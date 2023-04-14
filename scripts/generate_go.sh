@@ -27,7 +27,7 @@ process_file() {
   package_name=$(basename $subdir | cut -d'.' -f1 | tr '[:upper:]' '[:lower:]')
   
   # Generate the Go binding for the contract
-  echo "Compiling $contract_name... $package_name"
+  echo "Compiling $contract_name..."
   cat "$contract" | jq .abi > "$output_subdir/$contract_name.abi"
   cat "$contract" | jq .bytecode | tr -d '\"' > "$output_subdir/$contract_name.bin"
   abigen --abi "$output_subdir/$contract_name.abi" --bin "$output_subdir/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir/$contract_name.go" > /dev/null 2>&1
