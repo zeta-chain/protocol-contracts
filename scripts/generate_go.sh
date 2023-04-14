@@ -65,10 +65,16 @@ iterate_directory() {
   done
 }
 
+echo -e ""
+
 iterate_directory "$ARTIFACTS_DIR"
+
+echo -e ""
 
 if [ $errors -eq 0 ]; then
   echo "All contracts have been compiled successfully."
 else
   echo "There were $errors error(s) during the compilation process."
 fi
+
+echo -e ""
