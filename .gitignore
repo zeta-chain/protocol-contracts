@@ -27,18 +27,3 @@ tsconfig.tsbuildinfo
 # Slither
 scripts/slither-results/*
 !scripts/slither-results/.gitkeep
-
-
-
-
-node_modules
-.env
-coverage
-coverage.json
-typechain
-typechain-types
-
-# Hardhat files
-cache
-artifacts
-
