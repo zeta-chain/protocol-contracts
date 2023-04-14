@@ -7,6 +7,9 @@ OUTPUT_DIR="./pkg"
 # Create the output directory if it doesn't exist
 mkdir -p $OUTPUT_DIR
 
+# Initialize error counter
+errors=0
+
 # Function to process JSON files and generate Go bindings
 process_file() {
   local contract="$1"
@@ -31,6 +34,12 @@ process_file() {
   cat "$contract" | jq .abi > "$output_subdir/$contract_name.abi"
   cat "$contract" | jq .bytecode | tr -d '\"' > "$output_subdir/$contract_name.bin"
   abigen --abi "$output_subdir/$contract_name.abi" --bin "$output_subdir/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir/$contract_name.go" > /dev/null 2>&1
+
+  # Check if there were errors during the compilation
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to compile $contract_name"
+    errors=$((errors + 1))
+  fi
 
   # Remove temporary .abi and .bin files
   rm "$output_subdir/$contract_name.abi" "$output_subdir/$contract_name.bin"
@@ -58,4 +67,8 @@ iterate_directory() {
 
 iterate_directory "$ARTIFACTS_DIR"
 
-echo "All contracts have been compiled successfully."
+if [ $errors -eq 0 ]; then
+  echo "All contracts have been compiled successfully."
+else
+  echo "There were $errors error(s) during the compilation process."
+fi
