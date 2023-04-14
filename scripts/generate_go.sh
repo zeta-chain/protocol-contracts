@@ -21,13 +21,13 @@ process_file() {
   fi
   
   # Extract the contract name from the file name (without the .json extension)
-  contract_name=$(basename $contract .json)
+  contract_name=$(basename "$contract" .json)
 
   # Define output subdirectory and create it if it doesn't exist
-  output_subdir="$OUTPUT_DIR/$subdir"
+  output_subdir="$OUTPUT_DIR/${subdir/@/}/"
   mkdir -p "$output_subdir"
 
-  package_name=$(basename $subdir | cut -d'.' -f1 | tr '[:upper:]' '[:lower:]')
+  package_name=$(basename "${subdir/@/}" | cut -d'.' -f1 | tr '[:upper:]' '[:lower:]')
   
   # Generate the Go binding for the contract
   echo "Compiling $contract_name..."
