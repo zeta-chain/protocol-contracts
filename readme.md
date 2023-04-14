@@ -6,10 +6,10 @@ This repository contains the smart contracts for ZetaChain. The smart contracts 
 
 Before you can work with this project, you must have the following installed:
 
-* Node.js
-* Yarn
-* jq
-* abigen
+* [Node.js](https://nodejs.org/)
+* [Yarn](https://yarnpkg.com/)
+* [jq](https://stedolan.github.io/jq/)
+* [abigen](https://geth.ethereum.org/docs/tools/abigen)
 
 ## Getting Started
 
