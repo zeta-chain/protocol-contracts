@@ -22,7 +22,7 @@ git clone https://github.com/zeta-chain/protocol
 Once you have cloned the repository, you can navigate to the project directory and run the following command to install the project dependencies:
 
 ```
-yarn install
+yarn
 ```
 
 ## Compiling Contracts
@@ -33,7 +33,7 @@ To compile the contracts, run the following command:
 yarn compile
 ```
 
-This will compile the Solidity contracts and output the resulting JSON artifacts to the build/contracts directory.
+This will compile the Solidity contracts and output the resulting JSON artifacts to the `artifacts` directory.
 
 ## Generating Go Bindings
 
