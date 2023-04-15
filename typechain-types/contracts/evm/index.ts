@@ -9,6 +9,8 @@ import type * as zetaConnectorBaseSol from "./ZetaConnector.base.sol";
 export type { zetaConnectorBaseSol };
 import type * as zetaConnectorEthSol from "./ZetaConnector.eth.sol";
 export type { zetaConnectorEthSol };
+import type * as zetaConnectorNonEthSol from "./ZetaConnector.non-eth.sol";
+export type { zetaConnectorNonEthSol };
 import type * as interfaces from "./interfaces";
 export type { interfaces };
 export type { ERC20Custody } from "./ERC20Custody";

@@ -48,6 +48,8 @@ export type { ZetaConnectorBase } from "./contracts/evm/ZetaConnector.base.sol/Z
 export { ZetaConnectorBase__factory } from "./factories/contracts/evm/ZetaConnector.base.sol/ZetaConnectorBase__factory";
 export type { ZetaConnectorEth } from "./contracts/evm/ZetaConnector.eth.sol/ZetaConnectorEth";
 export { ZetaConnectorEth__factory } from "./factories/contracts/evm/ZetaConnector.eth.sol/ZetaConnectorEth__factory";
+export type { ZetaConnectorNonEth } from "./contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth";
+export { ZetaConnectorNonEth__factory } from "./factories/contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth__factory";
 export type { WZETA } from "./contracts/zevm/ConnectorZEVM.sol/WZETA";
 export { WZETA__factory } from "./factories/contracts/zevm/ConnectorZEVM.sol/WZETA__factory";
 export type { ZetaConnectorZEVM } from "./contracts/zevm/ConnectorZEVM.sol/ZetaConnectorZEVM";
