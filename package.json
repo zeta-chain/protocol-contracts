@@ -6,14 +6,20 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "clean": "npx hardhat clean",
-    "generate:go": "yarn compile && ./scripts/generate_go.sh"
+    "generate:interfaces": "yarn clean && yarn compile",
+    "generate:go": "yarn compile && ./scripts/generate_go.sh",
+    "test": "npx hardhat test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@changesets/cli": "^2.23.1",
+    "@ethersproject/abi": "^5.4.7",
+    "@ethersproject/providers": "^5.4.7",
+    "@fadeev/networks": "^1.0.7",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "3.0.3",
@@ -28,6 +34,10 @@
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "@uniswap/v3-periphery": "^1.4.3",
+    "@zetachain/addresses": "^0.0.9",
+    "@zetachain/addresses-tools": "^0.0.1",
     "chai": "^4.3.6",
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
@@ -54,9 +64,6 @@
     "ts-node": "10.8.1",
     "tsconfig-paths": "^3.14.1",
     "typechain": "^8.1.0",
-    "typescript": "^4.6.3",
-    "@ethersproject/abi": "^5.4.7",
-    "@ethersproject/providers": "^5.4.7",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.0"
+    "typescript": "^4.6.3"
   }
 }

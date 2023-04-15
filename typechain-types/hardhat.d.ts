@@ -13,6 +13,14 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
+      name: "Ownable2Step",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable2Step__factory>;
+    getContractFactory(
       name: "Pausable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Pausable__factory>;
@@ -45,9 +53,49 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Pair__factory>;
     getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "IUniswapV2Router01",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV2Router01__factory>;
+    getContractFactory(
+      name: "IUniswapV2Router02",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV2Router02__factory>;
+    getContractFactory(
+      name: "IWETH",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWETH__factory>;
+    getContractFactory(
+      name: "UniswapV2Router02",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.UniswapV2Router02__factory>;
+    getContractFactory(
+      name: "IUniswapV3SwapCallback",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV3SwapCallback__factory>;
+    getContractFactory(
+      name: "IQuoter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IQuoter__factory>;
+    getContractFactory(
+      name: "ISwapRouter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISwapRouter__factory>;
+    getContractFactory(
       name: "ERC20Custody",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Custody__factory>;
+    getContractFactory(
+      name: "ImmutableCreate2Factory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ImmutableCreate2Factory__factory>;
+    getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
     getContractFactory(
       name: "ConnectorErrors",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -56,6 +104,10 @@ declare module "hardhat/types/runtime" {
       name: "ZetaErrors",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaErrors__factory>;
+    getContractFactory(
+      name: "ZetaInteractorErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaInteractorErrors__factory>;
     getContractFactory(
       name: "ZetaCommonErrors",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -77,6 +129,22 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaNonEthInterface__factory>;
     getContractFactory(
+      name: "INonfungiblePositionManager",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.INonfungiblePositionManager__factory>;
+    getContractFactory(
+      name: "IPoolInitializer",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPoolInitializer__factory>;
+    getContractFactory(
+      name: "ZetaInteractorMock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaInteractorMock__factory>;
+    getContractFactory(
+      name: "ZetaReceiverMock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaReceiverMock__factory>;
+    getContractFactory(
       name: "ZetaEth",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaEth__factory>;
@@ -96,6 +164,30 @@ declare module "hardhat/types/runtime" {
       name: "ZetaConnectorNonEth",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaConnectorNonEth__factory>;
+    getContractFactory(
+      name: "ZetaInteractor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaInteractor__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV2__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV2Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV2Errors__factory>;
+    getContractFactory(
+      name: "WETH9",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.WETH9__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV3__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV3Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV3Errors__factory>;
     getContractFactory(
       name: "WZETA",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -158,6 +250,16 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.ZRC20Errors__factory>;
 
     getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
+    getContractAt(
+      name: "Ownable2Step",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable2Step>;
+    getContractAt(
       name: "Pausable",
       address: string,
       signer?: ethers.Signer
@@ -198,10 +300,60 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IUniswapV2Pair>;
     getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "IUniswapV2Router01",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV2Router01>;
+    getContractAt(
+      name: "IUniswapV2Router02",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV2Router02>;
+    getContractAt(
+      name: "IWETH",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWETH>;
+    getContractAt(
+      name: "UniswapV2Router02",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.UniswapV2Router02>;
+    getContractAt(
+      name: "IUniswapV3SwapCallback",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV3SwapCallback>;
+    getContractAt(
+      name: "IQuoter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IQuoter>;
+    getContractAt(
+      name: "ISwapRouter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISwapRouter>;
+    getContractAt(
       name: "ERC20Custody",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Custody>;
+    getContractAt(
+      name: "ImmutableCreate2Factory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ImmutableCreate2Factory>;
+    getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
     getContractAt(
       name: "ConnectorErrors",
       address: string,
@@ -212,6 +364,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaErrors>;
+    getContractAt(
+      name: "ZetaInteractorErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaInteractorErrors>;
     getContractAt(
       name: "ZetaCommonErrors",
       address: string,
@@ -238,6 +395,26 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaNonEthInterface>;
     getContractAt(
+      name: "INonfungiblePositionManager",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.INonfungiblePositionManager>;
+    getContractAt(
+      name: "IPoolInitializer",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPoolInitializer>;
+    getContractAt(
+      name: "ZetaInteractorMock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaInteractorMock>;
+    getContractAt(
+      name: "ZetaReceiverMock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaReceiverMock>;
+    getContractAt(
       name: "ZetaEth",
       address: string,
       signer?: ethers.Signer
@@ -262,6 +439,36 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaConnectorNonEth>;
+    getContractAt(
+      name: "ZetaInteractor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaInteractor>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV2>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV2Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV2Errors>;
+    getContractAt(
+      name: "WETH9",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.WETH9>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV3>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV3Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV3Errors>;
     getContractAt(
       name: "WZETA",
       address: string,
