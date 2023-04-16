@@ -1115,13 +1115,6 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@fadeev/networks@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@fadeev/networks/-/networks-1.0.7.tgz#a5d05a31f93acb4ba75279e243c3f9ce8e5d50da"
-  integrity sha512-526qGD5qO0TqXK3kJO1ISzxJwVMCx3YsB2pcggVy6VOkIr/RZ3by7Z8ojd9pTaFrGUZZi6z+MqyH8r0N0tf1Jw==
-  dependencies:
-    dotenv "^16.0.3"
-
 "@ganache/ethereum-address@0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@ganache/ethereum-address/-/ethereum-address-0.1.4.tgz#0e6d66f4a24f64bf687cb3ff7358fb85b9d9005e"
@@ -3282,7 +3275,7 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-dotenv@^16.0.0, dotenv@^16.0.3:
+dotenv@^16.0.0:
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
   integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
