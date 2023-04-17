@@ -3,14 +3,16 @@ import "@nomiclabs/hardhat-etherscan";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
+import * as dotenv from "dotenv";
 
 import type { HardhatUserConfig } from "hardhat/types";
 
-const PRIVATE_KEYS =
-  process.env.PRIVATE_KEY !== undefined
-    ? [`0x${process.env.PRIVATE_KEY}`, `0x${process.env.TSS_PRIVATE_KEY}`]
-    : [];
+dotenv.config();
 
+const PRIVATE_KEYS =
+  process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
+
+console.log(PRIVATE_KEYS);
 const config: HardhatUserConfig = {
   networks: {
     athens: {
@@ -50,7 +52,7 @@ const config: HardhatUserConfig = {
       chainId: 1337,
       forking: {
         blockNumber: 14672712,
-        url: `https://rpc.ankr.com/eth`,
+        url: "https://rpc.ankr.com/eth",
       },
     },
     "klaytn-baobab": {
