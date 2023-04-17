@@ -12,7 +12,6 @@ dotenv.config();
 const PRIVATE_KEYS =
   process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
 
-console.log(PRIVATE_KEYS);
 const config: HardhatUserConfig = {
   networks: {
     athens: {
