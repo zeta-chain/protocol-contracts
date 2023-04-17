@@ -1,7 +1,7 @@
 // Code generated - DO NOT EDIT.
 // This file is a generated binding and any manual changes will be lost.
 
-package uniswap
+package uniswapperiphery
 
 import (
 	"errors"
@@ -32,7 +32,7 @@ var (
 // UniswapImportsMetaData contains all meta data concerning the UniswapImports contract.
 var UniswapImportsMetaData = &bind.MetaData{
 	ABI: "[]",
-	Bin: "0x6080604052348015600f57600080fd5b50603e80601d6000396000f3fe6080604052600080fdfea265627a7a72315820ac5fd8a0a8e9920478daac7453aa8800dbde3429ca336aad004a2f58e45f295564736f6c63430005100032",
+	Bin: "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220f17fc62352a9ed59f3ba3100edde94d454d42effb690112c1047f8e02e6447d364736f6c63430006060033",
 }
 
 // UniswapImportsABI is the input ABI used to generate the binding from.
