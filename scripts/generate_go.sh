@@ -4,6 +4,8 @@
 ARTIFACTS_DIR="./artifacts"
 OUTPUT_DIR="./pkg"
 
+rm -rf $OUTPUT_DIR
+
 # Create the output directory if it doesn't exist
 mkdir -p $OUTPUT_DIR
 
@@ -28,13 +30,12 @@ process_file() {
   mkdir -p "$output_subdir"
 
   package_name=$(basename "${subdir/@/}" | cut -d'.' -f1 | tr '[:upper:]' '[:lower:]')
-  
+
   # Generate the Go binding for the contract
   echo "Compiling $contract_name..."
   cat "$contract" | jq .abi > "$output_subdir/$contract_name.abi"
   cat "$contract" | jq .bytecode | tr -d '\"' > "$output_subdir/$contract_name.bin"
   abigen --abi "$output_subdir/$contract_name.abi" --bin "$output_subdir/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir/$contract_name.go" > /dev/null 2>&1
-
   # Check if there were errors during the compilation
   if [ $? -ne 0 ]; then
     echo "Error: Failed to compile $contract_name"
