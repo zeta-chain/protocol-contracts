@@ -24,10 +24,12 @@ process_file() {
   
   # Extract the contract name from the file name (without the .json extension)
   contract_name=$(basename "$contract" .json)
+  contract_name_lowercase=$(echo "$contract_name" | tr '[:upper:]' '[:lower:]')
 
   # Define output subdirectory and create it if it doesn't exist
   output_subdir="$OUTPUT_DIR/${subdir/@/}/"
-  mkdir -p "$output_subdir"
+  output_subdir_lowercase=$(echo "$output_subdir" | tr '[:upper:]' '[:lower:]')
+  mkdir -p "$output_subdir_lowercase"
 
   package_name=$(basename "${subdir/@/}" | cut -d'.' -f1 | tr '[:upper:]' '[:lower:]')
 
@@ -35,7 +37,7 @@ process_file() {
   echo "Compiling $contract_name..."
   cat "$contract" | jq .abi > "$output_subdir/$contract_name.abi"
   cat "$contract" | jq .bytecode | tr -d '\"' > "$output_subdir/$contract_name.bin"
-  abigen --abi "$output_subdir/$contract_name.abi" --bin "$output_subdir/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir/$contract_name.go" > /dev/null 2>&1
+  abigen --abi "$output_subdir/$contract_name.abi" --bin "$output_subdir/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir/$contract_name_lowercase.go" > /dev/null 2>&1
   # Check if there were errors during the compilation
   if [ $? -ne 0 ]; then
     echo "Error: Failed to compile $contract_name"
