@@ -88,6 +88,7 @@ const config: HardhatUserConfig = {
   },
   solidity: {
     compilers: [
+      { version: "0.4.18" /** For zevm/wzeta.sol */ },
       { version: "0.5.10" /** For create2 factory */ },
       { version: "0.5.16" },
       { version: "0.6.6" /** For uniswap v2 */ },
