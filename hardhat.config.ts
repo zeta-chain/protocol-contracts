@@ -90,7 +90,12 @@ const config: HardhatUserConfig = {
     compilers: [
       { version: "0.4.19" /** For zevm/wzeta.sol */ },
       { version: "0.5.10" /** For create2 factory */ },
-      { version: "0.5.16" },
+      { version: "0.5.16", settings: {
+        optimizer: {
+          enabled: true,
+          runs: 999999,
+        }
+      } },
       { version: "0.6.6" /** For uniswap v2 */ },
       { version: "0.7.6" /** For uniswap v3 */ },
       { version: "0.8.7" },
