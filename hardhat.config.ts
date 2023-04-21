@@ -96,7 +96,12 @@ const config: HardhatUserConfig = {
           runs: 999999,
         }
       } },
-      { version: "0.6.6" /** For uniswap v2 */ },
+      { version: "0.6.6", settings: {
+        optimizer: {
+          enabled: true,
+          runs: 999999,
+        }
+      } /** For uniswap v2 */ },
       { version: "0.7.6" /** For uniswap v3 */ },
       { version: "0.8.7" },
     ],
