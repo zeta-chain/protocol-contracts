@@ -37,6 +37,7 @@
     "@uniswap/v3-periphery": "^1.4.3",
     "@zetachain/addresses": "^0.0.9",
     "@zetachain/addresses-tools": "^0.0.1",
+    "axios": "^1.4.0",
     "chai": "^4.3.6",
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
