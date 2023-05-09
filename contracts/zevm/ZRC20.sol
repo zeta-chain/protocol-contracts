@@ -261,7 +261,7 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
      */
     function withdraw(bytes memory to, uint256 amount) external override returns (bool) {
         (address gasZRC20, uint256 gasFee) = withdrawGasFee();
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee+PROTOCOL_FLAT_FEE)) {
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
         _burn(msg.sender, amount);
