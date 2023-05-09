@@ -5,7 +5,7 @@ import { ethers, network } from "hardhat";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { deployZetaConnector } from "./deploy-zeta-connector";
 import { deployZetaToken } from "./deploy-zeta-token";
-import { setZetaAddresses } from "../tools/set-zeta-token-addresses";
+import { setZetaAddresses } from "../../tools/set-zeta-token-addresses";
 
 async function main() {
   if (isLocalNetworkName(network.name)) {

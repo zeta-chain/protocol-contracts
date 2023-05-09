@@ -2,8 +2,8 @@ import { isNetworkName } from "@zetachain/addresses";
 import { saveAddress } from "@zetachain/addresses-tools";
 import { ethers, network } from "hardhat";
 
-import { getAddress } from "../../../lib/address.helpers";
-import { getZetaConnectorEth, getZetaConnectorNonEth, isEthNetworkName } from "../../../lib/contracts.helpers";
+import { getAddress } from "../../lib/address.helpers";
+import { getZetaConnectorEth, getZetaConnectorNonEth, isEthNetworkName } from "../../lib/contracts.helpers";
 
 async function sendGas() {
   if (!isNetworkName(network.name)) {

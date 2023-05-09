@@ -1,9 +1,9 @@
 import { getChainId } from "@zetachain/addresses";
-import { ZetaConnectorEth__factory as ZetaConnectorEthFactory } from "../../../typechain-types";
+import { ZetaConnectorEth__factory as ZetaConnectorEthFactory } from "../../typechain-types";
 import { AbiCoder } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 
-import { getAddress } from "../../../lib/address.helpers";
+import { getAddress } from "../../lib/address.helpers";
 
 const encoder = new AbiCoder();
 
