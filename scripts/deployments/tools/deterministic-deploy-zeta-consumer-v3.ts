@@ -27,7 +27,7 @@ export async function deterministicDeployZetaConsumer() {
   await contract.deployed();
   const address = contract.address;
 
-  saveAddress("zetaTokenConsumerUniV3", address);
+  // saveAddress("zetaTokenConsumerUniV3", address);
   console.log("Deployed ZetaConsumer. Address:", address);
 }
 

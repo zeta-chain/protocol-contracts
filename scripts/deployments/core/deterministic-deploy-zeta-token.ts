@@ -61,7 +61,7 @@ export async function deterministicDeployZetaToken() {
 
   console.log("Deployed zetaToken. Address:", address);  
   console.log("Constructor Args", constructorArgs);
-  saveAddress("zetaToken", address);
+  // saveAddress("zetaToken", address);
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {

@@ -41,7 +41,7 @@ export async function deterministicDeployZetaConsumer() {
     signer
   });
 
-  saveAddress("zetaTokenConsumerUniV2", address);
+  // saveAddress("zetaTokenConsumerUniV2", address);
   console.log("Deployed ZetaConsumer. Address:", address);
 }
 

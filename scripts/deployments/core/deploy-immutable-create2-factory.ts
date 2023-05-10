@@ -13,7 +13,7 @@ export async function deployImmutableCreate2Factory() {
 
   const contract = await deploy();
 
-  saveAddress("immutableCreate2Factory", contract.address);
+  // saveAddress("immutableCreate2Factory", contract.address);
   console.log("Deployed ImmutableCreate2Factory. Address:", contract.address);
 }
 

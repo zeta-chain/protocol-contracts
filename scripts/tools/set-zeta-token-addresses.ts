@@ -11,12 +11,13 @@ export async function setZetaAddresses() {
 
   const factory = (await ethers.getContractFactory("ZetaNonEth")) as ZetaNonEthFactory;
 
-  const [, tssSigner] = await ethers.getSigners();
+  const [tssSigner] = await ethers.getSigners();
 
   const contract = factory.attach(getAddress("zetaToken")).connect(tssSigner);
 
   console.log("Updating");
-  await (await contract.updateTssAndConnectorAddresses(getAddress("tss"), getAddress("connector"))).wait();
+  const tx = await contract.updateTssAndConnectorAddresses(getAddress("tss"), getAddress("connector"))
+  await tx.wait();
   console.log("Updated");
 }
 

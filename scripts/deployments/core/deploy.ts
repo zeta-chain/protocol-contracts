@@ -10,7 +10,7 @@ import { setZetaAddresses } from "../../tools/set-zeta-token-addresses";
 async function main() {
   if (isLocalNetworkName(network.name)) {
     const [owner] = await ethers.getSigners();
-    saveAddress("tssUpdater", owner.address);
+    // saveAddress("tssUpdater", owner.address);
   }
 
   await deployZetaToken();

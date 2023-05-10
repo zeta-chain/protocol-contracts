@@ -54,7 +54,7 @@ export async function deterministicDeployZetaConnector() {
 
   console.log("Deployed ZetaConnector. Address:", address);
   console.log("Constructor Args", constructorArgs);
-  saveAddress("connector", address);
+  // saveAddress("connector", address);
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
