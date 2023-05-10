@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
 
-import "./interfaces/ZetaInterfaces.sol";
+import "../interfaces/ZetaInterfaces.sol";
 
 interface ZetaTokenConsumerUniV3Errors {
     error InputCantBeZero();

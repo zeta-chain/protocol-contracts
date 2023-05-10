@@ -11,5 +11,6 @@ export * as zetaTokenConsumerUniV2StrategySol from "./ZetaTokenConsumerUniV2.str
 export * as zetaTokenConsumerUniV3StrategySol from "./ZetaTokenConsumerUniV3.strategy.sol";
 export * as interfaces from "./interfaces";
 export * as testing from "./testing";
+export * as tools from "./tools";
 export { ERC20Custody__factory } from "./ERC20Custody__factory";
 export { ZetaInteractor__factory } from "./ZetaInteractor__factory";
