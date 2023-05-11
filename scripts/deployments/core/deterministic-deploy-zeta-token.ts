@@ -13,18 +13,16 @@ import {
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { deployContractToAddress, saltToHex } from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
 
-const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS ?? "";
 
 export async function deterministicDeployZetaToken() {
   if (!isNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
-  if (DEPLOYER_ADDRESS === "") {
-    throw new Error(`DEPLOYER_ADDRESS env variable isn't set.`);
-  }
-
+  
   const accounts = await ethers.getSigners();
   const [signer] = accounts;
+  
+  const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
   const saltNumber = isEthNetworkName(network.name) ? ZETA_TOKEN_SALT_NUMBER_ETH : ZETA_TOKEN_SALT_NUMBER_NON_ETH;
   const saltStr = BigNumber.from(saltNumber).toHexString();

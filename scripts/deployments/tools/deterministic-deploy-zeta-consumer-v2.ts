@@ -8,8 +8,6 @@ import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_CONSUMER_SALT_NUMBER } from "../../../lib/contracts.constants";
 import { deployContractToAddress, saltToHex } from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
 
-const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS ?? "";
-
 export async function deterministicDeployZetaConsumer() {
   if (!isNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
@@ -17,6 +15,8 @@ export async function deterministicDeployZetaConsumer() {
 
   const accounts = await ethers.getSigners();
   const [signer] = accounts;
+
+  const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
   const saltNumber = ZETA_CONSUMER_SALT_NUMBER;
   const saltStr = BigNumber.from(saltNumber).toHexString();

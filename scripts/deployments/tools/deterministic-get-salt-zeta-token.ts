@@ -1,7 +1,7 @@
 import { isNetworkName } from "@zetachain/addresses";
 import { ZetaEth__factory, ZetaNonEth__factory } from "../../../typechain-types";
 import { BigNumber } from "ethers";
-import { network } from "hardhat";
+import { ethers, network } from "hardhat";
 
 import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_INITIAL_SUPPLY } from "../../../lib/contracts.constants";
@@ -9,12 +9,16 @@ import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { calculateBestSalt } from "../../../lib/deterministic-deploy.helpers";
 
 const MAX_ITERATIONS = BigNumber.from(100000);
-const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS ?? "";
 
 export async function deterministicDeployGetSaltZetaToken() {
   if (!isNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
+
+  const accounts = await ethers.getSigners();
+  const [signer] = accounts;
+
+  const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
   const tss = getAddress("tss");
   const tssUpdater = getAddress("tssUpdater");
