@@ -26,7 +26,6 @@ var (
 	_ = common.Big1
 	_ = types.BloomLookup
 	_ = event.NewSubscription
-	_ = abi.ConvertType
 )
 
 // ZetaInterfacesSendInput is an auto generated low-level Go binding around an user-defined struct.
@@ -41,8 +40,8 @@ type ZetaInterfacesSendInput struct {
 
 // ZetaConnectorZEVMMetaData contains all meta data concerning the ZetaConnectorZEVM contract.
 var ZetaConnectorZEVMMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_wzeta\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"FailedZetaSent\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OnlyFungibleModule\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OnlyWZETA\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"WZETATransferFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"wzeta_\",\"type\":\"address\"}],\"name\":\"SetWZETA\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sourceTxOriginAddress\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"zetaTxSenderAddress\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"destinationChainId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"destinationAddress\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"zetaValueAndGas\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"destinationGasLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"zetaParams\",\"type\":\"bytes\"}],\"name\":\"ZetaSent\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"FUNGIBLE_MODULE_ADDRESS\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"destinationChainId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"destinationAddress\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"destinationGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"zetaValueAndGas\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"zetaParams\",\"type\":\"bytes\"}],\"internalType\":\"structZetaInterfaces.SendInput\",\"name\":\"input\",\"type\":\"tuple\"}],\"name\":\"send\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"wzeta_\",\"type\":\"address\"}],\"name\":\"setWzetaAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"wzeta\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
-	Bin: "0x608060405234801561001057600080fd5b50604051610a51380380610a518339818101604052810190610032919061008d565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050610108565b600081519050610087816100f1565b92915050565b6000602082840312156100a3576100a26100ec565b5b60006100b184828501610078565b91505092915050565b60006100c5826100cc565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600080fd5b6100fa816100ba565b811461010557600080fd5b50565b61093a806101176000396000f3fe6080604052600436106100425760003560e01c8062173d46146100d35780633ce4a5bc146100fe578063eb3bacbd14610129578063ec02690114610152576100ce565b366100ce5760008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16146100cc576040517f6e6b6de700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b005b600080fd5b3480156100df57600080fd5b506100e861017b565b6040516100f591906106e5565b60405180910390f35b34801561010a57600080fd5b5061011361019f565b60405161012091906106e5565b60405180910390f35b34801561013557600080fd5b50610150600480360381019061014b91906105bf565b6101b7565b005b34801561015e57600080fd5b5061017960048036038101906101749190610619565b6102aa565b005b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b73735b14bb79463307aacbed86daf3322b1e6226ab81565b73735b14bb79463307aacbed86daf3322b1e6226ab73ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614610230576040517fea02b3f300000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f7325870b05f8f3412c318a35fc6a74feca51ea15811ec7a257676ca4db9d41768160405161029f91906106e5565b60405180910390a150565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd333084608001356040518463ffffffff1660e01b815260040161030b93929190610700565b602060405180830381600087803b15801561032557600080fd5b505af1158015610339573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061035d91906105ec565b610393576040517fa8c6fd4a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16632e1a7d4d82608001356040518263ffffffff1660e01b81526004016103f091906107b3565b600060405180830381600087803b15801561040a57600080fd5b505af115801561041e573d6000803e3d6000fd5b50505050600073735b14bb79463307aacbed86daf3322b1e6226ab73ffffffffffffffffffffffffffffffffffffffff168260800135604051610460906106d0565b60006040518083038185875af1925050503d806000811461049d576040519150601f19603f3d011682016040523d82523d6000602084013e6104a2565b606091505b50509050806104dd576040517fc7ffc47b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b81600001353373ffffffffffffffffffffffffffffffffffffffff167f7ec1c94701e09b1652f3e1d307e60c4b9ebf99aff8c2079fd1d8c585e031c4e43285806020019061052b91906107ce565b8760800135886040013589806060019061054591906107ce565b8b8060a0019061055591906107ce565b60405161056a99989796959493929190610737565b60405180910390a35050565b600081359050610585816108d6565b92915050565b60008151905061059a816108ed565b92915050565b600060c082840312156105b6576105b56108a9565b5b81905092915050565b6000602082840312156105d5576105d46108bd565b5b60006105e384828501610576565b91505092915050565b600060208284031215610602576106016108bd565b5b60006106108482850161058b565b91505092915050565b60006020828403121561062f5761062e6108bd565b5b600082013567ffffffffffffffff81111561064d5761064c6108b8565b5b610659848285016105a0565b91505092915050565b61066b8161084d565b82525050565b600061067d8385610831565b935061068a838584610895565b610693836108c2565b840190509392505050565b60006106ab600083610842565b91506106b6826108d3565b600082019050919050565b6106ca8161088b565b82525050565b60006106db8261069e565b9150819050919050565b60006020820190506106fa6000830184610662565b92915050565b60006060820190506107156000830186610662565b6107226020830185610662565b61072f60408301846106c1565b949350505050565b600060c08201905061074c600083018c610662565b818103602083015261075f818a8c610671565b905061076e60408301896106c1565b61077b60608301886106c1565b818103608083015261078e818688610671565b905081810360a08301526107a3818486610671565b90509a9950505050505050505050565b60006020820190506107c860008301846106c1565b92915050565b600080833560016020038436030381126107eb576107ea6108ae565b5b80840192508235915067ffffffffffffffff82111561080d5761080c6108a4565b5b602083019250600182023603831315610829576108286108b3565b5b509250929050565b600082825260208201905092915050565b600081905092915050565b60006108588261086b565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b50565b6108df8161084d565b81146108ea57600080fd5b50565b6108f68161085f565b811461090157600080fd5b5056fea26469706673582212200ffe6c799d91d5b7883478f60527249befb43da410ae458dea0c449f851341d464736f6c63430008070033",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_wzeta\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"FailedZetaSent\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OnlyFungibleModule\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OnlyWZETA\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"WZETATransferFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"wzeta_\",\"type\":\"address\"}],\"name\":\"SetWZETA\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sourceTxOriginAddress\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"zetaTxSenderAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"eventNonce\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"destinationChainId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"destinationAddress\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"zetaValueAndGas\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"destinationGasLimit\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"zetaParams\",\"type\":\"bytes\"}],\"name\":\"ZetaSent\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"FUNGIBLE_MODULE_ADDRESS\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"destinationChainId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"destinationAddress\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"destinationGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"zetaValueAndGas\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"zetaParams\",\"type\":\"bytes\"}],\"internalType\":\"structZetaInterfaces.SendInput\",\"name\":\"input\",\"type\":\"tuple\"}],\"name\":\"send\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"wzeta_\",\"type\":\"address\"}],\"name\":\"setWzetaAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"wzeta\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"zetaSentNonce\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
+	Bin: "0x608060405234801561001057600080fd5b50604051610b2d380380610b2d8339818101604052810190610032919061008d565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050610108565b600081519050610087816100f1565b92915050565b6000602082840312156100a3576100a26100ec565b5b60006100b184828501610078565b91505092915050565b60006100c5826100cc565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600080fd5b6100fa816100ba565b811461010557600080fd5b50565b610a16806101176000396000f3fe60806040526004361061004d5760003560e01c8062173d46146100de5780633ce4a5bc146101095780636f254b1914610134578063eb3bacbd1461015f578063ec02690114610188576100d9565b366100d95760008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16146100d7576040517f6e6b6de700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b005b600080fd5b3480156100ea57600080fd5b506100f36101b1565b604051610100919061073b565b60405180910390f35b34801561011557600080fd5b5061011e6101d5565b60405161012b919061073b565b60405180910390f35b34801561014057600080fd5b506101496101ed565b6040516101569190610817565b60405180910390f35b34801561016b57600080fd5b5061018660048036038101906101819190610615565b6101f3565b005b34801561019457600080fd5b506101af60048036038101906101aa919061066f565b6102e6565b005b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b73735b14bb79463307aacbed86daf3322b1e6226ab81565b60015481565b73735b14bb79463307aacbed86daf3322b1e6226ab73ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161461026c576040517fea02b3f300000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f7325870b05f8f3412c318a35fc6a74feca51ea15811ec7a257676ca4db9d4176816040516102db919061073b565b60405180910390a150565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166323b872dd333084608001356040518463ffffffff1660e01b815260040161034793929190610756565b602060405180830381600087803b15801561036157600080fd5b505af1158015610375573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906103999190610642565b6103cf576040517fa8c6fd4a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16632e1a7d4d82608001356040518263ffffffff1660e01b815260040161042c9190610817565b600060405180830381600087803b15801561044657600080fd5b505af115801561045a573d6000803e3d6000fd5b50505050600073735b14bb79463307aacbed86daf3322b1e6226ab73ffffffffffffffffffffffffffffffffffffffff16826080013560405161049c90610726565b60006040518083038185875af1925050503d80600081146104d9576040519150601f19603f3d011682016040523d82523d6000602084013e6104de565b606091505b5050905080610519576040517fc7ffc47b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60016000815461052890610908565b9190508190555081600001353373ffffffffffffffffffffffffffffffffffffffff167f3a5e775d23ccbb143b663302281541003214b93742c3a704474fa64e5292e319326001548680602001906105809190610832565b886080013589604001358a806060019061059a9190610832565b8c8060a001906105aa9190610832565b6040516105c09a9998979695949392919061078d565b60405180910390a35050565b6000813590506105db816109b2565b92915050565b6000815190506105f0816109c9565b92915050565b600060c0828403121561060c5761060b610985565b5b81905092915050565b60006020828403121561062b5761062a610999565b5b6000610639848285016105cc565b91505092915050565b60006020828403121561065857610657610999565b5b6000610666848285016105e1565b91505092915050565b60006020828403121561068557610684610999565b5b600082013567ffffffffffffffff8111156106a3576106a2610994565b5b6106af848285016105f6565b91505092915050565b6106c1816108b1565b82525050565b60006106d38385610895565b93506106e08385846108f9565b6106e98361099e565b840190509392505050565b60006107016000836108a6565b915061070c826109af565b600082019050919050565b610720816108ef565b82525050565b6000610731826106f4565b9150819050919050565b600060208201905061075060008301846106b8565b92915050565b600060608201905061076b60008301866106b8565b61077860208301856106b8565b6107856040830184610717565b949350505050565b600060e0820190506107a2600083018d6106b8565b6107af602083018c610717565b81810360408301526107c2818a8c6106c7565b90506107d16060830189610717565b6107de6080830188610717565b81810360a08301526107f18186886106c7565b905081810360c08301526108068184866106c7565b90509b9a5050505050505050505050565b600060208201905061082c6000830184610717565b92915050565b6000808335600160200384360303811261084f5761084e61098a565b5b80840192508235915067ffffffffffffffff82111561087157610870610980565b5b60208301925060018202360383131561088d5761088c61098f565b5b509250929050565b600082825260208201905092915050565b600081905092915050565b60006108bc826108cf565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b6000610913826108ef565b91507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82141561094657610945610951565b5b600182019050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b50565b6109bb816108b1565b81146109c657600080fd5b50565b6109d2816108c3565b81146109dd57600080fd5b5056fea26469706673582212207eb0b46b004cec67fd1ac3d7d6151765a1b1302a84ac3dd15df2dfb3e619870f64736f6c63430008070033",
 }
 
 // ZetaConnectorZEVMABI is the input ABI used to generate the binding from.
@@ -167,11 +166,11 @@ func NewZetaConnectorZEVMFilterer(address common.Address, filterer bind.Contract
 
 // bindZetaConnectorZEVM binds a generic wrapper to an already deployed contract.
 func bindZetaConnectorZEVM(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := ZetaConnectorZEVMMetaData.GetAbi()
+	parsed, err := abi.JSON(strings.NewReader(ZetaConnectorZEVMABI))
 	if err != nil {
 		return nil, err
 	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -272,6 +271,37 @@ func (_ZetaConnectorZEVM *ZetaConnectorZEVMSession) Wzeta() (common.Address, err
 // Solidity: function wzeta() view returns(address)
 func (_ZetaConnectorZEVM *ZetaConnectorZEVMCallerSession) Wzeta() (common.Address, error) {
 	return _ZetaConnectorZEVM.Contract.Wzeta(&_ZetaConnectorZEVM.CallOpts)
+}
+
+// ZetaSentNonce is a free data retrieval call binding the contract method 0x6f254b19.
+//
+// Solidity: function zetaSentNonce() view returns(uint256)
+func (_ZetaConnectorZEVM *ZetaConnectorZEVMCaller) ZetaSentNonce(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _ZetaConnectorZEVM.contract.Call(opts, &out, "zetaSentNonce")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// ZetaSentNonce is a free data retrieval call binding the contract method 0x6f254b19.
+//
+// Solidity: function zetaSentNonce() view returns(uint256)
+func (_ZetaConnectorZEVM *ZetaConnectorZEVMSession) ZetaSentNonce() (*big.Int, error) {
+	return _ZetaConnectorZEVM.Contract.ZetaSentNonce(&_ZetaConnectorZEVM.CallOpts)
+}
+
+// ZetaSentNonce is a free data retrieval call binding the contract method 0x6f254b19.
+//
+// Solidity: function zetaSentNonce() view returns(uint256)
+func (_ZetaConnectorZEVM *ZetaConnectorZEVMCallerSession) ZetaSentNonce() (*big.Int, error) {
+	return _ZetaConnectorZEVM.Contract.ZetaSentNonce(&_ZetaConnectorZEVM.CallOpts)
 }
 
 // Send is a paid mutator transaction binding the contract method 0xec026901.
@@ -542,6 +572,7 @@ func (it *ZetaConnectorZEVMZetaSentIterator) Close() error {
 type ZetaConnectorZEVMZetaSent struct {
 	SourceTxOriginAddress common.Address
 	ZetaTxSenderAddress   common.Address
+	EventNonce            *big.Int
 	DestinationChainId    *big.Int
 	DestinationAddress    []byte
 	ZetaValueAndGas       *big.Int
@@ -551,15 +582,16 @@ type ZetaConnectorZEVMZetaSent struct {
 	Raw                   types.Log // Blockchain specific contextual infos
 }
 
-// FilterZetaSent is a free log retrieval operation binding the contract event 0x7ec1c94701e09b1652f3e1d307e60c4b9ebf99aff8c2079fd1d8c585e031c4e4.
+// FilterZetaSent is a free log retrieval operation binding the contract event 0x3a5e775d23ccbb143b663302281541003214b93742c3a704474fa64e5292e319.
 //
-// Solidity: event ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
+// Solidity: event ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 eventNonce, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
 func (_ZetaConnectorZEVM *ZetaConnectorZEVMFilterer) FilterZetaSent(opts *bind.FilterOpts, zetaTxSenderAddress []common.Address, destinationChainId []*big.Int) (*ZetaConnectorZEVMZetaSentIterator, error) {
 
 	var zetaTxSenderAddressRule []interface{}
 	for _, zetaTxSenderAddressItem := range zetaTxSenderAddress {
 		zetaTxSenderAddressRule = append(zetaTxSenderAddressRule, zetaTxSenderAddressItem)
 	}
+
 	var destinationChainIdRule []interface{}
 	for _, destinationChainIdItem := range destinationChainId {
 		destinationChainIdRule = append(destinationChainIdRule, destinationChainIdItem)
@@ -572,15 +604,16 @@ func (_ZetaConnectorZEVM *ZetaConnectorZEVMFilterer) FilterZetaSent(opts *bind.F
 	return &ZetaConnectorZEVMZetaSentIterator{contract: _ZetaConnectorZEVM.contract, event: "ZetaSent", logs: logs, sub: sub}, nil
 }
 
-// WatchZetaSent is a free log subscription operation binding the contract event 0x7ec1c94701e09b1652f3e1d307e60c4b9ebf99aff8c2079fd1d8c585e031c4e4.
+// WatchZetaSent is a free log subscription operation binding the contract event 0x3a5e775d23ccbb143b663302281541003214b93742c3a704474fa64e5292e319.
 //
-// Solidity: event ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
+// Solidity: event ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 eventNonce, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
 func (_ZetaConnectorZEVM *ZetaConnectorZEVMFilterer) WatchZetaSent(opts *bind.WatchOpts, sink chan<- *ZetaConnectorZEVMZetaSent, zetaTxSenderAddress []common.Address, destinationChainId []*big.Int) (event.Subscription, error) {
 
 	var zetaTxSenderAddressRule []interface{}
 	for _, zetaTxSenderAddressItem := range zetaTxSenderAddress {
 		zetaTxSenderAddressRule = append(zetaTxSenderAddressRule, zetaTxSenderAddressItem)
 	}
+
 	var destinationChainIdRule []interface{}
 	for _, destinationChainIdItem := range destinationChainId {
 		destinationChainIdRule = append(destinationChainIdRule, destinationChainIdItem)
@@ -618,9 +651,9 @@ func (_ZetaConnectorZEVM *ZetaConnectorZEVMFilterer) WatchZetaSent(opts *bind.Wa
 	}), nil
 }
 
-// ParseZetaSent is a log parse operation binding the contract event 0x7ec1c94701e09b1652f3e1d307e60c4b9ebf99aff8c2079fd1d8c585e031c4e4.
+// ParseZetaSent is a log parse operation binding the contract event 0x3a5e775d23ccbb143b663302281541003214b93742c3a704474fa64e5292e319.
 //
-// Solidity: event ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
+// Solidity: event ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 eventNonce, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
 func (_ZetaConnectorZEVM *ZetaConnectorZEVMFilterer) ParseZetaSent(log types.Log) (*ZetaConnectorZEVMZetaSent, error) {
 	event := new(ZetaConnectorZEVMZetaSent)
 	if err := _ZetaConnectorZEVM.contract.UnpackLog(event, "ZetaSent", log); err != nil {
