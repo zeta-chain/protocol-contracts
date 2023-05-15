@@ -62,10 +62,13 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
     address public constant FUNGIBLE_MODULE_ADDRESS = payable(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
     /// @notice WZETA token address.
     address public wzeta;
+    /// @notice ZetaSent events nonce.
+    uint256 public zetaSentNonce;
 
     event ZetaSent(
         address sourceTxOriginAddress,
         address indexed zetaTxSenderAddress,
+        uint256 eventNonce,
         uint256 indexed destinationChainId,
         bytes destinationAddress,
         uint256 zetaValueAndGas,
@@ -94,9 +97,11 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
         WZETA(wzeta).withdraw(input.zetaValueAndGas);
         (bool sent,) = FUNGIBLE_MODULE_ADDRESS.call{value: input.zetaValueAndGas}("");
         if (!sent) revert FailedZetaSent();
+        ++zetaSentNonce;
         emit ZetaSent(
             tx.origin,
             msg.sender,
+            zetaSentNonce,
             input.destinationChainId,
             input.destinationAddress,
             input.zetaValueAndGas,
