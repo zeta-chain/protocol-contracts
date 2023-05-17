@@ -27,12 +27,3 @@ export async function deployZetaToken() {
   // saveAddress("zetaToken", contract.address);
   console.log("Deployed Zeta to:", contract.address);
 }
-
-if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deployZetaToken()
-    .then(() => process.exit(0))
-    .catch(error => {
-      console.error(error);
-      process.exit(1);
-    });
-}

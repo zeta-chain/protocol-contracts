@@ -27,12 +27,3 @@ export async function deployZetaConnector() {
   // saveAddress("connector", contract.address);
   console.log("Deployed ZetaConnector. Address:", contract.address);
 }
-
-if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deployZetaConnector()
-    .then(() => process.exit(0))
-    .catch(error => {
-      console.error(error);
-      process.exit(1);
-    });
-}

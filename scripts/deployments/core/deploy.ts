@@ -26,7 +26,8 @@ async function main() {
    * since it must be done after starting the local Zeta node
    */
   if (!isLocalNetworkName(network.name)) {
-    await setZetaAddresses();
+    // @dev: Set Zeta addresses on address lib before execute this step
+    // await setZetaAddresses();
   }
 }
 
