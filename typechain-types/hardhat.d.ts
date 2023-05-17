@@ -169,6 +169,38 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaReceiverMock__factory>;
     getContractFactory(
+      name: "ImmutableCreate2Factory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ImmutableCreate2Factory__factory>;
+    getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
+      name: "ZetaInteractor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaInteractor__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV2__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV2Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV2Errors__factory>;
+    getContractFactory(
+      name: "WETH9",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.WETH9__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV3__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV3Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV3Errors__factory>;
+    getContractFactory(
       name: "ZetaEth",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaEth__factory>;
@@ -468,6 +500,46 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaReceiverMock>;
+    getContractAt(
+      name: "ImmutableCreate2Factory",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ImmutableCreate2Factory>;
+    getContractAt(
+      name: "Ownable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
+    getContractAt(
+      name: "ZetaInteractor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaInteractor>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV2>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV2Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV2Errors>;
+    getContractAt(
+      name: "WETH9",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.WETH9>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV3>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV3Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV3Errors>;
     getContractAt(
       name: "ZetaEth",
       address: string,

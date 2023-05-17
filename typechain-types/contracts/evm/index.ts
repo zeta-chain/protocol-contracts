@@ -21,5 +21,7 @@ import type * as interfaces from "./interfaces";
 export type { interfaces };
 import type * as testing from "./testing";
 export type { testing };
+import type * as tools from "./tools";
+export type { tools };
 export type { ERC20Custody } from "./ERC20Custody";
 export type { ZetaInteractor } from "./ZetaInteractor";

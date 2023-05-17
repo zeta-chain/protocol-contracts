@@ -1,6 +1,5 @@
 import { Provider, TransactionReceipt } from "@ethersproject/providers";
 import { ImmutableCreate2Factory__factory } from "@typechain-types";
-import assert from "assert";
 import { ethers, Signer } from "ethers";
 
 export const buildBytecode = (
@@ -67,15 +66,13 @@ export async function deployContractToAddress({
     factoryAddress,
     signer
   );
-
   const bytecode = buildBytecode(
     constructorTypes,
     constructorArgs,
     contractBytecode
   );
 
-  const computedAddr = await factory.findCreate2Address(salt, bytecode);
-
+  const computedAddr = await factory.findCreate2Address(salt, bytecode );
   const call = transferOwner
     ? factory.safeCreate2AndTransfer
     : factory.safeCreate2;
