@@ -13,8 +13,8 @@ async function main() {
     // saveAddress("tssUpdater", owner.address);
   }
 
-  await deployZetaToken();
-  await deployZetaConnector();
+  const zetaTokenAddress = await deployZetaToken();
+  const connectorAddress = await deployZetaConnector();
 
   /**
    * @description The Eth implementation of Zeta token doesn't need any address
@@ -26,8 +26,7 @@ async function main() {
    * since it must be done after starting the local Zeta node
    */
   if (!isLocalNetworkName(network.name)) {
-    // @dev: Set Zeta addresses on address lib before execute this step
-    // await setZetaAddresses();
+    await setZetaAddresses(connectorAddress, zetaTokenAddress);
   }
 }
 

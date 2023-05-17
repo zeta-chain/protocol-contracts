@@ -26,4 +26,5 @@ export async function deployZetaConnector() {
 
   // saveAddress("connector", contract.address);
   console.log("Deployed ZetaConnector. Address:", contract.address);
+  return contract.address;
 }

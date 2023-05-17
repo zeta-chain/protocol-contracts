@@ -26,4 +26,5 @@ export async function deployZetaToken() {
 
   // saveAddress("zetaToken", contract.address);
   console.log("Deployed Zeta to:", contract.address);
+  return contract.address;
 }
