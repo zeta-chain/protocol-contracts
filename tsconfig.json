@@ -10,6 +10,12 @@
     "baseUrl": ".",
     "paths": {
       "@typechain-types": ["typechain-types"]
-    }
+    },
+    "typeRoots": ["@types", "./node_modules/@types"],
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "outDir": "dist",
+    "declaration": true
   }
 }

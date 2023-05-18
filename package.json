@@ -1,19 +1,26 @@
 {
   "name": "@zetachain/protocol-contracts",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "license": "MIT",
   "author": "zetachain",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "index.js",
+  "main": "./dist/typechain-types/index.js",
+  "types": "./dist/typechain-types/index.d.ts",
+  "files": [
+    "contracts",
+    "dist"
+  ],
   "scripts": {
     "compile": "npx hardhat compile",
     "clean": "npx hardhat clean",
     "generate:interfaces": "yarn clean && yarn compile",
     "generate:go": "yarn compile && ./scripts/generate_go.sh",
-    "test": "npx hardhat test"
+    "test": "npx hardhat test",
+    "tsc:watch": "npx tsc --watch",
+    "prepublishOnly": "npx tsc"
   },
   "keywords": [],
   "devDependencies": {
