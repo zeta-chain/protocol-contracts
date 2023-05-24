@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as immutableCreate2FactorySol from "./ImmutableCreate2Factory.sol";
+export * as zetaTokenConsumerTridentStrategySol from "./ZetaTokenConsumerTrident.strategy.sol";
 export * as zetaTokenConsumerUniV2StrategySol from "./ZetaTokenConsumerUniV2.strategy.sol";
 export * as zetaTokenConsumerUniV3StrategySol from "./ZetaTokenConsumerUniV3.strategy.sol";
+export * as interfaces from "./interfaces";
 export { ZetaInteractor__factory } from "./ZetaInteractor__factory";
