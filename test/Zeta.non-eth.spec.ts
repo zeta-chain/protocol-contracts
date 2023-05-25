@@ -163,11 +163,8 @@ describe("ZetaNonEth tests", () => {
 
     it("Should emit `Minted` on success", async () => {
       const zetaMintedFilter = zetaTokenNonEthContract.filters.Minted();
-      const e1 = await zetaTokenNonEthContract.queryFilter(zetaMintedFilter);
-      expect(e1.length).to.equal(1);
 
-      await (
-        await zetaConnectorNonEthContract
+      const tx = await zetaConnectorNonEthContract
           .connect(tssSigner)
           .onReceive(
             randomSigner.address,
@@ -177,10 +174,10 @@ describe("ZetaNonEth tests", () => {
             new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
             ethers.constants.HashZero
           )
-      ).wait();
+      const receipt = await tx.wait();
 
-      const e2 = await zetaTokenNonEthContract.queryFilter(zetaMintedFilter);
-      expect(e2.length).to.equal(2);
+      const events = await zetaTokenNonEthContract.queryFilter(zetaMintedFilter, receipt.blockHash);
+      expect(events.length).to.equal(1);
     });
   });
 
@@ -196,10 +193,8 @@ describe("ZetaNonEth tests", () => {
     it("Should emit `Burnt` on success", async () => {
       await tssUpdaterApproveConnectorNonEth();
       const zetaBurntFilter = zetaTokenNonEthContract.filters.Burnt();
-      const e1 = await zetaTokenNonEthContract.queryFilter(zetaBurntFilter);
-      expect(e1.length).to.equal(0);
 
-      await zetaConnectorNonEthContract.send({
+      const tx = await zetaConnectorNonEthContract.send({
         destinationAddress: randomSigner.address,
         destinationChainId: 1,
         destinationGasLimit: 2500000,
@@ -207,9 +202,10 @@ describe("ZetaNonEth tests", () => {
         zetaParams: new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
         zetaValueAndGas: 1000,
       });
+      const receipt = await tx.wait();
 
-      const e2 = await zetaTokenNonEthContract.queryFilter(zetaBurntFilter);
-      expect(e2.length).to.equal(1);
+      const events = await zetaTokenNonEthContract.queryFilter(zetaBurntFilter, receipt.blockHash);
+      expect(events.length).to.equal(1);
     });
   });
 });

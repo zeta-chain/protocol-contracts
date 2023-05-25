@@ -205,25 +205,20 @@ describe("ZetaConnector tests", () => {
       it("Should emit `PauserAddressUpdated` on success", async () => {
         const pauserAddressUpdatedFilter =
           zetaConnectorBaseContract.filters.PauserAddressUpdated();
-        const e1 = await zetaConnectorBaseContract.queryFilter(
-          pauserAddressUpdatedFilter
-        );
-        expect(e1.length).to.equal(0);
 
-        await (
-          await zetaConnectorBaseContract
+        const tx =  await zetaConnectorBaseContract
             .connect(pauserSigner)
             .updatePauserAddress(randomSigner.address)
-        ).wait();
+        const receipt = await tx.wait();
 
         const address = await zetaConnectorBaseContract.pauserAddress();
 
         expect(address).to.equal(randomSigner.address);
 
-        const e2 = await zetaConnectorBaseContract.queryFilter(
-          pauserAddressUpdatedFilter
+        const event = await zetaConnectorBaseContract.queryFilter(
+          pauserAddressUpdatedFilter, receipt.blockHash
         );
-        expect(e2.length).to.equal(1);
+        expect(event.length).to.equal(1);
       });
     });
 
@@ -360,10 +355,8 @@ describe("ZetaConnector tests", () => {
 
       it("Should emit `ZetaSent` on success", async () => {
         const zetaSentFilter = zetaConnectorEthContract.filters.ZetaSent();
-        const e1 = await zetaConnectorEthContract.queryFilter(zetaSentFilter);
-        expect(e1.length).to.equal(0);
 
-        await zetaConnectorEthContract.send({
+        const tx = await zetaConnectorEthContract.send({
           destinationAddress: randomSigner.address,
           destinationChainId: 1,
           destinationGasLimit: 2500000,
@@ -371,17 +364,15 @@ describe("ZetaConnector tests", () => {
           zetaParams: new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
           zetaValueAndGas: 0,
         });
-
-        const e2 = await zetaConnectorEthContract.queryFilter(zetaSentFilter);
-        expect(e2.length).to.equal(1);
+        const receipt = await tx.wait();
+        const events = await zetaConnectorEthContract.queryFilter(zetaSentFilter, receipt.blockHash);
+        expect(events.length).to.equal(1);
       });
 
       it("Should emit `ZetaSent` with tx.origin as the first parameter", async () => {
         const zetaSentFilter = zetaConnectorEthContract.filters.ZetaSent();
-        const e1 = await zetaConnectorEthContract.queryFilter(zetaSentFilter);
-        expect(e1.length).to.equal(0);
 
-        await zetaConnectorEthContract.connect(randomSigner).send({
+        const tx = await zetaConnectorEthContract.connect(randomSigner).send({
           destinationAddress: randomSigner.address,
           destinationChainId: 1,
           destinationGasLimit: 2500000,
@@ -390,8 +381,10 @@ describe("ZetaConnector tests", () => {
           zetaValueAndGas: 0,
         });
 
-        const e2 = await zetaConnectorEthContract.queryFilter(zetaSentFilter);
-        expect(e2[0].args[0].toString()).to.equal(randomSigner.address);
+        const receipt = await tx.wait();
+
+        const events = await zetaConnectorEthContract.queryFilter(zetaSentFilter, receipt.blockHash);
+        expect(events[0].args[0].toString()).to.equal(randomSigner.address);
       });
     });
 
@@ -488,13 +481,8 @@ describe("ZetaConnector tests", () => {
 
         const zetaReceivedFilter =
           zetaConnectorEthContract.filters.ZetaReceived();
-        const e1 = await zetaConnectorEthContract.queryFilter(
-          zetaReceivedFilter
-        );
-        expect(e1.length).to.equal(0);
 
-        await (
-          await zetaConnectorEthContract
+        const tx = await zetaConnectorEthContract
             .connect(tssSigner)
             .onReceive(
               randomSigner.address,
@@ -504,12 +492,12 @@ describe("ZetaConnector tests", () => {
               new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
               ethers.constants.HashZero
             )
-        ).wait();
+        const receipt = await tx.wait();
 
-        const e2 = await zetaConnectorEthContract.queryFilter(
-          zetaReceivedFilter
+        const events = await zetaConnectorEthContract.queryFilter(
+          zetaReceivedFilter, receipt.blockHash
         );
-        expect(e2.length).to.equal(1);
+        expect(events.length).to.equal(1);
       });
     });
 
@@ -590,15 +578,9 @@ describe("ZetaConnector tests", () => {
       it("Should emit `ZetaReverted` on success", async () => {
         await transfer100kZetaEth(zetaConnectorEthContract.address);
 
-        const zetaRevertedFilter =
-          zetaConnectorEthContract.filters.ZetaReverted();
-        const e1 = await zetaConnectorEthContract.queryFilter(
-          zetaRevertedFilter
-        );
-        expect(e1.length).to.equal(0);
+        const zetaRevertedFilter = zetaConnectorEthContract.filters.ZetaReverted();
 
-        await (
-          await zetaConnectorEthContract
+        const tx = await zetaConnectorEthContract
             .connect(tssSigner)
             .onRevert(
               zetaReceiverMockContract.address,
@@ -609,12 +591,12 @@ describe("ZetaConnector tests", () => {
               new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
               ethers.constants.HashZero
             )
-        ).wait();
+        const receipt = await tx.wait();
 
-        const e2 = await zetaConnectorEthContract.queryFilter(
-          zetaRevertedFilter
+        const events = await zetaConnectorEthContract.queryFilter(
+          zetaRevertedFilter, receipt.blockHash
         );
-        expect(e2.length).to.equal(1);
+        expect(events.length).to.equal(1);
       });
     });
   });
@@ -713,12 +695,8 @@ describe("ZetaConnector tests", () => {
 
       it("Should emit `ZetaSent` on success", async () => {
         const zetaSentFilter = zetaConnectorNonEthContract.filters.ZetaSent();
-        const e1 = await zetaConnectorNonEthContract.queryFilter(
-          zetaSentFilter
-        );
-        expect(e1.length).to.equal(0);
 
-        await zetaConnectorNonEthContract.send({
+        const tx = await zetaConnectorNonEthContract.send({
           destinationAddress: randomSigner.address,
           destinationChainId: 1,
           destinationGasLimit: 2500000,
@@ -726,21 +704,18 @@ describe("ZetaConnector tests", () => {
           zetaParams: new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
           zetaValueAndGas: 0,
         });
+        const receipt = await tx.wait();
 
-        const e2 = await zetaConnectorNonEthContract.queryFilter(
-          zetaSentFilter
+        const events = await zetaConnectorNonEthContract.queryFilter(
+          zetaSentFilter, receipt.blockHash
         );
-        expect(e2.length).to.equal(1);
+        expect(events.length).to.equal(1);
       });
 
       it("Should emit `ZetaSent` with tx.origin as the first parameter", async () => {
         const zetaSentFilter = zetaConnectorNonEthContract.filters.ZetaSent();
-        const e1 = await zetaConnectorNonEthContract.queryFilter(
-          zetaSentFilter
-        );
-        expect(e1.length).to.equal(0);
 
-        await zetaConnectorNonEthContract.connect(randomSigner).send({
+        const tx = await zetaConnectorNonEthContract.connect(randomSigner).send({
           destinationAddress: randomSigner.address,
           destinationChainId: 1,
           destinationGasLimit: 2500000,
@@ -748,11 +723,12 @@ describe("ZetaConnector tests", () => {
           zetaParams: new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
           zetaValueAndGas: 0,
         });
+        const receipt = await tx.wait();
 
-        const e2 = await zetaConnectorNonEthContract.queryFilter(
-          zetaSentFilter
+        const events = await zetaConnectorNonEthContract.queryFilter(
+          zetaSentFilter, receipt.blockHash
         );
-        expect(e2[0].args[0].toString()).to.equal(randomSigner.address);
+        expect(events[0].args[0].toString()).to.equal(randomSigner.address);
       });
     });
 
@@ -847,13 +823,8 @@ describe("ZetaConnector tests", () => {
       it("Should emit `ZetaReceived` on success", async () => {
         const zetaReceivedFilter =
           zetaConnectorNonEthContract.filters.ZetaReceived();
-        const e1 = await zetaConnectorNonEthContract.queryFilter(
-          zetaReceivedFilter
-        );
-        expect(e1.length).to.equal(1);
 
-        await (
-          await zetaConnectorNonEthContract
+        const tx = await zetaConnectorNonEthContract
             .connect(tssSigner)
             .onReceive(
               randomSigner.address,
@@ -863,12 +834,12 @@ describe("ZetaConnector tests", () => {
               new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
               ethers.constants.HashZero
             )
-        ).wait();
+        const receipt = await tx.wait();
 
-        const e2 = await zetaConnectorNonEthContract.queryFilter(
-          zetaReceivedFilter
+        const events = await zetaConnectorNonEthContract.queryFilter(
+          zetaReceivedFilter, receipt.blockHash
         );
-        expect(e2.length).to.equal(2);
+        expect(events.length).to.equal(1);
       });
     });
 
@@ -942,13 +913,8 @@ describe("ZetaConnector tests", () => {
 
         const zetaRevertedFilter =
           zetaConnectorNonEthContract.filters.ZetaReverted();
-        const e1 = await zetaConnectorNonEthContract.queryFilter(
-          zetaRevertedFilter
-        );
-        expect(e1.length).to.equal(0);
 
-        await (
-          await zetaConnectorNonEthContract
+        const tx = await zetaConnectorNonEthContract
             .connect(tssSigner)
             .onRevert(
               zetaReceiverMockContract.address,
@@ -959,12 +925,12 @@ describe("ZetaConnector tests", () => {
               new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
               ethers.constants.HashZero
             )
-        ).wait();
+        const receipt = await tx.wait();
 
-        const e2 = await zetaConnectorNonEthContract.queryFilter(
-          zetaRevertedFilter
+        const events = await zetaConnectorNonEthContract.queryFilter(
+          zetaRevertedFilter, receipt.blockHash
         );
-        expect(e2.length).to.equal(1);
+        expect(events.length).to.equal(1);
       });
     });
 
