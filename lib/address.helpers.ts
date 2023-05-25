@@ -9,7 +9,7 @@ export const getAddress = (
   address: ZetaAddress,
   {
     customNetworkName,
-    customZetaNetwork
+    customZetaNetwork,
   }: { customNetworkName?: NetworkName; customZetaNetwork?: ZetaNetworkName } = {}
 ): string => {
   const { name: _networkName } = network;

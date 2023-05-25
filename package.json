@@ -1,28 +1,5 @@
 {
-  "name": "@zetachain/protocol-contracts",
-  "version": "0.0.7",
-  "license": "MIT",
   "author": "zetachain",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "main": "./dist/typechain-types/index.js",
-  "types": "./dist/typechain-types/index.d.ts",
-  "files": [
-    "contracts",
-    "dist"
-  ],
-  "scripts": {
-    "compile": "npx hardhat compile",
-    "clean": "npx hardhat clean",
-    "generate:interfaces": "yarn clean && yarn compile",
-    "generate:go": "yarn compile && ./scripts/generate_go.sh",
-    "test": "npx hardhat clean && npx hardhat test",
-    "tsc:watch": "npx tsc --watch",
-    "prepublishOnly": "npx tsc"
-  },
-  "keywords": [],
   "devDependencies": {
     "@changesets/cli": "^2.23.1",
     "@ethersproject/abi": "^5.4.7",
@@ -74,5 +51,29 @@
     "tsconfig-paths": "^3.14.1",
     "typechain": "^8.1.0",
     "typescript": "^4.6.3"
-  }
+  },
+  "files": [
+    "contracts",
+    "dist"
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "main": "./dist/typechain-types/index.js",
+  "name": "@zetachain/protocol-contracts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "clean": "npx hardhat clean",
+    "compile": "npx hardhat compile",
+    "generate:go": "yarn compile && ./scripts/generate_go.sh",
+    "generate:interfaces": "yarn clean && yarn compile",
+    "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
+    "prepublishOnly": "npx tsc",
+    "test": "npx hardhat clean && npx hardhat test",
+    "tsc:watch": "npx tsc --watch"
+  },
+  "types": "./dist/typechain-types/index.d.ts",
+  "version": "0.0.7"
 }

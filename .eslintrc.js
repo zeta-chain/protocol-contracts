@@ -17,13 +17,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
-  plugins: [
-    "@typescript-eslint",
-    "prettier",
-    "simple-import-sort",
-    "sort-keys-fix",
-    "typescript-sort-keys",
-  ],
+  plugins: ["@typescript-eslint", "prettier", "simple-import-sort", "sort-keys-fix", "typescript-sort-keys"],
   rules: {
     "@typescript-eslint/sort-type-union-intersection-members": "error",
     camelcase: "off",
@@ -48,4 +42,3 @@ module.exports = {
     },
   },
 };
-

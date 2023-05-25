@@ -1,9 +1,9 @@
 import { getChainId } from "@zetachain/addresses";
-import { ZetaConnectorEth__factory as ZetaConnectorEthFactory } from "../../typechain-types";
 import { AbiCoder } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 
 import { getAddress } from "../../lib/address.helpers";
+import { ZetaConnectorEth__factory as ZetaConnectorEthFactory } from "../../typechain-types";
 
 const encoder = new AbiCoder();
 
@@ -20,7 +20,7 @@ async function main() {
       destinationGasLimit: 1_000_000,
       message: encoder.encode(["address"], [accounts[0].address]),
       zetaParams: [],
-      zetaValueAndGas: "10000000000000000000"
+      zetaValueAndGas: "10000000000000000000",
     })
   ).wait();
   console.log("Sent");
@@ -28,7 +28,7 @@ async function main() {
 
 main()
   .then(() => process.exit(0))
-  .catch(error => {
+  .catch((error) => {
     console.error(error);
     process.exit(1);
   });

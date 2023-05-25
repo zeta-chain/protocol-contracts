@@ -67,9 +67,5 @@ interface IPoolRouter {
     function exactOutput(ExactOutputParams calldata params) external payable returns (uint256 amountIn);
 
     /// @notice Recover mistakenly sent tokens
-    function sweep(
-        address token,
-        uint256 amount,
-        address recipient
-    ) external payable;
+    function sweep(address token, uint256 amount, address recipient) external payable;
 }

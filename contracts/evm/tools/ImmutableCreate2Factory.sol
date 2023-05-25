@@ -23,10 +23,10 @@ contract ImmutableCreate2Factory {
     // mapping to track which addresses have already been deployed.
     mapping(address => bool) private _deployed;
 
-    function safeCreate2Internal(bytes32 salt, bytes memory initializationCode)
-        internal
-        returns (address deploymentAddress)
-    {
+    function safeCreate2Internal(
+        bytes32 salt,
+        bytes memory initializationCode
+    ) internal returns (address deploymentAddress) {
         // move the initialization code from calldata to memory.
         bytes memory initCode = initializationCode;
 
@@ -84,12 +84,10 @@ contract ImmutableCreate2Factory {
      * @return Address of the contract that will be created, or the null address
      * if a contract already exists at that address.
      */
-    function safeCreate2(bytes32 salt, bytes memory initializationCode)
-        public
-        payable
-        containsCaller(salt)
-        returns (address deploymentAddress)
-    {
+    function safeCreate2(
+        bytes32 salt,
+        bytes memory initializationCode
+    ) public payable containsCaller(salt) returns (address deploymentAddress) {
         return safeCreate2Internal(salt, initializationCode);
     }
 
@@ -107,11 +105,10 @@ contract ImmutableCreate2Factory {
      * @return Address of the contract that will be created, or the null address
      * if a contract has already been deployed to that address.
      */
-    function findCreate2Address(bytes32 salt, bytes calldata initCode)
-        external
-        view
-        returns (address deploymentAddress)
-    {
+    function findCreate2Address(
+        bytes32 salt,
+        bytes calldata initCode
+    ) external view returns (address deploymentAddress) {
         // determine the address where the contract will be deployed.
         deploymentAddress = address(
             uint160( // downcast to match the address type.
@@ -148,11 +145,10 @@ contract ImmutableCreate2Factory {
      * @return Address of the contract that will be created, or the null address
      * if a contract has already been deployed to that address.
      */
-    function findCreate2AddressViaHash(bytes32 salt, bytes32 initCodeHash)
-        external
-        view
-        returns (address deploymentAddress)
-    {
+    function findCreate2AddressViaHash(
+        bytes32 salt,
+        bytes32 initCodeHash
+    ) external view returns (address deploymentAddress) {
         // determine the address where the contract will be deployed.
         deploymentAddress = address(
             uint160( // downcast to match the address type.
@@ -203,12 +199,10 @@ contract ImmutableCreate2Factory {
         _;
     }
 
-    function safeCreate2AndTransfer(bytes32 salt, bytes calldata initializationCode)
-        external
-        payable
-        containsCaller(salt)
-        returns (address deploymentAddress)
-    {
+    function safeCreate2AndTransfer(
+        bytes32 salt,
+        bytes calldata initializationCode
+    ) external payable containsCaller(salt) returns (address deploymentAddress) {
         deploymentAddress = safeCreate2Internal(salt, initializationCode);
         Ownable(deploymentAddress).transferOwnership(msg.sender);
     }

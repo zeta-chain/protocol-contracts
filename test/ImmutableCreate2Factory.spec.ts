@@ -31,9 +31,7 @@ describe("Deterministic deployment tests", () => {
     accounts = await ethers.getSigners();
     [signer] = accounts;
 
-    const immutableCreate2Factory = new ImmutableCreate2Factory__factory(
-      signer
-    );
+    const immutableCreate2Factory = new ImmutableCreate2Factory__factory(signer);
     immutableCreate2 = await immutableCreate2Factory.deploy();
   });
 
@@ -44,15 +42,8 @@ describe("Deterministic deployment tests", () => {
       const constructorArgs = ["2100000000"];
       const contractBytecode = ZetaEth__factory.bytecode;
 
-      const bytecode = buildBytecode(
-        constructorTypes,
-        constructorArgs,
-        contractBytecode
-      );
-      const expectedAddress = await immutableCreate2.findCreate2Address(
-        salthex,
-        bytecode
-      );
+      const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
+      const expectedAddress = await immutableCreate2.findCreate2Address(salthex, bytecode);
 
       // Deploy contract
       const { address } = await deployContractToAddress({
@@ -87,16 +78,8 @@ describe("Deterministic deployment tests", () => {
       const constructorArgs = ["2100000000"];
       const contractBytecode = ZetaEth__factory.bytecode;
 
-      const bytecode = buildBytecode(
-        constructorTypes,
-        constructorArgs,
-        contractBytecode
-      );
-      const expectedAddress = buildCreate2Address(
-        salthex,
-        bytecode,
-        immutableCreate2.address
-      );
+      const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
+      const expectedAddress = buildCreate2Address(salthex, bytecode, immutableCreate2.address);
       if (expectedAddress < minAddress) {
         minAddress = expectedAddress;
         minAddressSalt = saltStr;
@@ -115,23 +98,10 @@ describe("Deterministic deployment tests", () => {
     const constructorArgs = ["2100000000"];
     const contractBytecode = ZetaEth__factory.bytecode;
 
-    const bytecode = buildBytecode(
-      constructorTypes,
-      constructorArgs,
-      contractBytecode
-    );
-    const expectedAddress = await immutableCreate2.findCreate2Address(
-      salthex,
-      bytecode
-    );
-    const expectedAddressOffchain = buildCreate2Address(
-      salthex,
-      bytecode,
-      immutableCreate2.address
-    );
-    expect(expectedAddress.toLocaleLowerCase()).to.be.eq(
-      expectedAddressOffchain
-    );
+    const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
+    const expectedAddress = await immutableCreate2.findCreate2Address(salthex, bytecode);
+    const expectedAddressOffchain = buildCreate2Address(salthex, bytecode, immutableCreate2.address);
+    expect(expectedAddress.toLocaleLowerCase()).to.be.eq(expectedAddressOffchain);
   });
 
   it("Should deploy and transfer ownership to deployer", async () => {
