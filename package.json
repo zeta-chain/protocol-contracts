@@ -18,7 +18,7 @@
     "clean": "npx hardhat clean",
     "generate:interfaces": "yarn clean && yarn compile",
     "generate:go": "yarn compile && ./scripts/generate_go.sh",
-    "test": "npx hardhat test",
+    "test": "npx hardhat clean && npx hardhat test",
     "tsc:watch": "npx tsc --watch",
     "prepublishOnly": "npx tsc"
   },
