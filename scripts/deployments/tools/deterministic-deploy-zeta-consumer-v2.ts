@@ -1,12 +1,15 @@
 import { isNetworkName } from "@zetachain/addresses";
 import { saveAddress } from "@zetachain/addresses-tools";
-import { ZetaTokenConsumerUniV2__factory } from "../../../typechain-types";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 
 import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_CONSUMER_SALT_NUMBER } from "../../../lib/contracts.constants";
-import { deployContractToAddress, saltToHex } from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
+import {
+  deployContractToAddress,
+  saltToHex,
+} from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
+import { ZetaTokenConsumerUniV2__factory } from "../../../typechain-types";
 
 export async function deterministicDeployZetaConsumer() {
   if (!isNetworkName(network.name)) {
@@ -38,7 +41,7 @@ export async function deterministicDeployZetaConsumer() {
     contractBytecode,
     factoryAddress: immutableCreate2Factory,
     salt: salthex,
-    signer
+    signer,
   });
 
   // saveAddress("zetaTokenConsumerUniV2", address);
@@ -48,7 +51,7 @@ export async function deterministicDeployZetaConsumer() {
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
   deterministicDeployZetaConsumer()
     .then(() => process.exit(0))
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       process.exit(1);
     });

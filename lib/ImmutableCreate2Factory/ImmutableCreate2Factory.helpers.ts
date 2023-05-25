@@ -2,24 +2,12 @@ import { Provider, TransactionReceipt } from "@ethersproject/providers";
 import { ImmutableCreate2Factory__factory } from "@typechain-types";
 import { ethers, Signer } from "ethers";
 
-export const buildBytecode = (
-  constructorTypes: any[],
-  constructorArgs: any[],
-  contractBytecode: string
-) =>
-  `${contractBytecode}${encodeParams(constructorTypes, constructorArgs).slice(
-    2
-  )}`;
+export const buildBytecode = (constructorTypes: any[], constructorArgs: any[], contractBytecode: string) =>
+  `${contractBytecode}${encodeParams(constructorTypes, constructorArgs).slice(2)}`;
 
-export const buildCreate2Address = (
-  saltHex: string,
-  byteCode: string,
-  factoryAddress: string
-) => {
+export const buildCreate2Address = (saltHex: string, byteCode: string, factoryAddress: string) => {
   const payload = ethers.utils.keccak256(
-    `0x${["ff", factoryAddress, saltHex, ethers.utils.keccak256(byteCode)]
-      .map((x) => x.replace(/0x/, ""))
-      .join("")}`
+    `0x${["ff", factoryAddress, saltHex, ethers.utils.keccak256(byteCode)].map((x) => x.replace(/0x/, "")).join("")}`
   );
 
   return `0x${payload.slice(-40)}`.toLowerCase();
@@ -62,20 +50,11 @@ export async function deployContractToAddress({
   signer: Signer;
   transferOwner?: boolean;
 }) {
-  const factory = ImmutableCreate2Factory__factory.connect(
-    factoryAddress,
-    signer
-  );
-  const bytecode = buildBytecode(
-    constructorTypes,
-    constructorArgs,
-    contractBytecode
-  );
+  const factory = ImmutableCreate2Factory__factory.connect(factoryAddress, signer);
+  const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
 
-  const computedAddr = await factory.findCreate2Address(salt, bytecode );
-  const call = transferOwner
-    ? factory.safeCreate2AndTransfer
-    : factory.safeCreate2;
+  const computedAddr = await factory.findCreate2Address(salt, bytecode);
+  const call = transferOwner ? factory.safeCreate2AndTransfer : factory.safeCreate2;
   const tx = await call(salt, bytecode, {
     gasLimit: 6000000,
   });

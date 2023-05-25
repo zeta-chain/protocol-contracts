@@ -3,9 +3,9 @@ import { saveAddress } from "@zetachain/addresses-tools";
 import { ethers, network } from "hardhat";
 
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
+import { setZetaAddresses } from "../../tools/set-zeta-token-addresses";
 import { deployZetaConnector } from "./deploy-zeta-connector";
 import { deployZetaToken } from "./deploy-zeta-token";
-import { setZetaAddresses } from "../../tools/set-zeta-token-addresses";
 
 async function main() {
   if (isLocalNetworkName(network.name)) {

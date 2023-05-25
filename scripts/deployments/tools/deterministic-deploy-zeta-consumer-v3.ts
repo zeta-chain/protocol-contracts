@@ -1,9 +1,9 @@
 import { isNetworkName } from "@zetachain/addresses";
 import { saveAddress } from "@zetachain/addresses-tools";
-import { ZetaTokenConsumerUniV3__factory } from "../../../typechain-types";
 import { ethers, network } from "hardhat";
 
 import { getAddress } from "../../../lib/address.helpers";
+import { ZetaTokenConsumerUniV3__factory } from "../../../typechain-types";
 
 export async function deterministicDeployZetaConsumer() {
   if (!isNetworkName(network.name)) {
@@ -34,7 +34,7 @@ export async function deterministicDeployZetaConsumer() {
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
   deterministicDeployZetaConsumer()
     .then(() => process.exit(0))
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       process.exit(1);
     });

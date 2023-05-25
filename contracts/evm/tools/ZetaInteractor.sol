@@ -20,29 +20,22 @@ abstract contract ZetaInteractor is Ownable2Step, ZetaInteractorErrors {
      */
     mapping(uint256 => bytes) public interactorsByChainId;
 
-    modifier isValidMessageCall(
-        ZetaInterfaces.ZetaMessage calldata zetaMessage
-    ) {
+    modifier isValidMessageCall(ZetaInterfaces.ZetaMessage calldata zetaMessage) {
         _isValidCaller();
-        if (
-            keccak256(zetaMessage.zetaTxSenderAddress) !=
-            keccak256(interactorsByChainId[zetaMessage.sourceChainId])
-        ) revert InvalidZetaMessageCall();
+        if (keccak256(zetaMessage.zetaTxSenderAddress) != keccak256(interactorsByChainId[zetaMessage.sourceChainId]))
+            revert InvalidZetaMessageCall();
         _;
     }
 
     modifier isValidRevertCall(ZetaInterfaces.ZetaRevert calldata zetaRevert) {
         _isValidCaller();
-        if (zetaRevert.zetaTxSenderAddress != address(this))
-            revert InvalidZetaRevertCall();
-        if (zetaRevert.sourceChainId != currentChainId)
-            revert InvalidZetaRevertCall();
+        if (zetaRevert.zetaTxSenderAddress != address(this)) revert InvalidZetaRevertCall();
+        if (zetaRevert.sourceChainId != currentChainId) revert InvalidZetaRevertCall();
         _;
     }
 
     constructor(address zetaConnectorAddress) {
-        if (zetaConnectorAddress == address(0))
-            revert ZetaCommonErrors.InvalidAddress();
+        if (zetaConnectorAddress == address(0)) revert ZetaCommonErrors.InvalidAddress();
         currentChainId = block.chainid;
         connector = ZetaConnector(zetaConnectorAddress);
     }
@@ -58,10 +51,7 @@ abstract contract ZetaInteractor is Ownable2Step, ZetaInteractorErrors {
         return (keccak256(interactorsByChainId[chainId]) != ZERO_BYTES);
     }
 
-    function setInteractorByChainId(
-        uint256 destinationChainId,
-        bytes calldata contractAddress
-    ) external onlyOwner {
+    function setInteractorByChainId(uint256 destinationChainId, bytes calldata contractAddress) external onlyOwner {
         interactorsByChainId[destinationChainId] = contractAddress;
     }
 }

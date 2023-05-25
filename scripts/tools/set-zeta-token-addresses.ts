@@ -1,10 +1,10 @@
 import { isNetworkName } from "@zetachain/addresses";
-import { ZetaNonEth__factory as ZetaNonEthFactory } from "../../typechain-types";
 import { ethers, network } from "hardhat";
 
 import { getAddress } from "../../lib/address.helpers";
+import { ZetaNonEth__factory as ZetaNonEthFactory } from "../../typechain-types";
 
-export async function setZetaAddresses(connectorAddress:string , zetaTokenAddress: string) {
+export async function setZetaAddresses(connectorAddress: string, zetaTokenAddress: string) {
   const [owner] = await ethers.getSigners();
 
   if (!isNetworkName(network.name)) {
@@ -23,8 +23,7 @@ export async function setZetaAddresses(connectorAddress:string , zetaTokenAddres
   console.log("Updating");
   console.log("connectorAddress", connectorAddress);
   console.log("zetaTokenAddress", zetaTokenAddress);
-  const tx = await contract.updateTssAndConnectorAddresses(getAddress("tss"), connectorAddress)
+  const tx = await contract.updateTssAndConnectorAddresses(getAddress("tss"), connectorAddress);
   await tx.wait();
   console.log("Updated");
 }
-

@@ -1,5 +1,4 @@
 import { isNetworkName } from "@zetachain/addresses";
-import { ZetaEth__factory, ZetaNonEth__factory } from "../../../typechain-types";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 
@@ -7,6 +6,7 @@ import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_INITIAL_SUPPLY } from "../../../lib/contracts.constants";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { calculateBestSalt } from "../../../lib/deterministic-deploy.helpers";
+import { ZetaEth__factory, ZetaNonEth__factory } from "../../../typechain-types";
 
 const MAX_ITERATIONS = BigNumber.from(100000);
 
@@ -43,7 +43,7 @@ export async function deterministicDeployGetSaltZetaToken() {
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
   deterministicDeployGetSaltZetaToken()
     .then(() => process.exit(0))
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       process.exit(1);
     });

@@ -28,8 +28,7 @@ contract SystemContract is SystemContractErrors {
     mapping(uint256 => address) public gasZetaPoolByChainId;
 
     /// @notice Fungible address is always the same, it's on protocol level.
-    address public constant FUNGIBLE_MODULE_ADDRESS =
-        0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+    address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Uniswap V2 addresses.
     address public immutable uniswapv2FactoryAddress;
     address public immutable uniswapv2Router02Address;
@@ -49,13 +48,8 @@ contract SystemContract is SystemContractErrors {
     /**
      * @dev Only fungible module can deploy a system contract.
      */
-    constructor(
-        address wzeta_,
-        address uniswapv2Factory_,
-        address uniswapv2Router02_
-    ) {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
+    constructor(address wzeta_, address uniswapv2Factory_, address uniswapv2Router02_) {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         wZetaContractAddress = wzeta_;
         uniswapv2FactoryAddress = uniswapv2Factory_;
         uniswapv2Router02Address = uniswapv2Router02_;
@@ -71,16 +65,9 @@ contract SystemContract is SystemContractErrors {
      * @param target, contract address to make a call after deposit.
      * @param message, calldata for a call.
      */
-    function depositAndCall(
-        address zrc20,
-        uint256 amount,
-        address target,
-        bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this))
-            revert InvalidTarget();
+    function depositAndCall(address zrc20, uint256 amount, address target, bytes calldata message) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
         zContract(target).onCrossChainCall(zrc20, amount, message);
@@ -92,14 +79,9 @@ contract SystemContract is SystemContractErrors {
      * @param tokenB, tokenB address.
      * @return token0 token1, returns sorted token addresses,.
      */
-    function sortTokens(
-        address tokenA,
-        address tokenB
-    ) internal pure returns (address token0, address token1) {
+    function sortTokens(address tokenA, address tokenB) internal pure returns (address token0, address token1) {
         if (tokenA == tokenB) revert CantBeIdenticalAddresses();
-        (token0, token1) = tokenA < tokenB
-            ? (tokenA, tokenB)
-            : (tokenB, tokenA);
+        (token0, token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         if (token0 == address(0)) revert CantBeZeroAddress();
     }
 
@@ -110,11 +92,7 @@ contract SystemContract is SystemContractErrors {
      * @param tokenB, tokenB address.
      * @return pair tokens pair address.
      */
-    function uniswapv2PairFor(
-        address factory,
-        address tokenA,
-        address tokenB
-    ) public pure returns (address pair) {
+    function uniswapv2PairFor(address factory, address tokenA, address tokenB) public pure returns (address pair) {
         (address token0, address token1) = sortTokens(tokenA, tokenB);
         pair = address(
             uint160(
@@ -138,8 +116,7 @@ contract SystemContract is SystemContractErrors {
      * @param price, new gas price.
      */
     function setGasPrice(uint256 chainID, uint256 price) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         gasPriceByChainId[chainID] = price;
         emit SetGasPrice(chainID, price);
     }
@@ -150,8 +127,7 @@ contract SystemContract is SystemContractErrors {
      * @param zrc20, ZRC20 address.
      */
     function setGasCoinZRC20(uint256 chainID, address zrc20) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         gasCoinZRC20ByChainId[chainID] = zrc20;
         emit SetGasCoin(chainID, zrc20);
     }
@@ -162,13 +138,8 @@ contract SystemContract is SystemContractErrors {
      * @param erc20, pair for uniswap wzeta/erc20.
      */
     function setGasZetaPool(uint256 chainID, address erc20) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
-        address pool = uniswapv2PairFor(
-            uniswapv2FactoryAddress,
-            wZetaContractAddress,
-            erc20
-        );
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        address pool = uniswapv2PairFor(uniswapv2FactoryAddress, wZetaContractAddress, erc20);
         gasZetaPoolByChainId[chainID] = pool;
         emit SetGasZetaPool(chainID, pool);
     }
@@ -178,8 +149,7 @@ contract SystemContract is SystemContractErrors {
      * @param addr, wzeta new address.
      */
     function setWZETAContractAddress(address addr) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (addr == address(0)) revert ZeroAddress();
         wZetaContractAddress = addr;
         emit SetWZeta(wZetaContractAddress);
@@ -190,8 +160,7 @@ contract SystemContract is SystemContractErrors {
      * @param addr, zeta connector new address.
      */
     function setConnectorZEVMAddress(address addr) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS)
-            revert CallerIsNotFungibleModule();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (addr == address(0)) revert ZeroAddress();
         zetaConnectorZEVMAddress = addr;
         emit SetConnectorZEVM(zetaConnectorZEVMAddress);

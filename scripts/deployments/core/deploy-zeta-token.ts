@@ -16,11 +16,11 @@ export async function deployZetaToken() {
 
   if (isEthNetworkName(network.name)) {
     contract = await deployZetaEth({
-      args: [ZETA_INITIAL_SUPPLY]
+      args: [ZETA_INITIAL_SUPPLY],
     });
   } else {
     contract = await deployZetaNonEth({
-      args: [getAddress("tss"), getAddress("tssUpdater")]
+      args: [getAddress("tss"), getAddress("tssUpdater")],
     });
   }
 
