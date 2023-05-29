@@ -4,9 +4,38 @@ This repository contains the smart contracts for ZetaChain. The smart contracts
 are written in Solidity, and the repository includes scripts to compile the
 contracts and generate Go bindings.
 
+## Importing Protocol Contracts
+
+As a dapp developer, you can install the protocol contracts package into your
+project:
+
+```
+yarn add --dev @zetachain/protocol-contracts
+```
+
+Importing
+[`ZetaInterfaces`](https://www.zetachain.com/docs/developers/cross-chain-messaging/connector/)
+and `ZetaInteractor` for cross-chain messaging:
+
+```solidity
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.sol";
+import "@zetachain/protocol-contracts/contracts/evm/tools/ZetaInteractor.sol";
+```
+
+Importing [ZRC20](https://www.zetachain.com/docs/developers/concepts/zrc-20/)
+and the [system
+contract](https://www.zetachain.com/docs/developers/concepts/system-contract/)
+for omni-chain smart contracts:
+
+```solidity
+import "@zetachain/protocol-contracts/contracts/zevm/interfaces/IZRC20.sol";
+import "@zetachain/protocol-contracts/contracts/zevm/interfaces/zContract.sol";
+import "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
+```
+
 ## Prerequisites
 
-Before you can work with this project, you must have the following installed:
+Before you can contribute to this project, you must have the following installed:
 
 - [Node.js](https://nodejs.org/)
 - [Yarn](https://yarnpkg.com/)
