@@ -7,11 +7,6 @@ import "./ZetaConnector.base.sol";
 import "./interfaces/ZetaInterfaces.sol";
 import "./interfaces/ZetaNonEthInterface.sol";
 
-/**
- * @dev Non ETH implementation of ZetaConnector.
- * This contract manages interactions between TSS and different chains.
- * This version is for every chain but Etherum network because in the other chains we mint and burn and in Etherum we lock and unlock
- */
 contract ZetaConnectorNonEth is ZetaConnectorBase {
     uint256 public maxSupply = 2 ** 256 - 1;
 
@@ -30,10 +25,6 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
         maxSupply = maxSupply_;
     }
 
-    /**
-     * @dev Entry point to send data to protocol
-     * This call burn the token and emit an event with all the data needed by the protocol
-     */
     function send(ZetaInterfaces.SendInput calldata input) external override whenNotPaused {
         ZetaNonEthInterface(zetaToken).burnFrom(msg.sender, input.zetaValueAndGas);
 
@@ -49,50 +40,52 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
         );
     }
 
-    /**
-     * @dev Handler to receive data from other chain.
-     * This method can be called only by TSS.
-     * Transfer the Zeta tokens to destination and calls onZetaMessage if it's needed.
-     * To perform the transfer mint new tokens, validating first the maxSupply allowed in the current chain.
-     */
     function onReceive(
         bytes calldata zetaTxSenderAddress,
         uint256 sourceChainId,
         address destinationAddress,
-        uint256 zetaValue,
+        uint256 zetaValueAndGas,
         bytes calldata message,
         bytes32 internalSendHash
-    ) external override onlyTssAddress {
-        if (zetaValue + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply(maxSupply);
-        ZetaNonEthInterface(zetaToken).mint(destinationAddress, zetaValue, internalSendHash);
+    ) external override whenNotPaused onlyTssAddress {
+        if (zetaValueAndGas + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply)
+            revert ExceedsMaxSupply(maxSupply);
+        ZetaNonEthInterface(zetaToken).mint(destinationAddress, zetaValueAndGas, internalSendHash);
 
         if (message.length > 0) {
             ZetaReceiver(destinationAddress).onZetaMessage(
-                ZetaInterfaces.ZetaMessage(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message)
+                ZetaInterfaces.ZetaMessage(
+                    zetaTxSenderAddress,
+                    sourceChainId,
+                    destinationAddress,
+                    zetaValueAndGas,
+                    message
+                )
             );
         }
 
-        emit ZetaReceived(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message, internalSendHash);
+        emit ZetaReceived(
+            zetaTxSenderAddress,
+            sourceChainId,
+            destinationAddress,
+            zetaValueAndGas,
+            message,
+            internalSendHash
+        );
     }
 
-    /**
-     * @dev Handler to receive errors from other chain.
-     * This method can be called only by TSS.
-     * Transfer the Zeta tokens to destination and calls onZetaRevert if it's needed.
-     * To perform the transfer mint new tokens, validating first the maxSupply allowed in the current chain.
-     */
     function onRevert(
         address zetaTxSenderAddress,
         uint256 sourceChainId,
         bytes calldata destinationAddress,
         uint256 destinationChainId,
-        uint256 remainingZetaValue,
+        uint256 zetaValueAndGas,
         bytes calldata message,
         bytes32 internalSendHash
     ) external override whenNotPaused onlyTssAddress {
-        if (remainingZetaValue + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply)
+        if (zetaValueAndGas + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply)
             revert ExceedsMaxSupply(maxSupply);
-        ZetaNonEthInterface(zetaToken).mint(zetaTxSenderAddress, remainingZetaValue, internalSendHash);
+        ZetaNonEthInterface(zetaToken).mint(zetaTxSenderAddress, zetaValueAndGas, internalSendHash);
 
         if (message.length > 0) {
             ZetaReceiver(zetaTxSenderAddress).onZetaRevert(
@@ -101,7 +94,7 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
                     sourceChainId,
                     destinationAddress,
                     destinationChainId,
-                    remainingZetaValue,
+                    zetaValueAndGas,
                     message
                 )
             );
@@ -112,7 +105,7 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
             sourceChainId,
             destinationChainId,
             destinationAddress,
-            remainingZetaValue,
+            zetaValueAndGas,
             message,
             internalSendHash
         );

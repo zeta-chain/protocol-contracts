@@ -27,8 +27,7 @@ interface ZetaInterfaces {
         bytes zetaTxSenderAddress;
         uint256 sourceChainId;
         address destinationAddress;
-        /// @dev Remaining ZETA from zetaValueAndGas after subtracting ZetaChain gas fees and destination gas fees
-        uint256 zetaValue;
+        uint256 zetaValueAndGas;
         bytes message;
     }
 
@@ -40,8 +39,7 @@ interface ZetaInterfaces {
         uint256 sourceChainId;
         bytes destinationAddress;
         uint256 destinationChainId;
-        /// @dev Equals to: zetaValueAndGas - ZetaChain gas fees - destination chain gas fees - source chain revert tx gas fees
-        uint256 remainingZetaValue;
+        uint256 zetaValueAndGas;
         bytes message;
     }
 }
@@ -101,8 +99,4 @@ interface ZetaTokenConsumer {
         address outputToken,
         uint256 zetaTokenAmount
     ) external returns (uint256);
-}
-
-interface ZetaCommonErrors {
-    error InvalidAddress();
 }

@@ -5,9 +5,11 @@ import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
-import "../interfaces/ZetaInterfaces.sol";
+import "./interfaces/ZetaInterfaces.sol";
 
 interface ZetaTokenConsumerUniV2Errors {
+    error InvalidAddress();
+
     error InputCantBeZero();
 }
 
@@ -24,7 +26,7 @@ contract ZetaTokenConsumerUniV2 is ZetaTokenConsumer, ZetaTokenConsumerUniV2Erro
     IUniswapV2Router02 internal immutable uniswapV2Router;
 
     constructor(address zetaToken_, address uniswapV2Router_) {
-        if (zetaToken_ == address(0) || uniswapV2Router_ == address(0)) revert ZetaCommonErrors.InvalidAddress();
+        if (zetaToken_ == address(0) || uniswapV2Router_ == address(0)) revert InvalidAddress();
 
         zetaToken = zetaToken_;
         uniswapV2Router = IUniswapV2Router02(uniswapV2Router_);
@@ -35,7 +37,7 @@ contract ZetaTokenConsumerUniV2 is ZetaTokenConsumer, ZetaTokenConsumerUniV2Erro
         address destinationAddress,
         uint256 minAmountOut
     ) external payable override returns (uint256) {
-        if (destinationAddress == address(0)) revert ZetaCommonErrors.InvalidAddress();
+        if (destinationAddress == address(0)) revert InvalidAddress();
         if (msg.value == 0) revert InputCantBeZero();
 
         address[] memory path = new address[](2);
@@ -61,7 +63,7 @@ contract ZetaTokenConsumerUniV2 is ZetaTokenConsumer, ZetaTokenConsumerUniV2Erro
         address inputToken,
         uint256 inputTokenAmount
     ) external override returns (uint256) {
-        if (destinationAddress == address(0) || inputToken == address(0)) revert ZetaCommonErrors.InvalidAddress();
+        if (destinationAddress == address(0) || inputToken == address(0)) revert InvalidAddress();
         if (inputTokenAmount == 0) revert InputCantBeZero();
 
         IERC20(inputToken).safeTransferFrom(msg.sender, address(this), inputTokenAmount);
@@ -97,7 +99,7 @@ contract ZetaTokenConsumerUniV2 is ZetaTokenConsumer, ZetaTokenConsumerUniV2Erro
         uint256 minAmountOut,
         uint256 zetaTokenAmount
     ) external override returns (uint256) {
-        if (destinationAddress == address(0)) revert ZetaCommonErrors.InvalidAddress();
+        if (destinationAddress == address(0)) revert InvalidAddress();
         if (zetaTokenAmount == 0) revert InputCantBeZero();
 
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), zetaTokenAmount);
@@ -127,7 +129,7 @@ contract ZetaTokenConsumerUniV2 is ZetaTokenConsumer, ZetaTokenConsumerUniV2Erro
         address outputToken,
         uint256 zetaTokenAmount
     ) external override returns (uint256) {
-        if (destinationAddress == address(0) || outputToken == address(0)) revert ZetaCommonErrors.InvalidAddress();
+        if (destinationAddress == address(0) || outputToken == address(0)) revert InvalidAddress();
         if (zetaTokenAmount == 0) revert InputCantBeZero();
 
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), zetaTokenAmount);

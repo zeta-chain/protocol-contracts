@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "../interfaces/ZetaInterfaces.sol";
-import "../interfaces/ZetaInteractorErrors.sol";
+import "./interfaces/ZetaInterfaces.sol";
+import "./interfaces/ZetaInteractorErrors.sol";
 
-abstract contract ZetaInteractor is Ownable2Step, ZetaInteractorErrors {
+abstract contract ZetaInteractor is Ownable, ZetaInteractorErrors {
     bytes32 constant ZERO_BYTES = keccak256(new bytes(0));
     uint256 internal immutable currentChainId;
     ZetaConnector public immutable connector;
@@ -35,7 +35,6 @@ abstract contract ZetaInteractor is Ownable2Step, ZetaInteractorErrors {
     }
 
     constructor(address zetaConnectorAddress) {
-        if (zetaConnectorAddress == address(0)) revert ZetaCommonErrors.InvalidAddress();
         currentChainId = block.chainid;
         connector = ZetaConnector(zetaConnectorAddress);
     }
