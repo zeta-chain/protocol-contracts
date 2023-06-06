@@ -6,13 +6,12 @@ import "hardhat-abi-exporter";
 import "solidity-docgen";
 
 import * as dotenv from "dotenv";
-import type { HardhatUserConfig } from "hardhat/types";
 
 dotenv.config();
 
 const PRIVATE_KEYS = process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
 
-const config: HardhatUserConfig = {
+const config = {
   networks: {
     athens: {
       accounts: PRIVATE_KEYS,
@@ -111,6 +110,9 @@ const config: HardhatUserConfig = {
       { version: "0.7.6" /** For uniswap v3 */ },
       { version: "0.8.7" },
     ],
+  },
+  docgen: {
+    pages: "files",
   },
 };
 
