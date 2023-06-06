@@ -3,6 +3,7 @@ import "@nomiclabs/hardhat-etherscan";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
+import "solidity-docgen";
 
 import * as dotenv from "dotenv";
 import type { HardhatUserConfig } from "hardhat/types";

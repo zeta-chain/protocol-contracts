@@ -46,6 +46,7 @@
     "inquirer": "^8.2.4",
     "mocha": "^10.2.0",
     "solidity-coverage": "^0.8.2",
+    "solidity-docgen": "^0.6.0-beta.35",
     "ts-mocha": "^10.0.0",
     "ts-node": "10.8.1",
     "tsconfig-paths": "^3.14.1",
@@ -72,7 +73,8 @@
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "npx tsc",
     "test": "npx hardhat clean && npx hardhat test",
-    "tsc:watch": "npx tsc --watch"
+    "tsc:watch": "npx tsc --watch",
+    "docs": "npx hardhat docgen"
   },
   "types": "./dist/typechain-types/index.d.ts",
   "version": "0.0.7"
