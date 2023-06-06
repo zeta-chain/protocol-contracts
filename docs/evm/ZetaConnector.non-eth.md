@@ -1,4 +1,4 @@
-# Solidity API
+# evm/ZetaConnector.non-eth.md
 
 ## ZetaConnectorNonEth
 

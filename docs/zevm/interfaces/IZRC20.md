@@ -1,4 +1,4 @@
-# Solidity API
+# zevm/interfaces/IZRC20.md
 
 ## IZRC20
 

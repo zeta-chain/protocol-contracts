@@ -113,6 +113,7 @@ const config = {
   },
   docgen: {
     pages: "files",
+    templates: "templates",
   },
 };
 

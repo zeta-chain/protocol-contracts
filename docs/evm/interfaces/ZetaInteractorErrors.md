@@ -1,4 +1,4 @@
-# Solidity API
+# evm/interfaces/ZetaInteractorErrors.md
 
 ## ZetaInteractorErrors
 

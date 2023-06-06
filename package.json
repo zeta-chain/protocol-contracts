@@ -74,7 +74,7 @@
     "prepublishOnly": "npx tsc",
     "test": "npx hardhat clean && npx hardhat test",
     "tsc:watch": "npx tsc --watch",
-    "docs": "npx hardhat docgen"
+    "docs": "rm -rf docs && npx hardhat docgen"
   },
   "types": "./dist/typechain-types/index.d.ts",
   "version": "0.0.7"
