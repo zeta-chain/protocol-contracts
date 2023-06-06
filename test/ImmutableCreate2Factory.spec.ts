@@ -31,19 +31,28 @@ describe("Deterministic deployment tests", () => {
     accounts = await ethers.getSigners();
     [signer] = accounts;
 
-    const immutableCreate2Factory = new ImmutableCreate2Factory__factory(signer);
+    const immutableCreate2Factory = new ImmutableCreate2Factory__factory(
+      signer
+    );
     immutableCreate2 = await immutableCreate2Factory.deploy();
   });
 
   describe("Deploy zeta token with deterministic deployment", () => {
     it("Should deploy a contract", async () => {
       const salthex = saltToHex("hola", signer.address);
-      const constructorTypes = ["uint256"];
-      const constructorArgs = ["2100000000"];
+      const constructorTypes = ["address", "uint256"];
+      const constructorArgs = [signer.address, "2100000000"];
       const contractBytecode = ZetaEth__factory.bytecode;
 
-      const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
-      const expectedAddress = await immutableCreate2.findCreate2Address(salthex, bytecode);
+      const bytecode = buildBytecode(
+        constructorTypes,
+        constructorArgs,
+        contractBytecode
+      );
+      const expectedAddress = await immutableCreate2.findCreate2Address(
+        salthex,
+        bytecode
+      );
 
       // Deploy contract
       const { address } = await deployContractToAddress({
@@ -63,7 +72,7 @@ describe("Deterministic deployment tests", () => {
 
       const token = IERC20__factory.connect(address, signer);
       const totalSup = await token.totalSupply();
-      expect(totalSup.toString()).to.be.eq(parseEther(constructorArgs[0]));
+      expect(totalSup.toString()).to.be.eq(parseEther(constructorArgs[1]));
     });
   });
 
@@ -72,14 +81,22 @@ describe("Deterministic deployment tests", () => {
 
     let minAddress = MAX_ETH_ADDRESS;
     let minAddressSalt = "";
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 3000; i++) {
       const salthex = saltToHex(saltStr, signer.address);
-      const constructorTypes = ["uint256"];
-      const constructorArgs = ["2100000000"];
+      const constructorTypes = ["address", "uint256"];
+      const constructorArgs = [signer.address, "2100000000"];
       const contractBytecode = ZetaEth__factory.bytecode;
 
-      const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
-      const expectedAddress = buildCreate2Address(salthex, bytecode, immutableCreate2.address);
+      const bytecode = buildBytecode(
+        constructorTypes,
+        constructorArgs,
+        contractBytecode
+      );
+      const expectedAddress = buildCreate2Address(
+        salthex,
+        bytecode,
+        immutableCreate2.address
+      );
       if (expectedAddress < minAddress) {
         minAddress = expectedAddress;
         minAddressSalt = saltStr;
@@ -94,14 +111,27 @@ describe("Deterministic deployment tests", () => {
     let saltStr = "0";
 
     const salthex = saltToHex(saltStr, signer.address);
-    const constructorTypes = ["uint256"];
-    const constructorArgs = ["2100000000"];
+    const constructorTypes = ["address", "uint256"];
+    const constructorArgs = [signer.address, "2100000000"];
     const contractBytecode = ZetaEth__factory.bytecode;
 
-    const bytecode = buildBytecode(constructorTypes, constructorArgs, contractBytecode);
-    const expectedAddress = await immutableCreate2.findCreate2Address(salthex, bytecode);
-    const expectedAddressOffchain = buildCreate2Address(salthex, bytecode, immutableCreate2.address);
-    expect(expectedAddress.toLocaleLowerCase()).to.be.eq(expectedAddressOffchain);
+    const bytecode = buildBytecode(
+      constructorTypes,
+      constructorArgs,
+      contractBytecode
+    );
+    const expectedAddress = await immutableCreate2.findCreate2Address(
+      salthex,
+      bytecode
+    );
+    const expectedAddressOffchain = buildCreate2Address(
+      salthex,
+      bytecode,
+      immutableCreate2.address
+    );
+    expect(expectedAddress.toLocaleLowerCase()).to.be.eq(
+      expectedAddressOffchain
+    );
   });
 
   it("Should deploy and transfer ownership to deployer", async () => {
