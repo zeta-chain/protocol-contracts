@@ -6,7 +6,7 @@ contracts and generate Go bindings.
 
 ## Importing Protocol Contracts
 
-As a dapp developer, you can install the protocol contracts package into your
+As a dApp developer, you can install the protocol contracts package into your
 project:
 
 ```
