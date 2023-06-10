@@ -1,0 +1,26 @@
+name: Go Generate Check
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          sudo add-apt-repository -y ppa:ethereum/ethereum
+          sudo apt-get update
+          sudo apt-get install ethereum
+
+      - name: Generate Go code
+        run: scripts/generate_go.sh
+
+      - name: Check for changes
+        run: |
+          git diff --exit-code -- pkg/
