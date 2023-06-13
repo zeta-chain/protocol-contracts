@@ -1,7 +1,8 @@
-name: Go Generate Check
+name: Generate Go Packages
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - "*"
 
 jobs:
   build:

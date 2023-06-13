@@ -1,8 +1,9 @@
-name: Lint
+name: Lint TS/JS
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - "*"
 
 jobs:
   build:
