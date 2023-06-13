@@ -27,7 +27,7 @@ process_file() {
   contract_name_lowercase=$(echo "$contract_name" | tr '[:upper:]' '[:lower:]')
 
   # Define output subdirectory and create it if it doesn't exist
-  output_subdir="$OUTPUT_DIR/${subdir/@/}/"
+  output_subdir="$OUTPUT_DIR/${subdir/@/}"
   output_subdir_lowercase=$(echo "$output_subdir" | tr '[:upper:]' '[:lower:]')
   mkdir -p "$output_subdir_lowercase"
 
@@ -35,9 +35,9 @@ process_file() {
 
   # Generate the Go binding for the contract
   echo "Compiling $contract_name..."
-  cat "$contract" | jq .abi > "$output_subdir/$contract_name.abi"
-  cat "$contract" | jq .bytecode | tr -d '\"' > "$output_subdir/$contract_name.bin"
-  abigen --abi "$output_subdir/$contract_name.abi" --bin "$output_subdir/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir/$contract_name_lowercase.go" > /dev/null 2>&1
+  cat "$contract" | jq .abi > "$output_subdir_lowercase/$contract_name.abi"
+  cat "$contract" | jq .bytecode | tr -d '\"' > "$output_subdir_lowercase/$contract_name.bin"
+  abigen --abi "$output_subdir_lowercase/$contract_name.abi" --bin "$output_subdir_lowercase/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir_lowercase/$contract_name_lowercase.go" > /dev/null 2>&1
   # Check if there were errors during the compilation
   if [ $? -ne 0 ]; then
     echo "Error: Failed to compile $contract_name"
@@ -45,7 +45,7 @@ process_file() {
   fi
 
   # Remove temporary .abi and .bin files
-  rm "$output_subdir/$contract_name.abi" "$output_subdir/$contract_name.bin"
+  rm "$output_subdir_lowercase/$contract_name.abi" "$output_subdir_lowercase/$contract_name.bin"
 }
 
 # Function to iterate through the artifacts directory
