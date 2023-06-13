@@ -14,10 +14,7 @@ import {
   deployContractToAddress,
   saltToHex,
 } from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
-import {
-  ZetaEth__factory,
-  ZetaNonEth__factory,
-} from "../../../typechain-types";
+import { ZetaEth__factory, ZetaNonEth__factory } from "../../../typechain-types";
 
 export async function deterministicDeployZetaToken() {
   if (!isNetworkName(network.name)) {
@@ -29,9 +26,7 @@ export async function deterministicDeployZetaToken() {
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
-  const saltNumber = isEthNetworkName(network.name)
-    ? ZETA_TOKEN_SALT_NUMBER_ETH
-    : ZETA_TOKEN_SALT_NUMBER_NON_ETH;
+  const saltNumber = isEthNetworkName(network.name) ? ZETA_TOKEN_SALT_NUMBER_ETH : ZETA_TOKEN_SALT_NUMBER_NON_ETH;
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
   const tss = getAddress("tss");
