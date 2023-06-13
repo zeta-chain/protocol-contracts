@@ -1,10 +1,7 @@
 import { isNetworkName } from "@zetachain/addresses";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
-import {
-  ERC20_CUSTODY_ZETA_FEE,
-  ERC20_CUSTODY_ZETA_MAX_FEE,
-} from "lib/contracts.constants";
+import { ERC20_CUSTODY_ZETA_FEE, ERC20_CUSTODY_ZETA_MAX_FEE } from "lib/contracts.constants";
 
 import { getAddress } from "../../../lib/address.helpers";
 import { calculateBestSalt } from "../../../lib/deterministic-deploy.helpers";
@@ -29,29 +26,11 @@ export const deterministicDeployGetSaltERC20Custody = async () => {
   const zetaFee = ERC20_CUSTODY_ZETA_FEE;
   const zetaMaxFee = ERC20_CUSTODY_ZETA_MAX_FEE;
 
-  const constructorTypes = [
-    "address",
-    "address",
-    "uint256",
-    "uint256",
-    "address",
-  ];
-  const constructorArgs = [
-    tss,
-    tssUpdater,
-    zetaFee.toString(),
-    zetaMaxFee.toString(),
-    zetaToken,
-  ];
+  const constructorTypes = ["address", "address", "uint256", "uint256", "address"];
+  const constructorArgs = [tss, tssUpdater, zetaFee.toString(), zetaMaxFee.toString(), zetaToken];
   const contractBytecode = ERC20Custody__factory.bytecode;
 
-  calculateBestSalt(
-    MAX_ITERATIONS,
-    DEPLOYER_ADDRESS,
-    constructorTypes,
-    constructorArgs,
-    contractBytecode
-  );
+  calculateBestSalt(MAX_ITERATIONS, DEPLOYER_ADDRESS, constructorTypes, constructorArgs, contractBytecode);
 };
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
