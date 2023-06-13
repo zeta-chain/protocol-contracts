@@ -48,6 +48,7 @@ interface ZetaInterfaces {
 
 interface WZETA {
     function transferFrom(address src, address dst, uint wad) external returns (bool);
+
     function withdraw(uint wad) external;
 }
 
@@ -92,7 +93,7 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
         // Transfer wzeta to "fungible" module, which will be burnt by the protocol post processing via hooks.
         if (!WZETA(wzeta).transferFrom(msg.sender, address(this), input.zetaValueAndGas)) revert WZETATransferFailed();
         WZETA(wzeta).withdraw(input.zetaValueAndGas);
-        (bool sent,) = FUNGIBLE_MODULE_ADDRESS.call{value: input.zetaValueAndGas}("");
+        (bool sent, ) = FUNGIBLE_MODULE_ADDRESS.call{value: input.zetaValueAndGas}("");
         if (!sent) revert FailedZetaSent();
         emit ZetaSent(
             tx.origin,

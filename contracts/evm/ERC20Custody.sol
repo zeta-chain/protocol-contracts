@@ -21,19 +21,19 @@ contract ERC20Custody {
 
     /// @notice If custody operations are paused.
     bool public paused;
-    /// @notice TSSAddress is the TSS address collectively possessed by Zeta blockchain validators. 
-    address public TSSAddress; 
-    /// @notice Threshold Signature Scheme (TSS) [GG20] is a multi-sig ECDSA/EdDSA protocol. 
+    /// @notice TSSAddress is the TSS address collectively possessed by Zeta blockchain validators.
+    address public TSSAddress;
+    /// @notice Threshold Signature Scheme (TSS) [GG20] is a multi-sig ECDSA/EdDSA protocol.
     address public TSSAddressUpdater;
     /// @notice Current zeta fee for depositing funds into ZetaChain.
     uint256 public zetaFee;
     /// @notice Maximum zeta fee for transaction.
-    uint256 immutable public zetaMaxFee;
+    uint256 public immutable zetaMaxFee;
     /// @notice Zeta ERC20 token .
-    IERC20 immutable public zeta;
+    IERC20 public immutable zeta;
     /// @notice Mapping of whitelisted token => true/false.
     mapping(IERC20 => bool) public whitelisted;
-    
+
     event Paused(address sender);
     event Unpaused(address sender);
     event Whitelisted(IERC20 indexed asset);
@@ -64,8 +64,8 @@ contract ERC20Custody {
         _;
     }
 
-    constructor(address TSSAddress_, address TSSAddressUpdater_, uint256 zetaFee_, uint256 zetaMaxFee_, IERC20 zeta_) {       
-        TSSAddress = TSSAddress_; 
+    constructor(address TSSAddress_, address TSSAddressUpdater_, uint256 zetaFee_, uint256 zetaMaxFee_, IERC20 zeta_) {
+        TSSAddress = TSSAddress_;
         TSSAddressUpdater = TSSAddressUpdater_;
         zetaFee = zetaFee_;
         zeta = zeta_;
@@ -173,7 +173,7 @@ contract ERC20Custody {
         }
         uint256 oldBalance = asset.balanceOf(address(this));
         asset.safeTransferFrom(msg.sender, address(this), amount);
-        // In case if there is a fee on a token transfer, we might not receive a full exepected amount 
+        // In case if there is a fee on a token transfer, we might not receive a full exepected amount
         // and we need to correctly process that, o we subtract an old balance from a new balance, which should be an actual received amount.
         emit Deposited(recipient, asset, asset.balanceOf(address(this)) - oldBalance, message);
     }

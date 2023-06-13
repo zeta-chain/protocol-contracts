@@ -2,12 +2,10 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
-import "../ZetaInteractor.sol";
+import "../tools/ZetaInteractor.sol";
 
 contract ZetaInteractorMock is Ownable2Step, ZetaInteractor, ZetaReceiver {
-    constructor(
-        address zetaConnectorAddress
-    ) ZetaInteractor(zetaConnectorAddress) {}
+    constructor(address zetaConnectorAddress) ZetaInteractor(zetaConnectorAddress) {}
 
     function onZetaMessage(
         ZetaInterfaces.ZetaMessage calldata zetaMessage

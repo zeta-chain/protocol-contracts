@@ -3,16 +3,15 @@ import "@nomiclabs/hardhat-etherscan";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
-import * as dotenv from "dotenv";
 
+import * as dotenv from "dotenv";
 import type { HardhatUserConfig } from "hardhat/types";
 
 import "./tasks/addresses";
 
 dotenv.config();
 
-const PRIVATE_KEYS =
-  process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
+const PRIVATE_KEYS = process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
 
 const config: HardhatUserConfig = {
   networks: {

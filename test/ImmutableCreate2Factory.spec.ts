@@ -40,8 +40,8 @@ describe("Deterministic deployment tests", () => {
   describe("Deploy zeta token with deterministic deployment", () => {
     it("Should deploy a contract", async () => {
       const salthex = saltToHex("hola", signer.address);
-      const constructorTypes = ["uint256"];
-      const constructorArgs = ["2100000000"];
+      const constructorTypes = ["address", "uint256"];
+      const constructorArgs = [signer.address, "2100000000"];
       const contractBytecode = ZetaEth__factory.bytecode;
 
       const bytecode = buildBytecode(
@@ -72,7 +72,7 @@ describe("Deterministic deployment tests", () => {
 
       const token = IERC20__factory.connect(address, signer);
       const totalSup = await token.totalSupply();
-      expect(totalSup.toString()).to.be.eq(parseEther(constructorArgs[0]));
+      expect(totalSup.toString()).to.be.eq(parseEther(constructorArgs[1]));
     });
   });
 
@@ -81,10 +81,10 @@ describe("Deterministic deployment tests", () => {
 
     let minAddress = MAX_ETH_ADDRESS;
     let minAddressSalt = "";
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 3000; i++) {
       const salthex = saltToHex(saltStr, signer.address);
-      const constructorTypes = ["uint256"];
-      const constructorArgs = ["2100000000"];
+      const constructorTypes = ["address", "uint256"];
+      const constructorArgs = [signer.address, "2100000000"];
       const contractBytecode = ZetaEth__factory.bytecode;
 
       const bytecode = buildBytecode(
@@ -111,8 +111,8 @@ describe("Deterministic deployment tests", () => {
     let saltStr = "0";
 
     const salthex = saltToHex(saltStr, signer.address);
-    const constructorTypes = ["uint256"];
-    const constructorArgs = ["2100000000"];
+    const constructorTypes = ["address", "uint256"];
+    const constructorArgs = [signer.address, "2100000000"];
     const contractBytecode = ZetaEth__factory.bytecode;
 
     const bytecode = buildBytecode(

@@ -8,10 +8,10 @@ import "./Interfaces.sol";
 interface ZRC20Errors {
     // @dev: Error thrown when caller is not the fungible module
     error CallerIsNotFungibleModule();
-    error InvalidSender(); 
+    error InvalidSender();
     error GasFeeTransferFailed();
     error ZeroGasCoin();
-    error ZeroGasPrice();   
+    error ZeroGasPrice();
     error LowAllowance();
     error LowBalance();
     error ZeroAddress();
@@ -21,9 +21,9 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice Fungible address is always the same, maintained at the protocol level
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Chain id.abi
-    uint256 immutable public CHAIN_ID;
+    uint256 public immutable CHAIN_ID;
     /// @notice Coin type, checkout Interfaces.sol.
-    CoinType immutable public COIN_TYPE;
+    CoinType public immutable COIN_TYPE;
     /// @notice System contract address.
     address public SYSTEM_CONTRACT_ADDRESS;
     /// @notice Gas limit.
@@ -38,7 +38,7 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     string private _symbol;
     uint8 private _decimals;
 
-    /** 
+    /**
      * @dev Only fungible module modifier.
      */
     modifier onlyFungible() {
@@ -49,7 +49,15 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     /**
      * @dev The only one allowed to deploy new ZRC20 is fungible address.
      */
-    constructor(string memory name_, string memory symbol_, uint8 decimals_, uint256 chainid_, CoinType coinType_, uint256 gasLimit_, address systemContractAddress_) {
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        uint8 decimals_,
+        uint256 chainid_,
+        CoinType coinType_,
+        uint256 gasLimit_,
+        address systemContractAddress_
+    ) {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         _name = name_;
         _symbol = symbol_;
@@ -161,7 +169,7 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
      * @param amount, amount to transfer.
      * @return true/false if succeeded/failed.
      */
-    function transferFrom(address sender,address recipient,uint256 amount) public virtual override returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) public virtual override returns (bool) {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
@@ -222,6 +230,7 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
     }
+
     /**
      * @dev Deposits corresponding tokens from external chain, only callable by Fungible module.
      * @param to, recipient address.
@@ -239,7 +248,7 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
      * @dev Withdraws gas fees.
      * @return returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for withdraw()
      */
-    function withdrawGasFee() public override view returns (address,uint256) {
+    function withdrawGasFee() public view override returns (address, uint256) {
         address gasZRC20 = ISystem(SYSTEM_CONTRACT_ADDRESS).gasCoinZRC20ByChainId(CHAIN_ID);
         if (gasZRC20 == address(0)) {
             revert ZeroGasCoin();
@@ -261,7 +270,7 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
      */
     function withdraw(bytes memory to, uint256 amount) external override returns (bool) {
         (address gasZRC20, uint256 gasFee) = withdrawGasFee();
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee+PROTOCOL_FLAT_FEE)) {
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
         _burn(msg.sender, amount);
