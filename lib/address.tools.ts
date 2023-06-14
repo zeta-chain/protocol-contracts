@@ -11,15 +11,27 @@ export declare type ZetaProtocolTestNetwork =
   | "mumbai_testnet"
   | "zeta_testnet";
 
+export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
+  "baobab_testnet",
+  "bsc_testnet",
+  "goerli_testnet",
+  "mumbai_testnet",
+  "zeta_testnet",
+];
+
 export declare type ZetaProtocolMainNetwork = "etherum_mainnet";
+export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["etherum_mainnet"];
+
 export declare type ZetaProtocolNetwork = ZetaProtocolMainNetwork | ZetaProtocolTestNetwork;
+export const zetaProtocolNetworks: ZetaProtocolNetwork[] = [...zetaProtocolTestNetworks, ...zetaProtocolMainNetworks];
 
 export declare type ZetaProtocolEnviroment = "mainnet" | "testnet";
 
-export declare const isProtocolNetworkName: (str: string) => str is ZetaProtocolNetwork;
+export const isProtocolNetworkName = (str: string): str is ZetaProtocolNetwork =>
+  zetaProtocolNetworks.includes(str as ZetaProtocolNetwork);
 
 export const isTestnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
-  return ["baobab_testnet", "bsc_testnet", "goerli_testnet", "mumbai_testnet", "zeta_testnet"].includes(network);
+  return zetaProtocolTestNetworks.includes(network);
 };
 
 export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {

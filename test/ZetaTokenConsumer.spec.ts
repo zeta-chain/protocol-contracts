@@ -48,13 +48,11 @@ describe("ZetaTokenConsumer tests", () => {
 
   const swapToken = async (signer: SignerWithAddress, tokenAddress: string, expectedAmount: BigNumber) => {
     const uniswapRouter = UniswapV2Router02__factory.connect(uniswapV2RouterAddr, signer);
-
     const WETH = await uniswapRouter.WETH();
     const path = [WETH, tokenAddress];
     const tx = await uniswapRouter
       .connect(signer)
       .swapETHForExactTokens(expectedAmount, path, signer.address, (await getNow()) + 360, { value: parseEther("10") });
-
     await tx.wait();
   };
 
@@ -160,6 +158,7 @@ describe("ZetaTokenConsumer tests", () => {
     await swapToken(randomSigner, DAI, parseEther("10000"));
     await swapToken(randomSigner, DAI, parseEther("10000"));
     await swapToken(randomSigner, DAI, parseEther("10000"));
+
     zetaTokenNonEthAddress = DAI;
     zetaTokenNonEth = IERC20__factory.connect(zetaTokenNonEthAddress, tssSigner);
 
