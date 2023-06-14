@@ -1,7 +1,9 @@
 import fs from "fs";
 import path from "path";
 
-export const addresses = JSON.parse(fs.readFileSync(path.resolve(__dirname, "..", "", "addresses.json")).toString());
+export const addresses = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "..", "data", "addresses.json")).toString()
+);
 
 export declare type ZetaProtocolAddress = "connector" | "immutableCreate2Factory" | "tss" | "tssUpdater" | "zetaToken";
 export declare type ZetaProtocolTestNetwork =
