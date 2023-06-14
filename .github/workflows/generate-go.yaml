@@ -1,4 +1,4 @@
-name: Generate Go Packages
+name: Generated Go Packaged are Updated
 on:
   pull_request:
     branches:
