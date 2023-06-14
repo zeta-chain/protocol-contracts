@@ -1,9 +1,8 @@
-import { isNetworkName } from "@zetachain/addresses";
 import { saveAddress } from "@zetachain/addresses-tools";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
+import { getAddress, isProtocolNetworkName } from "lib";
 
-import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_CONNECTOR_SALT_NUMBER_ETH, ZETA_CONNECTOR_SALT_NUMBER_NON_ETH } from "../../../lib/contracts.constants";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import {
@@ -13,7 +12,7 @@ import {
 import { ZetaConnectorEth__factory, ZetaConnectorNonEth__factory } from "../../../typechain-types";
 
 export async function deterministicDeployZetaConnector() {
-  if (!isNetworkName(network.name)) {
+  if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
 
@@ -22,19 +21,19 @@ export async function deterministicDeployZetaConnector() {
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
+  const zetaTokenAddress = getAddress("zetaToken", network.name);
+  const tssAddress = getAddress("tss", network.name);
+  const tssUpdaterAddress = getAddress("tssUpdater", network.name);
+  const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
+
   const saltNumber = isEthNetworkName(network.name)
     ? ZETA_CONNECTOR_SALT_NUMBER_ETH
     : ZETA_CONNECTOR_SALT_NUMBER_NON_ETH;
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
-  const zetaToken = getAddress("zetaToken");
-  const tss = getAddress("tss");
-  const tssUpdater = getAddress("tssUpdater");
-  const immutableCreate2Factory = getAddress("immutableCreate2Factory");
-
   const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
   const constructorTypes = ["address", "address", "address", "address"];
-  const constructorArgs = [zetaToken, tss, tssUpdater, tssUpdater];
+  const constructorArgs = [zetaTokenAddress, tssAddress, tssUpdaterAddress, tssUpdaterAddress];
 
   let contractBytecode;
   if (isEthNetworkName(network.name)) {
@@ -47,7 +46,7 @@ export async function deterministicDeployZetaConnector() {
     constructorArgs,
     constructorTypes,
     contractBytecode,
-    factoryAddress: immutableCreate2Factory,
+    factoryAddress: immutableCreate2FactoryAddress,
     salt: salthex,
     signer,
   });

@@ -2086,6 +2086,11 @@
   resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.9.tgz#d8ad93242590c0a6d028be8f515ad9f84fd588c2"
   integrity sha512-MA/kD8a2NY5xJMFjwPj1oph6P3O7l0g23QB3QTgcBs4DdmwubvTVH6S6/e8CWzLFojTP5qBiqIWBsU0iHP/HFg==
 
+"@zetachain/networks@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-0.0.1.tgz#825b27cfb96cd156c079503de4253c8adf580275"
+  integrity sha512-p646aIgX/3IHkauZlOZBKirRCMY+hyo3Og3IfJGC3tNkqjADt0wrcnizJrRIlXWVJGnlAW7tJPyXPzcfBh2Bwg==
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

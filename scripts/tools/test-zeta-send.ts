@@ -1,16 +1,23 @@
 import { getChainId } from "@zetachain/addresses";
 import { AbiCoder } from "ethers/lib/utils";
-import { ethers } from "hardhat";
+import { ethers, network } from "hardhat";
+import { getAddress, isProtocolNetworkName } from "lib";
 
-import { getAddress } from "../../lib/address.helpers";
 import { ZetaConnectorEth__factory as ZetaConnectorEthFactory } from "../../typechain-types";
 
 const encoder = new AbiCoder();
 
 async function main() {
-  const factory = (await ethers.getContractFactory("ZetaConnectorEth")) as ZetaConnectorEthFactory;
+  if (!isProtocolNetworkName(network.name)) {
+    throw new Error(`network.name: ${network.name} isn't supported.`);
+  }
+
   const accounts = await ethers.getSigners();
-  const contract = factory.attach(getAddress("connector"));
+
+  const connectorAddress = getAddress("connector", network.name);
+
+  const factory = (await ethers.getContractFactory("ZetaConnectorEth")) as ZetaConnectorEthFactory;
+  const contract = factory.attach(connectorAddress);
 
   console.log(`Sending To ${accounts[0].address}`);
   await (

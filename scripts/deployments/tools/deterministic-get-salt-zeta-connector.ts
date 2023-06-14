@@ -1,8 +1,7 @@
-import { isNetworkName } from "@zetachain/addresses";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
+import { getAddress, isProtocolNetworkName } from "lib";
 
-import { getAddress } from "../../../lib/address.helpers";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { calculateBestSalt } from "../../../lib/deterministic-deploy.helpers";
 import { ZetaConnectorEth__factory, ZetaConnectorNonEth__factory } from "../../../typechain-types";
@@ -10,7 +9,7 @@ import { ZetaConnectorEth__factory, ZetaConnectorNonEth__factory } from "../../.
 const MAX_ITERATIONS = BigNumber.from(100000);
 
 export async function deterministicDeployGetSaltZetaConnector() {
-  if (!isNetworkName(network.name)) {
+  if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
 
@@ -19,13 +18,13 @@ export async function deterministicDeployGetSaltZetaConnector() {
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
-  const zetaToken = getAddress("zetaToken");
-  const tss = getAddress("tss");
-  const tssUpdater = getAddress("tssUpdater");
+  const zetaTokenAddress = getAddress("zetaToken", network.name);
+  const tssAddress = getAddress("tss", network.name);
+  const tssUpdaterAddress = getAddress("tssUpdater", network.name);
 
   // @todo: decide which address use as pauser
   const constructorTypes = ["address", "address", "address", "address"];
-  const constructorArgs = [zetaToken, tss, tssUpdater, tssUpdater];
+  const constructorArgs = [zetaTokenAddress, tssAddress, tssUpdaterAddress, tssUpdaterAddress];
 
   let contractBytecode;
 
