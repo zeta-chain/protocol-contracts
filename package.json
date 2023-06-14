@@ -69,6 +69,7 @@
     "compile": "npx hardhat compile",
     "generate:go": "yarn compile && ./scripts/generate_go.sh",
     "generate:interfaces": "yarn clean && yarn compile",
+    "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "npx tsc",
     "test": "npx hardhat clean && npx hardhat test",

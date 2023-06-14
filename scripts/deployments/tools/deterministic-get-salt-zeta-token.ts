@@ -6,10 +6,7 @@ import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_INITIAL_SUPPLY } from "../../../lib/contracts.constants";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { calculateBestSalt } from "../../../lib/deterministic-deploy.helpers";
-import {
-  ZetaEth__factory,
-  ZetaNonEth__factory,
-} from "../../../typechain-types";
+import { ZetaEth__factory, ZetaNonEth__factory } from "../../../typechain-types";
 
 const MAX_ITERATIONS = BigNumber.from(1000000);
 
@@ -38,13 +35,7 @@ export async function deterministicDeployGetSaltZetaToken() {
     constructorArgs = [tss, tssUpdater];
     contractBytecode = ZetaNonEth__factory.bytecode;
   }
-  calculateBestSalt(
-    MAX_ITERATIONS,
-    DEPLOYER_ADDRESS,
-    constructorTypes,
-    constructorArgs,
-    contractBytecode
-  );
+  calculateBestSalt(MAX_ITERATIONS, DEPLOYER_ADDRESS, constructorTypes, constructorArgs, contractBytecode);
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
