@@ -1,9 +1,9 @@
-import { isNetworkName } from "@zetachain/addresses";
 import { saveAddress } from "@zetachain/addresses-tools";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
+import { getAddress, isProtocolNetworkName } from "lib";
+import { getExternalAddress } from "lib/address.helpers";
 
-import { getAddress } from "../../../lib/address.helpers";
 import { ZETA_CONSUMER_SALT_NUMBER } from "../../../lib/contracts.constants";
 import {
   deployContractToAddress,
@@ -12,7 +12,7 @@ import {
 import { ZetaTokenConsumerUniV2__factory } from "../../../typechain-types";
 
 export async function deterministicDeployZetaConsumer() {
-  if (!isNetworkName(network.name)) {
+  if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
 
@@ -21,17 +21,17 @@ export async function deterministicDeployZetaConsumer() {
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
+  const zetaTokenAddress = getAddress("zetaToken", network.name);
+  const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
+
+  const uniswapV2Router02 = getExternalAddress("uniswapV2Router02");
+
   const saltNumber = ZETA_CONSUMER_SALT_NUMBER;
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
-  const zetaToken = getAddress("zetaToken");
-  const uniswapV2Router02 = getAddress("uniswapV2Router02");
-
-  const immutableCreate2Factory = getAddress("immutableCreate2Factory");
-
   const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
   const constructorTypes = ["address", "address"];
-  const constructorArgs = [zetaToken, uniswapV2Router02];
+  const constructorArgs = [zetaTokenAddress, uniswapV2Router02];
 
   const contractBytecode = ZetaTokenConsumerUniV2__factory.bytecode;
 
@@ -39,7 +39,7 @@ export async function deterministicDeployZetaConsumer() {
     constructorArgs,
     constructorTypes,
     contractBytecode,
-    factoryAddress: immutableCreate2Factory,
+    factoryAddress: immutableCreate2FactoryAddress,
     salt: salthex,
     signer,
   });

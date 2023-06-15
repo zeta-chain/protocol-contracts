@@ -1,28 +1,27 @@
-import { isNetworkName } from "@zetachain/addresses";
 import { ethers, network } from "hardhat";
+import { getAddress, isProtocolNetworkName } from "lib";
 
-import { getAddress } from "../../lib/address.helpers";
-import { getZetaFactoryNonEth, isEthNetworkName } from "../../lib/contracts.helpers";
+import { getZetaFactoryNonEth } from "../../lib/contracts.helpers";
 
 async function updateZetaConnector() {
-  if (!isNetworkName(network.name)) {
+  if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
 
   const [, tssUpdaterSigner] = await ethers.getSigners();
 
-  if (isEthNetworkName(network.name)) {
-    throw new Error(`network.name: ${network.name} isn't supported.`);
-  }
+  const zetaTokenAddress = getAddress("zetaToken", network.name);
+  const tssAddress = getAddress("tss", network.name);
+  const connectorAddress = getAddress("connector", network.name);
 
   const contract = (
-    await getZetaFactoryNonEth({ deployParams: null, existingContractAddress: getAddress("zetaToken") })
+    await getZetaFactoryNonEth({ deployParams: null, existingContractAddress: zetaTokenAddress })
   ).connect(tssUpdaterSigner);
 
-  await (await contract.updateTssAndConnectorAddresses(getAddress("tss"), getAddress("connector"))).wait();
+  await (await contract.updateTssAndConnectorAddresses(tssAddress, connectorAddress)).wait();
 
-  console.log(`Updated TSS address to ${getAddress("tss")}.`);
-  console.log(`Updated Connector address to ${getAddress("connector")}.`);
+  console.log(`Updated TSS address to ${tssAddress}.`);
+  console.log(`Updated Connector address to ${connectorAddress}.`);
 }
 
 updateZetaConnector()
