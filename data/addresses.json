@@ -34,6 +34,7 @@
     "connector": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
     "tss": "0x7c125C1d515b8945841b3d5144a060115C58725F",
     "tssUpdater": "0x7274d1d5dddef36aac53dd45b93487ce01ef0a55",
-    "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf"
+    "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
+    "systemContract": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921"
   }
 }
