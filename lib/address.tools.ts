@@ -58,3 +58,7 @@ export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, netwo
 
   return addresses["zevm"][address][network];
 };
+
+export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
+  return addresses["zevm"]["zrc20"][network];
+};

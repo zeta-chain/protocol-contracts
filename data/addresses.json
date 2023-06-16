@@ -35,13 +35,19 @@
       "connector": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
       "tss": "0x7c125C1d515b8945841b3d5144a060115C58725F",
       "tssUpdater": "0x7274d1d5dddef36aac53dd45b93487ce01ef0a55",
-      "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf"
+      "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
+      "immutableCreate2Factory": ""
     }
   },
   "zevm": {
     "systemContract": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
-    "geth": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4",
-    "tmatic": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
-    "tbnb": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891"
+    "uniswapv2Factory": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "uniswapv2Router02": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
+    "fungibleModule": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
+    "zrc20": {
+      "goerli_testnet": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4",
+      "mumbai_testnet": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
+      "bsc_testnet": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891"
+    }
   }
 }
