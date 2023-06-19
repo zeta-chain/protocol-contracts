@@ -6,6 +6,17 @@ export const addresses = JSON.parse(
 );
 
 export declare type ZetaProtocolAddress = "connector" | "immutableCreate2Factory" | "tss" | "tssUpdater" | "zetaToken";
+export const zetaProtocolAddress: ZetaProtocolAddress[] = [
+  "connector",
+  "immutableCreate2Factory",
+  "tss",
+  "tssUpdater",
+  "zetaToken",
+];
+export const isZetaProtocolAddress = (str: string): str is ZetaProtocolAddress =>
+  zetaProtocolAddress.includes(str as ZetaProtocolAddress);
+
+export declare type ZetaZEVMAddress = "geth" | "systemContract" | "tbnb" | "tmatic";
 export declare type ZetaProtocolTestNetwork =
   | "baobab_testnet"
   | "bsc_testnet"
@@ -40,6 +51,14 @@ export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
   return false;
 };
 
-export const getAddress = (address: ZetaProtocolAddress, network: ZetaProtocolNetwork): string => {
-  return addresses[network][address];
+export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
+  if (isZetaProtocolAddress(address)) {
+    return addresses["ccm"][address][network];
+  }
+
+  return addresses["zevm"][address][network];
+};
+
+export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
+  return addresses["zevm"]["zrc20"][network];
 };
