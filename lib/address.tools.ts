@@ -5,13 +5,23 @@ export const addresses = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, "..", "data", "addresses.json")).toString()
 );
 
-export declare type ZetaProtocolAddress = "connector" | "immutableCreate2Factory" | "tss" | "tssUpdater" | "zetaToken";
+export declare type ZetaProtocolAddress =
+  | "connector"
+  | "immutableCreate2Factory"
+  | "tss"
+  | "tssUpdater"
+  | "zetaToken"
+  | "zetaTokenConsumerUniV2"
+  | "zetaTokenConsumerUniV3";
+
 export const zetaProtocolAddress: ZetaProtocolAddress[] = [
   "connector",
   "immutableCreate2Factory",
   "tss",
   "tssUpdater",
   "zetaToken",
+  "zetaTokenConsumerUniV2",
+  "zetaTokenConsumerUniV3",
 ];
 export const isZetaProtocolAddress = (str: string): str is ZetaProtocolAddress =>
   zetaProtocolAddress.includes(str as ZetaProtocolAddress);
@@ -53,12 +63,12 @@ export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
 
 export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
   if (isZetaProtocolAddress(address)) {
-    return addresses["ccm"][address][network];
+    return addresses["ccm"][network][address];
   }
 
-  return addresses["zevm"][address][network];
+  return addresses["zevm"][network][address];
 };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
-  return addresses["zevm"]["zrc20"][network];
+  return addresses["zevm"][network]["zrc20"];
 };
