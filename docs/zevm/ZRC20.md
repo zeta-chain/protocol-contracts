@@ -66,7 +66,7 @@ found in the Ethereum ecosystem, ZRC-20 tokens have the added ability to manage
 assets on all ZetaChain-connected chains. Any fungible token, including Bitcoin,
 Dogecoin, ERC-20-equivalents on other chains, gas assets on other chains, and so
 on, may be represented on ZetaChain as a ZRC-20 and orchestrated as if it were
-any other fungible token (like an ERC-20). [wzeta](./wzeta.md)
+any other fungible token (like an ERC-20).
 
 ### FUNGIBLE_MODULE_ADDRESS
 
@@ -136,15 +136,15 @@ _Constructor that gives msg.sender all of existing tokens._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| name_ | string | Name of the token |
-| symbol_ | string | Symbol of the token |
-| decimals_ | uint8 | Number of decimal places the token can be divided into |
-| chainid_ | uint256 | Chain ID |
-| coinType_ | enum CoinType | Coin Type |
-| gasLimit_ | uint256 | Gas limit for transactions |
-| systemContractAddress_ | address | Address of the system contract |
+| Name                    | Type          | Description                                            |
+| ----------------------- | ------------- | ------------------------------------------------------ |
+| name\_                  | string        | Name of the token                                      |
+| symbol\_                | string        | Symbol of the token                                    |
+| decimals\_              | uint8         | Number of decimal places the token can be divided into |
+| chainid\_               | uint256       | Chain ID                                               |
+| coinType\_              | enum CoinType | Coin Type                                              |
+| gasLimit\_              | uint256       | Gas limit for transactions                             |
+| systemContractAddress\_ | address       | Address of the system contract                         |
 
 ### name
 
@@ -156,9 +156,9 @@ _ZRC20 name_
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | string | name as string |
+| Name | Type   | Description    |
+| ---- | ------ | -------------- |
+| [0]  | string | name as string |
 
 ### symbol
 
@@ -170,9 +170,9 @@ _ZRC20 symbol._
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | string | symbol as string. |
+| Name | Type   | Description       |
+| ---- | ------ | ----------------- |
+| [0]  | string | symbol as string. |
 
 ### decimals
 
@@ -184,9 +184,9 @@ _ZRC20 decimals._
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint8 | returns uint8 decimals. |
+| Name | Type  | Description             |
+| ---- | ----- | ----------------------- |
+| [0]  | uint8 | returns uint8 decimals. |
 
 ### totalSupply
 
@@ -198,9 +198,9 @@ _ZRC20 total supply._
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | returns uint256 total supply. |
+| Name | Type    | Description                   |
+| ---- | ------- | ----------------------------- |
+| [0]  | uint256 | returns uint256 total supply. |
 
 ### balanceOf
 
@@ -212,15 +212,15 @@ _Returns ZRC20 balance of an account._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type    | Description                             |
+| ------- | ------- | --------------------------------------- |
 | account | address | address for which balance is requested. |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | uint256 account balance. |
+| Name | Type    | Description              |
+| ---- | ------- | ------------------------ |
+| [0]  | uint256 | uint256 account balance. |
 
 ### transfer
 
@@ -234,16 +234,16 @@ _This function can be called by the contract owner or any other external address
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name      | Type    | Description                                                          |
+| --------- | ------- | -------------------------------------------------------------------- |
 | recipient | address | The address of the recipient to whom the tokens will be transferred. |
-| amount | uint256 | The amount of tokens to transfer. |
+| amount    | uint256 | The amount of tokens to transfer.                                    |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | Returns a boolean value indicating whether the transfer was successful or not. |
+| Name | Type | Description                                                                    |
+| ---- | ---- | ------------------------------------------------------------------------------ |
+| [0]  | bool | Returns a boolean value indicating whether the transfer was successful or not. |
 
 ### allowance
 
@@ -255,16 +255,16 @@ _Returns token allowance from owner to spender._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| owner | address | address. |
-| spender | address |  |
+| Name    | Type    | Description |
+| ------- | ------- | ----------- |
+| owner   | address | address.    |
+| spender | address |             |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | uint256 allowance. |
+| Name | Type    | Description        |
+| ---- | ------- | ------------------ |
+| [0]  | uint256 | uint256 allowance. |
 
 ### approve
 
@@ -276,16 +276,16 @@ _Approves amount transferFrom for spender._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| spender | address | address. |
-| amount | uint256 | to approve. |
+| Name    | Type    | Description |
+| ------- | ------- | ----------- |
+| spender | address | address.    |
+| amount  | uint256 | to approve. |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | true/false if succeeded/failed. |
+| Name | Type | Description                     |
+| ---- | ---- | ------------------------------- |
+| [0]  | bool | true/false if succeeded/failed. |
 
 ### increaseAllowance
 
@@ -297,16 +297,16 @@ _Increases allowance by amount for spender._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| spender | address | address. |
-| amount | uint256 | by which to increase allownace. |
+| Name    | Type    | Description                     |
+| ------- | ------- | ------------------------------- |
+| spender | address | address.                        |
+| amount  | uint256 | by which to increase allownace. |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | true/false if succeeded/failed. |
+| Name | Type | Description                     |
+| ---- | ---- | ------------------------------- |
+| [0]  | bool | true/false if succeeded/failed. |
 
 ### decreaseAllowance
 
@@ -318,16 +318,16 @@ _Decreases allowance by amount for spender._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| spender | address | address. |
-| amount | uint256 | by which to decrease allownace. |
+| Name    | Type    | Description                     |
+| ------- | ------- | ------------------------------- |
+| spender | address | address.                        |
+| amount  | uint256 | by which to decrease allownace. |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | true/false if succeeded/failed. |
+| Name | Type | Description                     |
+| ---- | ---- | ------------------------------- |
+| [0]  | bool | true/false if succeeded/failed. |
 
 ### transferFrom
 
@@ -339,17 +339,17 @@ _Transfers tokens from sender to recipient._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| sender | address | address. |
-| recipient | address | address. |
-| amount | uint256 | to transfer. |
+| Name      | Type    | Description  |
+| --------- | ------- | ------------ |
+| sender    | address | address.     |
+| recipient | address | address.     |
+| amount    | uint256 | to transfer. |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | true/false if succeeded/failed. |
+| Name | Type | Description                     |
+| ---- | ---- | ------------------------------- |
+| [0]  | bool | true/false if succeeded/failed. |
 
 ### burn
 
@@ -361,17 +361,17 @@ _Burns an amount of tokens._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| amount | uint256 | to burn. |
+| Name   | Type    | Description |
+| ------ | ------- | ----------- |
+| amount | uint256 | to burn.    |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | true/false if succeeded/failed. |
+| Name | Type | Description                     |
+| ---- | ---- | ------------------------------- |
+| [0]  | bool | true/false if succeeded/failed. |
 
-### _transfer
+### \_transfer
 
 ```solidity
 function _transfer(address sender, address recipient, uint256 amount) internal virtual
@@ -383,13 +383,13 @@ Throws if the sender's balance is lower than the transfer amount._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| sender | address | The address sending the tokens. |
+| Name      | Type    | Description                       |
+| --------- | ------- | --------------------------------- |
+| sender    | address | The address sending the tokens.   |
 | recipient | address | The address receiving the tokens. |
-| amount | uint256 | The amount of tokens to transfer. |
+| amount    | uint256 | The amount of tokens to transfer. |
 
-### _mint
+### \_mint
 
 ```solidity
 function _mint(address account, uint256 amount) internal virtual
@@ -400,12 +400,12 @@ Throws if the account address is zero._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type    | Description                                              |
+| ------- | ------- | -------------------------------------------------------- |
 | account | address | The address to which the minted tokens will be assigned. |
-| amount | uint256 | The amount of tokens to be minted. |
+| amount  | uint256 | The amount of tokens to be minted.                       |
 
-### _burn
+### \_burn
 
 ```solidity
 function _burn(address account, uint256 amount) internal virtual
@@ -417,12 +417,12 @@ Throws if the account's balance is lower than the burn amount._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type    | Description                                   |
+| ------- | ------- | --------------------------------------------- |
 | account | address | The address from which tokens will be burned. |
-| amount | uint256 | The amount of tokens to be burned. |
+| amount  | uint256 | The amount of tokens to be burned.            |
 
-### _approve
+### \_approve
 
 ```solidity
 function _approve(address owner, address spender, uint256 amount) internal virtual
@@ -434,11 +434,11 @@ Throws if the spender address is zero._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| owner | address | The address that owns the tokens. |
+| Name    | Type    | Description                                       |
+| ------- | ------- | ------------------------------------------------- |
+| owner   | address | The address that owns the tokens.                 |
 | spender | address | The address that is approved to spend the tokens. |
-| amount | uint256 | The maximum amount of tokens that can be spent. |
+| amount  | uint256 | The maximum amount of tokens that can be spent.   |
 
 ### deposit
 
@@ -452,16 +452,16 @@ Throws if called by an invalid sender._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| to | address | The recipient address. |
+| Name   | Type    | Description            |
+| ------ | ------- | ---------------------- |
+| to     | address | The recipient address. |
 | amount | uint256 | The amount to deposit. |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | A boolean indicating whether the deposit succeeded or failed. |
+| Name | Type | Description                                                   |
+| ---- | ---- | ------------------------------------------------------------- |
+| [0]  | bool | A boolean indicating whether the deposit succeeded or failed. |
 
 ### withdrawGasFee
 
@@ -475,10 +475,10 @@ Throws if the gas price is zero._
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | address | gasZRC20 The address of the gas ZRC20 token on the same chain. |
-| [1] | uint256 | gasFee The calculated gas fee for the `withdraw()` function. |
+| Name | Type    | Description                                                    |
+| ---- | ------- | -------------------------------------------------------------- |
+| [0]  | address | gasZRC20 The address of the gas ZRC20 token on the same chain. |
+| [1]  | uint256 | gasFee The calculated gas fee for the `withdraw()` function.   |
 
 ### withdraw
 
@@ -492,16 +492,16 @@ Throws if the gas fee transfer fails._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| to | bytes | The recipient address on the external chain. |
-| amount | uint256 | The amount of tokens to withdraw. |
+| Name   | Type    | Description                                  |
+| ------ | ------- | -------------------------------------------- |
+| to     | bytes   | The recipient address on the external chain. |
+| amount | uint256 | The amount of tokens to withdraw.            |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | A boolean indicating whether the withdrawal succeeded or failed. |
+| Name | Type | Description                                                      |
+| ---- | ---- | ---------------------------------------------------------------- |
+| [0]  | bool | A boolean indicating whether the withdrawal succeeded or failed. |
 
 ### updateSystemContractAddress
 
@@ -514,8 +514,8 @@ Requires the caller to be the fungible module._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name | Type    | Description                                |
+| ---- | ------- | ------------------------------------------ |
 | addr | address | The new system contract address to be set. |
 
 ### updateGasLimit
@@ -529,8 +529,8 @@ Requires the caller to be the fungible module._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name     | Type    | Description                  |
+| -------- | ------- | ---------------------------- |
 | gasLimit | uint256 | The new gas limit to be set. |
 
 ### updateProtocolFlatFee
@@ -544,7 +544,6 @@ Requires the caller to be the fungible module._
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name            | Type    | Description                          |
+| --------------- | ------- | ------------------------------------ |
 | protocolFlatFee | uint256 | The new protocol flat fee to be set. |
-
