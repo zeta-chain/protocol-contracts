@@ -8,7 +8,7 @@
       "erc20Custody": "0x0000a7db254145767262c6a81a7ee1650684258e",
       "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
       "zetaTokenConsumerUniV2": "0x30a7c9F471cfc2c65A57F04Ef5AB926eD59CE620",
-      "zetaTokenConsumerUniV3": ""
+      "zetaTokenConsumerUniV3": "0xE842Ed39DD86d9226129a25F0177a53180c7adeF"
     },
     "goerli_testnet": {
       "connector": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
