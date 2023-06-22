@@ -12,6 +12,10 @@ dotenv.config();
 const PRIVATE_KEYS = process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
 
 const config = {
+  docgen: {
+    pages: "files",
+    templates: "templates",
+  },
   networks: {
     athens: {
       accounts: PRIVATE_KEYS,
@@ -110,10 +114,6 @@ const config = {
       { version: "0.7.6" /** For uniswap v3 */ },
       { version: "0.8.7" },
     ],
-  },
-  docgen: {
-    pages: "files",
-    templates: "templates",
   },
 };
 

@@ -68,13 +68,13 @@
   "scripts": {
     "clean": "npx hardhat clean",
     "compile": "npx hardhat compile",
+    "docs": "rm -rf docs && npx hardhat docgen",
     "generate:go": "yarn compile && ./scripts/generate_go.sh",
     "generate:interfaces": "yarn clean && yarn compile",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "npx tsc",
     "test": "npx hardhat clean && npx hardhat test",
-    "tsc:watch": "npx tsc --watch",
-    "docs": "rm -rf docs && npx hardhat docgen"
+    "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/typechain-types/index.d.ts",
   "version": "0.0.7"
