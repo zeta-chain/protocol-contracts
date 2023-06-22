@@ -50,10 +50,12 @@
     }
   },
   "zevm": {
-    "systemContract": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
-    "uniswapv2Factory": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "uniswapv2Router02": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
-    "fungibleModule": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
+    "zeta_testnet": {
+      "systemContract": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
+      "uniswapv2Factory": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+      "uniswapv2Router02": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
+      "fungibleModule": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB"
+    },
     "goerli_testnet": {
       "zrc20": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4"
     },
