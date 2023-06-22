@@ -1,14 +1,14 @@
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
+import { ERC20_CUSTODY_ZETA_FEE, ERC20_CUSTODY_ZETA_MAX_FEE } from "lib/contracts.constants";
 
-import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { calculateBestSalt } from "../../../lib/deterministic-deploy.helpers";
-import { ZetaConnectorEth__factory, ZetaConnectorNonEth__factory } from "../../../typechain-types";
+import { ERC20Custody__factory } from "../../../typechain-types";
 
-const MAX_ITERATIONS = BigNumber.from(100000);
+const MAX_ITERATIONS = BigNumber.from(1000000);
 
-export async function deterministicDeployGetSaltZetaConnector() {
+export const deterministicDeployGetSaltERC20Custody = async () => {
   if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
@@ -22,23 +22,18 @@ export async function deterministicDeployGetSaltZetaConnector() {
   const tssAddress = getAddress("tss", network.name);
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
 
-  // @todo: decide which address use as pauser
-  const constructorTypes = ["address", "address", "address", "address"];
-  const constructorArgs = [zetaTokenAddress, tssAddress, tssUpdaterAddress, tssUpdaterAddress];
+  const zetaFee = ERC20_CUSTODY_ZETA_FEE;
+  const zetaMaxFee = ERC20_CUSTODY_ZETA_MAX_FEE;
 
-  let contractBytecode;
-
-  if (isEthNetworkName(network.name)) {
-    contractBytecode = ZetaConnectorEth__factory.bytecode;
-  } else {
-    contractBytecode = ZetaConnectorNonEth__factory.bytecode;
-  }
+  const constructorTypes = ["address", "address", "uint256", "uint256", "address"];
+  const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
+  const contractBytecode = ERC20Custody__factory.bytecode;
 
   calculateBestSalt(MAX_ITERATIONS, DEPLOYER_ADDRESS, constructorTypes, constructorArgs, contractBytecode);
-}
+};
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deterministicDeployGetSaltZetaConnector()
+  deterministicDeployGetSaltERC20Custody()
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error);

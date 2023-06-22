@@ -3,15 +3,20 @@ import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
 
-import { ZETA_CONNECTOR_SALT_NUMBER_ETH, ZETA_CONNECTOR_SALT_NUMBER_NON_ETH } from "../../../lib/contracts.constants";
+import {
+  ERC20_CUSTODY_SALT_NUMBER_ETH,
+  ERC20_CUSTODY_SALT_NUMBER_NON_ETH,
+  ERC20_CUSTODY_ZETA_FEE,
+  ERC20_CUSTODY_ZETA_MAX_FEE,
+} from "../../../lib/contracts.constants";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import {
   deployContractToAddress,
   saltToHex,
 } from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
-import { ZetaConnectorEth__factory, ZetaConnectorNonEth__factory } from "../../../typechain-types";
+import { ERC20Custody__factory } from "../../../typechain-types";
 
-export async function deterministicDeployZetaConnector() {
+export const deterministicDeployERC20Custody = async () => {
   if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
@@ -26,21 +31,18 @@ export async function deterministicDeployZetaConnector() {
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
   const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
-  const saltNumber = isEthNetworkName(network.name)
-    ? ZETA_CONNECTOR_SALT_NUMBER_ETH
-    : ZETA_CONNECTOR_SALT_NUMBER_NON_ETH;
+  const saltNumber = isEthNetworkName(network.name) ? ERC20_CUSTODY_SALT_NUMBER_ETH : ERC20_CUSTODY_SALT_NUMBER_NON_ETH;
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
-  const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
-  const constructorTypes = ["address", "address", "address", "address"];
-  const constructorArgs = [zetaTokenAddress, tssAddress, tssUpdaterAddress, tssUpdaterAddress];
+  const zetaFee = ERC20_CUSTODY_ZETA_FEE;
+  const zetaMaxFee = ERC20_CUSTODY_ZETA_MAX_FEE;
 
-  let contractBytecode;
-  if (isEthNetworkName(network.name)) {
-    contractBytecode = ZetaConnectorEth__factory.bytecode;
-  } else {
-    contractBytecode = ZetaConnectorNonEth__factory.bytecode;
-  }
+  const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
+  console.log("SaltHex:", salthex);
+
+  const constructorTypes = ["address", "address", "uint256", "uint256", "address"];
+  const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
+  const contractBytecode = ERC20Custody__factory.bytecode;
 
   const { address } = await deployContractToAddress({
     constructorArgs,
@@ -51,13 +53,13 @@ export async function deterministicDeployZetaConnector() {
     signer,
   });
 
-  console.log("Deployed ZetaConnector. Address:", address);
+  console.log("Deployed ERC20 Custody. Address:", address);
   console.log("Constructor Args", constructorArgs);
-  // saveAddress("connector", address);
-}
+  // saveAddress("zetaToken", address);
+};
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deterministicDeployZetaConnector()
+  deterministicDeployERC20Custody()
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error);

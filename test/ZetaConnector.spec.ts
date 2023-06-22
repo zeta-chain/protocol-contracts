@@ -66,7 +66,7 @@ describe("ZetaConnector tests", () => {
     [tssUpdater, tssSigner, randomSigner, pauserSigner] = accounts;
 
     zetaTokenEthContract = await deployZetaEth({
-      args: [100_000],
+      args: [tssUpdater.address, 100_000],
     });
 
     zetaTokenNonEthContract = await deployZetaNonEth({
