@@ -1,7 +1,6 @@
 import { saveAddress } from "@zetachain/addresses-tools";
 import { ethers, network } from "hardhat";
-import { getAddress, isProtocolNetworkName } from "lib";
-import { getExternalAddress } from "lib/address.helpers";
+import { getAddress, getNonZetaAddress, isProtocolNetworkName } from "lib";
 
 import { ZetaTokenConsumerUniV3__factory } from "../../../typechain-types";
 
@@ -14,19 +13,20 @@ export async function deterministicDeployZetaConsumer() {
 
   const zetaTokenAddress = getAddress("zetaToken", network.name);
 
-  const uniswapV3Router = getExternalAddress("uniswapV3Router");
-  const quoter = getExternalAddress("uniswapV3Quoter");
-  const WETH9Address = getExternalAddress("weth9");
+  const uniswapV3Router = getNonZetaAddress("uniswapV3Router", network.name);
+  const uniswapV3Factory = getNonZetaAddress("uniswapV3Factory", network.name);
+  const WETH9Address = getNonZetaAddress("weth9", network.name);
+
   const zetaPoolFee = 500;
   const tokenPoolFee = 3000;
 
-  console.log([zetaTokenAddress, uniswapV3Router, quoter, WETH9Address, zetaPoolFee, tokenPoolFee]);
+  console.log([zetaTokenAddress, uniswapV3Router, uniswapV3Factory, WETH9Address, zetaPoolFee, tokenPoolFee]);
 
   const Factory = new ZetaTokenConsumerUniV3__factory(signer);
   const contract = await Factory.deploy(
     zetaTokenAddress,
     uniswapV3Router,
-    quoter,
+    uniswapV3Factory,
     WETH9Address,
     zetaPoolFee,
     tokenPoolFee
