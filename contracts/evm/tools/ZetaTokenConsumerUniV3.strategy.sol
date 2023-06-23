@@ -4,7 +4,8 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
+import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
+import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 
 import "../interfaces/ZetaInterfaces.sol";
 
@@ -34,14 +35,14 @@ contract ZetaTokenConsumerUniV3 is ZetaTokenConsumer, ZetaTokenConsumerUniV3Erro
     address public immutable zetaToken;
 
     ISwapRouter public immutable uniswapV3Router;
-    IQuoter public immutable quoter;
+    IUniswapV3Factory internal immutable uniswapV3Factory;
 
     bool internal _locked;
 
     constructor(
         address zetaToken_,
         address uniswapV3Router_,
-        address quoter_,
+        address uniswapV3Factory_,
         address WETH9Address_,
         uint24 zetaPoolFee_,
         uint24 tokenPoolFee_
@@ -49,13 +50,13 @@ contract ZetaTokenConsumerUniV3 is ZetaTokenConsumer, ZetaTokenConsumerUniV3Erro
         if (
             zetaToken_ == address(0) ||
             uniswapV3Router_ == address(0) ||
-            quoter_ == address(0) ||
+            uniswapV3Factory_ == address(0) ||
             WETH9Address_ == address(0)
         ) revert ZetaCommonErrors.InvalidAddress();
 
         zetaToken = zetaToken_;
         uniswapV3Router = ISwapRouter(uniswapV3Router_);
-        quoter = IQuoter(quoter_);
+        uniswapV3Factory = IUniswapV3Factory(uniswapV3Factory_);
         WETH9Address = WETH9Address_;
         zetaPoolFee = zetaPoolFee_;
         tokenPoolFee = tokenPoolFee_;
@@ -178,5 +179,17 @@ contract ZetaTokenConsumerUniV3 is ZetaTokenConsumer, ZetaTokenConsumerUniV3Erro
 
         emit ZetaExchangedForToken(outputToken, zetaTokenAmount, amountOut);
         return amountOut;
+    }
+
+    function hasZetaLiquidity() external view override returns (bool) {
+        address poolAddress = uniswapV3Factory.getPool(WETH9Address, zetaToken, zetaPoolFee);
+
+        if (poolAddress == address(0)) {
+            return false;
+        }
+
+        //@dev: if pool does exist, get its liquidity
+        IUniswapV3Pool pool = IUniswapV3Pool(poolAddress);
+        return pool.liquidity() > 0;
     }
 }

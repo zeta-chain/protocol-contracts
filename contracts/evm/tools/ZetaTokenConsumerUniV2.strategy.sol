@@ -158,4 +158,16 @@ contract ZetaTokenConsumerUniV2 is ZetaTokenConsumer, ZetaTokenConsumerUniV2Erro
         emit ZetaExchangedForToken(outputToken, zetaTokenAmount, amountOut);
         return amountOut;
     }
+
+    function hasZetaLiquidity() external view override returns (bool) {
+        address[] memory path = new address[](2);
+        path[0] = wETH;
+        path[1] = zetaToken;
+
+        try uniswapV2Router.getAmountsOut(1, path) returns (uint256[] memory amounts) {
+            return amounts[path.length - 1] > 0;
+        } catch {
+            return false;
+        }
+    }
 }

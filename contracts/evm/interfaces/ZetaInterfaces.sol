@@ -101,6 +101,8 @@ interface ZetaTokenConsumer {
         address outputToken,
         uint256 zetaTokenAmount
     ) external returns (uint256);
+
+    function hasZetaLiquidity() external view returns (bool);
 }
 
 interface ZetaCommonErrors {
