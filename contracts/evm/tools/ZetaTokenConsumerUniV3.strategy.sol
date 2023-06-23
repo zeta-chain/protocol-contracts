@@ -31,11 +31,11 @@ contract ZetaTokenConsumerUniV3 is ZetaTokenConsumer, ZetaTokenConsumerUniV3Erro
     uint24 public immutable zetaPoolFee;
     uint24 public immutable tokenPoolFee;
 
-    address internal immutable WETH9Address;
+    address public immutable WETH9Address;
     address public immutable zetaToken;
 
     ISwapRouter public immutable uniswapV3Router;
-    IUniswapV3Factory internal immutable uniswapV3Factory;
+    IUniswapV3Factory public immutable uniswapV3Factory;
 
     bool internal _locked;
 
