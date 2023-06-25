@@ -15,6 +15,7 @@ import {
 import chai, { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
+import { getNonZetaAddress } from "lib";
 
 import { getExternalAddress } from "../lib/address.helpers";
 import {
@@ -23,7 +24,6 @@ import {
   getZetaTokenConsumerUniV3Strategy,
 } from "../lib/contracts.helpers";
 import { parseZetaConsumerLog } from "./test.helpers";
-import { getNonZetaAddress } from "lib";
 
 chai.should();
 
@@ -140,7 +140,6 @@ describe("ZetaTokenConsumer tests", () => {
     const UNI_ROUTER_V3 = getNonZetaAddress("uniswapV3Router", "etherum_mainnet");
 
     const WETH9 = getNonZetaAddress("weth9", "etherum_mainnet");
-
 
     // For testing purposes we use an existing uni v3 pool
     await swapToken(tssUpdater, DAI, parseEther("10000"));
