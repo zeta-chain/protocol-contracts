@@ -15,6 +15,7 @@ import {
 import chai, { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
+import { getNonZetaAddress } from "lib";
 
 import { getExternalAddress } from "../lib/address.helpers";
 import {
@@ -122,27 +123,7 @@ describe("ZetaTokenConsumer tests", () => {
       args: [tssSigner.address, tssUpdater.address],
     });
 
-    uniswapV2RouterAddr = getExternalAddress("uniswapV2Router02", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
     const DAI = getExternalAddress("dai", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
-    const UNI_QUOTER_V3 = getExternalAddress("uniswapV3Quoter", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
-    const UNI_ROUTER_V3 = getExternalAddress("uniswapV3Router", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
-    const WETH9 = getExternalAddress("weth9", {
       customNetworkName: "etherum_mainnet",
       customZetaNetwork: "mainnet",
     });
@@ -151,6 +132,14 @@ describe("ZetaTokenConsumer tests", () => {
       customNetworkName: "etherum_mainnet",
       customZetaNetwork: "mainnet",
     });
+
+    uniswapV2RouterAddr = getNonZetaAddress("uniswapV2Router02", "etherum_mainnet");
+
+    const UNI_FACTORY_V3 = getNonZetaAddress("uniswapV3Factory", "etherum_mainnet");
+
+    const UNI_ROUTER_V3 = getNonZetaAddress("uniswapV3Router", "etherum_mainnet");
+
+    const WETH9 = getNonZetaAddress("weth9", "etherum_mainnet");
 
     // For testing purposes we use an existing uni v3 pool
     await swapToken(tssUpdater, DAI, parseEther("10000"));
@@ -168,7 +157,7 @@ describe("ZetaTokenConsumer tests", () => {
 
     uniswapV3RouterAddr = UNI_ROUTER_V3;
     zetaTokenConsumerUniV3 = await getZetaTokenConsumerUniV3Strategy({
-      deployParams: [zetaTokenNonEthAddress, uniswapV3RouterAddr, UNI_QUOTER_V3, WETH9, 3000, 3000],
+      deployParams: [zetaTokenNonEthAddress, uniswapV3RouterAddr, UNI_FACTORY_V3, WETH9, 3000, 3000],
     });
   });
 

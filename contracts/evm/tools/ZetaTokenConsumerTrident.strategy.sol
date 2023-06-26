@@ -199,4 +199,9 @@ contract ZetaTokenConsumerTrident is ZetaTokenConsumer, ZetaTokenConsumerTrident
         emit ZetaExchangedForToken(outputToken, zetaTokenAmount, amountOut);
         return amountOut;
     }
+
+    function hasZetaLiquidity() external view override returns (bool) {
+        //@TODO: Implement
+        return false;
+    }
 }
