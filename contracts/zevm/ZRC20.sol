@@ -16,9 +16,24 @@ interface ZRC20Errors {
     error LowBalance();
     error ZeroAddress();
 }
+/**
+ZRC-20 is a token standard integrated into ZetaChain's omnichain smart contract
+platform. With ZRC-20, developers can build dApps that orchestrate native assets
+on any connected chain. This makes building Omnichain DeFi protocols and dApps
+such as Omnichain DEXs, Omnichain Lending, Omnichain Portfolio Management, and
+anything else that involves fungible tokens on multiple chains from a single
+place extremely simple — as if they were all on a single chain.
+
+At a high-level, ZRC-20 tokens are an extension of the standard ERC-20 tokens
+found in the Ethereum ecosystem, ZRC-20 tokens have the added ability to manage
+assets on all ZetaChain-connected chains. Any fungible token, including Bitcoin,
+Dogecoin, ERC-20-equivalents on other chains, gas assets on other chains, and so
+on, may be represented on ZetaChain as a ZRC-20 and orchestrated as if it were
+any other fungible token (like an ERC-20).
+*/
 
 contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
-    /// @notice Fungible address is always the same, maintained at the protocol level
+    /// @notice The fungible module address, this is maintained at the protocol level and is always constant
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Chain id.abi
     uint256 public immutable CHAIN_ID;
@@ -31,11 +46,22 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice Protocol flat fee.
     uint256 public PROTOCOL_FLAT_FEE;
 
+    /// @dev Mapping that keeps track of each account's token balance.
     mapping(address => uint256) private _balances;
+
+    /// @dev Nested mapping that tracks how many tokens each account is allowed to spend from each other account.
     mapping(address => mapping(address => uint256)) private _allowances;
+
+    /// @dev Total supply of tokens
     uint256 private _totalSupply;
+
+    /// @notice Name of the token
     string private _name;
+
+    /// @notice Symbol of the token
     string private _symbol;
+
+    /// @notice Number of decimal places the token can be divided into
     uint8 private _decimals;
 
     /**
@@ -47,7 +73,15 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev The only one allowed to deploy new ZRC20 is fungible address.
+     * @dev Constructor that gives msg.sender all of existing tokens.
+     * @notice Only the fungible module is allowed to deploy a new ZRC20 contract.
+     * @param name_ Name of the token
+     * @param symbol_ Symbol of the token
+     * @param decimals_ Number of decimal places the token can be divided into
+     * @param chainid_ Chain ID
+     * @param coinType_ Coin Type
+     * @param gasLimit_ Gas limit for transactions
+     * @param systemContractAddress_ Address of the system contract
      */
     constructor(
         string memory name_,
@@ -110,9 +144,11 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Returns ZRC20 balance of an account.
-     * @param recipient, recipiuent address to which transfer is done.
-     * @return true/false if transfer succeeded/failed.
+     * @notice Transfers a specified amount of tokens to the given recipient.
+     * @dev This function can be called by the contract owner or any other external address.
+     * @param recipient The address of the recipient to whom the tokens will be transferred.
+     * @param amount The amount of tokens to transfer.
+     * @return Returns a boolean value indicating whether the transfer was successful or not.
      */
     function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
         _transfer(_msgSender(), recipient, amount);
@@ -190,6 +226,14 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
         return true;
     }
 
+    /**
+     * @dev Internal function to transfer tokens from one address to another.
+     * @param sender The address sending the tokens.
+     * @param recipient The address receiving the tokens.
+     * @param amount The amount of tokens to transfer.
+     * @dev Throws if either the sender or recipient address is zero.
+     * @dev Throws if the sender's balance is lower than the transfer amount.
+     */
     function _transfer(address sender, address recipient, uint256 amount) internal virtual {
         if (sender == address(0)) revert ZeroAddress();
         if (recipient == address(0)) revert ZeroAddress();
@@ -203,6 +247,12 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
         emit Transfer(sender, recipient, amount);
     }
 
+    /**
+     * @dev Internal function to mint new tokens and assign them to an account.
+     * @param account The address to which the minted tokens will be assigned.
+     * @param amount The amount of tokens to be minted.
+     * @dev Throws if the account address is zero.
+     */
     function _mint(address account, uint256 amount) internal virtual {
         if (account == address(0)) revert ZeroAddress();
 
@@ -211,6 +261,13 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
         emit Transfer(address(0), account, amount);
     }
 
+    /**
+     * @dev Internal function to burn tokens from an account.
+     * @param account The address from which tokens will be burned.
+     * @param amount The amount of tokens to be burned.
+     * @dev Throws if the account address is zero.
+     * @dev Throws if the account's balance is lower than the burn amount.
+     */
     function _burn(address account, uint256 amount) internal virtual {
         if (account == address(0)) revert ZeroAddress();
 
@@ -223,6 +280,14 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
         emit Transfer(account, address(0), amount);
     }
 
+    /**
+     * @dev Internal function to approve a spender to spend tokens on behalf of the owner.
+     * @param owner The address that owns the tokens.
+     * @param spender The address that is approved to spend the tokens.
+     * @param amount The maximum amount of tokens that can be spent.
+     * @dev Throws if the owner address is zero.
+     * @dev Throws if the spender address is zero.
+     */
     function _approve(address owner, address spender, uint256 amount) internal virtual {
         if (owner == address(0)) revert ZeroAddress();
         if (spender == address(0)) revert ZeroAddress();
@@ -232,10 +297,12 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Deposits corresponding tokens from external chain, only callable by Fungible module.
-     * @param to, recipient address.
-     * @param amount, amount to deposit.
-     * @return true/false if succeeded/failed.
+     * @dev Deposits corresponding tokens from an external chain.
+     * @param to The recipient address.
+     * @param amount The amount to deposit.
+     * @return A boolean indicating whether the deposit succeeded or failed.
+     * @dev Only callable by the Fungible module or the System contract.
+     * @dev Throws if called by an invalid sender.
      */
     function deposit(address to, uint256 amount) external override returns (bool) {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS) revert InvalidSender();
@@ -245,8 +312,11 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Withdraws gas fees.
-     * @return returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for withdraw()
+     * @dev Returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for `withdraw()`.
+     * @return gasZRC20 The address of the gas ZRC20 token on the same chain.
+     * @return gasFee The calculated gas fee for the `withdraw()` function.
+     * @dev Throws if the gas ZRC20 address is zero.
+     * @dev Throws if the gas price is zero.
      */
     function withdrawGasFee() public view override returns (address, uint256) {
         address gasZRC20 = ISystem(SYSTEM_CONTRACT_ADDRESS).gasCoinZRC20ByChainId(CHAIN_ID);
@@ -262,11 +332,12 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Withraws ZRC20 tokens to external chains, this function causes cctx module to send out outbound tx to the outbound chain
-     * this contract should be given enough allowance of the gas ZRC20 to pay for outbound tx gas fee.
-     * @param to, recipient address.
-     * @param amount, amount to deposit.
-     * @return true/false if succeeded/failed.
+     * @dev Withdraws ZRC20 tokens to external chains by triggering the crosschain module to create an outbound transaction.
+     * @param to The recipient address on the external chain.
+     * @param amount The amount of tokens to withdraw.
+     * @return A boolean indicating whether the withdrawal succeeded or failed.
+     * @dev Requires this contract to have sufficient allowance of the gas ZRC20 token to pay for the outbound transaction gas fee.
+     * @dev Throws if the gas fee transfer fails.
      */
     function withdraw(bytes memory to, uint256 amount) external override returns (bool) {
         (address gasZRC20, uint256 gasFee) = withdrawGasFee();
@@ -279,8 +350,9 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Updates system contract address. Can only be updated by the fungible module.
-     * @param addr, new system contract address.
+     * @dev Updates the system contract address.
+     * @param addr The new system contract address to be set.
+     * @dev Requires the caller to be the fungible module.
      */
     function updateSystemContractAddress(address addr) external onlyFungible {
         SYSTEM_CONTRACT_ADDRESS = addr;
@@ -288,8 +360,9 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Updates gas limit. Can only be updated by the fungible module.
-     * @param gasLimit, new gas limit.
+     * @dev Updates the gas limit.
+     * @param gasLimit The new gas limit to be set.
+     * @dev Requires the caller to be the fungible module.
      */
     function updateGasLimit(uint256 gasLimit) external onlyFungible {
         GAS_LIMIT = gasLimit;
@@ -297,8 +370,9 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Updates protocol flat fee. Can only be updated by the fungible module.
-     * @param protocolFlatFee, new protocol flat fee.
+     * @dev Updates the protocol flat fee.
+     * @param protocolFlatFee The new protocol flat fee to be set.
+     * @dev Requires the caller to be the fungible module.
      */
     function updateProtocolFlatFee(uint256 protocolFlatFee) external onlyFungible {
         PROTOCOL_FLAT_FEE = protocolFlatFee;

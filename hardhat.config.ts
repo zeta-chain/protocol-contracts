@@ -3,16 +3,20 @@ import "@nomiclabs/hardhat-etherscan";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
+import "solidity-docgen";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
 import * as dotenv from "dotenv";
-import type { HardhatUserConfig } from "hardhat/types";
 
 dotenv.config();
 
 const PRIVATE_KEYS = process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
 
-const config: HardhatUserConfig = {
+const config = {
+  docgen: {
+    pages: "files",
+    templates: "templates",
+  },
   networks: {
     ...getHardhatConfigNetworks(PRIVATE_KEYS),
     hardhat: {
