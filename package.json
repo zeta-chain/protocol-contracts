@@ -26,6 +26,8 @@
     "@zetachain/addresses-tools": "^0.0.7",
     "@zetachain/networks": "^0.0.1",
     "chai": "^4.3.6",
+    "cpx": "^1.5.0",
+    "del-cli": "^5.0.0",
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
@@ -59,7 +61,7 @@
   ],
   "keywords": [],
   "license": "MIT",
-  "main": "./dist/typechain-types/index.js",
+  "main": "./dist/lib/index.js",
   "name": "@zetachain/protocol-contracts",
   "publishConfig": {
     "access": "public",
@@ -74,7 +76,10 @@
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "npx tsc",
     "test": "npx hardhat clean && npx hardhat test",
-    "tsc:watch": "npx tsc --watch"
+    "tsc:watch": "npx tsc --watch",
+    "prebuild": "npx del-cli dist",
+    "build": "tsc || exit 0",
+    "postbuild": "npx del-cli './dist/typechain-types/**/*.js' && cpx data/**/* dist/data"
   },
   "types": "./dist/typechain-types/index.d.ts",
   "version": "0.0.7"
