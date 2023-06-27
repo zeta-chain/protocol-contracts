@@ -77,7 +77,7 @@
     "test": "npx hardhat clean && npx hardhat test",
     "tsc:watch": "npx tsc --watch",
     "build": "npx del-cli dist && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && cpx data/**/* dist/data",
-    "prepublish": "yarn build"
+    "prepublishOnly": "yarn build"
   },
   "types": "./dist/typechain-types/index.d.ts",
   "version": "0.0.7"
