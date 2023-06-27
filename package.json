@@ -74,12 +74,10 @@
     "generate:interfaces": "yarn clean && yarn compile",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
-    "prepublishOnly": "npx tsc",
     "test": "npx hardhat clean && npx hardhat test",
     "tsc:watch": "npx tsc --watch",
-    "prebuild": "npx del-cli dist",
-    "build": "tsc || exit 0",
-    "postbuild": "npx del-cli './dist/typechain-types/**/*.js' && cpx data/**/* dist/data"
+    "build": "npx del-cli dist && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && cpx data/**/* dist/data",
+    "prepublishOnly": "yarn build"
   },
   "types": "./dist/typechain-types/index.d.ts",
   "version": "0.0.7"
