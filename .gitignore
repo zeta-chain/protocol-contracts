@@ -25,3 +25,5 @@ tsconfig.tsbuildinfo
 # Slither
 scripts/slither-results/*
 !scripts/slither-results/.gitkeep
+
+abi
