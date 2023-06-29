@@ -30,12 +30,14 @@ import type {
 
 export interface ZetaTokenConsumerUniV3Interface extends utils.Interface {
   functions: {
+    "WETH9Address()": FunctionFragment;
     "getEthFromZeta(address,uint256,uint256)": FunctionFragment;
     "getTokenFromZeta(address,uint256,address,uint256)": FunctionFragment;
     "getZetaFromEth(address,uint256)": FunctionFragment;
     "getZetaFromToken(address,uint256,address,uint256)": FunctionFragment;
-    "quoter()": FunctionFragment;
+    "hasZetaLiquidity()": FunctionFragment;
     "tokenPoolFee()": FunctionFragment;
+    "uniswapV3Factory()": FunctionFragment;
     "uniswapV3Router()": FunctionFragment;
     "zetaPoolFee()": FunctionFragment;
     "zetaToken()": FunctionFragment;
@@ -43,17 +45,23 @@ export interface ZetaTokenConsumerUniV3Interface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "WETH9Address"
       | "getEthFromZeta"
       | "getTokenFromZeta"
       | "getZetaFromEth"
       | "getZetaFromToken"
-      | "quoter"
+      | "hasZetaLiquidity"
       | "tokenPoolFee"
+      | "uniswapV3Factory"
       | "uniswapV3Router"
       | "zetaPoolFee"
       | "zetaToken"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "WETH9Address",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getEthFromZeta",
     values: [
@@ -84,9 +92,16 @@ export interface ZetaTokenConsumerUniV3Interface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
-  encodeFunctionData(functionFragment: "quoter", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "hasZetaLiquidity",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "tokenPoolFee",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "uniswapV3Factory",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -99,6 +114,10 @@ export interface ZetaTokenConsumerUniV3Interface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
+  decodeFunctionResult(
+    functionFragment: "WETH9Address",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getEthFromZeta",
     data: BytesLike
@@ -115,9 +134,16 @@ export interface ZetaTokenConsumerUniV3Interface extends utils.Interface {
     functionFragment: "getZetaFromToken",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "quoter", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "hasZetaLiquidity",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "tokenPoolFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "uniswapV3Factory",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -220,6 +246,8 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    WETH9Address(overrides?: CallOverrides): Promise<[string]>;
+
     getEthFromZeta(
       destinationAddress: PromiseOrValue<string>,
       minAmountOut: PromiseOrValue<BigNumberish>,
@@ -249,9 +277,11 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    quoter(overrides?: CallOverrides): Promise<[string]>;
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<[boolean]>;
 
     tokenPoolFee(overrides?: CallOverrides): Promise<[number]>;
+
+    uniswapV3Factory(overrides?: CallOverrides): Promise<[string]>;
 
     uniswapV3Router(overrides?: CallOverrides): Promise<[string]>;
 
@@ -259,6 +289,8 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
 
     zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
+
+  WETH9Address(overrides?: CallOverrides): Promise<string>;
 
   getEthFromZeta(
     destinationAddress: PromiseOrValue<string>,
@@ -289,9 +321,11 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  quoter(overrides?: CallOverrides): Promise<string>;
+  hasZetaLiquidity(overrides?: CallOverrides): Promise<boolean>;
 
   tokenPoolFee(overrides?: CallOverrides): Promise<number>;
+
+  uniswapV3Factory(overrides?: CallOverrides): Promise<string>;
 
   uniswapV3Router(overrides?: CallOverrides): Promise<string>;
 
@@ -300,6 +334,8 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
   zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
+    WETH9Address(overrides?: CallOverrides): Promise<string>;
+
     getEthFromZeta(
       destinationAddress: PromiseOrValue<string>,
       minAmountOut: PromiseOrValue<BigNumberish>,
@@ -329,9 +365,11 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    quoter(overrides?: CallOverrides): Promise<string>;
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<boolean>;
 
     tokenPoolFee(overrides?: CallOverrides): Promise<number>;
+
+    uniswapV3Factory(overrides?: CallOverrides): Promise<string>;
 
     uniswapV3Router(overrides?: CallOverrides): Promise<string>;
 
@@ -383,6 +421,8 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
   };
 
   estimateGas: {
+    WETH9Address(overrides?: CallOverrides): Promise<BigNumber>;
+
     getEthFromZeta(
       destinationAddress: PromiseOrValue<string>,
       minAmountOut: PromiseOrValue<BigNumberish>,
@@ -412,9 +452,11 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    quoter(overrides?: CallOverrides): Promise<BigNumber>;
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<BigNumber>;
 
     tokenPoolFee(overrides?: CallOverrides): Promise<BigNumber>;
+
+    uniswapV3Factory(overrides?: CallOverrides): Promise<BigNumber>;
 
     uniswapV3Router(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -424,6 +466,8 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
   };
 
   populateTransaction: {
+    WETH9Address(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getEthFromZeta(
       destinationAddress: PromiseOrValue<string>,
       minAmountOut: PromiseOrValue<BigNumberish>,
@@ -453,9 +497,11 @@ export interface ZetaTokenConsumerUniV3 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    quoter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     tokenPoolFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    uniswapV3Factory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     uniswapV3Router(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

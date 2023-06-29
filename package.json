@@ -69,7 +69,7 @@
   },
   "scripts": {
     "clean": "npx hardhat clean",
-    "compile": "npx hardhat compile",
+    "compile": "yarn clean && npx hardhat compile",
     "generate:go": "yarn compile && ./scripts/generate_go.sh",
     "generate:interfaces": "yarn clean && yarn compile",
     "lint": "npx eslint . --ext .js,.ts",

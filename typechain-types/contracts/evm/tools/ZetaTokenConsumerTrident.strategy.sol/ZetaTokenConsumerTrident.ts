@@ -34,6 +34,7 @@ export interface ZetaTokenConsumerTridentInterface extends utils.Interface {
     "getTokenFromZeta(address,uint256,address,uint256)": FunctionFragment;
     "getZetaFromEth(address,uint256)": FunctionFragment;
     "getZetaFromToken(address,uint256,address,uint256)": FunctionFragment;
+    "hasZetaLiquidity()": FunctionFragment;
     "poolFactory()": FunctionFragment;
     "tridentRouter()": FunctionFragment;
     "zetaToken()": FunctionFragment;
@@ -45,6 +46,7 @@ export interface ZetaTokenConsumerTridentInterface extends utils.Interface {
       | "getTokenFromZeta"
       | "getZetaFromEth"
       | "getZetaFromToken"
+      | "hasZetaLiquidity"
       | "poolFactory"
       | "tridentRouter"
       | "zetaToken"
@@ -81,6 +83,10 @@ export interface ZetaTokenConsumerTridentInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "hasZetaLiquidity",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "poolFactory",
     values?: undefined
   ): string;
@@ -104,6 +110,10 @@ export interface ZetaTokenConsumerTridentInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getZetaFromToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "hasZetaLiquidity",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -235,6 +245,8 @@ export interface ZetaTokenConsumerTrident extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<[boolean]>;
+
     poolFactory(overrides?: CallOverrides): Promise<[string]>;
 
     tridentRouter(overrides?: CallOverrides): Promise<[string]>;
@@ -271,6 +283,8 @@ export interface ZetaTokenConsumerTrident extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  hasZetaLiquidity(overrides?: CallOverrides): Promise<boolean>;
+
   poolFactory(overrides?: CallOverrides): Promise<string>;
 
   tridentRouter(overrides?: CallOverrides): Promise<string>;
@@ -306,6 +320,8 @@ export interface ZetaTokenConsumerTrident extends BaseContract {
       inputTokenAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<boolean>;
 
     poolFactory(overrides?: CallOverrides): Promise<string>;
 
@@ -386,6 +402,8 @@ export interface ZetaTokenConsumerTrident extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<BigNumber>;
+
     poolFactory(overrides?: CallOverrides): Promise<BigNumber>;
 
     tridentRouter(overrides?: CallOverrides): Promise<BigNumber>;
@@ -422,6 +440,8 @@ export interface ZetaTokenConsumerTrident extends BaseContract {
       inputTokenAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     poolFactory(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
