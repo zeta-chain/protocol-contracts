@@ -30,7 +30,6 @@ async function sendGas() {
   }
 
   console.log(`Updated TSS address from ${tssAddress} to ${newTssAddress}.`);
-
 }
 
 sendGas()
