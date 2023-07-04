@@ -1,4 +1,3 @@
-import { saveAddress } from "@zetachain/addresses-tools";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
 
@@ -31,8 +30,6 @@ async function sendGas() {
   }
 
   console.log(`Updated TSS address from ${tssAddress} to ${newTssAddress}.`);
-
-  // saveAddress("tss", newTssAddress);
 }
 
 sendGas()

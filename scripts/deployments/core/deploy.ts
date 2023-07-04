@@ -1,5 +1,4 @@
 import { isLocalNetworkName } from "@zetachain/addresses";
-import { saveAddress } from "@zetachain/addresses-tools";
 import { ethers, network } from "hardhat";
 
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
@@ -10,7 +9,6 @@ import { deployZetaToken } from "./deploy-zeta-token";
 async function main() {
   if (isLocalNetworkName(network.name)) {
     const [owner] = await ethers.getSigners();
-    // saveAddress("tssUpdater", owner.address);
   }
 
   const zetaTokenAddress = await deployZetaToken();

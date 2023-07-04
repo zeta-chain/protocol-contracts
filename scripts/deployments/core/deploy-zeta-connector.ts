@@ -1,4 +1,3 @@
-import { saveAddress } from "@zetachain/addresses-tools";
 import { Contract } from "ethers";
 import { network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib/address.tools";
@@ -27,7 +26,6 @@ export async function deployZetaConnector() {
     });
   }
 
-  // saveAddress("connector", contract.address);
   console.log("Deployed ZetaConnector. Address:", contract.address);
   return contract.address;
 }
