@@ -1,4 +1,3 @@
-import { saveAddress } from "@zetachain/addresses-tools";
 import { network } from "hardhat";
 import { isProtocolNetworkName } from "lib";
 
@@ -13,7 +12,6 @@ export async function deployImmutableCreate2Factory() {
 
   const contract = await deploy();
 
-  // saveAddress("immutableCreate2Factory", contract.address);
   console.log("Deployed ImmutableCreate2Factory. Address:", contract.address);
 }
 

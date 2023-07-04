@@ -1,4 +1,3 @@
-import { saveAddress } from "@zetachain/addresses-tools";
 import { ethers, network } from "hardhat";
 import { getAddress, getNonZetaAddress, isProtocolNetworkName } from "lib";
 
@@ -34,7 +33,6 @@ export async function deterministicDeployZetaConsumer() {
   await contract.deployed();
   const address = contract.address;
 
-  // saveAddress("zetaTokenConsumerUniV3", address);
   console.log("Deployed ZetaConsumer. Address:", address);
 }
 
