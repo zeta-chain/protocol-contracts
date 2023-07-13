@@ -80,6 +80,6 @@
     "build": "yarn clean && yarn compile && npx del-cli dist abi && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "prepublishOnly": "yarn build"
   },
-  "types": "./dist/typechain-types/index.d.ts",
+  "types": "./dist/lib/index.d.ts",
   "version": "0.0.7"
 }
