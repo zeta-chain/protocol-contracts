@@ -7,6 +7,7 @@ export const addresses = JSON.parse(
 
 export declare type ZetaProtocolAddress =
   | "connector"
+  | "erc20Custody"
   | "immutableCreate2Factory"
   | "tss"
   | "tssUpdater"
@@ -16,6 +17,7 @@ export declare type ZetaProtocolAddress =
 
 export const zetaProtocolAddress: ZetaProtocolAddress[] = [
   "connector",
+  "erc20Custody",
   "immutableCreate2Factory",
   "tss",
   "tssUpdater",
@@ -26,7 +28,13 @@ export const zetaProtocolAddress: ZetaProtocolAddress[] = [
 export const isZetaProtocolAddress = (str: string): str is ZetaProtocolAddress =>
   zetaProtocolAddress.includes(str as ZetaProtocolAddress);
 
-export declare type ZetaZEVMAddress = "geth" | "systemContract" | "tbnb" | "tmatic";
+export declare type ZetaZEVMAddress =
+  | "zrc20"
+  | "systemContract"
+  | "fungibleModule"
+  | "uniswapv2Factory"
+  | "uniswapv2Router02";
+
 export declare type ZetaProtocolTestNetwork =
   | "baobab_testnet"
   | "bsc_testnet"
