@@ -29,11 +29,11 @@ export const isZetaProtocolAddress = (str: string): str is ZetaProtocolAddress =
   zetaProtocolAddress.includes(str as ZetaProtocolAddress);
 
 export declare type ZetaZEVMAddress =
-  | "zrc20"
-  | "systemContract"
   | "fungibleModule"
+  | "systemContract"
   | "uniswapv2Factory"
-  | "uniswapv2Router02";
+  | "uniswapv2Router02"
+  | "zrc20";
 
 export declare type ZetaProtocolTestNetwork =
   | "baobab_testnet"
