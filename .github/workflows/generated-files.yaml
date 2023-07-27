@@ -1,4 +1,4 @@
-name: Generated Go Packages are Updated
+name: Generated Files are Updated
 on:
   pull_request:
     branches:
@@ -32,6 +32,10 @@ jobs:
         run: |
           yarn generate:go
 
+      - name: Compile contracts
+        run: |
+          yarn compile
+
       - name: Check for changes
         run: |
-          git diff --exit-code --ignore-space-change --ignore-all-space --ignore-cr-at-eol -- pkg
+          git diff --exit-code --ignore-space-change --ignore-all-space --ignore-cr-at-eol -- pkg typechain-types
