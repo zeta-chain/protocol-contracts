@@ -80,5 +80,5 @@
     "prepublishOnly": "yarn build"
   },
   "types": "./dist/typechain-types/index.d.ts",
-  "version": "0.0.7"
+  "version": "0.0.8"
 }
