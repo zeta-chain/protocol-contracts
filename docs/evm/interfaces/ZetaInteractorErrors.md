@@ -1,30 +1,45 @@
-# evm/interfaces/ZetaInteractorErrors.md
-
 ## ZetaInteractorErrors
 
-_Interface with Zeta Interactor errors_
-
-### InvalidDestinationChainId
-
 ```solidity
-error InvalidDestinationChainId()
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInteractorErrors.sol";
 ```
 
-### InvalidCaller
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaInteractorErrors.sol
 
-```solidity
-error InvalidCaller(address caller)
+Interface with Zeta Interactor errors
+
+### Error List
+
+* [InvalidDestinationChainId()](#ZetaInteractorErrors-InvalidDestinationChainId--)
+* [InvalidCaller(caller)](#ZetaInteractorErrors-InvalidCaller-address-)
+* [InvalidZetaMessageCall()](#ZetaInteractorErrors-InvalidZetaMessageCall--)
+* [InvalidZetaRevertCall()](#ZetaInteractorErrors-InvalidZetaRevertCall--)
+
+### Modifiers
+
+### Errors
+
+```
+InvalidDestinationChainId() (error)
 ```
 
-### InvalidZetaMessageCall
+<a name="ZetaInteractorErrors-InvalidDestinationChainId--"></a>
 
-```solidity
-error InvalidZetaMessageCall()
+```
+InvalidCaller(address caller) (error)
 ```
 
-### InvalidZetaRevertCall
+<a name="ZetaInteractorErrors-InvalidCaller-address-"></a>
 
-```solidity
-error InvalidZetaRevertCall()
 ```
+InvalidZetaMessageCall() (error)
+```
+
+<a name="ZetaInteractorErrors-InvalidZetaMessageCall--"></a>
+
+```
+InvalidZetaRevertCall() (error)
+```
+
+<a name="ZetaInteractorErrors-InvalidZetaRevertCall--"></a>
 

@@ -1,549 +1,438 @@
-# zevm/ZRC20.md
-
 ## ZRC20Errors
 
-_Custom errors for ZRC20_
-
-### CallerIsNotFungibleModule
-
 ```solidity
-error CallerIsNotFungibleModule()
+import "@zetachain/protocol-contracts/contracts/zevm/ZRC20.sol";
 ```
 
-### InvalidSender
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/ZRC20.sol
 
-```solidity
-error InvalidSender()
+Custom errors for ZRC20
+
+### Error List
+
+* [CallerIsNotFungibleModule()](#ZRC20Errors-CallerIsNotFungibleModule--)
+* [InvalidSender()](#ZRC20Errors-InvalidSender--)
+* [GasFeeTransferFailed()](#ZRC20Errors-GasFeeTransferFailed--)
+* [ZeroGasCoin()](#ZRC20Errors-ZeroGasCoin--)
+* [ZeroGasPrice()](#ZRC20Errors-ZeroGasPrice--)
+* [LowAllowance()](#ZRC20Errors-LowAllowance--)
+* [LowBalance()](#ZRC20Errors-LowBalance--)
+* [ZeroAddress()](#ZRC20Errors-ZeroAddress--)
+
+### Modifiers
+
+### Errors
+
+```
+CallerIsNotFungibleModule() (error)
 ```
 
-### GasFeeTransferFailed
+<a name="ZRC20Errors-CallerIsNotFungibleModule--"></a>
 
-```solidity
-error GasFeeTransferFailed()
+```
+InvalidSender() (error)
 ```
 
-### ZeroGasCoin
+<a name="ZRC20Errors-InvalidSender--"></a>
 
-```solidity
-error ZeroGasCoin()
+```
+GasFeeTransferFailed() (error)
 ```
 
-### ZeroGasPrice
+<a name="ZRC20Errors-GasFeeTransferFailed--"></a>
 
-```solidity
-error ZeroGasPrice()
+```
+ZeroGasCoin() (error)
 ```
 
-### LowAllowance
+<a name="ZRC20Errors-ZeroGasCoin--"></a>
 
-```solidity
-error LowAllowance()
+```
+ZeroGasPrice() (error)
 ```
 
-### LowBalance
+<a name="ZRC20Errors-ZeroGasPrice--"></a>
 
-```solidity
-error LowBalance()
+```
+LowAllowance() (error)
 ```
 
-### ZeroAddress
+<a name="ZRC20Errors-LowAllowance--"></a>
 
-```solidity
-error ZeroAddress()
 ```
+LowBalance() (error)
+```
+
+<a name="ZRC20Errors-LowBalance--"></a>
+
+```
+ZeroAddress() (error)
+```
+
+<a name="ZRC20Errors-ZeroAddress--"></a>
 
 ## ZRC20
 
-ZRC-20 is a token standard integrated into ZetaChain's omnichain smart contract
-platform. With ZRC-20, developers can build dApps that orchestrate native assets
-on any connected chain. This makes building Omnichain DeFi protocols and dApps
-such as Omnichain DEXs, Omnichain Lending, Omnichain Portfolio Management, and
-anything else that involves fungible tokens on multiple chains from a single
-place extremely simple — as if they were all on a single chain.
-
-At a high-level, ZRC-20 tokens are an extension of the standard ERC-20 tokens
-found in the Ethereum ecosystem, ZRC-20 tokens have the added ability to manage
-assets on all ZetaChain-connected chains. Any fungible token, including Bitcoin,
-Dogecoin, ERC-20-equivalents on other chains, gas assets on other chains, and so
-on, may be represented on ZetaChain as a ZRC-20 and orchestrated as if it were
-any other fungible token (like an ERC-20).
-
-### FUNGIBLE_MODULE_ADDRESS
-
 ```solidity
-address FUNGIBLE_MODULE_ADDRESS
+import "@zetachain/protocol-contracts/contracts/zevm/ZRC20.sol";
 ```
 
-The fungible module address, this is maintained at the protocol level and is always constant
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/ZRC20.sol
 
-### CHAIN_ID
+### Modifier List
 
-```solidity
-uint256 CHAIN_ID
+* [onlyFungible()](#ZRC20-onlyFungible--)
+
+### Function List
+
+* [constructor(name_, symbol_, decimals_, chainid_, coinType_, gasLimit_, systemContractAddress_)](#ZRC20-constructor-string-string-uint8-uint256-enum-CoinType-uint256-address-)
+* [name()](#ZRC20-name--)
+* [symbol()](#ZRC20-symbol--)
+* [decimals()](#ZRC20-decimals--)
+* [totalSupply()](#ZRC20-totalSupply--)
+* [balanceOf(account)](#ZRC20-balanceOf-address-)
+* [transfer(recipient, amount)](#ZRC20-transfer-address-uint256-)
+* [allowance(owner, spender)](#ZRC20-allowance-address-address-)
+* [approve(spender, amount)](#ZRC20-approve-address-uint256-)
+* [increaseAllowance(spender, amount)](#ZRC20-increaseAllowance-address-uint256-)
+* [decreaseAllowance(spender, amount)](#ZRC20-decreaseAllowance-address-uint256-)
+* [transferFrom(sender, recipient, amount)](#ZRC20-transferFrom-address-address-uint256-)
+* [burn(amount)](#ZRC20-burn-uint256-)
+* [_transfer(sender, recipient, amount)](#ZRC20-_transfer-address-address-uint256-)
+* [_mint(account, amount)](#ZRC20-_mint-address-uint256-)
+* [_burn(account, amount)](#ZRC20-_burn-address-uint256-)
+* [_approve(owner, spender, amount)](#ZRC20-_approve-address-address-uint256-)
+* [deposit(to, amount)](#ZRC20-deposit-address-uint256-)
+* [withdrawGasFee()](#ZRC20-withdrawGasFee--)
+* [withdraw(to, amount)](#ZRC20-withdraw-bytes-uint256-)
+* [updateSystemContractAddress(addr)](#ZRC20-updateSystemContractAddress-address-)
+* [updateGasLimit(gasLimit)](#ZRC20-updateGasLimit-uint256-)
+* [updateProtocolFlatFee(protocolFlatFee)](#ZRC20-updateProtocolFlatFee-uint256-)
+
+### Event List
+
+* [Transfer(from, to, value)](#IZRC20-Transfer-address-address-uint256-)
+* [Approval(owner, spender, value)](#IZRC20-Approval-address-address-uint256-)
+* [Deposit(from, to, value)](#IZRC20-Deposit-bytes-address-uint256-)
+* [Withdrawal(from, to, value, gasfee, protocolFlatFee)](#IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-)
+* [UpdatedSystemContract(systemContract)](#IZRC20-UpdatedSystemContract-address-)
+* [UpdatedGasLimit(gasLimit)](#IZRC20-UpdatedGasLimit-uint256-)
+* [UpdatedProtocolFlatFee(protocolFlatFee)](#IZRC20-UpdatedProtocolFlatFee-uint256-)
+
+### Error List
+
+* [CallerIsNotFungibleModule()](#ZRC20Errors-CallerIsNotFungibleModule--)
+* [InvalidSender()](#ZRC20Errors-InvalidSender--)
+* [GasFeeTransferFailed()](#ZRC20Errors-GasFeeTransferFailed--)
+* [ZeroGasCoin()](#ZRC20Errors-ZeroGasCoin--)
+* [ZeroGasPrice()](#ZRC20Errors-ZeroGasPrice--)
+* [LowAllowance()](#ZRC20Errors-LowAllowance--)
+* [LowBalance()](#ZRC20Errors-LowBalance--)
+* [ZeroAddress()](#ZRC20Errors-ZeroAddress--)
+
+### Modifiers
+
+```
+onlyFungible() (modifier)
 ```
 
-Chain id.abi
+<a name="ZRC20-onlyFungible--"></a>
 
-### COIN_TYPE
+Only fungible module modifier.
 
-```solidity
-enum CoinType COIN_TYPE
+### Functions
+
+```
+constructor(string name_, string symbol_, uint8 decimals_, uint256 chainid_, enum CoinType coinType_, uint256 gasLimit_, address systemContractAddress_) (public function)
 ```
 
-Coin type, checkout Interfaces.sol.
+<a name="ZRC20-constructor-string-string-uint8-uint256-enum-CoinType-uint256-address-"></a>
 
-### SYSTEM_CONTRACT_ADDRESS
+Constructor that gives msg.sender all of existing tokens.
 
-```solidity
-address SYSTEM_CONTRACT_ADDRESS
+```
+name() → string (public function)
 ```
 
-System contract address.
+<a name="ZRC20-name--"></a>
 
-### GAS_LIMIT
+ZRC20 name
 
-```solidity
-uint256 GAS_LIMIT
+```
+symbol() → string (public function)
 ```
 
-Gas limit.
+<a name="ZRC20-symbol--"></a>
 
-### PROTOCOL_FLAT_FEE
+ZRC20 symbol.
 
-```solidity
-uint256 PROTOCOL_FLAT_FEE
+```
+decimals() → uint8 (public function)
 ```
 
-Protocol flat fee.
+<a name="ZRC20-decimals--"></a>
 
-### onlyFungible
+ZRC20 decimals.
 
-```solidity
-modifier onlyFungible()
+```
+totalSupply() → uint256 (public function)
 ```
 
-_Only fungible module modifier._
+<a name="ZRC20-totalSupply--"></a>
 
-### constructor
+ZRC20 total supply.
 
-```solidity
-constructor(string name_, string symbol_, uint8 decimals_, uint256 chainid_, enum CoinType coinType_, uint256 gasLimit_, address systemContractAddress_) public
+```
+balanceOf(address account) → uint256 (public function)
 ```
 
-Only the fungible module is allowed to deploy a new ZRC20 contract.
+<a name="ZRC20-balanceOf-address-"></a>
 
-_Constructor that gives msg.sender all of existing tokens._
+Returns ZRC20 balance of an account.
 
-#### Parameters
-
-| Name                    | Type          | Description                                            |
-| ----------------------- | ------------- | ------------------------------------------------------ |
-| name\_                  | string        | Name of the token                                      |
-| symbol\_                | string        | Symbol of the token                                    |
-| decimals\_              | uint8         | Number of decimal places the token can be divided into |
-| chainid\_               | uint256       | Chain ID                                               |
-| coinType\_              | enum CoinType | Coin Type                                              |
-| gasLimit\_              | uint256       | Gas limit for transactions                             |
-| systemContractAddress\_ | address       | Address of the system contract                         |
-
-### name
-
-```solidity
-function name() public view virtual returns (string)
+```
+transfer(address recipient, uint256 amount) → bool (public function)
 ```
 
-_ZRC20 name_
+<a name="ZRC20-transfer-address-uint256-"></a>
 
-#### Return Values
+This function can be called by the contract owner or any other external address.
 
-| Name | Type   | Description    |
-| ---- | ------ | -------------- |
-| [0]  | string | name as string |
-
-### symbol
-
-```solidity
-function symbol() public view virtual returns (string)
+```
+allowance(address owner, address spender) → uint256 (public function)
 ```
 
-_ZRC20 symbol._
+<a name="ZRC20-allowance-address-address-"></a>
 
-#### Return Values
+Returns token allowance from owner to spender.
 
-| Name | Type   | Description       |
-| ---- | ------ | ----------------- |
-| [0]  | string | symbol as string. |
-
-### decimals
-
-```solidity
-function decimals() public view virtual returns (uint8)
+```
+approve(address spender, uint256 amount) → bool (public function)
 ```
 
-_ZRC20 decimals._
+<a name="ZRC20-approve-address-uint256-"></a>
 
-#### Return Values
+Approves amount transferFrom for spender.
 
-| Name | Type  | Description             |
-| ---- | ----- | ----------------------- |
-| [0]  | uint8 | returns uint8 decimals. |
-
-### totalSupply
-
-```solidity
-function totalSupply() public view virtual returns (uint256)
+```
+increaseAllowance(address spender, uint256 amount) → bool (external function)
 ```
 
-_ZRC20 total supply._
+<a name="ZRC20-increaseAllowance-address-uint256-"></a>
 
-#### Return Values
+Increases allowance by amount for spender.
 
-| Name | Type    | Description                   |
-| ---- | ------- | ----------------------------- |
-| [0]  | uint256 | returns uint256 total supply. |
-
-### balanceOf
-
-```solidity
-function balanceOf(address account) public view virtual returns (uint256)
+```
+decreaseAllowance(address spender, uint256 amount) → bool (external function)
 ```
 
-_Returns ZRC20 balance of an account._
+<a name="ZRC20-decreaseAllowance-address-uint256-"></a>
 
-#### Parameters
+Decreases allowance by amount for spender.
 
-| Name    | Type    | Description                             |
-| ------- | ------- | --------------------------------------- |
-| account | address | address for which balance is requested. |
-
-#### Return Values
-
-| Name | Type    | Description              |
-| ---- | ------- | ------------------------ |
-| [0]  | uint256 | uint256 account balance. |
-
-### transfer
-
-```solidity
-function transfer(address recipient, uint256 amount) public virtual returns (bool)
+```
+transferFrom(address sender, address recipient, uint256 amount) → bool (public function)
 ```
 
-Transfers a specified amount of tokens to the given recipient.
+<a name="ZRC20-transferFrom-address-address-uint256-"></a>
 
-_This function can be called by the contract owner or any other external address._
+Transfers tokens from sender to recipient.
 
-#### Parameters
-
-| Name      | Type    | Description                                                          |
-| --------- | ------- | -------------------------------------------------------------------- |
-| recipient | address | The address of the recipient to whom the tokens will be transferred. |
-| amount    | uint256 | The amount of tokens to transfer.                                    |
-
-#### Return Values
-
-| Name | Type | Description                                                                    |
-| ---- | ---- | ------------------------------------------------------------------------------ |
-| [0]  | bool | Returns a boolean value indicating whether the transfer was successful or not. |
-
-### allowance
-
-```solidity
-function allowance(address owner, address spender) public view virtual returns (uint256)
+```
+burn(uint256 amount) → bool (external function)
 ```
 
-_Returns token allowance from owner to spender._
+<a name="ZRC20-burn-uint256-"></a>
 
-#### Parameters
+Burns an amount of tokens.
 
-| Name    | Type    | Description |
-| ------- | ------- | ----------- |
-| owner   | address | address.    |
-| spender | address |             |
-
-#### Return Values
-
-| Name | Type    | Description        |
-| ---- | ------- | ------------------ |
-| [0]  | uint256 | uint256 allowance. |
-
-### approve
-
-```solidity
-function approve(address spender, uint256 amount) public virtual returns (bool)
+```
+_transfer(address sender, address recipient, uint256 amount) (internal function)
 ```
 
-_Approves amount transferFrom for spender._
+<a name="ZRC20-_transfer-address-address-uint256-"></a>
 
-#### Parameters
-
-| Name    | Type    | Description |
-| ------- | ------- | ----------- |
-| spender | address | address.    |
-| amount  | uint256 | to approve. |
-
-#### Return Values
-
-| Name | Type | Description                     |
-| ---- | ---- | ------------------------------- |
-| [0]  | bool | true/false if succeeded/failed. |
-
-### increaseAllowance
-
-```solidity
-function increaseAllowance(address spender, uint256 amount) external virtual returns (bool)
-```
-
-_Increases allowance by amount for spender._
-
-#### Parameters
-
-| Name    | Type    | Description                     |
-| ------- | ------- | ------------------------------- |
-| spender | address | address.                        |
-| amount  | uint256 | by which to increase allownace. |
-
-#### Return Values
-
-| Name | Type | Description                     |
-| ---- | ---- | ------------------------------- |
-| [0]  | bool | true/false if succeeded/failed. |
-
-### decreaseAllowance
-
-```solidity
-function decreaseAllowance(address spender, uint256 amount) external virtual returns (bool)
-```
-
-_Decreases allowance by amount for spender._
-
-#### Parameters
-
-| Name    | Type    | Description                     |
-| ------- | ------- | ------------------------------- |
-| spender | address | address.                        |
-| amount  | uint256 | by which to decrease allownace. |
-
-#### Return Values
-
-| Name | Type | Description                     |
-| ---- | ---- | ------------------------------- |
-| [0]  | bool | true/false if succeeded/failed. |
-
-### transferFrom
-
-```solidity
-function transferFrom(address sender, address recipient, uint256 amount) public virtual returns (bool)
-```
-
-_Transfers tokens from sender to recipient._
-
-#### Parameters
-
-| Name      | Type    | Description  |
-| --------- | ------- | ------------ |
-| sender    | address | address.     |
-| recipient | address | address.     |
-| amount    | uint256 | to transfer. |
-
-#### Return Values
-
-| Name | Type | Description                     |
-| ---- | ---- | ------------------------------- |
-| [0]  | bool | true/false if succeeded/failed. |
-
-### burn
-
-```solidity
-function burn(uint256 amount) external returns (bool)
-```
-
-_Burns an amount of tokens._
-
-#### Parameters
-
-| Name   | Type    | Description |
-| ------ | ------- | ----------- |
-| amount | uint256 | to burn.    |
-
-#### Return Values
-
-| Name | Type | Description                     |
-| ---- | ---- | ------------------------------- |
-| [0]  | bool | true/false if succeeded/failed. |
-
-### \_transfer
-
-```solidity
-function _transfer(address sender, address recipient, uint256 amount) internal virtual
-```
-
-_Internal function to transfer tokens from one address to another.
+Internal function to transfer tokens from one address to another.
 Throws if either the sender or recipient address is zero.
-Throws if the sender's balance is lower than the transfer amount._
+Throws if the sender's balance is lower than the transfer amount.
 
-#### Parameters
-
-| Name      | Type    | Description                       |
-| --------- | ------- | --------------------------------- |
-| sender    | address | The address sending the tokens.   |
-| recipient | address | The address receiving the tokens. |
-| amount    | uint256 | The amount of tokens to transfer. |
-
-### \_mint
-
-```solidity
-function _mint(address account, uint256 amount) internal virtual
+```
+_mint(address account, uint256 amount) (internal function)
 ```
 
-_Internal function to mint new tokens and assign them to an account.
-Throws if the account address is zero._
+<a name="ZRC20-_mint-address-uint256-"></a>
 
-#### Parameters
-
-| Name    | Type    | Description                                              |
-| ------- | ------- | -------------------------------------------------------- |
-| account | address | The address to which the minted tokens will be assigned. |
-| amount  | uint256 | The amount of tokens to be minted.                       |
-
-### \_burn
-
-```solidity
-function _burn(address account, uint256 amount) internal virtual
-```
-
-_Internal function to burn tokens from an account.
+Internal function to mint new tokens and assign them to an account.
 Throws if the account address is zero.
-Throws if the account's balance is lower than the burn amount._
 
-#### Parameters
-
-| Name    | Type    | Description                                   |
-| ------- | ------- | --------------------------------------------- |
-| account | address | The address from which tokens will be burned. |
-| amount  | uint256 | The amount of tokens to be burned.            |
-
-### \_approve
-
-```solidity
-function _approve(address owner, address spender, uint256 amount) internal virtual
+```
+_burn(address account, uint256 amount) (internal function)
 ```
 
-_Internal function to approve a spender to spend tokens on behalf of the owner.
+<a name="ZRC20-_burn-address-uint256-"></a>
+
+Internal function to burn tokens from an account.
+Throws if the account address is zero.
+Throws if the account's balance is lower than the burn amount.
+
+```
+_approve(address owner, address spender, uint256 amount) (internal function)
+```
+
+<a name="ZRC20-_approve-address-address-uint256-"></a>
+
+Internal function to approve a spender to spend tokens on behalf of the owner.
 Throws if the owner address is zero.
-Throws if the spender address is zero._
+Throws if the spender address is zero.
 
-#### Parameters
-
-| Name    | Type    | Description                                       |
-| ------- | ------- | ------------------------------------------------- |
-| owner   | address | The address that owns the tokens.                 |
-| spender | address | The address that is approved to spend the tokens. |
-| amount  | uint256 | The maximum amount of tokens that can be spent.   |
-
-### deposit
-
-```solidity
-function deposit(address to, uint256 amount) external returns (bool)
+```
+deposit(address to, uint256 amount) → bool (external function)
 ```
 
-_Deposits corresponding tokens from an external chain.
+<a name="ZRC20-deposit-address-uint256-"></a>
+
+Deposits corresponding tokens from an external chain.
 Only callable by the Fungible module or the System contract.
-Throws if called by an invalid sender._
+Throws if called by an invalid sender.
 
-#### Parameters
-
-| Name   | Type    | Description            |
-| ------ | ------- | ---------------------- |
-| to     | address | The recipient address. |
-| amount | uint256 | The amount to deposit. |
-
-#### Return Values
-
-| Name | Type | Description                                                   |
-| ---- | ---- | ------------------------------------------------------------- |
-| [0]  | bool | A boolean indicating whether the deposit succeeded or failed. |
-
-### withdrawGasFee
-
-```solidity
-function withdrawGasFee() public view returns (address, uint256)
+```
+withdrawGasFee() → address, uint256 (public function)
 ```
 
-_Returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for `withdraw()`.
+<a name="ZRC20-withdrawGasFee--"></a>
+
+Returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for `withdraw()`.
 Throws if the gas ZRC20 address is zero.
-Throws if the gas price is zero._
+Throws if the gas price is zero.
 
-#### Return Values
-
-| Name | Type    | Description                                                    |
-| ---- | ------- | -------------------------------------------------------------- |
-| [0]  | address | gasZRC20 The address of the gas ZRC20 token on the same chain. |
-| [1]  | uint256 | gasFee The calculated gas fee for the `withdraw()` function.   |
-
-### withdraw
-
-```solidity
-function withdraw(bytes to, uint256 amount) external returns (bool)
+```
+withdraw(bytes to, uint256 amount) → bool (external function)
 ```
 
-_Withdraws ZRC20 tokens to external chains by triggering the crosschain module to create an outbound transaction.
+<a name="ZRC20-withdraw-bytes-uint256-"></a>
+
+Withdraws ZRC20 tokens to external chains by triggering the crosschain module to create an outbound transaction.
 Requires this contract to have sufficient allowance of the gas ZRC20 token to pay for the outbound transaction gas fee.
-Throws if the gas fee transfer fails._
+Throws if the gas fee transfer fails.
 
-#### Parameters
-
-| Name   | Type    | Description                                  |
-| ------ | ------- | -------------------------------------------- |
-| to     | bytes   | The recipient address on the external chain. |
-| amount | uint256 | The amount of tokens to withdraw.            |
-
-#### Return Values
-
-| Name | Type | Description                                                      |
-| ---- | ---- | ---------------------------------------------------------------- |
-| [0]  | bool | A boolean indicating whether the withdrawal succeeded or failed. |
-
-### updateSystemContractAddress
-
-```solidity
-function updateSystemContractAddress(address addr) external
+```
+updateSystemContractAddress(address addr) (external function)
 ```
 
-_Updates the system contract address.
-Requires the caller to be the fungible module._
+<a name="ZRC20-updateSystemContractAddress-address-"></a>
 
-#### Parameters
+Updates the system contract address.
+Requires the caller to be the fungible module.
 
-| Name | Type    | Description                                |
-| ---- | ------- | ------------------------------------------ |
-| addr | address | The new system contract address to be set. |
-
-### updateGasLimit
-
-```solidity
-function updateGasLimit(uint256 gasLimit) external
+```
+updateGasLimit(uint256 gasLimit) (external function)
 ```
 
-_Updates the gas limit.
-Requires the caller to be the fungible module._
+<a name="ZRC20-updateGasLimit-uint256-"></a>
 
-#### Parameters
+Updates the gas limit.
+Requires the caller to be the fungible module.
 
-| Name     | Type    | Description                  |
-| -------- | ------- | ---------------------------- |
-| gasLimit | uint256 | The new gas limit to be set. |
-
-### updateProtocolFlatFee
-
-```solidity
-function updateProtocolFlatFee(uint256 protocolFlatFee) external
+```
+updateProtocolFlatFee(uint256 protocolFlatFee) (external function)
 ```
 
-_Updates the protocol flat fee.
-Requires the caller to be the fungible module._
+<a name="ZRC20-updateProtocolFlatFee-uint256-"></a>
 
-#### Parameters
+Updates the protocol flat fee.
+Requires the caller to be the fungible module.
 
-| Name            | Type    | Description                          |
-| --------------- | ------- | ------------------------------------ |
-| protocolFlatFee | uint256 | The new protocol flat fee to be set. |
+### Events
+
+```
+Transfer(address indexed from, address indexed to, uint256 value) (event)
+```
+
+<a name="IZRC20-Transfer-address-address-uint256-"></a>
+
+```
+Approval(address indexed owner, address indexed spender, uint256 value) (event)
+```
+
+<a name="IZRC20-Approval-address-address-uint256-"></a>
+
+```
+Deposit(bytes from, address indexed to, uint256 value) (event)
+```
+
+<a name="IZRC20-Deposit-bytes-address-uint256-"></a>
+
+```
+Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee) (event)
+```
+
+<a name="IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-"></a>
+
+```
+UpdatedSystemContract(address systemContract) (event)
+```
+
+<a name="IZRC20-UpdatedSystemContract-address-"></a>
+
+```
+UpdatedGasLimit(uint256 gasLimit) (event)
+```
+
+<a name="IZRC20-UpdatedGasLimit-uint256-"></a>
+
+```
+UpdatedProtocolFlatFee(uint256 protocolFlatFee) (event)
+```
+
+<a name="IZRC20-UpdatedProtocolFlatFee-uint256-"></a>
+
+### Errors
+
+```
+CallerIsNotFungibleModule() (error)
+```
+
+<a name="ZRC20Errors-CallerIsNotFungibleModule--"></a>
+
+```
+InvalidSender() (error)
+```
+
+<a name="ZRC20Errors-InvalidSender--"></a>
+
+```
+GasFeeTransferFailed() (error)
+```
+
+<a name="ZRC20Errors-GasFeeTransferFailed--"></a>
+
+```
+ZeroGasCoin() (error)
+```
+
+<a name="ZRC20Errors-ZeroGasCoin--"></a>
+
+```
+ZeroGasPrice() (error)
+```
+
+<a name="ZRC20Errors-ZeroGasPrice--"></a>
+
+```
+LowAllowance() (error)
+```
+
+<a name="ZRC20Errors-LowAllowance--"></a>
+
+```
+LowBalance() (error)
+```
+
+<a name="ZRC20Errors-LowBalance--"></a>
+
+```
+ZeroAddress() (error)
+```
+
+<a name="ZRC20Errors-ZeroAddress--"></a>
+

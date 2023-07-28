@@ -1,176 +1,312 @@
-# zevm/Interfaces.md
-
 ## ISystem
 
-_Interfaces of SystemContract and ZRC20 to make easier to import._
-
-### FUNGIBLE_MODULE_ADDRESS
-
 ```solidity
-function FUNGIBLE_MODULE_ADDRESS() external view returns (address)
+import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
 ```
 
-### wZetaContractAddress
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
 
-```solidity
-function wZetaContractAddress() external view returns (address)
+Interfaces of SystemContract and ZRC20 to make easier to import.
+
+### Function List
+
+* [FUNGIBLE_MODULE_ADDRESS()](#ISystem-FUNGIBLE_MODULE_ADDRESS--)
+* [wZetaContractAddress()](#ISystem-wZetaContractAddress--)
+* [uniswapv2FactoryAddress()](#ISystem-uniswapv2FactoryAddress--)
+* [gasPriceByChainId(chainID)](#ISystem-gasPriceByChainId-uint256-)
+* [gasCoinZRC20ByChainId(chainID)](#ISystem-gasCoinZRC20ByChainId-uint256-)
+* [gasZetaPoolByChainId(chainID)](#ISystem-gasZetaPoolByChainId-uint256-)
+
+### Modifiers
+
+### Functions
+
+```
+FUNGIBLE_MODULE_ADDRESS() → address (external function)
 ```
 
-### uniswapv2FactoryAddress
+<a name="ISystem-FUNGIBLE_MODULE_ADDRESS--"></a>
 
-```solidity
-function uniswapv2FactoryAddress() external view returns (address)
+```
+wZetaContractAddress() → address (external function)
 ```
 
-### gasPriceByChainId
+<a name="ISystem-wZetaContractAddress--"></a>
 
-```solidity
-function gasPriceByChainId(uint256 chainID) external view returns (uint256)
+```
+uniswapv2FactoryAddress() → address (external function)
 ```
 
-### gasCoinZRC20ByChainId
+<a name="ISystem-uniswapv2FactoryAddress--"></a>
 
-```solidity
-function gasCoinZRC20ByChainId(uint256 chainID) external view returns (address)
+```
+gasPriceByChainId(uint256 chainID) → uint256 (external function)
 ```
 
-### gasZetaPoolByChainId
+<a name="ISystem-gasPriceByChainId-uint256-"></a>
 
-```solidity
-function gasZetaPoolByChainId(uint256 chainID) external view returns (address)
 ```
+gasCoinZRC20ByChainId(uint256 chainID) → address (external function)
+```
+
+<a name="ISystem-gasCoinZRC20ByChainId-uint256-"></a>
+
+```
+gasZetaPoolByChainId(uint256 chainID) → address (external function)
+```
+
+<a name="ISystem-gasZetaPoolByChainId-uint256-"></a>
 
 ## IZRC20
 
-### totalSupply
-
 ```solidity
-function totalSupply() external view returns (uint256)
+import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
 ```
 
-### balanceOf
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
 
-```solidity
-function balanceOf(address account) external view returns (uint256)
+### Function List
+
+* [totalSupply()](#IZRC20-totalSupply--)
+* [balanceOf(account)](#IZRC20-balanceOf-address-)
+* [transfer(recipient, amount)](#IZRC20-transfer-address-uint256-)
+* [allowance(owner, spender)](#IZRC20-allowance-address-address-)
+* [approve(spender, amount)](#IZRC20-approve-address-uint256-)
+* [transferFrom(sender, recipient, amount)](#IZRC20-transferFrom-address-address-uint256-)
+* [deposit(to, amount)](#IZRC20-deposit-address-uint256-)
+* [withdraw(to, amount)](#IZRC20-withdraw-bytes-uint256-)
+* [withdrawGasFee()](#IZRC20-withdrawGasFee--)
+
+### Event List
+
+* [Transfer(from, to, value)](#IZRC20-Transfer-address-address-uint256-)
+* [Approval(owner, spender, value)](#IZRC20-Approval-address-address-uint256-)
+* [Deposit(from, to, value)](#IZRC20-Deposit-bytes-address-uint256-)
+* [Withdrawal(from, to, value, gasfee, protocolFlatFee)](#IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-)
+* [UpdatedSystemContract(systemContract)](#IZRC20-UpdatedSystemContract-address-)
+* [UpdatedGasLimit(gasLimit)](#IZRC20-UpdatedGasLimit-uint256-)
+* [UpdatedProtocolFlatFee(protocolFlatFee)](#IZRC20-UpdatedProtocolFlatFee-uint256-)
+
+### Modifiers
+
+### Functions
+
+```
+totalSupply() → uint256 (external function)
 ```
 
-### transfer
+<a name="IZRC20-totalSupply--"></a>
 
-```solidity
-function transfer(address recipient, uint256 amount) external returns (bool)
+```
+balanceOf(address account) → uint256 (external function)
 ```
 
-### allowance
+<a name="IZRC20-balanceOf-address-"></a>
 
-```solidity
-function allowance(address owner, address spender) external view returns (uint256)
+```
+transfer(address recipient, uint256 amount) → bool (external function)
 ```
 
-### approve
+<a name="IZRC20-transfer-address-uint256-"></a>
 
-```solidity
-function approve(address spender, uint256 amount) external returns (bool)
+```
+allowance(address owner, address spender) → uint256 (external function)
 ```
 
-### transferFrom
+<a name="IZRC20-allowance-address-address-"></a>
 
-```solidity
-function transferFrom(address sender, address recipient, uint256 amount) external returns (bool)
+```
+approve(address spender, uint256 amount) → bool (external function)
 ```
 
-### deposit
+<a name="IZRC20-approve-address-uint256-"></a>
 
-```solidity
-function deposit(address to, uint256 amount) external returns (bool)
+```
+transferFrom(address sender, address recipient, uint256 amount) → bool (external function)
 ```
 
-### withdraw
+<a name="IZRC20-transferFrom-address-address-uint256-"></a>
 
-```solidity
-function withdraw(bytes to, uint256 amount) external returns (bool)
+```
+deposit(address to, uint256 amount) → bool (external function)
 ```
 
-### withdrawGasFee
+<a name="IZRC20-deposit-address-uint256-"></a>
 
-```solidity
-function withdrawGasFee() external view returns (address, uint256)
+```
+withdraw(bytes to, uint256 amount) → bool (external function)
 ```
 
-### Transfer
+<a name="IZRC20-withdraw-bytes-uint256-"></a>
 
-```solidity
-event Transfer(address from, address to, uint256 value)
+```
+withdrawGasFee() → address, uint256 (external function)
 ```
 
-### Approval
+<a name="IZRC20-withdrawGasFee--"></a>
 
-```solidity
-event Approval(address owner, address spender, uint256 value)
+### Events
+
+```
+Transfer(address indexed from, address indexed to, uint256 value) (event)
 ```
 
-### Deposit
+<a name="IZRC20-Transfer-address-address-uint256-"></a>
 
-```solidity
-event Deposit(bytes from, address to, uint256 value)
+```
+Approval(address indexed owner, address indexed spender, uint256 value) (event)
 ```
 
-### Withdrawal
+<a name="IZRC20-Approval-address-address-uint256-"></a>
 
-```solidity
-event Withdrawal(address from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee)
+```
+Deposit(bytes from, address indexed to, uint256 value) (event)
 ```
 
-### UpdatedSystemContract
+<a name="IZRC20-Deposit-bytes-address-uint256-"></a>
 
-```solidity
-event UpdatedSystemContract(address systemContract)
+```
+Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee) (event)
 ```
 
-### UpdatedGasLimit
+<a name="IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-"></a>
 
-```solidity
-event UpdatedGasLimit(uint256 gasLimit)
+```
+UpdatedSystemContract(address systemContract) (event)
 ```
 
-### UpdatedProtocolFlatFee
+<a name="IZRC20-UpdatedSystemContract-address-"></a>
 
-```solidity
-event UpdatedProtocolFlatFee(uint256 protocolFlatFee)
 ```
+UpdatedGasLimit(uint256 gasLimit) (event)
+```
+
+<a name="IZRC20-UpdatedGasLimit-uint256-"></a>
+
+```
+UpdatedProtocolFlatFee(uint256 protocolFlatFee) (event)
+```
+
+<a name="IZRC20-UpdatedProtocolFlatFee-uint256-"></a>
 
 ## Context
 
-### _msgSender
-
 ```solidity
-function _msgSender() internal view virtual returns (address)
+import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
 ```
 
-### _msgData
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
 
-```solidity
-function _msgData() internal view virtual returns (bytes)
+### Function List
+
+* [_msgSender()](#Context-_msgSender--)
+* [_msgData()](#Context-_msgData--)
+
+### Modifiers
+
+### Functions
+
 ```
+_msgSender() → address (internal function)
+```
+
+<a name="Context-_msgSender--"></a>
+
+```
+_msgData() → bytes (internal function)
+```
+
+<a name="Context-_msgData--"></a>
 
 ## IZRC20Metadata
 
-### name
-
 ```solidity
-function name() external view returns (string)
+import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
 ```
 
-### symbol
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
 
-```solidity
-function symbol() external view returns (string)
+### Function List
+
+* [name()](#IZRC20Metadata-name--)
+* [symbol()](#IZRC20Metadata-symbol--)
+* [decimals()](#IZRC20Metadata-decimals--)
+
+### Event List
+
+* [Transfer(from, to, value)](#IZRC20-Transfer-address-address-uint256-)
+* [Approval(owner, spender, value)](#IZRC20-Approval-address-address-uint256-)
+* [Deposit(from, to, value)](#IZRC20-Deposit-bytes-address-uint256-)
+* [Withdrawal(from, to, value, gasfee, protocolFlatFee)](#IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-)
+* [UpdatedSystemContract(systemContract)](#IZRC20-UpdatedSystemContract-address-)
+* [UpdatedGasLimit(gasLimit)](#IZRC20-UpdatedGasLimit-uint256-)
+* [UpdatedProtocolFlatFee(protocolFlatFee)](#IZRC20-UpdatedProtocolFlatFee-uint256-)
+
+### Modifiers
+
+### Functions
+
+```
+name() → string (external function)
 ```
 
-### decimals
+<a name="IZRC20Metadata-name--"></a>
 
-```solidity
-function decimals() external view returns (uint8)
 ```
+symbol() → string (external function)
+```
+
+<a name="IZRC20Metadata-symbol--"></a>
+
+```
+decimals() → uint8 (external function)
+```
+
+<a name="IZRC20Metadata-decimals--"></a>
+
+### Events
+
+```
+Transfer(address indexed from, address indexed to, uint256 value) (event)
+```
+
+<a name="IZRC20-Transfer-address-address-uint256-"></a>
+
+```
+Approval(address indexed owner, address indexed spender, uint256 value) (event)
+```
+
+<a name="IZRC20-Approval-address-address-uint256-"></a>
+
+```
+Deposit(bytes from, address indexed to, uint256 value) (event)
+```
+
+<a name="IZRC20-Deposit-bytes-address-uint256-"></a>
+
+```
+Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee) (event)
+```
+
+<a name="IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-"></a>
+
+```
+UpdatedSystemContract(address systemContract) (event)
+```
+
+<a name="IZRC20-UpdatedSystemContract-address-"></a>
+
+```
+UpdatedGasLimit(uint256 gasLimit) (event)
+```
+
+<a name="IZRC20-UpdatedGasLimit-uint256-"></a>
+
+```
+UpdatedProtocolFlatFee(uint256 protocolFlatFee) (event)
+```
+
+<a name="IZRC20-UpdatedProtocolFlatFee-uint256-"></a>
 
 ## CoinType
 
@@ -181,15 +317,28 @@ enum CoinType {
   ERC20
 }
 ```
-
 ## zContract
 
-_Any ZetaChain Contract must implement this interface to allow SystemContract to interact with.
-This is only required if the contract wants to interact with other chains._
-
-### onCrossChainCall
-
 ```solidity
-function onCrossChainCall(address zrc20, uint256 amount, bytes message) external
+import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
 ```
+
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
+
+Any ZetaChain Contract must implement this interface to allow SystemContract to interact with.
+This is only required if the contract wants to interact with other chains.
+
+### Function List
+
+* [onCrossChainCall(zrc20, amount, message)](#zContract-onCrossChainCall-address-uint256-bytes-)
+
+### Modifiers
+
+### Functions
+
+```
+onCrossChainCall(address zrc20, uint256 amount, bytes message) (external function)
+```
+
+<a name="zContract-onCrossChainCall-address-uint256-bytes-"></a>
 

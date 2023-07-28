@@ -1,68 +1,119 @@
-# evm/tools/ZetaTokenConsumerUniV2.strategy.md
-
 ## ZetaTokenConsumerUniV2Errors
 
-### InputCantBeZero
-
 ```solidity
-error InputCantBeZero()
+import "@zetachain/protocol-contracts/contracts/evm/tools/ZetaTokenConsumerUniV2.strategy.sol";
 ```
+
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/tools/ZetaTokenConsumerUniV2.strategy.sol
+
+### Error List
+
+* [InputCantBeZero()](#ZetaTokenConsumerUniV2Errors-InputCantBeZero--)
+
+### Modifiers
+
+### Errors
+
+```
+InputCantBeZero() (error)
+```
+
+<a name="ZetaTokenConsumerUniV2Errors-InputCantBeZero--"></a>
 
 ## ZetaTokenConsumerUniV2
 
-_Uniswap V2 strategy for ZetaTokenConsumer_
-
-### MAX_DEADLINE
-
 ```solidity
-uint256 MAX_DEADLINE
+import "@zetachain/protocol-contracts/contracts/evm/tools/ZetaTokenConsumerUniV2.strategy.sol";
 ```
 
-### wETH
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/tools/ZetaTokenConsumerUniV2.strategy.sol
 
-```solidity
-address wETH
+Uniswap V2 strategy for ZetaTokenConsumer
+
+### Function List
+
+* [constructor(zetaToken_, uniswapV2Router_)](#ZetaTokenConsumerUniV2-constructor-address-address-)
+* [getZetaFromEth(destinationAddress, minAmountOut)](#ZetaTokenConsumerUniV2-getZetaFromEth-address-uint256-)
+* [getZetaFromToken(destinationAddress, minAmountOut, inputToken, inputTokenAmount)](#ZetaTokenConsumerUniV2-getZetaFromToken-address-uint256-address-uint256-)
+* [getEthFromZeta(destinationAddress, minAmountOut, zetaTokenAmount)](#ZetaTokenConsumerUniV2-getEthFromZeta-address-uint256-uint256-)
+* [getTokenFromZeta(destinationAddress, minAmountOut, outputToken, zetaTokenAmount)](#ZetaTokenConsumerUniV2-getTokenFromZeta-address-uint256-address-uint256-)
+
+### Event List
+
+* [EthExchangedForZeta(amountIn, amountOut)](#ZetaTokenConsumer-EthExchangedForZeta-uint256-uint256-)
+* [TokenExchangedForZeta(token, amountIn, amountOut)](#ZetaTokenConsumer-TokenExchangedForZeta-address-uint256-uint256-)
+* [ZetaExchangedForEth(amountIn, amountOut)](#ZetaTokenConsumer-ZetaExchangedForEth-uint256-uint256-)
+* [ZetaExchangedForToken(token, amountIn, amountOut)](#ZetaTokenConsumer-ZetaExchangedForToken-address-uint256-uint256-)
+
+### Error List
+
+* [InputCantBeZero()](#ZetaTokenConsumerUniV2Errors-InputCantBeZero--)
+
+### Modifiers
+
+### Functions
+
+```
+constructor(address zetaToken_, address uniswapV2Router_) (public function)
 ```
 
-### zetaToken
+<a name="ZetaTokenConsumerUniV2-constructor-address-address-"></a>
 
-```solidity
-address zetaToken
+```
+getZetaFromEth(address destinationAddress, uint256 minAmountOut) → uint256 (external function)
 ```
 
-### uniswapV2Router
+<a name="ZetaTokenConsumerUniV2-getZetaFromEth-address-uint256-"></a>
 
-```solidity
-contract IUniswapV2Router02 uniswapV2Router
+```
+getZetaFromToken(address destinationAddress, uint256 minAmountOut, address inputToken, uint256 inputTokenAmount) → uint256 (external function)
 ```
 
-### constructor
+<a name="ZetaTokenConsumerUniV2-getZetaFromToken-address-uint256-address-uint256-"></a>
 
-```solidity
-constructor(address zetaToken_, address uniswapV2Router_) public
+```
+getEthFromZeta(address destinationAddress, uint256 minAmountOut, uint256 zetaTokenAmount) → uint256 (external function)
 ```
 
-### getZetaFromEth
+<a name="ZetaTokenConsumerUniV2-getEthFromZeta-address-uint256-uint256-"></a>
 
-```solidity
-function getZetaFromEth(address destinationAddress, uint256 minAmountOut) external payable returns (uint256)
+```
+getTokenFromZeta(address destinationAddress, uint256 minAmountOut, address outputToken, uint256 zetaTokenAmount) → uint256 (external function)
 ```
 
-### getZetaFromToken
+<a name="ZetaTokenConsumerUniV2-getTokenFromZeta-address-uint256-address-uint256-"></a>
 
-```solidity
-function getZetaFromToken(address destinationAddress, uint256 minAmountOut, address inputToken, uint256 inputTokenAmount) external returns (uint256)
+### Events
+
+```
+EthExchangedForZeta(uint256 amountIn, uint256 amountOut) (event)
 ```
 
-### getEthFromZeta
+<a name="ZetaTokenConsumer-EthExchangedForZeta-uint256-uint256-"></a>
 
-```solidity
-function getEthFromZeta(address destinationAddress, uint256 minAmountOut, uint256 zetaTokenAmount) external returns (uint256)
+```
+TokenExchangedForZeta(address token, uint256 amountIn, uint256 amountOut) (event)
 ```
 
-### getTokenFromZeta
+<a name="ZetaTokenConsumer-TokenExchangedForZeta-address-uint256-uint256-"></a>
 
-```solidity
-function getTokenFromZeta(address destinationAddress, uint256 minAmountOut, address outputToken, uint256 zetaTokenAmount) external returns (uint256)
 ```
+ZetaExchangedForEth(uint256 amountIn, uint256 amountOut) (event)
+```
+
+<a name="ZetaTokenConsumer-ZetaExchangedForEth-uint256-uint256-"></a>
+
+```
+ZetaExchangedForToken(address token, uint256 amountIn, uint256 amountOut) (event)
+```
+
+<a name="ZetaTokenConsumer-ZetaExchangedForToken-address-uint256-uint256-"></a>
+
+### Errors
+
+```
+InputCantBeZero() (error)
+```
+
+<a name="ZetaTokenConsumerUniV2Errors-InputCantBeZero--"></a>
 

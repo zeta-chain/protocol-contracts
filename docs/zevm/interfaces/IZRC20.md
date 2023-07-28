@@ -1,124 +1,160 @@
-# zevm/interfaces/IZRC20.md
-
 ## IZRC20
 
-### totalSupply
-
 ```solidity
-function totalSupply() external view returns (uint256)
+import "@zetachain/protocol-contracts/contracts/zevm/interfaces/IZRC20.sol";
 ```
 
-### balanceOf
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/interfaces/IZRC20.sol
 
-```solidity
-function balanceOf(address account) external view returns (uint256)
+### Function List
+
+* [totalSupply()](#IZRC20-totalSupply--)
+* [balanceOf(account)](#IZRC20-balanceOf-address-)
+* [transfer(recipient, amount)](#IZRC20-transfer-address-uint256-)
+* [allowance(owner, spender)](#IZRC20-allowance-address-address-)
+* [approve(spender, amount)](#IZRC20-approve-address-uint256-)
+* [decreaseAllowance(spender, amount)](#IZRC20-decreaseAllowance-address-uint256-)
+* [increaseAllowance(spender, amount)](#IZRC20-increaseAllowance-address-uint256-)
+* [transferFrom(sender, recipient, amount)](#IZRC20-transferFrom-address-address-uint256-)
+* [deposit(to, amount)](#IZRC20-deposit-address-uint256-)
+* [burn(account, amount)](#IZRC20-burn-address-uint256-)
+* [withdraw(to, amount)](#IZRC20-withdraw-bytes-uint256-)
+* [withdrawGasFee()](#IZRC20-withdrawGasFee--)
+* [PROTOCOL_FEE()](#IZRC20-PROTOCOL_FEE--)
+
+### Event List
+
+* [Transfer(from, to, value)](#IZRC20-Transfer-address-address-uint256-)
+* [Approval(owner, spender, value)](#IZRC20-Approval-address-address-uint256-)
+* [Deposit(from, to, value)](#IZRC20-Deposit-bytes-address-uint256-)
+* [Withdrawal(from, to, value, gasFee, protocolFlatFee)](#IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-)
+* [UpdatedSystemContract(systemContract)](#IZRC20-UpdatedSystemContract-address-)
+* [UpdatedGasLimit(gasLimit)](#IZRC20-UpdatedGasLimit-uint256-)
+* [UpdatedProtocolFlatFee(protocolFlatFee)](#IZRC20-UpdatedProtocolFlatFee-uint256-)
+
+### Modifiers
+
+### Functions
+
+```
+totalSupply() → uint256 (external function)
 ```
 
-### transfer
+<a name="IZRC20-totalSupply--"></a>
 
-```solidity
-function transfer(address recipient, uint256 amount) external returns (bool)
+```
+balanceOf(address account) → uint256 (external function)
 ```
 
-### allowance
+<a name="IZRC20-balanceOf-address-"></a>
 
-```solidity
-function allowance(address owner, address spender) external view returns (uint256)
+```
+transfer(address recipient, uint256 amount) → bool (external function)
 ```
 
-### approve
+<a name="IZRC20-transfer-address-uint256-"></a>
 
-```solidity
-function approve(address spender, uint256 amount) external returns (bool)
+```
+allowance(address owner, address spender) → uint256 (external function)
 ```
 
-### decreaseAllowance
+<a name="IZRC20-allowance-address-address-"></a>
 
-```solidity
-function decreaseAllowance(address spender, uint256 amount) external returns (bool)
+```
+approve(address spender, uint256 amount) → bool (external function)
 ```
 
-### increaseAllowance
+<a name="IZRC20-approve-address-uint256-"></a>
 
-```solidity
-function increaseAllowance(address spender, uint256 amount) external returns (bool)
+```
+decreaseAllowance(address spender, uint256 amount) → bool (external function)
 ```
 
-### transferFrom
+<a name="IZRC20-decreaseAllowance-address-uint256-"></a>
 
-```solidity
-function transferFrom(address sender, address recipient, uint256 amount) external returns (bool)
+```
+increaseAllowance(address spender, uint256 amount) → bool (external function)
 ```
 
-### deposit
+<a name="IZRC20-increaseAllowance-address-uint256-"></a>
 
-```solidity
-function deposit(address to, uint256 amount) external returns (bool)
+```
+transferFrom(address sender, address recipient, uint256 amount) → bool (external function)
 ```
 
-### burn
+<a name="IZRC20-transferFrom-address-address-uint256-"></a>
 
-```solidity
-function burn(address account, uint256 amount) external returns (bool)
+```
+deposit(address to, uint256 amount) → bool (external function)
 ```
 
-### withdraw
+<a name="IZRC20-deposit-address-uint256-"></a>
 
-```solidity
-function withdraw(bytes to, uint256 amount) external returns (bool)
+```
+burn(address account, uint256 amount) → bool (external function)
 ```
 
-### withdrawGasFee
+<a name="IZRC20-burn-address-uint256-"></a>
 
-```solidity
-function withdrawGasFee() external view returns (address, uint256)
+```
+withdraw(bytes to, uint256 amount) → bool (external function)
 ```
 
-### PROTOCOL_FEE
+<a name="IZRC20-withdraw-bytes-uint256-"></a>
 
-```solidity
-function PROTOCOL_FEE() external view returns (uint256)
+```
+withdrawGasFee() → address, uint256 (external function)
 ```
 
-### Transfer
+<a name="IZRC20-withdrawGasFee--"></a>
 
-```solidity
-event Transfer(address from, address to, uint256 value)
+```
+PROTOCOL_FEE() → uint256 (external function)
 ```
 
-### Approval
+<a name="IZRC20-PROTOCOL_FEE--"></a>
 
-```solidity
-event Approval(address owner, address spender, uint256 value)
+### Events
+
+```
+Transfer(address indexed from, address indexed to, uint256 value) (event)
 ```
 
-### Deposit
+<a name="IZRC20-Transfer-address-address-uint256-"></a>
 
-```solidity
-event Deposit(bytes from, address to, uint256 value)
+```
+Approval(address indexed owner, address indexed spender, uint256 value) (event)
 ```
 
-### Withdrawal
+<a name="IZRC20-Approval-address-address-uint256-"></a>
 
-```solidity
-event Withdrawal(address from, bytes to, uint256 value, uint256 gasFee, uint256 protocolFlatFee)
+```
+Deposit(bytes from, address indexed to, uint256 value) (event)
 ```
 
-### UpdatedSystemContract
+<a name="IZRC20-Deposit-bytes-address-uint256-"></a>
 
-```solidity
-event UpdatedSystemContract(address systemContract)
+```
+Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasFee, uint256 protocolFlatFee) (event)
 ```
 
-### UpdatedGasLimit
+<a name="IZRC20-Withdrawal-address-bytes-uint256-uint256-uint256-"></a>
 
-```solidity
-event UpdatedGasLimit(uint256 gasLimit)
+```
+UpdatedSystemContract(address systemContract) (event)
 ```
 
-### UpdatedProtocolFlatFee
+<a name="IZRC20-UpdatedSystemContract-address-"></a>
 
-```solidity
-event UpdatedProtocolFlatFee(uint256 protocolFlatFee)
 ```
+UpdatedGasLimit(uint256 gasLimit) (event)
+```
+
+<a name="IZRC20-UpdatedGasLimit-uint256-"></a>
+
+```
+UpdatedProtocolFlatFee(uint256 protocolFlatFee) (event)
+```
+
+<a name="IZRC20-UpdatedProtocolFlatFee-uint256-"></a>
 

@@ -1,66 +1,108 @@
-# evm/tools/ZetaInteractor.md
-
 ## ZetaInteractor
 
-### ZERO_BYTES
-
 ```solidity
-bytes32 ZERO_BYTES
+import "@zetachain/protocol-contracts/contracts/evm/tools/ZetaInteractor.sol";
 ```
 
-### currentChainId
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/tools/ZetaInteractor.sol
 
-```solidity
-uint256 currentChainId
+### Modifier List
+
+* [isValidMessageCall(zetaMessage)](#ZetaInteractor-isValidMessageCall-struct-ZetaInterfaces-ZetaMessage-)
+* [isValidRevertCall(zetaRevert)](#ZetaInteractor-isValidRevertCall-struct-ZetaInterfaces-ZetaRevert-)
+
+### Function List
+
+* [constructor(zetaConnectorAddress)](#ZetaInteractor-constructor-address-)
+* [_isValidChainId(chainId)](#ZetaInteractor-_isValidChainId-uint256-)
+* [setInteractorByChainId(destinationChainId, contractAddress)](#ZetaInteractor-setInteractorByChainId-uint256-bytes-)
+
+### Event List
+
+* [OwnershipTransferStarted(previousOwner, newOwner)](#Ownable2Step-OwnershipTransferStarted-address-address-)
+
+* [OwnershipTransferred(previousOwner, newOwner)](#Ownable-OwnershipTransferred-address-address-)
+
+### Error List
+
+* [InvalidDestinationChainId()](#ZetaInteractorErrors-InvalidDestinationChainId--)
+* [InvalidCaller(caller)](#ZetaInteractorErrors-InvalidCaller-address-)
+* [InvalidZetaMessageCall()](#ZetaInteractorErrors-InvalidZetaMessageCall--)
+* [InvalidZetaRevertCall()](#ZetaInteractorErrors-InvalidZetaRevertCall--)
+
+### Modifiers
+
+```
+isValidMessageCall(struct ZetaInterfaces.ZetaMessage zetaMessage) (modifier)
 ```
 
-### connector
+<a name="ZetaInteractor-isValidMessageCall-struct-ZetaInterfaces-ZetaMessage-"></a>
 
-```solidity
-contract ZetaConnector connector
+```
+isValidRevertCall(struct ZetaInterfaces.ZetaRevert zetaRevert) (modifier)
 ```
 
-### interactorsByChainId
+<a name="ZetaInteractor-isValidRevertCall-struct-ZetaInterfaces-ZetaRevert-"></a>
 
-```solidity
-mapping(uint256 => bytes) interactorsByChainId
+### Functions
+
+```
+constructor(address zetaConnectorAddress) (internal function)
 ```
 
-_Maps a chain id to its corresponding address of the MultiChainSwap contract
-The address is expressed in bytes to allow non-EVM chains
-This mapping is useful, mainly, for two reasons:
- - Given a chain id, the contract is able to route a transaction to its corresponding address
- - To check that the messages (onZetaMessage, onZetaRevert) come from a trusted source_
+<a name="ZetaInteractor-constructor-address-"></a>
 
-### isValidMessageCall
-
-```solidity
-modifier isValidMessageCall(struct ZetaInterfaces.ZetaMessage zetaMessage)
+```
+_isValidChainId(uint256 chainId) → bool (internal function)
 ```
 
-### isValidRevertCall
+<a name="ZetaInteractor-_isValidChainId-uint256-"></a>
 
-```solidity
-modifier isValidRevertCall(struct ZetaInterfaces.ZetaRevert zetaRevert)
+Useful for contracts that inherit from this one
+
+```
+setInteractorByChainId(uint256 destinationChainId, bytes contractAddress) (external function)
 ```
 
-### constructor
+<a name="ZetaInteractor-setInteractorByChainId-uint256-bytes-"></a>
 
-```solidity
-constructor(address zetaConnectorAddress) internal
+### Events
+
+```
+OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner) (event)
 ```
 
-### _isValidChainId
+<a name="Ownable2Step-OwnershipTransferStarted-address-address-"></a>
 
-```solidity
-function _isValidChainId(uint256 chainId) internal view returns (bool)
+```
+OwnershipTransferred(address indexed previousOwner, address indexed newOwner) (event)
 ```
 
-_Useful for contracts that inherit from this one_
+<a name="Ownable-OwnershipTransferred-address-address-"></a>
 
-### setInteractorByChainId
+### Errors
 
-```solidity
-function setInteractorByChainId(uint256 destinationChainId, bytes contractAddress) external
 ```
+InvalidDestinationChainId() (error)
+```
+
+<a name="ZetaInteractorErrors-InvalidDestinationChainId--"></a>
+
+```
+InvalidCaller(address caller) (error)
+```
+
+<a name="ZetaInteractorErrors-InvalidCaller-address-"></a>
+
+```
+InvalidZetaMessageCall() (error)
+```
+
+<a name="ZetaInteractorErrors-InvalidZetaMessageCall--"></a>
+
+```
+InvalidZetaRevertCall() (error)
+```
+
+<a name="ZetaInteractorErrors-InvalidZetaRevertCall--"></a>
 

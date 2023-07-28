@@ -1,281 +1,238 @@
-# zevm/SystemContract.md
-
 ## SystemContractErrors
 
-_Custom errors for SystemContract_
-
-### CallerIsNotFungibleModule
-
 ```solidity
-error CallerIsNotFungibleModule()
+import "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
 ```
 
-### InvalidTarget
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/SystemContract.sol
 
-```solidity
-error InvalidTarget()
+Custom errors for SystemContract
+
+### Error List
+
+* [CallerIsNotFungibleModule()](#SystemContractErrors-CallerIsNotFungibleModule--)
+* [InvalidTarget()](#SystemContractErrors-InvalidTarget--)
+* [CantBeIdenticalAddresses()](#SystemContractErrors-CantBeIdenticalAddresses--)
+* [CantBeZeroAddress()](#SystemContractErrors-CantBeZeroAddress--)
+* [ZeroAddress()](#SystemContractErrors-ZeroAddress--)
+
+### Modifiers
+
+### Errors
+
+```
+CallerIsNotFungibleModule() (error)
 ```
 
-### CantBeIdenticalAddresses
+<a name="SystemContractErrors-CallerIsNotFungibleModule--"></a>
 
-```solidity
-error CantBeIdenticalAddresses()
+```
+InvalidTarget() (error)
 ```
 
-### CantBeZeroAddress
+<a name="SystemContractErrors-InvalidTarget--"></a>
 
-```solidity
-error CantBeZeroAddress()
+```
+CantBeIdenticalAddresses() (error)
 ```
 
-### ZeroAddress
+<a name="SystemContractErrors-CantBeIdenticalAddresses--"></a>
 
-```solidity
-error ZeroAddress()
 ```
+CantBeZeroAddress() (error)
+```
+
+<a name="SystemContractErrors-CantBeZeroAddress--"></a>
+
+```
+ZeroAddress() (error)
+```
+
+<a name="SystemContractErrors-ZeroAddress--"></a>
 
 ## SystemContract
 
-_The system contract it's called by the protocol to interact with the blockchain.
-Also includes a lot of tools to make easier to interact with ZetaChain._
-
-### gasPriceByChainId
-
 ```solidity
-mapping(uint256 => uint256) gasPriceByChainId
+import "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
 ```
 
-Map to know the gas price of each chain given a chain id.
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/SystemContract.sol
 
-### gasCoinZRC20ByChainId
+The system contract it's called by the protocol to interact with the blockchain.
+Also includes a lot of tools to make easier to interact with ZetaChain.
 
-```solidity
-mapping(uint256 => address) gasCoinZRC20ByChainId
+### Function List
+
+* [constructor(wzeta_, uniswapv2Factory_, uniswapv2Router02_)](#SystemContract-constructor-address-address-address-)
+* [depositAndCall(zrc20, amount, target, message)](#SystemContract-depositAndCall-address-uint256-address-bytes-)
+* [sortTokens(tokenA, tokenB)](#SystemContract-sortTokens-address-address-)
+* [uniswapv2PairFor(factory, tokenA, tokenB)](#SystemContract-uniswapv2PairFor-address-address-address-)
+* [setGasPrice(chainID, price)](#SystemContract-setGasPrice-uint256-uint256-)
+* [setGasCoinZRC20(chainID, zrc20)](#SystemContract-setGasCoinZRC20-uint256-address-)
+* [setGasZetaPool(chainID, erc20)](#SystemContract-setGasZetaPool-uint256-address-)
+* [setWZETAContractAddress(addr)](#SystemContract-setWZETAContractAddress-address-)
+* [setConnectorZEVMAddress(addr)](#SystemContract-setConnectorZEVMAddress-address-)
+
+### Event List
+
+* [SystemContractDeployed()](#SystemContract-SystemContractDeployed--)
+* [SetGasPrice(, )](#SystemContract-SetGasPrice-uint256-uint256-)
+* [SetGasCoin(, )](#SystemContract-SetGasCoin-uint256-address-)
+* [SetGasZetaPool(, )](#SystemContract-SetGasZetaPool-uint256-address-)
+* [SetWZeta()](#SystemContract-SetWZeta-address-)
+* [SetConnectorZEVM()](#SystemContract-SetConnectorZEVM-address-)
+
+### Error List
+
+* [CallerIsNotFungibleModule()](#SystemContractErrors-CallerIsNotFungibleModule--)
+* [InvalidTarget()](#SystemContractErrors-InvalidTarget--)
+* [CantBeIdenticalAddresses()](#SystemContractErrors-CantBeIdenticalAddresses--)
+* [CantBeZeroAddress()](#SystemContractErrors-CantBeZeroAddress--)
+* [ZeroAddress()](#SystemContractErrors-ZeroAddress--)
+
+### Modifiers
+
+### Functions
+
+```
+constructor(address wzeta_, address uniswapv2Factory_, address uniswapv2Router02_) (public function)
 ```
 
-Map to know the ZRC20 address of a token given a chain id, ex zETH, zBNB etc.
+<a name="SystemContract-constructor-address-address-address-"></a>
 
-### gasZetaPoolByChainId
+Only fungible module can deploy a system contract.
 
-```solidity
-mapping(uint256 => address) gasZetaPoolByChainId
+```
+depositAndCall(address zrc20, uint256 amount, address target, bytes message) (external function)
 ```
 
-### FUNGIBLE_MODULE_ADDRESS
+<a name="SystemContract-depositAndCall-address-uint256-address-bytes-"></a>
 
-```solidity
-address FUNGIBLE_MODULE_ADDRESS
+Deposit foreign coins into ZRC20 and call user specified contract on zEVM.
+
+```
+sortTokens(address tokenA, address tokenB) → address token0, address token1 (internal function)
 ```
 
-Fungible address is always the same, it's on protocol level.
+<a name="SystemContract-sortTokens-address-address-"></a>
 
-### uniswapv2FactoryAddress
+Sort token addresses lexicographically. Used to handle return values from pairs sorted in the order.
 
-```solidity
-address uniswapv2FactoryAddress
+```
+uniswapv2PairFor(address factory, address tokenA, address tokenB) → address pair (public function)
 ```
 
-Uniswap V2 addresses.
+<a name="SystemContract-uniswapv2PairFor-address-address-address-"></a>
 
-### uniswapv2Router02Address
+Calculates the CREATE2 address for a pair without making any external calls.
 
-```solidity
-address uniswapv2Router02Address
+```
+setGasPrice(uint256 chainID, uint256 price) (external function)
 ```
 
-### wZetaContractAddress
+<a name="SystemContract-setGasPrice-uint256-uint256-"></a>
 
-```solidity
-address wZetaContractAddress
+Fungible module updates the gas price oracle periodically.
+
+```
+setGasCoinZRC20(uint256 chainID, address zrc20) (external function)
 ```
 
-Address of the wrapped ZETA to interact with Uniswap V2.
+<a name="SystemContract-setGasCoinZRC20-uint256-address-"></a>
 
-### zetaConnectorZEVMAddress
+Setter for gasCoinZRC20ByChainId map.
 
-```solidity
-address zetaConnectorZEVMAddress
+```
+setGasZetaPool(uint256 chainID, address erc20) (external function)
 ```
 
-Address of ZEVM Zeta Connector.
+<a name="SystemContract-setGasZetaPool-uint256-address-"></a>
 
-### SystemContractDeployed
+Set the pool wzeta/erc20 address.
 
-```solidity
-event SystemContractDeployed()
+```
+setWZETAContractAddress(address addr) (external function)
 ```
 
-Custom SystemContract errors.
+<a name="SystemContract-setWZETAContractAddress-address-"></a>
 
-### SetGasPrice
+Setter for wrapped ZETA address.
 
-```solidity
-event SetGasPrice(uint256, uint256)
+```
+setConnectorZEVMAddress(address addr) (external function)
 ```
 
-### SetGasCoin
+<a name="SystemContract-setConnectorZEVMAddress-address-"></a>
 
-```solidity
-event SetGasCoin(uint256, address)
+Setter for zetaConnector ZEVM Address
+
+### Events
+
+```
+SystemContractDeployed() (event)
 ```
 
-### SetGasZetaPool
+<a name="SystemContract-SystemContractDeployed--"></a>
 
-```solidity
-event SetGasZetaPool(uint256, address)
+```
+SetGasPrice(uint256, uint256) (event)
 ```
 
-### SetWZeta
+<a name="SystemContract-SetGasPrice-uint256-uint256-"></a>
 
-```solidity
-event SetWZeta(address)
+```
+SetGasCoin(uint256, address) (event)
 ```
 
-### SetConnectorZEVM
+<a name="SystemContract-SetGasCoin-uint256-address-"></a>
 
-```solidity
-event SetConnectorZEVM(address)
+```
+SetGasZetaPool(uint256, address) (event)
 ```
 
-### constructor
+<a name="SystemContract-SetGasZetaPool-uint256-address-"></a>
 
-```solidity
-constructor(address wzeta_, address uniswapv2Factory_, address uniswapv2Router02_) public
+```
+SetWZeta(address) (event)
 ```
 
-_Only fungible module can deploy a system contract._
+<a name="SystemContract-SetWZeta-address-"></a>
 
-### depositAndCall
-
-```solidity
-function depositAndCall(address zrc20, uint256 amount, address target, bytes message) external
+```
+SetConnectorZEVM(address) (event)
 ```
 
-_Deposit foreign coins into ZRC20 and call user specified contract on zEVM._
+<a name="SystemContract-SetConnectorZEVM-address-"></a>
 
-#### Parameters
+### Errors
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| zrc20 | address | address for deposit. |
-| amount | uint256 | to deposit. |
-| target | address |  |
-| message | bytes |  |
-
-### sortTokens
-
-```solidity
-function sortTokens(address tokenA, address tokenB) internal pure returns (address token0, address token1)
+```
+CallerIsNotFungibleModule() (error)
 ```
 
-_Sort token addresses lexicographically. Used to handle return values from pairs sorted in the order._
+<a name="SystemContractErrors-CallerIsNotFungibleModule--"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| tokenA | address | address. |
-| tokenB | address | address. |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| token0 | address | token1, returns sorted token addresses,. |
-| token1 | address |  |
-
-### uniswapv2PairFor
-
-```solidity
-function uniswapv2PairFor(address factory, address tokenA, address tokenB) public pure returns (address pair)
+```
+InvalidTarget() (error)
 ```
 
-_Calculates the CREATE2 address for a pair without making any external calls._
+<a name="SystemContractErrors-InvalidTarget--"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| factory | address | address. |
-| tokenA | address | address. |
-| tokenB | address | address. |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| pair | address | tokens pair address. |
-
-### setGasPrice
-
-```solidity
-function setGasPrice(uint256 chainID, uint256 price) external
+```
+CantBeIdenticalAddresses() (error)
 ```
 
-_Fungible module updates the gas price oracle periodically._
+<a name="SystemContractErrors-CantBeIdenticalAddresses--"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| chainID | uint256 |  |
-| price | uint256 |  |
-
-### setGasCoinZRC20
-
-```solidity
-function setGasCoinZRC20(uint256 chainID, address zrc20) external
+```
+CantBeZeroAddress() (error)
 ```
 
-_Setter for gasCoinZRC20ByChainId map._
+<a name="SystemContractErrors-CantBeZeroAddress--"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| chainID | uint256 |  |
-| zrc20 | address |  |
-
-### setGasZetaPool
-
-```solidity
-function setGasZetaPool(uint256 chainID, address erc20) external
+```
+ZeroAddress() (error)
 ```
 
-_Set the pool wzeta/erc20 address._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| chainID | uint256 |  |
-| erc20 | address |  |
-
-### setWZETAContractAddress
-
-```solidity
-function setWZETAContractAddress(address addr) external
-```
-
-_Setter for wrapped ZETA address._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| addr | address |  |
-
-### setConnectorZEVMAddress
-
-```solidity
-function setConnectorZEVMAddress(address addr) external
-```
-
-_Setter for zetaConnector ZEVM Address_
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| addr | address |  |
+<a name="SystemContractErrors-ZeroAddress--"></a>
 

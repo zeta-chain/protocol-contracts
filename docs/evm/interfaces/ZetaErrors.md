@@ -1,42 +1,59 @@
-# evm/interfaces/ZetaErrors.md
-
 ## ZetaErrors
 
-_Common custom errors_
-
-### CallerIsNotTss
-
 ```solidity
-error CallerIsNotTss(address caller)
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaErrors.sol";
 ```
 
-### CallerIsNotConnector
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaErrors.sol
 
-```solidity
-error CallerIsNotConnector(address caller)
+Common custom errors
+
+### Error List
+
+* [CallerIsNotTss(caller)](#ZetaErrors-CallerIsNotTss-address-)
+* [CallerIsNotConnector(caller)](#ZetaErrors-CallerIsNotConnector-address-)
+* [CallerIsNotTssUpdater(caller)](#ZetaErrors-CallerIsNotTssUpdater-address-)
+* [CallerIsNotTssOrUpdater(caller)](#ZetaErrors-CallerIsNotTssOrUpdater-address-)
+* [InvalidAddress()](#ZetaErrors-InvalidAddress--)
+* [ZetaTransferError()](#ZetaErrors-ZetaTransferError--)
+
+### Modifiers
+
+### Errors
+
+```
+CallerIsNotTss(address caller) (error)
 ```
 
-### CallerIsNotTssUpdater
+<a name="ZetaErrors-CallerIsNotTss-address-"></a>
 
-```solidity
-error CallerIsNotTssUpdater(address caller)
+```
+CallerIsNotConnector(address caller) (error)
 ```
 
-### CallerIsNotTssOrUpdater
+<a name="ZetaErrors-CallerIsNotConnector-address-"></a>
 
-```solidity
-error CallerIsNotTssOrUpdater(address caller)
+```
+CallerIsNotTssUpdater(address caller) (error)
 ```
 
-### InvalidAddress
+<a name="ZetaErrors-CallerIsNotTssUpdater-address-"></a>
 
-```solidity
-error InvalidAddress()
+```
+CallerIsNotTssOrUpdater(address caller) (error)
 ```
 
-### ZetaTransferError
+<a name="ZetaErrors-CallerIsNotTssOrUpdater-address-"></a>
 
-```solidity
-error ZetaTransferError()
 ```
+InvalidAddress() (error)
+```
+
+<a name="ZetaErrors-InvalidAddress--"></a>
+
+```
+ZetaTransferError() (error)
+```
+
+<a name="ZetaErrors-ZetaTransferError--"></a>
 

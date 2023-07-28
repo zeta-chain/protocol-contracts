@@ -1,42 +1,59 @@
-# evm/interfaces/ConnectorErrors.md
-
 ## ConnectorErrors
 
-_Interface with connector custom errors_
-
-### CallerIsNotPauser
-
 ```solidity
-error CallerIsNotPauser(address caller)
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ConnectorErrors.sol";
 ```
 
-### CallerIsNotTss
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ConnectorErrors.sol
 
-```solidity
-error CallerIsNotTss(address caller)
+Interface with connector custom errors
+
+### Error List
+
+* [CallerIsNotPauser(caller)](#ConnectorErrors-CallerIsNotPauser-address-)
+* [CallerIsNotTss(caller)](#ConnectorErrors-CallerIsNotTss-address-)
+* [CallerIsNotTssUpdater(caller)](#ConnectorErrors-CallerIsNotTssUpdater-address-)
+* [CallerIsNotTssOrUpdater(caller)](#ConnectorErrors-CallerIsNotTssOrUpdater-address-)
+* [ZetaTransferError()](#ConnectorErrors-ZetaTransferError--)
+* [ExceedsMaxSupply(maxSupply)](#ConnectorErrors-ExceedsMaxSupply-uint256-)
+
+### Modifiers
+
+### Errors
+
+```
+CallerIsNotPauser(address caller) (error)
 ```
 
-### CallerIsNotTssUpdater
+<a name="ConnectorErrors-CallerIsNotPauser-address-"></a>
 
-```solidity
-error CallerIsNotTssUpdater(address caller)
+```
+CallerIsNotTss(address caller) (error)
 ```
 
-### CallerIsNotTssOrUpdater
+<a name="ConnectorErrors-CallerIsNotTss-address-"></a>
 
-```solidity
-error CallerIsNotTssOrUpdater(address caller)
+```
+CallerIsNotTssUpdater(address caller) (error)
 ```
 
-### ZetaTransferError
+<a name="ConnectorErrors-CallerIsNotTssUpdater-address-"></a>
 
-```solidity
-error ZetaTransferError()
+```
+CallerIsNotTssOrUpdater(address caller) (error)
 ```
 
-### ExceedsMaxSupply
+<a name="ConnectorErrors-CallerIsNotTssOrUpdater-address-"></a>
 
-```solidity
-error ExceedsMaxSupply(uint256 maxSupply)
 ```
+ZetaTransferError() (error)
+```
+
+<a name="ConnectorErrors-ZetaTransferError--"></a>
+
+```
+ExceedsMaxSupply(uint256 maxSupply) (error)
+```
+
+<a name="ConnectorErrors-ExceedsMaxSupply-uint256-"></a>
 

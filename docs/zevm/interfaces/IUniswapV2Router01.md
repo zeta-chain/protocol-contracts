@@ -1,118 +1,148 @@
-# zevm/interfaces/IUniswapV2Router01.md
-
 ## IUniswapV2Router01
 
-### factory
-
 ```solidity
-function factory() external pure returns (address)
+import "@zetachain/protocol-contracts/contracts/zevm/interfaces/IUniswapV2Router01.sol";
 ```
 
-### WETH
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/interfaces/IUniswapV2Router01.sol
 
-```solidity
-function WETH() external pure returns (address)
+### Function List
+
+* [factory()](#IUniswapV2Router01-factory--)
+* [WETH()](#IUniswapV2Router01-WETH--)
+* [addLiquidity(tokenA, tokenB, amountADesired, amountBDesired, amountAMin, amountBMin, to, deadline)](#IUniswapV2Router01-addLiquidity-address-address-uint256-uint256-uint256-uint256-address-uint256-)
+* [addLiquidityETH(token, amountTokenDesired, amountTokenMin, amountETHMin, to, deadline)](#IUniswapV2Router01-addLiquidityETH-address-uint256-uint256-uint256-address-uint256-)
+* [removeLiquidity(tokenA, tokenB, liquidity, amountAMin, amountBMin, to, deadline)](#IUniswapV2Router01-removeLiquidity-address-address-uint256-uint256-uint256-address-uint256-)
+* [removeLiquidityETH(token, liquidity, amountTokenMin, amountETHMin, to, deadline)](#IUniswapV2Router01-removeLiquidityETH-address-uint256-uint256-uint256-address-uint256-)
+* [removeLiquidityWithPermit(tokenA, tokenB, liquidity, amountAMin, amountBMin, to, deadline, approveMax, v, r, s)](#IUniswapV2Router01-removeLiquidityWithPermit-address-address-uint256-uint256-uint256-address-uint256-bool-uint8-bytes32-bytes32-)
+* [removeLiquidityETHWithPermit(token, liquidity, amountTokenMin, amountETHMin, to, deadline, approveMax, v, r, s)](#IUniswapV2Router01-removeLiquidityETHWithPermit-address-uint256-uint256-uint256-address-uint256-bool-uint8-bytes32-bytes32-)
+* [swapExactTokensForTokens(amountIn, amountOutMin, path, to, deadline)](#IUniswapV2Router01-swapExactTokensForTokens-uint256-uint256-address---address-uint256-)
+* [swapTokensForExactTokens(amountOut, amountInMax, path, to, deadline)](#IUniswapV2Router01-swapTokensForExactTokens-uint256-uint256-address---address-uint256-)
+* [swapExactETHForTokens(amountOutMin, path, to, deadline)](#IUniswapV2Router01-swapExactETHForTokens-uint256-address---address-uint256-)
+* [swapTokensForExactETH(amountOut, amountInMax, path, to, deadline)](#IUniswapV2Router01-swapTokensForExactETH-uint256-uint256-address---address-uint256-)
+* [swapExactTokensForETH(amountIn, amountOutMin, path, to, deadline)](#IUniswapV2Router01-swapExactTokensForETH-uint256-uint256-address---address-uint256-)
+* [swapETHForExactTokens(amountOut, path, to, deadline)](#IUniswapV2Router01-swapETHForExactTokens-uint256-address---address-uint256-)
+* [quote(amountA, reserveA, reserveB)](#IUniswapV2Router01-quote-uint256-uint256-uint256-)
+* [getAmountOut(amountIn, reserveIn, reserveOut)](#IUniswapV2Router01-getAmountOut-uint256-uint256-uint256-)
+* [getAmountIn(amountOut, reserveIn, reserveOut)](#IUniswapV2Router01-getAmountIn-uint256-uint256-uint256-)
+* [getAmountsOut(amountIn, path)](#IUniswapV2Router01-getAmountsOut-uint256-address---)
+* [getAmountsIn(amountOut, path)](#IUniswapV2Router01-getAmountsIn-uint256-address---)
+
+### Modifiers
+
+### Functions
+
+```
+factory() → address (external function)
 ```
 
-### addLiquidity
+<a name="IUniswapV2Router01-factory--"></a>
 
-```solidity
-function addLiquidity(address tokenA, address tokenB, uint256 amountADesired, uint256 amountBDesired, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) external returns (uint256 amountA, uint256 amountB, uint256 liquidity)
+```
+WETH() → address (external function)
 ```
 
-### addLiquidityETH
+<a name="IUniswapV2Router01-WETH--"></a>
 
-```solidity
-function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) external payable returns (uint256 amountToken, uint256 amountETH, uint256 liquidity)
+```
+addLiquidity(address tokenA, address tokenB, uint256 amountADesired, uint256 amountBDesired, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) → uint256 amountA, uint256 amountB, uint256 liquidity (external function)
 ```
 
-### removeLiquidity
+<a name="IUniswapV2Router01-addLiquidity-address-address-uint256-uint256-uint256-uint256-address-uint256-"></a>
 
-```solidity
-function removeLiquidity(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) external returns (uint256 amountA, uint256 amountB)
+```
+addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) → uint256 amountToken, uint256 amountETH, uint256 liquidity (external function)
 ```
 
-### removeLiquidityETH
+<a name="IUniswapV2Router01-addLiquidityETH-address-uint256-uint256-uint256-address-uint256-"></a>
 
-```solidity
-function removeLiquidityETH(address token, uint256 liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) external returns (uint256 amountToken, uint256 amountETH)
+```
+removeLiquidity(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) → uint256 amountA, uint256 amountB (external function)
 ```
 
-### removeLiquidityWithPermit
+<a name="IUniswapV2Router01-removeLiquidity-address-address-uint256-uint256-uint256-address-uint256-"></a>
 
-```solidity
-function removeLiquidityWithPermit(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32 r, bytes32 s) external returns (uint256 amountA, uint256 amountB)
+```
+removeLiquidityETH(address token, uint256 liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) → uint256 amountToken, uint256 amountETH (external function)
 ```
 
-### removeLiquidityETHWithPermit
+<a name="IUniswapV2Router01-removeLiquidityETH-address-uint256-uint256-uint256-address-uint256-"></a>
 
-```solidity
-function removeLiquidityETHWithPermit(address token, uint256 liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32 r, bytes32 s) external returns (uint256 amountToken, uint256 amountETH)
+```
+removeLiquidityWithPermit(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32 r, bytes32 s) → uint256 amountA, uint256 amountB (external function)
 ```
 
-### swapExactTokensForTokens
+<a name="IUniswapV2Router01-removeLiquidityWithPermit-address-address-uint256-uint256-uint256-address-uint256-bool-uint8-bytes32-bytes32-"></a>
 
-```solidity
-function swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) external returns (uint256[] amounts)
+```
+removeLiquidityETHWithPermit(address token, uint256 liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32 r, bytes32 s) → uint256 amountToken, uint256 amountETH (external function)
 ```
 
-### swapTokensForExactTokens
+<a name="IUniswapV2Router01-removeLiquidityETHWithPermit-address-uint256-uint256-uint256-address-uint256-bool-uint8-bytes32-bytes32-"></a>
 
-```solidity
-function swapTokensForExactTokens(uint256 amountOut, uint256 amountInMax, address[] path, address to, uint256 deadline) external returns (uint256[] amounts)
+```
+swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) → uint256[] amounts (external function)
 ```
 
-### swapExactETHForTokens
+<a name="IUniswapV2Router01-swapExactTokensForTokens-uint256-uint256-address---address-uint256-"></a>
 
-```solidity
-function swapExactETHForTokens(uint256 amountOutMin, address[] path, address to, uint256 deadline) external payable returns (uint256[] amounts)
+```
+swapTokensForExactTokens(uint256 amountOut, uint256 amountInMax, address[] path, address to, uint256 deadline) → uint256[] amounts (external function)
 ```
 
-### swapTokensForExactETH
+<a name="IUniswapV2Router01-swapTokensForExactTokens-uint256-uint256-address---address-uint256-"></a>
 
-```solidity
-function swapTokensForExactETH(uint256 amountOut, uint256 amountInMax, address[] path, address to, uint256 deadline) external returns (uint256[] amounts)
+```
+swapExactETHForTokens(uint256 amountOutMin, address[] path, address to, uint256 deadline) → uint256[] amounts (external function)
 ```
 
-### swapExactTokensForETH
+<a name="IUniswapV2Router01-swapExactETHForTokens-uint256-address---address-uint256-"></a>
 
-```solidity
-function swapExactTokensForETH(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) external returns (uint256[] amounts)
+```
+swapTokensForExactETH(uint256 amountOut, uint256 amountInMax, address[] path, address to, uint256 deadline) → uint256[] amounts (external function)
 ```
 
-### swapETHForExactTokens
+<a name="IUniswapV2Router01-swapTokensForExactETH-uint256-uint256-address---address-uint256-"></a>
 
-```solidity
-function swapETHForExactTokens(uint256 amountOut, address[] path, address to, uint256 deadline) external payable returns (uint256[] amounts)
+```
+swapExactTokensForETH(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) → uint256[] amounts (external function)
 ```
 
-### quote
+<a name="IUniswapV2Router01-swapExactTokensForETH-uint256-uint256-address---address-uint256-"></a>
 
-```solidity
-function quote(uint256 amountA, uint256 reserveA, uint256 reserveB) external pure returns (uint256 amountB)
+```
+swapETHForExactTokens(uint256 amountOut, address[] path, address to, uint256 deadline) → uint256[] amounts (external function)
 ```
 
-### getAmountOut
+<a name="IUniswapV2Router01-swapETHForExactTokens-uint256-address---address-uint256-"></a>
 
-```solidity
-function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) external pure returns (uint256 amountOut)
+```
+quote(uint256 amountA, uint256 reserveA, uint256 reserveB) → uint256 amountB (external function)
 ```
 
-### getAmountIn
+<a name="IUniswapV2Router01-quote-uint256-uint256-uint256-"></a>
 
-```solidity
-function getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut) external pure returns (uint256 amountIn)
+```
+getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) → uint256 amountOut (external function)
 ```
 
-### getAmountsOut
+<a name="IUniswapV2Router01-getAmountOut-uint256-uint256-uint256-"></a>
 
-```solidity
-function getAmountsOut(uint256 amountIn, address[] path) external view returns (uint256[] amounts)
+```
+getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut) → uint256 amountIn (external function)
 ```
 
-### getAmountsIn
+<a name="IUniswapV2Router01-getAmountIn-uint256-uint256-uint256-"></a>
 
-```solidity
-function getAmountsIn(uint256 amountOut, address[] path) external view returns (uint256[] amounts)
 ```
+getAmountsOut(uint256 amountIn, address[] path) → uint256[] amounts (external function)
+```
+
+<a name="IUniswapV2Router01-getAmountsOut-uint256-address---"></a>
+
+```
+getAmountsIn(uint256 amountOut, address[] path) → uint256[] amounts (external function)
+```
+
+<a name="IUniswapV2Router01-getAmountsIn-uint256-address---"></a>
 

@@ -1,120 +1,50 @@
-# evm/tools/interfaces/TridentIPoolRouter.md
-
 ## IPoolRouter
 
-### ExactInputSingleParams
-
 ```solidity
-struct ExactInputSingleParams {
-  address tokenIn;
-  uint256 amountIn;
-  uint256 amountOutMinimum;
-  address pool;
-  address to;
-  bool unwrap;
-}
+import "@zetachain/protocol-contracts/contracts/evm/tools/interfaces/TridentIPoolRouter.sol";
 ```
 
-### ExactInputParams
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/tools/interfaces/TridentIPoolRouter.sol
 
-```solidity
-struct ExactInputParams {
-  address tokenIn;
-  uint256 amountIn;
-  uint256 amountOutMinimum;
-  address[] path;
-  address to;
-  bool unwrap;
-}
+### Function List
+
+* [exactInputSingle(params)](#IPoolRouter-exactInputSingle-struct-IPoolRouter-ExactInputSingleParams-)
+* [exactInput(params)](#IPoolRouter-exactInput-struct-IPoolRouter-ExactInputParams-)
+* [exactOutputSingle(params)](#IPoolRouter-exactOutputSingle-struct-IPoolRouter-ExactOutputSingleParams-)
+* [exactOutput(params)](#IPoolRouter-exactOutput-struct-IPoolRouter-ExactOutputParams-)
+* [sweep(token, amount, recipient)](#IPoolRouter-sweep-address-uint256-address-)
+
+### Modifiers
+
+### Functions
+
+```
+exactInputSingle(struct IPoolRouter.ExactInputSingleParams params) → uint256 amountOut (external function)
 ```
 
-### ExactOutputSingleParams
+<a name="IPoolRouter-exactInputSingle-struct-IPoolRouter-ExactInputSingleParams-"></a>
 
-```solidity
-struct ExactOutputSingleParams {
-  address tokenIn;
-  uint256 amountOut;
-  uint256 amountInMaximum;
-  address pool;
-  address to;
-  bool unwrap;
-}
+```
+exactInput(struct IPoolRouter.ExactInputParams params) → uint256 amountOut (external function)
 ```
 
-### ExactOutputParams
+<a name="IPoolRouter-exactInput-struct-IPoolRouter-ExactInputParams-"></a>
 
-```solidity
-struct ExactOutputParams {
-  address tokenIn;
-  uint256 amountOut;
-  uint256 amountInMaximum;
-  address[] path;
-  address to;
-  bool unwrap;
-}
+```
+exactOutputSingle(struct IPoolRouter.ExactOutputSingleParams params) → uint256 amountIn (external function)
 ```
 
-### exactInputSingle
+<a name="IPoolRouter-exactOutputSingle-struct-IPoolRouter-ExactOutputSingleParams-"></a>
 
-```solidity
-function exactInputSingle(struct IPoolRouter.ExactInputSingleParams params) external payable returns (uint256 amountOut)
+```
+exactOutput(struct IPoolRouter.ExactOutputParams params) → uint256 amountIn (external function)
 ```
 
-Swap amountIn of one token for as much as possible of another token
+<a name="IPoolRouter-exactOutput-struct-IPoolRouter-ExactOutputParams-"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| params | struct IPoolRouter.ExactInputSingleParams | The parameters necessary for the swap, encoded as ExactInputSingleParams in calldata |
-
-### exactInput
-
-```solidity
-function exactInput(struct IPoolRouter.ExactInputParams params) external payable returns (uint256 amountOut)
+```
+sweep(address token, uint256 amount, address recipient) (external function)
 ```
 
-Swap amountIn of one token for as much as possible of another along the specified path
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| params | struct IPoolRouter.ExactInputParams | The parameters necessary for the multi-hop swap, encoded as ExactInputParams in calldata |
-
-### exactOutputSingle
-
-```solidity
-function exactOutputSingle(struct IPoolRouter.ExactOutputSingleParams params) external payable returns (uint256 amountIn)
-```
-
-Swaps as little as possible of one token for `amountOut` of another token
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| params | struct IPoolRouter.ExactOutputSingleParams | The parameters necessary for the swap, encoded as ExactOutputSingleParams in calldata |
-
-### exactOutput
-
-```solidity
-function exactOutput(struct IPoolRouter.ExactOutputParams params) external payable returns (uint256 amountIn)
-```
-
-Swaps as little as possible of one token for `amountOut` of another along the specified path (reversed)
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| params | struct IPoolRouter.ExactOutputParams | The parameters necessary for the multi-hop swap, encoded as ExactOutputParams in calldata |
-
-### sweep
-
-```solidity
-function sweep(address token, uint256 amount, address recipient) external payable
-```
-
-Recover mistakenly sent tokens
+<a name="IPoolRouter-sweep-address-uint256-address-"></a>
 

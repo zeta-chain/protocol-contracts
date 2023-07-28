@@ -1,70 +1,141 @@
-# evm/Zeta.non-eth.md
-
 ## ZetaNonEth
 
-### connectorAddress
-
 ```solidity
-address connectorAddress
+import "@zetachain/protocol-contracts/contracts/evm/Zeta.non-eth.sol";
 ```
 
-### tssAddress
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/Zeta.non-eth.sol
 
-```solidity
-address tssAddress
+### Function List
+
+* [constructor(tssAddress_, tssAddressUpdater_)](#ZetaNonEth-constructor-address-address-)
+* [updateTssAndConnectorAddresses(tssAddress_, connectorAddress_)](#ZetaNonEth-updateTssAndConnectorAddresses-address-address-)
+* [renounceTssAddressUpdater()](#ZetaNonEth-renounceTssAddressUpdater--)
+* [mint(mintee, value, internalSendHash)](#ZetaNonEth-mint-address-uint256-bytes32-)
+* [burnFrom(account, amount)](#ZetaNonEth-burnFrom-address-uint256-)
+
+### Event List
+
+* [Minted(mintee, amount, internalSendHash)](#ZetaNonEth-Minted-address-uint256-bytes32-)
+* [Burnt(burnee, amount)](#ZetaNonEth-Burnt-address-uint256-)
+
+* [Transfer(from, to, value)](#IERC20-Transfer-address-address-uint256-)
+* [Approval(owner, spender, value)](#IERC20-Approval-address-address-uint256-)
+
+### Error List
+
+* [CallerIsNotTss(caller)](#ZetaErrors-CallerIsNotTss-address-)
+* [CallerIsNotConnector(caller)](#ZetaErrors-CallerIsNotConnector-address-)
+* [CallerIsNotTssUpdater(caller)](#ZetaErrors-CallerIsNotTssUpdater-address-)
+* [CallerIsNotTssOrUpdater(caller)](#ZetaErrors-CallerIsNotTssOrUpdater-address-)
+* [InvalidAddress()](#ZetaErrors-InvalidAddress--)
+* [ZetaTransferError()](#ZetaErrors-ZetaTransferError--)
+
+### Modifiers
+
+### Functions
+
+```
+constructor(address tssAddress_, address tssAddressUpdater_) (public function)
 ```
 
-_Collectively held by Zeta blockchain validators_
+<a name="ZetaNonEth-constructor-address-address-"></a>
 
-### tssAddressUpdater
-
-```solidity
-address tssAddressUpdater
+```
+updateTssAndConnectorAddresses(address tssAddress_, address connectorAddress_) (external function)
 ```
 
-_Initially a multi-sig, eventually held by Zeta blockchain validators (via renounceTssAddressUpdater)_
+<a name="ZetaNonEth-updateTssAndConnectorAddresses-address-address-"></a>
 
-### Minted
-
-```solidity
-event Minted(address mintee, uint256 amount, bytes32 internalSendHash)
+```
+renounceTssAddressUpdater() (external function)
 ```
 
-### Burnt
+<a name="ZetaNonEth-renounceTssAddressUpdater--"></a>
 
-```solidity
-event Burnt(address burnee, uint256 amount)
+Sets tssAddressUpdater to be tssAddress
+
+```
+mint(address mintee, uint256 value, bytes32 internalSendHash) (external function)
 ```
 
-### constructor
+<a name="ZetaNonEth-mint-address-uint256-bytes32-"></a>
 
-```solidity
-constructor(address tssAddress_, address tssAddressUpdater_) public
+```
+burnFrom(address account, uint256 amount) (public function)
 ```
 
-### updateTssAndConnectorAddresses
+<a name="ZetaNonEth-burnFrom-address-uint256-"></a>
 
-```solidity
-function updateTssAndConnectorAddresses(address tssAddress_, address connectorAddress_) external
+### Events
+
+```
+Minted(address indexed mintee, uint256 amount, bytes32 indexed internalSendHash) (event)
 ```
 
-### renounceTssAddressUpdater
+<a name="ZetaNonEth-Minted-address-uint256-bytes32-"></a>
 
-```solidity
-function renounceTssAddressUpdater() external
+```
+Burnt(address indexed burnee, uint256 amount) (event)
 ```
 
-_Sets tssAddressUpdater to be tssAddress_
+<a name="ZetaNonEth-Burnt-address-uint256-"></a>
 
-### mint
-
-```solidity
-function mint(address mintee, uint256 value, bytes32 internalSendHash) external
+```
+Transfer(address indexed from, address indexed to, uint256 value) (event)
 ```
 
-### burnFrom
+<a name="IERC20-Transfer-address-address-uint256-"></a>
 
-```solidity
-function burnFrom(address account, uint256 amount) public
+Emitted when `value` tokens are moved from one account (`from`) to
+another (`to`).
+
+Note that `value` may be zero.
+
 ```
+Approval(address indexed owner, address indexed spender, uint256 value) (event)
+```
+
+<a name="IERC20-Approval-address-address-uint256-"></a>
+
+Emitted when the allowance of a `spender` for an `owner` is set by
+a call to {approve}. `value` is the new allowance.
+
+### Errors
+
+```
+CallerIsNotTss(address caller) (error)
+```
+
+<a name="ZetaErrors-CallerIsNotTss-address-"></a>
+
+```
+CallerIsNotConnector(address caller) (error)
+```
+
+<a name="ZetaErrors-CallerIsNotConnector-address-"></a>
+
+```
+CallerIsNotTssUpdater(address caller) (error)
+```
+
+<a name="ZetaErrors-CallerIsNotTssUpdater-address-"></a>
+
+```
+CallerIsNotTssOrUpdater(address caller) (error)
+```
+
+<a name="ZetaErrors-CallerIsNotTssOrUpdater-address-"></a>
+
+```
+InvalidAddress() (error)
+```
+
+<a name="ZetaErrors-InvalidAddress--"></a>
+
+```
+ZetaTransferError() (error)
+```
+
+<a name="ZetaErrors-ZetaTransferError--"></a>
 

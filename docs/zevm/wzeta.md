@@ -1,100 +1,97 @@
-# zevm/wzeta.md
-
 ## WETH9
 
-### name
-
 ```solidity
-string storage pointer name
+import "@zetachain/protocol-contracts/contracts/zevm/wzeta.sol";
 ```
 
-### symbol
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/wzeta.sol
 
-```solidity
-string storage pointer symbol
+### Function List
+
+* [()](#WETH9-undefined--)
+* [deposit()](#WETH9-deposit--)
+* [withdraw(wad)](#WETH9-withdraw-uint256-)
+* [totalSupply()](#WETH9-totalSupply--)
+* [approve(guy, wad)](#WETH9-approve-address-uint256-)
+* [transfer(dst, wad)](#WETH9-transfer-address-uint256-)
+* [transferFrom(src, dst, wad)](#WETH9-transferFrom-address-address-uint256-)
+
+### Event List
+
+* [Approval(src, guy, wad)](#WETH9-Approval-address-address-uint256-)
+* [Transfer(src, dst, wad)](#WETH9-Transfer-address-address-uint256-)
+* [Deposit(dst, wad)](#WETH9-Deposit-address-uint256-)
+* [Withdrawal(src, wad)](#WETH9-Withdrawal-address-uint256-)
+
+### Modifiers
+
+### Functions
+
+```
+() (public function)
 ```
 
-### decimals
+<a name="WETH9-undefined--"></a>
 
-```solidity
-uint8 decimals
+```
+deposit() (public function)
 ```
 
-### Approval
+<a name="WETH9-deposit--"></a>
 
-```solidity
-event Approval(address src, address guy, uint256 wad)
+```
+withdraw(uint256 wad) (public function)
 ```
 
-### Transfer
+<a name="WETH9-withdraw-uint256-"></a>
 
-```solidity
-event Transfer(address src, address dst, uint256 wad)
+```
+totalSupply() → uint256 (public function)
 ```
 
-### Deposit
+<a name="WETH9-totalSupply--"></a>
 
-```solidity
-event Deposit(address dst, uint256 wad)
+```
+approve(address guy, uint256 wad) → bool (public function)
 ```
 
-### Withdrawal
+<a name="WETH9-approve-address-uint256-"></a>
 
-```solidity
-event Withdrawal(address src, uint256 wad)
+```
+transfer(address dst, uint256 wad) → bool (public function)
 ```
 
-### balanceOf
+<a name="WETH9-transfer-address-uint256-"></a>
 
-```solidity
-mapping(address => uint256) balanceOf
+```
+transferFrom(address src, address dst, uint256 wad) → bool (public function)
 ```
 
-### allowance
+<a name="WETH9-transferFrom-address-address-uint256-"></a>
 
-```solidity
-mapping(address => mapping(address => uint256)) allowance
+### Events
+
+```
+Approval(address indexed src, address indexed guy, uint256 wad) (event)
 ```
 
-### 
+<a name="WETH9-Approval-address-address-uint256-"></a>
 
-```solidity
-undefined() public payable
+```
+Transfer(address indexed src, address indexed dst, uint256 wad) (event)
 ```
 
-### deposit
+<a name="WETH9-Transfer-address-address-uint256-"></a>
 
-```solidity
-undefined() public payable
+```
+Deposit(address indexed dst, uint256 wad) (event)
 ```
 
-### withdraw
+<a name="WETH9-Deposit-address-uint256-"></a>
 
-```solidity
-undefined(uint256 wad) public
+```
+Withdrawal(address indexed src, uint256 wad) (event)
 ```
 
-### totalSupply
-
-```solidity
-undefined() public view returns (uint256)
-```
-
-### approve
-
-```solidity
-undefined(address guy, uint256 wad) public returns (bool)
-```
-
-### transfer
-
-```solidity
-undefined(address dst, uint256 wad) public returns (bool)
-```
-
-### transferFrom
-
-```solidity
-undefined(address src, address dst, uint256 wad) public returns (bool)
-```
+<a name="WETH9-Withdrawal-address-uint256-"></a>
 

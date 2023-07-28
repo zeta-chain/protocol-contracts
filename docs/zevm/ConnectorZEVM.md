@@ -1,154 +1,140 @@
-# zevm/ConnectorZEVM.md
-
 ## ZetaInterfaces
 
-### SendInput
-
 ```solidity
-struct SendInput {
-  uint256 destinationChainId;
-  bytes destinationAddress;
-  uint256 destinationGasLimit;
-  bytes message;
-  uint256 zetaValueAndGas;
-  bytes zetaParams;
-}
+import "@zetachain/protocol-contracts/contracts/zevm/ConnectorZEVM.sol";
 ```
 
-### ZetaMessage
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/ConnectorZEVM.sol
 
-```solidity
-struct ZetaMessage {
-  bytes zetaTxSenderAddress;
-  uint256 sourceChainId;
-  address destinationAddress;
-  uint256 zetaValue;
-  bytes message;
-}
-```
-
-### ZetaRevert
-
-```solidity
-struct ZetaRevert {
-  address zetaTxSenderAddress;
-  uint256 sourceChainId;
-  bytes destinationAddress;
-  uint256 destinationChainId;
-  uint256 remainingZetaValue;
-  bytes message;
-}
-```
+### Modifiers
 
 ## WZETA
 
-### transferFrom
-
 ```solidity
-function transferFrom(address src, address dst, uint256 wad) external returns (bool)
+import "@zetachain/protocol-contracts/contracts/zevm/ConnectorZEVM.sol";
 ```
 
-### withdraw
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/ConnectorZEVM.sol
 
-```solidity
-function withdraw(uint256 wad) external
+### Function List
+
+* [transferFrom(src, dst, wad)](#WZETA-transferFrom-address-address-uint256-)
+* [withdraw(wad)](#WZETA-withdraw-uint256-)
+
+### Modifiers
+
+### Functions
+
 ```
+transferFrom(address src, address dst, uint256 wad) → bool (external function)
+```
+
+<a name="WZETA-transferFrom-address-address-uint256-"></a>
+
+```
+withdraw(uint256 wad) (external function)
+```
+
+<a name="WZETA-withdraw-uint256-"></a>
 
 ## ZetaConnectorZEVM
 
-### OnlyWZETA
-
 ```solidity
-error OnlyWZETA()
+import "@zetachain/protocol-contracts/contracts/zevm/ConnectorZEVM.sol";
 ```
 
-Contract custom errors.
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/ConnectorZEVM.sol
 
-### WZETATransferFailed
+### Function List
 
-```solidity
-error WZETATransferFailed()
+* [constructor(_wzeta)](#ZetaConnectorZEVM-constructor-address-)
+* [receive()](#ZetaConnectorZEVM-receive--)
+* [send(input)](#ZetaConnectorZEVM-send-struct-ZetaInterfaces-SendInput-)
+* [setWzetaAddress(wzeta_)](#ZetaConnectorZEVM-setWzetaAddress-address-)
+
+### Event List
+
+* [ZetaSent(sourceTxOriginAddress, zetaTxSenderAddress, destinationChainId, destinationAddress, zetaValueAndGas, destinationGasLimit, message, zetaParams)](#ZetaConnectorZEVM-ZetaSent-address-address-uint256-bytes-uint256-uint256-bytes-bytes-)
+* [SetWZETA(wzeta_)](#ZetaConnectorZEVM-SetWZETA-address-)
+
+### Error List
+
+* [OnlyWZETA()](#ZetaConnectorZEVM-OnlyWZETA--)
+* [WZETATransferFailed()](#ZetaConnectorZEVM-WZETATransferFailed--)
+* [OnlyFungibleModule()](#ZetaConnectorZEVM-OnlyFungibleModule--)
+* [FailedZetaSent()](#ZetaConnectorZEVM-FailedZetaSent--)
+
+### Modifiers
+
+### Functions
+
+```
+constructor(address _wzeta) (public function)
 ```
 
-### OnlyFungibleModule
+<a name="ZetaConnectorZEVM-constructor-address-"></a>
 
-```solidity
-error OnlyFungibleModule()
+```
+receive() (external function)
 ```
 
-### FailedZetaSent
+<a name="ZetaConnectorZEVM-receive--"></a>
 
-```solidity
-error FailedZetaSent()
+Receive function to receive ZETA from WETH9.withdraw().
+
+```
+send(struct ZetaInterfaces.SendInput input) (external function)
 ```
 
-### FUNGIBLE_MODULE_ADDRESS
+<a name="ZetaConnectorZEVM-send-struct-ZetaInterfaces-SendInput-"></a>
 
-```solidity
-address FUNGIBLE_MODULE_ADDRESS
+Sends ZETA and bytes messages (to execute it) crosschain.
+
+```
+setWzetaAddress(address wzeta_) (external function)
 ```
 
-Fungible module address.
+<a name="ZetaConnectorZEVM-setWzetaAddress-address-"></a>
 
-### wzeta
+Sends ZETA and bytes messages (to execute it) crosschain.
 
-```solidity
-address wzeta
+### Events
+
+```
+ZetaSent(address sourceTxOriginAddress, address indexed zetaTxSenderAddress, uint256 indexed destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams) (event)
 ```
 
-WZETA token address.
+<a name="ZetaConnectorZEVM-ZetaSent-address-address-uint256-bytes-uint256-uint256-bytes-bytes-"></a>
 
-### ZetaSent
-
-```solidity
-event ZetaSent(address sourceTxOriginAddress, address zetaTxSenderAddress, uint256 destinationChainId, bytes destinationAddress, uint256 zetaValueAndGas, uint256 destinationGasLimit, bytes message, bytes zetaParams)
+```
+SetWZETA(address wzeta_) (event)
 ```
 
-### SetWZETA
+<a name="ZetaConnectorZEVM-SetWZETA-address-"></a>
 
-```solidity
-event SetWZETA(address wzeta_)
+### Errors
+
+```
+OnlyWZETA() (error)
 ```
 
-### constructor
+<a name="ZetaConnectorZEVM-OnlyWZETA--"></a>
 
-```solidity
-constructor(address _wzeta) public
+```
+WZETATransferFailed() (error)
 ```
 
-### receive
+<a name="ZetaConnectorZEVM-WZETATransferFailed--"></a>
 
-```solidity
-receive() external payable
+```
+OnlyFungibleModule() (error)
 ```
 
-_Receive function to receive ZETA from WETH9.withdraw()._
+<a name="ZetaConnectorZEVM-OnlyFungibleModule--"></a>
 
-### send
-
-```solidity
-function send(struct ZetaInterfaces.SendInput input) external
+```
+FailedZetaSent() (error)
 ```
 
-_Sends ZETA and bytes messages (to execute it) crosschain._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| input | struct ZetaInterfaces.SendInput |  |
-
-### setWzetaAddress
-
-```solidity
-function setWzetaAddress(address wzeta_) external
-```
-
-_Sends ZETA and bytes messages (to execute it) crosschain._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| wzeta_ | address |  |
+<a name="ZetaConnectorZEVM-FailedZetaSent--"></a>
 

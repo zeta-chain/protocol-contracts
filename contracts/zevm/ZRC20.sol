@@ -16,21 +16,6 @@ interface ZRC20Errors {
     error LowBalance();
     error ZeroAddress();
 }
-/**
-ZRC-20 is a token standard integrated into ZetaChain's omnichain smart contract
-platform. With ZRC-20, developers can build dApps that orchestrate native assets
-on any connected chain. This makes building Omnichain DeFi protocols and dApps
-such as Omnichain DEXs, Omnichain Lending, Omnichain Portfolio Management, and
-anything else that involves fungible tokens on multiple chains from a single
-place extremely simple — as if they were all on a single chain.
-
-At a high-level, ZRC-20 tokens are an extension of the standard ERC-20 tokens
-found in the Ethereum ecosystem, ZRC-20 tokens have the added ability to manage
-assets on all ZetaChain-connected chains. Any fungible token, including Bitcoin,
-Dogecoin, ERC-20-equivalents on other chains, gas assets on other chains, and so
-on, may be represented on ZetaChain as a ZRC-20 and orchestrated as if it were
-any other fungible token (like an ERC-20).
-*/
 
 contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice The fungible module address, this is maintained at the protocol level and is always constant

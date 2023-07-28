@@ -1,300 +1,254 @@
-# evm/ERC20Custody.md
-
 ## ERC20Custody
 
-ERC20Custody for depositing ERC20 assets into ZetaChain and making operations with them.
-
-### NotWhitelisted
-
 ```solidity
-error NotWhitelisted()
+import "@zetachain/protocol-contracts/contracts/evm/ERC20Custody.sol";
 ```
 
-### NotPaused
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/ERC20Custody.sol
 
-```solidity
-error NotPaused()
+### Modifier List
+
+* [onlyTSS()](#ERC20Custody-onlyTSS--)
+* [onlyTSSUpdater()](#ERC20Custody-onlyTSSUpdater--)
+
+### Function List
+
+* [constructor(TSSAddress_, TSSAddressUpdater_, zetaFee_, zetaMaxFee_, zeta_)](#ERC20Custody-constructor-address-address-uint256-uint256-contract-IERC20-)
+* [updateTSSAddress(TSSAddress_)](#ERC20Custody-updateTSSAddress-address-)
+* [updateZetaFee(zetaFee_)](#ERC20Custody-updateZetaFee-uint256-)
+* [renounceTSSAddressUpdater()](#ERC20Custody-renounceTSSAddressUpdater--)
+* [pause()](#ERC20Custody-pause--)
+* [unpause()](#ERC20Custody-unpause--)
+* [whitelist(asset)](#ERC20Custody-whitelist-contract-IERC20-)
+* [unwhitelist(asset)](#ERC20Custody-unwhitelist-contract-IERC20-)
+* [deposit(recipient, asset, amount, message)](#ERC20Custody-deposit-bytes-contract-IERC20-uint256-bytes-)
+* [withdraw(recipient, asset, amount)](#ERC20Custody-withdraw-address-contract-IERC20-uint256-)
+
+### Event List
+
+* [Paused(sender)](#ERC20Custody-Paused-address-)
+* [Unpaused(sender)](#ERC20Custody-Unpaused-address-)
+* [Whitelisted(asset)](#ERC20Custody-Whitelisted-contract-IERC20-)
+* [Unwhitelisted(asset)](#ERC20Custody-Unwhitelisted-contract-IERC20-)
+* [Deposited(recipient, asset, amount, message)](#ERC20Custody-Deposited-bytes-contract-IERC20-uint256-bytes-)
+* [Withdrawn(recipient, asset, amount)](#ERC20Custody-Withdrawn-address-contract-IERC20-uint256-)
+* [RenouncedTSSUpdater(TSSAddressUpdater_)](#ERC20Custody-RenouncedTSSUpdater-address-)
+* [UpdatedTSSAddress(TSSAddress_)](#ERC20Custody-UpdatedTSSAddress-address-)
+* [UpdatedZetaFee(zetaFee_)](#ERC20Custody-UpdatedZetaFee-uint256-)
+
+### Error List
+
+* [NotWhitelisted()](#ERC20Custody-NotWhitelisted--)
+* [NotPaused()](#ERC20Custody-NotPaused--)
+* [InvalidSender()](#ERC20Custody-InvalidSender--)
+* [InvalidTSSUpdater()](#ERC20Custody-InvalidTSSUpdater--)
+* [ZeroAddress()](#ERC20Custody-ZeroAddress--)
+* [IsPaused()](#ERC20Custody-IsPaused--)
+* [ZetaMaxFeeExceeded()](#ERC20Custody-ZetaMaxFeeExceeded--)
+* [ZeroFee()](#ERC20Custody-ZeroFee--)
+
+### Modifiers
+
+```
+onlyTSS() (modifier)
 ```
 
-### InvalidSender
+<a name="ERC20Custody-onlyTSS--"></a>
 
-```solidity
-error InvalidSender()
+Only TSS address allowed modifier.
+
+```
+onlyTSSUpdater() (modifier)
 ```
 
-### InvalidTSSUpdater
+<a name="ERC20Custody-onlyTSSUpdater--"></a>
 
-```solidity
-error InvalidTSSUpdater()
+Only TSS address updater allowed modifier.
+
+### Functions
+
+```
+constructor(address TSSAddress_, address TSSAddressUpdater_, uint256 zetaFee_, uint256 zetaMaxFee_, contract IERC20 zeta_) (public function)
 ```
 
-### ZeroAddress
+<a name="ERC20Custody-constructor-address-address-uint256-uint256-contract-IERC20-"></a>
 
-```solidity
-error ZeroAddress()
+```
+updateTSSAddress(address TSSAddress_) (external function)
 ```
 
-### IsPaused
+<a name="ERC20Custody-updateTSSAddress-address-"></a>
 
-```solidity
-error IsPaused()
+Update the TSSAddress in case of Zeta blockchain validator nodes churn.
+
+```
+updateZetaFee(uint256 zetaFee_) (external function)
 ```
 
-### ZetaMaxFeeExceeded
+<a name="ERC20Custody-updateZetaFee-uint256-"></a>
 
-```solidity
-error ZetaMaxFeeExceeded()
+Update zeta fee
+
+```
+renounceTSSAddressUpdater() (external function)
 ```
 
-### ZeroFee
+<a name="ERC20Custody-renounceTSSAddressUpdater--"></a>
 
-```solidity
-error ZeroFee()
+Change the ownership of TSSAddressUpdater to the Zeta blockchain TSS nodes.
+Effectively, only Zeta blockchain validators collectively can update TSSAddress afterwards.
+
+```
+pause() (external function)
 ```
 
-### paused
+<a name="ERC20Custody-pause--"></a>
 
-```solidity
-bool paused
+Pause custody operations.
+
+```
+unpause() (external function)
 ```
 
-If custody operations are paused.
+<a name="ERC20Custody-unpause--"></a>
 
-### TSSAddress
+Unpause custody operations.
 
-```solidity
-address TSSAddress
+```
+whitelist(contract IERC20 asset) (external function)
 ```
 
-TSSAddress is the TSS address collectively possessed by Zeta blockchain validators.
+<a name="ERC20Custody-whitelist-contract-IERC20-"></a>
 
-### TSSAddressUpdater
+Whitelist asset.
 
-```solidity
-address TSSAddressUpdater
+```
+unwhitelist(contract IERC20 asset) (external function)
 ```
 
-Threshold Signature Scheme (TSS) [GG20] is a multi-sig ECDSA/EdDSA protocol.
+<a name="ERC20Custody-unwhitelist-contract-IERC20-"></a>
 
-### zetaFee
+Unwhitelist asset.
 
-```solidity
-uint256 zetaFee
+```
+deposit(bytes recipient, contract IERC20 asset, uint256 amount, bytes message) (external function)
 ```
 
-Current zeta fee for depositing funds into ZetaChain.
+<a name="ERC20Custody-deposit-bytes-contract-IERC20-uint256-bytes-"></a>
 
-### zetaMaxFee
+Deposit asset amount to recipient with message that encodes additional zetachain evm call or message.
 
-```solidity
-uint256 zetaMaxFee
+```
+withdraw(address recipient, contract IERC20 asset, uint256 amount) (external function)
 ```
 
-Maximum zeta fee for transaction.
+<a name="ERC20Custody-withdraw-address-contract-IERC20-uint256-"></a>
 
-### zeta
+Withdraw asset amount to recipient by custody TSS owner.
 
-```solidity
-contract IERC20 zeta
+### Events
+
+```
+Paused(address sender) (event)
 ```
 
-Zeta ERC20 token .
+<a name="ERC20Custody-Paused-address-"></a>
 
-### whitelisted
-
-```solidity
-mapping(contract IERC20 => bool) whitelisted
+```
+Unpaused(address sender) (event)
 ```
 
-Mapping of whitelisted token => true/false.
+<a name="ERC20Custody-Unpaused-address-"></a>
 
-### Paused
-
-```solidity
-event Paused(address sender)
+```
+Whitelisted(contract IERC20 indexed asset) (event)
 ```
 
-### Unpaused
+<a name="ERC20Custody-Whitelisted-contract-IERC20-"></a>
 
-```solidity
-event Unpaused(address sender)
+```
+Unwhitelisted(contract IERC20 indexed asset) (event)
 ```
 
-### Whitelisted
+<a name="ERC20Custody-Unwhitelisted-contract-IERC20-"></a>
 
-```solidity
-event Whitelisted(contract IERC20 asset)
+```
+Deposited(bytes recipient, contract IERC20 indexed asset, uint256 amount, bytes message) (event)
 ```
 
-### Unwhitelisted
+<a name="ERC20Custody-Deposited-bytes-contract-IERC20-uint256-bytes-"></a>
 
-```solidity
-event Unwhitelisted(contract IERC20 asset)
+```
+Withdrawn(address indexed recipient, contract IERC20 indexed asset, uint256 amount) (event)
 ```
 
-### Deposited
+<a name="ERC20Custody-Withdrawn-address-contract-IERC20-uint256-"></a>
 
-```solidity
-event Deposited(bytes recipient, contract IERC20 asset, uint256 amount, bytes message)
+```
+RenouncedTSSUpdater(address TSSAddressUpdater_) (event)
 ```
 
-### Withdrawn
+<a name="ERC20Custody-RenouncedTSSUpdater-address-"></a>
 
-```solidity
-event Withdrawn(address recipient, contract IERC20 asset, uint256 amount)
+```
+UpdatedTSSAddress(address TSSAddress_) (event)
 ```
 
-### RenouncedTSSUpdater
+<a name="ERC20Custody-UpdatedTSSAddress-address-"></a>
 
-```solidity
-event RenouncedTSSUpdater(address TSSAddressUpdater_)
+```
+UpdatedZetaFee(uint256 zetaFee_) (event)
 ```
 
-### UpdatedTSSAddress
+<a name="ERC20Custody-UpdatedZetaFee-uint256-"></a>
 
-```solidity
-event UpdatedTSSAddress(address TSSAddress_)
+### Errors
+
+```
+NotWhitelisted() (error)
 ```
 
-### UpdatedZetaFee
+<a name="ERC20Custody-NotWhitelisted--"></a>
 
-```solidity
-event UpdatedZetaFee(uint256 zetaFee_)
+```
+NotPaused() (error)
 ```
 
-### onlyTSS
+<a name="ERC20Custody-NotPaused--"></a>
 
-```solidity
-modifier onlyTSS()
+```
+InvalidSender() (error)
 ```
 
-_Only TSS address allowed modifier._
+<a name="ERC20Custody-InvalidSender--"></a>
 
-### onlyTSSUpdater
-
-```solidity
-modifier onlyTSSUpdater()
+```
+InvalidTSSUpdater() (error)
 ```
 
-_Only TSS address updater allowed modifier._
+<a name="ERC20Custody-InvalidTSSUpdater--"></a>
 
-### constructor
-
-```solidity
-constructor(address TSSAddress_, address TSSAddressUpdater_, uint256 zetaFee_, uint256 zetaMaxFee_, contract IERC20 zeta_) public
+```
+ZeroAddress() (error)
 ```
 
-### updateTSSAddress
+<a name="ERC20Custody-ZeroAddress--"></a>
 
-```solidity
-function updateTSSAddress(address TSSAddress_) external
+```
+IsPaused() (error)
 ```
 
-_Update the TSSAddress in case of Zeta blockchain validator nodes churn._
+<a name="ERC20Custody-IsPaused--"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| TSSAddress_ | address |  |
-
-### updateZetaFee
-
-```solidity
-function updateZetaFee(uint256 zetaFee_) external
+```
+ZetaMaxFeeExceeded() (error)
 ```
 
-_Update zeta fee_
+<a name="ERC20Custody-ZetaMaxFeeExceeded--"></a>
 
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| zetaFee_ | uint256 |  |
-
-### renounceTSSAddressUpdater
-
-```solidity
-function renounceTSSAddressUpdater() external
+```
+ZeroFee() (error)
 ```
 
-_Change the ownership of TSSAddressUpdater to the Zeta blockchain TSS nodes.
-Effectively, only Zeta blockchain validators collectively can update TSSAddress afterwards._
-
-### pause
-
-```solidity
-function pause() external
-```
-
-_Pause custody operations._
-
-### unpause
-
-```solidity
-function unpause() external
-```
-
-_Unpause custody operations._
-
-### whitelist
-
-```solidity
-function whitelist(contract IERC20 asset) external
-```
-
-_Whitelist asset._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| asset | contract IERC20 |  |
-
-### unwhitelist
-
-```solidity
-function unwhitelist(contract IERC20 asset) external
-```
-
-_Unwhitelist asset._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| asset | contract IERC20 |  |
-
-### deposit
-
-```solidity
-function deposit(bytes recipient, contract IERC20 asset, uint256 amount, bytes message) external
-```
-
-_Deposit asset amount to recipient with message that encodes additional zetachain evm call or message._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| recipient | bytes | address. |
-| asset | contract IERC20 | amount. |
-| amount | uint256 |  |
-| message | bytes |  |
-
-### withdraw
-
-```solidity
-function withdraw(address recipient, contract IERC20 asset, uint256 amount) external
-```
-
-_Withdraw asset amount to recipient by custody TSS owner._
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| recipient | address | address. |
-| asset | contract IERC20 | amount. |
-| amount | uint256 |  |
+<a name="ERC20Custody-ZeroFee--"></a>
 

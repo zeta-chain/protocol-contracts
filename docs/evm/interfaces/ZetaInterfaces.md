@@ -1,136 +1,173 @@
-# evm/interfaces/ZetaInterfaces.md
-
 ## ZetaInterfaces
 
-### SendInput
-
 ```solidity
-struct SendInput {
-  uint256 destinationChainId;
-  bytes destinationAddress;
-  uint256 destinationGasLimit;
-  bytes message;
-  uint256 zetaValueAndGas;
-  bytes zetaParams;
-}
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.sol";
 ```
 
-### ZetaMessage
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaInterfaces.sol
 
-```solidity
-struct ZetaMessage {
-  bytes zetaTxSenderAddress;
-  uint256 sourceChainId;
-  address destinationAddress;
-  uint256 zetaValue;
-  bytes message;
-}
-```
-
-### ZetaRevert
-
-```solidity
-struct ZetaRevert {
-  address zetaTxSenderAddress;
-  uint256 sourceChainId;
-  bytes destinationAddress;
-  uint256 destinationChainId;
-  uint256 remainingZetaValue;
-  bytes message;
-}
-```
+### Modifiers
 
 ## ZetaConnector
 
-### send
-
 ```solidity
-function send(struct ZetaInterfaces.SendInput input) external
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.sol";
 ```
 
-_Sending value and data cross-chain is as easy as calling connector.send(SendInput)_
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaInterfaces.sol
+
+### Function List
+
+* [send(input)](#ZetaConnector-send-struct-ZetaInterfaces-SendInput-)
+
+### Modifiers
+
+### Functions
+
+```
+send(struct ZetaInterfaces.SendInput input) (external function)
+```
+
+<a name="ZetaConnector-send-struct-ZetaInterfaces-SendInput-"></a>
+
+Sending value and data cross-chain is as easy as calling connector.send(SendInput)
 
 ## ZetaReceiver
 
-### onZetaMessage
-
 ```solidity
-function onZetaMessage(struct ZetaInterfaces.ZetaMessage zetaMessage) external
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.sol";
 ```
 
-_onZetaMessage is called when a cross-chain message reaches a contract_
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaInterfaces.sol
 
-### onZetaRevert
+### Function List
 
-```solidity
-function onZetaRevert(struct ZetaInterfaces.ZetaRevert zetaRevert) external
+* [onZetaMessage(zetaMessage)](#ZetaReceiver-onZetaMessage-struct-ZetaInterfaces-ZetaMessage-)
+* [onZetaRevert(zetaRevert)](#ZetaReceiver-onZetaRevert-struct-ZetaInterfaces-ZetaRevert-)
+
+### Modifiers
+
+### Functions
+
+```
+onZetaMessage(struct ZetaInterfaces.ZetaMessage zetaMessage) (external function)
 ```
 
-_onZetaRevert is called when a cross-chain message reverts.
-It's useful to rollback to the original state_
+<a name="ZetaReceiver-onZetaMessage-struct-ZetaInterfaces-ZetaMessage-"></a>
+
+onZetaMessage is called when a cross-chain message reaches a contract
+
+```
+onZetaRevert(struct ZetaInterfaces.ZetaRevert zetaRevert) (external function)
+```
+
+<a name="ZetaReceiver-onZetaRevert-struct-ZetaInterfaces-ZetaRevert-"></a>
+
+onZetaRevert is called when a cross-chain message reverts.
+It's useful to rollback to the original state
 
 ## ZetaTokenConsumer
 
-_ZetaTokenConsumer makes it easier to handle the following situations:
+```solidity
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.sol";
+```
+
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaInterfaces.sol
+
+ZetaTokenConsumer makes it easier to handle the following situations:
   - Getting Zeta using native coin (to pay for destination gas while using `connector.send`)
   - Getting Zeta using a token (to pay for destination gas while using `connector.send`)
   - Getting native coin using Zeta (to return unused destination gas when `onZetaRevert` is executed)
   - Getting a token using Zeta (to return unused destination gas when `onZetaRevert` is executed)
-The interface can be implemented using different strategies, like UniswapV2, UniswapV3, etc_
+The interface can be implemented using different strategies, like UniswapV2, UniswapV3, etc
 
-### EthExchangedForZeta
+### Function List
 
-```solidity
-event EthExchangedForZeta(uint256 amountIn, uint256 amountOut)
+* [getZetaFromEth(destinationAddress, minAmountOut)](#ZetaTokenConsumer-getZetaFromEth-address-uint256-)
+* [getZetaFromToken(destinationAddress, minAmountOut, inputToken, inputTokenAmount)](#ZetaTokenConsumer-getZetaFromToken-address-uint256-address-uint256-)
+* [getEthFromZeta(destinationAddress, minAmountOut, zetaTokenAmount)](#ZetaTokenConsumer-getEthFromZeta-address-uint256-uint256-)
+* [getTokenFromZeta(destinationAddress, minAmountOut, outputToken, zetaTokenAmount)](#ZetaTokenConsumer-getTokenFromZeta-address-uint256-address-uint256-)
+
+### Event List
+
+* [EthExchangedForZeta(amountIn, amountOut)](#ZetaTokenConsumer-EthExchangedForZeta-uint256-uint256-)
+* [TokenExchangedForZeta(token, amountIn, amountOut)](#ZetaTokenConsumer-TokenExchangedForZeta-address-uint256-uint256-)
+* [ZetaExchangedForEth(amountIn, amountOut)](#ZetaTokenConsumer-ZetaExchangedForEth-uint256-uint256-)
+* [ZetaExchangedForToken(token, amountIn, amountOut)](#ZetaTokenConsumer-ZetaExchangedForToken-address-uint256-uint256-)
+
+### Modifiers
+
+### Functions
+
+```
+getZetaFromEth(address destinationAddress, uint256 minAmountOut) → uint256 (external function)
 ```
 
-### TokenExchangedForZeta
+<a name="ZetaTokenConsumer-getZetaFromEth-address-uint256-"></a>
 
-```solidity
-event TokenExchangedForZeta(address token, uint256 amountIn, uint256 amountOut)
+```
+getZetaFromToken(address destinationAddress, uint256 minAmountOut, address inputToken, uint256 inputTokenAmount) → uint256 (external function)
 ```
 
-### ZetaExchangedForEth
+<a name="ZetaTokenConsumer-getZetaFromToken-address-uint256-address-uint256-"></a>
 
-```solidity
-event ZetaExchangedForEth(uint256 amountIn, uint256 amountOut)
+```
+getEthFromZeta(address destinationAddress, uint256 minAmountOut, uint256 zetaTokenAmount) → uint256 (external function)
 ```
 
-### ZetaExchangedForToken
+<a name="ZetaTokenConsumer-getEthFromZeta-address-uint256-uint256-"></a>
 
-```solidity
-event ZetaExchangedForToken(address token, uint256 amountIn, uint256 amountOut)
+```
+getTokenFromZeta(address destinationAddress, uint256 minAmountOut, address outputToken, uint256 zetaTokenAmount) → uint256 (external function)
 ```
 
-### getZetaFromEth
+<a name="ZetaTokenConsumer-getTokenFromZeta-address-uint256-address-uint256-"></a>
 
-```solidity
-function getZetaFromEth(address destinationAddress, uint256 minAmountOut) external payable returns (uint256)
+### Events
+
+```
+EthExchangedForZeta(uint256 amountIn, uint256 amountOut) (event)
 ```
 
-### getZetaFromToken
+<a name="ZetaTokenConsumer-EthExchangedForZeta-uint256-uint256-"></a>
 
-```solidity
-function getZetaFromToken(address destinationAddress, uint256 minAmountOut, address inputToken, uint256 inputTokenAmount) external returns (uint256)
+```
+TokenExchangedForZeta(address token, uint256 amountIn, uint256 amountOut) (event)
 ```
 
-### getEthFromZeta
+<a name="ZetaTokenConsumer-TokenExchangedForZeta-address-uint256-uint256-"></a>
 
-```solidity
-function getEthFromZeta(address destinationAddress, uint256 minAmountOut, uint256 zetaTokenAmount) external returns (uint256)
+```
+ZetaExchangedForEth(uint256 amountIn, uint256 amountOut) (event)
 ```
 
-### getTokenFromZeta
+<a name="ZetaTokenConsumer-ZetaExchangedForEth-uint256-uint256-"></a>
 
-```solidity
-function getTokenFromZeta(address destinationAddress, uint256 minAmountOut, address outputToken, uint256 zetaTokenAmount) external returns (uint256)
 ```
+ZetaExchangedForToken(address token, uint256 amountIn, uint256 amountOut) (event)
+```
+
+<a name="ZetaTokenConsumer-ZetaExchangedForToken-address-uint256-uint256-"></a>
 
 ## ZetaCommonErrors
 
-### InvalidAddress
-
 ```solidity
-error InvalidAddress()
+import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.sol";
 ```
+
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/interfaces/ZetaInterfaces.sol
+
+### Error List
+
+* [InvalidAddress()](#ZetaCommonErrors-InvalidAddress--)
+
+### Modifiers
+
+### Errors
+
+```
+InvalidAddress() (error)
+```
+
+<a name="ZetaCommonErrors-InvalidAddress--"></a>
 
