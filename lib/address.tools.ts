@@ -7,6 +7,7 @@ export const addresses = JSON.parse(
 
 export declare type ZetaProtocolAddress =
   | "connector"
+  | "erc20Custody"
   | "immutableCreate2Factory"
   | "tss"
   | "tssUpdater"
@@ -16,6 +17,7 @@ export declare type ZetaProtocolAddress =
 
 export const zetaProtocolAddress: ZetaProtocolAddress[] = [
   "connector",
+  "erc20Custody",
   "immutableCreate2Factory",
   "tss",
   "tssUpdater",
@@ -26,7 +28,13 @@ export const zetaProtocolAddress: ZetaProtocolAddress[] = [
 export const isZetaProtocolAddress = (str: string): str is ZetaProtocolAddress =>
   zetaProtocolAddress.includes(str as ZetaProtocolAddress);
 
-export declare type ZetaZEVMAddress = "geth" | "systemContract" | "tbnb" | "tmatic";
+export declare type ZetaZEVMAddress =
+  | "fungibleModule"
+  | "systemContract"
+  | "uniswapv2Factory"
+  | "uniswapv2Router02"
+  | "zrc20";
+
 export declare type ZetaProtocolTestNetwork =
   | "baobab_testnet"
   | "bsc_testnet"
@@ -41,6 +49,10 @@ export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
   "mumbai_testnet",
   "zeta_testnet",
 ];
+
+export declare type NonZetaAddress = "uniswapV2Router02" | "uniswapV3Factory" | "uniswapV3Router" | "weth9";
+
+export const nonZetaAddress: NonZetaAddress[] = ["uniswapV2Router02", "uniswapV3Router", "uniswapV3Factory", "weth9"];
 
 export declare type ZetaProtocolMainNetwork = "etherum_mainnet";
 export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["etherum_mainnet"];
@@ -71,4 +83,8 @@ export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, netwo
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
   return addresses["zevm"][network]["zrc20"];
+};
+
+export const getNonZetaAddress = (address: NonZetaAddress, network: ZetaProtocolNetwork): string => {
+  return addresses["non-zeta"][network][address];
 };

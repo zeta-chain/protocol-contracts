@@ -1,4 +1,3 @@
-import { saveAddress } from "@zetachain/addresses-tools";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
@@ -53,7 +52,6 @@ export async function deterministicDeployZetaConnector() {
 
   console.log("Deployed ZetaConnector. Address:", address);
   console.log("Constructor Args", constructorArgs);
-  // saveAddress("connector", address);
 }
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {

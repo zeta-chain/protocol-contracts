@@ -34,6 +34,7 @@ export interface ZetaTokenConsumerUniV2Interface extends utils.Interface {
     "getTokenFromZeta(address,uint256,address,uint256)": FunctionFragment;
     "getZetaFromEth(address,uint256)": FunctionFragment;
     "getZetaFromToken(address,uint256,address,uint256)": FunctionFragment;
+    "hasZetaLiquidity()": FunctionFragment;
     "zetaToken()": FunctionFragment;
   };
 
@@ -43,6 +44,7 @@ export interface ZetaTokenConsumerUniV2Interface extends utils.Interface {
       | "getTokenFromZeta"
       | "getZetaFromEth"
       | "getZetaFromToken"
+      | "hasZetaLiquidity"
       | "zetaToken"
   ): FunctionFragment;
 
@@ -76,6 +78,10 @@ export interface ZetaTokenConsumerUniV2Interface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "hasZetaLiquidity",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(
@@ -92,6 +98,10 @@ export interface ZetaTokenConsumerUniV2Interface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getZetaFromToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "hasZetaLiquidity",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
@@ -215,6 +225,8 @@ export interface ZetaTokenConsumerUniV2 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<[boolean]>;
+
     zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
@@ -247,6 +259,8 @@ export interface ZetaTokenConsumerUniV2 extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  hasZetaLiquidity(overrides?: CallOverrides): Promise<boolean>;
+
   zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
@@ -278,6 +292,8 @@ export interface ZetaTokenConsumerUniV2 extends BaseContract {
       inputTokenAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<boolean>;
 
     zetaToken(overrides?: CallOverrides): Promise<string>;
   };
@@ -354,6 +370,8 @@ export interface ZetaTokenConsumerUniV2 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<BigNumber>;
+
     zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
@@ -386,6 +404,8 @@ export interface ZetaTokenConsumerUniV2 extends BaseContract {
       inputTokenAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    hasZetaLiquidity(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };

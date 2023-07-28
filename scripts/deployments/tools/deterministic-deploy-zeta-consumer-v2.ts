@@ -1,8 +1,6 @@
-import { saveAddress } from "@zetachain/addresses-tools";
 import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
-import { getAddress, isProtocolNetworkName } from "lib";
-import { getExternalAddress } from "lib/address.helpers";
+import { getAddress, getNonZetaAddress, isProtocolNetworkName } from "lib";
 
 import { ZETA_CONSUMER_SALT_NUMBER } from "../../../lib/contracts.constants";
 import {
@@ -24,7 +22,7 @@ export async function deterministicDeployZetaConsumer() {
   const zetaTokenAddress = getAddress("zetaToken", network.name);
   const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
-  const uniswapV2Router02 = getExternalAddress("uniswapV2Router02");
+  const uniswapV2Router02 = getNonZetaAddress("uniswapV2Router02", network.name);
 
   const saltNumber = ZETA_CONSUMER_SALT_NUMBER;
   const saltStr = BigNumber.from(saltNumber).toHexString();
@@ -44,7 +42,6 @@ export async function deterministicDeployZetaConsumer() {
     signer,
   });
 
-  // saveAddress("zetaTokenConsumerUniV2", address);
   console.log("Deployed ZetaConsumer. Address:", address);
 }
 
