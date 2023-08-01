@@ -26,7 +26,6 @@ var (
 	_ = common.Big1
 	_ = types.BloomLookup
 	_ = event.NewSubscription
-	_ = abi.ConvertType
 )
 
 // ZetaErrorsMetaData contains all meta data concerning the ZetaErrors contract.
@@ -135,11 +134,11 @@ func NewZetaErrorsFilterer(address common.Address, filterer bind.ContractFiltere
 
 // bindZetaErrors binds a generic wrapper to an already deployed contract.
 func bindZetaErrors(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := ZetaErrorsMetaData.GetAbi()
+	parsed, err := abi.JSON(strings.NewReader(ZetaErrorsABI))
 	if err != nil {
 		return nil, err
 	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
