@@ -26,6 +26,7 @@ var (
 	_ = common.Big1
 	_ = types.BloomLookup
 	_ = event.NewSubscription
+	_ = abi.ConvertType
 )
 
 // ERC20CustodyMetaData contains all meta data concerning the ERC20Custody contract.
@@ -156,11 +157,11 @@ func NewERC20CustodyFilterer(address common.Address, filterer bind.ContractFilte
 
 // bindERC20Custody binds a generic wrapper to an already deployed contract.
 func bindERC20Custody(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := abi.JSON(strings.NewReader(ERC20CustodyABI))
+	parsed, err := ERC20CustodyMetaData.GetAbi()
 	if err != nil {
 		return nil, err
 	}
-	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
+	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
