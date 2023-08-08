@@ -46,16 +46,6 @@ interface IZRC20 {
     event UpdatedProtocolFlatFee(uint256 protocolFlatFee);
 }
 
-abstract contract Context {
-    function _msgSender() internal view virtual returns (address) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
-    }
-}
-
 interface IZRC20Metadata is IZRC20 {
     function name() external view returns (string memory);
 
@@ -69,12 +59,4 @@ enum CoinType {
     Zeta,
     Gas,
     ERC20
-}
-
-/**
- * @dev Any ZetaChain Contract must implement this interface to allow SystemContract to interact with.
- * This is only required if the contract wants to interact with other chains.
- */
-interface zContract {
-    function onCrossChainCall(address zrc20, uint256 amount, bytes calldata message) external;
 }

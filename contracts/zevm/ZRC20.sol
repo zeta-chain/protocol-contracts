@@ -17,7 +17,7 @@ interface ZRC20Errors {
     error ZeroAddress();
 }
 
-contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
+contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice Fungible address is always the same, maintained at the protocol level
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Chain id.abi
@@ -37,6 +37,14 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
+
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
 
     /**
      * @dev Only fungible module modifier.
