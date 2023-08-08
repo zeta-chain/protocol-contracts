@@ -27,13 +27,13 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
-export type ContextStruct = {
+export type ZContextStruct = {
   origin: PromiseOrValue<BytesLike>;
   sender: PromiseOrValue<string>;
   chainID: PromiseOrValue<BigNumberish>;
 };
 
-export type ContextStructOutput = [string, string, BigNumber] & {
+export type ZContextStructOutput = [string, string, BigNumber] & {
   origin: string;
   sender: string;
   chainID: BigNumber;
@@ -84,7 +84,7 @@ export interface SystemContractInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "depositAndCall",
     values: [
-      ContextStruct,
+      ZContextStruct,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
@@ -316,7 +316,7 @@ export interface SystemContract extends BaseContract {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
 
     depositAndCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
@@ -386,7 +386,7 @@ export interface SystemContract extends BaseContract {
   FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
   depositAndCall(
-    context: ContextStruct,
+    context: ZContextStruct,
     zrc20: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     target: PromiseOrValue<string>,
@@ -456,7 +456,7 @@ export interface SystemContract extends BaseContract {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
     depositAndCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
@@ -556,7 +556,7 @@ export interface SystemContract extends BaseContract {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
 
     depositAndCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
@@ -629,7 +629,7 @@ export interface SystemContract extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     depositAndCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
