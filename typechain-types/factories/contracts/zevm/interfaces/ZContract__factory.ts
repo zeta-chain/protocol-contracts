@@ -30,7 +30,7 @@ const _abi = [
             type: "uint256",
           },
         ],
-        internalType: "struct Context",
+        internalType: "struct zContext",
         name: "context",
         type: "tuple",
       },

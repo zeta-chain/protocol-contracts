@@ -23,13 +23,13 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
-export type ContextStruct = {
+export type ZContextStruct = {
   origin: PromiseOrValue<BytesLike>;
   sender: PromiseOrValue<string>;
   chainID: PromiseOrValue<BigNumberish>;
 };
 
-export type ContextStructOutput = [string, string, BigNumber] & {
+export type ZContextStructOutput = [string, string, BigNumber] & {
   origin: string;
   sender: string;
   chainID: BigNumber;
@@ -45,7 +45,7 @@ export interface ZContractInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "onCrossChainCall",
     values: [
-      ContextStruct,
+      ZContextStruct,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>
@@ -88,7 +88,7 @@ export interface ZContract extends BaseContract {
 
   functions: {
     onCrossChainCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
@@ -97,7 +97,7 @@ export interface ZContract extends BaseContract {
   };
 
   onCrossChainCall(
-    context: ContextStruct,
+    context: ZContextStruct,
     zrc20: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     message: PromiseOrValue<BytesLike>,
@@ -106,7 +106,7 @@ export interface ZContract extends BaseContract {
 
   callStatic: {
     onCrossChainCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
@@ -118,7 +118,7 @@ export interface ZContract extends BaseContract {
 
   estimateGas: {
     onCrossChainCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
@@ -128,7 +128,7 @@ export interface ZContract extends BaseContract {
 
   populateTransaction: {
     onCrossChainCall(
-      context: ContextStruct,
+      context: ZContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,

@@ -29,8 +29,8 @@ var (
 	_ = abi.ConvertType
 )
 
-// Context is an auto generated low-level Go binding around an user-defined struct.
-type Context struct {
+// ZContext is an auto generated low-level Go binding around an user-defined struct.
+type ZContext struct {
 	Origin  []byte
 	Sender  common.Address
 	ChainID *big.Int
@@ -38,7 +38,7 @@ type Context struct {
 
 // ZContractMetaData contains all meta data concerning the ZContract contract.
 var ZContractMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"onCrossChainCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structzContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"onCrossChainCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // ZContractABI is the input ABI used to generate the binding from.
@@ -190,20 +190,20 @@ func (_ZContract *ZContractTransactorRaw) Transact(opts *bind.TransactOpts, meth
 // OnCrossChainCall is a paid mutator transaction binding the contract method 0xde43156e.
 //
 // Solidity: function onCrossChainCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
-func (_ZContract *ZContractTransactor) OnCrossChainCall(opts *bind.TransactOpts, context Context, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
+func (_ZContract *ZContractTransactor) OnCrossChainCall(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
 	return _ZContract.contract.Transact(opts, "onCrossChainCall", context, zrc20, amount, message)
 }
 
 // OnCrossChainCall is a paid mutator transaction binding the contract method 0xde43156e.
 //
 // Solidity: function onCrossChainCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
-func (_ZContract *ZContractSession) OnCrossChainCall(context Context, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
+func (_ZContract *ZContractSession) OnCrossChainCall(context ZContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
 	return _ZContract.Contract.OnCrossChainCall(&_ZContract.TransactOpts, context, zrc20, amount, message)
 }
 
 // OnCrossChainCall is a paid mutator transaction binding the contract method 0xde43156e.
 //
 // Solidity: function onCrossChainCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
-func (_ZContract *ZContractTransactorSession) OnCrossChainCall(context Context, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
+func (_ZContract *ZContractTransactorSession) OnCrossChainCall(context ZContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
 	return _ZContract.Contract.OnCrossChainCall(&_ZContract.TransactOpts, context, zrc20, amount, message)
 }
