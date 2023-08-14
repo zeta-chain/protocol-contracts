@@ -17,8 +17,13 @@ interface ZRC20Errors {
     error ZeroAddress();
 }
 
+<<<<<<< HEAD
 contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice The fungible module address, this is maintained at the protocol level and is always constant
+=======
+contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
+    /// @notice Fungible address is always the same, maintained at the protocol level
+>>>>>>> main
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Chain id.abi
     uint256 public immutable CHAIN_ID;
@@ -48,6 +53,14 @@ contract ZRC20 is Context, IZRC20, IZRC20Metadata, ZRC20Errors {
 
     /// @notice Number of decimal places the token can be divided into
     uint8 private _decimals;
+
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
 
     /**
      * @dev Only fungible module modifier.

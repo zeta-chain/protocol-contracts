@@ -285,10 +285,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IZRC20Metadata__factory>;
     getContractFactory(
-      name: "ZContract",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZContract__factory>;
-    getContractFactory(
       name: "IUniswapV2Router01",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Router01__factory>;
@@ -665,11 +661,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IZRC20Metadata>;
-    getContractAt(
-      name: "ZContract",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ZContract>;
     getContractAt(
       name: "IUniswapV2Router01",
       address: string,
