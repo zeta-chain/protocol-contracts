@@ -148,29 +148,6 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
     }
 
     /**
-     * @dev Increases allowance by amount for spender.
-     * @param spender, spender address.
-     * @param amount, amount by which to increase allownace.
-     * @return true/false if succeeded/failed.
-     */
-    function increaseAllowance(address spender, uint256 amount) external virtual returns (bool) {
-        _allowances[spender][_msgSender()] += amount;
-        return true;
-    }
-
-    /**
-     * @dev Decreases allowance by amount for spender.
-     * @param spender, spender address.
-     * @param amount, amount by which to decrease allownace.
-     * @return true/false if succeeded/failed.
-     */
-    function decreaseAllowance(address spender, uint256 amount) external virtual returns (bool) {
-        if (_allowances[spender][_msgSender()] < amount) revert LowAllowance();
-        _allowances[spender][_msgSender()] -= amount;
-        return true;
-    }
-
-    /**
      * @dev Transfers tokens from sender to recipient.
      * @param sender, sender address.
      * @param recipient, recipient address.
