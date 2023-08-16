@@ -1,9 +1,4 @@
-import fs from "fs";
-import path from "path";
-
-export const addresses = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, "..", "data", "addresses.json")).toString()
-);
+import addresses from "../data/addresses.json";
 
 export declare type ZetaProtocolAddress =
   | "connector"
@@ -75,16 +70,16 @@ export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
 
 export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
   if (isZetaProtocolAddress(address)) {
-    return addresses["ccm"][network][address];
+    return (addresses["ccm"] as any)[network][address];
   }
 
-  return addresses["zevm"][network][address];
+  return (addresses["zevm"] as any)[network][address];
 };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
-  return addresses["zevm"][network]["zrc20"];
+  return (addresses["zevm"] as any)[network]["zrc20"];
 };
 
 export const getNonZetaAddress = (address: NonZetaAddress, network: ZetaProtocolNetwork): string => {
-  return addresses["non-zeta"][network][address];
+  return (addresses["non_zeta"] as any)[network][address];
 };
