@@ -62,7 +62,7 @@
       "uniswapV3Router": "0x9a489505a00cE272eAa5e07Dba6491314CaE3796",
       "weth9": ""
     },
-    "etherum_mainnet": {
+    "ethereum_mainnet": {
       "uniswapV2Router02": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
       "uniswapV3Factory": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
       "uniswapV3Router": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
