@@ -47,6 +47,15 @@
       "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
+    },
+    "btc_testnet": {
+      "connector": "",
+      "immutableCreate2Factory": "",
+      "tss": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
+      "tssUpdater": "",
+      "zetaToken": "",
+      "zetaTokenConsumerUniV2": "",
+      "zetaTokenConsumerUniV3": ""
     }
   },
   "non_zeta": {
