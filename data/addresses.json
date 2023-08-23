@@ -99,7 +99,7 @@
     },
     "zeta_testnet": {
       "fungibleModule": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
-      "systemContract": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
+      "systemContract": "0xEdf1c3275d13489aCdC6cD6eD246E72458B8795B",
       "uniswapv2Factory": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
       "uniswapv2Router02": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe"
     }
