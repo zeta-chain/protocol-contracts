@@ -139,6 +139,7 @@ contract ZetaConnectorBase is ConnectorErrors, Pausable {
         if (tssAddress == address(0)) revert ZetaCommonErrors.InvalidAddress();
 
         tssAddressUpdater = tssAddress;
+        emit PauserAddressUpdated(msg.sender, tssAddressUpdater);
     }
 
     /**
