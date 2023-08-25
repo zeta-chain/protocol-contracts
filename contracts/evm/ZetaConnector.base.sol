@@ -63,6 +63,8 @@ contract ZetaConnectorBase is ConnectorErrors, Pausable {
 
     event TSSAddressUpdated(address callerAddress, address newTssAddress);
 
+    event TSSAddressUpdaterUpdated(address callerAddress, address newTssUpdaterAddress);
+
     event PauserAddressUpdated(address callerAddress, address newTssAddress);
 
     /**
@@ -139,7 +141,7 @@ contract ZetaConnectorBase is ConnectorErrors, Pausable {
         if (tssAddress == address(0)) revert ZetaCommonErrors.InvalidAddress();
 
         tssAddressUpdater = tssAddress;
-        emit PauserAddressUpdated(msg.sender, tssAddressUpdater);
+        emit TSSAddressUpdaterUpdated(msg.sender, tssAddressUpdater);
     }
 
     /**

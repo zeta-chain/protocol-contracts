@@ -56,7 +56,7 @@ contract ZetaNonEth is ZetaNonEthInterface, ERC20Burnable, ZetaErrors {
         if (tssAddress == address(0)) revert InvalidAddress();
 
         tssAddressUpdater = tssAddress;
-        emit ConnectorAddressUpdated(msg.sender, tssAddress);
+        emit TSSAddressUpdaterUpdated(msg.sender, tssAddress);
     }
 
     function mint(address mintee, uint256 value, bytes32 internalSendHash) external override {
