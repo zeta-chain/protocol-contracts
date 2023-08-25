@@ -61,9 +61,9 @@ contract ZetaConnectorBase is ConnectorErrors, Pausable {
         bytes32 indexed internalSendHash
     );
 
-    event TSSAddressUpdated(address zetaTxSenderAddress, address newTssAddress);
+    event TSSAddressUpdated(address callerAddress, address newTssAddress);
 
-    event PauserAddressUpdated(address updaterAddress, address newTssAddress);
+    event PauserAddressUpdated(address callerAddress, address newTssAddress);
 
     /**
      * @dev Constructor requires initial addresses.

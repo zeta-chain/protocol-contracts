@@ -24,11 +24,11 @@ contract ZetaNonEth is ZetaNonEthInterface, ERC20Burnable, ZetaErrors {
 
     event Burnt(address indexed burnee, uint256 amount);
 
-    event TSSAddressUpdated(address zetaTxSenderAddress, address newTssAddress);
+    event TSSAddressUpdated(address callerAddress, address newTssAddress);
 
-    event TSSAddressUpdaterUpdated(address zetaTxSenderAddress, address newTssUpdaterAddress);
+    event TSSAddressUpdaterUpdated(address callerAddress, address newTssUpdaterAddress);
 
-    event ConnectorAddressUpdated(address zetaTxSenderAddress, address newConnectorAddress);
+    event ConnectorAddressUpdated(address callerAddress, address newConnectorAddress);
 
     constructor(address tssAddress_, address tssAddressUpdater_) ERC20("Zeta", "ZETA") {
         if (tssAddress_ == address(0) || tssAddressUpdater_ == address(0)) revert InvalidAddress();
