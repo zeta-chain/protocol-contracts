@@ -187,6 +187,7 @@ export interface ZetaConnectorEthInterface extends utils.Interface {
     "Paused(address)": EventFragment;
     "PauserAddressUpdated(address,address)": EventFragment;
     "TSSAddressUpdated(address,address)": EventFragment;
+    "TSSAddressUpdaterUpdated(address,address)": EventFragment;
     "Unpaused(address)": EventFragment;
     "ZetaReceived(bytes,uint256,address,uint256,bytes,bytes32)": EventFragment;
     "ZetaReverted(address,uint256,uint256,bytes,uint256,bytes,bytes32)": EventFragment;
@@ -196,6 +197,7 @@ export interface ZetaConnectorEthInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PauserAddressUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TSSAddressUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TSSAddressUpdaterUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaReceived"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaReverted"): EventFragment;
@@ -210,7 +212,7 @@ export type PausedEvent = TypedEvent<[string], PausedEventObject>;
 export type PausedEventFilter = TypedEventFilter<PausedEvent>;
 
 export interface PauserAddressUpdatedEventObject {
-  updaterAddress: string;
+  callerAddress: string;
   newTssAddress: string;
 }
 export type PauserAddressUpdatedEvent = TypedEvent<
@@ -222,7 +224,7 @@ export type PauserAddressUpdatedEventFilter =
   TypedEventFilter<PauserAddressUpdatedEvent>;
 
 export interface TSSAddressUpdatedEventObject {
-  zetaTxSenderAddress: string;
+  callerAddress: string;
   newTssAddress: string;
 }
 export type TSSAddressUpdatedEvent = TypedEvent<
@@ -232,6 +234,18 @@ export type TSSAddressUpdatedEvent = TypedEvent<
 
 export type TSSAddressUpdatedEventFilter =
   TypedEventFilter<TSSAddressUpdatedEvent>;
+
+export interface TSSAddressUpdaterUpdatedEventObject {
+  callerAddress: string;
+  newTssUpdaterAddress: string;
+}
+export type TSSAddressUpdaterUpdatedEvent = TypedEvent<
+  [string, string],
+  TSSAddressUpdaterUpdatedEventObject
+>;
+
+export type TSSAddressUpdaterUpdatedEventFilter =
+  TypedEventFilter<TSSAddressUpdaterUpdatedEvent>;
 
 export interface UnpausedEventObject {
   account: string;
@@ -497,22 +511,31 @@ export interface ZetaConnectorEth extends BaseContract {
     Paused(account?: null): PausedEventFilter;
 
     "PauserAddressUpdated(address,address)"(
-      updaterAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): PauserAddressUpdatedEventFilter;
     PauserAddressUpdated(
-      updaterAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): PauserAddressUpdatedEventFilter;
 
     "TSSAddressUpdated(address,address)"(
-      zetaTxSenderAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): TSSAddressUpdatedEventFilter;
     TSSAddressUpdated(
-      zetaTxSenderAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): TSSAddressUpdatedEventFilter;
+
+    "TSSAddressUpdaterUpdated(address,address)"(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
+    TSSAddressUpdaterUpdated(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
 
     "Unpaused(address)"(account?: null): UnpausedEventFilter;
     Unpaused(account?: null): UnpausedEventFilter;
