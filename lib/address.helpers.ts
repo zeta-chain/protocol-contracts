@@ -10,7 +10,7 @@ const MissingZetaNetworkError = new Error(
 export const ProtocolNetworkNetworkNameMap: Record<ZetaProtocolNetwork, NetworkName> = {
   baobab_testnet: "klaytn-baobab",
   bsc_testnet: "bsc-testnet",
-  etherum_mainnet: "eth-mainnet",
+  ethereum_mainnet: "eth-mainnet",
   goerli_testnet: "goerli",
   mumbai_testnet: "polygon-mumbai",
   zeta_testnet: "athens",
