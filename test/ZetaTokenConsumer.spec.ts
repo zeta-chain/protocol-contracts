@@ -62,17 +62,17 @@ describe("ZetaTokenConsumer tests", () => {
    */
   const createPoolV3 = async (signer: SignerWithAddress, tokenAddress: string) => {
     const DAI = getExternalAddress("dai", {
-      customNetworkName: "etherum_mainnet",
+      customNetworkName: "ethereum_mainnet",
       customZetaNetwork: "mainnet",
     });
 
     const UNI_NFT_MANAGER_V3 = getExternalAddress("uniswapV3NftManager", {
-      customNetworkName: "etherum_mainnet",
+      customNetworkName: "ethereum_mainnet",
       customZetaNetwork: "mainnet",
     });
 
     const USDC = getExternalAddress("usdc", {
-      customNetworkName: "etherum_mainnet",
+      customNetworkName: "ethereum_mainnet",
       customZetaNetwork: "mainnet",
     });
 
@@ -124,22 +124,22 @@ describe("ZetaTokenConsumer tests", () => {
     });
 
     const DAI = getExternalAddress("dai", {
-      customNetworkName: "etherum_mainnet",
+      customNetworkName: "ethereum_mainnet",
       customZetaNetwork: "mainnet",
     });
 
     USDCAddr = getExternalAddress("usdc", {
-      customNetworkName: "etherum_mainnet",
+      customNetworkName: "ethereum_mainnet",
       customZetaNetwork: "mainnet",
     });
 
-    uniswapV2RouterAddr = getNonZetaAddress("uniswapV2Router02", "etherum_mainnet");
+    uniswapV2RouterAddr = getNonZetaAddress("uniswapV2Router02", "ethereum_mainnet");
 
-    const UNI_FACTORY_V3 = getNonZetaAddress("uniswapV3Factory", "etherum_mainnet");
+    const UNI_FACTORY_V3 = getNonZetaAddress("uniswapV3Factory", "ethereum_mainnet");
 
-    const UNI_ROUTER_V3 = getNonZetaAddress("uniswapV3Router", "etherum_mainnet");
+    const UNI_ROUTER_V3 = getNonZetaAddress("uniswapV3Router", "ethereum_mainnet");
 
-    const WETH9 = getNonZetaAddress("weth9", "etherum_mainnet");
+    const WETH9 = getNonZetaAddress("weth9", "ethereum_mainnet");
 
     // For testing purposes we use an existing uni v3 pool
     await swapToken(tssUpdater, DAI, parseEther("10000"));

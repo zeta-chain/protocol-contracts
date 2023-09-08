@@ -136,6 +136,8 @@ export type { IZRC20 } from "./contracts/zevm/Interfaces.sol/IZRC20";
 export { IZRC20__factory } from "./factories/contracts/zevm/Interfaces.sol/IZRC20__factory";
 export type { IZRC20Metadata } from "./contracts/zevm/Interfaces.sol/IZRC20Metadata";
 export { IZRC20Metadata__factory } from "./factories/contracts/zevm/Interfaces.sol/IZRC20Metadata__factory";
+export type { IWETH9 } from "./contracts/zevm/interfaces/IWZETA.sol/IWETH9";
+export { IWETH9__factory } from "./factories/contracts/zevm/interfaces/IWZETA.sol/IWETH9__factory";
 export type { ZContract } from "./contracts/zevm/interfaces/ZContract";
 export { ZContract__factory } from "./factories/contracts/zevm/interfaces/ZContract__factory";
 export type { SystemContract } from "./contracts/zevm/SystemContract.sol/SystemContract";
