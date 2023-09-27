@@ -144,13 +144,13 @@ export const getZetaTokenConsumerUniV3Strategy = async (params: GetContractParam
 
 export type GetContractParams<Factory extends ContractFactory> =
   | {
-    deployParams: Parameters<Factory["deploy"]>;
-    existingContractAddress?: null;
-  }
+      deployParams: Parameters<Factory["deploy"]>;
+      existingContractAddress?: null;
+    }
   | {
-    deployParams?: null;
-    existingContractAddress: string;
-  };
+      deployParams?: null;
+      existingContractAddress: string;
+    };
 
 export const getContract = async <Factory extends ContractFactory, Contract extends BaseContract>({
   contractName,
