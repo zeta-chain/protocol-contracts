@@ -24,7 +24,7 @@ import { BaseContract, ContractFactory } from "ethers";
 import { ethers } from "hardhat";
 
 export const isEthNetworkName = (networkName: string) =>
-  networkName === "eth-localnet" || networkName === "goerli" || networkName === "eth-mainnet";
+  networkName === "eth-localnet" || networkName === "goerli_testnet" || networkName === "ethereum_mainnet";
 
 export const deployZetaConnectorBase = async ({ args }: { args: Parameters<ZetaConnectorBaseFactory["deploy"]> }) => {
   const Factory = (await ethers.getContractFactory("ZetaConnectorBase")) as ZetaConnectorBaseFactory;
@@ -144,13 +144,13 @@ export const getZetaTokenConsumerUniV3Strategy = async (params: GetContractParam
 
 export type GetContractParams<Factory extends ContractFactory> =
   | {
-      deployParams: Parameters<Factory["deploy"]>;
-      existingContractAddress?: null;
-    }
+    deployParams: Parameters<Factory["deploy"]>;
+    existingContractAddress?: null;
+  }
   | {
-      deployParams?: null;
-      existingContractAddress: string;
-    };
+    deployParams?: null;
+    existingContractAddress: string;
+  };
 
 export const getContract = async <Factory extends ContractFactory, Contract extends BaseContract>({
   contractName,
