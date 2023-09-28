@@ -2081,10 +2081,12 @@
   resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.9.tgz#d8ad93242590c0a6d028be8f515ad9f84fd588c2"
   integrity sha512-MA/kD8a2NY5xJMFjwPj1oph6P3O7l0g23QB3QTgcBs4DdmwubvTVH6S6/e8CWzLFojTP5qBiqIWBsU0iHP/HFg==
 
-"@zetachain/networks@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-0.0.1.tgz#825b27cfb96cd156c079503de4253c8adf580275"
-  integrity sha512-p646aIgX/3IHkauZlOZBKirRCMY+hyo3Og3IfJGC3tNkqjADt0wrcnizJrRIlXWVJGnlAW7tJPyXPzcfBh2Bwg==
+"@zetachain/networks@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-2.4.2.tgz#611986d2a7cfd45505c2f61cdbc403aeeff14812"
+  integrity sha512-Md2SbP9YPIbzkbzWa9853/L8tB1DwdPXmN7uPg2KrbxQk5AEqzSh/RuMq8hXaH14CunbiSqXmEuTq0mOtMsfZw==
+  dependencies:
+    dotenv "^16.1.4"
 
 abbrev@1:
   version "1.1.1"
@@ -3545,6 +3547,11 @@ dotenv@^16.0.0:
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
   integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+
+dotenv@^16.1.4:
+  version "16.3.1"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.3.1.tgz#369034de7d7e5b120972693352a3bf112172cc3e"
+  integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
 
 drbg.js@^1.0.1:
   version "1.0.1"
