@@ -49,8 +49,8 @@ export declare type NonZetaAddress = "uniswapV2Router02" | "uniswapV3Factory" | 
 
 export const nonZetaAddress: NonZetaAddress[] = ["uniswapV2Router02", "uniswapV3Router", "uniswapV3Factory", "weth9"];
 
-export declare type ZetaProtocolMainNetwork = "ethereum_mainnet";
-export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["ethereum_mainnet"];
+export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet";
+export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet"];
 
 export declare type ZetaProtocolNetwork = ZetaProtocolMainNetwork | ZetaProtocolTestNetwork;
 export const zetaProtocolNetworks: ZetaProtocolNetwork[] = [...zetaProtocolTestNetworks, ...zetaProtocolMainNetworks];

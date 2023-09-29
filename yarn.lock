@@ -2076,15 +2076,15 @@
     "@uniswap/v3-core" "1.0.0"
     base64-sol "1.0.1"
 
-"@zetachain/addresses@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.9.tgz#d8ad93242590c0a6d028be8f515ad9f84fd588c2"
-  integrity sha512-MA/kD8a2NY5xJMFjwPj1oph6P3O7l0g23QB3QTgcBs4DdmwubvTVH6S6/e8CWzLFojTP5qBiqIWBsU0iHP/HFg==
+"@zetachain/addresses@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.12.tgz#541c1515201e273e0867772193a89ab0a70c2c9e"
+  integrity sha512-1+wmUOyGrxmrE/qHw9REKPz2VRwwCSqEpp7cooKFwZsk6By4bZbEbDhzbbrXmoqq00YZbGUp0JsoYQvpxRPd0g==
 
-"@zetachain/networks@^2.4.2":
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-2.4.2.tgz#611986d2a7cfd45505c2f61cdbc403aeeff14812"
-  integrity sha512-Md2SbP9YPIbzkbzWa9853/L8tB1DwdPXmN7uPg2KrbxQk5AEqzSh/RuMq8hXaH14CunbiSqXmEuTq0mOtMsfZw==
+"@zetachain/networks@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-2.4.3.tgz#870b2cda4b91f913be990246831378f60688d452"
+  integrity sha512-ZoqN8M6+59OkujZCl3FcSEgSftIN1tw5bpuFwI/2+f0SlKH+8ztAk7aF1QHmzrPqolIJKt29ogsfvIjiynXNkg==
   dependencies:
     dotenv "^16.1.4"
 
