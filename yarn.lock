@@ -2076,10 +2076,10 @@
     "@uniswap/v3-core" "1.0.0"
     base64-sol "1.0.1"
 
-"@zetachain/addresses@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.12.tgz#541c1515201e273e0867772193a89ab0a70c2c9e"
-  integrity sha512-1+wmUOyGrxmrE/qHw9REKPz2VRwwCSqEpp7cooKFwZsk6By4bZbEbDhzbbrXmoqq00YZbGUp0JsoYQvpxRPd0g==
+"@zetachain/addresses@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.13.tgz#cbe56d3916e62d36e1d82e15a79404e84ed49176"
+  integrity sha512-hqCsEH+a3IqYR0cx9tlV0Rwk22i0MUpll81aLynxUkjoKQx5BaO3+5Mp/o62W8ZqYJICVbHPqb28DhmfoNQffg==
 
 "@zetachain/networks@^2.4.3":
   version "2.4.3"
