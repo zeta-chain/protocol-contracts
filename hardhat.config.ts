@@ -10,11 +10,19 @@ import type { HardhatUserConfig } from "hardhat/types";
 
 dotenv.config();
 
-const PRIVATE_KEYS = process.env.PRIVATE_KEY !== undefined ? [`0x${process.env.PRIVATE_KEY}`] : [];
-
 const config: HardhatUserConfig = {
+  //@ts-ignore
+  etherscan: {
+    apiKey: {
+      // BSC
+      bscTestnet: process.env.BSCSCAN_API_KEY || "",
+      // ETH
+      goerli: process.env.ETHERSCAN_API_KEY || "",
+      mainnet: process.env.ETHERSCAN_API_KEY || "",
+    },
+  },
   networks: {
-    ...getHardhatConfigNetworks(PRIVATE_KEYS),
+    ...getHardhatConfigNetworks(),
     hardhat: {
       chainId: 1337,
       forking: {

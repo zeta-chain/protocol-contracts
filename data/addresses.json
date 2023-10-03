@@ -9,6 +9,14 @@
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
     },
+    "bsc_mainnet": {
+      "connector": "",
+      "erc20Custody": "",
+      "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
+      "tss": "",
+      "tssUpdater": "",
+      "zetaToken": ""
+    },
     "bsc_testnet": {
       "connector": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
       "erc20Custody": "0x0000a7db254145767262c6a81a7ee1650684258e",
@@ -28,7 +36,7 @@
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
     },
-    "ethereum_mainnet": {
+    "eth_mainnet": {
       "connector": "",
       "erc20Custody": "",
       "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
@@ -73,13 +81,19 @@
       "uniswapV3Router": "",
       "weth9": ""
     },
+    "bsc_mainnet": {
+      "uniswapV2Router02": "",
+      "uniswapV3Factory": "",
+      "uniswapV3Router": "",
+      "weth9": ""
+    },
     "bsc_testnet": {
       "uniswapV2Router02": "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
       "uniswapV3Factory": "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
       "uniswapV3Router": "0x9a489505a00cE272eAa5e07Dba6491314CaE3796",
       "weth9": ""
     },
-    "ethereum_mainnet": {
+    "eth_mainnet": {
       "uniswapV2Router02": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
       "uniswapV3Factory": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
       "uniswapV3Router": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
