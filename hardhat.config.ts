@@ -23,13 +23,6 @@ const config: HardhatUserConfig = {
   },
   networks: {
     ...getHardhatConfigNetworks(),
-    hardhat: {
-      chainId: 1337,
-      forking: {
-        blockNumber: 14672712,
-        url: "https://rpc.ankr.com/eth",
-      },
-    },
   },
   solidity: {
     compilers: [
