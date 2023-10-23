@@ -102,8 +102,14 @@ export type { IPoolRouter } from "./contracts/evm/tools/interfaces/TridentIPoolR
 export { IPoolRouter__factory } from "./factories/contracts/evm/tools/interfaces/TridentIPoolRouter.sol/IPoolRouter__factory";
 export type { ZetaInteractor } from "./contracts/evm/tools/ZetaInteractor";
 export { ZetaInteractor__factory } from "./factories/contracts/evm/tools/ZetaInteractor__factory";
-export type { WETH9 } from "./contracts/evm/tools/ZetaTokenConsumerTrident.strategy.sol/WETH9";
-export { WETH9__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerTrident.strategy.sol/WETH9__factory";
+export type { ISwapRouterPancake } from "./contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/ISwapRouterPancake";
+export { ISwapRouterPancake__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/ISwapRouterPancake__factory";
+export type { WETH9 } from "./contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/WETH9";
+export { WETH9__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/WETH9__factory";
+export type { ZetaTokenConsumerPancakeV3 } from "./contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/ZetaTokenConsumerPancakeV3";
+export { ZetaTokenConsumerPancakeV3__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/ZetaTokenConsumerPancakeV3__factory";
+export type { ZetaTokenConsumerUniV3Errors } from "./contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/ZetaTokenConsumerUniV3Errors";
+export { ZetaTokenConsumerUniV3Errors__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerPancakeV3.strategy.sol/ZetaTokenConsumerUniV3Errors__factory";
 export type { ZetaTokenConsumerTrident } from "./contracts/evm/tools/ZetaTokenConsumerTrident.strategy.sol/ZetaTokenConsumerTrident";
 export { ZetaTokenConsumerTrident__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerTrident.strategy.sol/ZetaTokenConsumerTrident__factory";
 export type { ZetaTokenConsumerTridentErrors } from "./contracts/evm/tools/ZetaTokenConsumerTrident.strategy.sol/ZetaTokenConsumerTridentErrors";
@@ -114,8 +120,6 @@ export type { ZetaTokenConsumerUniV2Errors } from "./contracts/evm/tools/ZetaTok
 export { ZetaTokenConsumerUniV2Errors__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerUniV2.strategy.sol/ZetaTokenConsumerUniV2Errors__factory";
 export type { ZetaTokenConsumerUniV3 } from "./contracts/evm/tools/ZetaTokenConsumerUniV3.strategy.sol/ZetaTokenConsumerUniV3";
 export { ZetaTokenConsumerUniV3__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerUniV3.strategy.sol/ZetaTokenConsumerUniV3__factory";
-export type { ZetaTokenConsumerUniV3Errors } from "./contracts/evm/tools/ZetaTokenConsumerUniV3.strategy.sol/ZetaTokenConsumerUniV3Errors";
-export { ZetaTokenConsumerUniV3Errors__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerUniV3.strategy.sol/ZetaTokenConsumerUniV3Errors__factory";
 export type { ZetaEth } from "./contracts/evm/Zeta.eth.sol/ZetaEth";
 export { ZetaEth__factory } from "./factories/contracts/evm/Zeta.eth.sol/ZetaEth__factory";
 export type { ZetaNonEth } from "./contracts/evm/Zeta.non-eth.sol/ZetaNonEth";

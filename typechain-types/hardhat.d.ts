@@ -213,6 +213,22 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaInteractor__factory>;
     getContractFactory(
+      name: "ISwapRouterPancake",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISwapRouterPancake__factory>;
+    getContractFactory(
+      name: "WETH9",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.WETH9__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerPancakeV3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerPancakeV3__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerUniV3Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerUniV3Errors__factory>;
+    getContractFactory(
       name: "WETH9",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WETH9__factory>;
@@ -575,6 +591,26 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaInteractor>;
+    getContractAt(
+      name: "ISwapRouterPancake",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISwapRouterPancake>;
+    getContractAt(
+      name: "WETH9",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.WETH9>;
+    getContractAt(
+      name: "ZetaTokenConsumerPancakeV3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerPancakeV3>;
+    getContractAt(
+      name: "ZetaTokenConsumerUniV3Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerUniV3Errors>;
     getContractAt(
       name: "WETH9",
       address: string,

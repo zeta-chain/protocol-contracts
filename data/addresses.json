@@ -91,7 +91,7 @@
       "uniswapV2Router02": "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
       "uniswapV3Factory": "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
       "uniswapV3Router": "0x9a489505a00cE272eAa5e07Dba6491314CaE3796",
-      "weth9": ""
+      "weth9": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd"
     },
     "eth_mainnet": {
       "uniswapV2Router02": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
