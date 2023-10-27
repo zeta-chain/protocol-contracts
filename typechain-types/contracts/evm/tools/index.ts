@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as immutableCreate2FactorySol from "./ImmutableCreate2Factory.sol";
 export type { immutableCreate2FactorySol };
+import type * as zetaTokenConsumerPancakeV3StrategySol from "./ZetaTokenConsumerPancakeV3.strategy.sol";
+export type { zetaTokenConsumerPancakeV3StrategySol };
 import type * as zetaTokenConsumerTridentStrategySol from "./ZetaTokenConsumerTrident.strategy.sol";
 export type { zetaTokenConsumerTridentStrategySol };
 import type * as zetaTokenConsumerUniV2StrategySol from "./ZetaTokenConsumerUniV2.strategy.sol";
