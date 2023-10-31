@@ -4,10 +4,11 @@ pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /// @title ERC20Custody.
 /// @notice ERC20Custody for depositing ERC20 assets into ZetaChain and making operations with them.
-contract ERC20Custody {
+contract ERC20Custody is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     error NotWhitelisted();
@@ -161,7 +162,12 @@ contract ERC20Custody {
      * @param amount, asset amount.
      * @param message, bytes message or encoded zetechain call.
      */
-    function deposit(bytes calldata recipient, IERC20 asset, uint256 amount, bytes calldata message) external {
+    function deposit(
+        bytes calldata recipient,
+        IERC20 asset,
+        uint256 amount,
+        bytes calldata message
+    ) external nonReentrant {
         if (paused) {
             revert IsPaused();
         }
@@ -184,7 +190,7 @@ contract ERC20Custody {
      * @param asset, ERC20 asset.
      * @param amount, asset amount.
      */
-    function withdraw(address recipient, IERC20 asset, uint256 amount) external onlyTSS {
+    function withdraw(address recipient, IERC20 asset, uint256 amount) external nonReentrant onlyTSS {
         if (paused) {
             revert IsPaused();
         }
