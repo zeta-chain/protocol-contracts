@@ -115,7 +115,7 @@ contract ERC20Custody is ReentrancyGuard {
     /**
      * @dev Pause custody operations.
      */
-    function pause() external onlyTSSUpdater {
+    function pause() external onlyTSS {
         if (paused) {
             revert IsPaused();
         }
@@ -129,7 +129,7 @@ contract ERC20Custody is ReentrancyGuard {
     /**
      * @dev Unpause custody operations.
      */
-    function unpause() external onlyTSSUpdater {
+    function unpause() external onlyTSS {
         if (!paused) {
             revert NotPaused();
         }
@@ -191,9 +191,6 @@ contract ERC20Custody is ReentrancyGuard {
      * @param amount, asset amount.
      */
     function withdraw(address recipient, IERC20 asset, uint256 amount) external nonReentrant onlyTSS {
-        if (paused) {
-            revert IsPaused();
-        }
         if (!whitelisted[asset]) {
             revert NotWhitelisted();
         }

@@ -86,6 +86,12 @@ export type { ZetaTokenConsumer } from "./contracts/evm/interfaces/ZetaInterface
 export { ZetaTokenConsumer__factory } from "./factories/contracts/evm/interfaces/ZetaInterfaces.sol/ZetaTokenConsumer__factory";
 export type { ZetaNonEthInterface } from "./contracts/evm/interfaces/ZetaNonEthInterface";
 export { ZetaNonEthInterface__factory } from "./factories/contracts/evm/interfaces/ZetaNonEthInterface__factory";
+export type { AttackerContract } from "./contracts/evm/testing/AttackerContract.sol/AttackerContract";
+export { AttackerContract__factory } from "./factories/contracts/evm/testing/AttackerContract.sol/AttackerContract__factory";
+export type { Victim } from "./contracts/evm/testing/AttackerContract.sol/Victim";
+export { Victim__factory } from "./factories/contracts/evm/testing/AttackerContract.sol/Victim__factory";
+export type { ERC20Mock } from "./contracts/evm/testing/ERC20Mock";
+export { ERC20Mock__factory } from "./factories/contracts/evm/testing/ERC20Mock__factory";
 export type { INonfungiblePositionManager } from "./contracts/evm/testing/TestUniswapV3Contracts.sol/INonfungiblePositionManager";
 export { INonfungiblePositionManager__factory } from "./factories/contracts/evm/testing/TestUniswapV3Contracts.sol/INonfungiblePositionManager__factory";
 export type { IPoolInitializer } from "./contracts/evm/testing/TestUniswapV3Contracts.sol/IPoolInitializer";
@@ -148,6 +154,8 @@ export type { SystemContract } from "./contracts/zevm/SystemContract.sol/SystemC
 export { SystemContract__factory } from "./factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
 export type { SystemContractErrors } from "./contracts/zevm/SystemContract.sol/SystemContractErrors";
 export { SystemContractErrors__factory } from "./factories/contracts/zevm/SystemContract.sol/SystemContractErrors__factory";
+export type { MockSystemContract } from "./contracts/zevm/testing/MockSystemContract.sol/MockSystemContract";
+export { MockSystemContract__factory } from "./factories/contracts/zevm/testing/MockSystemContract.sol/MockSystemContract__factory";
 export type { ZRC20 } from "./contracts/zevm/ZRC20.sol/ZRC20";
 export { ZRC20__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20__factory";
 export type { ZRC20Errors } from "./contracts/zevm/ZRC20.sol/ZRC20Errors";

@@ -177,6 +177,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaNonEthInterface__factory>;
     getContractFactory(
+      name: "AttackerContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.AttackerContract__factory>;
+    getContractFactory(
+      name: "Victim",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Victim__factory>;
+    getContractFactory(
+      name: "ERC20Mock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Mock__factory>;
+    getContractFactory(
       name: "INonfungiblePositionManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.INonfungiblePositionManager__factory>;
@@ -324,6 +336,14 @@ declare module "hardhat/types/runtime" {
       name: "SystemContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SystemContract__factory>;
+    getContractFactory(
+      name: "SystemContractErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SystemContractErrors__factory>;
+    getContractFactory(
+      name: "MockSystemContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockSystemContract__factory>;
     getContractFactory(
       name: "SystemContractErrors",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -547,6 +567,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaNonEthInterface>;
     getContractAt(
+      name: "AttackerContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AttackerContract>;
+    getContractAt(
+      name: "Victim",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Victim>;
+    getContractAt(
+      name: "ERC20Mock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Mock>;
+    getContractAt(
       name: "INonfungiblePositionManager",
       address: string,
       signer?: ethers.Signer
@@ -731,6 +766,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.SystemContract>;
+    getContractAt(
+      name: "SystemContractErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SystemContractErrors>;
+    getContractAt(
+      name: "MockSystemContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockSystemContract>;
     getContractAt(
       name: "SystemContractErrors",
       address: string,

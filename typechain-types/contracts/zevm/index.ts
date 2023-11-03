@@ -13,3 +13,5 @@ import type * as zrc20Sol from "./ZRC20.sol";
 export type { zrc20Sol };
 import type * as interfaces from "./interfaces";
 export type { interfaces };
+import type * as testing from "./testing";
+export type { testing };
