@@ -49,6 +49,7 @@ contract SystemContract is SystemContractErrors {
      * @dev Only fungible module can deploy a system contract.
      */
     constructor(address wzeta_, address uniswapv2Factory_, address uniswapv2Router02_) {
+        if (wzeta_ == address(0) || uniswapv2Factory_ == address(0) || uniswapv2Router02_ == address(0)) revert ZeroAddress();
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         wZetaContractAddress = wzeta_;
         uniswapv2FactoryAddress = uniswapv2Factory_;
@@ -72,7 +73,11 @@ contract SystemContract is SystemContractErrors {
         bytes calldata message
     ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+        if (
+            target == FUNGIBLE_MODULE_ADDRESS || 
+            target == address(this) || 
+            target.code.length == 0
+            ) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
         zContract(target).onCrossChainCall(context, zrc20, amount, message);
@@ -132,6 +137,7 @@ contract SystemContract is SystemContractErrors {
      * @param zrc20, ZRC20 address.
      */
     function setGasCoinZRC20(uint256 chainID, address zrc20) external {
+        if (zrc20 == address(0)) revert ZeroAddress();
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         gasCoinZRC20ByChainId[chainID] = zrc20;
         emit SetGasCoin(chainID, zrc20);
@@ -143,6 +149,7 @@ contract SystemContract is SystemContractErrors {
      * @param erc20, pair for uniswap wzeta/erc20.
      */
     function setGasZetaPool(uint256 chainID, address erc20) external {
+        if (erc20 == address(0)) revert ZeroAddress();
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         address pool = uniswapv2PairFor(uniswapv2FactoryAddress, wZetaContractAddress, erc20);
         gasZetaPoolByChainId[chainID] = pool;
