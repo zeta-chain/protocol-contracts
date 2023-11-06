@@ -76,8 +76,8 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
     );
     event SetWZETA(address wzeta_);
 
-    constructor(address _wzeta) {
-        wzeta = _wzeta;
+    constructor(address wzeta_) {
+        wzeta = wzeta_;
     }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().

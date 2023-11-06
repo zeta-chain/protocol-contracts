@@ -7,7 +7,7 @@ import type { Provider } from "@ethersproject/providers";
 import type {
   SystemContractErrors,
   SystemContractErrorsInterface,
-} from "../../../../../contracts/zevm/testing/MockSystemContract.sol/SystemContractErrors";
+} from "../../../../../contracts/zevm/testing/SystemContractMock.sol/SystemContractErrors";
 
 const _abi = [
   {

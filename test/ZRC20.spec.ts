@@ -4,6 +4,8 @@ import { SystemContract, ZRC20 } from "@typechain-types";
 import { expect } from "chai";
 import { parseEther } from "ethers/lib/utils";
 import { ethers } from "hardhat";
+
+import { FUNGIBLE_MODULE_ADDRESS } from "./test.helpers";
 const hre = require("hardhat");
 
 describe("ZRC20 tests", () => {
@@ -15,8 +17,6 @@ describe("ZRC20 tests", () => {
   beforeEach(async () => {
     [owner, ...addrs] = await ethers.getSigners();
 
-    const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
-
     // Impersonate the fungible module account
     await hre.network.provider.request({
       method: "hardhat_impersonateAccount",
@@ -27,7 +27,7 @@ describe("ZRC20 tests", () => {
     fungibleModuleSigner = await ethers.getSigner(FUNGIBLE_MODULE_ADDRESS);
     hre.network.provider.send("hardhat_setBalance", [FUNGIBLE_MODULE_ADDRESS, parseEther("1000000").toHexString()]);
 
-    const SystemContractFactory = await ethers.getContractFactory("MockSystemContract");
+    const SystemContractFactory = await ethers.getContractFactory("SystemContractMock");
     systemContract = (await SystemContractFactory.deploy(AddressZero, AddressZero, AddressZero)) as SystemContract;
 
     const ZRC20Factory = await ethers.getContractFactory("ZRC20");

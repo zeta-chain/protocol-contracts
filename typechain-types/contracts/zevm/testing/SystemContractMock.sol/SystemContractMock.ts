@@ -27,7 +27,7 @@ import type {
   PromiseOrValue,
 } from "../../../../common";
 
-export interface MockSystemContractInterface extends utils.Interface {
+export interface SystemContractMockInterface extends utils.Interface {
   functions: {
     "gasCoinZRC20ByChainId(uint256)": FunctionFragment;
     "gasPriceByChainId(uint256)": FunctionFragment;
@@ -220,12 +220,12 @@ export type SystemContractDeployedEvent = TypedEvent<
 export type SystemContractDeployedEventFilter =
   TypedEventFilter<SystemContractDeployedEvent>;
 
-export interface MockSystemContract extends BaseContract {
+export interface SystemContractMock extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: MockSystemContractInterface;
+  interface: SystemContractMockInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
