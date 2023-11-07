@@ -177,6 +177,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaNonEthInterface__factory>;
     getContractFactory(
+      name: "AttackerContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.AttackerContract__factory>;
+    getContractFactory(
+      name: "Victim",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Victim__factory>;
+    getContractFactory(
+      name: "ERC20Mock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Mock__factory>;
+    getContractFactory(
       name: "INonfungiblePositionManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.INonfungiblePositionManager__factory>;
@@ -281,14 +293,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaConnectorNonEth__factory>;
     getContractFactory(
-      name: "WZETA",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WZETA__factory>;
-    getContractFactory(
-      name: "ZetaConnectorZEVM",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZetaConnectorZEVM__factory>;
-    getContractFactory(
       name: "ISystem",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ISystem__factory>;
@@ -329,9 +333,25 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SystemContractErrors__factory>;
     getContractFactory(
+      name: "SystemContractErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SystemContractErrors__factory>;
+    getContractFactory(
+      name: "SystemContractMock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SystemContractMock__factory>;
+    getContractFactory(
       name: "WETH9",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WETH9__factory>;
+    getContractFactory(
+      name: "WZETA",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.WZETA__factory>;
+    getContractFactory(
+      name: "ZetaConnectorZEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaConnectorZEVM__factory>;
     getContractFactory(
       name: "ZRC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -547,6 +567,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaNonEthInterface>;
     getContractAt(
+      name: "AttackerContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AttackerContract>;
+    getContractAt(
+      name: "Victim",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Victim>;
+    getContractAt(
+      name: "ERC20Mock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Mock>;
+    getContractAt(
       name: "INonfungiblePositionManager",
       address: string,
       signer?: ethers.Signer
@@ -677,16 +712,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaConnectorNonEth>;
     getContractAt(
-      name: "WZETA",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.WZETA>;
-    getContractAt(
-      name: "ZetaConnectorZEVM",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ZetaConnectorZEVM>;
-    getContractAt(
       name: "ISystem",
       address: string,
       signer?: ethers.Signer
@@ -737,10 +762,30 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.SystemContractErrors>;
     getContractAt(
+      name: "SystemContractErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SystemContractErrors>;
+    getContractAt(
+      name: "SystemContractMock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SystemContractMock>;
+    getContractAt(
       name: "WETH9",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.WETH9>;
+    getContractAt(
+      name: "WZETA",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.WZETA>;
+    getContractAt(
+      name: "ZetaConnectorZEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaConnectorZEVM>;
     getContractAt(
       name: "ZRC20",
       address: string,
