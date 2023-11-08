@@ -86,6 +86,12 @@ export type { ZetaTokenConsumer } from "./contracts/evm/interfaces/ZetaInterface
 export { ZetaTokenConsumer__factory } from "./factories/contracts/evm/interfaces/ZetaInterfaces.sol/ZetaTokenConsumer__factory";
 export type { ZetaNonEthInterface } from "./contracts/evm/interfaces/ZetaNonEthInterface";
 export { ZetaNonEthInterface__factory } from "./factories/contracts/evm/interfaces/ZetaNonEthInterface__factory";
+export type { AttackerContract } from "./contracts/evm/testing/AttackerContract.sol/AttackerContract";
+export { AttackerContract__factory } from "./factories/contracts/evm/testing/AttackerContract.sol/AttackerContract__factory";
+export type { Victim } from "./contracts/evm/testing/AttackerContract.sol/Victim";
+export { Victim__factory } from "./factories/contracts/evm/testing/AttackerContract.sol/Victim__factory";
+export type { ERC20Mock } from "./contracts/evm/testing/ERC20Mock";
+export { ERC20Mock__factory } from "./factories/contracts/evm/testing/ERC20Mock__factory";
 export type { INonfungiblePositionManager } from "./contracts/evm/testing/TestUniswapV3Contracts.sol/INonfungiblePositionManager";
 export { INonfungiblePositionManager__factory } from "./factories/contracts/evm/testing/TestUniswapV3Contracts.sol/INonfungiblePositionManager__factory";
 export type { IPoolInitializer } from "./contracts/evm/testing/TestUniswapV3Contracts.sol/IPoolInitializer";
@@ -130,10 +136,6 @@ export type { ZetaConnectorEth } from "./contracts/evm/ZetaConnector.eth.sol/Zet
 export { ZetaConnectorEth__factory } from "./factories/contracts/evm/ZetaConnector.eth.sol/ZetaConnectorEth__factory";
 export type { ZetaConnectorNonEth } from "./contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth";
 export { ZetaConnectorNonEth__factory } from "./factories/contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth__factory";
-export type { WZETA } from "./contracts/zevm/ConnectorZEVM.sol/WZETA";
-export { WZETA__factory } from "./factories/contracts/zevm/ConnectorZEVM.sol/WZETA__factory";
-export type { ZetaConnectorZEVM } from "./contracts/zevm/ConnectorZEVM.sol/ZetaConnectorZEVM";
-export { ZetaConnectorZEVM__factory } from "./factories/contracts/zevm/ConnectorZEVM.sol/ZetaConnectorZEVM__factory";
 export type { ISystem } from "./contracts/zevm/Interfaces.sol/ISystem";
 export { ISystem__factory } from "./factories/contracts/zevm/Interfaces.sol/ISystem__factory";
 export type { IZRC20 } from "./contracts/zevm/Interfaces.sol/IZRC20";
@@ -148,6 +150,12 @@ export type { SystemContract } from "./contracts/zevm/SystemContract.sol/SystemC
 export { SystemContract__factory } from "./factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
 export type { SystemContractErrors } from "./contracts/zevm/SystemContract.sol/SystemContractErrors";
 export { SystemContractErrors__factory } from "./factories/contracts/zevm/SystemContract.sol/SystemContractErrors__factory";
+export type { SystemContractMock } from "./contracts/zevm/testing/SystemContractMock.sol/SystemContractMock";
+export { SystemContractMock__factory } from "./factories/contracts/zevm/testing/SystemContractMock.sol/SystemContractMock__factory";
+export type { WZETA } from "./contracts/zevm/ZetaConnectorZEVM.sol/WZETA";
+export { WZETA__factory } from "./factories/contracts/zevm/ZetaConnectorZEVM.sol/WZETA__factory";
+export type { ZetaConnectorZEVM } from "./contracts/zevm/ZetaConnectorZEVM.sol/ZetaConnectorZEVM";
+export { ZetaConnectorZEVM__factory } from "./factories/contracts/zevm/ZetaConnectorZEVM.sol/ZetaConnectorZEVM__factory";
 export type { ZRC20 } from "./contracts/zevm/ZRC20.sol/ZRC20";
 export { ZRC20__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20__factory";
 export type { ZRC20Errors } from "./contracts/zevm/ZRC20.sol/ZRC20Errors";

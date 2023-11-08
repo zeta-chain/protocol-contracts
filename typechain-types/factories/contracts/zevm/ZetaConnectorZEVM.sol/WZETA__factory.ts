@@ -7,7 +7,7 @@ import type { Provider } from "@ethersproject/providers";
 import type {
   WZETA,
   WZETAInterface,
-} from "../../../../contracts/zevm/ConnectorZEVM.sol/WZETA";
+} from "../../../../contracts/zevm/ZetaConnectorZEVM.sol/WZETA";
 
 const _abi = [
   {

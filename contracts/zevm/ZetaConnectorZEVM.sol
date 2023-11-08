@@ -58,7 +58,6 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
     error WZETATransferFailed();
     error OnlyFungibleModule();
     error FailedZetaSent();
-    error ZeroAddress();
 
     /// @notice Fungible module address.
     address public constant FUNGIBLE_MODULE_ADDRESS = payable(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
@@ -77,9 +76,8 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
     );
     event SetWZETA(address wzeta_);
 
-    constructor(address _wzeta) {
-        if (_wzeta == address(0)) revert ZeroAddress();
-        wzeta = _wzeta;
+    constructor(address wzeta_) {
+        wzeta = wzeta_;
     }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
