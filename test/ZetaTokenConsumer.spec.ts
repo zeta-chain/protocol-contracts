@@ -14,7 +14,7 @@ import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { getNonZetaAddress } from "lib";
 
-import { getExternalAddress } from "../lib/address.helpers";
+import { getTestAddress } from "../lib/address.helpers";
 import {
   deployZetaNonEth,
   getZetaTokenConsumerUniV2Strategy,
@@ -62,15 +62,9 @@ describe("ZetaTokenConsumer tests", () => {
       args: [tssSigner.address, tssUpdater.address],
     });
 
-    const DAI = getExternalAddress("dai", {
-      customNetworkName: "eth_mainnet",
-      customZetaNetwork: "mainnet",
-    });
+    const DAI = getTestAddress("dai", "eth_mainnet");
 
-    USDCAddr = getExternalAddress("usdc", {
-      customNetworkName: "eth_mainnet",
-      customZetaNetwork: "mainnet",
-    });
+    USDCAddr = getTestAddress("usdc", "eth_mainnet");
 
     uniswapV2RouterAddr = getNonZetaAddress("uniswapV2Router02", "eth_mainnet");
 

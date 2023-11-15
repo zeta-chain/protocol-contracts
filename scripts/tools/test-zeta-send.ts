@@ -1,11 +1,16 @@
-import { getChainId } from "@zetachain/addresses";
+import { networks } from "@zetachain/networks";
 import { AbiCoder } from "ethers/lib/utils";
 import { ethers, network } from "hardhat";
-import { getAddress, isProtocolNetworkName } from "lib";
 
+import { getAddress, isProtocolNetworkName, ZetaProtocolNetwork } from "../../lib/address.tools";
 import { ZetaConnectorEth__factory as ZetaConnectorEthFactory } from "../../typechain-types";
 
 const encoder = new AbiCoder();
+
+export const getChainId = (network: ZetaProtocolNetwork): number => {
+  //@ts-ignore
+  return networks[network].chain_id;
+};
 
 async function main() {
   if (!isProtocolNetworkName(network.name)) {
@@ -23,7 +28,7 @@ async function main() {
   await (
     await contract.send({
       destinationAddress: encoder.encode(["address"], [accounts[0].address]),
-      destinationChainId: getChainId("bsc-testnet"),
+      destinationChainId: getChainId("bsc_testnet"),
       destinationGasLimit: 1_000_000,
       message: encoder.encode(["address"], [accounts[0].address]),
       zetaParams: [],
