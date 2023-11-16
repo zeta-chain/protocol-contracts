@@ -33,6 +33,7 @@ export declare type ZetaZEVMAddress =
 export declare type ZetaProtocolTestNetwork =
   | "baobab_testnet"
   | "bsc_testnet"
+  | "btc_testnet"
   | "goerli_testnet"
   | "mumbai_testnet"
   | "zeta_testnet";
@@ -40,14 +41,26 @@ export declare type ZetaProtocolTestNetwork =
 export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
   "baobab_testnet",
   "bsc_testnet",
+  "btc_testnet",
   "goerli_testnet",
   "mumbai_testnet",
   "zeta_testnet",
 ];
 
-export declare type NonZetaAddress = "uniswapV2Router02" | "uniswapV3Factory" | "uniswapV3Router" | "weth9";
+export declare type NonZetaAddress =
+  | "uniswapV2Factory"
+  | "uniswapV2Router02"
+  | "uniswapV3Factory"
+  | "uniswapV3Router"
+  | "weth9";
 
-export const nonZetaAddress: NonZetaAddress[] = ["uniswapV2Router02", "uniswapV3Router", "uniswapV3Factory", "weth9"];
+export const nonZetaAddress: NonZetaAddress[] = [
+  "uniswapV2Factory",
+  "uniswapV2Router02",
+  "uniswapV3Router",
+  "uniswapV3Factory",
+  "weth9",
+];
 
 export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet";
 export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet"];

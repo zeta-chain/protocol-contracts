@@ -2076,11 +2076,6 @@
     "@uniswap/v3-core" "1.0.0"
     base64-sol "1.0.1"
 
-"@zetachain/addresses@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@zetachain/addresses/-/addresses-0.0.13.tgz#cbe56d3916e62d36e1d82e15a79404e84ed49176"
-  integrity sha512-hqCsEH+a3IqYR0cx9tlV0Rwk22i0MUpll81aLynxUkjoKQx5BaO3+5Mp/o62W8ZqYJICVbHPqb28DhmfoNQffg==
-
 "@zetachain/networks@^2.4.3":
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-2.4.3.tgz#870b2cda4b91f913be990246831378f60688d452"
