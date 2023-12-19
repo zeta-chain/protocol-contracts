@@ -16,7 +16,7 @@
       "tssUpdater": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
       "zetaToken": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
       "zetaTokenConsumerUniV2": "",
-      "zetaTokenConsumerUniV3": "0xd886b7Af031F9a505310bA01951948BD1d673aF1"
+      "zetaTokenConsumerUniV3": "0xFB2fCE3CCca19F0f764Ed8aa26C62181E3dA04C5"
     },
     "btc_testnet": {
       "connector": "",
