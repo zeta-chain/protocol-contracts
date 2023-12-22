@@ -2,13 +2,7 @@ import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
 
-import {
-  ERC20_CUSTODY_SALT_NUMBER_ETH,
-  ERC20_CUSTODY_SALT_NUMBER_NON_ETH,
-  ERC20_CUSTODY_ZETA_FEE,
-  ERC20_CUSTODY_ZETA_MAX_FEE,
-} from "../../../lib/contracts.constants";
-import { isEthNetworkName } from "../../../lib/contracts.helpers";
+import { ERC20_CUSTODY_ZETA_FEE, ERC20_CUSTODY_ZETA_MAX_FEE, getSaltNumber } from "../../../lib/contracts.constants";
 import {
   deployContractToAddress,
   saltToHex,
@@ -30,7 +24,7 @@ export const deterministicDeployERC20Custody = async () => {
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
   const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
-  const saltNumber = isEthNetworkName(network.name) ? ERC20_CUSTODY_SALT_NUMBER_ETH : ERC20_CUSTODY_SALT_NUMBER_NON_ETH;
+  const saltNumber = getSaltNumber(network.name, "zetaERC20Custody");
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
   const zetaFee = ERC20_CUSTODY_ZETA_FEE;
@@ -54,6 +48,7 @@ export const deterministicDeployERC20Custody = async () => {
 
   console.log("Deployed ERC20 Custody. Address:", address);
   console.log("Constructor Args", constructorArgs);
+  return address;
 };
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {

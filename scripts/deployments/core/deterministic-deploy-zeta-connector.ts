@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
 
-import { ZETA_CONNECTOR_SALT_NUMBER_ETH, ZETA_CONNECTOR_SALT_NUMBER_NON_ETH } from "../../../lib/contracts.constants";
+import { getSaltNumber } from "../../../lib/contracts.constants";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import {
   deployContractToAddress,
@@ -10,7 +10,7 @@ import {
 } from "../../../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
 import { ZetaConnectorEth__factory, ZetaConnectorNonEth__factory } from "../../../typechain-types";
 
-export async function deterministicDeployZetaConnector() {
+export const deterministicDeployZetaConnector = async () => {
   if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
@@ -25,9 +25,7 @@ export async function deterministicDeployZetaConnector() {
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
   const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
-  const saltNumber = isEthNetworkName(network.name)
-    ? ZETA_CONNECTOR_SALT_NUMBER_ETH
-    : ZETA_CONNECTOR_SALT_NUMBER_NON_ETH;
+  const saltNumber = getSaltNumber(network.name, "zetaConnector");
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
   const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
@@ -52,7 +50,8 @@ export async function deterministicDeployZetaConnector() {
 
   console.log("Deployed ZetaConnector. Address:", address);
   console.log("Constructor Args", constructorArgs);
-}
+  return address;
+};
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
   deterministicDeployZetaConnector()
