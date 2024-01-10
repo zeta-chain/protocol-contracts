@@ -11,8 +11,7 @@ import {
 import { ZetaConnector__factory } from "dist/typechain-types";
 import { zetaConnectorNonEthSol } from "typechain-types/factories/contracts/evm";
 
-const ATHENS_EVM_RPC =
-  "https://zetachain-athens-evm.blockpi.network/v1/rpc/public";
+const ATHENS_EVM_RPC = "https://zetachain-athens-evm.blockpi.network/v1/rpc/public";
 const ATHENS_TENDERMINT_RPC = "http://46.4.15.110:1317";
 
 const fetchChains = async (chainObject: any) => {
@@ -28,11 +27,7 @@ const fetchChains = async (chainObject: any) => {
         };
       });
     } else {
-      console.error(
-        "Error fetching chains:",
-        response.status,
-        response.statusText
-      );
+      console.error("Error fetching chains:", response.status, response.statusText);
     }
   } catch (error) {
     console.error("Error fetching chains:", error);
@@ -40,7 +35,7 @@ const fetchChains = async (chainObject: any) => {
 };
 
 const fetchTssData = async (chainObject: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/zetacore/crosschain/get_tss_address`;
+  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/crosschain/get_tss_address`;
   try {
     const tssResponse: AxiosResponse<any> = await axios.get(URL);
 
@@ -51,11 +46,7 @@ const fetchTssData = async (chainObject: any) => {
         chainObject[chain]["tss"] = chain.includes("btc") ? btc : eth;
       }
     } else {
-      console.error(
-        "Error fetching TSS data:",
-        tssResponse.status,
-        tssResponse.statusText
-      );
+      console.error("Error fetching TSS data:", tssResponse.status, tssResponse.statusText);
     }
   } catch (error) {
     console.error("Error fetching TSS data:", error);
@@ -63,7 +54,7 @@ const fetchTssData = async (chainObject: any) => {
 };
 
 const fetchSystemContract = async (chainObject: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/zetacore/fungible/system_contract`;
+  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/fungible/system_contract`;
   try {
     const systemContractResponse: AxiosResponse<any> = await axios.get(URL);
 
@@ -71,15 +62,10 @@ const fetchSystemContract = async (chainObject: any) => {
       if (!chainObject["zeta_testnet"]) {
         chainObject["zeta_testnet"] = {};
       }
-      chainObject["zeta_testnet"]["systemContract"] =
-        systemContractResponse.data.SystemContract.system_contract;
-      chainObject["zeta_testnet"]["connectorZEVM"] =
-        systemContractResponse.data.SystemContract.connector_zevm;
+      chainObject["zeta_testnet"]["systemContract"] = systemContractResponse.data.SystemContract.system_contract;
+      chainObject["zeta_testnet"]["connectorZEVM"] = systemContractResponse.data.SystemContract.connector_zevm;
     } else {
-      console.error(
-        "Error fetching system contract:",
-        systemContractResponse.statusText
-      );
+      console.error("Error fetching system contract:", systemContractResponse.statusText);
     }
   } catch (error) {
     console.error("Error fetching system contract:", error);
@@ -87,7 +73,7 @@ const fetchSystemContract = async (chainObject: any) => {
 };
 
 const fetchForeignCoinsData = async (chainObject: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/zetacore/fungible/foreign_coins`;
+  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/fungible/foreign_coins`;
   try {
     const foreignCoinsResponse: AxiosResponse<any> = await axios.get(URL);
     if (foreignCoinsResponse.status === 200) {
@@ -102,21 +88,14 @@ const fetchForeignCoinsData = async (chainObject: any) => {
         }
       });
     } else {
-      console.error(
-        "Error fetching foreign coins data:",
-        foreignCoinsResponse.status,
-        foreignCoinsResponse.statusText
-      );
+      console.error("Error fetching foreign coins data:", foreignCoinsResponse.status, foreignCoinsResponse.statusText);
     }
   } catch (error) {
     console.error("Error fetching foreign coins data:", error);
   }
 };
 
-const fetchAthensAddresses = async (
-  chainObject: any,
-  hre: HardhatRuntimeEnvironment
-) => {
+const fetchAthensAddresses = async (chainObject: any, hre: HardhatRuntimeEnvironment) => {
   const zeta = "zeta_testnet";
   if (chainObject[zeta] && chainObject[zeta]["systemContract"]) {
     const athens = chainObject[zeta];
@@ -138,25 +117,18 @@ const fetchAthensAddresses = async (
 };
 
 const fetchChainSpecificAddresses = async (chainObject: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/zetacore/observer/get_client_params_for_chain`;
+  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/observer/get_client_params_for_chain`;
   try {
     for (const chain in chainObject) {
       if (chain.includes("zeta") || chain.includes("btc")) continue;
       const id = chainObject[chain].chainId;
       const response: AxiosResponse<any> = await axios.get(`${URL}/${id}`);
       if (response.status === 200) {
-        chainObject[chain]["zetaTokenContractAddress"] =
-          response.data.core_params.zeta_token_contract_address;
-        chainObject[chain]["connectorContractAddress"] =
-          response.data.core_params.connector_contract_address;
-        chainObject[chain]["erc20CustodyContractAddress"] =
-          response.data.core_params.erc20_custody_contract_address;
+        chainObject[chain]["zetaTokenContractAddress"] = response.data.core_params.zeta_token_contract_address;
+        chainObject[chain]["connectorContractAddress"] = response.data.core_params.connector_contract_address;
+        chainObject[chain]["erc20CustodyContractAddress"] = response.data.core_params.erc20_custody_contract_address;
       } else {
-        console.error(
-          "Error fetching chain data:",
-          response.status,
-          response.statusText
-        );
+        console.error("Error fetching chain data:", response.status, response.statusText);
       }
     }
   } catch (error) {
@@ -164,10 +136,7 @@ const fetchChainSpecificAddresses = async (chainObject: any) => {
   }
 };
 
-const fetchPauserUpdater = async (
-  chainObject: any,
-  hre: HardhatRuntimeEnvironment
-) => {
+const fetchPauserUpdater = async (chainObject: any, hre: HardhatRuntimeEnvironment) => {
   try {
     for (const chain in chainObject) {
       const provider = new hre.ethers.providers.JsonRpcProvider(ATHENS_EVM_RPC);
