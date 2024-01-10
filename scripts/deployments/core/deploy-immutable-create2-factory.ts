@@ -1,11 +1,10 @@
-import { isNetworkName } from "@zetachain/addresses";
-import { saveAddress } from "@zetachain/addresses-tools";
 import { network } from "hardhat";
+import { isProtocolNetworkName } from "lib";
 
 import { deployImmutableCreate2Factory as deploy } from "../../../lib/contracts.helpers";
 
 export async function deployImmutableCreate2Factory() {
-  if (!isNetworkName(network.name)) {
+  if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
 
@@ -13,7 +12,6 @@ export async function deployImmutableCreate2Factory() {
 
   const contract = await deploy();
 
-  // saveAddress("immutableCreate2Factory", contract.address);
   console.log("Deployed ImmutableCreate2Factory. Address:", contract.address);
 }
 

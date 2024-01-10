@@ -198,23 +198,39 @@ export interface ZetaConnectorNonEthInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
+    "MaxSupplyUpdated(address,uint256)": EventFragment;
     "Paused(address)": EventFragment;
     "PauserAddressUpdated(address,address)": EventFragment;
     "TSSAddressUpdated(address,address)": EventFragment;
+    "TSSAddressUpdaterUpdated(address,address)": EventFragment;
     "Unpaused(address)": EventFragment;
     "ZetaReceived(bytes,uint256,address,uint256,bytes,bytes32)": EventFragment;
     "ZetaReverted(address,uint256,uint256,bytes,uint256,bytes,bytes32)": EventFragment;
     "ZetaSent(address,address,uint256,bytes,uint256,uint256,bytes,bytes)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "MaxSupplyUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PauserAddressUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TSSAddressUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TSSAddressUpdaterUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaReceived"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaReverted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaSent"): EventFragment;
 }
+
+export interface MaxSupplyUpdatedEventObject {
+  callerAddress: string;
+  newMaxSupply: BigNumber;
+}
+export type MaxSupplyUpdatedEvent = TypedEvent<
+  [string, BigNumber],
+  MaxSupplyUpdatedEventObject
+>;
+
+export type MaxSupplyUpdatedEventFilter =
+  TypedEventFilter<MaxSupplyUpdatedEvent>;
 
 export interface PausedEventObject {
   account: string;
@@ -224,7 +240,7 @@ export type PausedEvent = TypedEvent<[string], PausedEventObject>;
 export type PausedEventFilter = TypedEventFilter<PausedEvent>;
 
 export interface PauserAddressUpdatedEventObject {
-  updaterAddress: string;
+  callerAddress: string;
   newTssAddress: string;
 }
 export type PauserAddressUpdatedEvent = TypedEvent<
@@ -236,7 +252,7 @@ export type PauserAddressUpdatedEventFilter =
   TypedEventFilter<PauserAddressUpdatedEvent>;
 
 export interface TSSAddressUpdatedEventObject {
-  zetaTxSenderAddress: string;
+  callerAddress: string;
   newTssAddress: string;
 }
 export type TSSAddressUpdatedEvent = TypedEvent<
@@ -246,6 +262,18 @@ export type TSSAddressUpdatedEvent = TypedEvent<
 
 export type TSSAddressUpdatedEventFilter =
   TypedEventFilter<TSSAddressUpdatedEvent>;
+
+export interface TSSAddressUpdaterUpdatedEventObject {
+  callerAddress: string;
+  newTssUpdaterAddress: string;
+}
+export type TSSAddressUpdaterUpdatedEvent = TypedEvent<
+  [string, string],
+  TSSAddressUpdaterUpdatedEventObject
+>;
+
+export type TSSAddressUpdaterUpdatedEventFilter =
+  TypedEventFilter<TSSAddressUpdaterUpdatedEvent>;
 
 export interface UnpausedEventObject {
   account: string;
@@ -528,26 +556,44 @@ export interface ZetaConnectorNonEth extends BaseContract {
   };
 
   filters: {
+    "MaxSupplyUpdated(address,uint256)"(
+      callerAddress?: null,
+      newMaxSupply?: null
+    ): MaxSupplyUpdatedEventFilter;
+    MaxSupplyUpdated(
+      callerAddress?: null,
+      newMaxSupply?: null
+    ): MaxSupplyUpdatedEventFilter;
+
     "Paused(address)"(account?: null): PausedEventFilter;
     Paused(account?: null): PausedEventFilter;
 
     "PauserAddressUpdated(address,address)"(
-      updaterAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): PauserAddressUpdatedEventFilter;
     PauserAddressUpdated(
-      updaterAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): PauserAddressUpdatedEventFilter;
 
     "TSSAddressUpdated(address,address)"(
-      zetaTxSenderAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): TSSAddressUpdatedEventFilter;
     TSSAddressUpdated(
-      zetaTxSenderAddress?: null,
+      callerAddress?: null,
       newTssAddress?: null
     ): TSSAddressUpdatedEventFilter;
+
+    "TSSAddressUpdaterUpdated(address,address)"(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
+    TSSAddressUpdaterUpdated(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
 
     "Unpaused(address)"(account?: null): UnpausedEventFilter;
     Unpaused(account?: null): UnpausedEventFilter;

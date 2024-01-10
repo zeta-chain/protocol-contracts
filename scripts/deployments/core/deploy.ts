@@ -1,17 +1,15 @@
-import { isLocalNetworkName } from "@zetachain/addresses";
-import { saveAddress } from "@zetachain/addresses-tools";
-import { ethers, network } from "hardhat";
+import { network } from "hardhat";
 
+import { isProtocolNetworkName } from "../../../lib/address.tools";
 import { isEthNetworkName } from "../../../lib/contracts.helpers";
 import { setZetaAddresses } from "../../tools/set-zeta-token-addresses";
 import { deployZetaConnector } from "./deploy-zeta-connector";
 import { deployZetaToken } from "./deploy-zeta-token";
 
+const networkName = network.name;
+
 async function main() {
-  if (isLocalNetworkName(network.name)) {
-    const [owner] = await ethers.getSigners();
-    // saveAddress("tssUpdater", owner.address);
-  }
+  if (!isProtocolNetworkName(networkName)) throw new Error("Invalid network name");
 
   const zetaTokenAddress = await deployZetaToken();
   const connectorAddress = await deployZetaConnector();
@@ -25,9 +23,7 @@ async function main() {
    * @description Avoid setting Zeta addresses for local network,
    * since it must be done after starting the local Zeta node
    */
-  if (!isLocalNetworkName(network.name)) {
-    await setZetaAddresses(connectorAddress, zetaTokenAddress);
-  }
+  await setZetaAddresses(connectorAddress, zetaTokenAddress);
 }
 
 main()

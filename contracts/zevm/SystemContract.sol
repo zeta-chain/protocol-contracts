@@ -56,21 +56,26 @@ contract SystemContract is SystemContractErrors {
         emit SystemContractDeployed();
     }
 
-    //
-
     /**
      * @dev Deposit foreign coins into ZRC20 and call user specified contract on zEVM.
+     * @param context, context data for deposit.
      * @param zrc20, zrc20 address for deposit.
      * @param amount, amount to deposit.
      * @param target, contract address to make a call after deposit.
      * @param message, calldata for a call.
      */
-    function depositAndCall(address zrc20, uint256 amount, address target, bytes calldata message) external {
+    function depositAndCall(
+        zContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
-        zContract(target).onCrossChainCall(zrc20, amount, message);
+        zContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
     /**

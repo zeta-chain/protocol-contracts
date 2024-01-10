@@ -1,23 +1,14 @@
-import { getAddress as getAddressLib, NetworkName, ZetaAddress, ZetaNetworkName } from "@zetachain/addresses";
-import { network } from "hardhat";
+import { ZetaProtocolNetwork } from "./address.tools";
 
-const MissingZetaNetworkError = new Error(
-  "ZETA_NETWORK is not defined, please set the environment variable (e.g.: ZETA_NETWORK=athens <command>)"
-);
+export declare type TestAddress = "dai" | "usdc";
 
-export const getAddress = (
-  address: ZetaAddress,
-  {
-    customNetworkName,
-    customZetaNetwork,
-  }: { customNetworkName?: NetworkName; customZetaNetwork?: ZetaNetworkName } = {}
-): string => {
-  const { name: _networkName } = network;
-  const networkName = customNetworkName || _networkName;
+export const getTestAddress = (address: TestAddress, networkName: ZetaProtocolNetwork): string => {
+  if (networkName !== "eth_mainnet") throw new Error("Invalid network name");
+  if (address === "dai") {
+    return "0x6b175474e89094c44da98b954eedeac495271d0f";
+  } else if (address === "usdc") {
+    return "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  }
 
-  const { ZETA_NETWORK: _ZETA_NETWORK } = process.env;
-  const zetaNetwork = customZetaNetwork || _ZETA_NETWORK;
-
-  if (!zetaNetwork) throw MissingZetaNetworkError;
-  return getAddressLib({ address, networkName, zetaNetwork });
+  throw new Error(`Unknown external address ${address} for network ${networkName}`);
 };

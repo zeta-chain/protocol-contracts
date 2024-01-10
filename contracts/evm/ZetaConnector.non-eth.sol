@@ -15,6 +15,8 @@ import "./interfaces/ZetaNonEthInterface.sol";
 contract ZetaConnectorNonEth is ZetaConnectorBase {
     uint256 public maxSupply = 2 ** 256 - 1;
 
+    event MaxSupplyUpdated(address callerAddress, uint256 newMaxSupply);
+
     constructor(
         address zetaTokenAddress_,
         address tssAddress_,
@@ -28,6 +30,7 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
 
     function setMaxSupply(uint256 maxSupply_) external onlyTssAddress {
         maxSupply = maxSupply_;
+        emit MaxSupplyUpdated(msg.sender, maxSupply_);
     }
 
     /**
