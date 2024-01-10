@@ -8,7 +8,7 @@ import {
   ZetaConnectorNonEth__factory,
   ZetaConnectorZEVM__factory,
 } from "@typechain-types";
-import { ZetaConnector__factory } from "dist/typechain-types";
+import { ZetaConnector__factory } from "../typechain-types";
 import { zetaConnectorNonEthSol } from "typechain-types/factories/contracts/evm";
 
 const ATHENS_EVM_RPC = "https://zetachain-athens-evm.blockpi.network/v1/rpc/public";

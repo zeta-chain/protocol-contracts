@@ -68,14 +68,13 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "yarn clean && yarn compile && npx del-cli dist abi && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
-    "clean": "npx hardhat clean",
-    "compile": "yarn clean && npx hardhat compile",
+    "build": "yarn compile && npx del-cli dist abi && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
+    "compile": "npx hardhat compile --force",
     "generate": "yarn compile && ./scripts/generate_go.sh",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "yarn build",
-    "test": "npx hardhat clean && npx hardhat test",
+    "test": "yarn compile && npx hardhat test",
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
