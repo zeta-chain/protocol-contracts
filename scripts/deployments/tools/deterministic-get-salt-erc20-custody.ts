@@ -29,14 +29,19 @@ export const deterministicDeployGetSaltERC20Custody = async () => {
   const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
   const contractBytecode = ERC20Custody__factory.bytecode;
 
-  calculateBestSalt(MAX_ITERATIONS, DEPLOYER_ADDRESS, constructorTypes, constructorArgs, contractBytecode);
+  await calculateBestSalt(
+    MAX_ITERATIONS,
+    DEPLOYER_ADDRESS,
+    constructorTypes,
+    constructorArgs,
+    contractBytecode,
+    network.name
+  );
 };
 
-if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deterministicDeployGetSaltERC20Custody()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error);
-      process.exit(1);
-    });
-}
+deterministicDeployGetSaltERC20Custody()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
