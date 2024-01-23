@@ -31,10 +31,10 @@ const SALT_NUMBERS = {
     zetaToken: "",
   },
   eth_mainnet: {
-    zetaConnector: "1414",
+    zetaConnector: "84286",
     zetaConsumer: "0",
-    zetaERC20Custody: "87967",
-    zetaToken: "84108",
+    zetaERC20Custody: "926526",
+    zetaToken: "0",
   },
   goerli_testnet: {
     zetaConnector: "1414",

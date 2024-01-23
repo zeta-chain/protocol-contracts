@@ -17,6 +17,7 @@ export const deterministicDeployZetaConnector = async () => {
 
   const accounts = await ethers.getSigners();
   const [signer] = accounts;
+  const initialBalance = await signer.getBalance();
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
@@ -25,7 +26,7 @@ export const deterministicDeployZetaConnector = async () => {
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
   const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
-  const saltNumber = getSaltNumber(network.name, "zetaConnector");
+  const saltNumber = getSaltNumber("zetaConnector", network.name);
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
   const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
@@ -48,8 +49,11 @@ export const deterministicDeployZetaConnector = async () => {
     signer,
   });
 
+  const finalBalance = await signer.getBalance();
   console.log("Deployed ZetaConnector. Address:", address);
   console.log("Constructor Args", constructorArgs);
+  console.log("ETH spent:", initialBalance.sub(finalBalance).toString());
+
   return address;
 };
 
