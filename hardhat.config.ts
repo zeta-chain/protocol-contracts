@@ -1,5 +1,5 @@
 import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-etherscan";
+import "@nomicfoundation/hardhat-verify";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
@@ -15,6 +15,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       // BSC
+      bsc: process.env.BSCSCAN_API_KEY || "",
       bscTestnet: process.env.BSCSCAN_API_KEY || "",
       // ETH
       goerli: process.env.ETHERSCAN_API_KEY || "",
