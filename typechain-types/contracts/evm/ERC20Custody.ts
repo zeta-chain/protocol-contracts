@@ -34,9 +34,11 @@ export interface ERC20CustodyInterface extends utils.Interface {
     "deposit(bytes,address,uint256,bytes)": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
+    "pauserAddress()": FunctionFragment;
     "renounceTSSAddressUpdater()": FunctionFragment;
     "unpause()": FunctionFragment;
     "unwhitelist(address)": FunctionFragment;
+    "updatePauserAddress(address)": FunctionFragment;
     "updateTSSAddress(address)": FunctionFragment;
     "updateZetaFee(uint256)": FunctionFragment;
     "whitelist(address)": FunctionFragment;
@@ -54,9 +56,11 @@ export interface ERC20CustodyInterface extends utils.Interface {
       | "deposit"
       | "pause"
       | "paused"
+      | "pauserAddress"
       | "renounceTSSAddressUpdater"
       | "unpause"
       | "unwhitelist"
+      | "updatePauserAddress"
       | "updateTSSAddress"
       | "updateZetaFee"
       | "whitelist"
@@ -87,12 +91,20 @@ export interface ERC20CustodyInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "pauserAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "renounceTSSAddressUpdater",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "unwhitelist",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updatePauserAddress",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -135,12 +147,20 @@ export interface ERC20CustodyInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "pauserAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "renounceTSSAddressUpdater",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "unwhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updatePauserAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -164,6 +184,7 @@ export interface ERC20CustodyInterface extends utils.Interface {
   events: {
     "Deposited(bytes,address,uint256,bytes)": EventFragment;
     "Paused(address)": EventFragment;
+    "PauserAddressUpdated(address,address)": EventFragment;
     "RenouncedTSSUpdater(address)": EventFragment;
     "Unpaused(address)": EventFragment;
     "Unwhitelisted(address)": EventFragment;
@@ -175,6 +196,7 @@ export interface ERC20CustodyInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "Deposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PauserAddressUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RenouncedTSSUpdater"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unwhitelisted"): EventFragment;
@@ -198,11 +220,23 @@ export type DepositedEvent = TypedEvent<
 export type DepositedEventFilter = TypedEventFilter<DepositedEvent>;
 
 export interface PausedEventObject {
-  sender: string;
+  account: string;
 }
 export type PausedEvent = TypedEvent<[string], PausedEventObject>;
 
 export type PausedEventFilter = TypedEventFilter<PausedEvent>;
+
+export interface PauserAddressUpdatedEventObject {
+  callerAddress: string;
+  newTssAddress: string;
+}
+export type PauserAddressUpdatedEvent = TypedEvent<
+  [string, string],
+  PauserAddressUpdatedEventObject
+>;
+
+export type PauserAddressUpdatedEventFilter =
+  TypedEventFilter<PauserAddressUpdatedEvent>;
 
 export interface RenouncedTSSUpdaterEventObject {
   TSSAddressUpdater_: string;
@@ -216,7 +250,7 @@ export type RenouncedTSSUpdaterEventFilter =
   TypedEventFilter<RenouncedTSSUpdaterEvent>;
 
 export interface UnpausedEventObject {
-  sender: string;
+  account: string;
 }
 export type UnpausedEvent = TypedEvent<[string], UnpausedEventObject>;
 
@@ -314,6 +348,8 @@ export interface ERC20Custody extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
+    pauserAddress(overrides?: CallOverrides): Promise<[string]>;
+
     renounceTSSAddressUpdater(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -324,6 +360,11 @@ export interface ERC20Custody extends BaseContract {
 
     unwhitelist(
       asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -379,6 +420,8 @@ export interface ERC20Custody extends BaseContract {
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
+  pauserAddress(overrides?: CallOverrides): Promise<string>;
+
   renounceTSSAddressUpdater(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -389,6 +432,11 @@ export interface ERC20Custody extends BaseContract {
 
   unwhitelist(
     asset: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  updatePauserAddress(
+    pauserAddress_: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -442,12 +490,19 @@ export interface ERC20Custody extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<boolean>;
 
+    pauserAddress(overrides?: CallOverrides): Promise<string>;
+
     renounceTSSAddressUpdater(overrides?: CallOverrides): Promise<void>;
 
     unpause(overrides?: CallOverrides): Promise<void>;
 
     unwhitelist(
       asset: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -499,8 +554,17 @@ export interface ERC20Custody extends BaseContract {
       message?: null
     ): DepositedEventFilter;
 
-    "Paused(address)"(sender?: null): PausedEventFilter;
-    Paused(sender?: null): PausedEventFilter;
+    "Paused(address)"(account?: null): PausedEventFilter;
+    Paused(account?: null): PausedEventFilter;
+
+    "PauserAddressUpdated(address,address)"(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): PauserAddressUpdatedEventFilter;
+    PauserAddressUpdated(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): PauserAddressUpdatedEventFilter;
 
     "RenouncedTSSUpdater(address)"(
       TSSAddressUpdater_?: null
@@ -509,8 +573,8 @@ export interface ERC20Custody extends BaseContract {
       TSSAddressUpdater_?: null
     ): RenouncedTSSUpdaterEventFilter;
 
-    "Unpaused(address)"(sender?: null): UnpausedEventFilter;
-    Unpaused(sender?: null): UnpausedEventFilter;
+    "Unpaused(address)"(account?: null): UnpausedEventFilter;
+    Unpaused(account?: null): UnpausedEventFilter;
 
     "Unwhitelisted(address)"(
       asset?: PromiseOrValue<string> | null
@@ -563,6 +627,8 @@ export interface ERC20Custody extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
+    pauserAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     renounceTSSAddressUpdater(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -573,6 +639,11 @@ export interface ERC20Custody extends BaseContract {
 
     unwhitelist(
       asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -629,6 +700,8 @@ export interface ERC20Custody extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    pauserAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     renounceTSSAddressUpdater(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -639,6 +712,11 @@ export interface ERC20Custody extends BaseContract {
 
     unwhitelist(
       asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

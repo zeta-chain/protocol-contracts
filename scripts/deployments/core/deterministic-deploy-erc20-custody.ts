@@ -34,8 +34,15 @@ export const deterministicDeployERC20Custody = async () => {
   const salthex = saltToHex(saltStr, DEPLOYER_ADDRESS);
   console.log("SaltHex:", salthex);
 
-  const constructorTypes = ["address", "address", "uint256", "uint256", "address"];
-  const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
+  const constructorTypes = ["address", "address", "uint256", "uint256", "address", "address"];
+  const constructorArgs = [
+    tssAddress,
+    tssUpdaterAddress,
+    zetaFee.toString(),
+    zetaMaxFee.toString(),
+    zetaTokenAddress,
+    tssUpdaterAddress,
+  ];
   const contractBytecode = ERC20Custody__factory.bytecode;
 
   const { address } = await deployContractToAddress({
