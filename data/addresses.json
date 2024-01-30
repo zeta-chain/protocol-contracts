@@ -3,7 +3,7 @@
     "bsc_mainnet": {
       "connector": "",
       "erc20Custody": "",
-      "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
+      "immutableCreate2Factory": "",
       "tss": "",
       "tssUpdater": "",
       "zetaToken": ""
@@ -28,12 +28,12 @@
       "zetaTokenConsumerUniV3": ""
     },
     "eth_mainnet": {
-      "connector": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
-      "erc20Custody": "0x000001b91C19A31809e769110d35FAd2C15BCeA7",
-      "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
-      "tss": "0xaeB6dDB7708467814D557e340283248be8E43124",
-      "tssUpdater": "0xaeB6dDB7708467814D557e340283248be8E43124",
-      "zetaToken": "0xf091867EC603A6628eD83D274E835539D82e9cc8"
+      "connector": "",
+      "erc20Custody": "",
+      "immutableCreate2Factory": "",
+      "tss": "",
+      "tssUpdater": "",
+      "zetaToken": ""
     },
     "goerli_testnet": {
       "connector": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
