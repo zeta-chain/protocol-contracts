@@ -1,12 +1,12 @@
 {
   "ccm": {
     "bsc_mainnet": {
-      "connector": "",
-      "erc20Custody": "",
+      "connector": "0x000063A6e758D9e2f438d430108377564cf4077D",
+      "erc20Custody": "0x00000fF8fA992424957F97688015814e707A0115",
       "immutableCreate2Factory": "",
-      "tss": "",
+      "tss": "0x70e967acFcC17c3941E87562161406d41676FD83",
       "tssUpdater": "",
-      "zetaToken": ""
+      "zetaToken": "0x0000028a2eB8346cd5c0267856aB7594B7a55308"
     },
     "bsc_testnet": {
       "connector": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -27,13 +27,22 @@
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
     },
-    "eth_mainnet": {
+    "btc_mainnet": {
       "connector": "",
-      "erc20Custody": "",
       "immutableCreate2Factory": "",
-      "tss": "",
+      "tss": "bc1qm24wp577nk8aacckv8np465z3dvmu7ry45el6y",
       "tssUpdater": "",
-      "zetaToken": ""
+      "zetaToken": "",
+      "zetaTokenConsumerUniV2": "",
+      "zetaTokenConsumerUniV3": ""
+    },
+    "eth_mainnet": {
+      "connector": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
+      "erc20Custody": "0x0000030Ec64DF25301d8414eE5a29588C4B0dE10",
+      "immutableCreate2Factory": "",
+      "tss": "0x70e967acFcC17c3941E87562161406d41676FD83",
+      "tssUpdater": "",
+      "zetaToken": "0xf091867EC603A6628eD83D274E835539D82e9cc8"
     },
     "goerli_testnet": {
       "connector": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
@@ -60,6 +69,15 @@
       "immutableCreate2Factory": "",
       "tss": "0x7c125C1d515b8945841b3d5144a060115C58725F",
       "tssUpdater": "0x7274d1d5dddef36aac53dd45b93487ce01ef0a55",
+      "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
+      "zetaTokenConsumerUniV2": "",
+      "zetaTokenConsumerUniV3": ""
+    },
+    "zeta_mainnet": {
+      "connector": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
+      "immutableCreate2Factory": "",
+      "tss": "",
+      "tssUpdater": "",
       "zetaToken": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
@@ -127,6 +145,12 @@
       "systemContract": "0xEdf1c3275d13489aCdC6cD6eD246E72458B8795B",
       "uniswapv2Factory": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
       "uniswapv2Router02": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe"
+    },
+    "zeta_mainnet": {
+      "fungibleModule": "",
+      "systemContract": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
+      "uniswapv2Factory": "",
+      "uniswapv2Router02": ""
     }
   }
 }
