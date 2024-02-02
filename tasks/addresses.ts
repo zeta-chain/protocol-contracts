@@ -1,23 +1,26 @@
+import { getEndpoints } from "@zetachain/networks";
+import axios, { AxiosResponse } from "axios";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import axios, { AxiosResponse } from "axios";
+
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
 import { SystemContract__factory } from "../typechain-types/factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
-import {
-  ZetaConnectorBase__factory,
-  ZetaConnectorEth__factory,
-  ZetaConnectorNonEth__factory,
-  ZetaConnectorZEVM__factory,
-} from "@typechain-types";
-import { ZetaConnector__factory } from "../typechain-types";
-import { zetaConnectorNonEthSol } from "../typechain-types/factories/contracts/evm";
-import { getEndpoints } from "@zetachain/networks";
 
-const EVM_RPC = "https://zetachain-athens-evm.blockpi.network/v1/rpc/public";
-const CONSENSUS_API = "https://zetachain-athens.blockpi.network/lcd/v1/public";
+type Network = "zeta_mainnet" | "zeta_testnet";
 
-const fetchChains = async () => {
-  const URL = `${CONSENSUS_API}/zeta-chain/observer/supportedChains`;
+const api = {
+  zeta_mainnet: {
+    evm: "https://zetachain-evm.blockpi.network/v1/rpc/public",
+    rpc: "https://zetachain.blockpi.network/lcd/v1/public",
+  },
+  zeta_testnet: {
+    evm: "https://zetachain-athens-evm.blockpi.network/v1/rpc/public",
+    rpc: "https://zetachain-athens.blockpi.network/lcd/v1/public",
+  },
+};
+
+const fetchChains = async (network: Network) => {
+  const URL = `${api[network].rpc}/zeta-chain/observer/supportedChains`;
   try {
     const response: AxiosResponse<any> = await axios.get(URL);
 
@@ -31,8 +34,8 @@ const fetchChains = async () => {
   }
 };
 
-const fetchTssData = async (chains: any, addresses: any) => {
-  const URL = `${CONSENSUS_API}/zeta-chain/observer/get_tss_address/18332`;
+const fetchTssData = async (chains: any, addresses: any, network: Network) => {
+  const URL = `${api[network].rpc}/zeta-chain/observer/get_tss_address/18332`;
   try {
     const tssResponse: AxiosResponse<any> = await axios.get(URL);
 
@@ -41,11 +44,11 @@ const fetchTssData = async (chains: any, addresses: any) => {
         const { btc, eth } = tssResponse.data;
         if (chain.chain_name === "zeta_testnet") return;
         addresses.push({
+          address: chain.chain_name === "btc_testnet" ? btc : eth,
+          category: "omnichain",
           chain_id: chain.chain_id,
           chain_name: chain.chain_name,
           type: "tss",
-          category: "omnichain",
-          address: chain.chain_name === "btc_testnet" ? btc : eth,
         });
       });
     } else {
@@ -56,25 +59,26 @@ const fetchTssData = async (chains: any, addresses: any) => {
   }
 };
 
-const fetchSystemContract = async (addresses: any) => {
-  const URL = `${CONSENSUS_API}/zeta-chain/fungible/system_contract`;
+const fetchSystemContract = async (addresses: any, network: Network) => {
+  const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
+  const URL = `${api[network].rpc}/zeta-chain/fungible/system_contract`;
   try {
     const systemContractResponse: AxiosResponse<any> = await axios.get(URL);
 
     if (systemContractResponse.status === 200) {
       addresses.push({
-        chain_id: 7001,
+        address: systemContractResponse.data.SystemContract.system_contract,
+        category: "omnichain",
+        chain_id,
         chain_name: "zeta_testnet",
         type: "systemContract",
-        category: "omnichain",
-        address: systemContractResponse.data.SystemContract.system_contract,
       });
       addresses.push({
-        chain_id: 7001,
+        address: systemContractResponse.data.SystemContract.connector_zevm,
+        category: "messaging",
+        chain_id,
         chain_name: "zeta_testnet",
         type: "connectorZEVM",
-        category: "messaging",
-        address: systemContractResponse.data.SystemContract.connector_zevm,
       });
     } else {
       console.error("Error fetching system contract:", systemContractResponse.statusText);
@@ -84,31 +88,32 @@ const fetchSystemContract = async (addresses: any) => {
   }
 };
 
-const fetchForeignCoinsData = async (chains: any, addresses: any) => {
-  const URL = `${CONSENSUS_API}/zeta-chain/fungible/foreign_coins`;
+const fetchForeignCoinsData = async (chains: any, addresses: any, network: Network) => {
+  const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
+  const URL = `${api[network].rpc}/zeta-chain/fungible/foreign_coins`;
   try {
     const foreignCoinsResponse: AxiosResponse<any> = await axios.get(URL);
     if (foreignCoinsResponse.status === 200) {
       foreignCoinsResponse.data.foreignCoins.forEach((token: any) => {
         addresses.push({
+          address: token.asset,
+          category: "omnichain",
           chain_id: token.foreign_chain_id,
           chain_name: chains.find((c: any) => c.chain_id === token.foreign_chain_id)?.chain_name,
           coin_type: token.coin_type,
-          address: token.asset,
+          decimals: token.decimals,
           symbol: token.symbol,
-          zrc20: token.zrc20_contract_address,
-          category: "omnichain",
-          decimals: token.decimals, // TODO: dynamically fetch from contract (to verify)
+          zrc20: token.zrc20_contract_address, // TODO: dynamically fetch from contract (to verify)
         });
         addresses.push({
-          chain_id: 7001,
-          chain_name: "zeta_testnet",
-          coin_type: "ZRC20",
           address: token.zrc20_contract_address,
-          symbol: token.name,
           asset: token.asset,
           category: "omnichain",
-          decimals: 18, // TODO: dynamically fetch from contract
+          chain_id,
+          chain_name: "zeta_testnet",
+          coin_type: "ZRC20",
+          decimals: 18,
+          symbol: token.name, // TODO: dynamically fetch from contract
         });
       });
     } else {
@@ -119,62 +124,63 @@ const fetchForeignCoinsData = async (chains: any, addresses: any) => {
   }
 };
 
-const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironment) => {
+const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+  const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === "zeta_testnet" && a.type === "systemContract";
   })?.address;
-  const provider = new hre.ethers.providers.JsonRpcProvider(EVM_RPC);
+  const provider = new hre.ethers.providers.JsonRpcProvider(api[network].evm);
   const sc = SystemContract__factory.connect(systemContract, provider);
   const common = {
-    chain_id: 7001,
-    chain_name: "zeta_testnet",
     category: "omnichain",
+    chain_id,
+    chain_name: "zeta_testnet",
   };
   try {
-    addresses.push({ ...common, type: "uniswapv2FactoryAddress", address: await sc.uniswapv2FactoryAddress() });
-    addresses.push({ ...common, type: "wZetaContractAddress", address: await sc.wZetaContractAddress() });
-    addresses.push({ ...common, type: "uniswapv2Router02Address", address: await sc.uniswapv2Router02Address() });
-    addresses.push({ ...common, type: "zetaConnectorZEVMAddress", address: await sc.zetaConnectorZEVMAddress() });
-    addresses.push({ ...common, type: "fungibleModuleAddress", address: await sc.FUNGIBLE_MODULE_ADDRESS() });
+    addresses.push({ ...common, address: await sc.uniswapv2FactoryAddress(), type: "uniswapv2Factory" });
+    addresses.push({ ...common, address: await sc.wZetaContractAddress(), type: "wZetaContract" });
+    addresses.push({ ...common, address: await sc.uniswapv2Router02Address(), type: "uniswapv2Router02" });
+    addresses.push({ ...common, address: await sc.zetaConnectorZEVMAddress(), type: "zetaConnectorZEVM" });
+    addresses.push({ ...common, address: await sc.FUNGIBLE_MODULE_ADDRESS(), type: "fungibleModule" });
   } catch (error) {
     console.error("Error fetching addresses from ZetaChain:", error);
   }
 };
 
-const fetchChainSpecificAddresses = async (chains: any, addresses: any) => {
+const fetchChainSpecificAddresses = async (chains: any, addresses: any, network: Network) => {
   await Promise.all(
     chains.map(async (chain: any) => {
       return axios
-        .get(`${CONSENSUS_API}/zeta-chain/observer/get_chain_params_for_chain/${chain.chain_id}`)
+        .get(`${api[network].rpc}/zeta-chain/observer/get_chain_params_for_chain/${chain.chain_id}`)
         .then(({ data }) => {
-          if (data.chain_params.zeta_token_contract_address) {
+          const zetaToken = data.chain_params.zeta_token_contract_address;
+          if (zetaToken && zetaToken != "0x0000000000000000000000000000000000000000") {
             addresses.push({
+              address: zetaToken,
+              category: "messaging",
               chain_id: chain.chain_id,
               chain_name: chain.chain_name,
-              category: "messaging",
               type: "zetaToken",
-              address: data.chain_params.zeta_token_contract_address,
             });
           }
-          if (data.chain_params.connector_contract_address) {
-            const address = data.chain_params.connector_contract_address;
-            if (address != "0x0000000000000000000000000000000000000000") {
-              addresses.push({
-                chain_id: chain.chain_id,
-                chain_name: chain.chain_name,
-                category: "messaging",
-                type: "connector",
-                address: data.chain_params.connector_contract_address,
-              });
-            }
-          }
-          if (data.chain_params.erc20_custody_contract_address) {
+          const connector = data.chain_params.connector_contract_address;
+          if (connector && connector != "0x0000000000000000000000000000000000000000") {
             addresses.push({
+              address: connector,
+              category: "messaging",
               chain_id: chain.chain_id,
+              chain_name: chain.chain_name,
+              type: "connector",
+            });
+          }
+          const erc20Custody = data.chain_params.erc20_custody_contract_address;
+          if (erc20Custody && erc20Custody != "0x0000000000000000000000000000000000000000") {
+            addresses.push({
+              address: data.chain_params.erc20_custody_contract_address,
               category: "omnichain",
+              chain_id: chain.chain_id,
               chain_name: chain.chain_name,
               type: "erc20Custody",
-              address: data.chain_params.erc20_custody_contract_address,
             });
           }
         });
@@ -195,11 +201,11 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
         const custody = ERC20Custody__factory.connect(erc20Custody, provider);
         return custody.TSSAddressUpdater().then((address: string) => {
           addresses.push({
+            address,
+            category: "omnichain",
             chain_id: chain.chain_id,
             chain_name: chain.chain_name,
-            category: "omnichain",
             type: "tssUpdater",
-            address,
           });
         });
       }
@@ -208,14 +214,20 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
 };
 
 const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
+  const n = hre.network.name;
+  if (n !== "zeta_testnet" && n !== "zeta_mainnet") {
+    throw new Error(`Unsupported network: ${n}. Must be 'zeta_testnet' or 'zeta_mainnet'.`);
+  }
+
+  const network: Network = n;
   const addresses: any = [];
 
-  const chains = await fetchChains();
-  await fetchTssData(chains, addresses);
-  await fetchSystemContract(addresses);
-  await fetchForeignCoinsData(chains, addresses);
-  await fetchAthensAddresses(addresses, hre);
-  await fetchChainSpecificAddresses(chains, addresses);
+  const chains = await fetchChains(network);
+  await fetchTssData(chains, addresses, network);
+  await fetchSystemContract(addresses, network);
+  await fetchForeignCoinsData(chains, addresses, network);
+  await fetchAthensAddresses(addresses, hre, network);
+  await fetchChainSpecificAddresses(chains, addresses, network);
   await fetchTSSUpdater(chains, addresses);
 
   console.log(JSON.stringify(addresses, null, 2));
