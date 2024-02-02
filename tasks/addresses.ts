@@ -2,8 +2,8 @@ import { getEndpoints } from "@zetachain/networks";
 import axios, { AxiosResponse } from "axios";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { ZetaConnectorBase__factory } from "../typechain-types";
 
+import { ZetaConnectorBase__factory } from "../typechain-types";
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
 import { SystemContract__factory } from "../typechain-types/factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
 
