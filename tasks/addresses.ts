@@ -13,11 +13,11 @@ import { ZetaConnector__factory } from "../typechain-types";
 import { zetaConnectorNonEthSol } from "../typechain-types/factories/contracts/evm";
 import { getEndpoints } from "@zetachain/networks";
 
-const ATHENS_EVM_RPC = "https://zetachain-athens-evm.blockpi.network/v1/rpc/public";
-const ATHENS_TENDERMINT_RPC = "https://zetachain-athens.blockpi.network/lcd/v1/public";
+const EVM_RPC = "https://zetachain-athens-evm.blockpi.network/v1/rpc/public";
+const CONSENSUS_API = "https://zetachain-athens.blockpi.network/lcd/v1/public";
 
 const fetchChains = async () => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/observer/supportedChains`;
+  const URL = `${CONSENSUS_API}/zeta-chain/observer/supportedChains`;
   try {
     const response: AxiosResponse<any> = await axios.get(URL);
 
@@ -32,7 +32,7 @@ const fetchChains = async () => {
 };
 
 const fetchTssData = async (chains: any, addresses: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/crosschain/get_tss_address`;
+  const URL = `${CONSENSUS_API}/zeta-chain/observer/get_tss_address/18332`;
   try {
     const tssResponse: AxiosResponse<any> = await axios.get(URL);
 
@@ -57,7 +57,7 @@ const fetchTssData = async (chains: any, addresses: any) => {
 };
 
 const fetchSystemContract = async (addresses: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/fungible/system_contract`;
+  const URL = `${CONSENSUS_API}/zeta-chain/fungible/system_contract`;
   try {
     const systemContractResponse: AxiosResponse<any> = await axios.get(URL);
 
@@ -85,7 +85,7 @@ const fetchSystemContract = async (addresses: any) => {
 };
 
 const fetchForeignCoinsData = async (chains: any, addresses: any) => {
-  const URL = `${ATHENS_TENDERMINT_RPC}/zeta-chain/fungible/foreign_coins`;
+  const URL = `${CONSENSUS_API}/zeta-chain/fungible/foreign_coins`;
   try {
     const foreignCoinsResponse: AxiosResponse<any> = await axios.get(URL);
     if (foreignCoinsResponse.status === 200) {
@@ -123,7 +123,7 @@ const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironme
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === "zeta_testnet" && a.type === "systemContract";
   })?.address;
-  const provider = new hre.ethers.providers.JsonRpcProvider(ATHENS_EVM_RPC);
+  const provider = new hre.ethers.providers.JsonRpcProvider(EVM_RPC);
   const sc = SystemContract__factory.connect(systemContract, provider);
   const common = {
     chain_id: 7001,
@@ -145,33 +145,36 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any) => {
   await Promise.all(
     chains.map(async (chain: any) => {
       return axios
-        .get(`${ATHENS_TENDERMINT_RPC}/zeta-chain/observer/get_client_params_for_chain/${chain.chain_id}`)
+        .get(`${CONSENSUS_API}/zeta-chain/observer/get_chain_params_for_chain/${chain.chain_id}`)
         .then(({ data }) => {
-          if (data.core_params.zeta_token_contract_address) {
+          if (data.chain_params.zeta_token_contract_address) {
             addresses.push({
               chain_id: chain.chain_id,
               chain_name: chain.chain_name,
               category: "messaging",
               type: "zetaToken",
-              address: data.core_params.zeta_token_contract_address,
+              address: data.chain_params.zeta_token_contract_address,
             });
           }
-          if (data.core_params.connector_contract_address) {
-            addresses.push({
-              chain_id: chain.chain_id,
-              chain_name: chain.chain_name,
-              category: "messaging",
-              type: "connector",
-              address: data.core_params.connector_contract_address,
-            });
+          if (data.chain_params.connector_contract_address) {
+            const address = data.chain_params.connector_contract_address;
+            if (address != "0x0000000000000000000000000000000000000000") {
+              addresses.push({
+                chain_id: chain.chain_id,
+                chain_name: chain.chain_name,
+                category: "messaging",
+                type: "connector",
+                address: data.chain_params.connector_contract_address,
+              });
+            }
           }
-          if (data.core_params.erc20_custody_contract_address) {
+          if (data.chain_params.erc20_custody_contract_address) {
             addresses.push({
               chain_id: chain.chain_id,
               category: "omnichain",
               chain_name: chain.chain_name,
               type: "erc20Custody",
-              address: data.core_params.erc20_custody_contract_address,
+              address: data.chain_params.erc20_custody_contract_address,
             });
           }
         });
@@ -186,6 +189,7 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
         return a.chain_name === chain.chain_name && a.type === "erc20Custody";
       })?.address;
       if (erc20Custody) {
+        if (["18332", "8332"].includes(chain.chain_id)) return;
         const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
         const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
         const custody = ERC20Custody__factory.connect(erc20Custody, provider);
