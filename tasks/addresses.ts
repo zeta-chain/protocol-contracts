@@ -2,6 +2,7 @@ import { getEndpoints } from "@zetachain/networks";
 import axios, { AxiosResponse } from "axios";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ZetaConnectorBase__factory } from "../typechain-types";
 
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
 import { SystemContract__factory } from "../typechain-types/factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
@@ -78,7 +79,7 @@ const fetchSystemContract = async (addresses: any, network: Network) => {
         category: "messaging",
         chain_id,
         chain_name: "zeta_testnet",
-        type: "connectorZEVM",
+        type: "connector",
       });
     } else {
       console.error("Error fetching system contract:", systemContractResponse.statusText);
@@ -140,7 +141,7 @@ const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironme
     addresses.push({ ...common, address: await sc.uniswapv2FactoryAddress(), type: "uniswapv2Factory" });
     addresses.push({ ...common, address: await sc.wZetaContractAddress(), type: "wZetaContract" });
     addresses.push({ ...common, address: await sc.uniswapv2Router02Address(), type: "uniswapv2Router02" });
-    addresses.push({ ...common, address: await sc.zetaConnectorZEVMAddress(), type: "zetaConnectorZEVM" });
+    // addresses.push({ ...common, address: await sc.zetaConnectorZEVMAddress(), type: "zetaConnectorZEVM" });
     addresses.push({ ...common, address: await sc.FUNGIBLE_MODULE_ADDRESS(), type: "fungibleModule" });
   } catch (error) {
     console.error("Error fetching addresses from ZetaChain:", error);
@@ -213,6 +214,31 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
   );
 };
 
+const fetchPauser = async (chains: any, addresses: any) => {
+  await Promise.all(
+    chains.map(async (chain: any) => {
+      const erc20Custody = addresses.find((a: any) => {
+        return a.chain_name === chain.chain_name && a.type === "connector";
+      })?.address;
+      if (erc20Custody) {
+        if (["18332", "8332", "7001"].includes(chain.chain_id)) return;
+        const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
+        const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+        const connector = ZetaConnectorBase__factory.connect(erc20Custody, provider);
+        return connector.pauserAddress().then((address: string) => {
+          addresses.push({
+            address,
+            category: "messaging",
+            chain_id: chain.chain_id,
+            chain_name: chain.chain_name,
+            type: "pauser",
+          });
+        });
+      }
+    })
+  );
+};
+
 const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   const n = hre.network.name;
   if (n !== "zeta_testnet" && n !== "zeta_mainnet") {
@@ -229,6 +255,7 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   await fetchAthensAddresses(addresses, hre, network);
   await fetchChainSpecificAddresses(chains, addresses, network);
   await fetchTSSUpdater(chains, addresses);
+  await fetchPauser(chains, addresses);
 
   console.log(JSON.stringify(addresses, null, 2));
 };
