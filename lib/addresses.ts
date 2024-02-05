@@ -8,7 +8,6 @@ export const getAddress = (type: any, network: any, symbol?: any) => {
   if (type === "zrc20" && !symbol) {
     // for backwards compatibility
     const chainId = getChainId(network);
-    console.log(chainId);
     address = networks.find((n: any) => {
       return n.foreign_chain_id === chainId?.toString() && n.type === type && n.coin_type === "gas";
     });
