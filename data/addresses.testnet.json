@@ -42,111 +42,95 @@
     "type": "connector"
   },
   {
-    "address": "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
-    "category": "omnichain",
-    "chain_id": "5",
-    "chain_name": "goerli_testnet",
-    "coin_type": "ERC20",
-    "decimals": 6,
-    "symbol": "USDC",
-    "zrc20": "0x0cbe0dF132a6c6B4a2974Fa1b7Fb953CF0Cc798a"
-  },
-  {
     "address": "0x0cbe0dF132a6c6B4a2974Fa1b7Fb953CF0Cc798a",
     "asset": "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "5",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
+    "type": "zrc20",
+    "symbol": "USDC",
+    "coin_type": "erc20",
     "decimals": 18,
-    "symbol": "USDC-goerli_testnet"
+    "description": "USDC-goerli_testnet"
   },
   {
     "address": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "5",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "gETH",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "ETH-goerli_testnet"
+    "description": "ETH-goerli_testnet"
   },
   {
     "address": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "80001",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "tMATIC",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "MATIC-mumbai_testnet"
+    "description": "MATIC-mumbai_testnet"
   },
   {
     "address": "0x65a45c57636f9BcCeD4fe193A602008578BcA90b",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "18332",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "tBTC",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "BTC-btc_testnet-btc_testnet"
-  },
-  {
-    "address": "0x64544969ed7EBf5f083679233325356EbE738930",
-    "category": "omnichain",
-    "chain_id": "97",
-    "chain_name": "bsc_testnet",
-    "coin_type": "ERC20",
-    "decimals": 6,
-    "symbol": "USDC",
-    "zrc20": "0x7c8dDa80bbBE1254a7aACf3219EBe1481c6E01d7"
+    "description": "BTC-btc_testnet-btc_testnet"
   },
   {
     "address": "0x7c8dDa80bbBE1254a7aACf3219EBe1481c6E01d7",
     "asset": "0x64544969ed7EBf5f083679233325356EbE738930",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "97",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
-    "decimals": 18,
-    "symbol": "USDC-bsc_testnet"
-  },
-  {
-    "address": "0x9999f7fea5938fd3b1e26a12c3f2fb024e194f97",
-    "category": "omnichain",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "coin_type": "ERC20",
-    "decimals": 6,
+    "type": "zrc20",
     "symbol": "USDC",
-    "zrc20": "0x91d4F0D54090Df2D81e834c3c8CE71C6c865e79F"
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "USDC-bsc_testnet"
   },
   {
     "address": "0x91d4F0D54090Df2D81e834c3c8CE71C6c865e79F",
     "asset": "0x9999f7fea5938fd3b1e26a12c3f2fb024e194f97",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "80001",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
+    "type": "zrc20",
+    "symbol": "USDC",
+    "coin_type": "erc20",
     "decimals": 18,
-    "symbol": "USDC-mumbai_testnet"
+    "description": "USDC-mumbai_testnet"
   },
   {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
+    "foreign_chain_id": "97",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "tBNB",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "BNB-bsc_testnet"
+    "description": "BNB-bsc_testnet"
   },
   {
     "category": "omnichain",
@@ -242,6 +226,13 @@
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "omnichain",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "omnichain",
     "chain_id": "97",
     "chain_name": "bsc_testnet",
     "type": "tssUpdater"
@@ -251,13 +242,6 @@
     "category": "omnichain",
     "chain_id": "5",
     "chain_name": "goerli_testnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "omnichain",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
     "type": "tssUpdater"
   },
   {

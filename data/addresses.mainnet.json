@@ -42,121 +42,95 @@
     "type": "connector"
   },
   {
-    "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
-    "category": "omnichain",
-    "chain_id": "56",
-    "chain_name": "bsc_mainnet",
-    "coin_type": "ERC20",
-    "decimals": 18,
-    "symbol": "USDC.BSC",
-    "zrc20": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0"
-  },
-  {
     "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
     "asset": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "56",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
+    "type": "zrc20",
+    "symbol": "USDC.BSC",
+    "coin_type": "erc20",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 USDC on BSC"
-  },
-  {
-    "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-    "category": "omnichain",
-    "chain_id": "1",
-    "chain_name": "eth_mainnet",
-    "coin_type": "ERC20",
-    "decimals": 6,
-    "symbol": "USDC.ETH",
-    "zrc20": "0x0cbe0dF132a6c6B4a2974Fa1b7Fb953CF0Cc798a"
+    "description": "ZetaChain ZRC20 USDC on BSC"
   },
   {
     "address": "0x0cbe0dF132a6c6B4a2974Fa1b7Fb953CF0Cc798a",
     "asset": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "1",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
+    "type": "zrc20",
+    "symbol": "USDC.ETH",
+    "coin_type": "erc20",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 USDC on ETH"
+    "description": "ZetaChain ZRC20 USDC on ETH"
   },
   {
     "address": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "8332",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "BTC.BTC",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 BTC-btc_mainnet"
+    "description": "ZetaChain ZRC20 BTC-btc_mainnet"
   },
   {
     "address": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "56",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "BNB.BSC",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 BNB-bsc_mainnet"
-  },
-  {
-    "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-    "category": "omnichain",
-    "chain_id": "1",
-    "chain_name": "eth_mainnet",
-    "coin_type": "ERC20",
-    "decimals": 6,
-    "symbol": "USDT.ETH",
-    "zrc20": "0x7c8dDa80bbBE1254a7aACf3219EBe1481c6E01d7"
+    "description": "ZetaChain ZRC20 BNB-bsc_mainnet"
   },
   {
     "address": "0x7c8dDa80bbBE1254a7aACf3219EBe1481c6E01d7",
     "asset": "0xdac17f958d2ee523a2206206994597c13d831ec7",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "1",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
+    "type": "zrc20",
+    "symbol": "USDT.ETH",
+    "coin_type": "erc20",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 USDT on ETH"
-  },
-  {
-    "address": "0x55d398326f99059ff775485246999027b3197955",
-    "category": "omnichain",
-    "chain_id": "56",
-    "chain_name": "bsc_mainnet",
-    "coin_type": "ERC20",
-    "decimals": 18,
-    "symbol": "USDT.BSC",
-    "zrc20": "0x91d4F0D54090Df2D81e834c3c8CE71C6c865e79F"
+    "description": "ZetaChain ZRC20 USDT on ETH"
   },
   {
     "address": "0x91d4F0D54090Df2D81e834c3c8CE71C6c865e79F",
     "asset": "0x55d398326f99059ff775485246999027b3197955",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "56",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "ERC20",
+    "type": "zrc20",
+    "symbol": "USDT.BSC",
+    "coin_type": "erc20",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 USDT on BSC"
+    "description": "ZetaChain ZRC20 USDT on BSC"
   },
   {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7000,
+    "foreign_chain_id": "1",
     "chain_name": "zeta_testnet",
-    "type": "ZRC20",
-    "coin_type": "Gas",
+    "type": "zrc20",
+    "symbol": "ETH.ETH",
+    "coin_type": "gas",
     "decimals": 18,
-    "symbol": "ZetaChain ZRC20 ETH-eth_mainnet"
+    "description": "ZetaChain ZRC20 ETH-eth_mainnet"
   },
   {
     "category": "omnichain",
@@ -229,6 +203,13 @@
     "type": "erc20Custody"
   },
   {
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "category": "omnichain",
+    "chain_id": "1",
+    "chain_name": "eth_mainnet",
+    "type": "tssUpdater"
+  },
+  {
     "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
     "category": "omnichain",
     "chain_id": "56",
@@ -236,24 +217,17 @@
     "type": "tssUpdater"
   },
   {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "omnichain",
-    "chain_id": "1",
-    "chain_name": "eth_mainnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
     "category": "messaging",
-    "chain_id": "1",
-    "chain_name": "eth_mainnet",
+    "chain_id": "56",
+    "chain_name": "bsc_mainnet",
     "type": "pauser"
   },
   {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
     "category": "messaging",
-    "chain_id": "56",
-    "chain_name": "bsc_mainnet",
+    "chain_id": "1",
+    "chain_name": "eth_mainnet",
     "type": "pauser"
   }
 ]

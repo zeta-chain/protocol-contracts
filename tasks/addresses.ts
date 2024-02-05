@@ -7,6 +7,8 @@ import { ZetaConnectorBase__factory } from "../typechain-types";
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
 import { SystemContract__factory } from "../typechain-types/factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
 
+declare const hre: any;
+
 type Network = "zeta_mainnet" | "zeta_testnet";
 
 const api = {
@@ -96,28 +98,18 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
     const foreignCoinsResponse: AxiosResponse<any> = await axios.get(URL);
     if (foreignCoinsResponse.status === 200) {
       foreignCoinsResponse.data.foreignCoins.forEach((token: any) => {
-        if (token.coin_type !== "Gas") {
-          addresses.push({
-            address: token.asset,
-            category: "omnichain",
-            chain_id: token.foreign_chain_id,
-            chain_name: chains.find((c: any) => c.chain_id === token.foreign_chain_id)?.chain_name,
-            coin_type: token.coin_type,
-            decimals: token.decimals,
-            symbol: token.symbol,
-            zrc20: token.zrc20_contract_address, // TODO: dynamically fetch from contract (to verify)
-          });
-        }
         addresses.push({
           address: token.zrc20_contract_address,
           asset: token.asset,
           category: "omnichain",
           chain_id,
+          foreign_chain_id: token.foreign_chain_id,
           chain_name: "zeta_testnet",
-          type: "ZRC20",
-          coin_type: token.coin_type,
+          type: "zrc20",
+          symbol: token.symbol,
+          coin_type: token.coin_type.toLowerCase(),
           decimals: 18,
-          symbol: token.name, // TODO: dynamically fetch from contract
+          description: token.name, // TODO: dynamically fetch from contract
         });
       });
     } else {
@@ -128,7 +120,7 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
   }
 };
 
-const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+const fetchAthensAddresses = async (addresses: any, hre: any, network: Network) => {
   const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === "zeta_testnet" && a.type === "systemContract";
