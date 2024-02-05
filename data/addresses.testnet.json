@@ -161,27 +161,6 @@
     "type": "fungibleModule"
   },
   {
-    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
-    "category": "messaging",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
-    "category": "messaging",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
-    "category": "omnichain",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "erc20Custody"
-  },
-  {
     "address": "0x0000c304d2934c00db1d51995b9f6996affd17c0",
     "category": "messaging",
     "chain_id": "5",
@@ -224,10 +203,38 @@
     "type": "erc20Custody"
   },
   {
+    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
+    "category": "messaging",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
+    "category": "messaging",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
+    "category": "omnichain",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "erc20Custody"
+  },
+  {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "omnichain",
     "chain_id": "80001",
     "chain_name": "mumbai_testnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "omnichain",
+    "chain_id": "5",
+    "chain_name": "goerli_testnet",
     "type": "tssUpdater"
   },
   {
@@ -239,23 +246,16 @@
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "omnichain",
+    "category": "messaging",
     "chain_id": "5",
     "chain_name": "goerli_testnet",
-    "type": "tssUpdater"
+    "type": "pauser"
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "messaging",
     "chain_id": "80001",
     "chain_name": "mumbai_testnet",
-    "type": "pauser"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "messaging",
-    "chain_id": "5",
-    "chain_name": "goerli_testnet",
     "type": "pauser"
   },
   {

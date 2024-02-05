@@ -1,8 +1,9 @@
 import testnet from "../data/addresses.testnet.json";
 import mainnet from "../data/addresses.mainnet.json";
 import { getChainId } from "@zetachain/networks";
+import { ParamChainName, ParamSymbol, ParamType } from "./types";
 
-export const getAddress = (type: any, network: any, symbol?: any) => {
+export const getAddress = (type: ParamType, network: ParamChainName, symbol?: ParamSymbol) => {
   const networks = [...testnet, ...mainnet];
   let address;
   if (type === "zrc20" && !symbol) {
