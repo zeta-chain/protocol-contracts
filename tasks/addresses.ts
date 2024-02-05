@@ -103,13 +103,13 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
           asset: token.asset,
           category: "omnichain",
           chain_id,
-          foreign_chain_id: token.foreign_chain_id,
           chain_name: network,
-          type: "zrc20",
-          symbol: token.symbol,
           coin_type: token.coin_type.toLowerCase(),
           decimals: 18,
-          description: token.name, // TODO: dynamically fetch from contract
+          description: token.name,
+          foreign_chain_id: token.foreign_chain_id,
+          symbol: token.symbol,
+          type: "zrc20", // TODO: dynamically fetch from contract
         });
       });
     } else {
