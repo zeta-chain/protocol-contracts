@@ -73,14 +73,14 @@ const fetchSystemContract = async (addresses: any, network: Network) => {
         address: systemContractResponse.data.SystemContract.system_contract,
         category: "omnichain",
         chain_id,
-        chain_name: "zeta_testnet",
+        chain_name: network,
         type: "systemContract",
       });
       addresses.push({
         address: systemContractResponse.data.SystemContract.connector_zevm,
         category: "messaging",
         chain_id,
-        chain_name: "zeta_testnet",
+        chain_name: network,
         type: "connector",
       });
     } else {
@@ -103,13 +103,13 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
           asset: token.asset,
           category: "omnichain",
           chain_id,
-          chain_name: "zeta_testnet",
+          foreign_chain_id: token.foreign_chain_id,
+          chain_name: network,
+          type: "zrc20",
+          symbol: token.symbol,
           coin_type: token.coin_type.toLowerCase(),
           decimals: 18,
-          description: token.name,
-          foreign_chain_id: token.foreign_chain_id,
-          symbol: token.symbol,
-          type: "zrc20", // TODO: dynamically fetch from contract
+          description: token.name, // TODO: dynamically fetch from contract
         });
       });
     } else {
@@ -123,14 +123,14 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
 const fetchAthensAddresses = async (addresses: any, hre: any, network: Network) => {
   const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
   const systemContract = addresses.find((a: any) => {
-    return a.chain_name === "zeta_testnet" && a.type === "systemContract";
+    return a.chain_name === network && a.type === "systemContract";
   })?.address;
   const provider = new hre.ethers.providers.JsonRpcProvider(api[network].evm);
   const sc = SystemContract__factory.connect(systemContract, provider);
   const common = {
     category: "omnichain",
     chain_id,
-    chain_name: "zeta_testnet",
+    chain_name: network,
   };
   try {
     addresses.push({ ...common, address: await sc.uniswapv2FactoryAddress(), type: "uniswapv2Factory" });
@@ -216,7 +216,7 @@ const fetchPauser = async (chains: any, addresses: any) => {
         return a.chain_name === chain.chain_name && a.type === "connector";
       })?.address;
       if (erc20Custody) {
-        if (["18332", "8332", "7001"].includes(chain.chain_id)) return;
+        if (["18332", "8332", "7001", "7000"].includes(chain.chain_id)) return;
         const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
         const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
         const connector = ZetaConnectorBase__factory.connect(erc20Custody, provider);
