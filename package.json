@@ -22,7 +22,7 @@
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@uniswap/v3-periphery": "^1.4.3",
-    "@zetachain/networks": "^2.4.3",
+    "@zetachain/networks": "4.0.0-rc1",
     "axios": "^1.6.5",
     "chai": "^4.3.6",
     "cpx": "^1.5.0",
@@ -70,7 +70,7 @@
   "scripts": {
     "build": "yarn compile && npx del-cli dist abi && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "compile": "npx hardhat compile --force",
-    "generate": "yarn compile && ./scripts/generate_go.sh",
+    "generate": "yarn compile && ./scripts/generate_go.sh || exit 0 && ./scripts/generate_addresses.sh",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "yarn build",
