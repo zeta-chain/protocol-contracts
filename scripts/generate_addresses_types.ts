@@ -1,5 +1,5 @@
-import testnet from "../data/addresses.testnet.json";
 import mainnet from "../data/addresses.mainnet.json";
+import testnet from "../data/addresses.testnet.json";
 
 const extractUniqueValues = (data: any[], key: string): string[] => {
   const allValues = data.filter((item) => item[key] !== undefined).map((item) => item[key].toString());

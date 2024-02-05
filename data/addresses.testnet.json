@@ -46,118 +46,118 @@
     "asset": "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "5",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "USDC",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "USDC-goerli_testnet"
+    "description": "USDC-goerli_testnet",
+    "foreign_chain_id": "5",
+    "symbol": "USDC",
+    "type": "zrc20"
   },
   {
     "address": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "5",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "gETH",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ETH-goerli_testnet"
+    "description": "ETH-goerli_testnet",
+    "foreign_chain_id": "5",
+    "symbol": "gETH",
+    "type": "zrc20"
   },
   {
     "address": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "80001",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "tMATIC",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "MATIC-mumbai_testnet"
+    "description": "MATIC-mumbai_testnet",
+    "foreign_chain_id": "80001",
+    "symbol": "tMATIC",
+    "type": "zrc20"
   },
   {
     "address": "0x65a45c57636f9BcCeD4fe193A602008578BcA90b",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "18332",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "tBTC",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "BTC-btc_testnet-btc_testnet"
+    "description": "BTC-btc_testnet-btc_testnet",
+    "foreign_chain_id": "18332",
+    "symbol": "tBTC",
+    "type": "zrc20"
   },
   {
     "address": "0x7c8dDa80bbBE1254a7aACf3219EBe1481c6E01d7",
     "asset": "0x64544969ed7EBf5f083679233325356EbE738930",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "97",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "USDC",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "USDC-bsc_testnet"
+    "description": "USDC-bsc_testnet",
+    "foreign_chain_id": "97",
+    "symbol": "USDC",
+    "type": "zrc20"
   },
   {
     "address": "0x91d4F0D54090Df2D81e834c3c8CE71C6c865e79F",
     "asset": "0x9999f7fea5938fd3b1e26a12c3f2fb024e194f97",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "80001",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "USDC",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "USDC-mumbai_testnet"
+    "description": "USDC-mumbai_testnet",
+    "foreign_chain_id": "80001",
+    "symbol": "USDC",
+    "type": "zrc20"
   },
   {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
     "asset": "",
     "category": "omnichain",
     "chain_id": 7001,
-    "foreign_chain_id": "97",
     "chain_name": "zeta_testnet",
-    "type": "zrc20",
-    "symbol": "tBNB",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "BNB-bsc_testnet"
+    "description": "BNB-bsc_testnet",
+    "foreign_chain_id": "97",
+    "symbol": "tBNB",
+    "type": "zrc20"
   },
   {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "type": "uniswapv2Factory"
   },
   {
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "type": "wZetaContract"
   },
   {
+    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "type": "uniswapv2Router02"
   },
   {
+    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "type": "fungibleModule"
   },
   {

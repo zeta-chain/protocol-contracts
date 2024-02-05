@@ -1,6 +1,7 @@
-import testnet from "../data/addresses.testnet.json";
-import mainnet from "../data/addresses.mainnet.json";
 import { getChainId } from "@zetachain/networks";
+
+import mainnet from "../data/addresses.mainnet.json";
+import testnet from "../data/addresses.testnet.json";
 import { ParamChainName, ParamSymbol, ParamType } from "./types";
 
 export const getAddress = (type: ParamType, network: ParamChainName, symbol?: ParamSymbol) => {
