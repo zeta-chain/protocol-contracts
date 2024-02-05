@@ -96,23 +96,26 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
     const foreignCoinsResponse: AxiosResponse<any> = await axios.get(URL);
     if (foreignCoinsResponse.status === 200) {
       foreignCoinsResponse.data.foreignCoins.forEach((token: any) => {
-        addresses.push({
-          address: token.asset,
-          category: "omnichain",
-          chain_id: token.foreign_chain_id,
-          chain_name: chains.find((c: any) => c.chain_id === token.foreign_chain_id)?.chain_name,
-          coin_type: token.coin_type,
-          decimals: token.decimals,
-          symbol: token.symbol,
-          zrc20: token.zrc20_contract_address, // TODO: dynamically fetch from contract (to verify)
-        });
+        if (token.coin_type !== "Gas") {
+          addresses.push({
+            address: token.asset,
+            category: "omnichain",
+            chain_id: token.foreign_chain_id,
+            chain_name: chains.find((c: any) => c.chain_id === token.foreign_chain_id)?.chain_name,
+            coin_type: token.coin_type,
+            decimals: token.decimals,
+            symbol: token.symbol,
+            zrc20: token.zrc20_contract_address, // TODO: dynamically fetch from contract (to verify)
+          });
+        }
         addresses.push({
           address: token.zrc20_contract_address,
           asset: token.asset,
           category: "omnichain",
           chain_id,
           chain_name: "zeta_testnet",
-          coin_type: "ZRC20",
+          type: "ZRC20",
+          coin_type: token.coin_type,
           decimals: 18,
           symbol: token.name, // TODO: dynamically fetch from contract
         });

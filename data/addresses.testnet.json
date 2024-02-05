@@ -57,19 +57,10 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
+    "type": "ZRC20",
+    "coin_type": "ERC20",
     "decimals": 18,
     "symbol": "USDC-goerli_testnet"
-  },
-  {
-    "address": "",
-    "category": "omnichain",
-    "chain_id": "5",
-    "chain_name": "goerli_testnet",
-    "coin_type": "Gas",
-    "decimals": 18,
-    "symbol": "gETH",
-    "zrc20": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4"
   },
   {
     "address": "0x13A0c5930C028511Dc02665E7285134B6d11A5f4",
@@ -77,19 +68,10 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
-    "decimals": 18,
-    "symbol": "ETH-goerli_testnet"
-  },
-  {
-    "address": "",
-    "category": "omnichain",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
+    "type": "ZRC20",
     "coin_type": "Gas",
     "decimals": 18,
-    "symbol": "tMATIC",
-    "zrc20": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb"
+    "symbol": "ETH-goerli_testnet"
   },
   {
     "address": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
@@ -97,19 +79,10 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
+    "type": "ZRC20",
+    "coin_type": "Gas",
     "decimals": 18,
     "symbol": "MATIC-mumbai_testnet"
-  },
-  {
-    "address": "",
-    "category": "omnichain",
-    "chain_id": "18332",
-    "chain_name": "btc_testnet",
-    "coin_type": "Gas",
-    "decimals": 8,
-    "symbol": "tBTC",
-    "zrc20": "0x65a45c57636f9BcCeD4fe193A602008578BcA90b"
   },
   {
     "address": "0x65a45c57636f9BcCeD4fe193A602008578BcA90b",
@@ -117,7 +90,8 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
+    "type": "ZRC20",
+    "coin_type": "Gas",
     "decimals": 18,
     "symbol": "BTC-btc_testnet-btc_testnet"
   },
@@ -137,7 +111,8 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
+    "type": "ZRC20",
+    "coin_type": "ERC20",
     "decimals": 18,
     "symbol": "USDC-bsc_testnet"
   },
@@ -157,19 +132,10 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
+    "type": "ZRC20",
+    "coin_type": "ERC20",
     "decimals": 18,
     "symbol": "USDC-mumbai_testnet"
-  },
-  {
-    "address": "",
-    "category": "omnichain",
-    "chain_id": "97",
-    "chain_name": "bsc_testnet",
-    "coin_type": "Gas",
-    "decimals": 18,
-    "symbol": "tBNB",
-    "zrc20": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891"
   },
   {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
@@ -177,7 +143,8 @@
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "coin_type": "ZRC20",
+    "type": "ZRC20",
+    "coin_type": "Gas",
     "decimals": 18,
     "symbol": "BNB-bsc_testnet"
   },
@@ -210,27 +177,6 @@
     "type": "fungibleModule"
   },
   {
-    "address": "0x0000c304d2934c00db1d51995b9f6996affd17c0",
-    "category": "messaging",
-    "chain_id": "5",
-    "chain_name": "goerli_testnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
-    "category": "messaging",
-    "chain_id": "5",
-    "chain_name": "goerli_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x000047f11c6e42293f433c82473532e869ce4ec5",
-    "category": "omnichain",
-    "chain_id": "5",
-    "chain_name": "goerli_testnet",
-    "type": "erc20Custody"
-  },
-  {
     "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
     "category": "messaging",
     "chain_id": "80001",
@@ -249,6 +195,27 @@
     "category": "omnichain",
     "chain_id": "80001",
     "chain_name": "mumbai_testnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x0000c304d2934c00db1d51995b9f6996affd17c0",
+    "category": "messaging",
+    "chain_id": "5",
+    "chain_name": "goerli_testnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
+    "category": "messaging",
+    "chain_id": "5",
+    "chain_name": "goerli_testnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x000047f11c6e42293f433c82473532e869ce4ec5",
+    "category": "omnichain",
+    "chain_id": "5",
+    "chain_name": "goerli_testnet",
     "type": "erc20Custody"
   },
   {
