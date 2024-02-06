@@ -1,5 +1,61 @@
 [
   {
+    "address": "0x8eAc517b92eeE82177a83851268F13109878f8c4",
+    "chain_name": "goerli_testnet",
+    "chain_id": 5,
+    "category": "messaging",
+    "type": "zetaTokenConsumerUniV2"
+  },
+  {
+    "address": "0x7e792f3736751e168864106AdbAC50152641A927",
+    "chain_name": "mumbai_testnet",
+    "category": "messaging",
+    "chain_id": 80001,
+    "type": "zetaTokenConsumerUniV3"
+  },
+  {
+    "address": "0x8954AfA98594b838bda56FE4C12a09D7739D179b",
+    "chain_name": "mumbai_testnet",
+    "chain_id": 80001,
+    "category": "messaging",
+    "type": "uniswapV2Router02"
+  },
+  {
+    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+    "chain_name": "mumbai_testnet",
+    "chain_id": 80001,
+    "category": "messaging",
+    "type": "uniswapV3Router"
+  },
+  {
+    "address": "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
+    "chain_name": "bsc_testnet",
+    "chain_id": 97,
+    "category": "messaging",
+    "type": "uniswapV2Router02"
+  },
+  {
+    "address": "0x9a489505a00cE272eAa5e07Dba6491314CaE3796",
+    "chain_name": "bsc_testnet",
+    "chain_id": 97,
+    "category": "messaging",
+    "type": "uniswapV3Router"
+  },
+  {
+    "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+    "chain_name": "goerli_testnet",
+    "chain_id": 5,
+    "category": "messaging",
+    "type": "uniswapV2Router02"
+  },
+  {
+    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+    "chain_name": "goerli_testnet",
+    "chain_id": 5,
+    "category": "messaging",
+    "type": "uniswapV3Router"
+  },
+  {
     "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
     "category": "omnichain",
     "chain_id": "5",
@@ -133,74 +189,32 @@
     "type": "zrc20"
   },
   {
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
     "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "type": "uniswapV2Factory"
+  },
+  {
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "type": "uniswapv2Factory"
-  },
-  {
     "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
+    "type": "zetaToken"
+  },
+  {
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "type": "wZetaContract"
-  },
-  {
     "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
+    "type": "uniswapV2Router02"
+  },
+  {
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
-    "type": "uniswapv2Router02"
-  },
-  {
     "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
-    "category": "omnichain",
-    "chain_id": 7001,
-    "chain_name": "zeta_testnet",
     "type": "fungibleModule"
-  },
-  {
-    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
-    "category": "messaging",
-    "chain_id": "97",
-    "chain_name": "bsc_testnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
-    "category": "messaging",
-    "chain_id": "97",
-    "chain_name": "bsc_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
-    "category": "omnichain",
-    "chain_id": "97",
-    "chain_name": "bsc_testnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
-    "category": "messaging",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
-    "category": "messaging",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
-    "category": "omnichain",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "erc20Custody"
   },
   {
     "address": "0x0000c304d2934c00db1d51995b9f6996affd17c0",
@@ -224,17 +238,52 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
+    "category": "messaging",
+    "chain_id": "97",
+    "chain_name": "bsc_testnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
+    "category": "messaging",
+    "chain_id": "97",
+    "chain_name": "bsc_testnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
+    "category": "omnichain",
+    "chain_id": "97",
+    "chain_name": "bsc_testnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
+    "category": "messaging",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
+    "category": "messaging",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
     "category": "omnichain",
     "chain_id": "80001",
     "chain_name": "mumbai_testnet",
-    "type": "tssUpdater"
+    "type": "erc20Custody"
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "omnichain",
-    "chain_id": "97",
-    "chain_name": "bsc_testnet",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
     "type": "tssUpdater"
   },
   {
@@ -246,10 +295,10 @@
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "messaging",
-    "chain_id": "80001",
-    "chain_name": "mumbai_testnet",
-    "type": "pauser"
+    "category": "omnichain",
+    "chain_id": "97",
+    "chain_name": "bsc_testnet",
+    "type": "tssUpdater"
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
@@ -261,8 +310,99 @@
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "messaging",
+    "chain_id": "80001",
+    "chain_name": "mumbai_testnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "messaging",
     "chain_id": "97",
     "chain_name": "bsc_testnet",
     "type": "pauser"
+  },
+  {
+    "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+    "category": "messaging",
+    "chain_id": 80001,
+    "chain_name": "mumbai_testnet",
+    "type": "weth9"
+  },
+  {
+    "address": "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
+    "category": "messaging",
+    "chain_id": 80001,
+    "chain_name": "mumbai_testnet",
+    "type": "uniswapV2Factory"
+  },
+  {
+    "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    "category": "messaging",
+    "chain_id": 97,
+    "chain_name": "bsc_testnet",
+    "type": "weth9"
+  },
+  {
+    "address": "0xB7926C0430Afb07AA7DEfDE6DA862aE0Bde767bc",
+    "category": "messaging",
+    "chain_id": 97,
+    "chain_name": "bsc_testnet",
+    "type": "uniswapV2Factory"
+  },
+  {
+    "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
+    "category": "messaging",
+    "chain_id": 5,
+    "chain_name": "goerli_testnet",
+    "type": "weth9"
+  },
+  {
+    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+    "category": "messaging",
+    "chain_id": 5,
+    "chain_name": "goerli_testnet",
+    "type": "uniswapV2Factory"
+  },
+  {
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "weth9"
+  },
+  {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV2Factory"
+  },
+  {
+    "address": "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
+    "category": "messaging",
+    "chain_id": 80001,
+    "chain_name": "mumbai_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0xB7926C0430Afb07AA7DEfDE6DA862aE0Bde767bc",
+    "category": "messaging",
+    "chain_id": 97,
+    "chain_name": "bsc_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+    "category": "messaging",
+    "chain_id": 5,
+    "chain_name": "goerli_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV3Factory"
   }
 ]

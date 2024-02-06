@@ -6,6 +6,10 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ZetaConnectorBase__factory } from "../typechain-types";
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
 import { SystemContract__factory } from "../typechain-types/factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
+import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json";
+
+import zeta_testnet_addresses from "./addresses.testnet.json";
+import zeta_mainnet_addresses from "./addresses.mainnet.json";
 
 declare const hre: any;
 
@@ -109,7 +113,7 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
           description: token.name,
           foreign_chain_id: token.foreign_chain_id,
           symbol: token.symbol,
-          type: "zrc20", // TODO: dynamically fetch from contract
+          type: "zrc20",
         });
       });
     } else {
@@ -133,9 +137,9 @@ const fetchAthensAddresses = async (addresses: any, hre: any, network: Network) 
     chain_name: network,
   };
   try {
-    addresses.push({ ...common, address: await sc.uniswapv2FactoryAddress(), type: "uniswapv2Factory" });
-    addresses.push({ ...common, address: await sc.wZetaContractAddress(), type: "wZetaContract" });
-    addresses.push({ ...common, address: await sc.uniswapv2Router02Address(), type: "uniswapv2Router02" });
+    addresses.push({ ...common, address: await sc.uniswapv2FactoryAddress(), type: "uniswapV2Factory" });
+    addresses.push({ ...common, address: await sc.wZetaContractAddress(), type: "zetaToken" });
+    addresses.push({ ...common, address: await sc.uniswapv2Router02Address(), type: "uniswapV2Router02" });
     // addresses.push({ ...common, address: await sc.zetaConnectorZEVMAddress(), type: "zetaConnectorZEVM" });
     addresses.push({ ...common, address: await sc.FUNGIBLE_MODULE_ADDRESS(), type: "fungibleModule" });
   } catch (error) {
@@ -234,14 +238,77 @@ const fetchPauser = async (chains: any, addresses: any) => {
   );
 };
 
+const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+  const routers = addresses.filter((a: any) => a.type === "uniswapV2Router02");
+
+  for (const router of routers) {
+    const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
+    const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+    const routerContract = new hre.ethers.Contract(router.address, uniswapV2Router.abi, provider);
+
+    try {
+      const wethAddress = await routerContract.WETH();
+      const factoryAddress = await routerContract.factory();
+
+      // Adding WETH and Factory addresses to the addresses array
+      addresses.push({
+        address: wethAddress,
+        category: "messaging",
+        chain_id: router.chain_id,
+        chain_name: router.chain_name,
+        type: "weth9",
+      });
+
+      addresses.push({
+        address: factoryAddress,
+        category: "messaging",
+        chain_id: router.chain_id,
+        chain_name: router.chain_name,
+        type: "uniswapV2Factory",
+      });
+    } catch (error) {
+      console.error(`Error fetching factory and WETH for router v2 ${router.address}:`, error);
+    }
+  }
+};
+
+const fetchFactoryV3 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+  const routers = addresses.filter((a: any) => a.type === "uniswapV2Router02");
+
+  for (const router of routers) {
+    const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
+    const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+    const routerContract = new hre.ethers.Contract(router.address, uniswapV2Router.abi, provider);
+
+    try {
+      const factoryAddress = await routerContract.factory();
+
+      addresses.push({
+        address: factoryAddress,
+        category: "messaging",
+        chain_id: router.chain_id,
+        chain_name: router.chain_name,
+        type: "uniswapV3Factory",
+      });
+    } catch (error) {
+      console.error(`Error fetching factory for router v3 ${router.address}:`, error);
+    }
+  }
+};
+
 const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
+  const addresses: any = [];
+
   const n = hre.network.name;
-  if (n !== "zeta_testnet" && n !== "zeta_mainnet") {
+  if (n === "zeta_testnet") {
+    addresses.push(...zeta_testnet_addresses);
+  } else if (n === "zeta_mainnet") {
+    addresses.push(...zeta_mainnet_addresses);
+  } else {
     throw new Error(`Unsupported network: ${n}. Must be 'zeta_testnet' or 'zeta_mainnet'.`);
   }
 
   const network: Network = n;
-  const addresses: any = [];
 
   const chains = await fetchChains(network);
   await fetchTssData(chains, addresses, network);
@@ -251,6 +318,8 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   await fetchChainSpecificAddresses(chains, addresses, network);
   await fetchTSSUpdater(chains, addresses);
   await fetchPauser(chains, addresses);
+  await fetchFactoryV2(addresses, hre, network);
+  await fetchFactoryV3(addresses, hre, network);
 
   console.log(JSON.stringify(addresses, null, 2));
 };
