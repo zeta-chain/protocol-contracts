@@ -1,3 +1,4 @@
+import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json";
 import { getEndpoints } from "@zetachain/networks";
 import axios, { AxiosResponse } from "axios";
 import { task } from "hardhat/config";
@@ -6,10 +7,8 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ZetaConnectorBase__factory } from "../typechain-types";
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
 import { SystemContract__factory } from "../typechain-types/factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
-import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json";
-
-import zeta_testnet_addresses from "./addresses.testnet.json";
 import zeta_mainnet_addresses from "./addresses.mainnet.json";
+import zeta_testnet_addresses from "./addresses.testnet.json";
 
 declare const hre: any;
 

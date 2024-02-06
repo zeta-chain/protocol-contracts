@@ -1,23 +1,23 @@
 [
   {
     "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "chain_name": "eth_mainnet",
-    "chain_id": 1,
     "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
     "type": "uniswapV2Factory"
   },
   {
     "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-    "chain_name": "eth_mainnet",
-    "chain_id": 1,
     "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
     "type": "uniswapV2Router02"
   },
   {
     "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    "chain_name": "eth_mainnet",
-    "chain_id": 1,
     "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
     "type": "uniswapV3Router"
   },
   {
@@ -154,31 +154,31 @@
     "type": "zrc20"
   },
   {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "type": "uniswapV2Factory"
   },
   {
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "type": "zetaToken"
   },
   {
+    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "type": "uniswapV2Router02"
   },
   {
+    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "type": "fungibleModule"
   },
   {
@@ -238,17 +238,17 @@
     "type": "tssUpdater"
   },
   {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "messaging",
-    "chain_id": "1",
-    "chain_name": "eth_mainnet",
-    "type": "pauser"
-  },
-  {
     "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
     "category": "messaging",
     "chain_id": "56",
     "chain_name": "bsc_mainnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "category": "messaging",
+    "chain_id": "1",
+    "chain_name": "eth_mainnet",
     "type": "pauser"
   },
   {
