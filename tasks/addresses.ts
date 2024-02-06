@@ -52,7 +52,7 @@ const fetchTssData = async (chains: any, addresses: any, network: Network) => {
         addresses.push({
           address: chain.chain_name === "btc_testnet" ? btc : eth,
           category: "omnichain",
-          chain_id: chain.chain_id,
+          chain_id: parseInt(chain.chain_id),
           chain_name: chain.chain_name,
           type: "tss",
         });
@@ -157,7 +157,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             addresses.push({
               address: zetaToken,
               category: "messaging",
-              chain_id: chain.chain_id,
+              chain_id: parseInt(chain.chain_id),
               chain_name: chain.chain_name,
               type: "zetaToken",
             });
@@ -167,7 +167,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             addresses.push({
               address: connector,
               category: "messaging",
-              chain_id: chain.chain_id,
+              chain_id: parseInt(chain.chain_id),
               chain_name: chain.chain_name,
               type: "connector",
             });
@@ -177,7 +177,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             addresses.push({
               address: data.chain_params.erc20_custody_contract_address,
               category: "omnichain",
-              chain_id: chain.chain_id,
+              chain_id: parseInt(chain.chain_id),
               chain_name: chain.chain_name,
               type: "erc20Custody",
             });
@@ -202,7 +202,7 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
           addresses.push({
             address,
             category: "omnichain",
-            chain_id: chain.chain_id,
+            chain_id: parseInt(chain.chain_id),
             chain_name: chain.chain_name,
             type: "tssUpdater",
           });
@@ -227,7 +227,7 @@ const fetchPauser = async (chains: any, addresses: any) => {
           addresses.push({
             address,
             category: "messaging",
-            chain_id: chain.chain_id,
+            chain_id: parseInt(chain.chain_id),
             chain_name: chain.chain_name,
             type: "pauser",
           });
