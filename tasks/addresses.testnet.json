@@ -14,6 +14,13 @@
     "type": "zetaTokenConsumerUniV3"
   },
   {
+    "address": "0xFB2fCE3CCca19F0f764Ed8aa26C62181E3dA04C5",
+    "chain_name": "bsc_testnet",
+    "category": "messaging",
+    "chain_id": 97,
+    "type": "zetaTokenConsumerUniV3"
+  },
+  {
     "address": "0x8954AfA98594b838bda56FE4C12a09D7739D179b",
     "chain_name": "mumbai_testnet",
     "chain_id": 80001,
