@@ -7,8 +7,8 @@
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomicfoundation/hardhat-verify": "2.0.3",
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.8.3",
     "@typechain/ethers-v5": "^10.1.0",
@@ -68,9 +68,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "yarn compile && npx del-cli dist abi && tsc || exit 0 && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
+    "build": "yarn compile && npx del-cli dist abi && npx tsc || true && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "compile": "npx hardhat compile --force",
-    "generate": "yarn compile && ./scripts/generate_go.sh || exit 0 && ./scripts/generate_addresses.sh && yarn lint:fix",
+    "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "yarn build",
