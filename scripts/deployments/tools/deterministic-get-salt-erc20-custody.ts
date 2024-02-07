@@ -25,8 +25,15 @@ export const deterministicDeployGetSaltERC20Custody = async () => {
   const zetaFee = ERC20_CUSTODY_ZETA_FEE;
   const zetaMaxFee = ERC20_CUSTODY_ZETA_MAX_FEE;
 
-  const constructorTypes = ["address", "address", "uint256", "uint256", "address"];
-  const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
+  const constructorTypes = ["address", "address", "uint256", "uint256", "address", "address"];
+  const constructorArgs = [
+    tssAddress,
+    tssUpdaterAddress,
+    zetaFee.toString(),
+    zetaMaxFee.toString(),
+    zetaTokenAddress,
+    tssUpdaterAddress,
+  ];
   const contractBytecode = ERC20Custody__factory.bytecode;
 
   await calculateBestSalt(

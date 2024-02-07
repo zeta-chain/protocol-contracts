@@ -13,16 +13,16 @@ const SALT_NUMBERS = {
     zetaToken: "29265",
   },
   bsc_mainnet: {
-    zetaConnector: "71733",
-    zetaConsumer: "0",
-    zetaERC20Custody: "195084",
-    zetaToken: "29265",
+    zetaConnector: "6577",
+    zetaConsumer: "",
+    zetaERC20Custody: "934842",
+    zetaToken: "765917",
   },
   bsc_testnet: {
-    zetaConnector: "71733",
-    zetaConsumer: "0",
-    zetaERC20Custody: "195084",
-    zetaToken: "29265",
+    zetaConnector: "6577",
+    zetaConsumer: "",
+    zetaERC20Custody: "934842",
+    zetaToken: "765917",
   },
   btc_testnet: {
     zetaConnector: "",
@@ -33,13 +33,13 @@ const SALT_NUMBERS = {
   eth_mainnet: {
     zetaConnector: "84286",
     zetaConsumer: "0",
-    zetaERC20Custody: "926526",
+    zetaERC20Custody: "531570",
     zetaToken: "0",
   },
   goerli_testnet: {
-    zetaConnector: "1414",
+    zetaConnector: "21414",
     zetaConsumer: "0",
-    zetaERC20Custody: "87967",
+    zetaERC20Custody: "531570",
     zetaToken: "84108",
   },
   mumbai_testnet: {

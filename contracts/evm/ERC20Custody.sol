@@ -5,12 +5,14 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 /// @title ERC20Custody.
 /// @notice ERC20Custody for depositing ERC20 assets into ZetaChain and making operations with them.
-contract ERC20Custody is ReentrancyGuard {
+contract ERC20Custody is ReentrancyGuard, Pausable {
     using SafeERC20 for IERC20;
 
+    error CallerIsNotPauser(address caller);
     error NotWhitelisted();
     error NotPaused();
     error InvalidSender();
@@ -20,8 +22,6 @@ contract ERC20Custody is ReentrancyGuard {
     error ZetaMaxFeeExceeded();
     error ZeroFee();
 
-    /// @notice If custody operations are paused.
-    bool public paused;
     /// @notice TSSAddress is the TSS address collectively possessed by Zeta blockchain validators.
     address public TSSAddress;
     /// @notice Threshold Signature Scheme (TSS) [GG20] is a multi-sig ECDSA/EdDSA protocol.
@@ -34,9 +34,13 @@ contract ERC20Custody is ReentrancyGuard {
     IERC20 public immutable zeta;
     /// @notice Mapping of whitelisted token => true/false.
     mapping(IERC20 => bool) public whitelisted;
+    /**
+     * @dev Multisig contract to pause incoming transactions.
+     * The responsibility of pausing outgoing transactions is left to the protocol for more flexibility.
+     */
+    address public pauserAddress;
 
-    event Paused(address sender);
-    event Unpaused(address sender);
+    event PauserAddressUpdated(address callerAddress, address newTssAddress);
     event Whitelisted(IERC20 indexed asset);
     event Unwhitelisted(IERC20 indexed asset);
     event Deposited(bytes recipient, IERC20 indexed asset, uint256 amount, bytes message);
@@ -65,12 +69,44 @@ contract ERC20Custody is ReentrancyGuard {
         _;
     }
 
-    constructor(address TSSAddress_, address TSSAddressUpdater_, uint256 zetaFee_, uint256 zetaMaxFee_, IERC20 zeta_) {
+    constructor(
+        address TSSAddress_,
+        address TSSAddressUpdater_,
+        uint256 zetaFee_,
+        uint256 zetaMaxFee_,
+        IERC20 zeta_,
+        address pauserAddress_
+    ) {
         TSSAddress = TSSAddress_;
         TSSAddressUpdater = TSSAddressUpdater_;
         zetaFee = zetaFee_;
         zeta = zeta_;
         zetaMaxFee = zetaMaxFee_;
+        pauserAddress = pauserAddress_;
+    }
+
+    /**
+     * @dev Modifier to restrict actions to pauser address.
+     */
+    modifier onlyPauser() {
+        if (msg.sender != pauserAddress) revert CallerIsNotPauser(msg.sender);
+        _;
+    }
+
+    /**
+     * @dev Pause the input (send) transactions.
+     */
+
+    function pause() external onlyPauser {
+        _pause();
+    }
+
+    /**
+     * @dev Unpause the contract to allow transactions again.
+     */
+
+    function unpause() external onlyPauser {
+        _unpause();
     }
 
     /**
@@ -113,28 +149,14 @@ contract ERC20Custody is ReentrancyGuard {
     }
 
     /**
-     * @dev Pause custody operations.
+     * @dev Update the pauser address. The only address allowed to do that is the current pauser.
      */
-    function pause() external onlyTSS {
-        if (paused) {
-            revert IsPaused();
-        }
-        if (TSSAddress == address(0)) {
-            revert ZeroAddress();
-        }
-        paused = true;
-        emit Paused(msg.sender);
-    }
+    function updatePauserAddress(address pauserAddress_) external onlyPauser {
+        if (pauserAddress_ == address(0)) revert ZeroAddress();
 
-    /**
-     * @dev Unpause custody operations.
-     */
-    function unpause() external onlyTSS {
-        if (!paused) {
-            revert NotPaused();
-        }
-        paused = false;
-        emit Unpaused(msg.sender);
+        pauserAddress = pauserAddress_;
+
+        emit PauserAddressUpdated(msg.sender, pauserAddress_);
     }
 
     /**
@@ -168,7 +190,7 @@ contract ERC20Custody is ReentrancyGuard {
         uint256 amount,
         bytes calldata message
     ) external nonReentrant {
-        if (paused) {
+        if (this.paused()) {
             revert IsPaused();
         }
         if (!whitelisted[asset]) {

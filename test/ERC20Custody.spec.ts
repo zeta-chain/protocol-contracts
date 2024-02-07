@@ -42,7 +42,8 @@ describe("ERC20Custody tests", () => {
       tssUpdater.address,
       ZETA_FEE,
       ZETA_MAX_FEE,
-      zetaTokenEthContract.address
+      zetaTokenEthContract.address,
+      tssSigner.address
     )) as ERC20Custody;
   });
 
