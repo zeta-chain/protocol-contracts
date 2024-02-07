@@ -2,13 +2,7 @@ import { BigNumber } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
 
-import {
-  ERC20_CUSTODY_SALT_NUMBER_ETH,
-  ERC20_CUSTODY_SALT_NUMBER_NON_ETH,
-  ERC20_CUSTODY_ZETA_FEE,
-  ERC20_CUSTODY_ZETA_MAX_FEE,
-} from "../../../lib/contracts.constants";
-import { isEthNetworkName } from "../../../lib/contracts.helpers";
+import { ERC20_CUSTODY_ZETA_FEE, ERC20_CUSTODY_ZETA_MAX_FEE, getSaltNumber } from "../../../lib/contracts.constants";
 import {
   deployContractToAddress,
   saltToHex,
@@ -22,6 +16,7 @@ export const deterministicDeployERC20Custody = async () => {
 
   const accounts = await ethers.getSigners();
   const [signer] = accounts;
+  const initialBalance = await signer.getBalance();
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
@@ -30,7 +25,7 @@ export const deterministicDeployERC20Custody = async () => {
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
   const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
-  const saltNumber = isEthNetworkName(network.name) ? ERC20_CUSTODY_SALT_NUMBER_ETH : ERC20_CUSTODY_SALT_NUMBER_NON_ETH;
+  const saltNumber = getSaltNumber("zetaERC20Custody", network.name);
   const saltStr = BigNumber.from(saltNumber).toHexString();
 
   const zetaFee = ERC20_CUSTODY_ZETA_FEE;
@@ -52,8 +47,12 @@ export const deterministicDeployERC20Custody = async () => {
     signer,
   });
 
+  const finalBalance = await signer.getBalance();
   console.log("Deployed ERC20 Custody. Address:", address);
   console.log("Constructor Args", constructorArgs);
+  console.log("ETH spent:", initialBalance.sub(finalBalance).toString());
+
+  return address;
 };
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {

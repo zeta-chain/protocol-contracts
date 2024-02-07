@@ -5,16 +5,66 @@ export const ZETA_INITIAL_SUPPLY = 2_100_000_000;
 export const MAX_ETH_ADDRESS = "0xffffffffffffffffffffffffffffffffffffffff";
 
 // dev: this values should be calculated using get-salt script
-export const ZETA_TOKEN_SALT_NUMBER_ETH = "84108";
-export const ZETA_TOKEN_SALT_NUMBER_NON_ETH = "29265";
+const SALT_NUMBERS = {
+  baobab_testnet: {
+    zetaConnector: "71733",
+    zetaConsumer: "0",
+    zetaERC20Custody: "195084",
+    zetaToken: "29265",
+  },
+  bsc_mainnet: {
+    zetaConnector: "71733",
+    zetaConsumer: "0",
+    zetaERC20Custody: "195084",
+    zetaToken: "29265",
+  },
+  bsc_testnet: {
+    zetaConnector: "71733",
+    zetaConsumer: "0",
+    zetaERC20Custody: "195084",
+    zetaToken: "29265",
+  },
+  btc_testnet: {
+    zetaConnector: "",
+    zetaConsumer: "",
+    zetaERC20Custody: "",
+    zetaToken: "",
+  },
+  eth_mainnet: {
+    zetaConnector: "84286",
+    zetaConsumer: "0",
+    zetaERC20Custody: "926526",
+    zetaToken: "0",
+  },
+  goerli_testnet: {
+    zetaConnector: "1414",
+    zetaConsumer: "0",
+    zetaERC20Custody: "87967",
+    zetaToken: "84108",
+  },
+  mumbai_testnet: {
+    zetaConnector: "71733",
+    zetaConsumer: "0",
+    zetaERC20Custody: "195084",
+    zetaToken: "29265",
+  },
+  zeta_testnet: {
+    zetaConnector: "71733",
+    zetaConsumer: "0",
+    zetaERC20Custody: "195084",
+    zetaToken: "29265",
+  },
+};
 
-// dev: this values should be calculated using get-salt script
-export const ZETA_CONNECTOR_SALT_NUMBER_ETH = "1414";
-export const ZETA_CONNECTOR_SALT_NUMBER_NON_ETH = "71733";
+export const getSaltNumber = (contractName: string, networkName: string) => {
+  const saltNumber = SALT_NUMBERS[networkName][contractName];
 
-export const ERC20_CUSTODY_SALT_NUMBER_ETH = "87967";
-export const ERC20_CUSTODY_SALT_NUMBER_NON_ETH = "195084";
+  if (!saltNumber) {
+    throw new Error(`Salt number for ${contractName} on ${networkName} is not defined.`);
+  }
+
+  return saltNumber;
+};
+
 export const ERC20_CUSTODY_ZETA_FEE = "0";
 export const ERC20_CUSTODY_ZETA_MAX_FEE = parseEther("1000");
-
-export const ZETA_CONSUMER_SALT_NUMBER = "0";

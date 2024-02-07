@@ -34,14 +34,19 @@ export async function deterministicDeployGetSaltZetaConnector() {
     contractBytecode = ZetaConnectorNonEth__factory.bytecode;
   }
 
-  calculateBestSalt(MAX_ITERATIONS, DEPLOYER_ADDRESS, constructorTypes, constructorArgs, contractBytecode);
+  await calculateBestSalt(
+    MAX_ITERATIONS,
+    DEPLOYER_ADDRESS,
+    constructorTypes,
+    constructorArgs,
+    contractBytecode,
+    network.name
+  );
 }
 
-if (!process.env.EXECUTE_PROGRAMMATICALLY) {
-  deterministicDeployGetSaltZetaConnector()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error);
-      process.exit(1);
-    });
-}
+deterministicDeployGetSaltZetaConnector()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
