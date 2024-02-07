@@ -30,7 +30,6 @@ abstract contract ZetaInteractor is Ownable2Step, ZetaInteractorErrors {
     modifier isValidRevertCall(ZetaInterfaces.ZetaRevert calldata zetaRevert) {
         _isValidCaller();
         if (zetaRevert.zetaTxSenderAddress != address(this)) revert InvalidZetaRevertCall();
-        if (zetaRevert.sourceChainId != currentChainId) revert InvalidZetaRevertCall();
         _;
     }
 
