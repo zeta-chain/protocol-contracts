@@ -289,13 +289,6 @@
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "omnichain",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "omnichain",
     "chain_id": 5,
     "chain_name": "goerli_testnet",
     "type": "tssUpdater"
@@ -303,16 +296,16 @@
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
     "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
+    "chain_id": 80001,
+    "chain_name": "mumbai_testnet",
     "type": "tssUpdater"
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "messaging",
+    "category": "omnichain",
     "chain_id": 97,
     "chain_name": "bsc_testnet",
-    "type": "pauser"
+    "type": "tssUpdater"
   },
   {
     "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
@@ -326,6 +319,13 @@
     "category": "messaging",
     "chain_id": 5,
     "chain_name": "goerli_testnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "messaging",
+    "chain_id": 97,
+    "chain_name": "bsc_testnet",
     "type": "pauser"
   },
   {

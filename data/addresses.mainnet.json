@@ -224,13 +224,6 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "omnichain",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "tssUpdater"
-  },
-  {
     "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
     "category": "omnichain",
     "chain_id": 56,
@@ -239,16 +232,23 @@
   },
   {
     "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "messaging",
+    "category": "omnichain",
     "chain_id": 1,
     "chain_name": "eth_mainnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
+    "category": "messaging",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
     "type": "pauser"
   },
   {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
     "category": "messaging",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
     "type": "pauser"
   },
   {

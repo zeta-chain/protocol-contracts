@@ -1,4 +1,4 @@
-export declare type ParamSymbol =
+export type ParamSymbol =
   | "BNB.BSC"
   | "BTC.BTC"
   | "ETH.ETH"
@@ -11,7 +11,7 @@ export declare type ParamSymbol =
   | "USDC"
   | "USDT.BSC"
   | "USDT.ETH";
-export declare type ParamChainName =
+export type ParamChainName =
   | "bsc_mainnet"
   | "bsc_testnet"
   | "btc_mainnet"
@@ -21,7 +21,7 @@ export declare type ParamChainName =
   | "mumbai_testnet"
   | "zeta_mainnet"
   | "zeta_testnet";
-export declare type ParamType =
+export type ParamType =
   | "connector"
   | "erc20Custody"
   | "fungibleModule"
@@ -29,8 +29,12 @@ export declare type ParamType =
   | "systemContract"
   | "tss"
   | "tssUpdater"
-  | "uniswapv2Factory"
-  | "uniswapv2Router02"
-  | "wZetaContract"
+  | "uniswapV2Factory"
+  | "uniswapV2Router02"
+  | "uniswapV3Factory"
+  | "uniswapV3Router"
+  | "weth9"
   | "zetaToken"
+  | "zetaTokenConsumerUniV2"
+  | "zetaTokenConsumerUniV3"
   | "zrc20";
