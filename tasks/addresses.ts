@@ -249,14 +249,16 @@ const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
       const wethAddress = await routerContract.WETH();
       const factoryAddress = await routerContract.factory();
 
-      // Adding WETH and Factory addresses to the addresses array
-      addresses.push({
-        address: wethAddress,
-        category: "messaging",
-        chain_id: router.chain_id,
-        chain_name: router.chain_name,
-        type: "weth9",
-      });
+      // Skip ZetaChain as we've already added ZETA token
+      if (router.chain_id !== 7000 && router.chain_id !== 7001) {
+        addresses.push({
+          address: wethAddress,
+          category: "messaging",
+          chain_id: router.chain_id,
+          chain_name: router.chain_name,
+          type: "weth9",
+        });
+      }
 
       addresses.push({
         address: factoryAddress,

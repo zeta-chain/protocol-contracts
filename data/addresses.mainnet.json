@@ -224,13 +224,6 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
-    "category": "omnichain",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "tssUpdater"
-  },
-  {
     "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
     "category": "omnichain",
     "chain_id": 1,
@@ -239,16 +232,23 @@
   },
   {
     "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
-    "category": "messaging",
+    "category": "omnichain",
     "chain_id": 56,
     "chain_name": "bsc_mainnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
     "type": "pauser"
   },
   {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
     "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
     "type": "pauser"
   },
   {
@@ -264,13 +264,6 @@
     "chain_id": 1,
     "chain_name": "eth_mainnet",
     "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
-    "category": "messaging",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "weth9"
   },
   {
     "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
