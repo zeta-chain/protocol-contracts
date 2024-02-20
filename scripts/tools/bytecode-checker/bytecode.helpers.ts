@@ -64,7 +64,7 @@ export const getZetaNodeBytecode = async (contractAddress: string) => {
   }
 };
 
-export const cleanAddress = (bytecode: string, pattern: string) => {
+export const removeImmutableAddress = (bytecode: string, pattern: string) => {
   const replacement = encodeAddress(ethers.constants.AddressZero);
   const regex = new RegExp(pattern, "gi");
 
@@ -72,7 +72,7 @@ export const cleanAddress = (bytecode: string, pattern: string) => {
   return bytecode;
 };
 
-export const cleanNumber = (bytecode: string, pattern: string) => {
+export const removeImmutableNumber = (bytecode: string, pattern: string) => {
   const replacement = encodeNumber(BigNumber.from("0"));
   const regex = new RegExp(pattern, "gi");
 
