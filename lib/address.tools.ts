@@ -81,13 +81,13 @@ export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
   return false;
 };
 
-export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
-  if (isZetaProtocolAddress(address)) {
-    return (addresses["ccm"] as any)[network][address];
-  }
+// export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
+//   if (isZetaProtocolAddress(address)) {
+//     return (addresses["ccm"] as any)[network][address];
+//   }
 
-  return (addresses["zevm"] as any)[network][address];
-};
+//   return (addresses["zevm"] as any)[network][address];
+// };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
   return (addresses["zevm"] as any)[network]["zrc20"];
