@@ -1,5 +1,47 @@
 [
   {
+    "address": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
+    "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x0000030Ec64DF25301d8414eE5a29588C4B0dE10",
+    "category": "omnichain",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "tss"
+  },
+  {
+    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
+    "category": "omnichain",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+    "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "uniswapV2Factory"
+  },
+  {
     "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
     "category": "messaging",
     "chain_id": 1,
@@ -14,6 +56,13 @@
     "type": "uniswapV2Router02"
   },
   {
+    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+    "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "uniswapV3Factory"
+  },
+  {
     "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
     "category": "messaging",
     "chain_id": 1,
@@ -21,11 +70,39 @@
     "type": "uniswapV3Router"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
+    "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "category": "messaging",
     "chain_id": 1,
     "chain_name": "eth_mainnet",
-    "type": "tss"
+    "type": "weth9"
+  },
+  {
+    "address": "0xf091867EC603A6628eD83D274E835539D82e9cc8",
+    "category": "messaging",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x000063A6e758D9e2f438d430108377564cf4077D",
+    "category": "messaging",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x00000fF8fA992424957F97688015814e707A0115",
+    "category": "omnichain",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
+    "category": "messaging",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
+    "type": "pauser"
   },
   {
     "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
@@ -35,18 +112,32 @@
     "type": "tss"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
     "category": "omnichain",
-    "chain_id": 8332,
-    "chain_name": "btc_mainnet",
-    "type": "tss"
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
+    "type": "tssUpdater"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "address": "0x0000028a2eB8346cd5c0267856aB7594B7a55308",
+    "category": "messaging",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
+    "category": "messaging",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "type": "tss"
+    "type": "fungibleModule"
   },
   {
     "address": "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
@@ -56,11 +147,46 @@
     "type": "systemContract"
   },
   {
-    "address": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "tss"
+  },
+  {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "uniswapV2Factory"
+  },
+  {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "messaging",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "type": "connector"
+    "type": "uniswapV2Factory"
+  },
+  {
+    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "uniswapV2Router02"
+  },
+  {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "category": "messaging",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "zetaToken"
   },
   {
     "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
@@ -154,136 +280,10 @@
     "type": "zrc20"
   },
   {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
     "category": "omnichain",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
-    "category": "omnichain",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
-    "category": "omnichain",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
-    "category": "omnichain",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "fungibleModule"
-  },
-  {
-    "address": "0x0000028a2eB8346cd5c0267856aB7594B7a55308",
-    "category": "messaging",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x000063A6e758D9e2f438d430108377564cf4077D",
-    "category": "messaging",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x00000fF8fA992424957F97688015814e707A0115",
-    "category": "omnichain",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0xf091867EC603A6628eD83D274E835539D82e9cc8",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x0000030Ec64DF25301d8414eE5a29588C4B0dE10",
-    "category": "omnichain",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "omnichain",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
-    "category": "omnichain",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "pauser"
-  },
-  {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
-    "category": "messaging",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "pauser"
-  },
-  {
-    "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "weth9"
-  },
-  {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "category": "messaging",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "uniswapV3Factory"
-  },
-  {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "category": "messaging",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "uniswapV3Factory"
+    "chain_id": 8332,
+    "chain_name": "btc_mainnet",
+    "type": "tss"
   }
 ]
