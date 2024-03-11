@@ -1,9 +1,4 @@
-import fs from "fs";
-import path from "path";
-
-export const addresses = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, "..", "data", "addresses.json")).toString()
-);
+import addresses from "../data/addresses.json";
 
 export declare type ZetaProtocolAddress =
   | "connector"
@@ -38,6 +33,7 @@ export declare type ZetaZEVMAddress =
 export declare type ZetaProtocolTestNetwork =
   | "baobab_testnet"
   | "bsc_testnet"
+  | "btc_testnet"
   | "goerli_testnet"
   | "mumbai_testnet"
   | "zeta_testnet";
@@ -45,17 +41,29 @@ export declare type ZetaProtocolTestNetwork =
 export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
   "baobab_testnet",
   "bsc_testnet",
+  "btc_testnet",
   "goerli_testnet",
   "mumbai_testnet",
   "zeta_testnet",
 ];
 
-export declare type NonZetaAddress = "uniswapV2Router02" | "uniswapV3Factory" | "uniswapV3Router" | "weth9";
+export declare type NonZetaAddress =
+  | "uniswapV2Factory"
+  | "uniswapV2Router02"
+  | "uniswapV3Factory"
+  | "uniswapV3Router"
+  | "weth9";
 
-export const nonZetaAddress: NonZetaAddress[] = ["uniswapV2Router02", "uniswapV3Router", "uniswapV3Factory", "weth9"];
+export const nonZetaAddress: NonZetaAddress[] = [
+  "uniswapV2Factory",
+  "uniswapV2Router02",
+  "uniswapV3Router",
+  "uniswapV3Factory",
+  "weth9",
+];
 
-export declare type ZetaProtocolMainNetwork = "etherum_mainnet";
-export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["etherum_mainnet"];
+export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet" | "zeta_mainnet";
+export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet", "zeta_mainnet"];
 
 export declare type ZetaProtocolNetwork = ZetaProtocolMainNetwork | ZetaProtocolTestNetwork;
 export const zetaProtocolNetworks: ZetaProtocolNetwork[] = [...zetaProtocolTestNetworks, ...zetaProtocolMainNetworks];
@@ -73,18 +81,18 @@ export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
   return false;
 };
 
-export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
-  if (isZetaProtocolAddress(address)) {
-    return addresses["ccm"][network][address];
-  }
+// export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
+//   if (isZetaProtocolAddress(address)) {
+//     return (addresses["ccm"] as any)[network][address];
+//   }
 
-  return addresses["zevm"][network][address];
-};
+//   return (addresses["zevm"] as any)[network][address];
+// };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
-  return addresses["zevm"][network]["zrc20"];
+  return (addresses["zevm"] as any)[network]["zrc20"];
 };
 
 export const getNonZetaAddress = (address: NonZetaAddress, network: ZetaProtocolNetwork): string => {
-  return addresses["non-zeta"][network][address];
+  return (addresses["non_zeta"] as any)[network][address];
 };

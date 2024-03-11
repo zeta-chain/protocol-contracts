@@ -47,7 +47,7 @@ Before you can contribute to this project, you must have the following installed
 To get started with this project, you should first clone the repository:
 
 ```
-git clone https://github.com/zeta-chain/protocol
+git clone https://github.com/zeta-chain/protocol-contracts
 ```
 
 Once you have cloned the repository, you can navigate to the project directory

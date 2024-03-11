@@ -24,6 +24,12 @@ contract ZetaNonEth is ZetaNonEthInterface, ERC20Burnable, ZetaErrors {
 
     event Burnt(address indexed burnee, uint256 amount);
 
+    event TSSAddressUpdated(address callerAddress, address newTssAddress);
+
+    event TSSAddressUpdaterUpdated(address callerAddress, address newTssUpdaterAddress);
+
+    event ConnectorAddressUpdated(address callerAddress, address newConnectorAddress);
+
     constructor(address tssAddress_, address tssAddressUpdater_) ERC20("Zeta", "ZETA") {
         if (tssAddress_ == address(0) || tssAddressUpdater_ == address(0)) revert InvalidAddress();
 
@@ -37,6 +43,9 @@ contract ZetaNonEth is ZetaNonEthInterface, ERC20Burnable, ZetaErrors {
 
         tssAddress = tssAddress_;
         connectorAddress = connectorAddress_;
+
+        emit TSSAddressUpdated(msg.sender, tssAddress_);
+        emit ConnectorAddressUpdated(msg.sender, connectorAddress_);
     }
 
     /**
@@ -47,6 +56,7 @@ contract ZetaNonEth is ZetaNonEthInterface, ERC20Burnable, ZetaErrors {
         if (tssAddress == address(0)) revert InvalidAddress();
 
         tssAddressUpdater = tssAddress;
+        emit TSSAddressUpdaterUpdated(msg.sender, tssAddress);
     }
 
     function mint(address mintee, uint256 value, bytes32 internalSendHash) external override {

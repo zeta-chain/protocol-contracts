@@ -4,9 +4,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import {
   IERC20,
   IERC20__factory,
-  INonfungiblePositionManager,
-  INonfungiblePositionManager__factory,
-  IPoolInitializer__factory,
   UniswapV2Router02__factory,
   ZetaTokenConsumer,
   ZetaTokenConsumerUniV2,
@@ -17,7 +14,7 @@ import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { getNonZetaAddress } from "lib";
 
-import { getExternalAddress } from "../lib/address.helpers";
+import { getTestAddress } from "../lib/address.helpers";
 import {
   deployZetaNonEth,
   getZetaTokenConsumerUniV2Strategy,
@@ -57,64 +54,6 @@ describe("ZetaTokenConsumer tests", () => {
     await tx.wait();
   };
 
-  /**
-   * @todo (andy): WIP, not in use yet
-   */
-  const createPoolV3 = async (signer: SignerWithAddress, tokenAddress: string) => {
-    const DAI = getExternalAddress("dai", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
-    const UNI_NFT_MANAGER_V3 = getExternalAddress("uniswapV3NftManager", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
-    const USDC = getExternalAddress("usdc", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
-
-    await swapToken(signer, DAI, parseUnits("10000", 18));
-
-    const token = IERC20__factory.connect(USDC, signer);
-    const tx1 = await token.approve(UNI_NFT_MANAGER_V3, MaxUint256);
-    await tx1.wait();
-
-    const token2 = IERC20__factory.connect(DAI, signer);
-    const tx2 = await token2.approve(UNI_NFT_MANAGER_V3, MaxUint256);
-    await tx2.wait();
-
-    const uniswapRouter = INonfungiblePositionManager__factory.connect(UNI_NFT_MANAGER_V3, signer);
-
-    const uniswapNFTManager = IPoolInitializer__factory.connect(UNI_NFT_MANAGER_V3, signer);
-    const tx3 = await uniswapNFTManager.createAndInitializePoolIfNecessary(
-      USDC,
-      DAI,
-      3000,
-      "80000000000000000000000000000"
-    );
-    await tx3.wait();
-
-    const params: INonfungiblePositionManager.MintParamsStruct = {
-      amount0Desired: parseEther("10"),
-      amount0Min: 0,
-      amount1Desired: parseEther("10"),
-      amount1Min: 0,
-      deadline: (await getNow()) + 360,
-      fee: 3000,
-      recipient: signer.address,
-      tickLower: 193,
-      tickUpper: 194,
-      token0: USDC,
-      token1: DAI,
-    };
-
-    const tx4 = await uniswapRouter.mint(params);
-    await tx4.wait();
-  };
-
   beforeEach(async () => {
     accounts = await ethers.getSigners();
     [tssUpdater, tssSigner, randomSigner] = accounts;
@@ -123,23 +62,17 @@ describe("ZetaTokenConsumer tests", () => {
       args: [tssSigner.address, tssUpdater.address],
     });
 
-    const DAI = getExternalAddress("dai", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
+    const DAI = getTestAddress("dai", "eth_mainnet");
 
-    USDCAddr = getExternalAddress("usdc", {
-      customNetworkName: "etherum_mainnet",
-      customZetaNetwork: "mainnet",
-    });
+    USDCAddr = getTestAddress("usdc", "eth_mainnet");
 
-    uniswapV2RouterAddr = getNonZetaAddress("uniswapV2Router02", "etherum_mainnet");
+    uniswapV2RouterAddr = getNonZetaAddress("uniswapV2Router02", "eth_mainnet");
 
-    const UNI_FACTORY_V3 = getNonZetaAddress("uniswapV3Factory", "etherum_mainnet");
+    const UNI_FACTORY_V3 = getNonZetaAddress("uniswapV3Factory", "eth_mainnet");
 
-    const UNI_ROUTER_V3 = getNonZetaAddress("uniswapV3Router", "etherum_mainnet");
+    const UNI_ROUTER_V3 = getNonZetaAddress("uniswapV3Router", "eth_mainnet");
 
-    const WETH9 = getNonZetaAddress("weth9", "etherum_mainnet");
+    const WETH9 = getNonZetaAddress("weth9", "eth_mainnet");
 
     // For testing purposes we use an existing uni v3 pool
     await swapToken(tssUpdater, DAI, parseEther("10000"));

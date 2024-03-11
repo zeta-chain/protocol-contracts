@@ -1,21 +1,23 @@
 import { BigNumber } from "ethers";
+import { getAddress } from "lib";
 
-import { getAddress } from "../lib/address.helpers";
 import { MAX_ETH_ADDRESS } from "../lib/contracts.constants";
 import {
   buildBytecode,
   buildCreate2Address,
   saltToHex,
 } from "../lib/ImmutableCreate2Factory/ImmutableCreate2Factory.helpers";
+import { ZetaProtocolNetwork } from "./address.tools";
 
 export const calculateBestSalt = async (
   maxIterations: BigNumber,
   deployerAddress: string,
   constructorTypes: string[],
   constructorArgs: string[],
-  contractBytecode: string
+  contractBytecode: string,
+  network: ZetaProtocolNetwork
 ) => {
-  const immutableCreate2Factory = getAddress("immutableCreate2Factory");
+  const immutableCreate2Factory = getAddress("immutableCreate2Factory", network);
 
   let minAddress = MAX_ETH_ADDRESS;
   let minAddressSalt = "";

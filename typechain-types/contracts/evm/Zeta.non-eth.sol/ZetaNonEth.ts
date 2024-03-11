@@ -196,13 +196,19 @@ export interface ZetaNonEthInterface extends utils.Interface {
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "Burnt(address,uint256)": EventFragment;
+    "ConnectorAddressUpdated(address,address)": EventFragment;
     "Minted(address,uint256,bytes32)": EventFragment;
+    "TSSAddressUpdated(address,address)": EventFragment;
+    "TSSAddressUpdaterUpdated(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Burnt"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ConnectorAddressUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Minted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TSSAddressUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TSSAddressUpdaterUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
@@ -226,6 +232,18 @@ export type BurntEvent = TypedEvent<[string, BigNumber], BurntEventObject>;
 
 export type BurntEventFilter = TypedEventFilter<BurntEvent>;
 
+export interface ConnectorAddressUpdatedEventObject {
+  callerAddress: string;
+  newConnectorAddress: string;
+}
+export type ConnectorAddressUpdatedEvent = TypedEvent<
+  [string, string],
+  ConnectorAddressUpdatedEventObject
+>;
+
+export type ConnectorAddressUpdatedEventFilter =
+  TypedEventFilter<ConnectorAddressUpdatedEvent>;
+
 export interface MintedEventObject {
   mintee: string;
   amount: BigNumber;
@@ -237,6 +255,30 @@ export type MintedEvent = TypedEvent<
 >;
 
 export type MintedEventFilter = TypedEventFilter<MintedEvent>;
+
+export interface TSSAddressUpdatedEventObject {
+  callerAddress: string;
+  newTssAddress: string;
+}
+export type TSSAddressUpdatedEvent = TypedEvent<
+  [string, string],
+  TSSAddressUpdatedEventObject
+>;
+
+export type TSSAddressUpdatedEventFilter =
+  TypedEventFilter<TSSAddressUpdatedEvent>;
+
+export interface TSSAddressUpdaterUpdatedEventObject {
+  callerAddress: string;
+  newTssUpdaterAddress: string;
+}
+export type TSSAddressUpdaterUpdatedEvent = TypedEvent<
+  [string, string],
+  TSSAddressUpdaterUpdatedEventObject
+>;
+
+export type TSSAddressUpdaterUpdatedEventFilter =
+  TypedEventFilter<TSSAddressUpdaterUpdatedEvent>;
 
 export interface TransferEventObject {
   from: string;
@@ -551,6 +593,15 @@ export interface ZetaNonEth extends BaseContract {
       amount?: null
     ): BurntEventFilter;
 
+    "ConnectorAddressUpdated(address,address)"(
+      callerAddress?: null,
+      newConnectorAddress?: null
+    ): ConnectorAddressUpdatedEventFilter;
+    ConnectorAddressUpdated(
+      callerAddress?: null,
+      newConnectorAddress?: null
+    ): ConnectorAddressUpdatedEventFilter;
+
     "Minted(address,uint256,bytes32)"(
       mintee?: PromiseOrValue<string> | null,
       amount?: null,
@@ -561,6 +612,24 @@ export interface ZetaNonEth extends BaseContract {
       amount?: null,
       internalSendHash?: PromiseOrValue<BytesLike> | null
     ): MintedEventFilter;
+
+    "TSSAddressUpdated(address,address)"(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): TSSAddressUpdatedEventFilter;
+    TSSAddressUpdated(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): TSSAddressUpdatedEventFilter;
+
+    "TSSAddressUpdaterUpdated(address,address)"(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
+    TSSAddressUpdaterUpdated(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
 
     "Transfer(address,address,uint256)"(
       from?: PromiseOrValue<string> | null,
