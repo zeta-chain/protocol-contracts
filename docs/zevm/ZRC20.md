@@ -85,6 +85,8 @@ Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zev
 
 ### Function List
 
+* [_msgSender()](#ZRC20-_msgSender--)
+* [_msgData()](#ZRC20-_msgData--)
 * [constructor(name_, symbol_, decimals_, chainid_, coinType_, gasLimit_, systemContractAddress_)](#ZRC20-constructor-string-string-uint8-uint256-enum-CoinType-uint256-address-)
 * [name()](#ZRC20-name--)
 * [symbol()](#ZRC20-symbol--)
@@ -94,8 +96,6 @@ Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zev
 * [transfer(recipient, amount)](#ZRC20-transfer-address-uint256-)
 * [allowance(owner, spender)](#ZRC20-allowance-address-address-)
 * [approve(spender, amount)](#ZRC20-approve-address-uint256-)
-* [increaseAllowance(spender, amount)](#ZRC20-increaseAllowance-address-uint256-)
-* [decreaseAllowance(spender, amount)](#ZRC20-decreaseAllowance-address-uint256-)
 * [transferFrom(sender, recipient, amount)](#ZRC20-transferFrom-address-address-uint256-)
 * [burn(amount)](#ZRC20-burn-uint256-)
 * [_transfer(sender, recipient, amount)](#ZRC20-_transfer-address-address-uint256-)
@@ -141,6 +141,18 @@ onlyFungible() (modifier)
 Only fungible module modifier.
 
 ### Functions
+
+```
+_msgSender() → address (internal function)
+```
+
+<a name="ZRC20-_msgSender--"></a>
+
+```
+_msgData() → bytes (internal function)
+```
+
+<a name="ZRC20-_msgData--"></a>
 
 ```
 constructor(string name_, string symbol_, uint8 decimals_, uint256 chainid_, enum CoinType coinType_, uint256 gasLimit_, address systemContractAddress_) (public function)
@@ -213,22 +225,6 @@ approve(address spender, uint256 amount) → bool (public function)
 <a name="ZRC20-approve-address-uint256-"></a>
 
 Approves amount transferFrom for spender.
-
-```
-increaseAllowance(address spender, uint256 amount) → bool (external function)
-```
-
-<a name="ZRC20-increaseAllowance-address-uint256-"></a>
-
-Increases allowance by amount for spender.
-
-```
-decreaseAllowance(address spender, uint256 amount) → bool (external function)
-```
-
-<a name="ZRC20-decreaseAllowance-address-uint256-"></a>
-
-Decreases allowance by amount for spender.
 
 ```
 transferFrom(address sender, address recipient, uint256 amount) → bool (public function)

@@ -87,6 +87,7 @@ The interface can be implemented using different strategies, like UniswapV2, Uni
 * [getZetaFromToken(destinationAddress, minAmountOut, inputToken, inputTokenAmount)](#ZetaTokenConsumer-getZetaFromToken-address-uint256-address-uint256-)
 * [getEthFromZeta(destinationAddress, minAmountOut, zetaTokenAmount)](#ZetaTokenConsumer-getEthFromZeta-address-uint256-uint256-)
 * [getTokenFromZeta(destinationAddress, minAmountOut, outputToken, zetaTokenAmount)](#ZetaTokenConsumer-getTokenFromZeta-address-uint256-address-uint256-)
+* [hasZetaLiquidity()](#ZetaTokenConsumer-hasZetaLiquidity--)
 
 ### Event List
 
@@ -122,6 +123,12 @@ getTokenFromZeta(address destinationAddress, uint256 minAmountOut, address outpu
 ```
 
 <a name="ZetaTokenConsumer-getTokenFromZeta-address-uint256-address-uint256-"></a>
+
+```
+hasZetaLiquidity() → bool (external function)
+```
+
+<a name="ZetaTokenConsumer-hasZetaLiquidity--"></a>
 
 ### Events
 

@@ -18,6 +18,9 @@ Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm
 
 * [Minted(mintee, amount, internalSendHash)](#ZetaNonEth-Minted-address-uint256-bytes32-)
 * [Burnt(burnee, amount)](#ZetaNonEth-Burnt-address-uint256-)
+* [TSSAddressUpdated(callerAddress, newTssAddress)](#ZetaNonEth-TSSAddressUpdated-address-address-)
+* [TSSAddressUpdaterUpdated(callerAddress, newTssUpdaterAddress)](#ZetaNonEth-TSSAddressUpdaterUpdated-address-address-)
+* [ConnectorAddressUpdated(callerAddress, newConnectorAddress)](#ZetaNonEth-ConnectorAddressUpdated-address-address-)
 
 * [Transfer(from, to, value)](#IERC20-Transfer-address-address-uint256-)
 * [Approval(owner, spender, value)](#IERC20-Approval-address-address-uint256-)
@@ -80,6 +83,24 @@ Burnt(address indexed burnee, uint256 amount) (event)
 ```
 
 <a name="ZetaNonEth-Burnt-address-uint256-"></a>
+
+```
+TSSAddressUpdated(address callerAddress, address newTssAddress) (event)
+```
+
+<a name="ZetaNonEth-TSSAddressUpdated-address-address-"></a>
+
+```
+TSSAddressUpdaterUpdated(address callerAddress, address newTssUpdaterAddress) (event)
+```
+
+<a name="ZetaNonEth-TSSAddressUpdaterUpdated-address-address-"></a>
+
+```
+ConnectorAddressUpdated(address callerAddress, address newConnectorAddress) (event)
+```
+
+<a name="ZetaNonEth-ConnectorAddressUpdated-address-address-"></a>
 
 ```
 Transfer(address indexed from, address indexed to, uint256 value) (event)

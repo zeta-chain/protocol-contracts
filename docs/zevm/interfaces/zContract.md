@@ -1,3 +1,12 @@
+## zContext
+
+```solidity
+struct zContext {
+  bytes origin;
+  address sender;
+  uint256 chainID;
+}
+```
 ## zContract
 
 ```solidity
@@ -8,15 +17,15 @@ Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zev
 
 ### Function List
 
-* [onCrossChainCall(zrc20, amount, message)](#zContract-onCrossChainCall-address-uint256-bytes-)
+* [onCrossChainCall(context, zrc20, amount, message)](#zContract-onCrossChainCall-struct-zContext-address-uint256-bytes-)
 
 ### Modifiers
 
 ### Functions
 
 ```
-onCrossChainCall(address zrc20, uint256 amount, bytes message) (external function)
+onCrossChainCall(struct zContext context, address zrc20, uint256 amount, bytes message) (external function)
 ```
 
-<a name="zContract-onCrossChainCall-address-uint256-bytes-"></a>
+<a name="zContract-onCrossChainCall-struct-zContext-address-uint256-bytes-"></a>
 

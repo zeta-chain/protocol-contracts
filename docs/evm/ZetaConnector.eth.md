@@ -23,8 +23,9 @@ This version is only for Ethereum network because in the other chains we mint an
 * [ZetaSent(sourceTxOriginAddress, zetaTxSenderAddress, destinationChainId, destinationAddress, zetaValueAndGas, destinationGasLimit, message, zetaParams)](#ZetaConnectorBase-ZetaSent-address-address-uint256-bytes-uint256-uint256-bytes-bytes-)
 * [ZetaReceived(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message, internalSendHash)](#ZetaConnectorBase-ZetaReceived-bytes-uint256-address-uint256-bytes-bytes32-)
 * [ZetaReverted(zetaTxSenderAddress, sourceChainId, destinationChainId, destinationAddress, remainingZetaValue, message, internalSendHash)](#ZetaConnectorBase-ZetaReverted-address-uint256-uint256-bytes-uint256-bytes-bytes32-)
-* [TSSAddressUpdated(zetaTxSenderAddress, newTssAddress)](#ZetaConnectorBase-TSSAddressUpdated-address-address-)
-* [PauserAddressUpdated(updaterAddress, newTssAddress)](#ZetaConnectorBase-PauserAddressUpdated-address-address-)
+* [TSSAddressUpdated(callerAddress, newTssAddress)](#ZetaConnectorBase-TSSAddressUpdated-address-address-)
+* [TSSAddressUpdaterUpdated(callerAddress, newTssUpdaterAddress)](#ZetaConnectorBase-TSSAddressUpdaterUpdated-address-address-)
+* [PauserAddressUpdated(callerAddress, newTssAddress)](#ZetaConnectorBase-PauserAddressUpdated-address-address-)
 
 * [Paused(account)](#Pausable-Paused-address-)
 * [Unpaused(account)](#Pausable-Unpaused-address-)
@@ -104,13 +105,19 @@ ZetaReverted(address zetaTxSenderAddress, uint256 sourceChainId, uint256 indexed
 <a name="ZetaConnectorBase-ZetaReverted-address-uint256-uint256-bytes-uint256-bytes-bytes32-"></a>
 
 ```
-TSSAddressUpdated(address zetaTxSenderAddress, address newTssAddress) (event)
+TSSAddressUpdated(address callerAddress, address newTssAddress) (event)
 ```
 
 <a name="ZetaConnectorBase-TSSAddressUpdated-address-address-"></a>
 
 ```
-PauserAddressUpdated(address updaterAddress, address newTssAddress) (event)
+TSSAddressUpdaterUpdated(address callerAddress, address newTssUpdaterAddress) (event)
+```
+
+<a name="ZetaConnectorBase-TSSAddressUpdaterUpdated-address-address-"></a>
+
+```
+PauserAddressUpdated(address callerAddress, address newTssAddress) (event)
 ```
 
 <a name="ZetaConnectorBase-PauserAddressUpdated-address-address-"></a>

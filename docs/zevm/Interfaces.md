@@ -189,35 +189,6 @@ UpdatedProtocolFlatFee(uint256 protocolFlatFee) (event)
 
 <a name="IZRC20-UpdatedProtocolFlatFee-uint256-"></a>
 
-## Context
-
-```solidity
-import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
-```
-
-Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
-
-### Function List
-
-* [_msgSender()](#Context-_msgSender--)
-* [_msgData()](#Context-_msgData--)
-
-### Modifiers
-
-### Functions
-
-```
-_msgSender() → address (internal function)
-```
-
-<a name="Context-_msgSender--"></a>
-
-```
-_msgData() → bytes (internal function)
-```
-
-<a name="Context-_msgData--"></a>
-
 ## IZRC20Metadata
 
 ```solidity
@@ -317,28 +288,3 @@ enum CoinType {
   ERC20
 }
 ```
-## zContract
-
-```solidity
-import "@zetachain/protocol-contracts/contracts/zevm/Interfaces.sol";
-```
-
-Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/Interfaces.sol
-
-Any ZetaChain Contract must implement this interface to allow SystemContract to interact with.
-This is only required if the contract wants to interact with other chains.
-
-### Function List
-
-* [onCrossChainCall(zrc20, amount, message)](#zContract-onCrossChainCall-address-uint256-bytes-)
-
-### Modifiers
-
-### Functions
-
-```
-onCrossChainCall(address zrc20, uint256 amount, bytes message) (external function)
-```
-
-<a name="zContract-onCrossChainCall-address-uint256-bytes-"></a>
-

@@ -1,10 +1,10 @@
 ## WETH9
 
 ```solidity
-import "@zetachain/protocol-contracts/contracts/zevm/wzeta.sol";
+import "@zetachain/protocol-contracts/contracts/zevm/WZETA.sol";
 ```
 
-Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/wzeta.sol
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/WZETA.sol
 
 ### Function List
 

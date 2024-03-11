@@ -12,6 +12,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const config: HardhatUserConfig = {
+  docgen: {
+    pages: "files",
+    templates: "templates",
+  },
   //@ts-ignore
   etherscan: {
     apiKey: {
