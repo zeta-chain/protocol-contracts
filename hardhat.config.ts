@@ -4,6 +4,7 @@ import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
 import "./tasks/addresses";
+import "solidity-docgen";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
 import * as dotenv from "dotenv";
@@ -12,6 +13,10 @@ import type { HardhatUserConfig } from "hardhat/types";
 dotenv.config();
 
 const config: HardhatUserConfig = {
+  docgen: {
+    pages: "files",
+    templates: "templates",
+  },
   //@ts-ignore
   etherscan: {
     apiKey: {
