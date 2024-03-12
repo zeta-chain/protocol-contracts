@@ -72,13 +72,13 @@
   "scripts": {
     "build": "yarn compile && npx del-cli dist abi && npx tsc || true && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "compile": "npx hardhat compile --force",
+    "docs": "npx hardhat docgen",
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "yarn build",
     "test": "yarn compile && npx hardhat test",
-    "tsc:watch": "npx tsc --watch",
-    "docs": "npx hardhat docgen"
+    "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
   "version": "0.0.8"
