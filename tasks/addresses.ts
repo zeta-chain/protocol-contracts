@@ -14,6 +14,14 @@ declare const hre: any;
 
 type Network = "zeta_mainnet" | "zeta_testnet";
 
+type AddressDetails = {
+  address: string;
+  category: string;
+  chain_id: number;
+  chain_name: string;
+  type: string;
+};
+
 const api = {
   zeta_mainnet: {
     evm: "https://zetachain-evm.blockpi.network/v1/rpc/public",
@@ -298,7 +306,7 @@ const fetchFactoryV3 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
 };
 
 const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
-  const addresses: any = [];
+  let addresses: any = [];
 
   const n = hre.network.name;
   if (n === "zeta_testnet") {
@@ -321,6 +329,16 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   await fetchPauser(chains, addresses);
   await fetchFactoryV2(addresses, hre, network);
   await fetchFactoryV3(addresses, hre, network);
+
+  addresses = addresses.sort((a: AddressDetails, b: AddressDetails) => {
+    if (a.chain_id !== b.chain_id) {
+      return a.chain_id - b.chain_id;
+    } else if (a.type !== b.type) {
+      return a.type.localeCompare(b.type);
+    } else {
+      return a.address.localeCompare(b.address);
+    }
+  });
 
   console.log(JSON.stringify(addresses, null, 2));
 };
