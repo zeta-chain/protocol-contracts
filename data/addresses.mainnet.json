@@ -280,7 +280,7 @@
     "type": "zrc20"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "address": "bc1qm24wp577nk8aacckv8np465z3dvmu7ry45el6y",
     "category": "omnichain",
     "chain_id": 8332,
     "chain_name": "btc_mainnet",
