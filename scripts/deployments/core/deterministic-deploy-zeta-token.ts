@@ -19,11 +19,14 @@ export const deterministicDeployZetaToken = async () => {
   const [signer] = accounts;
   const initialBalance = await signer.getBalance();
 
+  // console.log("signer:", signer.address);
+  // return;
+
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
   const tssAddress = getAddress("tss", network.name);
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
-  const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
+  const immutableCreate2FactoryAddress = "0x095a03c6a68137fE9a566bBc3e552F299d8b886d"; //getAddress("immutableCreate2Factory", network.name);
 
   const saltNumber = getSaltNumber("zetaToken", network.name);
   const saltStr = BigNumber.from(saltNumber).toHexString();
@@ -59,7 +62,7 @@ export const deterministicDeployZetaToken = async () => {
   console.log("Constructor Args", constructorArgs);
   console.log("ETH spent:", initialBalance.sub(finalBalance).toString());
 
-  return address;
+  return "address";
 };
 
 if (!process.env.EXECUTE_PROGRAMMATICALLY) {
