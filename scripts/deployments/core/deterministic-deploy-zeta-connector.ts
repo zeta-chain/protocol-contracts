@@ -24,7 +24,7 @@ export const deterministicDeployZetaConnector = async () => {
   const zetaTokenAddress = getAddress("zetaToken", network.name);
   const tssAddress = getAddress("tss", network.name);
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
-  const immutableCreate2FactoryAddress = "0x095a03c6a68137fE9a566bBc3e552F299d8b886d"; //getAddress("immutableCreate2Factory", network.name);
+  const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
   const saltNumber = getSaltNumber("zetaConnector", network.name);
   const saltStr = BigNumber.from(saltNumber).toHexString();
@@ -33,14 +33,6 @@ export const deterministicDeployZetaConnector = async () => {
   const constructorTypes = ["address", "address", "address", "address"];
   const constructorArgs = [zetaTokenAddress, tssAddress, tssUpdaterAddress, tssUpdaterAddress];
 
-  console.log("Deploying ZetaConnector with the following parameters:");
-  console.log("zetaTokenAddress:", zetaTokenAddress);
-  console.log("tssAddress:", tssAddress);
-  console.log("tssUpdaterAddress:", tssUpdaterAddress);
-  console.log("immutableCreate2FactoryAddress:", immutableCreate2FactoryAddress);
-  console.log("salt:", salthex);
-
-  // return;
   let contractBytecode;
   if (isEthNetworkName(network.name)) {
     contractBytecode = ZetaConnectorEth__factory.bytecode;

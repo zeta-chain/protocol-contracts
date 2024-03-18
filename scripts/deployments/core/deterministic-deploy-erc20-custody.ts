@@ -23,7 +23,7 @@ export const deterministicDeployERC20Custody = async () => {
   const zetaTokenAddress = getAddress("zetaToken", network.name);
   const tssAddress = getAddress("tss", network.name);
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
-  const immutableCreate2FactoryAddress = "0x095a03c6a68137fE9a566bBc3e552F299d8b886d"; //getAddress("immutableCreate2Factory", network.name);
+  const immutableCreate2FactoryAddress = getAddress("immutableCreate2Factory", network.name);
 
   const saltNumber = getSaltNumber("zetaERC20Custody", network.name);
   const saltStr = BigNumber.from(saltNumber).toHexString();
@@ -38,16 +38,6 @@ export const deterministicDeployERC20Custody = async () => {
   const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
   const contractBytecode = ERC20Custody__factory.bytecode;
 
-  // console.log("Deploying ERC20 Custody with the following parameters:");
-  // console.log("tssAddress:", tssAddress);
-  // console.log("tssUpdaterAddress:", tssUpdaterAddress);
-  // console.log("zetaFee:", zetaFee.toString());
-  // console.log("zetaMaxFee:", zetaMaxFee.toString());
-  // console.log("zetaTokenAddress:", zetaTokenAddress);
-  // console.log("immutableCreate2FactoryAddress:", immutableCreate2FactoryAddress);
-  // console.log("salt:", salthex);
-
-  // return;
   const { address } = await deployContractToAddress({
     constructorArgs,
     constructorTypes,
