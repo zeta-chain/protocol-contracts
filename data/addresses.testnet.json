@@ -1,40 +1,5 @@
 [
   {
-    "address": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x000047f11c6e42293f433c82473532e869ce4ec5",
-    "category": "omnichain",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "pauser"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "tss"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "omnichain",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "tssUpdater"
-  },
-  {
     "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
     "category": "messaging",
     "chain_id": 5,
@@ -68,13 +33,6 @@
     "chain_id": 5,
     "chain_name": "goerli_testnet",
     "type": "weth9"
-  },
-  {
-    "address": "0x0000c304d2934c00db1d51995b9f6996affd17c0",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "zetaToken"
   },
   {
     "address": "0x8eAc517b92eeE82177a83851268F13109878f8c4",
@@ -222,6 +180,19 @@
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
     "type": "zetaToken"
+  },
+  {
+    "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 sETH-sepolia_testnet",
+    "foreign_chain_id": "11155111",
+    "symbol": "sETH.SEPOLIA",
+    "type": "zrc20"
   },
   {
     "address": "0x0cbe0dF132a6c6B4a2974Fa1b7Fb953CF0Cc798a",
@@ -404,5 +375,47 @@
     "chain_id": 80001,
     "chain_name": "mumbai_testnet",
     "type": "zetaTokenConsumerUniV3"
+  },
+  {
+    "address": "0x3963341dad121c9CD33046089395D66eBF20Fb03",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x84725b70a239d3Faa7C6EF0C6C8E8b6c8e28338b",
+    "category": "omnichain",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "category": "omnichain",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "tss"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "omnichain",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x0000c304D2934c00Db1d51995b9f6996AffD17c0",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "zetaToken"
   }
 ]

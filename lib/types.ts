@@ -3,6 +3,7 @@ export type ParamSymbol =
   | "BTC.BTC"
   | "ETH.ETH"
   | "gETH"
+  | "sETH.SEPOLIA"
   | "tBNB"
   | "tBTC"
   | "tMATIC"
@@ -19,6 +20,7 @@ export type ParamChainName =
   | "eth_mainnet"
   | "goerli_testnet"
   | "mumbai_testnet"
+  | "sepolia_testnet"
   | "zeta_mainnet"
   | "zeta_testnet";
 export type ParamType =
