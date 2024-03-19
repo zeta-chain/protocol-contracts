@@ -1,47 +1,5 @@
 [
   {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV3Factory"
-  },
-  {
-    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV3Router"
-  },
-  {
-    "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "weth9"
-  },
-  {
-    "address": "0x8eAc517b92eeE82177a83851268F13109878f8c4",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "zetaTokenConsumerUniV2"
-  },
-  {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
     "category": "messaging",
     "chain_id": 97,

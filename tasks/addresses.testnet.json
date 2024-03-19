@@ -1,12 +1,5 @@
 [
   {
-    "address": "0x8eAc517b92eeE82177a83851268F13109878f8c4",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "zetaTokenConsumerUniV2"
-  },
-  {
     "address": "0x7e792f3736751e168864106AdbAC50152641A927",
     "category": "messaging",
     "chain_id": 80001,
@@ -46,20 +39,6 @@
     "category": "messaging",
     "chain_id": 97,
     "chain_name": "bsc_testnet",
-    "type": "uniswapV3Router"
-  },
-  {
-    "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
     "type": "uniswapV3Router"
   }
 ]
