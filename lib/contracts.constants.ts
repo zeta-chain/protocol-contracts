@@ -48,6 +48,12 @@ const SALT_NUMBERS = {
     zetaERC20Custody: "195084",
     zetaToken: "29265",
   },
+  sepolia_testnet: {
+    zetaConnector: "1414",
+    zetaConsumer: "0",
+    zetaERC20Custody: "87967",
+    zetaToken: "84108",
+  },
   zeta_testnet: {
     zetaConnector: "71733",
     zetaConsumer: "0",
