@@ -2078,10 +2078,10 @@
     "@uniswap/v3-core" "1.0.0"
     base64-sol "1.0.1"
 
-"@zetachain/networks@6.0.0-rc4":
-  version "6.0.0-rc4"
-  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-6.0.0-rc4.tgz#e81262c59c63045a8284213c41405b84363387d5"
-  integrity sha512-b2mxG2A9/8TMHQE87iUP8oE1LY5bvWE/lcIOV9sPUuaS5DVJTIq+m83f9F0kFSLZ2RAeU6FsG+IB0WCNCnDZjw==
+"@zetachain/networks@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-6.0.0.tgz#ae5d3cd1678b32510edfaa71f8f4a6f4cbc1d9ab"
+  integrity sha512-yKFVP/yJDp76Q5lBGfZSpY/KO3TZ9ldo0lhE4MpBW43EsBxOZWixg6sqb56mcU/gg1lbWG8sHHWtYFK51SByjQ==
   dependencies:
     dotenv "^16.1.4"
 
