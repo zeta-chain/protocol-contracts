@@ -231,6 +231,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xcC683A782f4B30c138787CB5576a86AF66fdc31d",
+    "asset": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 USDC on SEPOLIA",
+    "foreign_chain_id": "11155111",
+    "symbol": "USDC.SEPOLIA",
+    "type": "zrc20"
+  },
+  {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
     "asset": "",
     "category": "omnichain",

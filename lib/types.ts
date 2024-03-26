@@ -9,6 +9,7 @@ export type ParamSymbol =
   | "tMATIC"
   | "USDC.BSC"
   | "USDC.ETH"
+  | "USDC.SEPOLIA"
   | "USDC"
   | "USDT.BSC"
   | "USDT.ETH";
