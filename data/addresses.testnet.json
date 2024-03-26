@@ -49,7 +49,7 @@
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0xB7926C0430Afb07AA7DEfDE6DA862aE0Bde767bc",
+    "address": "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
     "category": "messaging",
     "chain_id": 97,
     "chain_name": "bsc_testnet",
@@ -124,13 +124,6 @@
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
     "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "category": "messaging",
-    "chain_id": 7001,
-    "chain_name": "zeta_testnet",
-    "type": "uniswapV3Factory"
   },
   {
     "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
@@ -313,7 +306,7 @@
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
+    "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
     "category": "messaging",
     "chain_id": 80001,
     "chain_name": "mumbai_testnet",
@@ -383,11 +376,25 @@
     "type": "tssUpdater"
   },
   {
-    "address": "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+    "address": "0x0227628f3F023bb0B980b67D528571c95c6DaC1c",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
     "category": "messaging",
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "uniswapV3Router"
+  },
+  {
+    "address": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "weth9"
   },
   {
     "address": "0x0000c304D2934c00Db1d51995b9f6996AffD17c0",
