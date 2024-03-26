@@ -28,6 +28,13 @@
     "type": "uniswapV3Router"
   },
   {
+    "address": "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "uniswapV3Router"
+  },
+  {
     "address": "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
     "category": "messaging",
     "chain_id": 97,

@@ -383,6 +383,13 @@
     "type": "tssUpdater"
   },
   {
+    "address": "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "uniswapV3Router"
+  },
+  {
     "address": "0x0000c304D2934c00Db1d51995b9f6996AffD17c0",
     "category": "messaging",
     "chain_id": 11155111,
