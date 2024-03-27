@@ -1,0 +1,118 @@
+## {{name}}
+
+```solidity
+import "@zetachain/protocol-contracts/{{__item_context.file.absolutePath}}";
+```
+
+Source: https://github.com/zeta-chain/protocol-contracts/blob/main/{{__item_context.file.absolutePath}}
+
+{{{natspec.dev}}}
+
+{{#if modifiers}}
+### Modifier List
+
+{{#each modifiers}}
+* [{{name}}({{names params}})](#{{anchor}})
+{{/each}}
+{{/if}}
+
+{{#if has-functions}}
+### Function List
+
+{{#each functions}}
+* [{{name}}({{names params}})](#{{anchor}})
+{{/each}}
+
+{{/if}}
+
+{{#if has-events}}
+### Event List
+
+{{#each inheritance}}
+{{#each events}}
+* [{{name}}({{names params}})](#{{anchor}})
+{{/each}}
+
+{{/each}}
+{{/if}}
+
+{{#if has-errors}}
+### Error List
+
+{{#each inheritance}}
+{{#each errors}}
+* [{{name}}({{names params}})](#{{anchor}})
+{{/each}}
+
+{{/each}}
+{{/if}}
+
+### Modifiers
+
+{{#each modifiers}}
+
+```
+{{name}}({{typed-params params}}) (modifier)
+```
+
+<a name="{{anchor}}"></a>
+
+{{{natspec.dev}}}
+
+{{/each}}
+
+{{#if has-functions}}
+
+### Functions
+
+{{#each functions}}
+
+```
+{{name}}({{typed-params params}}){{#if returns}} → {{typed-params returns}}{{/if}} ({{visibility}} function)
+```
+
+<a name="{{anchor}}"></a>
+
+{{{natspec.dev}}}
+
+{{/each}}
+
+{{/if}}
+
+{{#if has-events}}
+
+### Events
+
+{{#each inheritance}}
+{{#each events}}
+
+```
+{{name}}({{typed-params params}}) (event)
+```
+
+<a name="{{anchor}}"></a>
+
+{{{natspec.dev}}}
+
+{{/each}}
+{{/each}}
+{{/if}}
+
+{{#if has-errors}}
+
+### Errors
+
+{{#each inheritance}}
+{{#each errors}}
+
+```
+{{name}}({{typed-params params}}) (error)
+```
+
+<a name="{{anchor}}"></a>
+
+{{{natspec.dev}}}
+
+{{/each}}
+{{/each}}
+{{/if}}
