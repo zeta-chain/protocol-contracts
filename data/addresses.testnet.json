@@ -1,89 +1,5 @@
 [
   {
-    "address": "0x00005e3125aba53c5652f9f0ce1a4cf91d8b15ea",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x000047f11c6e42293f433c82473532e869ce4ec5",
-    "category": "omnichain",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "pauser"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "tss"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "omnichain",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV3Factory"
-  },
-  {
-    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "uniswapV3Router"
-  },
-  {
-    "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "weth9"
-  },
-  {
-    "address": "0x0000c304d2934c00db1d51995b9f6996affd17c0",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x8eAc517b92eeE82177a83851268F13109878f8c4",
-    "category": "messaging",
-    "chain_id": 5,
-    "chain_name": "goerli_testnet",
-    "type": "zetaTokenConsumerUniV2"
-  },
-  {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
     "category": "messaging",
     "chain_id": 97,
@@ -133,7 +49,7 @@
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0xB7926C0430Afb07AA7DEfDE6DA862aE0Bde767bc",
+    "address": "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
     "category": "messaging",
     "chain_id": 97,
     "chain_name": "bsc_testnet",
@@ -210,18 +126,24 @@
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "category": "messaging",
-    "chain_id": 7001,
-    "chain_name": "zeta_testnet",
-    "type": "uniswapV3Factory"
-  },
-  {
     "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
     "type": "zetaToken"
+  },
+  {
+    "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 sETH-sepolia_testnet",
+    "foreign_chain_id": "11155111",
+    "symbol": "sETH.SEPOLIA",
+    "type": "zrc20"
   },
   {
     "address": "0x0cbe0dF132a6c6B4a2974Fa1b7Fb953CF0Cc798a",
@@ -302,6 +224,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xcC683A782f4B30c138787CB5576a86AF66fdc31d",
+    "asset": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 USDC on SEPOLIA",
+    "foreign_chain_id": "11155111",
+    "symbol": "USDC.SEPOLIA",
+    "type": "zrc20"
+  },
+  {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
     "asset": "",
     "category": "omnichain",
@@ -371,7 +306,7 @@
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
+    "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
     "category": "messaging",
     "chain_id": 80001,
     "chain_name": "mumbai_testnet",
@@ -403,6 +338,76 @@
     "category": "messaging",
     "chain_id": 80001,
     "chain_name": "mumbai_testnet",
+    "type": "zetaTokenConsumerUniV3"
+  },
+  {
+    "address": "0x3963341dad121c9CD33046089395D66eBF20Fb03",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x84725b70a239d3Faa7C6EF0C6C8E8b6c8e28338b",
+    "category": "omnichain",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "category": "omnichain",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "tss"
+  },
+  {
+    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
+    "category": "omnichain",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x0227628f3F023bb0B980b67D528571c95c6DaC1c",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "uniswapV3Router"
+  },
+  {
+    "address": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "weth9"
+  },
+  {
+    "address": "0x0000c304D2934c00Db1d51995b9f6996AffD17c0",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x301ED39771d8f1dD0b05F8C2D4327ce9C426E783",
+    "category": "messaging",
+    "chain_id": 11155111,
+    "chain_name": "sepolia_testnet",
     "type": "zetaTokenConsumerUniV3"
   }
 ]

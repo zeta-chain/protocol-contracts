@@ -56,7 +56,7 @@
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+    "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
     "category": "messaging",
     "chain_id": 1,
     "chain_name": "eth_mainnet",
@@ -173,13 +173,6 @@
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
     "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "category": "messaging",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "uniswapV3Factory"
   },
   {
     "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",

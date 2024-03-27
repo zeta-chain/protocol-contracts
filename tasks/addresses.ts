@@ -1,8 +1,10 @@
 import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json";
+import SwapRouter from "@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json";
 import { getEndpoints } from "@zetachain/networks";
 import axios, { AxiosResponse } from "axios";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { isEqual } from "lodash";
 
 import { ZetaConnectorBase__factory } from "../typechain-types";
 import { ERC20Custody__factory } from "../typechain-types/factories/contracts/evm/ERC20Custody__factory";
@@ -283,15 +285,28 @@ const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
 };
 
 const fetchFactoryV3 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
-  const routers = addresses.filter((a: any) => a.type === "uniswapV2Router02");
+  const routers = addresses.filter((a: any) => a.type === "uniswapV3Router");
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
     const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
-    const routerContract = new hre.ethers.Contract(router.address, uniswapV2Router.abi, provider);
+    const routerContract = new hre.ethers.Contract(router.address, SwapRouter.abi, provider);
 
     try {
+      const wethAddress = await routerContract.WETH9();
       const factoryAddress = await routerContract.factory();
+
+      const wethObj = {
+        address: wethAddress,
+        category: "messaging",
+        chain_id: router.chain_id,
+        chain_name: router.chain_name,
+        type: "weth9",
+      };
+
+      if (!addresses.some((e: any) => isEqual(e, wethObj))) {
+        addresses.push(wethObj);
+      }
 
       addresses.push({
         address: factoryAddress,
