@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-import "./interfaces/ZetaNonEthInterface.sol";
-
-
 interface ZetaInterfaces {
     /**
      * @dev Use SendInput to interact with the Connector: connector.send(SendInput)
