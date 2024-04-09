@@ -116,4 +116,73 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
         wzeta = wzeta_;
         emit SetWZETA(wzeta_);
     }
+    /**
+     * @dev Handler to receive errors from other chain.
+     * This method can be called only by TSS.
+     * Transfer the Zeta tokens to destination and calls onZetaRevert if it's needed.
+     * To perform the transfer mint new tokens, validating first the maxSupply allowed in the current chain.
+     */
+    function onRevert(
+        address zetaTxSenderAddress,
+        uint256 sourceChainId,
+        bytes calldata destinationAddress,
+        uint256 destinationChainId,
+        uint256 remainingZetaValue,
+        bytes calldata message,
+        bytes32 internalSendHash
+    ) external override whenNotPaused {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
+        if (remainingZetaValue + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply)
+            revert ExceedsMaxSupply(maxSupply);
+        ZetaNonEthInterface(zetaToken).mint(zetaTxSenderAddress, remainingZetaValue, internalSendHash);
+
+        if (message.length > 0) {
+            ZetaReceiver(zetaTxSenderAddress).onZetaRevert(
+                ZetaInterfaces.ZetaRevert(
+                    zetaTxSenderAddress,
+                    sourceChainId,
+                    destinationAddress,
+                    destinationChainId,
+                    remainingZetaValue,
+                    message
+                )
+            );
+        }
+
+        emit ZetaReverted(
+            zetaTxSenderAddress,
+            sourceChainId,
+            destinationChainId,
+            destinationAddress,
+            remainingZetaValue,
+            message,
+            internalSendHash
+        );
+    }
+    /**
+ * @dev Handler to receive data from other chain.
+     * This method can be called only by TSS.
+     * Transfer the Zeta tokens to destination and calls onZetaMessage if it's needed.
+     * To perform the transfer mint new tokens, validating first the maxSupply allowed in the current chain.
+     */
+    function onReceive(
+        bytes calldata zetaTxSenderAddress,
+        uint256 sourceChainId,
+        address destinationAddress,
+        uint256 zetaValue,
+        bytes calldata message,
+        bytes32 internalSendHash
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
+        if (zetaValue + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply(maxSupply);
+        ZetaNonEthInterface(zetaToken).mint(destinationAddress, zetaValue, internalSendHash);
+
+        if (message.length > 0) {
+            ZetaReceiver(destinationAddress).onZetaMessage(
+                ZetaInterfaces.ZetaMessage(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message)
+            );
+        }
+
+        emit ZetaReceived(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message, internalSendHash);
+    }
 }
