@@ -156,6 +156,8 @@ export type { WZETA } from "./contracts/zevm/ZetaConnectorZEVM.sol/WZETA";
 export { WZETA__factory } from "./factories/contracts/zevm/ZetaConnectorZEVM.sol/WZETA__factory";
 export type { ZetaConnectorZEVM } from "./contracts/zevm/ZetaConnectorZEVM.sol/ZetaConnectorZEVM";
 export { ZetaConnectorZEVM__factory } from "./factories/contracts/zevm/ZetaConnectorZEVM.sol/ZetaConnectorZEVM__factory";
+export type { ZetaInterfaces } from "./contracts/zevm/ZetaConnectorZEVM.sol/ZetaInterfaces";
+export { ZetaInterfaces__factory } from "./factories/contracts/zevm/ZetaConnectorZEVM.sol/ZetaInterfaces__factory";
 export type { ZRC20 } from "./contracts/zevm/ZRC20.sol/ZRC20";
 export { ZRC20__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20__factory";
 export type { ZRC20Errors } from "./contracts/zevm/ZRC20.sol/ZRC20Errors";

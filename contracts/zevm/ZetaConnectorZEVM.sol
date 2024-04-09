@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
+import "./interfaces/ZetaNonEthInterface.sol";
+
+
 interface ZetaInterfaces {
     /**
      * @dev Use SendInput to interact with the Connector: connector.send(SendInput)
@@ -44,6 +47,37 @@ interface ZetaInterfaces {
         uint256 remainingZetaValue;
         bytes message;
     }
+    event ZetaReceived(
+        bytes zetaTxSenderAddress,
+        uint256 indexed sourceChainId,
+        address indexed destinationAddress,
+        uint256 zetaValue,
+        bytes message,
+        bytes32 indexed internalSendHash
+    );
+
+    event ZetaReverted(
+        address zetaTxSenderAddress,
+        uint256 sourceChainId,
+        uint256 indexed destinationChainId,
+        bytes destinationAddress,
+        uint256 remainingZetaValue,
+        bytes message,
+        bytes32 indexed internalSendHash
+    );
+}
+
+interface ZetaReceiver {
+    /**
+     * @dev onZetaMessage is called when a cross-chain message reaches a contract
+     */
+    function onZetaMessage(ZetaInterfaces.ZetaMessage calldata zetaMessage) external;
+
+    /**
+     * @dev onZetaRevert is called when a cross-chain message reverts.
+     * It's useful to rollback to the original state
+     */
+    function onZetaRevert(ZetaInterfaces.ZetaRevert calldata zetaRevert) external;
 }
 
 interface WZETA {
@@ -130,11 +164,8 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
         uint256 remainingZetaValue,
         bytes calldata message,
         bytes32 internalSendHash
-    ) external override whenNotPaused {
+    ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
-        if (remainingZetaValue + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply)
-            revert ExceedsMaxSupply(maxSupply);
-        ZetaNonEthInterface(zetaToken).mint(zetaTxSenderAddress, remainingZetaValue, internalSendHash);
 
         if (message.length > 0) {
             ZetaReceiver(zetaTxSenderAddress).onZetaRevert(
@@ -174,8 +205,6 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
         bytes32 internalSendHash
     ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
-        if (zetaValue + ZetaNonEthInterface(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply(maxSupply);
-        ZetaNonEthInterface(zetaToken).mint(destinationAddress, zetaValue, internalSendHash);
 
         if (message.length > 0) {
             ZetaReceiver(destinationAddress).onZetaMessage(

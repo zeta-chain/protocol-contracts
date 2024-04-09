@@ -3,3 +3,5 @@
 /* eslint-disable */
 export type { WZETA } from "./WZETA";
 export type { ZetaConnectorZEVM } from "./ZetaConnectorZEVM";
+export type { ZetaInterfaces } from "./ZetaInterfaces";
+export type { ZetaReceiver } from "./ZetaReceiver";

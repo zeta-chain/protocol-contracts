@@ -3,3 +3,5 @@
 /* eslint-disable */
 export { WZETA__factory } from "./WZETA__factory";
 export { ZetaConnectorZEVM__factory } from "./ZetaConnectorZEVM__factory";
+export { ZetaInterfaces__factory } from "./ZetaInterfaces__factory";
+export { ZetaReceiver__factory } from "./ZetaReceiver__factory";
