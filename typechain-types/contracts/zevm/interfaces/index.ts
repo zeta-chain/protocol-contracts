@@ -6,5 +6,4 @@ export type { iwzetaSol };
 export type { IUniswapV2Router01 } from "./IUniswapV2Router01";
 export type { IUniswapV2Router02 } from "./IUniswapV2Router02";
 export type { IZRC20 } from "./IZRC20";
-export type { ZetaNonEthInterface } from "./ZetaNonEthInterface";
 export type { ZContract } from "./ZContract";

@@ -26,7 +26,6 @@ var (
 	_ = common.Big1
 	_ = types.BloomLookup
 	_ = event.NewSubscription
-	_ = abi.ConvertType
 )
 
 // VictimMetaData contains all meta data concerning the Victim contract.
@@ -135,11 +134,11 @@ func NewVictimFilterer(address common.Address, filterer bind.ContractFilterer) (
 
 // bindVictim binds a generic wrapper to an already deployed contract.
 func bindVictim(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := VictimMetaData.GetAbi()
+	parsed, err := abi.JSON(strings.NewReader(VictimABI))
 	if err != nil {
 		return nil, err
 	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
 }
 
 // Call invokes the (constant) contract method with params as input values and

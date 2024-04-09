@@ -26,7 +26,6 @@ var (
 	_ = common.Big1
 	_ = types.BloomLookup
 	_ = event.NewSubscription
-	_ = abi.ConvertType
 )
 
 // Ownable2StepMetaData contains all meta data concerning the Ownable2Step contract.
@@ -135,11 +134,11 @@ func NewOwnable2StepFilterer(address common.Address, filterer bind.ContractFilte
 
 // bindOwnable2Step binds a generic wrapper to an already deployed contract.
 func bindOwnable2Step(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := Ownable2StepMetaData.GetAbi()
+	parsed, err := abi.JSON(strings.NewReader(Ownable2StepABI))
 	if err != nil {
 		return nil, err
 	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
 }
 
 // Call invokes the (constant) contract method with params as input values and

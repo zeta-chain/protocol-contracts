@@ -26,7 +26,6 @@ var (
 	_ = common.Big1
 	_ = types.BloomLookup
 	_ = event.NewSubscription
-	_ = abi.ConvertType
 )
 
 // IUniswapV2Router01MetaData contains all meta data concerning the IUniswapV2Router01 contract.
@@ -135,11 +134,11 @@ func NewIUniswapV2Router01Filterer(address common.Address, filterer bind.Contrac
 
 // bindIUniswapV2Router01 binds a generic wrapper to an already deployed contract.
 func bindIUniswapV2Router01(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := IUniswapV2Router01MetaData.GetAbi()
+	parsed, err := abi.JSON(strings.NewReader(IUniswapV2Router01ABI))
 	if err != nil {
 		return nil, err
 	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	return bind.NewBoundContract(address, parsed, caller, transactor, filterer), nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
