@@ -1,58 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
+import "../evm/interfaces/ZetaInterfaces.sol";
+import "../evm/ZetaConnector.base.sol";
+import "./interfaces/IWZETA.sol";
 
-interface ZetaInterfaces {
-    /**
-     * @dev Use SendInput to interact with the Connector: connector.send(SendInput)
-     */
-    struct SendInput {
-        /// @dev Chain id of the destination chain. More about chain ids https://docs.zetachain.com/learn/glossary#chain-id
-        uint256 destinationChainId;
-        /// @dev Address receiving the message on the destination chain (expressed in bytes since it can be non-EVM)
-        bytes destinationAddress;
-        /// @dev Gas limit for the destination chain's transaction
-        uint256 destinationGasLimit;
-        /// @dev An encoded, arbitrary message to be parsed by the destination contract
-        bytes message;
-        /// @dev ZETA to be sent cross-chain + ZetaChain gas fees + destination chain gas fees (expressed in ZETA)
-        uint256 zetaValueAndGas;
-        /// @dev Optional parameters for the ZetaChain protocol
-        bytes zetaParams;
-    }
-
-    /**
-     * @dev Our Connector calls onZetaMessage with this struct as argument
-     */
-    struct ZetaMessage {
-        bytes zetaTxSenderAddress;
-        uint256 sourceChainId;
-        address destinationAddress;
-        /// @dev Remaining ZETA from zetaValueAndGas after subtracting ZetaChain gas fees and destination gas fees
-        uint256 zetaValue;
-        bytes message;
-    }
-
-    /**
-     * @dev Our Connector calls onZetaRevert with this struct as argument
-     */
-    struct ZetaRevert {
-        address zetaTxSenderAddress;
-        uint256 sourceChainId;
-        bytes destinationAddress;
-        uint256 destinationChainId;
-        /// @dev Equals to: zetaValueAndGas - ZetaChain gas fees - destination chain gas fees - source chain revert tx gas fees
-        uint256 remainingZetaValue;
-        bytes message;
-    }
-}
-
-interface WZETA {
-    function transferFrom(address src, address dst, uint wad) external returns (bool);
-
-    function withdraw(uint wad) external;
-}
-
-contract ZetaConnectorZEVM is ZetaInterfaces {
+contract ZetaConnectorZEVM is ZetaConnectorBase {
     /// @notice Contract custom errors.
     error OnlyWZETA();
     error WZETATransferFailed();
@@ -61,38 +13,36 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
 
     /// @notice Fungible module address.
     address public constant FUNGIBLE_MODULE_ADDRESS = payable(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
-    /// @notice WZETA token address.
-    address public wzeta;
 
-    event ZetaSent(
-        address sourceTxOriginAddress,
-        address indexed zetaTxSenderAddress,
-        uint256 indexed destinationChainId,
-        bytes destinationAddress,
-        uint256 zetaValueAndGas,
-        uint256 destinationGasLimit,
-        bytes message,
-        bytes zetaParams
-    );
-    event SetWZETA(address wzeta_);
-
-    constructor(address wzeta_) {
-        wzeta = wzeta_;
+    /**
+     * @dev Modifier to restrict actions to fungible module.
+     */
+    modifier onlyFungibleModule() {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
+        _;
     }
+
+    constructor(
+        address zetaTokenAddress_,
+        address tssAddress_,
+        address tssAddressUpdater_,
+        address pauserAddress_
+    ) ZetaConnectorBase(zetaTokenAddress_, tssAddress_, tssAddressUpdater_, pauserAddress_) {}
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable {
-        if (msg.sender != wzeta) revert OnlyWZETA();
+        if (msg.sender != zetaToken) revert OnlyWZETA();
     }
 
     /**
      * @dev Sends ZETA and bytes messages (to execute it) crosschain.
      * @param input, SendInput struct, checkout above.
      */
-    function send(ZetaInterfaces.SendInput calldata input) external {
+    function send(ZetaInterfaces.SendInput calldata input) external override {
         // Transfer wzeta to "fungible" module, which will be burnt by the protocol post processing via hooks.
-        if (!WZETA(wzeta).transferFrom(msg.sender, address(this), input.zetaValueAndGas)) revert WZETATransferFailed();
-        WZETA(wzeta).withdraw(input.zetaValueAndGas);
+        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), input.zetaValueAndGas))
+            revert WZETATransferFailed();
+        IWETH9(zetaToken).withdraw(input.zetaValueAndGas);
         (bool sent, ) = FUNGIBLE_MODULE_ADDRESS.call{value: input.zetaValueAndGas}("");
         if (!sent) revert FailedZetaSent();
         emit ZetaSent(
@@ -108,12 +58,70 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
     }
 
     /**
-     * @dev Sends ZETA and bytes messages (to execute it) crosschain.
-     * @param wzeta_, new WZETA address.
+     * @dev Handler to receive data from other chain.
+     * This method can be called only by Fungible Module.
+     * Transfer the Zeta tokens to destination and calls onZetaMessage if it's needed.
+     * To perform the transfer mint new tokens, validating first the maxSupply allowed in the current chain.
      */
-    function setWzetaAddress(address wzeta_) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
-        wzeta = wzeta_;
-        emit SetWZETA(wzeta_);
+    function onReceive(
+        bytes calldata zetaTxSenderAddress,
+        uint256 sourceChainId,
+        address destinationAddress,
+        uint256 zetaValue,
+        bytes calldata message,
+        bytes32 internalSendHash
+    ) external override onlyFungibleModule {
+        IWETH9(zetaToken).deposit{value: zetaValue}();
+        if (!IWETH9(zetaToken).transferFrom(address(this), destinationAddress, zetaValue)) revert WZETATransferFailed();
+
+        if (message.length > 0) {
+            ZetaReceiver(destinationAddress).onZetaMessage(
+                ZetaInterfaces.ZetaMessage(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message)
+            );
+        }
+
+        emit ZetaReceived(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message, internalSendHash);
+    }
+
+    /**
+     * @dev Handler to receive errors from other chain.
+     * This method can be called only by Fungible Module.
+     * Transfer the Zeta tokens to destination and calls onZetaRevert if it's needed.
+     */
+    function onRevert(
+        address zetaTxSenderAddress,
+        uint256 sourceChainId,
+        bytes calldata destinationAddress,
+        uint256 destinationChainId,
+        uint256 remainingZetaValue,
+        bytes calldata message,
+        bytes32 internalSendHash
+    ) external override whenNotPaused onlyFungibleModule {
+        IWETH9(zetaToken).deposit{value: remainingZetaValue}();
+        if (!IWETH9(zetaToken).transferFrom(address(this), zetaTxSenderAddress, remainingZetaValue))
+            revert WZETATransferFailed();
+
+        if (message.length > 0) {
+            ZetaReceiver(zetaTxSenderAddress).onZetaRevert(
+                ZetaInterfaces.ZetaRevert(
+                    zetaTxSenderAddress,
+                    sourceChainId,
+                    destinationAddress,
+                    destinationChainId,
+                    remainingZetaValue,
+                    message
+                )
+            );
+        }
+
+        emit ZetaReverted(
+            zetaTxSenderAddress,
+            sourceChainId,
+            destinationChainId,
+            destinationAddress,
+            remainingZetaValue,
+            message,
+            internalSendHash
+        );
     }
 }
