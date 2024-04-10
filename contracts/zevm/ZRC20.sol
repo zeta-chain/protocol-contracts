@@ -66,6 +66,7 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
         uint256 gasLimit_,
         address systemContractAddress_
     ) {
+        if (systemContractAddress_ == address(0)) revert ZeroAddress();
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         _name = name_;
         _symbol = symbol_;
