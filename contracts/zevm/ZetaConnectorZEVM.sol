@@ -38,7 +38,7 @@ contract ZetaConnectorZEVM is ZetaConnectorBase {
      * @dev Sends ZETA and bytes messages (to execute it) crosschain.
      * @param input, SendInput struct, checkout above.
      */
-    function send(ZetaInterfaces.SendInput calldata input) external override {
+    function send(ZetaInterfaces.SendInput calldata input) external override whenNotPaused {
         // Transfer wzeta to "fungible" module, which will be burnt by the protocol post processing via hooks.
         if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), input.zetaValueAndGas))
             revert WZETATransferFailed();
