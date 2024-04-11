@@ -61,7 +61,7 @@ contract ZetaConnectorZEVM is ZetaConnectorBase {
      * @dev Handler to receive data from other chain.
      * This method can be called only by Fungible Module.
      * Transfer the Zeta tokens to destination and calls onZetaMessage if it's needed.
-     * To perform the transfer mint new tokens, validating first the maxSupply allowed in the current chain.
+     * To perform the transfer wrap the new tokens
      */
     function onReceive(
         bytes calldata zetaTxSenderAddress,
