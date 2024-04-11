@@ -73,6 +73,8 @@ contract ZetaConnectorZEVM {
     /// @notice Fungible module address.
     address public constant FUNGIBLE_MODULE_ADDRESS = payable(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
 
+    event SetWZETA(address wzeta_);
+
     event ZetaSent(
         address sourceTxOriginAddress,
         address indexed zetaTxSenderAddress,
@@ -118,6 +120,11 @@ contract ZetaConnectorZEVM {
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable {
         if (msg.sender != wzeta) revert OnlyWZETA();
+    }
+
+    function setWzetaAddress(address wzeta_) external onlyFungibleModule {
+        wzeta = wzeta_;
+        emit SetWZETA(wzeta_);
     }
 
     /**
