@@ -57,16 +57,18 @@ export declare namespace ZetaInterfaces {
 export interface ZetaConnectorZEVMInterface extends utils.Interface {
   functions: {
     "FUNGIBLE_MODULE_ADDRESS()": FunctionFragment;
+    "onReceive(bytes,uint256,address,uint256,bytes,bytes32)": FunctionFragment;
+    "onRevert(address,uint256,bytes,uint256,uint256,bytes,bytes32)": FunctionFragment;
     "send((uint256,bytes,uint256,bytes,uint256,bytes))": FunctionFragment;
-    "setWzetaAddress(address)": FunctionFragment;
     "wzeta()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "FUNGIBLE_MODULE_ADDRESS"
+      | "onReceive"
+      | "onRevert"
       | "send"
-      | "setWzetaAddress"
       | "wzeta"
   ): FunctionFragment;
 
@@ -75,12 +77,31 @@ export interface ZetaConnectorZEVMInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "send",
-    values: [ZetaInterfaces.SendInputStruct]
+    functionFragment: "onReceive",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "setWzetaAddress",
-    values: [PromiseOrValue<string>]
+    functionFragment: "onRevert",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "send",
+    values: [ZetaInterfaces.SendInputStruct]
   ): string;
   encodeFunctionData(functionFragment: "wzeta", values?: undefined): string;
 
@@ -88,28 +109,52 @@ export interface ZetaConnectorZEVMInterface extends utils.Interface {
     functionFragment: "FUNGIBLE_MODULE_ADDRESS",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "onReceive", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setWzetaAddress",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "wzeta", data: BytesLike): Result;
 
   events: {
-    "SetWZETA(address)": EventFragment;
+    "ZetaReceived(bytes,uint256,address,uint256,bytes,bytes32)": EventFragment;
+    "ZetaReverted(address,uint256,uint256,bytes,uint256,bytes,bytes32)": EventFragment;
     "ZetaSent(address,address,uint256,bytes,uint256,uint256,bytes,bytes)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "SetWZETA"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ZetaReceived"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ZetaReverted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaSent"): EventFragment;
 }
 
-export interface SetWZETAEventObject {
-  wzeta_: string;
+export interface ZetaReceivedEventObject {
+  zetaTxSenderAddress: string;
+  sourceChainId: BigNumber;
+  destinationAddress: string;
+  zetaValue: BigNumber;
+  message: string;
+  internalSendHash: string;
 }
-export type SetWZETAEvent = TypedEvent<[string], SetWZETAEventObject>;
+export type ZetaReceivedEvent = TypedEvent<
+  [string, BigNumber, string, BigNumber, string, string],
+  ZetaReceivedEventObject
+>;
 
-export type SetWZETAEventFilter = TypedEventFilter<SetWZETAEvent>;
+export type ZetaReceivedEventFilter = TypedEventFilter<ZetaReceivedEvent>;
+
+export interface ZetaRevertedEventObject {
+  zetaTxSenderAddress: string;
+  sourceChainId: BigNumber;
+  destinationChainId: BigNumber;
+  destinationAddress: string;
+  remainingZetaValue: BigNumber;
+  message: string;
+  internalSendHash: string;
+}
+export type ZetaRevertedEvent = TypedEvent<
+  [string, BigNumber, BigNumber, string, BigNumber, string, string],
+  ZetaRevertedEventObject
+>;
+
+export type ZetaRevertedEventFilter = TypedEventFilter<ZetaRevertedEvent>;
 
 export interface ZetaSentEventObject {
   sourceTxOriginAddress: string;
@@ -157,13 +202,29 @@ export interface ZetaConnectorZEVM extends BaseContract {
   functions: {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
 
-    send(
-      input: ZetaInterfaces.SendInputStruct,
+    onReceive(
+      zetaTxSenderAddress: PromiseOrValue<BytesLike>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<string>,
+      zetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    onRevert(
+      zetaTxSenderAddress: PromiseOrValue<string>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<BytesLike>,
+      destinationChainId: PromiseOrValue<BigNumberish>,
+      remainingZetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    send(
+      input: ZetaInterfaces.SendInputStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -172,13 +233,29 @@ export interface ZetaConnectorZEVM extends BaseContract {
 
   FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
-  send(
-    input: ZetaInterfaces.SendInputStruct,
+  onReceive(
+    zetaTxSenderAddress: PromiseOrValue<BytesLike>,
+    sourceChainId: PromiseOrValue<BigNumberish>,
+    destinationAddress: PromiseOrValue<string>,
+    zetaValue: PromiseOrValue<BigNumberish>,
+    message: PromiseOrValue<BytesLike>,
+    internalSendHash: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setWzetaAddress(
-    wzeta_: PromiseOrValue<string>,
+  onRevert(
+    zetaTxSenderAddress: PromiseOrValue<string>,
+    sourceChainId: PromiseOrValue<BigNumberish>,
+    destinationAddress: PromiseOrValue<BytesLike>,
+    destinationChainId: PromiseOrValue<BigNumberish>,
+    remainingZetaValue: PromiseOrValue<BigNumberish>,
+    message: PromiseOrValue<BytesLike>,
+    internalSendHash: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  send(
+    input: ZetaInterfaces.SendInputStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -187,13 +264,29 @@ export interface ZetaConnectorZEVM extends BaseContract {
   callStatic: {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
-    send(
-      input: ZetaInterfaces.SendInputStruct,
+    onReceive(
+      zetaTxSenderAddress: PromiseOrValue<BytesLike>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<string>,
+      zetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    onRevert(
+      zetaTxSenderAddress: PromiseOrValue<string>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<BytesLike>,
+      destinationChainId: PromiseOrValue<BigNumberish>,
+      remainingZetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    send(
+      input: ZetaInterfaces.SendInputStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -201,8 +294,41 @@ export interface ZetaConnectorZEVM extends BaseContract {
   };
 
   filters: {
-    "SetWZETA(address)"(wzeta_?: null): SetWZETAEventFilter;
-    SetWZETA(wzeta_?: null): SetWZETAEventFilter;
+    "ZetaReceived(bytes,uint256,address,uint256,bytes,bytes32)"(
+      zetaTxSenderAddress?: null,
+      sourceChainId?: PromiseOrValue<BigNumberish> | null,
+      destinationAddress?: PromiseOrValue<string> | null,
+      zetaValue?: null,
+      message?: null,
+      internalSendHash?: PromiseOrValue<BytesLike> | null
+    ): ZetaReceivedEventFilter;
+    ZetaReceived(
+      zetaTxSenderAddress?: null,
+      sourceChainId?: PromiseOrValue<BigNumberish> | null,
+      destinationAddress?: PromiseOrValue<string> | null,
+      zetaValue?: null,
+      message?: null,
+      internalSendHash?: PromiseOrValue<BytesLike> | null
+    ): ZetaReceivedEventFilter;
+
+    "ZetaReverted(address,uint256,uint256,bytes,uint256,bytes,bytes32)"(
+      zetaTxSenderAddress?: null,
+      sourceChainId?: null,
+      destinationChainId?: PromiseOrValue<BigNumberish> | null,
+      destinationAddress?: null,
+      remainingZetaValue?: null,
+      message?: null,
+      internalSendHash?: PromiseOrValue<BytesLike> | null
+    ): ZetaRevertedEventFilter;
+    ZetaReverted(
+      zetaTxSenderAddress?: null,
+      sourceChainId?: null,
+      destinationChainId?: PromiseOrValue<BigNumberish> | null,
+      destinationAddress?: null,
+      remainingZetaValue?: null,
+      message?: null,
+      internalSendHash?: PromiseOrValue<BytesLike> | null
+    ): ZetaRevertedEventFilter;
 
     "ZetaSent(address,address,uint256,bytes,uint256,uint256,bytes,bytes)"(
       sourceTxOriginAddress?: null,
@@ -229,13 +355,29 @@ export interface ZetaConnectorZEVM extends BaseContract {
   estimateGas: {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
 
-    send(
-      input: ZetaInterfaces.SendInputStruct,
+    onReceive(
+      zetaTxSenderAddress: PromiseOrValue<BytesLike>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<string>,
+      zetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    onRevert(
+      zetaTxSenderAddress: PromiseOrValue<string>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<BytesLike>,
+      destinationChainId: PromiseOrValue<BigNumberish>,
+      remainingZetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    send(
+      input: ZetaInterfaces.SendInputStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -247,13 +389,29 @@ export interface ZetaConnectorZEVM extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    send(
-      input: ZetaInterfaces.SendInputStruct,
+    onReceive(
+      zetaTxSenderAddress: PromiseOrValue<BytesLike>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<string>,
+      zetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    onRevert(
+      zetaTxSenderAddress: PromiseOrValue<string>,
+      sourceChainId: PromiseOrValue<BigNumberish>,
+      destinationAddress: PromiseOrValue<BytesLike>,
+      destinationChainId: PromiseOrValue<BigNumberish>,
+      remainingZetaValue: PromiseOrValue<BigNumberish>,
+      message: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    send(
+      input: ZetaInterfaces.SendInputStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
