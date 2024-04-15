@@ -201,13 +201,13 @@ contract ZetaConnectorZEVM is ZetaInterfaces {
         bytes calldata message,
         bytes32 internalSendHash
     ) external {
-        //if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyFungibleModule();
 
-        if (message.length > 0) {
-            ZetaReceiver(destinationAddress).onZetaMessage(
-                ZetaInterfaces.ZetaMessage(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message)
-            );
-        }
+//        if (message.length > 0) {
+//            ZetaReceiver(destinationAddress).onZetaMessage(
+//                ZetaInterfaces.ZetaMessage(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message)
+//            );
+//        }
 
         emit ZetaReceived(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message, internalSendHash);
     }
