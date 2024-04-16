@@ -65,7 +65,7 @@ contract ZetaConnectorZEVM {
     address public wzeta;
 
     /// @notice Contract custom errors.
-    error OnlyWZETA();
+    error OnlyWZETAOrFungible();
     error WZETATransferFailed();
     error OnlyFungibleModule();
     error FailedZetaSent();
@@ -119,7 +119,7 @@ contract ZetaConnectorZEVM {
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable {
-        if (msg.sender != wzeta) revert OnlyWZETA();
+        if (msg.sender != wzeta && msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyWZETAOrFungible();
     }
 
     function setWzetaAddress(address wzeta_) external onlyFungibleModule {
