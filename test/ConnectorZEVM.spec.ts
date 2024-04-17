@@ -1,7 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { WETH9, ZetaConnectorZEVM } from "@typechain-types";
+import { WETH9, ZetaConnectorZEVM, ZetaReceiverMock } from "@typechain-types";
 import { expect } from "chai";
-import exp from "constants";
 import { parseEther } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 
@@ -12,6 +11,7 @@ const hre = require("hardhat");
 describe("ConnectorZEVM tests", () => {
   let zetaTokenContract: WETH9;
   let zetaConnectorZEVM: ZetaConnectorZEVM;
+  let zetaReceiverMockContract: ZetaReceiverMock;
 
   let owner: SignerWithAddress;
   let fungibleModuleSigner: SignerWithAddress;
@@ -38,6 +38,9 @@ describe("ConnectorZEVM tests", () => {
     zetaConnectorZEVM = (await ZetaConnectorZEVMFactory.connect(owner).deploy(
       zetaTokenContract.address
     )) as ZetaConnectorZEVM;
+
+    const ZetaReceiverMockContractactory = await ethers.getContractFactory("ZetaReceiverMock");
+    zetaReceiverMockContract = (await ZetaReceiverMockContractactory.connect(owner).deploy()) as ZetaReceiverMock;
   });
 
   describe("ZetaConnectorZEVM", () => {
@@ -130,6 +133,109 @@ describe("ConnectorZEVM tests", () => {
 
       const tx = zetaConnectorZEVM.setWzetaAddress(newZetaTokenContract.address);
       await expect(tx).to.be.revertedWith("OnlyFungibleModule");
+    });
+
+    it("Should transfer to the receiver address", async () => {
+      await fungibleModuleSigner.sendTransaction({
+        to: zetaConnectorZEVM.address,
+        value: 1000,
+      });
+
+      // read eth balance of zetaConnectorEVM
+      const initialZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
+      const initialBalanceConnector = await zetaTokenContract.balanceOf(zetaConnectorZEVM.address);
+      const initialBalanceReceiver = await zetaTokenContract.balanceOf(zetaReceiverMockContract.address);
+      expect(initialZetaBalanceConnector.toString()).to.equal("1000");
+      expect(initialBalanceConnector.toString()).to.equal("0");
+      expect(initialBalanceReceiver.toString()).to.equal("0");
+
+      const tx = await zetaConnectorZEVM
+        .connect(fungibleModuleSigner)
+        .onReceive(
+          randomSigner.address,
+          1,
+          zetaReceiverMockContract.address,
+          1000,
+          new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+          ethers.constants.HashZero
+        );
+
+      await expect(tx)
+        .to.emit(zetaReceiverMockContract, "MockOnZetaMessage")
+        .withArgs(zetaReceiverMockContract.address);
+
+      const finalZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
+      const finalBalanceConnector = await zetaTokenContract.balanceOf(zetaConnectorZEVM.address);
+      const finalBalanceReceiver = await zetaTokenContract.balanceOf(zetaReceiverMockContract.address);
+
+      expect(finalZetaBalanceConnector.toString()).to.equal("0");
+      expect(finalBalanceConnector.toString()).to.equal("0");
+      expect(finalBalanceReceiver.toString()).to.equal("1000");
+    });
+
+    it("Should call onRevert to the original address", async () => {
+      await fungibleModuleSigner.sendTransaction({
+        to: zetaConnectorZEVM.address,
+        value: 1000,
+      });
+
+      // read eth balance of zetaConnectorEVM
+      const initialZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
+      const initialBalanceConnector = await zetaTokenContract.balanceOf(zetaConnectorZEVM.address);
+      const initialBalanceReceiver = await zetaTokenContract.balanceOf(zetaReceiverMockContract.address);
+      expect(initialZetaBalanceConnector.toString()).to.equal("1000");
+      expect(initialBalanceConnector.toString()).to.equal("0");
+      expect(initialBalanceReceiver.toString()).to.equal("0");
+
+      const tx = await zetaConnectorZEVM
+        .connect(fungibleModuleSigner)
+        .onRevert(
+          zetaReceiverMockContract.address,
+          1,
+          randomSigner.address,
+          5,
+          1000,
+          new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+          ethers.constants.HashZero
+        );
+
+      await expect(tx).to.emit(zetaReceiverMockContract, "MockOnZetaRevert").withArgs(zetaReceiverMockContract.address);
+
+      const finalZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
+      const finalBalanceConnector = await zetaTokenContract.balanceOf(zetaConnectorZEVM.address);
+      const finalBalanceReceiver = await zetaTokenContract.balanceOf(zetaReceiverMockContract.address);
+
+      expect(finalZetaBalanceConnector.toString()).to.equal("0");
+      expect(finalBalanceConnector.toString()).to.equal("0");
+      expect(finalBalanceReceiver.toString()).to.equal("1000");
+    });
+
+    it("Should accept ZETA from fungible module", async () => {
+      const initialZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
+      expect(initialZetaBalanceConnector.toString()).to.equal("0");
+
+      await fungibleModuleSigner.sendTransaction({
+        to: zetaConnectorZEVM.address,
+        value: 1000,
+      });
+
+      // read eth balance of zetaConnectorEVM
+      const finalZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
+      expect(finalZetaBalanceConnector.toString()).to.equal("1000");
+    });
+
+    it("Should reject ZETA from other address", async () => {
+      await fungibleModuleSigner.sendTransaction({
+        to: randomSigner.address,
+        value: 1000,
+      });
+
+      const tx = randomSigner.sendTransaction({
+        to: zetaConnectorZEVM.address,
+        value: 1000,
+      });
+
+      expect(tx).to.be.revertedWith("OnlyWZETAOrFungible");
     });
   });
 });

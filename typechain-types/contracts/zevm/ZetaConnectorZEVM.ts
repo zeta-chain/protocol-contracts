@@ -25,7 +25,7 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../../common";
+} from "../../common";
 
 export declare namespace ZetaInterfaces {
   export type SendInputStruct = {
@@ -59,9 +59,17 @@ export interface ZetaConnectorZEVMInterface extends utils.Interface {
     "FUNGIBLE_MODULE_ADDRESS()": FunctionFragment;
     "onReceive(bytes,uint256,address,uint256,bytes,bytes32)": FunctionFragment;
     "onRevert(address,uint256,bytes,uint256,uint256,bytes,bytes32)": FunctionFragment;
+    "pause()": FunctionFragment;
+    "paused()": FunctionFragment;
+    "pauserAddress()": FunctionFragment;
+    "renounceTssAddressUpdater()": FunctionFragment;
     "send((uint256,bytes,uint256,bytes,uint256,bytes))": FunctionFragment;
-    "setWzetaAddress(address)": FunctionFragment;
-    "wzeta()": FunctionFragment;
+    "tssAddress()": FunctionFragment;
+    "tssAddressUpdater()": FunctionFragment;
+    "unpause()": FunctionFragment;
+    "updatePauserAddress(address)": FunctionFragment;
+    "updateTssAddress(address)": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
@@ -69,9 +77,17 @@ export interface ZetaConnectorZEVMInterface extends utils.Interface {
       | "FUNGIBLE_MODULE_ADDRESS"
       | "onReceive"
       | "onRevert"
+      | "pause"
+      | "paused"
+      | "pauserAddress"
+      | "renounceTssAddressUpdater"
       | "send"
-      | "setWzetaAddress"
-      | "wzeta"
+      | "tssAddress"
+      | "tssAddressUpdater"
+      | "unpause"
+      | "updatePauserAddress"
+      | "updateTssAddress"
+      | "zetaToken"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -101,15 +117,38 @@ export interface ZetaConnectorZEVMInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "pauserAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceTssAddressUpdater",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "send",
     values: [ZetaInterfaces.SendInputStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "setWzetaAddress",
+    functionFragment: "tssAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tssAddressUpdater",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "updatePauserAddress",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "wzeta", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "updateTssAddress",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "FUNGIBLE_MODULE_ADDRESS",
@@ -117,32 +156,103 @@ export interface ZetaConnectorZEVMInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "onReceive", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setWzetaAddress",
+    functionFragment: "pauserAddress",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "wzeta", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceTssAddressUpdater",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "tssAddressUpdater",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updatePauserAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTssAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
-    "SetWZETA(address)": EventFragment;
+    "Paused(address)": EventFragment;
+    "PauserAddressUpdated(address,address)": EventFragment;
+    "TSSAddressUpdated(address,address)": EventFragment;
+    "TSSAddressUpdaterUpdated(address,address)": EventFragment;
+    "Unpaused(address)": EventFragment;
     "ZetaReceived(bytes,uint256,address,uint256,bytes,bytes32)": EventFragment;
     "ZetaReverted(address,uint256,uint256,bytes,uint256,bytes,bytes32)": EventFragment;
     "ZetaSent(address,address,uint256,bytes,uint256,uint256,bytes,bytes)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "SetWZETA"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PauserAddressUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TSSAddressUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TSSAddressUpdaterUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaReceived"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaReverted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ZetaSent"): EventFragment;
 }
 
-export interface SetWZETAEventObject {
-  wzeta_: string;
+export interface PausedEventObject {
+  account: string;
 }
-export type SetWZETAEvent = TypedEvent<[string], SetWZETAEventObject>;
+export type PausedEvent = TypedEvent<[string], PausedEventObject>;
 
-export type SetWZETAEventFilter = TypedEventFilter<SetWZETAEvent>;
+export type PausedEventFilter = TypedEventFilter<PausedEvent>;
+
+export interface PauserAddressUpdatedEventObject {
+  callerAddress: string;
+  newTssAddress: string;
+}
+export type PauserAddressUpdatedEvent = TypedEvent<
+  [string, string],
+  PauserAddressUpdatedEventObject
+>;
+
+export type PauserAddressUpdatedEventFilter =
+  TypedEventFilter<PauserAddressUpdatedEvent>;
+
+export interface TSSAddressUpdatedEventObject {
+  callerAddress: string;
+  newTssAddress: string;
+}
+export type TSSAddressUpdatedEvent = TypedEvent<
+  [string, string],
+  TSSAddressUpdatedEventObject
+>;
+
+export type TSSAddressUpdatedEventFilter =
+  TypedEventFilter<TSSAddressUpdatedEvent>;
+
+export interface TSSAddressUpdaterUpdatedEventObject {
+  callerAddress: string;
+  newTssUpdaterAddress: string;
+}
+export type TSSAddressUpdaterUpdatedEvent = TypedEvent<
+  [string, string],
+  TSSAddressUpdaterUpdatedEventObject
+>;
+
+export type TSSAddressUpdaterUpdatedEventFilter =
+  TypedEventFilter<TSSAddressUpdaterUpdatedEvent>;
+
+export interface UnpausedEventObject {
+  account: string;
+}
+export type UnpausedEvent = TypedEvent<[string], UnpausedEventObject>;
+
+export type UnpausedEventFilter = TypedEventFilter<UnpausedEvent>;
 
 export interface ZetaReceivedEventObject {
   zetaTxSenderAddress: string;
@@ -242,17 +352,42 @@ export interface ZetaConnectorZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
+
+    pauserAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    renounceTssAddressUpdater(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     send(
       input: ZetaInterfaces.SendInputStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    tssAddress(overrides?: CallOverrides): Promise<[string]>;
+
+    tssAddressUpdater(overrides?: CallOverrides): Promise<[string]>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    wzeta(overrides?: CallOverrides): Promise<[string]>;
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    updateTssAddress(
+      tssAddress_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
   FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -278,17 +413,42 @@ export interface ZetaConnectorZEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  pause(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  paused(overrides?: CallOverrides): Promise<boolean>;
+
+  pauserAddress(overrides?: CallOverrides): Promise<string>;
+
+  renounceTssAddressUpdater(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   send(
     input: ZetaInterfaces.SendInputStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setWzetaAddress(
-    wzeta_: PromiseOrValue<string>,
+  tssAddress(overrides?: CallOverrides): Promise<string>;
+
+  tssAddressUpdater(overrides?: CallOverrides): Promise<string>;
+
+  unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  wzeta(overrides?: CallOverrides): Promise<string>;
+  updatePauserAddress(
+    pauserAddress_: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  updateTssAddress(
+    tssAddress_: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -314,22 +474,71 @@ export interface ZetaConnectorZEVM extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    pause(overrides?: CallOverrides): Promise<void>;
+
+    paused(overrides?: CallOverrides): Promise<boolean>;
+
+    pauserAddress(overrides?: CallOverrides): Promise<string>;
+
+    renounceTssAddressUpdater(overrides?: CallOverrides): Promise<void>;
+
     send(
       input: ZetaInterfaces.SendInputStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    tssAddress(overrides?: CallOverrides): Promise<string>;
+
+    tssAddressUpdater(overrides?: CallOverrides): Promise<string>;
+
+    unpause(overrides?: CallOverrides): Promise<void>;
+
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    wzeta(overrides?: CallOverrides): Promise<string>;
+    updateTssAddress(
+      tssAddress_: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
-    "SetWZETA(address)"(wzeta_?: null): SetWZETAEventFilter;
-    SetWZETA(wzeta_?: null): SetWZETAEventFilter;
+    "Paused(address)"(account?: null): PausedEventFilter;
+    Paused(account?: null): PausedEventFilter;
+
+    "PauserAddressUpdated(address,address)"(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): PauserAddressUpdatedEventFilter;
+    PauserAddressUpdated(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): PauserAddressUpdatedEventFilter;
+
+    "TSSAddressUpdated(address,address)"(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): TSSAddressUpdatedEventFilter;
+    TSSAddressUpdated(
+      callerAddress?: null,
+      newTssAddress?: null
+    ): TSSAddressUpdatedEventFilter;
+
+    "TSSAddressUpdaterUpdated(address,address)"(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
+    TSSAddressUpdaterUpdated(
+      callerAddress?: null,
+      newTssUpdaterAddress?: null
+    ): TSSAddressUpdaterUpdatedEventFilter;
+
+    "Unpaused(address)"(account?: null): UnpausedEventFilter;
+    Unpaused(account?: null): UnpausedEventFilter;
 
     "ZetaReceived(bytes,uint256,address,uint256,bytes,bytes32)"(
       zetaTxSenderAddress?: null,
@@ -413,17 +622,42 @@ export interface ZetaConnectorZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
+
+    pauserAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    renounceTssAddressUpdater(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     send(
       input: ZetaInterfaces.SendInputStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    tssAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
+    tssAddressUpdater(overrides?: CallOverrides): Promise<BigNumber>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    wzeta(overrides?: CallOverrides): Promise<BigNumber>;
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    updateTssAddress(
+      tssAddress_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -452,16 +686,41 @@ export interface ZetaConnectorZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    pause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    pauserAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    renounceTssAddressUpdater(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     send(
       input: ZetaInterfaces.SendInputStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setWzetaAddress(
-      wzeta_: PromiseOrValue<string>,
+    tssAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tssAddressUpdater(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    wzeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    updatePauserAddress(
+      pauserAddress_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateTssAddress(
+      tssAddress_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
