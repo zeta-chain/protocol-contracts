@@ -162,7 +162,7 @@ contract ZetaConnectorZEVM {
         uint256 zetaValue,
         bytes calldata message,
         bytes32 internalSendHash
-    ) external onlyFungibleModule {
+    ) external payable onlyFungibleModule {
         IWETH9(wzeta).deposit{value: zetaValue}();
         if (!IWETH9(wzeta).transferFrom(address(this), destinationAddress, zetaValue)) revert WZETATransferFailed();
 
@@ -188,7 +188,7 @@ contract ZetaConnectorZEVM {
         uint256 remainingZetaValue,
         bytes calldata message,
         bytes32 internalSendHash
-    ) external onlyFungibleModule {
+    ) external payable onlyFungibleModule {
         IWETH9(wzeta).deposit{value: remainingZetaValue}();
         if (!IWETH9(wzeta).transferFrom(address(this), zetaTxSenderAddress, remainingZetaValue))
             revert WZETATransferFailed();
