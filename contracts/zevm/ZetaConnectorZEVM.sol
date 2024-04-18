@@ -69,6 +69,7 @@ contract ZetaConnectorZEVM {
     error WZETATransferFailed();
     error OnlyFungibleModule();
     error FailedZetaSent();
+    error WrongValue();
 
     /// @notice Fungible module address.
     address public constant FUNGIBLE_MODULE_ADDRESS = payable(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
@@ -163,6 +164,7 @@ contract ZetaConnectorZEVM {
         bytes calldata message,
         bytes32 internalSendHash
     ) external payable onlyFungibleModule {
+        if (msg.value != zetaValue) revert WrongValue();
         IWETH9(wzeta).deposit{value: zetaValue}();
         if (!IWETH9(wzeta).transferFrom(address(this), destinationAddress, zetaValue)) revert WZETATransferFailed();
 
@@ -189,6 +191,7 @@ contract ZetaConnectorZEVM {
         bytes calldata message,
         bytes32 internalSendHash
     ) external payable onlyFungibleModule {
+        if (msg.value != remainingZetaValue) revert WrongValue();
         IWETH9(wzeta).deposit{value: remainingZetaValue}();
         if (!IWETH9(wzeta).transferFrom(address(this), zetaTxSenderAddress, remainingZetaValue))
             revert WZETATransferFailed();

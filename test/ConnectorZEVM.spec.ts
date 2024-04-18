@@ -227,7 +227,69 @@ describe("ConnectorZEVM tests", () => {
         value: 1000,
       });
 
-      expect(tx).to.be.revertedWith("OnlyWZETAOrFungible");
+      await expect(tx).to.be.revertedWith("OnlyWZETAOrFungible");
+    });
+
+    it("Should reject if call onReceive from other than fungible module", async () => {
+      const tx = zetaConnectorZEVM.onReceive(
+        randomSigner.address,
+        1,
+        zetaReceiverMockContract.address,
+        1000,
+        new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+        ethers.constants.HashZero,
+        { value: 1000 }
+      );
+
+      await expect(tx).to.be.revertedWith("OnlyFungibleModule");
+    });
+
+    it("Should reject if call onRevert from other than fungible module", async () => {
+      const tx = zetaConnectorZEVM.onRevert(
+        zetaReceiverMockContract.address,
+        1,
+        randomSigner.address,
+        5,
+        1000,
+        new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+        ethers.constants.HashZero,
+        { value: 1000 }
+      );
+
+      await expect(tx).to.be.revertedWith("OnlyFungibleModule");
+    });
+
+    it("Should revert if value is not the same as declared in onReceive args", async () => {
+      const tx = zetaConnectorZEVM
+        .connect(fungibleModuleSigner)
+        .onReceive(
+          randomSigner.address,
+          1,
+          zetaReceiverMockContract.address,
+          1000,
+          new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+          ethers.constants.HashZero,
+          { value: 900 }
+        );
+
+      await expect(tx).to.be.revertedWith("WrongValue");
+    });
+
+    it("Should revert if value is not the same as declared in onRevert args", async () => {
+      const tx = zetaConnectorZEVM
+        .connect(fungibleModuleSigner)
+        .onRevert(
+          zetaReceiverMockContract.address,
+          1,
+          randomSigner.address,
+          5,
+          1000,
+          new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+          ethers.constants.HashZero,
+          { value: 900 }
+        );
+
+      await expect(tx).to.be.revertedWith("WrongValue");
     });
   });
 });
