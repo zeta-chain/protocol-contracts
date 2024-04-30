@@ -155,13 +155,6 @@
   },
   {
     "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
-    "category": "omnichain",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "messaging",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
