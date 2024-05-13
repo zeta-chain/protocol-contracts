@@ -126,6 +126,10 @@ export type { ZetaTokenConsumerUniV2Errors } from "./contracts/evm/tools/ZetaTok
 export { ZetaTokenConsumerUniV2Errors__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerUniV2.strategy.sol/ZetaTokenConsumerUniV2Errors__factory";
 export type { ZetaTokenConsumerUniV3 } from "./contracts/evm/tools/ZetaTokenConsumerUniV3.strategy.sol/ZetaTokenConsumerUniV3";
 export { ZetaTokenConsumerUniV3__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerUniV3.strategy.sol/ZetaTokenConsumerUniV3__factory";
+export type { ZetaTokenConsumerZEVM } from "./contracts/evm/tools/ZetaTokenConsumerZEVM.strategy.sol/ZetaTokenConsumerZEVM";
+export { ZetaTokenConsumerZEVM__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerZEVM.strategy.sol/ZetaTokenConsumerZEVM__factory";
+export type { ZetaTokenConsumerZEVMErrors } from "./contracts/evm/tools/ZetaTokenConsumerZEVM.strategy.sol/ZetaTokenConsumerZEVMErrors";
+export { ZetaTokenConsumerZEVMErrors__factory } from "./factories/contracts/evm/tools/ZetaTokenConsumerZEVM.strategy.sol/ZetaTokenConsumerZEVMErrors__factory";
 export type { ZetaEth } from "./contracts/evm/Zeta.eth.sol/ZetaEth";
 export { ZetaEth__factory } from "./factories/contracts/evm/Zeta.eth.sol/ZetaEth__factory";
 export type { ZetaNonEth } from "./contracts/evm/Zeta.non-eth.sol/ZetaNonEth";

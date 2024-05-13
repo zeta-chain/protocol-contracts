@@ -10,9 +10,9 @@ const networkName = network.name;
 async function main() {
   if (!isProtocolNetworkName(networkName)) throw new Error("Invalid network name");
 
-  await deterministicDeployZetaToken();
+  // await deterministicDeployZetaToken();
   await deterministicDeployZetaConnector();
-  await deterministicDeployERC20Custody();
+  // await deterministicDeployERC20Custody();
 }
 
 main()

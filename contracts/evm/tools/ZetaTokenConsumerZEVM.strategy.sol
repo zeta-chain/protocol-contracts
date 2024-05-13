@@ -6,12 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 import "../interfaces/ZetaInterfaces.sol";
-
-interface WETH9 {
-    function deposit() external payable;
-
-    function withdraw(uint256 wad) external;
-}
+import "../../zevm/interfaces/IWZETA.sol";
 
 interface ZetaTokenConsumerZEVMErrors {
     error InputCantBeZero();
@@ -25,6 +20,8 @@ interface ZetaTokenConsumerZEVMErrors {
     error InputCantBeZeta();
 
     error OutputCantBeZeta();
+
+    error OnlyWZETAAllowed();
 }
 
 /**
@@ -53,7 +50,7 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
         if (msg.value == 0) revert InputCantBeZero();
         if (msg.value < minAmountOut) revert NotEnoughValue();
 
-        WETH9(WETH9Address).deposit{value: msg.value}();
+        IWETH9(WETH9Address).deposit{value: msg.value}();
         IERC20(WETH9Address).safeTransfer(destinationAddress, msg.value);
         emit EthExchangedForZeta(msg.value, msg.value);
         return msg.value;
@@ -98,8 +95,8 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
         if (zetaTokenAmount == 0) revert InputCantBeZero();
         if (zetaTokenAmount < minAmountOut) revert NotEnoughValue();
 
-        IERC20(WETH9Address).safeTransferFrom(msg.sender, address(this), zetaTokenAmount);
-        WETH9(WETH9Address).withdraw(zetaTokenAmount);
+        IWETH9(WETH9Address).transferFrom(msg.sender, address(this), zetaTokenAmount);
+        IWETH9(WETH9Address).withdraw(zetaTokenAmount);
 
         emit ZetaExchangedForEth(zetaTokenAmount, zetaTokenAmount);
 
@@ -122,7 +119,7 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
         IERC20(WETH9Address).safeTransferFrom(msg.sender, address(this), zetaTokenAmount);
         IERC20(WETH9Address).safeApprove(address(uniswapV2Router), zetaTokenAmount);
 
-        address[] memory path = new address[](3);
+        address[] memory path = new address[](2);
         path[0] = WETH9Address;
         path[1] = outputToken;
 
@@ -142,5 +139,9 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
 
     function hasZetaLiquidity() external view override returns (bool) {
         //@TODO: Implement
+    }
+
+    receive() external payable {
+        if (msg.sender != WETH9Address) revert OnlyWZETAAllowed();
     }
 }
