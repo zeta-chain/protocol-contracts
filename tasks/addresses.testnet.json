@@ -21,6 +21,13 @@
     "type": "zetaTokenConsumerUniV3"
   },
   {
+    "address": "0x48C4475B7A9A6E9c384dDF3eb30c56761a2bc37e",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "zetaTokenConsumerUniV3"
+  },
+  {
     "address": "0x8954AfA98594b838bda56FE4C12a09D7739D179b",
     "category": "messaging",
     "chain_id": 80001,
