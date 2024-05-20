@@ -59,7 +59,7 @@ const fetchTssData = async (chains: any, addresses: any, network: Network) => {
     if (tssResponse.status === 200) {
       chains.forEach((chain: any) => {
         const { btc, eth } = tssResponse.data;
-        if (chain.chain_name === "zeta_testnet") return;
+        if (["zeta_testnet", "zeta_mainnet"].includes(chain.chain_name)) return;
         addresses.push({
           address: ["btc_testnet", "btc_mainnet"].includes(chain.chain_name) ? btc : eth,
           category: "omnichain",
