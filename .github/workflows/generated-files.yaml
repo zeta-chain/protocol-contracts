@@ -41,6 +41,6 @@ jobs:
           if [ -z "$(git status --porcelain docs pkg typechain-types)" ]; then
             echo "Generated files are up-to-date."
           else
-            echo "::error::Generated files are not up-to-date. Please run 'yarn generate' locally and commit any changes."
+            echo "::error::Generated files are not up-to-date. Please run 'yarn generate' and 'yarn docs' locally and commit any changes."
             exit 1
           fi
