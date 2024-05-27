@@ -38,8 +38,8 @@ jobs:
 
       - name: Check for changes
         run: |
-          if git diff --exit-code --ignore-space-change --ignore-all-space --ignore-cr-at-eol -- docs pkg typechain-types; then
-            echo "Generated Go files are up-to-date."
+          if [ -z "$(git status --porcelain docs pkg typechain-types)" ]; then
+            echo "Generated files are up-to-date."
           else
             echo "::error::Generated files are not up-to-date. Please run 'yarn generate' locally and commit any changes."
             exit 1
