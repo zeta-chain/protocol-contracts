@@ -64,6 +64,7 @@
   "license": "MIT",
   "main": "./dist/lib/index.js",
   "name": "@zetachain/protocol-contracts",
+  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -71,8 +72,8 @@
   "scripts": {
     "build": "yarn compile && npx del-cli dist abi && npx tsc || true && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "compile": "npx hardhat compile --force",
-    "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "docs": "forge doc",
+    "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "yarn build",
@@ -80,6 +81,5 @@
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
-  "version": "0.0.8",
-  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
+  "version": "0.0.8"
 }
