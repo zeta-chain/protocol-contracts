@@ -29,10 +29,7 @@ jobs:
           sudo mv geth-alltools-linux-amd64-1.11.5-a38f4108/abigen /usr/local/bin/
 
       - name: Install Foundry
-        run: |
-          curl -L https://foundry.paradigm.xyz | bash
-          source ~/.bashrc
-          foundryup
+        uses: foundry-rs/foundry-toolchain@v1
 
       - name: Generate Go packages and typechain-types
         run: |
