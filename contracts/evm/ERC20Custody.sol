@@ -197,4 +197,32 @@ contract ERC20Custody is ReentrancyGuard {
         IERC20(asset).safeTransfer(recipient, amount);
         emit Withdrawn(recipient, asset, amount);
     }
+
+    function onReceive(
+        bytes calldata zetaTxSenderAddress,
+        uint256 sourceChainId,
+        address destinationAddress,
+        address asset, // ERC20 address
+        uint256 amount,
+        bytes calldata message,
+        bytes32 internalSendHash
+    ) external override onlyTssAddress {
+        bool success = IERC20(asset).transfer(destinationAddress, amount);
+        if (!success) revert Error();
+
+        if (message.length > 0) {
+            ZetaReceiver(destinationAddress).onZetaMessage(
+                ZetaInterfaces.ZetaMessage(zetaTxSenderAddress, sourceChainId, destinationAddress, asset, amount, message)
+            );
+        }
+
+        emit ZetaReceived(zetaTxSenderAddress, sourceChainId, destinationAddress, zetaValue, message, internalSendHash);
+    }
 }
+
+contract AppContract is ZetaReceiver{
+    function ZetaMessage(address, sender, uint256 srcChainId, address destAddr, address asset, uint256 amount, bytes message) {
+        (address recipient, ) = unpack(message);
+        IERC20(asset).transfer(recipient, amount); 
+    }
+} 
