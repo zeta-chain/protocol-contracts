@@ -24,6 +24,8 @@ export type { IERC20Metadata } from "./@openzeppelin/contracts/token/ERC20/exten
 export { IERC20Metadata__factory } from "./factories/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata__factory";
 export type { IERC20 } from "./@openzeppelin/contracts/token/ERC20/IERC20";
 export { IERC20__factory } from "./factories/@openzeppelin/contracts/token/ERC20/IERC20__factory";
+export type { Multicall } from "./@openzeppelin/contracts/utils/Multicall";
+export { Multicall__factory } from "./factories/@openzeppelin/contracts/utils/Multicall__factory";
 export type { IUniswapV2Callee } from "./@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee";
 export { IUniswapV2Callee__factory } from "./factories/@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee__factory";
 export type { IUniswapV2ERC20 } from "./@uniswap/v2-core/contracts/interfaces/IUniswapV2ERC20";
@@ -70,6 +72,12 @@ export type { ISwapRouter } from "./@uniswap/v3-periphery/contracts/interfaces/I
 export { ISwapRouter__factory } from "./factories/@uniswap/v3-periphery/contracts/interfaces/ISwapRouter__factory";
 export type { ERC20Custody } from "./contracts/evm/ERC20Custody";
 export { ERC20Custody__factory } from "./factories/contracts/evm/ERC20Custody__factory";
+export type { AppContract } from "./contracts/evm/ERC20Proxy.sol/AppContract";
+export { AppContract__factory } from "./factories/contracts/evm/ERC20Proxy.sol/AppContract__factory";
+export type { ERC20Proxy } from "./contracts/evm/ERC20Proxy.sol/ERC20Proxy";
+export { ERC20Proxy__factory } from "./factories/contracts/evm/ERC20Proxy.sol/ERC20Proxy__factory";
+export type { ZRC20Receiver } from "./contracts/evm/ERC20Proxy.sol/ZRC20Receiver";
+export { ZRC20Receiver__factory } from "./factories/contracts/evm/ERC20Proxy.sol/ZRC20Receiver__factory";
 export type { ConnectorErrors } from "./contracts/evm/interfaces/ConnectorErrors";
 export { ConnectorErrors__factory } from "./factories/contracts/evm/interfaces/ConnectorErrors__factory";
 export type { ZetaErrors } from "./contracts/evm/interfaces/ZetaErrors";

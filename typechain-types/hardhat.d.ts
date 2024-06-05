@@ -45,6 +45,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
+      name: "Multicall",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Multicall__factory>;
+    getContractFactory(
       name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
@@ -144,6 +148,22 @@ declare module "hardhat/types/runtime" {
       name: "ERC20Custody",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Custody__factory>;
+    getContractFactory(
+      name: "AppContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.AppContract__factory>;
+    getContractFactory(
+      name: "ERC20Custody",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Custody__factory>;
+    getContractFactory(
+      name: "ERC20Proxy",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20Proxy__factory>;
+    getContractFactory(
+      name: "ZRC20Receiver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20Receiver__factory>;
     getContractFactory(
       name: "ConnectorErrors",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -402,6 +422,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
+      name: "Multicall",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Multicall>;
+    getContractAt(
       name: "IERC20",
       address: string,
       signer?: ethers.Signer
@@ -526,6 +551,26 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20Custody>;
+    getContractAt(
+      name: "AppContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.AppContract>;
+    getContractAt(
+      name: "ERC20Custody",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Custody>;
+    getContractAt(
+      name: "ERC20Proxy",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20Proxy>;
+    getContractAt(
+      name: "ZRC20Receiver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20Receiver>;
     getContractAt(
       name: "ConnectorErrors",
       address: string,
