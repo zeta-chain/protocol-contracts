@@ -31,9 +31,7 @@ getAddress("zrc20", "zeta_mainnet", "USDT.BSC");
 The third argument (symbol) is only used when querying ZRC-20 addresses to
 specify which token address is needed.
 
-To view a table of all contracts visit the [Contract
-Addresses](https://www.zetachain.com/docs/reference/contracts/) page in the
-docs.
+To view a table of all contracts visit the [Contract Addresses](https://www.zetachain.com/docs/reference/contracts/) page in the docs.
 
 Importing
 [`ZetaInterfaces`](https://www.zetachain.com/docs/developers/cross-chain-messaging/connector/)
@@ -44,8 +42,8 @@ import "@zetachain/protocol-contracts/contracts/evm/interfaces/ZetaInterfaces.so
 import "@zetachain/protocol-contracts/contracts/evm/tools/ZetaInteractor.sol";
 ```
 
-Importing [ZRC20](https://www.zetachain.com/docs/developers/tokens/zrc20/) and
-the [system
+Importing [ZRC20](https://www.zetachain.com/docs/developers/tokens/zrc20/)
+and the [system
 contract](https://www.zetachain.com/docs/developers/omnichain/system-contract/)
 for omni-chain smart contracts:
 
@@ -57,14 +55,12 @@ import "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
 
 ## Prerequisites for Development
 
-Before you can contribute to this project, you must have the following
-installed:
+Before you can contribute to this project, you must have the following installed:
 
 - [Node.js](https://nodejs.org/)
 - [Yarn](https://yarnpkg.com/)
 - [jq](https://stedolan.github.io/jq/)
 - [abigen](https://geth.ethereum.org/docs/tools/abigen)
-- [forge](https://getfoundry.sh/)
 
 ## Compiling Contracts
 
@@ -79,8 +75,7 @@ to the `artifacts` directory.
 
 ## Generating Go Bindings and Contract Addresses
 
-To generate Go bindings for the Solidity contracts and fetch, run the following
-command:
+To generate Go bindings for the Solidity contracts and fetch, run the following command:
 
 ```
 yarn generate
@@ -88,16 +83,6 @@ yarn generate
 
 This will use `abigen` to generate Go bindings for the contracts and output the
 resulting Go files to the `pkg` directory.
-
-## Generating Contract Docs
-
-To generate the docs from protocol contracts, run the following command:
-
-```
-yarn docs
-```
-
-This script uses `forge doc` to generate the docs.
 
 ## Contributing
 

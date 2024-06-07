@@ -140,13 +140,6 @@
     "type": "systemContract"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 7000,
-    "chain_name": "zeta_mainnet",
-    "type": "tss"
-  },
-  {
     "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "omnichain",
     "chain_id": 7000,
