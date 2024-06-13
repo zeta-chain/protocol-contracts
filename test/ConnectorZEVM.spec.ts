@@ -136,16 +136,11 @@ describe("ConnectorZEVM tests", () => {
     });
 
     it("Should transfer to the receiver address", async () => {
-      await fungibleModuleSigner.sendTransaction({
-        to: zetaConnectorZEVM.address,
-        value: 1000,
-      });
-
       // read eth balance of zetaConnectorEVM
       const initialZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
       const initialBalanceConnector = await zetaTokenContract.balanceOf(zetaConnectorZEVM.address);
       const initialBalanceReceiver = await zetaTokenContract.balanceOf(zetaReceiverMockContract.address);
-      expect(initialZetaBalanceConnector.toString()).to.equal("1000");
+      expect(initialZetaBalanceConnector.toString()).to.equal("0");
       expect(initialBalanceConnector.toString()).to.equal("0");
       expect(initialBalanceReceiver.toString()).to.equal("0");
 
@@ -157,7 +152,8 @@ describe("ConnectorZEVM tests", () => {
           zetaReceiverMockContract.address,
           1000,
           new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
-          ethers.constants.HashZero
+          ethers.constants.HashZero,
+          { value: 1000 }
         );
 
       await expect(tx)
@@ -174,16 +170,11 @@ describe("ConnectorZEVM tests", () => {
     });
 
     it("Should call onRevert to the original address", async () => {
-      await fungibleModuleSigner.sendTransaction({
-        to: zetaConnectorZEVM.address,
-        value: 1000,
-      });
-
       // read eth balance of zetaConnectorEVM
       const initialZetaBalanceConnector = await ethers.provider.getBalance(zetaConnectorZEVM.address);
       const initialBalanceConnector = await zetaTokenContract.balanceOf(zetaConnectorZEVM.address);
       const initialBalanceReceiver = await zetaTokenContract.balanceOf(zetaReceiverMockContract.address);
-      expect(initialZetaBalanceConnector.toString()).to.equal("1000");
+      expect(initialZetaBalanceConnector.toString()).to.equal("0");
       expect(initialBalanceConnector.toString()).to.equal("0");
       expect(initialBalanceReceiver.toString()).to.equal("0");
 
@@ -196,7 +187,8 @@ describe("ConnectorZEVM tests", () => {
           5,
           1000,
           new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
-          ethers.constants.HashZero
+          ethers.constants.HashZero,
+          { value: 1000 }
         );
 
       await expect(tx).to.emit(zetaReceiverMockContract, "MockOnZetaRevert").withArgs(zetaReceiverMockContract.address);
@@ -235,7 +227,69 @@ describe("ConnectorZEVM tests", () => {
         value: 1000,
       });
 
-      expect(tx).to.be.revertedWith("OnlyWZETAOrFungible");
+      await expect(tx).to.be.revertedWith("OnlyWZETAOrFungible");
+    });
+
+    it("Should reject if call onReceive from other than fungible module", async () => {
+      const tx = zetaConnectorZEVM.onReceive(
+        randomSigner.address,
+        1,
+        zetaReceiverMockContract.address,
+        1000,
+        new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+        ethers.constants.HashZero,
+        { value: 1000 }
+      );
+
+      await expect(tx).to.be.revertedWith("OnlyFungibleModule");
+    });
+
+    it("Should reject if call onRevert from other than fungible module", async () => {
+      const tx = zetaConnectorZEVM.onRevert(
+        zetaReceiverMockContract.address,
+        1,
+        randomSigner.address,
+        5,
+        1000,
+        new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+        ethers.constants.HashZero,
+        { value: 1000 }
+      );
+
+      await expect(tx).to.be.revertedWith("OnlyFungibleModule");
+    });
+
+    it("Should revert if value is not the same as declared in onReceive args", async () => {
+      const tx = zetaConnectorZEVM
+        .connect(fungibleModuleSigner)
+        .onReceive(
+          randomSigner.address,
+          1,
+          zetaReceiverMockContract.address,
+          1000,
+          new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+          ethers.constants.HashZero,
+          { value: 900 }
+        );
+
+      await expect(tx).to.be.revertedWith("WrongValue");
+    });
+
+    it("Should revert if value is not the same as declared in onRevert args", async () => {
+      const tx = zetaConnectorZEVM
+        .connect(fungibleModuleSigner)
+        .onRevert(
+          zetaReceiverMockContract.address,
+          1,
+          randomSigner.address,
+          5,
+          1000,
+          new ethers.utils.AbiCoder().encode(["string"], ["hello"]),
+          ethers.constants.HashZero,
+          { value: 900 }
+        );
+
+      await expect(tx).to.be.revertedWith("WrongValue");
     });
   });
 });

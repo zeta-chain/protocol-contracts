@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -228,7 +229,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
       zetaValue: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
       internalSendHash: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     onRevert(
@@ -239,7 +240,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
       remainingZetaValue: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
       internalSendHash: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     send(
@@ -264,7 +265,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
     zetaValue: PromiseOrValue<BigNumberish>,
     message: PromiseOrValue<BytesLike>,
     internalSendHash: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   onRevert(
@@ -275,7 +276,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
     remainingZetaValue: PromiseOrValue<BigNumberish>,
     message: PromiseOrValue<BytesLike>,
     internalSendHash: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   send(
@@ -399,7 +400,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
       zetaValue: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
       internalSendHash: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     onRevert(
@@ -410,7 +411,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
       remainingZetaValue: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
       internalSendHash: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     send(
@@ -438,7 +439,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
       zetaValue: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
       internalSendHash: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     onRevert(
@@ -449,7 +450,7 @@ export interface ZetaConnectorZEVM extends BaseContract {
       remainingZetaValue: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
       internalSendHash: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     send(
