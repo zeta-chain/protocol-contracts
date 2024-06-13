@@ -9,7 +9,7 @@ import {
   ZetaTokenConsumerZEVM__factory,
 } from "@typechain-types";
 import chai, { expect } from "chai";
-import { BigNumber } from "ethers";
+import { BigNumber, providers } from "ethers";
 import { ethers } from "hardhat";
 
 import { WETH9__factory } from "../typechain-types/factories/contracts/zevm/WZETA.sol/WETH9__factory";
@@ -67,6 +67,26 @@ describe("ZetaTokenConsumerZEVM tests", () => {
       const finalZetaBalance = await zetaToken.balanceOf(randomSigner.address);
       expect(finalZetaBalance).to.be.gt(initialZetaBalance);
     });
+
+    it("Should revert if send zeta to the contract", async () => {
+      const tx = randomSigner.sendTransaction({ to: zetaTokenConsumerZEVM.address, value: parseEther("1") });
+      await expect(tx).to.be.revertedWith("OnlyWZETAAllowed");
+    });
+
+    it("Should revert if hasZetaLiquidity is called", async () => {
+      const tx = zetaTokenConsumerZEVM.hasZetaLiquidity();
+      await expect(tx).to.be.revertedWith("InvalidForZEVM");
+    });
+
+    it("Should revert if value is zero", async () => {
+      const tx = zetaTokenConsumerZEVM.getZetaFromEth(randomSigner.address, 1, { value: 0 });
+      await expect(tx).to.be.revertedWith("InputCantBeZero");
+    });
+
+    it("Should revert if not enogth value", async () => {
+      const tx = zetaTokenConsumerZEVM.getZetaFromEth(randomSigner.address, 10, { value: 1 });
+      await expect(tx).to.be.revertedWith("NotEnoughValue");
+    });
   });
 
   describe("getZetaFromToken", () => {
@@ -91,6 +111,11 @@ describe("ZetaTokenConsumerZEVM tests", () => {
 
       const finalZetaBalance = await zetaToken.balanceOf(randomSigner.address);
       expect(finalZetaBalance).to.be.gt(initialZetaBalance);
+    });
+
+    it("Should revert if input is zeta", async () => {
+      const tx1 = zetaTokenConsumerZEVM.getZetaFromToken(randomSigner.address, 1, WETH_ADDRESS, parseUnits("100", 6));
+      await expect(tx1).to.be.revertedWith("InputCantBeZeta");
     });
   });
 
@@ -117,6 +142,20 @@ describe("ZetaTokenConsumerZEVM tests", () => {
       const finalEthBalance = await ethers.provider.getBalance(randomSigner.address);
       expect(finalEthBalance).to.be.gt(initialEthBalance);
     });
+
+    it("Should revert if destination doesn't allow receive", async () => {
+      const amount = parseUnits("50", 18);
+      const WETH9 = WETH9__factory.connect(WETH_ADDRESS, deployer);
+
+      const tx = await WETH9.deposit({ value: amount });
+      await tx.wait();
+
+      const tx1 = await WETH9.approve(zetaTokenConsumerZEVM.address, MaxUint256);
+      await tx1.wait();
+
+      const tx2 = zetaTokenConsumerZEVM.getEthFromZeta(zetaTokenConsumerZEVM.address, 1, amount);
+      await expect(tx2).to.be.revertedWith("ErrorSendingETH");
+    });
   });
 
   describe("getTokenFromZeta", async () => {
@@ -142,6 +181,11 @@ describe("ZetaTokenConsumerZEVM tests", () => {
 
       const finalTokenBalance = await USDCContract.balanceOf(randomSigner.address);
       expect(finalTokenBalance).to.be.gt(initialTokenBalance);
+    });
+
+    it("Should revert if output is zeta", async () => {
+      const tx = zetaTokenConsumerZEVM.getTokenFromZeta(randomSigner.address, 1, WETH_ADDRESS, 1);
+      await expect(tx).to.be.revertedWith("OutputCantBeZeta");
     });
   });
 });
