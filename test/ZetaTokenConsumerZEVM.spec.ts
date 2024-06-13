@@ -12,10 +12,6 @@ import chai, { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 
-// import { getNonZetaAddress } from "lib";
-// import { getTestAddress } from "../lib/address.helpers";
-// test/ZetaTokenConsumerZEVM.spec.ts
-// import { type WETH9 } from "../typechain-types/contracts/zevm/WZETA.sol/WETH9";
 import { WETH9__factory } from "../typechain-types/factories/contracts/zevm/WZETA.sol/WETH9__factory";
 import { parseZetaConsumerLog } from "./test.helpers";
 

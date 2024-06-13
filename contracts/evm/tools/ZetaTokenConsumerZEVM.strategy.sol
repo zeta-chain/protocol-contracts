@@ -22,6 +22,8 @@ interface ZetaTokenConsumerZEVMErrors {
     error OutputCantBeZeta();
 
     error OnlyWZETAAllowed();
+
+    error InvalidForZEVM();
 }
 
 /**
@@ -64,11 +66,11 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
     ) external override returns (uint256) {
         if (destinationAddress == address(0) || inputToken == address(0)) revert ZetaCommonErrors.InvalidAddress();
         if (inputTokenAmount == 0) revert InputCantBeZero();
+        if (inputToken == WETH9Address) revert InputCantBeZeta();
 
         IERC20(inputToken).safeTransferFrom(msg.sender, address(this), inputTokenAmount);
         IERC20(inputToken).safeApprove(address(uniswapV2Router), inputTokenAmount);
 
-        if (inputToken == WETH9Address) revert InputCantBeZeta();
         address[] memory path = new address[](2);
         path[0] = inputToken;
         path[1] = WETH9Address;
@@ -95,7 +97,7 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
         if (zetaTokenAmount == 0) revert InputCantBeZero();
         if (zetaTokenAmount < minAmountOut) revert NotEnoughValue();
 
-        IWETH9(WETH9Address).transferFrom(msg.sender, address(this), zetaTokenAmount);
+        IERC20(WETH9Address).safeTransferFrom(msg.sender, address(this), zetaTokenAmount);
         IWETH9(WETH9Address).withdraw(zetaTokenAmount);
 
         emit ZetaExchangedForEth(zetaTokenAmount, zetaTokenAmount);
@@ -138,7 +140,7 @@ contract ZetaTokenConsumerZEVM is ZetaTokenConsumer, ZetaTokenConsumerZEVMErrors
     }
 
     function hasZetaLiquidity() external view override returns (bool) {
-        //@TODO: Implement
+        revert InvalidForZEVM();
     }
 
     receive() external payable {
