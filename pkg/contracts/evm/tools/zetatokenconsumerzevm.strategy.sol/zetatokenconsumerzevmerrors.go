@@ -31,7 +31,7 @@ var (
 
 // ZetaTokenConsumerZEVMErrorsMetaData contains all meta data concerning the ZetaTokenConsumerZEVMErrors contract.
 var ZetaTokenConsumerZEVMErrorsMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"name\":\"ErrorSendingETH\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InputCantBeZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InputCantBeZeta\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotEnoughValue\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OnlyWZETAAllowed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OutputCantBeZeta\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyError\",\"type\":\"error\"}]",
+	ABI: "[{\"inputs\":[],\"name\":\"ErrorSendingETH\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InputCantBeZero\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InputCantBeZeta\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidForZEVM\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotEnoughValue\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OnlyWZETAAllowed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OutputCantBeZeta\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyError\",\"type\":\"error\"}]",
 }
 
 // ZetaTokenConsumerZEVMErrorsABI is the input ABI used to generate the binding from.

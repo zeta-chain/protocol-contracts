@@ -27,6 +27,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "InvalidForZEVM",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "NotEnoughValue",
     type: "error",
   },
