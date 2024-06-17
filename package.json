@@ -64,6 +64,7 @@
   "license": "MIT",
   "main": "./dist/lib/index.js",
   "name": "@zetachain/protocol-contracts",
+  "packageManager": "yarn@1.22.21",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -80,6 +81,5 @@
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
-  "version": "0.0.8",
-  "packageManager": "yarn@1.22.21"
+  "version": "0.0.8"
 }
