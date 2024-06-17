@@ -11,6 +11,8 @@ import type * as zetaTokenConsumerUniV2StrategySol from "./ZetaTokenConsumerUniV
 export type { zetaTokenConsumerUniV2StrategySol };
 import type * as zetaTokenConsumerUniV3StrategySol from "./ZetaTokenConsumerUniV3.strategy.sol";
 export type { zetaTokenConsumerUniV3StrategySol };
+import type * as zetaTokenConsumerZevmStrategySol from "./ZetaTokenConsumerZEVM.strategy.sol";
+export type { zetaTokenConsumerZevmStrategySol };
 import type * as interfaces from "./interfaces";
 export type { interfaces };
 export type { ZetaInteractor } from "./ZetaInteractor";

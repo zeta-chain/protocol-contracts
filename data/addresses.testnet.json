@@ -133,6 +133,13 @@
     "type": "zetaToken"
   },
   {
+    "address": "0x48C4475B7A9A6E9c384dDF3eb30c56761a2bc37e",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "zetaTokenConsumerUniV3"
+  },
+  {
     "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
     "asset": "",
     "category": "omnichain",
@@ -257,41 +264,6 @@
     "type": "tss"
   },
   {
-    "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "connector"
-  },
-  {
-    "address": "0x0000a7db254145767262c6a81a7ee1650684258e",
-    "category": "omnichain",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "pauser"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "tss"
-  },
-  {
-    "address": "0x55122f7590164Ac222504436943FAB17B62F5d7d",
-    "category": "omnichain",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "tssUpdater"
-  },
-  {
     "address": "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
     "category": "messaging",
     "chain_id": 80001,
@@ -325,13 +297,6 @@
     "chain_id": 80001,
     "chain_name": "mumbai_testnet",
     "type": "weth9"
-  },
-  {
-    "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "zetaToken"
   },
   {
     "address": "0x7e792f3736751e168864106AdbAC50152641A927",

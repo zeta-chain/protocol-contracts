@@ -273,6 +273,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaTokenConsumerUniV3Errors__factory>;
     getContractFactory(
+      name: "ZetaTokenConsumerZEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerZEVM__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerZEVMErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerZEVMErrors__factory>;
+    getContractFactory(
       name: "ZetaEth",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaEth__factory>;
@@ -686,6 +694,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaTokenConsumerUniV3Errors>;
+    getContractAt(
+      name: "ZetaTokenConsumerZEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerZEVM>;
+    getContractAt(
+      name: "ZetaTokenConsumerZEVMErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerZEVMErrors>;
     getContractAt(
       name: "ZetaEth",
       address: string,
