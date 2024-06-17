@@ -126,6 +126,13 @@
     "type": "zetaToken"
   },
   {
+    "address": "0x48C4475B7A9A6E9c384dDF3eb30c56761a2bc37e",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "zetaTokenConsumerUniV3"
+  },
+  {
     "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
     "asset": "",
     "category": "omnichain",
