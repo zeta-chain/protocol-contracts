@@ -269,15 +269,15 @@ const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
           chain_name: router.chain_name,
           type: "weth9",
         });
-      }
 
-      addresses.push({
-        address: factoryAddress,
-        category: "messaging",
-        chain_id: router.chain_id,
-        chain_name: router.chain_name,
-        type: "uniswapV2Factory",
-      });
+        addresses.push({
+          address: factoryAddress,
+          category: "messaging",
+          chain_id: router.chain_id,
+          chain_name: router.chain_name,
+          type: "uniswapV2Factory",
+        });
+      }
     } catch (error) {
       console.error(`Error fetching factory and WETH for router v2 ${router.address}:`, error);
     }
