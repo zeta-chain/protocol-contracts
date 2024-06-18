@@ -78,6 +78,7 @@
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
     "prepublishOnly": "yarn build",
     "test": "yarn compile && npx hardhat test",
+    "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
