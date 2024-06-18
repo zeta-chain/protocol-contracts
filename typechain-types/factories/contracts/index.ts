@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as evm from "./evm";
+export * as prototypes from "./prototypes";
 export * as zevm from "./zevm";
