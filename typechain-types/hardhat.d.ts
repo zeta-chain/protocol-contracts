@@ -273,6 +273,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaTokenConsumerUniV3Errors__factory>;
     getContractFactory(
+      name: "ZetaTokenConsumerZEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerZEVM__factory>;
+    getContractFactory(
+      name: "ZetaTokenConsumerZEVMErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaTokenConsumerZEVMErrors__factory>;
+    getContractFactory(
       name: "ZetaEth",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaEth__factory>;
@@ -345,13 +353,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.WETH9__factory>;
     getContractFactory(
-      name: "WZETA",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.WZETA__factory>;
-    getContractFactory(
       name: "ZetaConnectorZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaConnectorZEVM__factory>;
+    getContractFactory(
+      name: "ZetaReceiver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaReceiver__factory>;
     getContractFactory(
       name: "ZRC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -687,6 +695,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaTokenConsumerUniV3Errors>;
     getContractAt(
+      name: "ZetaTokenConsumerZEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerZEVM>;
+    getContractAt(
+      name: "ZetaTokenConsumerZEVMErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaTokenConsumerZEVMErrors>;
+    getContractAt(
       name: "ZetaEth",
       address: string,
       signer?: ethers.Signer
@@ -777,15 +795,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.WETH9>;
     getContractAt(
-      name: "WZETA",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.WZETA>;
-    getContractAt(
       name: "ZetaConnectorZEVM",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaConnectorZEVM>;
+    getContractAt(
+      name: "ZetaReceiver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaReceiver>;
     getContractAt(
       name: "ZRC20",
       address: string,

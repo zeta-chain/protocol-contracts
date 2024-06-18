@@ -36,6 +36,7 @@ export declare type ZetaProtocolTestNetwork =
   | "btc_testnet"
   | "goerli_testnet"
   | "mumbai_testnet"
+  | "sepolia_testnet"
   | "zeta_testnet";
 
 export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
@@ -43,6 +44,7 @@ export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
   "bsc_testnet",
   "btc_testnet",
   "goerli_testnet",
+  "sepolia_testnet",
   "mumbai_testnet",
   "zeta_testnet",
 ];
@@ -62,8 +64,8 @@ export const nonZetaAddress: NonZetaAddress[] = [
   "weth9",
 ];
 
-export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet";
-export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet"];
+export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet" | "zeta_mainnet";
+export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet", "zeta_mainnet"];
 
 export declare type ZetaProtocolNetwork = ZetaProtocolMainNetwork | ZetaProtocolTestNetwork;
 export const zetaProtocolNetworks: ZetaProtocolNetwork[] = [...zetaProtocolTestNetworks, ...zetaProtocolMainNetworks];
@@ -81,13 +83,13 @@ export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
   return false;
 };
 
-export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
-  if (isZetaProtocolAddress(address)) {
-    return (addresses["ccm"] as any)[network][address];
-  }
+// export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
+//   if (isZetaProtocolAddress(address)) {
+//     return (addresses["ccm"] as any)[network][address];
+//   }
 
-  return (addresses["zevm"] as any)[network][address];
-};
+//   return (addresses["zevm"] as any)[network][address];
+// };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
   return (addresses["zevm"] as any)[network]["zrc20"];

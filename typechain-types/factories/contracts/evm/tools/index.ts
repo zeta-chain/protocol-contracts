@@ -6,5 +6,6 @@ export * as zetaTokenConsumerPancakeV3StrategySol from "./ZetaTokenConsumerPanca
 export * as zetaTokenConsumerTridentStrategySol from "./ZetaTokenConsumerTrident.strategy.sol";
 export * as zetaTokenConsumerUniV2StrategySol from "./ZetaTokenConsumerUniV2.strategy.sol";
 export * as zetaTokenConsumerUniV3StrategySol from "./ZetaTokenConsumerUniV3.strategy.sol";
+export * as zetaTokenConsumerZevmStrategySol from "./ZetaTokenConsumerZEVM.strategy.sol";
 export * as interfaces from "./interfaces";
 export { ZetaInteractor__factory } from "./ZetaInteractor__factory";

@@ -3,6 +3,7 @@ import "@nomicfoundation/hardhat-verify";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
+import "./tasks/addresses";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
 import * as dotenv from "dotenv";
