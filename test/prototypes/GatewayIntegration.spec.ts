@@ -41,12 +41,11 @@ describe("Gateway and Receiver", function () {
     const strs = ["Hello", "Hardhat"];
     const nums = [1, 2, 3];
     const flag = false;
-    const value = ethers.utils.parseEther("0.5");
     const data = receiver.interface.encodeFunctionData("receiveB", [strs, nums, flag]);
-    const tx = await gateway.forwardCall(receiver.address, data, { value: value });
+    const tx = await gateway.forwardCall(receiver.address, data);
     await tx.wait();
     await expect(tx)
       .to.emit(receiver, "ReceivedB")
-      .withArgs(gateway.address, value, strs, nums, flag);
+      .withArgs(gateway.address, strs, nums, flag);
   });
 });

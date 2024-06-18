@@ -8,6 +8,7 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -59,7 +60,7 @@ export interface ReceiverInterface extends utils.Interface {
 
   events: {
     "ReceivedA(address,uint256,string,uint256,bool)": EventFragment;
-    "ReceivedB(address,uint256,string[],uint256[],bool)": EventFragment;
+    "ReceivedB(address,string[],uint256[],bool)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ReceivedA"): EventFragment;
@@ -82,13 +83,12 @@ export type ReceivedAEventFilter = TypedEventFilter<ReceivedAEvent>;
 
 export interface ReceivedBEventObject {
   sender: string;
-  value: BigNumber;
   strs: string[];
   nums: BigNumber[];
   flag: boolean;
 }
 export type ReceivedBEvent = TypedEvent<
-  [string, BigNumber, string[], BigNumber[], boolean],
+  [string, string[], BigNumber[], boolean],
   ReceivedBEventObject
 >;
 
@@ -132,7 +132,7 @@ export interface Receiver extends BaseContract {
       strs: PromiseOrValue<string>[],
       nums: PromiseOrValue<BigNumberish>[],
       flag: PromiseOrValue<boolean>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -147,7 +147,7 @@ export interface Receiver extends BaseContract {
     strs: PromiseOrValue<string>[],
     nums: PromiseOrValue<BigNumberish>[],
     flag: PromiseOrValue<boolean>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -182,16 +182,14 @@ export interface Receiver extends BaseContract {
       flag?: null
     ): ReceivedAEventFilter;
 
-    "ReceivedB(address,uint256,string[],uint256[],bool)"(
+    "ReceivedB(address,string[],uint256[],bool)"(
       sender?: null,
-      value?: null,
       strs?: null,
       nums?: null,
       flag?: null
     ): ReceivedBEventFilter;
     ReceivedB(
       sender?: null,
-      value?: null,
       strs?: null,
       nums?: null,
       flag?: null
@@ -210,7 +208,7 @@ export interface Receiver extends BaseContract {
       strs: PromiseOrValue<string>[],
       nums: PromiseOrValue<BigNumberish>[],
       flag: PromiseOrValue<boolean>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -226,7 +224,7 @@ export interface Receiver extends BaseContract {
       strs: PromiseOrValue<string>[],
       nums: PromiseOrValue<BigNumberish>[],
       flag: PromiseOrValue<boolean>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
