@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
 import { Contract } from "ethers";
+import { ethers } from "hardhat";
 
 describe("Gateway and Receiver", function () {
   let receiver: Contract;
@@ -32,9 +32,7 @@ describe("Gateway and Receiver", function () {
     await tx.wait();
 
     // Listen for the event
-    await expect(tx)
-      .to.emit(receiver, "ReceivedA")
-      .withArgs(gateway.address, value, str, num, flag);
+    await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gateway.address, value, str, num, flag);
   });
 
   it("should forward call to Receiver's receiveB function", async function () {
@@ -44,8 +42,6 @@ describe("Gateway and Receiver", function () {
     const data = receiver.interface.encodeFunctionData("receiveB", [strs, nums, flag]);
     const tx = await gateway.forwardCall(receiver.address, data);
     await tx.wait();
-    await expect(tx)
-      .to.emit(receiver, "ReceivedB")
-      .withArgs(gateway.address, strs, nums, flag);
+    await expect(tx).to.emit(receiver, "ReceivedB").withArgs(gateway.address, strs, nums, flag);
   });
 });
