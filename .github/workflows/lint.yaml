@@ -19,9 +19,6 @@ jobs:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Check Node.js version
-        run: node --version
-
       - name: Install Dependencies
         run: yarn install
 
