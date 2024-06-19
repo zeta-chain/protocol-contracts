@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./ERC20CustodyNew.sol";
 
 contract Gateway {
+    error ExecutionFailed();
+
     ERC20CustodyNew public custody;
 
     event Executed(address indexed destination, uint256 value, bytes data);
@@ -12,7 +14,11 @@ contract Gateway {
 
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
-        require(success, "Call failed");
+    
+        if (!success) {
+            revert ExecutionFailed();
+        }
+        
         return result;
     }
 
