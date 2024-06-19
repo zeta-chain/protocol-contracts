@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
 import { ERC20, ERC20CustodyNew, Gateway, Receiver, TestERC20, UniswapV2Factory, UniswapV2Pair, UniswapV2Router02 } from "../../typechain-types";
+import { UniswapV2Deployer } from "uniswap-v2-deploy-plugin";
 
 describe("Uniswap Integration with Gateway", function () {
     let tokenA: TestERC20;
@@ -11,7 +12,6 @@ describe("Uniswap Integration with Gateway", function () {
     let pair: UniswapV2Pair;
     let custody: ERC20CustodyNew;
     let gateway: Gateway;
-    let receiver: Receiver;
     let owner, addr1, addr2;
 
     beforeEach(async function () {
@@ -24,25 +24,20 @@ describe("Uniswap Integration with Gateway", function () {
         await tokenA.mint(owner.address, ethers.utils.parseEther("1000"));
         await tokenB.mint(owner.address, ethers.utils.parseEther("1000"));
 
-        // Deploy Uniswap Factory
-        const UniswapV2Factory = await ethers.getContractFactory("@uniswap/v2-core/contracts/UniswapV2Factory.sol:UniswapV2Factory");
-        factory = await UniswapV2Factory.deploy(owner.address) as UniswapV2Factory;
-        
-        // Deploy Uniswap Router
-        const UniswapV2Router02 = await ethers.getContractFactory("@uniswap/v2-periphery/contracts/UniswapV2Router02.sol:UniswapV2Router02");
-        const WETH = await ethers.getContractFactory("contracts/zevm/WZETA.sol:WETH9");
-        const weth = await WETH.deploy();
-        router = await UniswapV2Router02.deploy(factory.address, weth.address) as UniswapV2Router02;
+
+        const {
+            factory: newFactory,
+            router: newRouter,
+            weth9: weth
+        } = await UniswapV2Deployer.deploy(owner)
+
+        factory = newFactory;
+        router = newRouter;
 
         // Approve Router to move tokens
         await tokenA.approve(router.address, ethers.utils.parseEther("1000"));
         await tokenB.approve(router.address, ethers.utils.parseEther("1000"));
 
-        // Create Uniswap Pair
-        await factory.createPair(tokenA.address, tokenB.address);
-
-        const pairAddress = await factory.getPair(tokenA.address, tokenB.address);
-        pair = await ethers.getContractAt("UniswapV2Pair", pairAddress) as UniswapV2Pair;
 
         // Add Liquidity
         await router.addLiquidity(
@@ -58,11 +53,9 @@ describe("Uniswap Integration with Gateway", function () {
 
         // Deploy Gateway and Custody Contracts
         const Gateway = await ethers.getContractFactory("Gateway");
-        const ERC20Custody = await ethers.getContractFactory("ERC20Custody");
-        const Receiver = await ethers.getContractFactory("Receiver");
-        gateway = await Gateway.deploy(addr1.address) as Gateway;
-        custody = await ERC20Custody.deploy(gateway.address) as ERC20CustodyNew;
-        receiver = await Receiver.deploy() as Receiver;
+        const ERC20CustodyNew = await ethers.getContractFactory("ERC20CustodyNew");
+        gateway = await Gateway.deploy() as Gateway;
+        custody = await ERC20CustodyNew.deploy(gateway.address) as ERC20CustodyNew;
 
         // Transfer some tokens to the custody contract
         await tokenA.transfer(custody.address, ethers.utils.parseEther("100"));
@@ -71,6 +64,7 @@ describe("Uniswap Integration with Gateway", function () {
 
     it("should perform a token swap on Uniswap and transfer the output tokens to a destination address", async function () {
         const amountIn = ethers.utils.parseEther("50");
+
         const data = router.interface.encodeFunctionData("swapExactTokensForTokens", [
             amountIn, 
             0, 

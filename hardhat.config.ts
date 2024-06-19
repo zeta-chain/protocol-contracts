@@ -3,6 +3,7 @@ import "@nomicfoundation/hardhat-verify";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
+import "uniswap-v2-deploy-plugin";
 import "./tasks/addresses";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
