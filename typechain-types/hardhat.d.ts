@@ -301,6 +301,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaConnectorNonEth__factory>;
     getContractFactory(
+      name: "ERC20CustodyNew",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20CustodyNew__factory>;
+    getContractFactory(
       name: "Gateway",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Gateway__factory>;
@@ -308,6 +312,10 @@ declare module "hardhat/types/runtime" {
       name: "Receiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Receiver__factory>;
+    getContractFactory(
+      name: "TestERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TestERC20__factory>;
     getContractFactory(
       name: "ISystem",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -738,6 +746,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaConnectorNonEth>;
     getContractAt(
+      name: "ERC20CustodyNew",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20CustodyNew>;
+    getContractAt(
       name: "Gateway",
       address: string,
       signer?: ethers.Signer
@@ -747,6 +760,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Receiver>;
+    getContractAt(
+      name: "TestERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TestERC20>;
     getContractAt(
       name: "ISystem",
       address: string,

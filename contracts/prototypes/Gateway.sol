@@ -2,17 +2,13 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./ERC20Custody.sol";
+import "./ERC20CustodyNew.sol";
 
 contract Gateway {
-    ERC20Custody public custody;
+    ERC20CustodyNew public custody;
 
     event Executed(address indexed destination, uint256 value, bytes data);
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-
-    constructor(address _custody) {
-        custody = ERC20Custody(_custody);
-    }
 
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
@@ -28,7 +24,12 @@ contract Gateway {
         return result;
     }
 
-    function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external returns (bytes memory) {
+    function executeWithERC20(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    ) external returns (bytes memory) {
         // Approve the target contract to spend the tokens
         IERC20(token).approve(to, amount);
 
@@ -47,5 +48,9 @@ contract Gateway {
         emit ExecutedWithERC20(token, to, amount, data);
 
         return result;
+    }
+
+    function setCustody(address _custody) external {
+        custody = ERC20CustodyNew(_custody);
     }
 }

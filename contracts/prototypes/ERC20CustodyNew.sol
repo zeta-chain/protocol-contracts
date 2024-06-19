@@ -4,7 +4,7 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Gateway.sol";
 
-contract ERC20Custody {
+contract ERC20CustodyNew {
     Gateway public gateway;
 
     event Withdraw(address indexed token, address indexed to, uint256 amount);

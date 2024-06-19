@@ -140,10 +140,14 @@ export type { ZetaConnectorEth } from "./contracts/evm/ZetaConnector.eth.sol/Zet
 export { ZetaConnectorEth__factory } from "./factories/contracts/evm/ZetaConnector.eth.sol/ZetaConnectorEth__factory";
 export type { ZetaConnectorNonEth } from "./contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth";
 export { ZetaConnectorNonEth__factory } from "./factories/contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth__factory";
+export type { ERC20CustodyNew } from "./contracts/prototypes/ERC20CustodyNew";
+export { ERC20CustodyNew__factory } from "./factories/contracts/prototypes/ERC20CustodyNew__factory";
 export type { Gateway } from "./contracts/prototypes/Gateway";
 export { Gateway__factory } from "./factories/contracts/prototypes/Gateway__factory";
 export type { Receiver } from "./contracts/prototypes/Receiver";
 export { Receiver__factory } from "./factories/contracts/prototypes/Receiver__factory";
+export type { TestERC20 } from "./contracts/prototypes/TestERC20";
+export { TestERC20__factory } from "./factories/contracts/prototypes/TestERC20__factory";
 export type { ISystem } from "./contracts/zevm/Interfaces.sol/ISystem";
 export { ISystem__factory } from "./factories/contracts/zevm/Interfaces.sol/ISystem__factory";
 export type { IZRC20 } from "./contracts/zevm/Interfaces.sol/IZRC20";

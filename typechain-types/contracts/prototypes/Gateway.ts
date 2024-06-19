@@ -4,9 +4,11 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -28,39 +30,81 @@ import type {
 
 export interface GatewayInterface extends utils.Interface {
   functions: {
-    "forwardCall(address,bytes)": FunctionFragment;
+    "custody()": FunctionFragment;
+    "execute(address,bytes)": FunctionFragment;
+    "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
+    "setCustody(address)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "forwardCall"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic:
+      | "custody"
+      | "execute"
+      | "executeWithERC20"
+      | "setCustody"
+  ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "custody", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "forwardCall",
+    functionFragment: "execute",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "executeWithERC20",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setCustody",
+    values: [PromiseOrValue<string>]
+  ): string;
 
+  decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "forwardCall",
+    functionFragment: "executeWithERC20",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setCustody", data: BytesLike): Result;
 
   events: {
-    "Forwarded(address,uint256,bytes)": EventFragment;
+    "Executed(address,uint256,bytes)": EventFragment;
+    "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Forwarded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
 }
 
-export interface ForwardedEventObject {
+export interface ExecutedEventObject {
   destination: string;
   value: BigNumber;
   data: string;
 }
-export type ForwardedEvent = TypedEvent<
+export type ExecutedEvent = TypedEvent<
   [string, BigNumber, string],
-  ForwardedEventObject
+  ExecutedEventObject
 >;
 
-export type ForwardedEventFilter = TypedEventFilter<ForwardedEvent>;
+export type ExecutedEventFilter = TypedEventFilter<ExecutedEvent>;
+
+export interface ExecutedWithERC20EventObject {
+  token: string;
+  to: string;
+  amount: BigNumber;
+  data: string;
+}
+export type ExecutedWithERC20Event = TypedEvent<
+  [string, string, BigNumber, string],
+  ExecutedWithERC20EventObject
+>;
+
+export type ExecutedWithERC20EventFilter =
+  TypedEventFilter<ExecutedWithERC20Event>;
 
 export interface Gateway extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -89,53 +133,141 @@ export interface Gateway extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    forwardCall(
+    custody(overrides?: CallOverrides): Promise<[string]>;
+
+    execute(
       destination: PromiseOrValue<string>,
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    executeWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setCustody(
+      _custody: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
-  forwardCall(
+  custody(overrides?: CallOverrides): Promise<string>;
+
+  execute(
     destination: PromiseOrValue<string>,
     data: PromiseOrValue<BytesLike>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  executeWithERC20(
+    token: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setCustody(
+    _custody: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
-    forwardCall(
+    custody(overrides?: CallOverrides): Promise<string>;
+
+    execute(
       destination: PromiseOrValue<string>,
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    executeWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    setCustody(
+      _custody: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
-    "Forwarded(address,uint256,bytes)"(
+    "Executed(address,uint256,bytes)"(
       destination?: PromiseOrValue<string> | null,
       value?: null,
       data?: null
-    ): ForwardedEventFilter;
-    Forwarded(
+    ): ExecutedEventFilter;
+    Executed(
       destination?: PromiseOrValue<string> | null,
       value?: null,
       data?: null
-    ): ForwardedEventFilter;
+    ): ExecutedEventFilter;
+
+    "ExecutedWithERC20(address,address,uint256,bytes)"(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): ExecutedWithERC20EventFilter;
+    ExecutedWithERC20(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): ExecutedWithERC20EventFilter;
   };
 
   estimateGas: {
-    forwardCall(
+    custody(overrides?: CallOverrides): Promise<BigNumber>;
+
+    execute(
       destination: PromiseOrValue<string>,
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    executeWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setCustody(
+      _custody: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    forwardCall(
+    custody(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    execute(
       destination: PromiseOrValue<string>,
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    executeWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setCustody(
+      _custody: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
