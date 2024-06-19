@@ -31,8 +31,8 @@ var (
 
 // ReceiverMetaData contains all meta data concerning the Receiver contract.
 var ReceiverMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"ReceivedA\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string[]\",\"name\":\"strs\",\"type\":\"string[]\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"nums\",\"type\":\"uint256[]\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"ReceivedB\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"receiveA\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"strs\",\"type\":\"string[]\"},{\"internalType\":\"uint256[]\",\"name\":\"nums\",\"type\":\"uint256[]\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"receiveB\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
-	Bin: "0x608060405234801561001057600080fd5b50610906806100206000396000f3fe6080604052600436106100295760003560e01c80636fa220ad1461002e578063f5db6b391461004a575b600080fd5b61004860048036038101906100439190610378565b610073565b005b34801561005657600080fd5b50610071600480360381019061006c91906102ed565b6100b7565b005b7f87d67858b5cc03bdd16a3fcc56773bd59410e946cff7193cf374402c6e8fb6ee33348585856040516100aa9594939291906105e7565b60405180910390a1505050565b7f463b3e5d6969d17b19e10c4ca95f5f1b6fdef8678f980af98071bd38f0d885c2338484846040516100ec9493929190610594565b60405180910390a1505050565b600061010c61010784610666565b610641565b9050808382526020820190508285602086028201111561012f5761012e61087d565b5b60005b8581101561017d57813567ffffffffffffffff81111561015557610154610878565b5b80860161016289826102aa565b85526020850194506020840193505050600181019050610132565b5050509392505050565b600061019a61019584610692565b610641565b905080838252602082019050828560208602820111156101bd576101bc61087d565b5b60005b858110156101ed57816101d388826102d8565b8452602084019350602083019250506001810190506101c0565b5050509392505050565b600061020a610205846106be565b610641565b90508281526020810184848401111561022657610225610882565b5b6102318482856107d6565b509392505050565b600082601f83011261024e5761024d610878565b5b813561025e8482602086016100f9565b91505092915050565b600082601f83011261027c5761027b610878565b5b813561028c848260208601610187565b91505092915050565b6000813590506102a4816108a2565b92915050565b600082601f8301126102bf576102be610878565b5b81356102cf8482602086016101f7565b91505092915050565b6000813590506102e7816108b9565b92915050565b6000806000606084860312156103065761030561088c565b5b600084013567ffffffffffffffff81111561032457610323610887565b5b61033086828701610239565b935050602084013567ffffffffffffffff81111561035157610350610887565b5b61035d86828701610267565b925050604061036e86828701610295565b9150509250925092565b6000806000606084860312156103915761039061088c565b5b600084013567ffffffffffffffff8111156103af576103ae610887565b5b6103bb868287016102aa565b93505060206103cc868287016102d8565b92505060406103dd86828701610295565b9150509250925092565b60006103f38383610504565b905092915050565b60006104078383610576565b60208301905092915050565b61041c8161078e565b82525050565b600061042d8261070f565b610437818561074a565b935083602082028501610449856106ef565b8060005b85811015610485578484038952815161046685826103e7565b945061047183610730565b925060208a0199505060018101905061044d565b50829750879550505050505092915050565b60006104a28261071a565b6104ac818561075b565b93506104b7836106ff565b8060005b838110156104e85781516104cf88826103fb565b97506104da8361073d565b9250506001810190506104bb565b5085935050505092915050565b6104fe816107a0565b82525050565b600061050f82610725565b610519818561076c565b93506105298185602086016107e5565b61053281610891565b840191505092915050565b600061054882610725565b610552818561077d565b93506105628185602086016107e5565b61056b81610891565b840191505092915050565b61057f816107cc565b82525050565b61058e816107cc565b82525050565b60006080820190506105a96000830187610413565b81810360208301526105bb8186610422565b905081810360408301526105cf8185610497565b90506105de60608301846104f5565b95945050505050565b600060a0820190506105fc6000830188610413565b6106096020830187610585565b818103604083015261061b818661053d565b905061062a6060830185610585565b61063760808301846104f5565b9695505050505050565b600061064b61065c565b90506106578282610818565b919050565b6000604051905090565b600067ffffffffffffffff82111561068157610680610849565b5b602082029050602081019050919050565b600067ffffffffffffffff8211156106ad576106ac610849565b5b602082029050602081019050919050565b600067ffffffffffffffff8211156106d9576106d8610849565b5b6106e282610891565b9050602081019050919050565b6000819050602082019050919050565b6000819050602082019050919050565b600081519050919050565b600081519050919050565b600081519050919050565b6000602082019050919050565b6000602082019050919050565b600082825260208201905092915050565b600082825260208201905092915050565b600082825260208201905092915050565b600082825260208201905092915050565b6000610799826107ac565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b838110156108035780820151818401526020810190506107e8565b83811115610812576000848401525b50505050565b61082182610891565b810181811067ffffffffffffffff821117156108405761083f610849565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b6108ab816107a0565b81146108b657600080fd5b50565b6108c2816107cc565b81146108cd57600080fd5b5056fea2646970667358221220a471fde0547689c02df444b3d3f058d18c9dd15c58325e79133a63a1cc3608dd64736f6c63430008070033",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"ReceivedA\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string[]\",\"name\":\"strs\",\"type\":\"string[]\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"nums\",\"type\":\"uint256[]\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"ReceivedB\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"}],\"name\":\"ReceivedC\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"ReceivedD\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"receiveA\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"strs\",\"type\":\"string[]\"},{\"internalType\":\"uint256[]\",\"name\":\"nums\",\"type\":\"uint256[]\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"receiveB\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"}],\"name\":\"receiveC\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"receiveD\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	Bin: "0x608060405234801561001057600080fd5b50610bbf806100206000396000f3fe60806040526004361061003f5760003560e01c806352df08b6146100445780636fa220ad1461006d57806386c4519214610089578063f5db6b39146100a0575b600080fd5b34801561005057600080fd5b5061006b6004803603810190610066919061059f565b6100c9565b005b61008760048036038101906100829190610530565b61019b565b005b34801561009557600080fd5b5061009e6101df565b005b3480156100ac57600080fd5b506100c760048036038101906100c29190610478565b610218565b005b8173ffffffffffffffffffffffffffffffffffffffff166323b872dd3383866040518463ffffffff1660e01b8152600401610106939291906107ba565b602060405180830381600087803b15801561012057600080fd5b505af1158015610134573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101589190610503565b507fe8077791e8d0f63b9e4c0b6d386cbbf6c65e1acb2a103019edba9d1cc0b329003384848460405161018e9493929190610844565b60405180910390a1505050565b7f87d67858b5cc03bdd16a3fcc56773bd59410e946cff7193cf374402c6e8fb6ee33348585856040516101d2959493929190610889565b60405180910390a1505050565b7fcf0e6f18d967cb5a3ca7781d74b1d66411d1b8984e2dd2a066709c204a66d8623360405161020e919061079f565b60405180910390a1565b7f463b3e5d6969d17b19e10c4ca95f5f1b6fdef8678f980af98071bd38f0d885c23384848460405161024d94939291906107f1565b60405180910390a1505050565b600061026d61026884610908565b6108e3565b905080838252602082019050828560208602820111156102905761028f610b1f565b5b60005b858110156102de57813567ffffffffffffffff8111156102b6576102b5610b1a565b5b8086016102c38982610435565b85526020850194506020840193505050600181019050610293565b5050509392505050565b60006102fb6102f684610934565b6108e3565b9050808382526020820190508285602086028201111561031e5761031d610b1f565b5b60005b8581101561034e57816103348882610463565b845260208401935060208301925050600181019050610321565b5050509392505050565b600061036b61036684610960565b6108e3565b90508281526020810184848401111561038757610386610b24565b5b610392848285610a78565b509392505050565b6000813590506103a981610b44565b92915050565b600082601f8301126103c4576103c3610b1a565b5b81356103d484826020860161025a565b91505092915050565b600082601f8301126103f2576103f1610b1a565b5b81356104028482602086016102e8565b91505092915050565b60008135905061041a81610b5b565b92915050565b60008151905061042f81610b5b565b92915050565b600082601f83011261044a57610449610b1a565b5b813561045a848260208601610358565b91505092915050565b60008135905061047281610b72565b92915050565b60008060006060848603121561049157610490610b2e565b5b600084013567ffffffffffffffff8111156104af576104ae610b29565b5b6104bb868287016103af565b935050602084013567ffffffffffffffff8111156104dc576104db610b29565b5b6104e8868287016103dd565b92505060406104f98682870161040b565b9150509250925092565b60006020828403121561051957610518610b2e565b5b600061052784828501610420565b91505092915050565b60008060006060848603121561054957610548610b2e565b5b600084013567ffffffffffffffff81111561056757610566610b29565b5b61057386828701610435565b935050602061058486828701610463565b92505060406105958682870161040b565b9150509250925092565b6000806000606084860312156105b8576105b7610b2e565b5b60006105c686828701610463565b93505060206105d78682870161039a565b92505060406105e88682870161039a565b9150509250925092565b60006105fe838361070f565b905092915050565b60006106128383610781565b60208301905092915050565b61062781610a30565b82525050565b6000610638826109b1565b61064281856109ec565b93508360208202850161065485610991565b8060005b85811015610690578484038952815161067185826105f2565b945061067c836109d2565b925060208a01995050600181019050610658565b50829750879550505050505092915050565b60006106ad826109bc565b6106b781856109fd565b93506106c2836109a1565b8060005b838110156106f35781516106da8882610606565b97506106e5836109df565b9250506001810190506106c6565b5085935050505092915050565b61070981610a42565b82525050565b600061071a826109c7565b6107248185610a0e565b9350610734818560208601610a87565b61073d81610b33565b840191505092915050565b6000610753826109c7565b61075d8185610a1f565b935061076d818560208601610a87565b61077681610b33565b840191505092915050565b61078a81610a6e565b82525050565b61079981610a6e565b82525050565b60006020820190506107b4600083018461061e565b92915050565b60006060820190506107cf600083018661061e565b6107dc602083018561061e565b6107e96040830184610790565b949350505050565b6000608082019050610806600083018761061e565b8181036020830152610818818661062d565b9050818103604083015261082c81856106a2565b905061083b6060830184610700565b95945050505050565b6000608082019050610859600083018761061e565b6108666020830186610790565b610873604083018561061e565b610880606083018461061e565b95945050505050565b600060a08201905061089e600083018861061e565b6108ab6020830187610790565b81810360408301526108bd8186610748565b90506108cc6060830185610790565b6108d96080830184610700565b9695505050505050565b60006108ed6108fe565b90506108f98282610aba565b919050565b6000604051905090565b600067ffffffffffffffff82111561092357610922610aeb565b5b602082029050602081019050919050565b600067ffffffffffffffff82111561094f5761094e610aeb565b5b602082029050602081019050919050565b600067ffffffffffffffff82111561097b5761097a610aeb565b5b61098482610b33565b9050602081019050919050565b6000819050602082019050919050565b6000819050602082019050919050565b600081519050919050565b600081519050919050565b600081519050919050565b6000602082019050919050565b6000602082019050919050565b600082825260208201905092915050565b600082825260208201905092915050565b600082825260208201905092915050565b600082825260208201905092915050565b6000610a3b82610a4e565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b83811015610aa5578082015181840152602081019050610a8a565b83811115610ab4576000848401525b50505050565b610ac382610b33565b810181811067ffffffffffffffff82111715610ae257610ae1610aeb565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b610b4d81610a30565b8114610b5857600080fd5b50565b610b6481610a42565b8114610b6f57600080fd5b50565b610b7b81610a6e565b8114610b8657600080fd5b5056fea264697066735822122071e33ff7a639cea7ba0e3fa2cb4106a312f1b8080d32e972b0ef4823ad974cf264736f6c63430008070033",
 }
 
 // ReceiverABI is the input ABI used to generate the binding from.
@@ -242,6 +242,48 @@ func (_Receiver *ReceiverSession) ReceiveB(strs []string, nums []*big.Int, flag 
 // Solidity: function receiveB(string[] strs, uint256[] nums, bool flag) returns()
 func (_Receiver *ReceiverTransactorSession) ReceiveB(strs []string, nums []*big.Int, flag bool) (*types.Transaction, error) {
 	return _Receiver.Contract.ReceiveB(&_Receiver.TransactOpts, strs, nums, flag)
+}
+
+// ReceiveC is a paid mutator transaction binding the contract method 0x52df08b6.
+//
+// Solidity: function receiveC(uint256 amount, address token, address destination) returns()
+func (_Receiver *ReceiverTransactor) ReceiveC(opts *bind.TransactOpts, amount *big.Int, token common.Address, destination common.Address) (*types.Transaction, error) {
+	return _Receiver.contract.Transact(opts, "receiveC", amount, token, destination)
+}
+
+// ReceiveC is a paid mutator transaction binding the contract method 0x52df08b6.
+//
+// Solidity: function receiveC(uint256 amount, address token, address destination) returns()
+func (_Receiver *ReceiverSession) ReceiveC(amount *big.Int, token common.Address, destination common.Address) (*types.Transaction, error) {
+	return _Receiver.Contract.ReceiveC(&_Receiver.TransactOpts, amount, token, destination)
+}
+
+// ReceiveC is a paid mutator transaction binding the contract method 0x52df08b6.
+//
+// Solidity: function receiveC(uint256 amount, address token, address destination) returns()
+func (_Receiver *ReceiverTransactorSession) ReceiveC(amount *big.Int, token common.Address, destination common.Address) (*types.Transaction, error) {
+	return _Receiver.Contract.ReceiveC(&_Receiver.TransactOpts, amount, token, destination)
+}
+
+// ReceiveD is a paid mutator transaction binding the contract method 0x86c45192.
+//
+// Solidity: function receiveD() returns()
+func (_Receiver *ReceiverTransactor) ReceiveD(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Receiver.contract.Transact(opts, "receiveD")
+}
+
+// ReceiveD is a paid mutator transaction binding the contract method 0x86c45192.
+//
+// Solidity: function receiveD() returns()
+func (_Receiver *ReceiverSession) ReceiveD() (*types.Transaction, error) {
+	return _Receiver.Contract.ReceiveD(&_Receiver.TransactOpts)
+}
+
+// ReceiveD is a paid mutator transaction binding the contract method 0x86c45192.
+//
+// Solidity: function receiveD() returns()
+func (_Receiver *ReceiverTransactorSession) ReceiveD() (*types.Transaction, error) {
+	return _Receiver.Contract.ReceiveD(&_Receiver.TransactOpts)
 }
 
 // ReceiverReceivedAIterator is returned from FilterReceivedA and is used to iterate over the raw logs and unpacked data for ReceivedA events raised by the Receiver contract.
@@ -513,6 +555,277 @@ func (_Receiver *ReceiverFilterer) WatchReceivedB(opts *bind.WatchOpts, sink cha
 func (_Receiver *ReceiverFilterer) ParseReceivedB(log types.Log) (*ReceiverReceivedB, error) {
 	event := new(ReceiverReceivedB)
 	if err := _Receiver.contract.UnpackLog(event, "ReceivedB", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ReceiverReceivedCIterator is returned from FilterReceivedC and is used to iterate over the raw logs and unpacked data for ReceivedC events raised by the Receiver contract.
+type ReceiverReceivedCIterator struct {
+	Event *ReceiverReceivedC // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ReceiverReceivedCIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ReceiverReceivedC)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ReceiverReceivedC)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ReceiverReceivedCIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ReceiverReceivedCIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ReceiverReceivedC represents a ReceivedC event raised by the Receiver contract.
+type ReceiverReceivedC struct {
+	Sender      common.Address
+	Amount      *big.Int
+	Token       common.Address
+	Destination common.Address
+	Raw         types.Log // Blockchain specific contextual infos
+}
+
+// FilterReceivedC is a free log retrieval operation binding the contract event 0xe8077791e8d0f63b9e4c0b6d386cbbf6c65e1acb2a103019edba9d1cc0b32900.
+//
+// Solidity: event ReceivedC(address sender, uint256 amount, address token, address destination)
+func (_Receiver *ReceiverFilterer) FilterReceivedC(opts *bind.FilterOpts) (*ReceiverReceivedCIterator, error) {
+
+	logs, sub, err := _Receiver.contract.FilterLogs(opts, "ReceivedC")
+	if err != nil {
+		return nil, err
+	}
+	return &ReceiverReceivedCIterator{contract: _Receiver.contract, event: "ReceivedC", logs: logs, sub: sub}, nil
+}
+
+// WatchReceivedC is a free log subscription operation binding the contract event 0xe8077791e8d0f63b9e4c0b6d386cbbf6c65e1acb2a103019edba9d1cc0b32900.
+//
+// Solidity: event ReceivedC(address sender, uint256 amount, address token, address destination)
+func (_Receiver *ReceiverFilterer) WatchReceivedC(opts *bind.WatchOpts, sink chan<- *ReceiverReceivedC) (event.Subscription, error) {
+
+	logs, sub, err := _Receiver.contract.WatchLogs(opts, "ReceivedC")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ReceiverReceivedC)
+				if err := _Receiver.contract.UnpackLog(event, "ReceivedC", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseReceivedC is a log parse operation binding the contract event 0xe8077791e8d0f63b9e4c0b6d386cbbf6c65e1acb2a103019edba9d1cc0b32900.
+//
+// Solidity: event ReceivedC(address sender, uint256 amount, address token, address destination)
+func (_Receiver *ReceiverFilterer) ParseReceivedC(log types.Log) (*ReceiverReceivedC, error) {
+	event := new(ReceiverReceivedC)
+	if err := _Receiver.contract.UnpackLog(event, "ReceivedC", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ReceiverReceivedDIterator is returned from FilterReceivedD and is used to iterate over the raw logs and unpacked data for ReceivedD events raised by the Receiver contract.
+type ReceiverReceivedDIterator struct {
+	Event *ReceiverReceivedD // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ReceiverReceivedDIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ReceiverReceivedD)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ReceiverReceivedD)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ReceiverReceivedDIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ReceiverReceivedDIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ReceiverReceivedD represents a ReceivedD event raised by the Receiver contract.
+type ReceiverReceivedD struct {
+	Sender common.Address
+	Raw    types.Log // Blockchain specific contextual infos
+}
+
+// FilterReceivedD is a free log retrieval operation binding the contract event 0xcf0e6f18d967cb5a3ca7781d74b1d66411d1b8984e2dd2a066709c204a66d862.
+//
+// Solidity: event ReceivedD(address sender)
+func (_Receiver *ReceiverFilterer) FilterReceivedD(opts *bind.FilterOpts) (*ReceiverReceivedDIterator, error) {
+
+	logs, sub, err := _Receiver.contract.FilterLogs(opts, "ReceivedD")
+	if err != nil {
+		return nil, err
+	}
+	return &ReceiverReceivedDIterator{contract: _Receiver.contract, event: "ReceivedD", logs: logs, sub: sub}, nil
+}
+
+// WatchReceivedD is a free log subscription operation binding the contract event 0xcf0e6f18d967cb5a3ca7781d74b1d66411d1b8984e2dd2a066709c204a66d862.
+//
+// Solidity: event ReceivedD(address sender)
+func (_Receiver *ReceiverFilterer) WatchReceivedD(opts *bind.WatchOpts, sink chan<- *ReceiverReceivedD) (event.Subscription, error) {
+
+	logs, sub, err := _Receiver.contract.WatchLogs(opts, "ReceivedD")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ReceiverReceivedD)
+				if err := _Receiver.contract.UnpackLog(event, "ReceivedD", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseReceivedD is a log parse operation binding the contract event 0xcf0e6f18d967cb5a3ca7781d74b1d66411d1b8984e2dd2a066709c204a66d862.
+//
+// Solidity: event ReceivedD(address sender)
+func (_Receiver *ReceiverFilterer) ParseReceivedD(log types.Log) (*ReceiverReceivedD, error) {
+	event := new(ReceiverReceivedD)
+	if err := _Receiver.contract.UnpackLog(event, "ReceivedD", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
