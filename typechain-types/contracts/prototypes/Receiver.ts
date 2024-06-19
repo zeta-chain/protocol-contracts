@@ -33,10 +33,11 @@ export interface ReceiverInterface extends utils.Interface {
     "receiveA(string,uint256,bool)": FunctionFragment;
     "receiveB(string[],uint256[],bool)": FunctionFragment;
     "receiveC(uint256,address,address)": FunctionFragment;
+    "receiveD()": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "receiveA" | "receiveB" | "receiveC"
+    nameOrSignatureOrTopic: "receiveA" | "receiveB" | "receiveC" | "receiveD"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -63,20 +64,24 @@ export interface ReceiverInterface extends utils.Interface {
       PromiseOrValue<string>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "receiveD", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "receiveA", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "receiveB", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "receiveC", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "receiveD", data: BytesLike): Result;
 
   events: {
     "ReceivedA(address,uint256,string,uint256,bool)": EventFragment;
     "ReceivedB(address,string[],uint256[],bool)": EventFragment;
     "ReceivedC(address,uint256,address,address)": EventFragment;
+    "ReceivedD(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ReceivedA"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedB"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedC"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedD"): EventFragment;
 }
 
 export interface ReceivedAEventObject {
@@ -118,6 +123,13 @@ export type ReceivedCEvent = TypedEvent<
 >;
 
 export type ReceivedCEventFilter = TypedEventFilter<ReceivedCEvent>;
+
+export interface ReceivedDEventObject {
+  sender: string;
+}
+export type ReceivedDEvent = TypedEvent<[string], ReceivedDEventObject>;
+
+export type ReceivedDEventFilter = TypedEventFilter<ReceivedDEvent>;
 
 export interface Receiver extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -166,6 +178,10 @@ export interface Receiver extends BaseContract {
       destination: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    receiveD(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   receiveA(
@@ -186,6 +202,10 @@ export interface Receiver extends BaseContract {
     amount: PromiseOrValue<BigNumberish>,
     token: PromiseOrValue<string>,
     destination: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  receiveD(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -210,6 +230,8 @@ export interface Receiver extends BaseContract {
       destination: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    receiveD(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -253,6 +275,9 @@ export interface Receiver extends BaseContract {
       token?: null,
       destination?: null
     ): ReceivedCEventFilter;
+
+    "ReceivedD(address)"(sender?: null): ReceivedDEventFilter;
+    ReceivedD(sender?: null): ReceivedDEventFilter;
   };
 
   estimateGas: {
@@ -276,6 +301,10 @@ export interface Receiver extends BaseContract {
       destination: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    receiveD(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -297,6 +326,10 @@ export interface Receiver extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    receiveD(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
