@@ -4,6 +4,8 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./ERC20CustodyNew.sol";
 
+// The Gateway contract is the endpoint to call smart contracts on external chains
+// The contract doesn't hold any funds and should never have active allowances
 contract Gateway {
     error ExecutionFailed();
 
