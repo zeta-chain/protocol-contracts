@@ -18,10 +18,13 @@ contract Gateway {
         if (!success) {
             revert ExecutionFailed();
         }
-        
+
         return result;
     }
 
+    // Called by the TSS
+    // Execution without ERC20 tokens, it is payable and can be used in the case of WithdrawAndCall for Gas ZRC20
+    // It can be also used for contract call without asset movement
     function execute(address destination, bytes calldata data) external payable returns (bytes memory) {
         bytes memory result = _execute(destination, data);
 
@@ -30,6 +33,10 @@ contract Gateway {
         return result;
     }
 
+    // Called by the ERC20Custody contract
+    // It call a function using ERC20 transfer
+    // Since the goal is to allow calling contract not designed for ZetaChain specifically, it uses ERC20 allowance system
+    // It provides allowance to destination contract and call destination contract. In the end, it remove remaining allowance and transfer remaining tokens back to the custody contract for security purposes
     function executeWithERC20(
         address token,
         address to,
