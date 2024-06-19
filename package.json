@@ -56,6 +56,9 @@
     "typechain": "^8.1.0",
     "typescript": "^4.6.3"
   },
+  "engines": {
+    "node": ">=16 <17"
+  },
   "files": [
     "contracts",
     "abi",
