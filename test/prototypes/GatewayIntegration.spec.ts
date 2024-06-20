@@ -19,10 +19,10 @@ describe("Gateway and Receiver", function () {
     // Deploy the contracts
     token = await TestERC20.deploy("Test Token", "TTK");
     receiver = await Receiver.deploy();
-    gateway = (await upgrades.deployProxy(Gateway, [], {
-      kind: 'uups',
-      initializer: 'initialize',
-    }))
+    gateway = await upgrades.deployProxy(Gateway, [], {
+      initializer: "initialize",
+      kind: "uups",
+    });
     custody = await Custody.deploy(gateway.address);
 
     gateway.setCustody(custody.address);
