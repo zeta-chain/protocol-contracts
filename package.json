@@ -48,6 +48,7 @@
     "inquirer": "^8.2.4",
     "lodash": "^4.17.21",
     "mocha": "^10.2.0",
+    "solhint": "^5.0.1",
     "solidity-coverage": "^0.8.2",
     "ts-mocha": "^10.0.0",
     "ts-node": "10.8.1",
@@ -55,6 +56,9 @@
     "typechain": "^8.1.0",
     "typescript": "^4.6.3",
     "uniswap-v2-deploy-plugin": "^0.0.4"
+  },
+  "engines": {
+    "node": ">=16 <17"
   },
   "files": [
     "contracts",
@@ -77,6 +81,7 @@
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
+    "lint:sol": "solhint 'contracts/**/*.sol'",
     "prepublishOnly": "yarn build",
     "test": "yarn compile && npx hardhat test",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",

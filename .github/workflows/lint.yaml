@@ -22,5 +22,8 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Lint
+      - name: Lint JavaScript/TypeScript
         run: yarn lint
+
+      - name: Lint Solidity
+        run: yarn lint:sol
