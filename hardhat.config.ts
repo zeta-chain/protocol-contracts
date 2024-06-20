@@ -9,6 +9,7 @@ import "./tasks/addresses";
 import { getHardhatConfigNetworks } from "@zetachain/networks";
 import * as dotenv from "dotenv";
 import type { HardhatUserConfig } from "hardhat/types";
+import "@openzeppelin/hardhat-upgrades";
 
 dotenv.config();
 

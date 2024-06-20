@@ -2,19 +2,19 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./Gateway.sol";
+import "./interfaces.sol";
 
 // As the current version, ERC20CustodyNew hold the ERC20s deposited on ZetaChain
 // This version include a functionality allowing to call a contract
 // ERC20Custody doesn't call smart contract directly, it passes through the Gateway contract
 contract ERC20CustodyNew {
-    Gateway public gateway;
+    IGateway public gateway;
 
     event Withdraw(address indexed token, address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
 
     constructor(address _gateway) {
-        gateway = Gateway(_gateway);
+        gateway = IGateway(_gateway);
     }
     
     // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract call

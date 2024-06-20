@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Contract } from "ethers";
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 
 describe("Gateway and Receiver", function () {
   let receiver: Contract;
@@ -19,7 +19,10 @@ describe("Gateway and Receiver", function () {
     // Deploy the contracts
     token = await TestERC20.deploy("Test Token", "TTK");
     receiver = await Receiver.deploy();
-    gateway = await Gateway.deploy();
+    gateway = (await upgrades.deployProxy(Gateway, [], {
+      kind: 'uups',
+      initializer: 'initialize',
+    }))
     custody = await Custody.deploy(gateway.address);
 
     gateway.setCustody(custody.address);
