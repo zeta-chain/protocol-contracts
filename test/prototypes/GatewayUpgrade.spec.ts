@@ -38,7 +38,9 @@ describe("Gateway upgrade", function () {
     // Upgrade Gateway contract
     // Fail to upgrade if not using owner account
     let GatewayUpgradeTest = await ethers.getContractFactory("GatewayUpgradeTest", randomSigner);
-    await expect(upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest)).to.be.revertedWith("Ownable: caller is not the owner");
+    await expect(upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest)).to.be.revertedWith(
+      "Ownable: caller is not the owner"
+    );
 
     // Upgrade with owner account
     GatewayUpgradeTest = await ethers.getContractFactory("GatewayUpgradeTest", owner);
