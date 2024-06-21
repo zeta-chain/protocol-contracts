@@ -31,7 +31,7 @@ var (
 
 // IGatewayMetaData contains all meta data concerning the IGateway contract.
 var IGatewayMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeWithERC20\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeWithERC20\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IGatewayABI is the input ABI used to generate the binding from.
@@ -178,6 +178,27 @@ func (_IGateway *IGatewayTransactorRaw) Transfer(opts *bind.TransactOpts) (*type
 // Transact invokes the (paid) contract method with params as input values.
 func (_IGateway *IGatewayTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	return _IGateway.Contract.contract.Transact(opts, method, params...)
+}
+
+// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
+//
+// Solidity: function execute(address destination, bytes data) payable returns(bytes)
+func (_IGateway *IGatewayTransactor) Execute(opts *bind.TransactOpts, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGateway.contract.Transact(opts, "execute", destination, data)
+}
+
+// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
+//
+// Solidity: function execute(address destination, bytes data) payable returns(bytes)
+func (_IGateway *IGatewaySession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGateway.Contract.Execute(&_IGateway.TransactOpts, destination, data)
+}
+
+// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
+//
+// Solidity: function execute(address destination, bytes data) payable returns(bytes)
+func (_IGateway *IGatewayTransactorSession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGateway.Contract.Execute(&_IGateway.TransactOpts, destination, data)
 }
 
 // ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
