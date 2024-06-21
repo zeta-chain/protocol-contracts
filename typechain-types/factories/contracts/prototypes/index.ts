@@ -4,5 +4,6 @@
 export * as interfacesSol from "./interfaces.sol";
 export { ERC20CustodyNew__factory } from "./ERC20CustodyNew__factory";
 export { Gateway__factory } from "./Gateway__factory";
+export { GatewayV2__factory } from "./GatewayV2__factory";
 export { Receiver__factory } from "./Receiver__factory";
 export { TestERC20__factory } from "./TestERC20__factory";

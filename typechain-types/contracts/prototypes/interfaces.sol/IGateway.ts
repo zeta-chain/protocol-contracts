@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -25,11 +26,18 @@ import type {
 
 export interface IGatewayInterface extends utils.Interface {
   functions: {
+    "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "executeWithERC20"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic: "execute" | "executeWithERC20"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "execute",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
   encodeFunctionData(
     functionFragment: "executeWithERC20",
     values: [
@@ -40,6 +48,7 @@ export interface IGatewayInterface extends utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeWithERC20",
     data: BytesLike
@@ -75,6 +84,12 @@ export interface IGateway extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    execute(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -83,6 +98,12 @@ export interface IGateway extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  execute(
+    destination: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   executeWithERC20(
     token: PromiseOrValue<string>,
@@ -93,6 +114,12 @@ export interface IGateway extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    execute(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -105,6 +132,12 @@ export interface IGateway extends BaseContract {
   filters: {};
 
   estimateGas: {
+    execute(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -115,6 +148,12 @@ export interface IGateway extends BaseContract {
   };
 
   populateTransaction: {
+    execute(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,

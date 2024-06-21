@@ -48,6 +48,7 @@ describe("Gateway and Receiver", function () {
     await tx.wait();
 
     // Listen for the event
+    await expect(tx).to.emit(gateway, "Executed").withArgs(receiver.address, value, data);
     await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gateway.address, value, str, num, flag);
   });
 

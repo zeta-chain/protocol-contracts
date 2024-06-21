@@ -8,4 +8,6 @@ interface IGateway {
         uint256 amount,
         bytes calldata data
     ) external returns (bytes memory);
+
+    function execute(address destination, bytes calldata data) external payable returns (bytes memory);
 }

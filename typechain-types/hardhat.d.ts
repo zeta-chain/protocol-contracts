@@ -341,6 +341,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Gateway__factory>;
     getContractFactory(
+      name: "GatewayV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayV2__factory>;
+    getContractFactory(
       name: "IGateway",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGateway__factory>;
@@ -831,6 +835,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Gateway>;
+    getContractAt(
+      name: "GatewayV2",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayV2>;
     getContractAt(
       name: "IGateway",
       address: string,
