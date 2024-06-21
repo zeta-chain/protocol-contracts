@@ -7,14 +7,14 @@ describe("Gateway upgrade", function () {
   let gateway: Contract;
   let token: Contract;
   let custody: Contract;
-  let owner: any, destination: any;
+  let owner: any, destination: any, randomSigner: any;
 
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
     const Receiver = await ethers.getContractFactory("Receiver");
     const Gateway = await ethers.getContractFactory("Gateway");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
-    [owner, destination] = await ethers.getSigners();
+    [owner, destination, randomSigner] = await ethers.getSigners();
 
     // Deploy the contracts
     token = await TestERC20.deploy("Test Token", "TTK");
@@ -36,8 +36,13 @@ describe("Gateway upgrade", function () {
 
   it("should upgrade and forward call to Receiver's receiveA function", async function () {
     // Upgrade Gateway contract
-    const GatewayV2 = await ethers.getContractFactory("GatewayV2");
-    const gatewayV2 = await upgrades.upgradeProxy(gateway.address, GatewayV2);
+    // Fail to upgrade if not using owner account
+    let GatewayUpgradeTest = await ethers.getContractFactory("GatewayUpgradeTest", randomSigner);
+    await expect(upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest)).to.be.revertedWith("Ownable: caller is not the owner");
+
+    // Upgrade with owner account
+    GatewayUpgradeTest = await ethers.getContractFactory("GatewayUpgradeTest", owner);
+    const gatewayUpgradeTest = await upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest);
 
     // Forward call
     const str = "Hello, Hardhat!";
@@ -49,11 +54,11 @@ describe("Gateway upgrade", function () {
     const data = receiver.interface.encodeFunctionData("receiveA", [str, num, flag]);
 
     // Call execute on the GatewayV2 contract
-    const tx = await gatewayV2.execute(receiver.address, data, { value: value });
+    const tx = await gatewayUpgradeTest.execute(receiver.address, data, { value: value });
     await tx.wait();
 
     // Listen for the event
-    await expect(tx).to.emit(gatewayV2, "ExecutedV2").withArgs(receiver.address, value, data);
-    await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gatewayV2.address, value, str, num, flag);
+    await expect(tx).to.emit(gatewayUpgradeTest, "ExecutedV2").withArgs(receiver.address, value, data);
+    await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gatewayUpgradeTest.address, value, str, num, flag);
   });
 });

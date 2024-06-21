@@ -5,6 +5,6 @@ import type * as interfacesSol from "./interfaces.sol";
 export type { interfacesSol };
 export type { ERC20CustodyNew } from "./ERC20CustodyNew";
 export type { Gateway } from "./Gateway";
-export type { GatewayV2 } from "./GatewayV2";
+export type { GatewayUpgradeTest } from "./GatewayUpgradeTest";
 export type { Receiver } from "./Receiver";
 export type { TestERC20 } from "./TestERC20";
