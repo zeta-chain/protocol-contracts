@@ -87,12 +87,14 @@ contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return result;
     }
 
+    // Tranfer specified token amount to ERC20Custody and emits event
     function sendERC20(bytes calldata recipient, address token, uint256 amount) external {
         IERC20(token).transferFrom(msg.sender, address(custody), amount);
 
         emit SendERC20(recipient, token, amount);
     }
 
+    // Tranfer specified ETH amount to TSS address and emits event
     function send(bytes calldata recipient, uint256 amount) external payable {
         if (msg.value < amount) {
             revert InsufficientETHAmount();

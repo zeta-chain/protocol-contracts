@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Contract } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 
 describe("Gateway and Receiver", function () {
@@ -122,5 +122,77 @@ describe("Gateway and Receiver", function () {
     // Verify that the approval was reset
     const allowance = await token.allowance(gateway.address, receiver.address);
     expect(allowance).to.equal(0);
+  });
+});
+
+describe("Gateway evm inbound", function () {
+  let gateway: Contract;
+  let token: Contract;
+  let custody: Contract;
+  let owner: any, destination: any, tssAddress: any;
+
+  beforeEach(async function () {
+    const TestERC20 = await ethers.getContractFactory("TestERC20");
+    const Gateway = await ethers.getContractFactory("Gateway");
+    const Custody = await ethers.getContractFactory("ERC20CustodyNew");
+    [owner, destination, tssAddress] = await ethers.getSigners();
+
+    // Deploy the contracts
+    token = await TestERC20.deploy("Test Token", "TTK");
+    gateway = await upgrades.deployProxy(Gateway, [tssAddress.address], {
+      initializer: "initialize",
+      kind: "uups",
+    });
+    custody = await Custody.deploy(gateway.address);
+
+    gateway.setCustody(custody.address);
+
+    // Mint initial supply to the owner
+    await token.mint(owner.address, ethers.utils.parseEther("1000"));
+  });
+
+  it("should send erc20 to custody and emit event", async function() {
+    const amount = ethers.utils.parseEther("100");
+
+    const custodyBalanceBefore = await token.balanceOf(custody.address);
+    expect(custodyBalanceBefore).to.equal(0); 
+
+    await token.approve(gateway.address, amount);
+
+    const tx = await gateway.sendERC20(destination.address, token.address, amount);
+    await tx.wait();
+
+    const custodyBalanceAfter = await token.balanceOf(custody.address);
+    expect(custodyBalanceAfter).to.equal(amount); 
+
+    const ownerBalanceAfter = await token.balanceOf(owner.address);
+    expect(ownerBalanceAfter).to.equal(ethers.utils.parseEther("900"));
+
+    await expect(tx).to.emit(gateway, "SendERC20").withArgs(destination.address.toLowerCase(), token.address, amount);
+  });
+
+  it("should send eth to tss address and emit event", async function() {
+    const amount = ethers.utils.parseEther("100") as BigNumber;
+
+    const tssAddressBalanceBefore = await ethers.provider.getBalance(tssAddress.address) as BigNumber;
+
+    const tx = await gateway.send(destination.address, amount, { value: amount });
+    await tx.wait();
+
+    const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
+    expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore.add(amount)); 
+
+    await expect(tx).to.emit(gateway, "Send").withArgs(destination.address.toLowerCase(), amount);
+  });
+
+  it("should fail to send to tss address if msg.value lower than amount", async function() {
+    const amount = ethers.utils.parseEther("100") as BigNumber;
+
+    const tssAddressBalanceBefore = await ethers.provider.getBalance(tssAddress.address) as BigNumber;
+
+    await expect(gateway.send(destination.address, amount, { value: amount.sub(1) })).to.be.revertedWith("InsufficientETHAmount")
+
+    const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
+    expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore); 
   });
 });
