@@ -151,11 +151,11 @@ describe("Gateway evm inbound", function () {
     await token.mint(owner.address, ethers.utils.parseEther("1000"));
   });
 
-  it("should send erc20 to custody and emit event", async function() {
+  it("should send erc20 to custody and emit event", async function () {
     const amount = ethers.utils.parseEther("100");
 
     const custodyBalanceBefore = await token.balanceOf(custody.address);
-    expect(custodyBalanceBefore).to.equal(0); 
+    expect(custodyBalanceBefore).to.equal(0);
 
     await token.approve(gateway.address, amount);
 
@@ -163,7 +163,7 @@ describe("Gateway evm inbound", function () {
     await tx.wait();
 
     const custodyBalanceAfter = await token.balanceOf(custody.address);
-    expect(custodyBalanceAfter).to.equal(amount); 
+    expect(custodyBalanceAfter).to.equal(amount);
 
     const ownerBalanceAfter = await token.balanceOf(owner.address);
     expect(ownerBalanceAfter).to.equal(ethers.utils.parseEther("900"));
@@ -171,28 +171,30 @@ describe("Gateway evm inbound", function () {
     await expect(tx).to.emit(gateway, "SendERC20").withArgs(destination.address.toLowerCase(), token.address, amount);
   });
 
-  it("should send eth to tss address and emit event", async function() {
+  it("should send eth to tss address and emit event", async function () {
     const amount = ethers.utils.parseEther("100") as BigNumber;
 
-    const tssAddressBalanceBefore = await ethers.provider.getBalance(tssAddress.address) as BigNumber;
+    const tssAddressBalanceBefore = (await ethers.provider.getBalance(tssAddress.address)) as BigNumber;
 
     const tx = await gateway.send(destination.address, amount, { value: amount });
     await tx.wait();
 
     const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
-    expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore.add(amount)); 
+    expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore.add(amount));
 
     await expect(tx).to.emit(gateway, "Send").withArgs(destination.address.toLowerCase(), amount);
   });
 
-  it("should fail to send to tss address if msg.value lower than amount", async function() {
+  it("should fail to send to tss address if msg.value lower than amount", async function () {
     const amount = ethers.utils.parseEther("100") as BigNumber;
 
-    const tssAddressBalanceBefore = await ethers.provider.getBalance(tssAddress.address) as BigNumber;
+    const tssAddressBalanceBefore = (await ethers.provider.getBalance(tssAddress.address)) as BigNumber;
 
-    await expect(gateway.send(destination.address, amount, { value: amount.sub(1) })).to.be.revertedWith("InsufficientETHAmount")
+    await expect(gateway.send(destination.address, amount, { value: amount.sub(1) })).to.be.revertedWith(
+      "InsufficientETHAmount"
+    );
 
     const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
-    expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore); 
+    expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore);
   });
 });
