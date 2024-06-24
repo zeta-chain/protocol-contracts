@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 
-describe("Gateway and Receiver", function () {
+describe("GatewayEVM and Receiver", function () {
   let receiver: Contract;
   let gateway: Contract;
   let token: Contract;
@@ -12,7 +12,7 @@ describe("Gateway and Receiver", function () {
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
     const Receiver = await ethers.getContractFactory("Receiver");
-    const Gateway = await ethers.getContractFactory("Gateway");
+    const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
     [owner, destination, tssAddress] = await ethers.getSigners();
 
@@ -125,7 +125,7 @@ describe("Gateway and Receiver", function () {
   });
 });
 
-describe("Gateway evm inbound", function () {
+describe("GatewayEVM inbound", function () {
   let gateway: Contract;
   let token: Contract;
   let custody: Contract;
@@ -133,7 +133,7 @@ describe("Gateway evm inbound", function () {
 
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
-    const Gateway = await ethers.getContractFactory("Gateway");
+    const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
     [owner, destination, tssAddress] = await ethers.getSigners();
 
@@ -168,7 +168,9 @@ describe("Gateway evm inbound", function () {
     const ownerBalanceAfter = await token.balanceOf(owner.address);
     expect(ownerBalanceAfter).to.equal(ethers.utils.parseEther("900"));
 
-    await expect(tx).to.emit(gateway, "SendERC20").withArgs(destination.address.toLowerCase(), token.address, amount);
+    await expect(tx)
+      .to.emit(gateway, "SendERC20")
+      .withArgs(owner.address, destination.address.toLowerCase(), token.address, amount);
   });
 
   it("should send eth to tss address and emit event", async function () {
@@ -182,7 +184,7 @@ describe("Gateway evm inbound", function () {
     const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
     expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore.add(amount));
 
-    await expect(tx).to.emit(gateway, "Send").withArgs(destination.address.toLowerCase(), amount);
+    await expect(tx).to.emit(gateway, "Send").withArgs(owner.address, destination.address.toLowerCase(), amount);
   });
 
   it("should fail to send to tss address if msg.value lower than amount", async function () {

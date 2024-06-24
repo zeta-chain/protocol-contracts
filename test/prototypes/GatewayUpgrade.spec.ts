@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 
-describe("Gateway upgrade", function () {
+describe("GatewayEVM upgrade", function () {
   let receiver: Contract;
   let gateway: Contract;
   let token: Contract;
@@ -12,7 +12,7 @@ describe("Gateway upgrade", function () {
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
     const Receiver = await ethers.getContractFactory("Receiver");
-    const Gateway = await ethers.getContractFactory("Gateway");
+    const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
     [owner, destination, randomSigner, tssAddress] = await ethers.getSigners();
 
@@ -37,13 +37,13 @@ describe("Gateway upgrade", function () {
   it("should upgrade and forward call to Receiver's receiveA function", async function () {
     // Upgrade Gateway contract
     // Fail to upgrade if not using owner account
-    let GatewayUpgradeTest = await ethers.getContractFactory("GatewayUpgradeTest", randomSigner);
+    let GatewayUpgradeTest = await ethers.getContractFactory("GatewayEVMUpgradeTest", randomSigner);
     await expect(upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest)).to.be.revertedWith(
       "Ownable: caller is not the owner"
     );
 
     // Upgrade with owner account
-    GatewayUpgradeTest = await ethers.getContractFactory("GatewayUpgradeTest", owner);
+    GatewayUpgradeTest = await ethers.getContractFactory("GatewayEVMUpgradeTest", owner);
     const gatewayUpgradeTest = await upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest);
 
     // Forward call

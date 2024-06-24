@@ -158,12 +158,12 @@ export type { ZetaConnectorNonEth } from "./contracts/evm/ZetaConnector.non-eth.
 export { ZetaConnectorNonEth__factory } from "./factories/contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth__factory";
 export type { ERC20CustodyNew } from "./contracts/prototypes/evm/ERC20CustodyNew";
 export { ERC20CustodyNew__factory } from "./factories/contracts/prototypes/evm/ERC20CustodyNew__factory";
-export type { Gateway } from "./contracts/prototypes/evm/Gateway";
-export { Gateway__factory } from "./factories/contracts/prototypes/evm/Gateway__factory";
-export type { GatewayUpgradeTest } from "./contracts/prototypes/evm/GatewayUpgradeTest";
-export { GatewayUpgradeTest__factory } from "./factories/contracts/prototypes/evm/GatewayUpgradeTest__factory";
-export type { IGateway } from "./contracts/prototypes/evm/interfaces.sol/IGateway";
-export { IGateway__factory } from "./factories/contracts/prototypes/evm/interfaces.sol/IGateway__factory";
+export type { GatewayEVM } from "./contracts/prototypes/evm/GatewayEVM";
+export { GatewayEVM__factory } from "./factories/contracts/prototypes/evm/GatewayEVM__factory";
+export type { GatewayEVMUpgradeTest } from "./contracts/prototypes/evm/GatewayEVMUpgradeTest";
+export { GatewayEVMUpgradeTest__factory } from "./factories/contracts/prototypes/evm/GatewayEVMUpgradeTest__factory";
+export type { IGatewayEVM } from "./contracts/prototypes/evm/interfaces.sol/IGatewayEVM";
+export { IGatewayEVM__factory } from "./factories/contracts/prototypes/evm/interfaces.sol/IGatewayEVM__factory";
 export type { Receiver } from "./contracts/prototypes/evm/Receiver";
 export { Receiver__factory } from "./factories/contracts/prototypes/evm/Receiver__factory";
 export type { TestERC20 } from "./contracts/prototypes/evm/TestERC20";

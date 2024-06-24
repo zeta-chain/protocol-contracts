@@ -8,13 +8,13 @@ import "./interfaces.sol";
 // This version include a functionality allowing to call a contract
 // ERC20Custody doesn't call smart contract directly, it passes through the Gateway contract
 contract ERC20CustodyNew {
-    IGateway public gateway;
+    IGatewayEVM public gateway;
 
     event Withdraw(address indexed token, address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
 
     constructor(address _gateway) {
-        gateway = IGateway(_gateway);
+        gateway = IGatewayEVM(_gateway);
     }
     
     // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract call

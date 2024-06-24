@@ -7,9 +7,9 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 
-// The Gateway contract is the endpoint to call smart contracts on external chains
+// The GatewayEVM contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
-contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error ExecutionFailed();
     error SendFailed();
     error InsufficientETHAmount();
@@ -19,8 +19,8 @@ contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
 
     event Executed(address indexed destination, uint256 value, bytes data);
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-    event SendERC20(bytes recipient, address indexed asset, uint256 amount);
-    event Send(bytes recipient, uint256 amount);
+    event SendERC20(address sender, bytes recipient, address indexed asset, uint256 amount);
+    event Send(address sender, bytes recipient, uint256 amount);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -91,7 +91,7 @@ contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     function sendERC20(bytes calldata recipient, address token, uint256 amount) external {
         IERC20(token).transferFrom(msg.sender, address(custody), amount);
 
-        emit SendERC20(recipient, token, amount);
+        emit SendERC20(msg.sender, recipient, token, amount);
     }
 
     // Tranfer specified ETH amount to TSS address and emits event
@@ -106,7 +106,7 @@ contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
             revert SendFailed();
         }
 
-        emit Send(recipient, amount);
+        emit Send(msg.sender, recipient, amount);
     }
 
     function setCustody(address _custody) external {
