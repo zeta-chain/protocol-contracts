@@ -35,6 +35,9 @@ describe("GatewayEVM upgrade", function () {
   });
 
   it("should upgrade and forward call to Receiver's receiveA function", async function () {
+    const custodyBeforeUpgrade = await gateway.custody();
+    const tssAddressBeforeUpgrade = await gateway.tssAddress();
+
     // Upgrade Gateway contract
     // Fail to upgrade if not using owner account
     let GatewayUpgradeTest = await ethers.getContractFactory("GatewayEVMUpgradeTest", randomSigner);
@@ -44,6 +47,7 @@ describe("GatewayEVM upgrade", function () {
 
     // Upgrade with owner account
     GatewayUpgradeTest = await ethers.getContractFactory("GatewayEVMUpgradeTest", owner);
+
     const gatewayUpgradeTest = await upgrades.upgradeProxy(gateway.address, GatewayUpgradeTest);
 
     // Forward call
@@ -62,5 +66,9 @@ describe("GatewayEVM upgrade", function () {
     // Listen for the event
     await expect(tx).to.emit(gatewayUpgradeTest, "ExecutedV2").withArgs(receiver.address, value, data);
     await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gatewayUpgradeTest.address, value, str, num, flag);
+
+    // Check that storage is not changed
+    expect(await gatewayUpgradeTest.custody()).to.equal(custodyBeforeUpgrade);
+    expect(await gatewayUpgradeTest.tssAddress()).to.equal(tssAddressBeforeUpgrade);
   });
 });
