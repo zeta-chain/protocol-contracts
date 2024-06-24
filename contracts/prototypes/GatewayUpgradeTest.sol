@@ -7,25 +7,32 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 
-// NOTE: Purpose of this contract is to test upgrade process, the only difference should be event names
+// NOTE: Purpose of this contract is to test upgrade process, the only difference should be name of Executed event
 // The Gateway contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error ExecutionFailed();
+    error SendFailed();
+    error InsufficientETHAmount();
 
     address public custody;
+    address public tssAddress;
 
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
-    event ExecutedWithERC20V2(address indexed token, address indexed to, uint256 amount, bytes data);
+    event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
+    event SendERC20(bytes recipient, address indexed asset, uint256 amount);
+    event Send(bytes recipient, uint256 amount);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize(address _tssAddress) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
+
+        tssAddress = _tssAddress;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -76,9 +83,29 @@ contract GatewayUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgradeabl
             IERC20(token).transfer(address(custody), remainingBalance);
         }
 
-        emit ExecutedWithERC20V2(token, to, amount, data);
+        emit ExecutedWithERC20(token, to, amount, data);
 
         return result;
+    }
+
+    function sendERC20(bytes calldata recipient, address token, uint256 amount) external {
+        IERC20(token).transferFrom(msg.sender, address(custody), amount);
+
+        emit SendERC20(recipient, token, amount);
+    }
+
+    function send(bytes calldata recipient, uint256 amount) external payable {
+        if (msg.value < amount) {
+            revert InsufficientETHAmount();
+        }
+
+        (bool sent, ) = tssAddress.call{value: amount}("");
+
+        if (sent == false) {
+            revert SendFailed();
+        }
+
+        emit Send(recipient, amount);
     }
 
     function setCustody(address _custody) external {

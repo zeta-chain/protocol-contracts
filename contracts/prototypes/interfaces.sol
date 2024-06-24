@@ -10,4 +10,8 @@ interface IGateway {
     ) external returns (bytes memory);
 
     function execute(address destination, bytes calldata data) external payable returns (bytes memory);
+
+    function sendERC20(bytes calldata recipient, address asset, uint256 amount) external;
+
+    function send(bytes calldata recipient, uint256 amount) external payable;
 }

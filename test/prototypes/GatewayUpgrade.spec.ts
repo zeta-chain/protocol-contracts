@@ -7,19 +7,19 @@ describe("Gateway upgrade", function () {
   let gateway: Contract;
   let token: Contract;
   let custody: Contract;
-  let owner: any, destination: any, randomSigner: any;
+  let owner: any, destination: any, randomSigner: any, tssAddress: any;
 
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
     const Receiver = await ethers.getContractFactory("Receiver");
     const Gateway = await ethers.getContractFactory("Gateway");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
-    [owner, destination, randomSigner] = await ethers.getSigners();
+    [owner, destination, randomSigner, tssAddress] = await ethers.getSigners();
 
     // Deploy the contracts
     token = await TestERC20.deploy("Test Token", "TTK");
     receiver = await Receiver.deploy();
-    gateway = await upgrades.deployProxy(Gateway, [], {
+    gateway = await upgrades.deployProxy(Gateway, [tssAddress.address], {
       initializer: "initialize",
       kind: "uups",
     });

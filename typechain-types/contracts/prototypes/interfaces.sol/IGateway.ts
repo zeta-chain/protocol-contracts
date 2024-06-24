@@ -28,10 +28,16 @@ export interface IGatewayInterface extends utils.Interface {
   functions: {
     "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
+    "send(bytes,uint256)": FunctionFragment;
+    "sendERC20(bytes,address,uint256)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "execute" | "executeWithERC20"
+    nameOrSignatureOrTopic:
+      | "execute"
+      | "executeWithERC20"
+      | "send"
+      | "sendERC20"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -47,12 +53,26 @@ export interface IGatewayInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "send",
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "sendERC20",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
 
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeWithERC20",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "sendERC20", data: BytesLike): Result;
 
   events: {};
 }
@@ -97,6 +117,19 @@ export interface IGateway extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    send(
+      recipient: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    sendERC20(
+      recipient: PromiseOrValue<BytesLike>,
+      asset: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   execute(
@@ -110,6 +143,19 @@ export interface IGateway extends BaseContract {
     to: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  send(
+    recipient: PromiseOrValue<BytesLike>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  sendERC20(
+    recipient: PromiseOrValue<BytesLike>,
+    asset: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -127,6 +173,19 @@ export interface IGateway extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    send(
+      recipient: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    sendERC20(
+      recipient: PromiseOrValue<BytesLike>,
+      asset: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
@@ -145,6 +204,19 @@ export interface IGateway extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    send(
+      recipient: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    sendERC20(
+      recipient: PromiseOrValue<BytesLike>,
+      asset: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -159,6 +231,19 @@ export interface IGateway extends BaseContract {
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    send(
+      recipient: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    sendERC20(
+      recipient: PromiseOrValue<BytesLike>,
+      asset: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

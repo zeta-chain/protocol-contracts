@@ -23,9 +23,10 @@ describe("Uniswap Integration with Gateway", function () {
   let custody: ERC20CustodyNew;
   let gateway: Gateway;
   let owner, addr1, addr2;
+  let tssAddress;
 
   beforeEach(async function () {
-    [owner, addr1, addr2] = await ethers.getSigners();
+    [owner, addr1, addr2, tssAddress] = await ethers.getSigners();
 
     // Deploy TestERC20 tokens
     const TestERC20 = await ethers.getContractFactory("TestERC20");
@@ -58,7 +59,7 @@ describe("Uniswap Integration with Gateway", function () {
     // Deploy Gateway and Custody Contracts
     const Gateway = await ethers.getContractFactory("Gateway");
     const ERC20CustodyNew = await ethers.getContractFactory("ERC20CustodyNew");
-    gateway = (await upgrades.deployProxy(Gateway, [], {
+    gateway = (await upgrades.deployProxy(Gateway, [tssAddress.address], {
       initializer: "initialize",
       kind: "uups",
     })) as Gateway;
