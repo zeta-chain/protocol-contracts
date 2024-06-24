@@ -87,26 +87,26 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return result;
     }
 
-    // Tranfer specified token amount to ERC20Custody and emits event
+    // Transfer specified token amount to ERC20Custody and emits event
     function sendERC20(bytes calldata recipient, address token, uint256 amount) external {
         IERC20(token).transferFrom(msg.sender, address(custody), amount);
 
         emit SendERC20(msg.sender, recipient, token, amount);
     }
 
-    // Tranfer specified ETH amount to TSS address and emits event
+    // Transfer specified ETH amount to TSS address and emits event
     function send(bytes calldata recipient, uint256 amount) external payable {
-        if (msg.value < amount) {
+      if (msg.value == 0) {
             revert InsufficientETHAmount();
         }
 
-        (bool sent, ) = tssAddress.call{value: amount}("");
+        (bool sent, ) = tssAddress.call{value: msg.value}("");
 
         if (sent == false) {
             revert SendFailed();
         }
 
-        emit Send(msg.sender, recipient, amount);
+        emit Send(msg.sender, recipient, msg.value);
     }
 
     function setCustody(address _custody) external {

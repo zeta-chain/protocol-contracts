@@ -187,12 +187,12 @@ describe("GatewayEVM inbound", function () {
     await expect(tx).to.emit(gateway, "Send").withArgs(owner.address, destination.address.toLowerCase(), amount);
   });
 
-  it("should fail to send to tss address if msg.value lower than amount", async function () {
-    const amount = ethers.utils.parseEther("100") as BigNumber;
+  it("should fail to send to tss address if msg.value is 0", async function () {
+    const amount = ethers.utils.parseEther("0") as BigNumber;
 
     const tssAddressBalanceBefore = (await ethers.provider.getBalance(tssAddress.address)) as BigNumber;
 
-    await expect(gateway.send(destination.address, amount, { value: amount.sub(1) })).to.be.revertedWith(
+    await expect(gateway.send(destination.address, amount, { value: amount })).to.be.revertedWith(
       "InsufficientETHAmount"
     );
 
