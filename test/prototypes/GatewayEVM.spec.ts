@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 
-describe("GatewayEVM and Receiver", function () {
+describe("GatewayEVM inbound", function () {
   let receiver: Contract;
   let gateway: Contract;
   let token: Contract;
@@ -45,7 +45,6 @@ describe("GatewayEVM and Receiver", function () {
 
     // Call execute on the Gateway contract
     const tx = await gateway.execute(receiver.address, data, { value: value });
-    await tx.wait();
 
     // Listen for the event
     await expect(tx).to.emit(gateway, "Executed").withArgs(receiver.address, value, data);
@@ -58,7 +57,6 @@ describe("GatewayEVM and Receiver", function () {
     const flag = false;
     const data = receiver.interface.encodeFunctionData("receiveB", [strs, nums, flag]);
     const tx = await gateway.execute(receiver.address, data);
-    await tx.wait();
     await expect(tx).to.emit(receiver, "ReceivedB").withArgs(gateway.address, strs, nums, flag);
   });
 
@@ -70,7 +68,6 @@ describe("GatewayEVM and Receiver", function () {
 
     // Withdraw and call
     const tx = await custody.withdrawAndCall(token.address, receiver.address, amount, data);
-    await tx.wait();
 
     // Verify the event was emitted
     await expect(tx)
@@ -95,7 +92,6 @@ describe("GatewayEVM and Receiver", function () {
 
     // Execute the call
     const tx = await gateway.execute(receiver.address, data);
-    await tx.wait();
 
     // Verify the event was emitted
     await expect(tx).to.emit(receiver, "ReceivedD").withArgs(gateway.address);
@@ -160,7 +156,6 @@ describe("GatewayEVM inbound", function () {
     await token.approve(gateway.address, amount);
 
     const tx = await gateway["deposit(address,uint256,address)"](destination.address, amount, token.address);
-    await tx.wait();
 
     const custodyBalanceAfter = await token.balanceOf(custody.address);
     expect(custodyBalanceAfter).to.equal(amount);
@@ -194,7 +189,6 @@ describe("GatewayEVM inbound", function () {
     const tssAddressBalanceBefore = (await ethers.provider.getBalance(tssAddress.address)) as BigNumber;
 
     const tx = await gateway["deposit(address)"](destination.address, { value: amount });
-    await tx.wait();
 
     const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
     expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore.add(amount));
@@ -236,7 +230,6 @@ describe("GatewayEVM inbound", function () {
       token.address,
       payload
     );
-    await tx.wait();
 
     const custodyBalanceAfter = await token.balanceOf(custody.address);
     expect(custodyBalanceAfter).to.equal(amount);
@@ -277,7 +270,6 @@ describe("GatewayEVM inbound", function () {
     const tssAddressBalanceBefore = (await ethers.provider.getBalance(tssAddress.address)) as BigNumber;
 
     const tx = await gateway["depositAndCall(address,bytes)"](destination.address, payload, { value: amount });
-    await tx.wait();
 
     const tssAddressBalanceAfter = await ethers.provider.getBalance(tssAddress.address);
     expect(tssAddressBalanceAfter).to.equal(tssAddressBalanceBefore.add(amount));
@@ -311,7 +303,6 @@ describe("GatewayEVM inbound", function () {
     const payload = iface.encodeFunctionData("hello", ["0x1234567890123456789012345678901234567890"]);
 
     const tx = await gateway.call(destination.address, payload);
-    await tx.wait();
 
     await expect(tx)
       .to.emit(gateway, "Call")
