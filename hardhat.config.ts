@@ -4,6 +4,7 @@ import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
 import "solidity-coverage";
+import "hardhat-gas-reporter";
 import "./tasks/addresses";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
