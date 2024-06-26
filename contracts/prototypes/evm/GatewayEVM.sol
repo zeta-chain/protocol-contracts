@@ -88,8 +88,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return result;
     }
 
-
-    // Deposit ETH
+    // Deposit ETH to tss
     function deposit(address receiver) external payable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited, ) = tssAddress.call{value: msg.value}("");
@@ -101,7 +100,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
 
-    // Deposit ERC20 tokens
+    // Deposit ERC20 tokens to custody
     function deposit(address receiver, uint256 amount, address asset) external {
         if (amount == 0) revert InsufficientERC20Amount();
         IERC20(asset).transferFrom(msg.sender, address(custody), amount);
@@ -109,7 +108,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         emit Deposit(msg.sender, receiver, amount, asset, "");
     }
 
-    // Deposit ETH and call an omnichain smart contract
+    // Deposit ETH to tss and call an omnichain smart contract
     function depositAndCall(address receiver, bytes calldata payload) external payable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited, ) = tssAddress.call{value: msg.value}("");
@@ -121,7 +120,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
     }
 
-    // Deposit ERC20 tokens and call an omnichain smart contract
+    // Deposit ERC20 tokens to custody and call an omnichain smart contract
     function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
         if (amount == 0) revert InsufficientERC20Amount();
         IERC20(asset).transferFrom(msg.sender, address(custody), amount);
