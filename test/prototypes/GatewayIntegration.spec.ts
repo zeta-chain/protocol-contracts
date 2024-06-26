@@ -170,15 +170,22 @@ describe("GatewayEVM inbound", function () {
 
     await expect(tx)
       .to.emit(gateway, "Deposit")
-      .withArgs(ethers.utils.getAddress(owner.address), ethers.utils.getAddress(destination.address), amount, ethers.utils.getAddress(token.address), "0x");
+      .withArgs(
+        ethers.utils.getAddress(owner.address),
+        ethers.utils.getAddress(destination.address),
+        amount,
+        ethers.utils.getAddress(token.address),
+        "0x"
+      );
   });
 
   it("should fail to deposit erc20 to custody and emit event if amount is 0", async function () {
     const amount = ethers.utils.parseEther("0");
     await token.approve(gateway.address, amount);
 
-    await expect(gateway["deposit(address,uint256,address)"](destination.address, amount, token.address))
-      .to.be.revertedWith("InsufficientERC20Amount");
+    await expect(
+      gateway["deposit(address,uint256,address)"](destination.address, amount, token.address)
+    ).to.be.revertedWith("InsufficientERC20Amount");
   });
 
   it("should deposit eth to tss and emit event", async function () {
@@ -194,37 +201,41 @@ describe("GatewayEVM inbound", function () {
 
     await expect(tx)
       .to.emit(gateway, "Deposit")
-      .withArgs(ethers.utils.getAddress(owner.address), ethers.utils.getAddress(destination.address), amount, ethers.constants.AddressZero, "0x");
+      .withArgs(
+        ethers.utils.getAddress(owner.address),
+        ethers.utils.getAddress(destination.address),
+        amount,
+        ethers.constants.AddressZero,
+        "0x"
+      );
   });
 
   it("should fail to deposit eth to tss and emit event if amount is 0", async function () {
     const amount = ethers.utils.parseEther("0");
 
-    await expect(gateway["deposit(address)"](destination.address, { value: amount }))
-      .to.be.revertedWith("InsufficientETHAmount");
+    await expect(gateway["deposit(address)"](destination.address, { value: amount })).to.be.revertedWith(
+      "InsufficientETHAmount"
+    );
   });
 
   it("should fail to deposit erc20 to custody and emit event with payload if amount is 0", async function () {
     const amount = ethers.utils.parseEther("0");
 
-    let ABI = [
-      "function hello(address to)"
-    ];
+    let ABI = ["function hello(address to)"];
     let iface = new ethers.utils.Interface(ABI);
-    const payload = iface.encodeFunctionData("hello", [ "0x1234567890123456789012345678901234567890"]);
+    const payload = iface.encodeFunctionData("hello", ["0x1234567890123456789012345678901234567890"]);
 
-    await expect(gateway["depositAndCall(address,uint256,address,bytes)"](destination.address, amount, token.address, payload))
-      .to.be.revertedWith("InsufficientERC20Amount");
+    await expect(
+      gateway["depositAndCall(address,uint256,address,bytes)"](destination.address, amount, token.address, payload)
+    ).to.be.revertedWith("InsufficientERC20Amount");
   });
 
   it("should deposit eth to tss and emit event with payload", async function () {
     const amount = ethers.utils.parseEther("100");
 
-    let ABI = [
-      "function hello(address to)"
-    ];
+    let ABI = ["function hello(address to)"];
     let iface = new ethers.utils.Interface(ABI);
-    const payload = iface.encodeFunctionData("hello", [ "0x1234567890123456789012345678901234567890"]);
+    const payload = iface.encodeFunctionData("hello", ["0x1234567890123456789012345678901234567890"]);
 
     const tssAddressBalanceBefore = (await ethers.provider.getBalance(tssAddress.address)) as BigNumber;
 
@@ -236,28 +247,31 @@ describe("GatewayEVM inbound", function () {
 
     await expect(tx)
       .to.emit(gateway, "Deposit")
-      .withArgs(ethers.utils.getAddress(owner.address), ethers.utils.getAddress(destination.address), amount, ethers.constants.AddressZero, payload);
+      .withArgs(
+        ethers.utils.getAddress(owner.address),
+        ethers.utils.getAddress(destination.address),
+        amount,
+        ethers.constants.AddressZero,
+        payload
+      );
   });
 
   it("should fail to deposit eth to tss and emit event with payload if amount is 0", async function () {
     const amount = ethers.utils.parseEther("0");
 
-    let ABI = [
-      "function hello(address to)"
-    ];
+    let ABI = ["function hello(address to)"];
     let iface = new ethers.utils.Interface(ABI);
-    const payload = iface.encodeFunctionData("hello", [ "0x1234567890123456789012345678901234567890"]);
+    const payload = iface.encodeFunctionData("hello", ["0x1234567890123456789012345678901234567890"]);
 
-    await expect(gateway["depositAndCall(address,bytes)"](destination.address, payload, { value: amount }))
-      .to.be.revertedWith("InsufficientETHAmount");
+    await expect(
+      gateway["depositAndCall(address,bytes)"](destination.address, payload, { value: amount })
+    ).to.be.revertedWith("InsufficientETHAmount");
   });
 
   it("should call and emit with payload and without asset transfer", async function () {
-    let ABI = [
-      "function hello(address to)"
-    ];
+    let ABI = ["function hello(address to)"];
     let iface = new ethers.utils.Interface(ABI);
-    const payload = iface.encodeFunctionData("hello", [ "0x1234567890123456789012345678901234567890"]);
+    const payload = iface.encodeFunctionData("hello", ["0x1234567890123456789012345678901234567890"]);
 
     const tx = await gateway.call(destination.address, payload);
     await tx.wait();
