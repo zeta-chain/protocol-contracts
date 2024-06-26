@@ -14,6 +14,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error DepositFailed();
     error InsufficientETHAmount();
     error InsufficientERC20Amount();
+    error ZeroAddress();
 
     address public custody;
     address public tssAddress;
@@ -32,6 +33,9 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         __Ownable_init();
         __UUPSUpgradeable_init();
 
+        if (_tssAddress == address(0)) {
+            revert ZeroAddress();
+        }
         tssAddress = _tssAddress;
     }
 
@@ -69,6 +73,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         bytes calldata data
     ) external returns (bytes memory) {
         // Approve the target contract to spend the tokens
+        IERC20(token).approve(to, 0);
         IERC20(token).approve(to, amount);
 
         // Execute the call on the target contract
