@@ -11,16 +11,17 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error ExecutionFailed();
-    error SendFailed();
+    error DepositFailed();
     error InsufficientETHAmount();
+    error InsufficientERC20Amount();
 
     address public custody;
     address public tssAddress;
 
     event Executed(address indexed destination, uint256 value, bytes data);
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-    event SendERC20(address sender, bytes recipient, address indexed asset, uint256 amount);
-    event Send(address sender, bytes recipient, uint256 amount);
+    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+    event Call(address indexed sender, address indexed receiver, bytes payload);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -87,26 +88,50 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         return result;
     }
 
-    // Transfer specified token amount to ERC20Custody and emits event
-    function sendERC20(bytes calldata recipient, address token, uint256 amount) external {
-        IERC20(token).transferFrom(msg.sender, address(custody), amount);
 
-        emit SendERC20(msg.sender, recipient, token, amount);
+    // Deposit ETH
+    function deposit(address receiver) external payable {
+        if (msg.value == 0) revert InsufficientETHAmount();
+        (bool deposited, ) = tssAddress.call{value: msg.value}("");
+
+        if (deposited == false) {
+            revert DepositFailed();
+        }
+        
+        emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
 
-    // Transfer specified ETH amount to TSS address and emits event
-    function send(bytes calldata recipient, uint256 amount) external payable {
-      if (msg.value == 0) {
-            revert InsufficientETHAmount();
+    // Deposit ERC20 tokens
+    function deposit(address receiver, uint256 amount, address asset) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+        IERC20(asset).transferFrom(msg.sender, address(custody), amount);
+
+        emit Deposit(msg.sender, receiver, amount, asset, "");
+    }
+
+    // Deposit ETH and call an omnichain smart contract
+    function depositAndCall(address receiver, bytes calldata payload) external payable {
+        if (msg.value == 0) revert InsufficientETHAmount();
+        (bool deposited, ) = tssAddress.call{value: msg.value}("");
+
+        if (deposited == false) {
+            revert DepositFailed();
         }
+        
+        emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
+    }
 
-        (bool sent, ) = tssAddress.call{value: msg.value}("");
+    // Deposit ERC20 tokens and call an omnichain smart contract
+    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+        IERC20(asset).transferFrom(msg.sender, address(custody), amount);
 
-        if (sent == false) {
-            revert SendFailed();
-        }
+        emit Deposit(msg.sender, receiver, amount, asset, payload);
+    }
 
-        emit Send(msg.sender, recipient, msg.value);
+    // Call an omnichain smart contract without asset transfer
+    function call(address receiver, bytes calldata payload) external {
+        emit Call(msg.sender, receiver, payload);
     }
 
     function setCustody(address _custody) external {

@@ -30,15 +30,18 @@ import type {
 
 export interface GatewayEVMInterface extends utils.Interface {
   functions: {
+    "call(address,bytes)": FunctionFragment;
     "custody()": FunctionFragment;
+    "deposit(address)": FunctionFragment;
+    "deposit(address,uint256,address)": FunctionFragment;
+    "depositAndCall(address,bytes)": FunctionFragment;
+    "depositAndCall(address,uint256,address,bytes)": FunctionFragment;
     "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "send(bytes,uint256)": FunctionFragment;
-    "sendERC20(bytes,address,uint256)": FunctionFragment;
     "setCustody(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "tssAddress()": FunctionFragment;
@@ -48,15 +51,18 @@ export interface GatewayEVMInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "call"
       | "custody"
+      | "deposit(address)"
+      | "deposit(address,uint256,address)"
+      | "depositAndCall(address,bytes)"
+      | "depositAndCall(address,uint256,address,bytes)"
       | "execute"
       | "executeWithERC20"
       | "initialize"
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
-      | "send"
-      | "sendERC20"
       | "setCustody"
       | "transferOwnership"
       | "tssAddress"
@@ -64,7 +70,36 @@ export interface GatewayEVMInterface extends utils.Interface {
       | "upgradeToAndCall"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "call",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
   encodeFunctionData(functionFragment: "custody", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address)",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address,uint256,address)",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,bytes)",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
   encodeFunctionData(
     functionFragment: "execute",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
@@ -92,18 +127,6 @@ export interface GatewayEVMInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "send",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "sendERC20",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setCustody",
     values: [PromiseOrValue<string>]
   ): string;
@@ -124,7 +147,24 @@ export interface GatewayEVMInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
 
+  decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address,uint256,address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeWithERC20",
@@ -140,8 +180,6 @@ export interface GatewayEVMInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "sendERC20", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setCustody", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -157,23 +195,23 @@ export interface GatewayEVMInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "Call(address,address,bytes)": EventFragment;
+    "Deposit(address,address,uint256,address,bytes)": EventFragment;
     "Executed(address,uint256,bytes)": EventFragment;
     "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Send(address,bytes,uint256)": EventFragment;
-    "SendERC20(address,bytes,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Send"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SendERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -197,6 +235,29 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface CallEventObject {
+  sender: string;
+  receiver: string;
+  payload: string;
+}
+export type CallEvent = TypedEvent<[string, string, string], CallEventObject>;
+
+export type CallEventFilter = TypedEventFilter<CallEvent>;
+
+export interface DepositEventObject {
+  sender: string;
+  receiver: string;
+  amount: BigNumber;
+  asset: string;
+  payload: string;
+}
+export type DepositEvent = TypedEvent<
+  [string, string, BigNumber, string, string],
+  DepositEventObject
+>;
+
+export type DepositEventFilter = TypedEventFilter<DepositEvent>;
 
 export interface ExecutedEventObject {
   destination: string;
@@ -243,31 +304,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
-export interface SendEventObject {
-  sender: string;
-  recipient: string;
-  amount: BigNumber;
-}
-export type SendEvent = TypedEvent<
-  [string, string, BigNumber],
-  SendEventObject
->;
-
-export type SendEventFilter = TypedEventFilter<SendEvent>;
-
-export interface SendERC20EventObject {
-  sender: string;
-  recipient: string;
-  asset: string;
-  amount: BigNumber;
-}
-export type SendERC20Event = TypedEvent<
-  [string, string, string, BigNumber],
-  SendERC20EventObject
->;
-
-export type SendERC20EventFilter = TypedEventFilter<SendERC20Event>;
-
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -302,7 +338,39 @@ export interface GatewayEVM extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     custody(overrides?: CallOverrides): Promise<[string]>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -331,19 +399,6 @@ export interface GatewayEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     setCustody(
       _custody: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -368,7 +423,39 @@ export interface GatewayEVM extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  call(
+    receiver: PromiseOrValue<string>,
+    payload: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   custody(overrides?: CallOverrides): Promise<string>;
+
+  "deposit(address)"(
+    receiver: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "deposit(address,uint256,address)"(
+    receiver: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    asset: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "depositAndCall(address,bytes)"(
+    receiver: PromiseOrValue<string>,
+    payload: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "depositAndCall(address,uint256,address,bytes)"(
+    receiver: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    asset: PromiseOrValue<string>,
+    payload: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   execute(
     destination: PromiseOrValue<string>,
@@ -397,19 +484,6 @@ export interface GatewayEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  send(
-    recipient: PromiseOrValue<BytesLike>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  sendERC20(
-    recipient: PromiseOrValue<BytesLike>,
-    token: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   setCustody(
     _custody: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -434,7 +508,39 @@ export interface GatewayEVM extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     custody(overrides?: CallOverrides): Promise<string>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -460,19 +566,6 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     setCustody(
       _custody: PromiseOrValue<string>,
@@ -515,6 +608,32 @@ export interface GatewayEVM extends BaseContract {
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
 
+    "Call(address,address,bytes)"(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      payload?: null
+    ): CallEventFilter;
+    Call(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      payload?: null
+    ): CallEventFilter;
+
+    "Deposit(address,address,uint256,address,bytes)"(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      amount?: null,
+      asset?: null,
+      payload?: null
+    ): DepositEventFilter;
+    Deposit(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      amount?: null,
+      asset?: null,
+      payload?: null
+    ): DepositEventFilter;
+
     "Executed(address,uint256,bytes)"(
       destination?: PromiseOrValue<string> | null,
       value?: null,
@@ -551,26 +670,6 @@ export interface GatewayEVM extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
-    "Send(address,bytes,uint256)"(
-      sender?: null,
-      recipient?: null,
-      amount?: null
-    ): SendEventFilter;
-    Send(sender?: null, recipient?: null, amount?: null): SendEventFilter;
-
-    "SendERC20(address,bytes,address,uint256)"(
-      sender?: null,
-      recipient?: null,
-      asset?: PromiseOrValue<string> | null,
-      amount?: null
-    ): SendERC20EventFilter;
-    SendERC20(
-      sender?: null,
-      recipient?: null,
-      asset?: PromiseOrValue<string> | null,
-      amount?: null
-    ): SendERC20EventFilter;
-
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -580,7 +679,39 @@ export interface GatewayEVM extends BaseContract {
   };
 
   estimateGas: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     custody(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -609,19 +740,6 @@ export interface GatewayEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setCustody(
       _custody: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -647,7 +765,39 @@ export interface GatewayEVM extends BaseContract {
   };
 
   populateTransaction: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     custody(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -673,19 +823,6 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
