@@ -230,7 +230,12 @@ describe("GatewayEVM inbound", function () {
 
     await token.approve(gateway.address, amount);
 
-    const tx = await gateway["depositAndCall(address,uint256,address,bytes)"](destination.address, amount, token.address, payload);
+    const tx = await gateway["depositAndCall(address,uint256,address,bytes)"](
+      destination.address,
+      amount,
+      token.address,
+      payload
+    );
     await tx.wait();
 
     const custodyBalanceAfter = await token.balanceOf(custody.address);
