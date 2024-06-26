@@ -3,3 +3,6 @@
 /* eslint-disable */
 import type * as evm from "./evm";
 export type { evm };
+import type * as interfacesSol from "./interfaces.sol";
+export type { interfacesSol };
+export type { GatewayUpgradeTest } from "./GatewayUpgradeTest";

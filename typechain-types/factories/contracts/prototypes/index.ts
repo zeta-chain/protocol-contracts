@@ -2,3 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as evm from "./evm";
+export * as interfacesSol from "./interfaces.sol";
+export { GatewayUpgradeTest__factory } from "./GatewayUpgradeTest__factory";

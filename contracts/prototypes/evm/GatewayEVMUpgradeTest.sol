@@ -37,18 +37,6 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
-
-    function initialize() public initializer {
-        __Ownable_init();
-        __UUPSUpgradeable_init();
-    }
-
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
-
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
     

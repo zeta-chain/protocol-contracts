@@ -33,15 +33,12 @@ export interface GatewayUpgradeTestInterface extends utils.Interface {
     "custody()": FunctionFragment;
     "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
-    "initialize(address)": FunctionFragment;
+    "initialize()": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "send(bytes,uint256)": FunctionFragment;
-    "sendERC20(bytes,address,uint256)": FunctionFragment;
     "setCustody(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "tssAddress()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
   };
@@ -55,11 +52,8 @@ export interface GatewayUpgradeTestInterface extends utils.Interface {
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
-      | "send"
-      | "sendERC20"
       | "setCustody"
       | "transferOwnership"
-      | "tssAddress"
       | "upgradeTo"
       | "upgradeToAndCall"
   ): FunctionFragment;
@@ -80,7 +74,7 @@ export interface GatewayUpgradeTestInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [PromiseOrValue<string>]
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -92,28 +86,12 @@ export interface GatewayUpgradeTestInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "send",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "sendERC20",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setCustody",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tssAddress",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeTo",
@@ -140,14 +118,11 @@ export interface GatewayUpgradeTestInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "sendERC20", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setCustody", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -158,22 +133,18 @@ export interface GatewayUpgradeTestInterface extends utils.Interface {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "ExecutedV2(address,uint256,bytes)": EventFragment;
-    "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
+    "ExecutedWithERC20V2(address,address,uint256,bytes)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Send(bytes,uint256)": EventFragment;
-    "SendERC20(bytes,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedV2"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20V2"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Send"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SendERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -210,19 +181,19 @@ export type ExecutedV2Event = TypedEvent<
 
 export type ExecutedV2EventFilter = TypedEventFilter<ExecutedV2Event>;
 
-export interface ExecutedWithERC20EventObject {
+export interface ExecutedWithERC20V2EventObject {
   token: string;
   to: string;
   amount: BigNumber;
   data: string;
 }
-export type ExecutedWithERC20Event = TypedEvent<
+export type ExecutedWithERC20V2Event = TypedEvent<
   [string, string, BigNumber, string],
-  ExecutedWithERC20EventObject
+  ExecutedWithERC20V2EventObject
 >;
 
-export type ExecutedWithERC20EventFilter =
-  TypedEventFilter<ExecutedWithERC20Event>;
+export type ExecutedWithERC20V2EventFilter =
+  TypedEventFilter<ExecutedWithERC20V2Event>;
 
 export interface InitializedEventObject {
   version: number;
@@ -242,26 +213,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
-
-export interface SendEventObject {
-  recipient: string;
-  amount: BigNumber;
-}
-export type SendEvent = TypedEvent<[string, BigNumber], SendEventObject>;
-
-export type SendEventFilter = TypedEventFilter<SendEvent>;
-
-export interface SendERC20EventObject {
-  recipient: string;
-  asset: string;
-  amount: BigNumber;
-}
-export type SendERC20Event = TypedEvent<
-  [string, string, BigNumber],
-  SendERC20EventObject
->;
-
-export type SendERC20EventFilter = TypedEventFilter<SendERC20Event>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -314,7 +265,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     ): Promise<ContractTransaction>;
 
     initialize(
-      _tssAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -323,19 +273,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -348,8 +285,6 @@ export interface GatewayUpgradeTest extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    tssAddress(overrides?: CallOverrides): Promise<[string]>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -380,7 +315,6 @@ export interface GatewayUpgradeTest extends BaseContract {
   ): Promise<ContractTransaction>;
 
   initialize(
-    _tssAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -389,19 +323,6 @@ export interface GatewayUpgradeTest extends BaseContract {
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  send(
-    recipient: PromiseOrValue<BytesLike>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  sendERC20(
-    recipient: PromiseOrValue<BytesLike>,
-    token: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -414,8 +335,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  tssAddress(overrides?: CallOverrides): Promise<string>;
 
   upgradeTo(
     newImplementation: PromiseOrValue<string>,
@@ -445,29 +364,13 @@ export interface GatewayUpgradeTest extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    initialize(
-      _tssAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    initialize(overrides?: CallOverrides): Promise<void>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     setCustody(
       _custody: PromiseOrValue<string>,
@@ -478,8 +381,6 @@ export interface GatewayUpgradeTest extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    tssAddress(overrides?: CallOverrides): Promise<string>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -521,18 +422,18 @@ export interface GatewayUpgradeTest extends BaseContract {
       data?: null
     ): ExecutedV2EventFilter;
 
-    "ExecutedWithERC20(address,address,uint256,bytes)"(
+    "ExecutedWithERC20V2(address,address,uint256,bytes)"(
       token?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
       amount?: null,
       data?: null
-    ): ExecutedWithERC20EventFilter;
-    ExecutedWithERC20(
+    ): ExecutedWithERC20V2EventFilter;
+    ExecutedWithERC20V2(
       token?: PromiseOrValue<string> | null,
       to?: PromiseOrValue<string> | null,
       amount?: null,
       data?: null
-    ): ExecutedWithERC20EventFilter;
+    ): ExecutedWithERC20V2EventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
@@ -545,20 +446,6 @@ export interface GatewayUpgradeTest extends BaseContract {
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
-
-    "Send(bytes,uint256)"(recipient?: null, amount?: null): SendEventFilter;
-    Send(recipient?: null, amount?: null): SendEventFilter;
-
-    "SendERC20(bytes,address,uint256)"(
-      recipient?: null,
-      asset?: PromiseOrValue<string> | null,
-      amount?: null
-    ): SendERC20EventFilter;
-    SendERC20(
-      recipient?: null,
-      asset?: PromiseOrValue<string> | null,
-      amount?: null
-    ): SendERC20EventFilter;
 
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
@@ -586,7 +473,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     ): Promise<BigNumber>;
 
     initialize(
-      _tssAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -595,19 +481,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -620,8 +493,6 @@ export interface GatewayUpgradeTest extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    tssAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -653,7 +524,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _tssAddress: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -662,19 +532,6 @@ export interface GatewayUpgradeTest extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -687,8 +544,6 @@ export interface GatewayUpgradeTest extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
-
-    tssAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
