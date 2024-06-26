@@ -5,6 +5,7 @@ import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
 import "uniswap-v2-deploy-plugin";
 import "./tasks/addresses";
+import "@openzeppelin/hardhat-upgrades";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
 import * as dotenv from "dotenv";

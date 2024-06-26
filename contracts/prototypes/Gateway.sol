@@ -2,17 +2,32 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./ERC20CustodyNew.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
 
 // The Gateway contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
-contract Gateway {
+contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error ExecutionFailed();
 
-    ERC20CustodyNew public custody;
+    address public custody;
 
     event Executed(address indexed destination, uint256 value, bytes data);
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
+
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    function initialize() public initializer {
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
 
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
@@ -66,6 +81,6 @@ contract Gateway {
     }
 
     function setCustody(address _custody) external {
-        custody = ERC20CustodyNew(_custody);
+        custody = _custody;
     }
 }

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Contract } from "ethers";
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import { UniswapV2Deployer } from "uniswap-v2-deploy-plugin";
 
 import {
@@ -58,7 +58,10 @@ describe("Uniswap Integration with Gateway", function () {
     // Deploy Gateway and Custody Contracts
     const Gateway = await ethers.getContractFactory("Gateway");
     const ERC20CustodyNew = await ethers.getContractFactory("ERC20CustodyNew");
-    gateway = (await Gateway.deploy()) as Gateway;
+    gateway = (await upgrades.deployProxy(Gateway, [], {
+      initializer: "initialize",
+      kind: "uups",
+    })) as Gateway;
     custody = (await ERC20CustodyNew.deploy(gateway.address)) as ERC20CustodyNew;
 
     // Transfer some tokens to the custody contract
