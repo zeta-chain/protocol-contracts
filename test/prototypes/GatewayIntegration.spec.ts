@@ -218,6 +218,38 @@ describe("GatewayEVM inbound", function () {
     );
   });
 
+  it("should deposit erc20 to custody and emit event with payload", async function () {
+    const amount = ethers.utils.parseEther("100");
+
+    const custodyBalanceBefore = await token.balanceOf(custody.address);
+    expect(custodyBalanceBefore).to.equal(0);
+
+    let ABI = ["function hello(address to)"];
+    let iface = new ethers.utils.Interface(ABI);
+    const payload = iface.encodeFunctionData("hello", ["0x1234567890123456789012345678901234567890"]);
+
+    await token.approve(gateway.address, amount);
+
+    const tx = await gateway["depositAndCall(address,uint256,address,bytes)"](destination.address, amount, token.address, payload);
+    await tx.wait();
+
+    const custodyBalanceAfter = await token.balanceOf(custody.address);
+    expect(custodyBalanceAfter).to.equal(amount);
+
+    const ownerBalanceAfter = await token.balanceOf(owner.address);
+    expect(ownerBalanceAfter).to.equal(ethers.utils.parseEther("900"));
+
+    await expect(tx)
+      .to.emit(gateway, "Deposit")
+      .withArgs(
+        ethers.utils.getAddress(owner.address),
+        ethers.utils.getAddress(destination.address),
+        amount,
+        ethers.utils.getAddress(token.address),
+        payload
+      );
+  });
+
   it("should fail to deposit erc20 to custody and emit event with payload if amount is 0", async function () {
     const amount = ethers.utils.parseEther("0");
 
