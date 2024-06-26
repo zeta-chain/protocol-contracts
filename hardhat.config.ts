@@ -3,6 +3,7 @@ import "@nomicfoundation/hardhat-verify";
 import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
+import "solidity-coverage";
 import "hardhat-gas-reporter";
 import "./tasks/addresses";
 
