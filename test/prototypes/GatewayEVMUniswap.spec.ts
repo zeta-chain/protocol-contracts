@@ -6,7 +6,7 @@ import { UniswapV2Deployer } from "uniswap-v2-deploy-plugin";
 import {
   ERC20,
   ERC20CustodyNew,
-  Gateway,
+  GatewayEVM,
   Receiver,
   TestERC20,
   UniswapV2Factory,
@@ -14,18 +14,19 @@ import {
   UniswapV2Router02,
 } from "../../typechain-types";
 
-describe("Uniswap Integration with Gateway", function () {
+describe("Uniswap Integration with GatewayEVM", function () {
   let tokenA: TestERC20;
   let tokenB: TestERC20;
   let factory: UniswapV2Factory;
   let router: UniswapV2Router02;
   let pair: UniswapV2Pair;
   let custody: ERC20CustodyNew;
-  let gateway: Gateway;
+  let gateway: GatewayEVM;
   let owner, addr1, addr2;
+  let tssAddress;
 
   beforeEach(async function () {
-    [owner, addr1, addr2] = await ethers.getSigners();
+    [owner, addr1, addr2, tssAddress] = await ethers.getSigners();
 
     // Deploy TestERC20 tokens
     const TestERC20 = await ethers.getContractFactory("TestERC20");
@@ -56,12 +57,12 @@ describe("Uniswap Integration with Gateway", function () {
     );
 
     // Deploy Gateway and Custody Contracts
-    const Gateway = await ethers.getContractFactory("Gateway");
+    const Gateway = await ethers.getContractFactory("GatewayEVM");
     const ERC20CustodyNew = await ethers.getContractFactory("ERC20CustodyNew");
-    gateway = (await upgrades.deployProxy(Gateway, [], {
+    gateway = (await upgrades.deployProxy(Gateway, [tssAddress.address], {
       initializer: "initialize",
       kind: "uups",
-    })) as Gateway;
+    })) as GatewayEVM;
     custody = (await ERC20CustodyNew.deploy(gateway.address)) as ERC20CustodyNew;
 
     // Transfer some tokens to the custody contract

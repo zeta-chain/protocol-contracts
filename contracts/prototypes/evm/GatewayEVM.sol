@@ -7,24 +7,36 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 
-// The Gateway contract is the endpoint to call smart contracts on external chains
+// The GatewayEVM contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
-contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error ExecutionFailed();
+    error DepositFailed();
+    error InsufficientETHAmount();
+    error InsufficientERC20Amount();
+    error ZeroAddress();
 
     address public custody;
+    address public tssAddress;
 
     event Executed(address indexed destination, uint256 value, bytes data);
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
+    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+    event Call(address indexed sender, address indexed receiver, bytes payload);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize(address _tssAddress) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
+
+        if (_tssAddress == address(0)) {
+            revert ZeroAddress();
+        }
+        tssAddress = _tssAddress;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -61,6 +73,7 @@ contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         bytes calldata data
     ) external returns (bytes memory) {
         // Approve the target contract to spend the tokens
+        IERC20(token).approve(to, 0);
         IERC20(token).approve(to, amount);
 
         // Execute the call on the target contract
@@ -78,6 +91,51 @@ contract Gateway is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         emit ExecutedWithERC20(token, to, amount, data);
 
         return result;
+    }
+
+    // Deposit ETH to tss
+    function deposit(address receiver) external payable {
+        if (msg.value == 0) revert InsufficientETHAmount();
+        (bool deposited, ) = tssAddress.call{value: msg.value}("");
+
+        if (deposited == false) {
+            revert DepositFailed();
+        }
+        
+        emit Deposit(msg.sender, receiver, msg.value, address(0), "");
+    }
+
+    // Deposit ERC20 tokens to custody
+    function deposit(address receiver, uint256 amount, address asset) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+        IERC20(asset).transferFrom(msg.sender, address(custody), amount);
+
+        emit Deposit(msg.sender, receiver, amount, asset, "");
+    }
+
+    // Deposit ETH to tss and call an omnichain smart contract
+    function depositAndCall(address receiver, bytes calldata payload) external payable {
+        if (msg.value == 0) revert InsufficientETHAmount();
+        (bool deposited, ) = tssAddress.call{value: msg.value}("");
+
+        if (deposited == false) {
+            revert DepositFailed();
+        }
+        
+        emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
+    }
+
+    // Deposit ERC20 tokens to custody and call an omnichain smart contract
+    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+        IERC20(asset).transferFrom(msg.sender, address(custody), amount);
+
+        emit Deposit(msg.sender, receiver, amount, asset, payload);
+    }
+
+    // Call an omnichain smart contract without asset transfer
+    function call(address receiver, bytes calldata payload) external {
+        emit Call(msg.sender, receiver, payload);
     }
 
     function setCustody(address _custody) external {

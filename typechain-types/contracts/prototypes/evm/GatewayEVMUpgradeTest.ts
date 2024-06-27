@@ -26,9 +26,9 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../common";
+} from "../../../common";
 
-export interface GatewayInterface extends utils.Interface {
+export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
   functions: {
     "custody()": FunctionFragment;
     "execute(address,bytes)": FunctionFragment;
@@ -157,7 +157,7 @@ export interface GatewayInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
-    "Executed(address,uint256,bytes)": EventFragment;
+    "ExecutedV2(address,uint256,bytes)": EventFragment;
     "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
@@ -168,7 +168,7 @@ export interface GatewayInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExecutedV2"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
@@ -198,17 +198,17 @@ export type BeaconUpgradedEvent = TypedEvent<
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
-export interface ExecutedEventObject {
+export interface ExecutedV2EventObject {
   destination: string;
   value: BigNumber;
   data: string;
 }
-export type ExecutedEvent = TypedEvent<
+export type ExecutedV2Event = TypedEvent<
   [string, BigNumber, string],
-  ExecutedEventObject
+  ExecutedV2EventObject
 >;
 
-export type ExecutedEventFilter = TypedEventFilter<ExecutedEvent>;
+export type ExecutedV2EventFilter = TypedEventFilter<ExecutedV2Event>;
 
 export interface ExecutedWithERC20EventObject {
   token: string;
@@ -270,12 +270,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface Gateway extends BaseContract {
+export interface GatewayEVMUpgradeTest extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: GatewayInterface;
+  interface: GatewayEVMUpgradeTestInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -510,16 +510,16 @@ export interface Gateway extends BaseContract {
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
 
-    "Executed(address,uint256,bytes)"(
+    "ExecutedV2(address,uint256,bytes)"(
       destination?: PromiseOrValue<string> | null,
       value?: null,
       data?: null
-    ): ExecutedEventFilter;
-    Executed(
+    ): ExecutedV2EventFilter;
+    ExecutedV2(
       destination?: PromiseOrValue<string> | null,
       value?: null,
       data?: null
-    ): ExecutedEventFilter;
+    ): ExecutedV2EventFilter;
 
     "ExecutedWithERC20(address,address,uint256,bytes)"(
       token?: PromiseOrValue<string> | null,

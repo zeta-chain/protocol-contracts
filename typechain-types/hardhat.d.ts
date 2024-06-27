@@ -337,17 +337,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20CustodyNew__factory>;
     getContractFactory(
-      name: "Gateway",
+      name: "GatewayEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Gateway__factory>;
+    ): Promise<Contracts.GatewayEVM__factory>;
     getContractFactory(
-      name: "GatewayUpgradeTest",
+      name: "GatewayEVMUpgradeTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GatewayUpgradeTest__factory>;
+    ): Promise<Contracts.GatewayEVMUpgradeTest__factory>;
     getContractFactory(
-      name: "IGateway",
+      name: "IGatewayEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IGateway__factory>;
+    ): Promise<Contracts.IGatewayEVM__factory>;
     getContractFactory(
       name: "Receiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -831,20 +831,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20CustodyNew>;
     getContractAt(
-      name: "Gateway",
+      name: "GatewayEVM",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Gateway>;
+    ): Promise<Contracts.GatewayEVM>;
     getContractAt(
-      name: "GatewayUpgradeTest",
+      name: "GatewayEVMUpgradeTest",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.GatewayUpgradeTest>;
+    ): Promise<Contracts.GatewayEVMUpgradeTest>;
     getContractAt(
-      name: "IGateway",
+      name: "IGatewayEVM",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IGateway>;
+    ): Promise<Contracts.IGatewayEVM>;
     getContractAt(
       name: "Receiver",
       address: string,
