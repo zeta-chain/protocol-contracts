@@ -77,7 +77,7 @@
     "docs": "forge doc",
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts",
-    "lint:fix": "npx eslint . --ext .js,.ts,.json --fix",
+    "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
