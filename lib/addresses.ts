@@ -4,8 +4,22 @@ import mainnet from "../data/addresses.mainnet.json";
 import testnet from "../data/addresses.testnet.json";
 import { ParamChainName, ParamSymbol, ParamType } from "./types";
 
+interface Address {
+  address: string;
+  category: string;
+  chain_id: number;
+  chain_name: ParamChainName;
+  type: ParamType;
+}
+
+let additionalAddresses: Address[] = [];
+
+export const setAdditionalAddresses = (addresses: Address[]) => {
+  additionalAddresses = addresses;
+}
+
 export const getAddress = (type: ParamType, network: ParamChainName, symbol?: ParamSymbol) => {
-  const networks = [...testnet, ...mainnet];
+  const networks = [...testnet, ...mainnet, ...additionalAddresses];
   let address;
   if (type !== "zrc20" && symbol) {
     throw new Error("Symbol is only supported when ParamType is zrc20");
