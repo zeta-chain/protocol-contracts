@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 
-// The GatewayEVM contract is the endpoint to call smart contracts on external chains
+// The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
