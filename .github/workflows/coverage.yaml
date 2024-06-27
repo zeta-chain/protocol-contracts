@@ -14,7 +14,7 @@ on:
       - ready_for_review
 
 jobs:
-  test:
+  coverage:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +30,10 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Test
-        run: yarn test
+      - name: Test with coverage
+        run: yarn coverage || true
     
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

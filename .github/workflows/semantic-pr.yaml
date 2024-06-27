@@ -1,13 +1,17 @@
 name: "Semantic PR"
+
 on:
-  pull_request_target:
+  pull_request:
+    branches:
+      - "*"
     types:
-      - opened
-      - edited
       - synchronize
+      - opened
+      - reopened
+      - ready_for_review
 
 jobs:
-  main:
+  semantic-pr:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:

@@ -4,6 +4,8 @@ import "@typechain/hardhat";
 import "tsconfig-paths/register";
 import "hardhat-abi-exporter";
 import "uniswap-v2-deploy-plugin";
+import "solidity-coverage";
+import "hardhat-gas-reporter";
 import "./tasks/addresses";
 import "@openzeppelin/hardhat-upgrades";
 
