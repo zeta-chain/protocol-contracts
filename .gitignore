@@ -22,6 +22,10 @@ tsconfig.tsbuildinfo
 .secrets
 .wallet.json
 
+# Coverage
+coverage
+coverage.json
+
 # Slither
 scripts/slither-results/*
 !scripts/slither-results/.gitkeep

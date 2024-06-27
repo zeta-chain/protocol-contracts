@@ -1,13 +1,17 @@
 import mainnet from "../data/addresses.mainnet.json";
 import testnet from "../data/addresses.testnet.json";
 
+// Ensure that mainnet and testnet are typed as arrays
+const mainnetData: any[] = mainnet as any[];
+const testnetData: any[] = testnet as any[];
+
 const extractUniqueValues = (data: any[], key: string): string[] => {
   const allValues = data.filter((item) => item[key] !== undefined).map((item) => item[key].toString());
   return [...new Set(allValues)];
 };
 
 const generateTypesForKeys = (keys: string[]) => {
-  const networks = [...mainnet, ...testnet];
+  const networks = [...mainnetData, ...testnetData];
 
   let typeDefs = "";
 
