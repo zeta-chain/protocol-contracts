@@ -19,7 +19,7 @@ export const setAdditionalAddresses = (addresses: Address[]) => {
 }
 
 export const getAddress = (type: ParamType, network: ParamChainName, symbol?: ParamSymbol) => {
-  const networks = [...testnet, ...mainnet, ...additionalAddresses];
+  const networks = [...additionalAddresses, ...testnet, ...mainnet];
   let address;
   if (type !== "zrc20" && symbol) {
     throw new Error("Symbol is only supported when ParamType is zrc20");
