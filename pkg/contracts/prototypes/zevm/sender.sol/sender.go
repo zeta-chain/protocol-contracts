@@ -31,8 +31,8 @@ var (
 
 // SenderMetaData contains all meta data concerning the Sender contract.
 var SenderMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_gateway\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Call\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"gateway\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"sendToReceiver\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
-	Bin: "0x608060405234801561001057600080fd5b506040516107e43803806107e48339818101604052810190610032919061008d565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050610108565b600081519050610087816100f1565b92915050565b6000602082840312156100a3576100a26100ec565b5b60006100b184828501610078565b91505092915050565b60006100c5826100cc565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600080fd5b6100fa816100ba565b811461010557600080fd5b50565b6106cd806101176000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063116191b61461003b578063f948d35914610059575b600080fd5b610043610075565b604051610050919061040b565b60405180910390f35b610073600480360381019061006e91906102cd565b610099565b005b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60008383836040516024016100b09392919061045d565b6040516020818303038152906040527f6fa220ad000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16630ac7c44c86836040518363ffffffff1660e01b815260040161018a929190610426565b600060405180830381600087803b1580156101a457600080fd5b505af11580156101b8573d6000803e3d6000fd5b505050505050505050565b60006101d66101d1846104c0565b61049b565b9050828152602081018484840111156101f2576101f1610649565b5b6101fd8482856105a2565b509392505050565b6000610218610213846104f1565b61049b565b90508281526020810184848401111561023457610233610649565b5b61023f8482856105a2565b509392505050565b60008135905061025681610669565b92915050565b600082601f83011261027157610270610644565b5b81356102818482602086016101c3565b91505092915050565b600082601f83011261029f5761029e610644565b5b81356102af848260208601610205565b91505092915050565b6000813590506102c781610680565b92915050565b600080600080608085870312156102e7576102e6610653565b5b600085013567ffffffffffffffff8111156103055761030461064e565b5b6103118782880161025c565b945050602085013567ffffffffffffffff8111156103325761033161064e565b5b61033e8782880161028a565b935050604061034f878288016102b8565b925050606061036087828801610247565b91505092959194509250565b6103758161055a565b82525050565b6103848161056c565b82525050565b600061039582610522565b61039f8185610538565b93506103af8185602086016105b1565b6103b881610658565b840191505092915050565b60006103ce8261052d565b6103d88185610549565b93506103e88185602086016105b1565b6103f181610658565b840191505092915050565b61040581610598565b82525050565b6000602082019050610420600083018461036c565b92915050565b60006040820190508181036000830152610440818561038a565b90508181036020830152610454818461038a565b90509392505050565b6000606082019050818103600083015261047781866103c3565b905061048660208301856103fc565b610493604083018461037b565b949350505050565b60006104a56104b6565b90506104b182826105e4565b919050565b6000604051905090565b600067ffffffffffffffff8211156104db576104da610615565b5b6104e482610658565b9050602081019050919050565b600067ffffffffffffffff82111561050c5761050b610615565b5b61051582610658565b9050602081019050919050565b600081519050919050565b600081519050919050565b600082825260208201905092915050565b600082825260208201905092915050565b600061056582610578565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b838110156105cf5780820151818401526020810190506105b4565b838111156105de576000848401525b50505050565b6105ed82610658565b810181811067ffffffffffffffff8211171561060c5761060b610615565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b6106728161056c565b811461067d57600080fd5b50565b61068981610598565b811461069457600080fd5b5056fea2646970667358221220cdaccd861067daccfac02009db402ee2d2aca72fb7ae4d1786005c3b291c2e3b64736f6c63430008070033",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_gateway\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Call\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"to\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"gasfee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"protocolFlatFee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Withdrawal\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"callReceiver\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"gateway\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"flag\",\"type\":\"bool\"}],\"name\":\"withdrawAndCallReceiver\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	Bin: "0x608060405234801561001057600080fd5b50604051610b98380380610b988339818101604052810190610032919061008d565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050610108565b600081519050610087816100f1565b92915050565b6000602082840312156100a3576100a26100ec565b5b60006100b184828501610078565b91505092915050565b60006100c5826100cc565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600080fd5b6100fa816100ba565b811461010557600080fd5b50565b610a81806101176000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c80630abd890514610046578063116191b614610062578063a0a1730b14610080575b600080fd5b610060600480360381019061005b91906105c8565b61009c565b005b61006a61027a565b604051610077919061072c565b60405180910390f35b61009a60048036038101906100959190610529565b61029e565b005b60008383836040516024016100b3939291906107fa565b6040516020818303038152906040527f6fa220ad000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff838183161783525050505090508473ffffffffffffffffffffffffffffffffffffffff1663095ea7b360008054906101000a900473ffffffffffffffffffffffffffffffffffffffff16886040518363ffffffff1660e01b815260040161018d929190610747565b602060405180830381600087803b1580156101a757600080fd5b505af11580156101bb573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101df91906104fc565b5060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16637993c1e0888888856040518563ffffffff1660e01b815260040161023f94939291906107a7565b600060405180830381600087803b15801561025957600080fd5b505af115801561026d573d6000803e3d6000fd5b5050505050505050505050565b60008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60008383836040516024016102b5939291906107fa565b6040516020818303038152906040527f6fa220ad000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16630ac7c44c86836040518363ffffffff1660e01b815260040161038f929190610770565b600060405180830381600087803b1580156103a957600080fd5b505af11580156103bd573d6000803e3d6000fd5b505050505050505050565b60006103db6103d68461085d565b610838565b9050828152602081018484840111156103f7576103f66109e6565b5b61040284828561093f565b509392505050565b600061041d6104188461088e565b610838565b905082815260208101848484011115610439576104386109e6565b5b61044484828561093f565b509392505050565b60008135905061045b81610a06565b92915050565b60008135905061047081610a1d565b92915050565b60008151905061048581610a1d565b92915050565b600082601f8301126104a05761049f6109e1565b5b81356104b08482602086016103c8565b91505092915050565b600082601f8301126104ce576104cd6109e1565b5b81356104de84826020860161040a565b91505092915050565b6000813590506104f681610a34565b92915050565b600060208284031215610512576105116109f0565b5b600061052084828501610476565b91505092915050565b60008060008060808587031215610543576105426109f0565b5b600085013567ffffffffffffffff811115610561576105606109eb565b5b61056d8782880161048b565b945050602085013567ffffffffffffffff81111561058e5761058d6109eb565b5b61059a878288016104b9565b93505060406105ab878288016104e7565b92505060606105bc87828801610461565b91505092959194509250565b60008060008060008060c087890312156105e5576105e46109f0565b5b600087013567ffffffffffffffff811115610603576106026109eb565b5b61060f89828a0161048b565b965050602061062089828a016104e7565b955050604061063189828a0161044c565b945050606087013567ffffffffffffffff811115610652576106516109eb565b5b61065e89828a016104b9565b935050608061066f89828a016104e7565b92505060a061068089828a01610461565b9150509295509295509295565b610696816108f7565b82525050565b6106a581610909565b82525050565b60006106b6826108bf565b6106c081856108d5565b93506106d081856020860161094e565b6106d9816109f5565b840191505092915050565b60006106ef826108ca565b6106f981856108e6565b935061070981856020860161094e565b610712816109f5565b840191505092915050565b61072681610935565b82525050565b6000602082019050610741600083018461068d565b92915050565b600060408201905061075c600083018561068d565b610769602083018461071d565b9392505050565b6000604082019050818103600083015261078a81856106ab565b9050818103602083015261079e81846106ab565b90509392505050565b600060808201905081810360008301526107c181876106ab565b90506107d0602083018661071d565b6107dd604083018561068d565b81810360608301526107ef81846106ab565b905095945050505050565b6000606082019050818103600083015261081481866106e4565b9050610823602083018561071d565b610830604083018461069c565b949350505050565b6000610842610853565b905061084e8282610981565b919050565b6000604051905090565b600067ffffffffffffffff821115610878576108776109b2565b5b610881826109f5565b9050602081019050919050565b600067ffffffffffffffff8211156108a9576108a86109b2565b5b6108b2826109f5565b9050602081019050919050565b600081519050919050565b600081519050919050565b600082825260208201905092915050565b600082825260208201905092915050565b600061090282610915565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b8381101561096c578082015181840152602081019050610951565b8381111561097b576000848401525b50505050565b61098a826109f5565b810181811067ffffffffffffffff821117156109a9576109a86109b2565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b610a0f816108f7565b8114610a1a57600080fd5b50565b610a2681610909565b8114610a3157600080fd5b50565b610a3d81610935565b8114610a4857600080fd5b5056fea26469706673582212201d9a1e122da683ebb6822aeeea08fd6b6ae29ce383d05c76a0c76f15d749458c64736f6c63430008070033",
 }
 
 // SenderABI is the input ABI used to generate the binding from.
@@ -233,25 +233,46 @@ func (_Sender *SenderCallerSession) Gateway() (common.Address, error) {
 	return _Sender.Contract.Gateway(&_Sender.CallOpts)
 }
 
-// SendToReceiver is a paid mutator transaction binding the contract method 0xf948d359.
+// CallReceiver is a paid mutator transaction binding the contract method 0xa0a1730b.
 //
-// Solidity: function sendToReceiver(bytes receiver, string str, uint256 num, bool flag) returns()
-func (_Sender *SenderTransactor) SendToReceiver(opts *bind.TransactOpts, receiver []byte, str string, num *big.Int, flag bool) (*types.Transaction, error) {
-	return _Sender.contract.Transact(opts, "sendToReceiver", receiver, str, num, flag)
+// Solidity: function callReceiver(bytes receiver, string str, uint256 num, bool flag) returns()
+func (_Sender *SenderTransactor) CallReceiver(opts *bind.TransactOpts, receiver []byte, str string, num *big.Int, flag bool) (*types.Transaction, error) {
+	return _Sender.contract.Transact(opts, "callReceiver", receiver, str, num, flag)
 }
 
-// SendToReceiver is a paid mutator transaction binding the contract method 0xf948d359.
+// CallReceiver is a paid mutator transaction binding the contract method 0xa0a1730b.
 //
-// Solidity: function sendToReceiver(bytes receiver, string str, uint256 num, bool flag) returns()
-func (_Sender *SenderSession) SendToReceiver(receiver []byte, str string, num *big.Int, flag bool) (*types.Transaction, error) {
-	return _Sender.Contract.SendToReceiver(&_Sender.TransactOpts, receiver, str, num, flag)
+// Solidity: function callReceiver(bytes receiver, string str, uint256 num, bool flag) returns()
+func (_Sender *SenderSession) CallReceiver(receiver []byte, str string, num *big.Int, flag bool) (*types.Transaction, error) {
+	return _Sender.Contract.CallReceiver(&_Sender.TransactOpts, receiver, str, num, flag)
 }
 
-// SendToReceiver is a paid mutator transaction binding the contract method 0xf948d359.
+// CallReceiver is a paid mutator transaction binding the contract method 0xa0a1730b.
 //
-// Solidity: function sendToReceiver(bytes receiver, string str, uint256 num, bool flag) returns()
-func (_Sender *SenderTransactorSession) SendToReceiver(receiver []byte, str string, num *big.Int, flag bool) (*types.Transaction, error) {
-	return _Sender.Contract.SendToReceiver(&_Sender.TransactOpts, receiver, str, num, flag)
+// Solidity: function callReceiver(bytes receiver, string str, uint256 num, bool flag) returns()
+func (_Sender *SenderTransactorSession) CallReceiver(receiver []byte, str string, num *big.Int, flag bool) (*types.Transaction, error) {
+	return _Sender.Contract.CallReceiver(&_Sender.TransactOpts, receiver, str, num, flag)
+}
+
+// WithdrawAndCallReceiver is a paid mutator transaction binding the contract method 0x0abd8905.
+//
+// Solidity: function withdrawAndCallReceiver(bytes receiver, uint256 amount, address zrc20, string str, uint256 num, bool flag) returns()
+func (_Sender *SenderTransactor) WithdrawAndCallReceiver(opts *bind.TransactOpts, receiver []byte, amount *big.Int, zrc20 common.Address, str string, num *big.Int, flag bool) (*types.Transaction, error) {
+	return _Sender.contract.Transact(opts, "withdrawAndCallReceiver", receiver, amount, zrc20, str, num, flag)
+}
+
+// WithdrawAndCallReceiver is a paid mutator transaction binding the contract method 0x0abd8905.
+//
+// Solidity: function withdrawAndCallReceiver(bytes receiver, uint256 amount, address zrc20, string str, uint256 num, bool flag) returns()
+func (_Sender *SenderSession) WithdrawAndCallReceiver(receiver []byte, amount *big.Int, zrc20 common.Address, str string, num *big.Int, flag bool) (*types.Transaction, error) {
+	return _Sender.Contract.WithdrawAndCallReceiver(&_Sender.TransactOpts, receiver, amount, zrc20, str, num, flag)
+}
+
+// WithdrawAndCallReceiver is a paid mutator transaction binding the contract method 0x0abd8905.
+//
+// Solidity: function withdrawAndCallReceiver(bytes receiver, uint256 amount, address zrc20, string str, uint256 num, bool flag) returns()
+func (_Sender *SenderTransactorSession) WithdrawAndCallReceiver(receiver []byte, amount *big.Int, zrc20 common.Address, str string, num *big.Int, flag bool) (*types.Transaction, error) {
+	return _Sender.Contract.WithdrawAndCallReceiver(&_Sender.TransactOpts, receiver, amount, zrc20, str, num, flag)
 }
 
 // SenderCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the Sender contract.
@@ -402,6 +423,155 @@ func (_Sender *SenderFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *Send
 func (_Sender *SenderFilterer) ParseCall(log types.Log) (*SenderCall, error) {
 	event := new(SenderCall)
 	if err := _Sender.contract.UnpackLog(event, "Call", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// SenderWithdrawalIterator is returned from FilterWithdrawal and is used to iterate over the raw logs and unpacked data for Withdrawal events raised by the Sender contract.
+type SenderWithdrawalIterator struct {
+	Event *SenderWithdrawal // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *SenderWithdrawalIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(SenderWithdrawal)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(SenderWithdrawal)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *SenderWithdrawalIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *SenderWithdrawalIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// SenderWithdrawal represents a Withdrawal event raised by the Sender contract.
+type SenderWithdrawal struct {
+	From            common.Address
+	To              []byte
+	Value           *big.Int
+	Gasfee          *big.Int
+	ProtocolFlatFee *big.Int
+	Message         []byte
+	Raw             types.Log // Blockchain specific contextual infos
+}
+
+// FilterWithdrawal is a free log retrieval operation binding the contract event 0x1866ad2994816c79f4103e1eddacc7b085eb7c635205243a28940be69b01536d.
+//
+// Solidity: event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_Sender *SenderFilterer) FilterWithdrawal(opts *bind.FilterOpts, from []common.Address) (*SenderWithdrawalIterator, error) {
+
+	var fromRule []interface{}
+	for _, fromItem := range from {
+		fromRule = append(fromRule, fromItem)
+	}
+
+	logs, sub, err := _Sender.contract.FilterLogs(opts, "Withdrawal", fromRule)
+	if err != nil {
+		return nil, err
+	}
+	return &SenderWithdrawalIterator{contract: _Sender.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
+}
+
+// WatchWithdrawal is a free log subscription operation binding the contract event 0x1866ad2994816c79f4103e1eddacc7b085eb7c635205243a28940be69b01536d.
+//
+// Solidity: event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_Sender *SenderFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *SenderWithdrawal, from []common.Address) (event.Subscription, error) {
+
+	var fromRule []interface{}
+	for _, fromItem := range from {
+		fromRule = append(fromRule, fromItem)
+	}
+
+	logs, sub, err := _Sender.contract.WatchLogs(opts, "Withdrawal", fromRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(SenderWithdrawal)
+				if err := _Sender.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseWithdrawal is a log parse operation binding the contract event 0x1866ad2994816c79f4103e1eddacc7b085eb7c635205243a28940be69b01536d.
+//
+// Solidity: event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_Sender *SenderFilterer) ParseWithdrawal(log types.Log) (*SenderWithdrawal, error) {
+	event := new(SenderWithdrawal)
+	if err := _Sender.contract.UnpackLog(event, "Withdrawal", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

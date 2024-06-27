@@ -29,17 +29,20 @@ import type {
 
 export interface SenderInterface extends utils.Interface {
   functions: {
+    "callReceiver(bytes,string,uint256,bool)": FunctionFragment;
     "gateway()": FunctionFragment;
-    "sendToReceiver(bytes,string,uint256,bool)": FunctionFragment;
+    "withdrawAndCallReceiver(bytes,uint256,address,string,uint256,bool)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "gateway" | "sendToReceiver"
+    nameOrSignatureOrTopic:
+      | "callReceiver"
+      | "gateway"
+      | "withdrawAndCallReceiver"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "sendToReceiver",
+    functionFragment: "callReceiver",
     values: [
       PromiseOrValue<BytesLike>,
       PromiseOrValue<string>,
@@ -47,18 +50,36 @@ export interface SenderInterface extends utils.Interface {
       PromiseOrValue<boolean>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCallReceiver",
+    values: [
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>
+    ]
+  ): string;
 
+  decodeFunctionResult(
+    functionFragment: "callReceiver",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "sendToReceiver",
+    functionFragment: "withdrawAndCallReceiver",
     data: BytesLike
   ): Result;
 
   events: {
     "Call(address,bytes,bytes)": EventFragment;
+    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
 }
 
 export interface CallEventObject {
@@ -69,6 +90,21 @@ export interface CallEventObject {
 export type CallEvent = TypedEvent<[string, string, string], CallEventObject>;
 
 export type CallEventFilter = TypedEventFilter<CallEvent>;
+
+export interface WithdrawalEventObject {
+  from: string;
+  to: string;
+  value: BigNumber;
+  gasfee: BigNumber;
+  protocolFlatFee: BigNumber;
+  message: string;
+}
+export type WithdrawalEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber, BigNumber, string],
+  WithdrawalEventObject
+>;
+
+export type WithdrawalEventFilter = TypedEventFilter<WithdrawalEvent>;
 
 export interface Sender extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -97,10 +133,20 @@ export interface Sender extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    callReceiver(
+      receiver: PromiseOrValue<BytesLike>,
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
-    sendToReceiver(
+    withdrawAndCallReceiver(
       receiver: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      zrc20: PromiseOrValue<string>,
       str: PromiseOrValue<string>,
       num: PromiseOrValue<BigNumberish>,
       flag: PromiseOrValue<boolean>,
@@ -108,9 +154,7 @@ export interface Sender extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  gateway(overrides?: CallOverrides): Promise<string>;
-
-  sendToReceiver(
+  callReceiver(
     receiver: PromiseOrValue<BytesLike>,
     str: PromiseOrValue<string>,
     num: PromiseOrValue<BigNumberish>,
@@ -118,11 +162,33 @@ export interface Sender extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  gateway(overrides?: CallOverrides): Promise<string>;
+
+  withdrawAndCallReceiver(
+    receiver: PromiseOrValue<BytesLike>,
+    amount: PromiseOrValue<BigNumberish>,
+    zrc20: PromiseOrValue<string>,
+    str: PromiseOrValue<string>,
+    num: PromiseOrValue<BigNumberish>,
+    flag: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    callReceiver(
+      receiver: PromiseOrValue<BytesLike>,
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     gateway(overrides?: CallOverrides): Promise<string>;
 
-    sendToReceiver(
+    withdrawAndCallReceiver(
       receiver: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      zrc20: PromiseOrValue<string>,
       str: PromiseOrValue<string>,
       num: PromiseOrValue<BigNumberish>,
       flag: PromiseOrValue<boolean>,
@@ -141,13 +207,40 @@ export interface Sender extends BaseContract {
       receiver?: PromiseOrValue<BytesLike> | null,
       message?: null
     ): CallEventFilter;
+
+    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)"(
+      from?: PromiseOrValue<string> | null,
+      to?: null,
+      value?: null,
+      gasfee?: null,
+      protocolFlatFee?: null,
+      message?: null
+    ): WithdrawalEventFilter;
+    Withdrawal(
+      from?: PromiseOrValue<string> | null,
+      to?: null,
+      value?: null,
+      gasfee?: null,
+      protocolFlatFee?: null,
+      message?: null
+    ): WithdrawalEventFilter;
   };
 
   estimateGas: {
+    callReceiver(
+      receiver: PromiseOrValue<BytesLike>,
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
-    sendToReceiver(
+    withdrawAndCallReceiver(
       receiver: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      zrc20: PromiseOrValue<string>,
       str: PromiseOrValue<string>,
       num: PromiseOrValue<BigNumberish>,
       flag: PromiseOrValue<boolean>,
@@ -156,10 +249,20 @@ export interface Sender extends BaseContract {
   };
 
   populateTransaction: {
+    callReceiver(
+      receiver: PromiseOrValue<BytesLike>,
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    sendToReceiver(
+    withdrawAndCallReceiver(
       receiver: PromiseOrValue<BytesLike>,
+      amount: PromiseOrValue<BigNumberish>,
+      zrc20: PromiseOrValue<string>,
       str: PromiseOrValue<string>,
       num: PromiseOrValue<BigNumberish>,
       flag: PromiseOrValue<boolean>,

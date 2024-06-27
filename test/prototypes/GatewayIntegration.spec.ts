@@ -90,10 +90,11 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     const SenderZEVM = await ethers.getContractFactory("Sender");
     senderZEVM = await SenderZEVM.deploy(gatewayZEVM.address);
+
+    await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
   });
 
-  it("should call receiver on EVM from ZEVM", async function () {
-    // Inbound zevm -> event -> outbound evm
+  it("should call Receiver contract on EVM from ZEVM account", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;
@@ -102,6 +103,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
     const callTx = await gatewayZEVM.connect(ownerZEVM).call(ethers.utils.arrayify(addrs[0].address), message);
+    await expect(callTx).to.emit(gatewayZEVM, "Call").withArgs(ownerZEVM.address, addrs[0].address, message);
 
     // Get message from events
     const callTxReceipt = await callTx.wait();
@@ -116,15 +118,53 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
   });
 
-  it("should call receiver on EVM from sender on ZEVM", async function () {
-    // Inbound zevm -> event -> outbound evm
+  it("should withdraw and call Receiver contract on EVM from ZEVM account", async function () {
+    const str = "Hello, Hardhat!";
+    const num = 42;
+    const flag = true;
+    const value = ethers.utils.parseEther("1.0");
+
+    // Encode the function call data and call on zevm
+    const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const callTx = await gatewayZEVM
+      .connect(ownerZEVM)
+      .withdrawAndCall(receiverEVM.address, parseEther("1"), ZRC20Contract.address, message);
+
+    await expect(callTx)
+      .to.emit(gatewayZEVM, "Withdrawal")
+      .withArgs(
+        ethers.utils.getAddress(ownerZEVM.address),
+        receiverEVM.address.toLowerCase(),
+        parseEther("1"),
+        0,
+        await ZRC20Contract.PROTOCOL_FLAT_FEE(),
+        message
+      );
+
+    // Get message from events
+    const callTxReceipt = await callTx.wait();
+    const callEvent = callTxReceipt.events.filter((e) => e.event == "Withdrawal")[0];
+    const callMessage = callEvent.args[5];
+
+    // Call execute on evm
+    const executeTx = await gatewayEVM.execute(receiverEVM.address, callMessage, { value: value });
+
+    // Listen for the event
+    await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
+    await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+
+    const balanceOfAfterWithdrawal = await ZRC20Contract.balanceOf(ownerZEVM.address);
+    expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));
+  });
+
+  it("should call Receiver contract on EVM from Sender contract on ZEVM", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;
     const value = ethers.utils.parseEther("1.0");
 
     // Call sender function
-    const callTx = await senderZEVM.connect(ownerZEVM).sendToReceiver(receiverEVM.address, str, num, flag);
+    const callTx = await senderZEVM.connect(ownerZEVM).callReceiver(receiverEVM.address, str, num, flag);
 
     // Get message from events
     const callTxReceipt = await callTx.wait();
@@ -142,5 +182,45 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     // Listen for the event
     await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
     await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+  });
+
+  it("should withdrawn and call Receiver contract on EVM from Sender contract on ZEVM", async function () {
+    const str = "Hello, Hardhat!";
+    const num = 42;
+    const flag = true;
+    const value = ethers.utils.parseEther("1.0");
+
+    // Call sender function
+    const callTx = await senderZEVM
+      .connect(ownerZEVM)
+      .withdrawAndCallReceiver(receiverEVM.address, parseEther("1"), ZRC20Contract.address, str, num, flag);
+
+    // Get message from events
+    const callTxReceipt = await callTx.wait();
+    const expectedMessage = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+
+    await expect(callTx)
+      .to.emit(gatewayZEVM, "Withdrawal")
+      .withArgs(
+        ethers.utils.getAddress(senderZEVM.address),
+        receiverEVM.address.toLowerCase(),
+        parseEther("1"),
+        0,
+        await ZRC20Contract.PROTOCOL_FLAT_FEE(),
+        expectedMessage
+      );
+
+    const callEvent = callTxReceipt.events.filter((e) => e.event == "Withdrawal")[0];
+    const callMessage = callEvent.args[5];
+
+    // Call execute on evm
+    const executeTx = await gatewayEVM.execute(receiverEVM.address, callMessage, { value: value });
+
+    // Listen for the event
+    await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
+    await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+
+    const balanceOfAfterWithdrawal = await ZRC20Contract.balanceOf(senderZEVM.address);
+    expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));
   });
 });
