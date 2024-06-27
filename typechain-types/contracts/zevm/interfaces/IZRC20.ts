@@ -29,11 +29,11 @@ import type {
 
 export interface IZRC20Interface extends utils.Interface {
   functions: {
-    "PROTOCOL_FEE()": FunctionFragment;
+    "PROTOCOL_FLAT_FEE()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "burn(address,uint256)": FunctionFragment;
+    "burn(uint256)": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "deposit(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
@@ -46,7 +46,7 @@ export interface IZRC20Interface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "PROTOCOL_FEE"
+      | "PROTOCOL_FLAT_FEE"
       | "allowance"
       | "approve"
       | "balanceOf"
@@ -62,7 +62,7 @@ export interface IZRC20Interface extends utils.Interface {
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "PROTOCOL_FEE",
+    functionFragment: "PROTOCOL_FLAT_FEE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -79,7 +79,7 @@ export interface IZRC20Interface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "burn",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
@@ -119,7 +119,7 @@ export interface IZRC20Interface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "PROTOCOL_FEE",
+    functionFragment: "PROTOCOL_FLAT_FEE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -278,7 +278,7 @@ export interface IZRC20 extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    PROTOCOL_FEE(overrides?: CallOverrides): Promise<[BigNumber]>;
+    PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -298,7 +298,6 @@ export interface IZRC20 extends BaseContract {
     ): Promise<[BigNumber]>;
 
     burn(
-      account: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -345,7 +344,7 @@ export interface IZRC20 extends BaseContract {
     withdrawGasFee(overrides?: CallOverrides): Promise<[string, BigNumber]>;
   };
 
-  PROTOCOL_FEE(overrides?: CallOverrides): Promise<BigNumber>;
+  PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
   allowance(
     owner: PromiseOrValue<string>,
@@ -365,7 +364,6 @@ export interface IZRC20 extends BaseContract {
   ): Promise<BigNumber>;
 
   burn(
-    account: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -412,7 +410,7 @@ export interface IZRC20 extends BaseContract {
   withdrawGasFee(overrides?: CallOverrides): Promise<[string, BigNumber]>;
 
   callStatic: {
-    PROTOCOL_FEE(overrides?: CallOverrides): Promise<BigNumber>;
+    PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -432,7 +430,6 @@ export interface IZRC20 extends BaseContract {
     ): Promise<BigNumber>;
 
     burn(
-      account: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -547,7 +544,7 @@ export interface IZRC20 extends BaseContract {
   };
 
   estimateGas: {
-    PROTOCOL_FEE(overrides?: CallOverrides): Promise<BigNumber>;
+    PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -567,7 +564,6 @@ export interface IZRC20 extends BaseContract {
     ): Promise<BigNumber>;
 
     burn(
-      account: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -615,7 +611,7 @@ export interface IZRC20 extends BaseContract {
   };
 
   populateTransaction: {
-    PROTOCOL_FEE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -635,7 +631,6 @@ export interface IZRC20 extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     burn(
-      account: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
