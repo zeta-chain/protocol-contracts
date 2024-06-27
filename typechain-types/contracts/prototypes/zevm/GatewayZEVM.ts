@@ -260,7 +260,7 @@ export interface GatewayZEVM extends BaseContract {
 
     call(
       receiver: PromiseOrValue<BytesLike>,
-      payload: PromiseOrValue<BytesLike>,
+      message: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -312,7 +312,7 @@ export interface GatewayZEVM extends BaseContract {
 
   call(
     receiver: PromiseOrValue<BytesLike>,
-    payload: PromiseOrValue<BytesLike>,
+    message: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -364,7 +364,7 @@ export interface GatewayZEVM extends BaseContract {
 
     call(
       receiver: PromiseOrValue<BytesLike>,
-      payload: PromiseOrValue<BytesLike>,
+      message: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -478,7 +478,7 @@ export interface GatewayZEVM extends BaseContract {
 
     call(
       receiver: PromiseOrValue<BytesLike>,
-      payload: PromiseOrValue<BytesLike>,
+      message: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -533,7 +533,7 @@ export interface GatewayZEVM extends BaseContract {
 
     call(
       receiver: PromiseOrValue<BytesLike>,
-      payload: PromiseOrValue<BytesLike>,
+      message: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -55,7 +55,7 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Call smart contract on external chain without asset transfer
-    function call(bytes memory receiver, bytes calldata payload) external {
-        emit Call(msg.sender, receiver, payload);
+    function call(bytes memory receiver, bytes calldata message) external {
+        emit Call(msg.sender, receiver, message);
     }
 }
