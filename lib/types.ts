@@ -19,10 +19,12 @@ export type ParamChainName =
   | "btc_mainnet"
   | "btc_testnet"
   | "eth_mainnet"
+  | "eth_developnet"
   | "mumbai_testnet"
   | "sepolia_testnet"
   | "zeta_mainnet"
-  | "zeta_testnet";
+  | "zeta_testnet"
+  | "zeta_developnet";
 export type ParamType =
   | "connector"
   | "erc20Custody"
