@@ -89,14 +89,14 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await ZRC20Contract.connect(ownerZEVM).approve(gatewayZEVM.address, parseEther("100"));
 
     // including abi of gatewayZEVM events, so hardhat can decode them automatically
-    const senderArtifact = await hre.artifacts.readArtifact('Sender');
-const gatewayZEVMArtifact = await hre.artifacts.readArtifact('GatewayZEVM');
-const senderABI = [
-  ...senderArtifact.abi, 
-  ...gatewayZEVMArtifact.abi.filter((f: ethers.utils.Fragment) => f.type === 'event')
-]
+    const senderArtifact = await hre.artifacts.readArtifact("Sender");
+    const gatewayZEVMArtifact = await hre.artifacts.readArtifact("GatewayZEVM");
+    const senderABI = [
+      ...senderArtifact.abi,
+      ...gatewayZEVMArtifact.abi.filter((f: ethers.utils.Fragment) => f.type === "event"),
+    ];
 
-const SenderZEVM = new ethers.ContractFactory(senderABI, senderArtifact.bytecode, ownerZEVM);
+    const SenderZEVM = new ethers.ContractFactory(senderABI, senderArtifact.bytecode, ownerZEVM);
     senderZEVM = await SenderZEVM.deploy(gatewayZEVM.address);
 
     await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));

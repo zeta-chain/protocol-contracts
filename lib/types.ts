@@ -3,6 +3,7 @@ export type ParamSymbol =
   | "BTC.BTC"
   | "ETH.ETH"
   | "gETH"
+  | "MATIC.AMOY"
   | "sETH.SEPOLIA"
   | "tBNB"
   | "tBTC"
