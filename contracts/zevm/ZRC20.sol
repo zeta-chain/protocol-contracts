@@ -26,6 +26,8 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
     CoinType public immutable COIN_TYPE;
     /// @notice System contract address.
     address public SYSTEM_CONTRACT_ADDRESS;
+     /// @notice Gateway contract address.
+    address public GATEWAY_CONTRACT_ADDRESS;
     /// @notice Gas limit.
     uint256 public GAS_LIMIT;
     /// @notice Protocol flat fee.
@@ -74,6 +76,11 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
         COIN_TYPE = coinType_;
         GAS_LIMIT = gasLimit_;
         SYSTEM_CONTRACT_ADDRESS = systemContractAddress_;
+    }
+
+    // TODO: discuss
+    function setGatewayContractAddress(address gateway) external {
+        GATEWAY_CONTRACT_ADDRESS = gateway;
     }
 
     /**
@@ -223,7 +230,7 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
      * @return true/false if succeeded/failed.
      */
     function deposit(address to, uint256 amount) external override returns (bool) {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS) revert InvalidSender();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS && msg.sender != GATEWAY_CONTRACT_ADDRESS) revert InvalidSender();
         _mint(to, amount);
         emit Deposit(abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), to, amount);
         return true;

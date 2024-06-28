@@ -33,6 +33,7 @@ export interface ZRC20Interface extends utils.Interface {
     "COIN_TYPE()": FunctionFragment;
     "FUNGIBLE_MODULE_ADDRESS()": FunctionFragment;
     "GAS_LIMIT()": FunctionFragment;
+    "GATEWAY_CONTRACT_ADDRESS()": FunctionFragment;
     "PROTOCOL_FLAT_FEE()": FunctionFragment;
     "SYSTEM_CONTRACT_ADDRESS()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
@@ -42,6 +43,7 @@ export interface ZRC20Interface extends utils.Interface {
     "decimals()": FunctionFragment;
     "deposit(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
+    "setGatewayContractAddress(address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -59,6 +61,7 @@ export interface ZRC20Interface extends utils.Interface {
       | "COIN_TYPE"
       | "FUNGIBLE_MODULE_ADDRESS"
       | "GAS_LIMIT"
+      | "GATEWAY_CONTRACT_ADDRESS"
       | "PROTOCOL_FLAT_FEE"
       | "SYSTEM_CONTRACT_ADDRESS"
       | "allowance"
@@ -68,6 +71,7 @@ export interface ZRC20Interface extends utils.Interface {
       | "decimals"
       | "deposit"
       | "name"
+      | "setGatewayContractAddress"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -86,6 +90,10 @@ export interface ZRC20Interface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "GAS_LIMIT", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "GATEWAY_CONTRACT_ADDRESS",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "PROTOCOL_FLAT_FEE",
     values?: undefined
@@ -116,6 +124,10 @@ export interface ZRC20Interface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setGatewayContractAddress",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -162,6 +174,10 @@ export interface ZRC20Interface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "GAS_LIMIT", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "GATEWAY_CONTRACT_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "PROTOCOL_FLAT_FEE",
     data: BytesLike
   ): Result;
@@ -176,6 +192,10 @@ export interface ZRC20Interface extends utils.Interface {
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setGatewayContractAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -340,6 +360,8 @@ export interface ZRC20 extends BaseContract {
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
+
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     SYSTEM_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
@@ -375,6 +397,11 @@ export interface ZRC20 extends BaseContract {
     ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
+
+    setGatewayContractAddress(
+      gateway: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -425,6 +452,8 @@ export interface ZRC20 extends BaseContract {
 
   GAS_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
+  GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
   PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
   SYSTEM_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -460,6 +489,11 @@ export interface ZRC20 extends BaseContract {
   ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
+
+  setGatewayContractAddress(
+    gateway: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -510,6 +544,8 @@ export interface ZRC20 extends BaseContract {
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
+    GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
     SYSTEM_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -545,6 +581,11 @@ export interface ZRC20 extends BaseContract {
     ): Promise<boolean>;
 
     name(overrides?: CallOverrides): Promise<string>;
+
+    setGatewayContractAddress(
+      gateway: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -663,6 +704,8 @@ export interface ZRC20 extends BaseContract {
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
+    GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
+
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
     SYSTEM_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
@@ -698,6 +741,11 @@ export interface ZRC20 extends BaseContract {
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setGatewayContractAddress(
+      gateway: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -751,6 +799,10 @@ export interface ZRC20 extends BaseContract {
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    GATEWAY_CONTRACT_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     SYSTEM_CONTRACT_ADDRESS(
@@ -788,6 +840,11 @@ export interface ZRC20 extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setGatewayContractAddress(
+      gateway: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

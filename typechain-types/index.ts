@@ -174,6 +174,8 @@ export type { IGatewayZEVM } from "./contracts/prototypes/zevm/interfaces.sol/IG
 export { IGatewayZEVM__factory } from "./factories/contracts/prototypes/zevm/interfaces.sol/IGatewayZEVM__factory";
 export type { Sender } from "./contracts/prototypes/zevm/Sender";
 export { Sender__factory } from "./factories/contracts/prototypes/zevm/Sender__factory";
+export type { TestZContract } from "./contracts/prototypes/zevm/TestZContract";
+export { TestZContract__factory } from "./factories/contracts/prototypes/zevm/TestZContract__factory";
 export type { ISystem } from "./contracts/zevm/Interfaces.sol/ISystem";
 export { ISystem__factory } from "./factories/contracts/zevm/Interfaces.sol/ISystem__factory";
 export type { IZRC20 } from "./contracts/zevm/Interfaces.sol/IZRC20";

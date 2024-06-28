@@ -62,7 +62,6 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         emit Call(msg.sender, receiver, message);
     }
 
-
     // Deposit foreign coins into ZRC20
     function deposit(
         address zrc20,

@@ -28,6 +28,8 @@ interface IZRC20 {
 
     function PROTOCOL_FLAT_FEE() external view returns (uint256);
 
+    function setGatewayContractAddress(address gateway) external;
+
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
     event Deposit(bytes from, address indexed to, uint256 value);
