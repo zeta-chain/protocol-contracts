@@ -126,10 +126,10 @@
     "type": "connector"
   },
   {
+    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "type": "fungibleModule"
   },
   {
@@ -140,24 +140,24 @@
     "type": "systemContract"
   },
   {
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "type": "uniswapV2Factory"
   },
   {
+    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "type": "uniswapV2Router02"
   },
   {
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "type": "zetaToken"
   },
   {
