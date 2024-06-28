@@ -5,6 +5,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "../../zevm/interfaces/IZRC20.sol";
+import "../../zevm/interfaces/zContract.sol";
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
@@ -14,6 +15,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error WithdrawalFailed();
     error InsufficientZRC20Amount();
     error GasFeeTransferFailed();
+    error CallerIsNotFungibleModule();
+    error InvalidTarget();
 
     event Call(address indexed sender, bytes indexed receiver, bytes message);
     event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
@@ -57,5 +60,46 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // Call smart contract on external chain without asset transfer
     function call(bytes memory receiver, bytes calldata message) external {
         emit Call(msg.sender, receiver, message);
+    }
+
+
+    // Deposit foreign coins into ZRC20
+    function deposit(
+        address zrc20,
+        uint256 amount,
+        address target
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        IZRC20(zrc20).deposit(target, amount);
+    }
+
+    // Execute user specified contract on ZEVM
+    function execute(
+        zContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+
+        zContract(target).onCrossChainCall(context, zrc20, amount, message);
+    }
+
+    // Deposit foreign coins into ZRC20 and call user specified contract on ZEVM
+    function depositAndCall(
+        zContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        IZRC20(zrc20).deposit(target, amount);
+        zContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 }

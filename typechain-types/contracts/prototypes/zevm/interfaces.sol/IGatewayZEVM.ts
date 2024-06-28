@@ -23,20 +23,69 @@ import type {
   PromiseOrValue,
 } from "../../../../common";
 
+export type ZContextStruct = {
+  origin: PromiseOrValue<BytesLike>;
+  sender: PromiseOrValue<string>;
+  chainID: PromiseOrValue<BigNumberish>;
+};
+
+export type ZContextStructOutput = [string, string, BigNumber] & {
+  origin: string;
+  sender: string;
+  chainID: BigNumber;
+};
+
 export interface IGatewayZEVMInterface extends utils.Interface {
   functions: {
     "call(bytes,bytes)": FunctionFragment;
+    "deposit(address,uint256,address)": FunctionFragment;
+    "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
+    "execute((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
     "withdraw(bytes,uint256,address)": FunctionFragment;
     "withdrawAndCall(bytes,uint256,address,bytes)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "call" | "withdraw" | "withdrawAndCall"
+    nameOrSignatureOrTopic:
+      | "call"
+      | "deposit"
+      | "depositAndCall"
+      | "execute"
+      | "withdraw"
+      | "withdrawAndCall"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "call",
     values: [PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall",
+    values: [
+      ZContextStruct,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute",
+    values: [
+      ZContextStruct,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
@@ -57,6 +106,12 @@ export interface IGatewayZEVMInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -99,6 +154,31 @@ export interface IGatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    deposit(
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    depositAndCall(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    execute(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     withdraw(
       receiver: PromiseOrValue<BytesLike>,
       amount: PromiseOrValue<BigNumberish>,
@@ -121,6 +201,31 @@ export interface IGatewayZEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  deposit(
+    zrc20: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  depositAndCall(
+    context: ZContextStruct,
+    zrc20: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    message: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  execute(
+    context: ZContextStruct,
+    zrc20: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    message: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   withdraw(
     receiver: PromiseOrValue<BytesLike>,
     amount: PromiseOrValue<BigNumberish>,
@@ -139,6 +244,31 @@ export interface IGatewayZEVM extends BaseContract {
   callStatic: {
     call(
       receiver: PromiseOrValue<BytesLike>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    deposit(
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    depositAndCall(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    execute(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       message: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -168,6 +298,31 @@ export interface IGatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    deposit(
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    depositAndCall(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    execute(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     withdraw(
       receiver: PromiseOrValue<BytesLike>,
       amount: PromiseOrValue<BigNumberish>,
@@ -187,6 +342,31 @@ export interface IGatewayZEVM extends BaseContract {
   populateTransaction: {
     call(
       receiver: PromiseOrValue<BytesLike>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    deposit(
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositAndCall(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    execute(
+      context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
       message: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
