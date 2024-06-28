@@ -1,4 +1,6 @@
 import {
+  ERC20Custody,
+  ERC20Custody__factory as ERC20CustodyFactory,
   ImmutableCreate2Factory,
   ImmutableCreate2Factory__factory,
   ZetaConnectorBase,
@@ -61,6 +63,16 @@ export const deployZetaConnectorNonEth = async ({
   await zetaConnectorContract.deployed();
 
   return zetaConnectorContract;
+};
+
+export const deployERC20Custody = async ({ args }: { args: Parameters<ERC20CustodyFactory["deploy"]> }) => {
+  const Factory = (await ethers.getContractFactory("ERC20Custody")) as ERC20CustodyFactory;
+
+  const ERC20CustodyContract = (await Factory.deploy(...args)) as ERC20Custody;
+
+  await ERC20CustodyContract.deployed();
+
+  return ERC20CustodyContract;
 };
 
 export const deployZetaReceiverMock = async () => {
