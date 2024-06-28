@@ -6,9 +6,6 @@ import "./interfaces.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 
 contract Sender {
-    event Call(address indexed sender, bytes indexed receiver, bytes message);
-    event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
-
     address public gateway;
 
     constructor(address _gateway) {

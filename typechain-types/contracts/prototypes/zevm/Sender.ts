@@ -13,11 +13,7 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -73,38 +69,8 @@ export interface SenderInterface extends utils.Interface {
     data: BytesLike
   ): Result;
 
-  events: {
-    "Call(address,bytes,bytes)": EventFragment;
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
+  events: {};
 }
-
-export interface CallEventObject {
-  sender: string;
-  receiver: string;
-  message: string;
-}
-export type CallEvent = TypedEvent<[string, string, string], CallEventObject>;
-
-export type CallEventFilter = TypedEventFilter<CallEvent>;
-
-export interface WithdrawalEventObject {
-  from: string;
-  to: string;
-  value: BigNumber;
-  gasfee: BigNumber;
-  protocolFlatFee: BigNumber;
-  message: string;
-}
-export type WithdrawalEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, string],
-  WithdrawalEventObject
->;
-
-export type WithdrawalEventFilter = TypedEventFilter<WithdrawalEvent>;
 
 export interface Sender extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -196,35 +162,7 @@ export interface Sender extends BaseContract {
     ): Promise<void>;
   };
 
-  filters: {
-    "Call(address,bytes,bytes)"(
-      sender?: PromiseOrValue<string> | null,
-      receiver?: PromiseOrValue<BytesLike> | null,
-      message?: null
-    ): CallEventFilter;
-    Call(
-      sender?: PromiseOrValue<string> | null,
-      receiver?: PromiseOrValue<BytesLike> | null,
-      message?: null
-    ): CallEventFilter;
-
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)"(
-      from?: PromiseOrValue<string> | null,
-      to?: null,
-      value?: null,
-      gasfee?: null,
-      protocolFlatFee?: null,
-      message?: null
-    ): WithdrawalEventFilter;
-    Withdrawal(
-      from?: PromiseOrValue<string> | null,
-      to?: null,
-      value?: null,
-      gasfee?: null,
-      protocolFlatFee?: null,
-      message?: null
-    ): WithdrawalEventFilter;
-  };
+  filters: {};
 
   estimateGas: {
     callReceiver(
