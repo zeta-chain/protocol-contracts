@@ -91,10 +91,10 @@
     "type": "connector"
   },
   {
-    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
+    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "type": "fungibleModule"
   },
   {
@@ -105,24 +105,24 @@
     "type": "systemContract"
   },
   {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "type": "uniswapV2Factory"
   },
   {
-    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
+    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "category": "omnichain",
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "type": "zetaToken"
   },
   {
@@ -255,48 +255,6 @@
     "chain_id": 18332,
     "chain_name": "btc_testnet",
     "type": "tss"
-  },
-  {
-    "address": "0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "uniswapV2Factory"
-  },
-  {
-    "address": "0x8954AfA98594b838bda56FE4C12a09D7739D179b",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "uniswapV3Factory"
-  },
-  {
-    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "uniswapV3Router"
-  },
-  {
-    "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "weth9"
-  },
-  {
-    "address": "0x7e792f3736751e168864106AdbAC50152641A927",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "zetaTokenConsumerUniV3"
   },
   {
     "address": "0x3963341dad121c9CD33046089395D66eBF20Fb03",
