@@ -1,12 +1,5 @@
 [
   {
-    "address": "0x7e792f3736751e168864106AdbAC50152641A927",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "zetaTokenConsumerUniV3"
-  },
-  {
     "address": "0xFB2fCE3CCca19F0f764Ed8aa26C62181E3dA04C5",
     "category": "messaging",
     "chain_id": 97,
@@ -26,20 +19,6 @@
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
     "type": "zetaTokenConsumerUniV3"
-  },
-  {
-    "address": "0x8954AfA98594b838bda56FE4C12a09D7739D179b",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "uniswapV2Router02"
-  },
-  {
-    "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
-    "category": "messaging",
-    "chain_id": 80001,
-    "chain_name": "mumbai_testnet",
-    "type": "uniswapV3Router"
   },
   {
     "address": "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",

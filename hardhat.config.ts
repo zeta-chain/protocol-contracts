@@ -17,13 +17,26 @@ const config: HardhatUserConfig = {
   //@ts-ignore
   etherscan: {
     apiKey: {
+      amoy_testnet: process.env.POLYGONSCAN_API_KEY || "",
       // BSC
       bsc: process.env.BSCSCAN_API_KEY || "",
+
       bscTestnet: process.env.BSCSCAN_API_KEY || "",
       // ETH
       goerli: process.env.ETHERSCAN_API_KEY || "",
       mainnet: process.env.ETHERSCAN_API_KEY || "",
     },
+    //@ts-ignore
+    customChains: [
+      {
+        chainId: 80002,
+        network: "amoy_testnet",
+        urls: {
+          apiURL: "https://api-amoy.polygonscan.com/api",
+          browserURL: "https://amoy.polygonscan.com",
+        },
+      },
+    ],
   },
   networks: {
     ...getHardhatConfigNetworks(),

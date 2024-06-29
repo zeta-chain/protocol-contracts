@@ -2,9 +2,10 @@ import { Contract } from "ethers";
 import { ethers, network } from "hardhat";
 import { getAddress, isProtocolNetworkName } from "lib";
 
-import { deployZetaConnectorEth, deployZetaConnectorNonEth, isEthNetworkName } from "../../../lib/contracts.helpers";
+import { ERC20_CUSTODY_ZETA_FEE, ERC20_CUSTODY_ZETA_MAX_FEE } from "../../../lib/contracts.constants";
+import { deployERC20Custody as deployERC20CustodyHelper } from "../../../lib/contracts.helpers";
 
-export async function deployZetaConnector(zetaTokenAddress: string) {
+export async function deployERC20Custody(zetaTokenAddress: string) {
   if (!isProtocolNetworkName(network.name)) {
     throw new Error(`network.name: ${network.name} isn't supported.`);
   }
@@ -15,23 +16,21 @@ export async function deployZetaConnector(zetaTokenAddress: string) {
   const tssAddress = getAddress("tss", network.name);
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
 
-  const constructorArgs = [zetaTokenAddress, tssAddress, tssUpdaterAddress, tssUpdaterAddress];
-  let contract: Contract;
-  console.log(`Deploying ZetaConnector to ${network.name}`);
+  const zetaFee = ERC20_CUSTODY_ZETA_FEE;
+  const zetaMaxFee = ERC20_CUSTODY_ZETA_MAX_FEE;
 
-  if (isEthNetworkName(network.name)) {
-    contract = await deployZetaConnectorEth({
-      args: constructorArgs,
-    });
-  } else {
-    contract = await deployZetaConnectorNonEth({
-      args: constructorArgs,
-    });
-  }
+  let contract: Contract;
+  console.log(`Deploying ERC20Custody to ${network.name}`);
+
+  const constructorArgs = [tssAddress, tssUpdaterAddress, zetaFee.toString(), zetaMaxFee.toString(), zetaTokenAddress];
+  contract = await deployERC20CustodyHelper({
+    args: constructorArgs,
+  });
 
   const finalBalance = await signer.getBalance();
-  console.log("Deployed ZetaConnector. Address:", contract.address);
+  console.log("Deployed ERC20Custody. Address:", contract.address);
   console.log("Constructor Args", constructorArgs);
   console.log("ETH spent:", initialBalance.sub(finalBalance).toString());
+
   return contract.address;
 }
