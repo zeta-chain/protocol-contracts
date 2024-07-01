@@ -31,6 +31,7 @@ export declare type ZetaZEVMAddress =
   | "zrc20";
 
 export declare type ZetaProtocolTestNetwork =
+  | "amoy_testnet"
   | "baobab_testnet"
   | "bsc_testnet"
   | "btc_testnet"
@@ -47,6 +48,7 @@ export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
   "sepolia_testnet",
   "mumbai_testnet",
   "zeta_testnet",
+  "amoy_testnet",
 ];
 
 export declare type NonZetaAddress =
@@ -82,14 +84,6 @@ export const isTestnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
 export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
   return false;
 };
-
-// export const getAddress = (address: ZetaProtocolAddress | ZetaZEVMAddress, network: ZetaProtocolNetwork): string => {
-//   if (isZetaProtocolAddress(address)) {
-//     return (addresses["ccm"] as any)[network][address];
-//   }
-
-//   return (addresses["zevm"] as any)[network][address];
-// };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
   return (addresses["zevm"] as any)[network]["zrc20"];

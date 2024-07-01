@@ -20,7 +20,6 @@ export type ParamChainName =
   | "btc_mainnet"
   | "btc_testnet"
   | "eth_mainnet"
-  | "mumbai_testnet"
   | "sepolia_testnet"
   | "zeta_mainnet"
   | "zeta_testnet";
