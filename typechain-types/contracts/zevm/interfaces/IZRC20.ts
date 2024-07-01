@@ -37,7 +37,6 @@ export interface IZRC20Interface extends utils.Interface {
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "deposit(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "setGatewayContractAddress(address)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
@@ -55,7 +54,6 @@ export interface IZRC20Interface extends utils.Interface {
       | "decreaseAllowance"
       | "deposit"
       | "increaseAllowance"
-      | "setGatewayContractAddress"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
@@ -94,10 +92,6 @@ export interface IZRC20Interface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setGatewayContractAddress",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -139,10 +133,6 @@ export interface IZRC20Interface extends utils.Interface {
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setGatewayContractAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -330,11 +320,6 @@ export interface IZRC20 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setGatewayContractAddress(
-      gateway: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
@@ -398,11 +383,6 @@ export interface IZRC20 extends BaseContract {
   increaseAllowance(
     spender: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setGatewayContractAddress(
-    gateway: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -471,11 +451,6 @@ export interface IZRC20 extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    setGatewayContractAddress(
-      gateway: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -611,11 +586,6 @@ export interface IZRC20 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setGatewayContractAddress(
-      gateway: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
@@ -680,11 +650,6 @@ export interface IZRC20 extends BaseContract {
     increaseAllowance(
       spender: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setGatewayContractAddress(
-      gateway: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

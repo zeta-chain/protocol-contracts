@@ -333,19 +333,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "gateway",
-        type: "address",
-      },
-    ],
-    name: "setGatewayContractAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "totalSupply",
     outputs: [
