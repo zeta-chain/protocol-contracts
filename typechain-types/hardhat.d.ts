@@ -369,6 +369,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Sender__factory>;
     getContractFactory(
+      name: "TestZContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TestZContract__factory>;
+    getContractFactory(
+      name: "ZRC20Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20Errors__factory>;
+    getContractFactory(
+      name: "ZRC20New",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20New__factory>;
+    getContractFactory(
       name: "ISystem",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ISystem__factory>;
@@ -882,6 +894,21 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Sender>;
+    getContractAt(
+      name: "TestZContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TestZContract>;
+    getContractAt(
+      name: "ZRC20Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20Errors>;
+    getContractAt(
+      name: "ZRC20New",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20New>;
     getContractAt(
       name: "ISystem",
       address: string,

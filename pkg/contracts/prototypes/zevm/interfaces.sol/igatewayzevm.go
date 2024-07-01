@@ -29,9 +29,16 @@ var (
 	_ = abi.ConvertType
 )
 
+// ZContext is an auto generated low-level Go binding around an user-defined struct.
+type ZContext struct {
+	Origin  []byte
+	Sender  common.Address
+	ChainID *big.Int
+}
+
 // IGatewayZEVMMetaData contains all meta data concerning the IGatewayZEVM contract.
 var IGatewayZEVMMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"call\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"withdrawAndCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"call\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structzContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"depositAndCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structzContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"withdrawAndCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IGatewayZEVMABI is the input ABI used to generate the binding from.
@@ -199,6 +206,69 @@ func (_IGatewayZEVM *IGatewayZEVMSession) Call(receiver []byte, message []byte) 
 // Solidity: function call(bytes receiver, bytes message) returns()
 func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Call(receiver []byte, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.Contract.Call(&_IGatewayZEVM.TransactOpts, receiver, message)
+}
+
+// Deposit is a paid mutator transaction binding the contract method 0xf45346dc.
+//
+// Solidity: function deposit(address zrc20, uint256 amount, address target) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) Deposit(opts *bind.TransactOpts, zrc20 common.Address, amount *big.Int, target common.Address) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "deposit", zrc20, amount, target)
+}
+
+// Deposit is a paid mutator transaction binding the contract method 0xf45346dc.
+//
+// Solidity: function deposit(address zrc20, uint256 amount, address target) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) Deposit(zrc20 common.Address, amount *big.Int, target common.Address) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Deposit(&_IGatewayZEVM.TransactOpts, zrc20, amount, target)
+}
+
+// Deposit is a paid mutator transaction binding the contract method 0xf45346dc.
+//
+// Solidity: function deposit(address zrc20, uint256 amount, address target) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Deposit(zrc20 common.Address, amount *big.Int, target common.Address) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Deposit(&_IGatewayZEVM.TransactOpts, zrc20, amount, target)
+}
+
+// DepositAndCall is a paid mutator transaction binding the contract method 0xc39aca37.
+//
+// Solidity: function depositAndCall((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) DepositAndCall(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "depositAndCall", context, zrc20, amount, target, message)
+}
+
+// DepositAndCall is a paid mutator transaction binding the contract method 0xc39aca37.
+//
+// Solidity: function depositAndCall((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) DepositAndCall(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.DepositAndCall(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
+}
+
+// DepositAndCall is a paid mutator transaction binding the contract method 0xc39aca37.
+//
+// Solidity: function depositAndCall((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) DepositAndCall(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.DepositAndCall(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
+}
+
+// Execute is a paid mutator transaction binding the contract method 0xbcf7f32b.
+//
+// Solidity: function execute((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) Execute(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "execute", context, zrc20, amount, target, message)
+}
+
+// Execute is a paid mutator transaction binding the contract method 0xbcf7f32b.
+//
+// Solidity: function execute((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) Execute(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Execute(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
+}
+
+// Execute is a paid mutator transaction binding the contract method 0xbcf7f32b.
+//
+// Solidity: function execute((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Execute(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Execute(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
 // Withdraw is a paid mutator transaction binding the contract method 0x135390f9.
