@@ -85,7 +85,9 @@
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
-    "tsc:watch": "npx tsc --watch"
+    "tsc:watch": "npx tsc --watch",
+    "localnode": "npx hardhat node",
+    "localnet": "npx hardhat run scripts/worker.ts --network localhost"
   },
   "types": "./dist/lib/index.d.ts",
   "version": "0.0.8"
