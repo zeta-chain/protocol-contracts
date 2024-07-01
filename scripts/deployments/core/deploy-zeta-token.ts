@@ -12,6 +12,7 @@ export async function deployZetaToken() {
 
   const accounts = await ethers.getSigners();
   const [signer] = accounts;
+  const initialBalance = await signer.getBalance();
 
   const DEPLOYER_ADDRESS = process.env.DEPLOYER_ADDRESS || signer.address;
 
@@ -19,17 +20,24 @@ export async function deployZetaToken() {
   const tssUpdaterAddress = getAddress("tssUpdater", network.name);
 
   let contract: Contract;
+  let constructorArgs: any;
+  console.log(`Deploying ZetaToken to ${network.name}`);
 
   if (isEthNetworkName(network.name)) {
+    constructorArgs = [DEPLOYER_ADDRESS, ZETA_INITIAL_SUPPLY];
     contract = await deployZetaEth({
-      args: [DEPLOYER_ADDRESS, ZETA_INITIAL_SUPPLY],
+      args: constructorArgs,
     });
   } else {
+    constructorArgs = [tssAddress, tssUpdaterAddress];
     contract = await deployZetaNonEth({
-      args: [tssAddress, tssUpdaterAddress],
+      args: constructorArgs,
     });
   }
 
-  console.log("Deployed Zeta to:", contract.address);
+  const finalBalance = await signer.getBalance();
+  console.log("Deployed ZetaToken. Address:", contract.address);
+  console.log("Constructor Args", constructorArgs);
+  console.log("ETH spent:", initialBalance.sub(finalBalance).toString());
   return contract.address;
 }

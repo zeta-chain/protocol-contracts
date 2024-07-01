@@ -1,18 +1,18 @@
 import { network } from "hardhat";
 
 import { isProtocolNetworkName } from "../../../lib/address.tools";
-import { deterministicDeployERC20Custody } from "./deterministic-deploy-erc20-custody";
-import { deterministicDeployZetaConnector } from "./deterministic-deploy-zeta-connector";
-import { deterministicDeployZetaToken } from "./deterministic-deploy-zeta-token";
+import { deployERC20Custody } from "./deploy-erc20-custody";
+import { deployZetaConnector } from "./deploy-zeta-connector";
+import { deployZetaToken } from "./deploy-zeta-token";
 
 const networkName = network.name;
 
 async function main() {
   if (!isProtocolNetworkName(networkName)) throw new Error("Invalid network name");
 
-  await deterministicDeployZetaToken();
-  await deterministicDeployZetaConnector();
-  await deterministicDeployERC20Custody();
+  const zetaTokenAddress = await deployZetaToken();
+  await deployZetaConnector(zetaTokenAddress);
+  await deployERC20Custody(zetaTokenAddress);
 }
 
 main()

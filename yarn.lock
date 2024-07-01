@@ -2262,10 +2262,10 @@
     "@uniswap/v3-core" "1.0.0"
     base64-sol "1.0.1"
 
-"@zetachain/networks@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/@zetachain/networks/-/networks-6.0.0.tgz"
-  integrity sha512-yKFVP/yJDp76Q5lBGfZSpY/KO3TZ9ldo0lhE4MpBW43EsBxOZWixg6sqb56mcU/gg1lbWG8sHHWtYFK51SByjQ==
+"@zetachain/networks@8.0.0-rc1":
+  version "8.0.0-rc1"
+  resolved "https://registry.yarnpkg.com/@zetachain/networks/-/networks-8.0.0-rc1.tgz#3ad8891a7e2120509ef560720c6fa573a0a0b73f"
+  integrity sha512-rw09aariRcNItoNYClHq6Gm2IUNoBOFHOO3VHNyN7krapbY0Jy4HCQQj8iq7oNWZyNfwDIxIqkiQURPvIfpsMw==
   dependencies:
     dotenv "^16.1.4"
 
