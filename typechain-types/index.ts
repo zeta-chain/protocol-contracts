@@ -176,6 +176,10 @@ export type { Sender } from "./contracts/prototypes/zevm/Sender";
 export { Sender__factory } from "./factories/contracts/prototypes/zevm/Sender__factory";
 export type { TestZContract } from "./contracts/prototypes/zevm/TestZContract";
 export { TestZContract__factory } from "./factories/contracts/prototypes/zevm/TestZContract__factory";
+export type { ZRC20Errors } from "./contracts/prototypes/zevm/ZRC20New.sol/ZRC20Errors";
+export { ZRC20Errors__factory } from "./factories/contracts/prototypes/zevm/ZRC20New.sol/ZRC20Errors__factory";
+export type { ZRC20New } from "./contracts/prototypes/zevm/ZRC20New.sol/ZRC20New";
+export { ZRC20New__factory } from "./factories/contracts/prototypes/zevm/ZRC20New.sol/ZRC20New__factory";
 export type { ISystem } from "./contracts/zevm/Interfaces.sol/ISystem";
 export { ISystem__factory } from "./factories/contracts/zevm/Interfaces.sol/ISystem__factory";
 export type { IZRC20 } from "./contracts/zevm/Interfaces.sol/IZRC20";
@@ -196,5 +200,3 @@ export type { ZetaConnectorZEVM } from "./contracts/zevm/ZetaConnectorZEVM.sol/Z
 export { ZetaConnectorZEVM__factory } from "./factories/contracts/zevm/ZetaConnectorZEVM.sol/ZetaConnectorZEVM__factory";
 export type { ZRC20 } from "./contracts/zevm/ZRC20.sol/ZRC20";
 export { ZRC20__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20__factory";
-export type { ZRC20Errors } from "./contracts/zevm/ZRC20.sol/ZRC20Errors";
-export { ZRC20Errors__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20Errors__factory";

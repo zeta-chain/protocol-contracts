@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
-import "./Interfaces.sol";
+import "../../zevm/Interfaces.sol";
 
 /**
  * @dev Custom errors for ZRC20
@@ -17,7 +17,9 @@ interface ZRC20Errors {
     error ZeroAddress();
 }
 
-contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
+// NOTE: this is exactly the same as ZRC20, except gateway contract address is set at deployment
+// and used to allow deposit. This is first version, it might change in the future.
+contract ZRC20New is IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice Fungible address is always the same, maintained at the protocol level
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Chain id.abi
@@ -26,6 +28,8 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
     CoinType public immutable COIN_TYPE;
     /// @notice System contract address.
     address public SYSTEM_CONTRACT_ADDRESS;
+     /// @notice Gateway contract address.
+    address public GATEWAY_CONTRACT_ADDRESS;
     /// @notice Gas limit.
     uint256 public GAS_LIMIT;
     /// @notice Protocol flat fee.
@@ -64,7 +68,8 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
         uint256 chainid_,
         CoinType coinType_,
         uint256 gasLimit_,
-        address systemContractAddress_
+        address systemContractAddress_,
+        address gatewayContractAddress_
     ) {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         _name = name_;
@@ -74,6 +79,7 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
         COIN_TYPE = coinType_;
         GAS_LIMIT = gasLimit_;
         SYSTEM_CONTRACT_ADDRESS = systemContractAddress_;
+        GATEWAY_CONTRACT_ADDRESS = gatewayContractAddress_;
     }
 
     /**
@@ -223,7 +229,7 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
      * @return true/false if succeeded/failed.
      */
     function deposit(address to, uint256 amount) external override returns (bool) {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS) revert InvalidSender();
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS && msg.sender != GATEWAY_CONTRACT_ADDRESS) revert InvalidSender();
         _mint(to, amount);
         emit Deposit(abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), to, amount);
         return true;

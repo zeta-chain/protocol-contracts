@@ -25,14 +25,15 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../../common";
+} from "../../../../common";
 
-export interface ZRC20Interface extends utils.Interface {
+export interface ZRC20NewInterface extends utils.Interface {
   functions: {
     "CHAIN_ID()": FunctionFragment;
     "COIN_TYPE()": FunctionFragment;
     "FUNGIBLE_MODULE_ADDRESS()": FunctionFragment;
     "GAS_LIMIT()": FunctionFragment;
+    "GATEWAY_CONTRACT_ADDRESS()": FunctionFragment;
     "PROTOCOL_FLAT_FEE()": FunctionFragment;
     "SYSTEM_CONTRACT_ADDRESS()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
@@ -59,6 +60,7 @@ export interface ZRC20Interface extends utils.Interface {
       | "COIN_TYPE"
       | "FUNGIBLE_MODULE_ADDRESS"
       | "GAS_LIMIT"
+      | "GATEWAY_CONTRACT_ADDRESS"
       | "PROTOCOL_FLAT_FEE"
       | "SYSTEM_CONTRACT_ADDRESS"
       | "allowance"
@@ -86,6 +88,10 @@ export interface ZRC20Interface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "GAS_LIMIT", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "GATEWAY_CONTRACT_ADDRESS",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "PROTOCOL_FLAT_FEE",
     values?: undefined
@@ -161,6 +167,10 @@ export interface ZRC20Interface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "GAS_LIMIT", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "GATEWAY_CONTRACT_ADDRESS",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "PROTOCOL_FLAT_FEE",
     data: BytesLike
@@ -305,12 +315,12 @@ export type WithdrawalEvent = TypedEvent<
 
 export type WithdrawalEventFilter = TypedEventFilter<WithdrawalEvent>;
 
-export interface ZRC20 extends BaseContract {
+export interface ZRC20New extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ZRC20Interface;
+  interface: ZRC20NewInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -339,6 +349,8 @@ export interface ZRC20 extends BaseContract {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<[string]>;
 
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -425,6 +437,8 @@ export interface ZRC20 extends BaseContract {
 
   GAS_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
+  GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
+
   PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
   SYSTEM_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -509,6 +523,8 @@ export interface ZRC20 extends BaseContract {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<string>;
 
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -663,6 +679,8 @@ export interface ZRC20 extends BaseContract {
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
+    GATEWAY_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
+
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<BigNumber>;
 
     SYSTEM_CONTRACT_ADDRESS(overrides?: CallOverrides): Promise<BigNumber>;
@@ -750,6 +768,10 @@ export interface ZRC20 extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     GAS_LIMIT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    GATEWAY_CONTRACT_ADDRESS(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     PROTOCOL_FLAT_FEE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

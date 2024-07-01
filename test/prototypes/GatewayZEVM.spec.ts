@@ -34,7 +34,13 @@ describe("GatewayZEVM", function () {
     const SystemContractFactory = await ethers.getContractFactory("SystemContractMock");
     systemContract = (await SystemContractFactory.deploy(AddressZero, AddressZero, AddressZero)) as SystemContract;
 
-    const ZRC20Factory = await ethers.getContractFactory("ZRC20");
+    const Gateway = await ethers.getContractFactory("GatewayZEVM");
+    gateway = await upgrades.deployProxy(Gateway, [], {
+      initializer: "initialize",
+      kind: "uups",
+    });
+
+    const ZRC20Factory = await ethers.getContractFactory("ZRC20New");
     ZRC20Contract = (await ZRC20Factory.connect(fungibleModuleSigner).deploy(
       "TOKEN",
       "TKN",
@@ -42,7 +48,8 @@ describe("GatewayZEVM", function () {
       1,
       1,
       0,
-      systemContract.address
+      systemContract.address,
+      gateway.address
     )) as ZRC20;
 
     await systemContract.setGasCoinZRC20(1, ZRC20Contract.address);
@@ -50,15 +57,7 @@ describe("GatewayZEVM", function () {
 
     await ZRC20Contract.connect(fungibleModuleSigner).deposit(owner.address, parseEther("100"));
 
-    const Gateway = await ethers.getContractFactory("GatewayZEVM");
-    gateway = await upgrades.deployProxy(Gateway, [], {
-      initializer: "initialize",
-      kind: "uups",
-    });
-
     await ZRC20Contract.connect(owner).approve(gateway.address, parseEther("100"));
-
-    await ZRC20Contract.connect(owner).setGatewayContractAddress(gateway.address);
 
     const TestZContract = await ethers.getContractFactory("TestZContract");
     testZContract = await TestZContract.deploy();
