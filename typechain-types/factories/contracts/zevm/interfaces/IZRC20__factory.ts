@@ -163,7 +163,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "PROTOCOL_FEE",
+    name: "PROTOCOL_FLAT_FEE",
     outputs: [
       {
         internalType: "uint256",
@@ -243,11 +243,6 @@ const _abi = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
       {
         internalType: "uint256",
         name: "amount",

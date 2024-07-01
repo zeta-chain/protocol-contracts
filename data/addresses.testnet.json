@@ -198,6 +198,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x777915D031d1e8144c90D025C594b3b8Bf07a08d",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Amoy MATIC-amoy_testnet",
+    "foreign_chain_id": "80002",
+    "symbol": "MATIC.AMOY",
+    "type": "zrc20"
+  },
+  {
     "address": "0x7c8dDa80bbBE1254a7aACf3219EBe1481c6E01d7",
     "asset": "0x64544969ed7EBf5f083679233325356EbE738930",
     "category": "omnichain",
