@@ -1,7 +1,6 @@
 import { AddressZero } from "@ethersproject/constants";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { SystemContract, ZRC20 } from "@typechain-types";
-import { expect } from "chai";
 import { Contract } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, upgrades } from "hardhat";
@@ -117,11 +116,19 @@ export const startLocalnet = async () => {
 
   await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
   console.log("ZEVM: Fungible module deposited 100TKN to sender:", senderZEVM.address);
+
+  gatewayEVM.on("Deposit", (...args: Array<any>) => {
+    console.log("EVM: GatewayEVM Deposit event:", args)
+  })
+
+  process.stdin.resume();
 }
 
 startLocalnet()
-  .then(() => process.exit(0))
+  .then(() => {
+    console.log('Setup complete, monitoring events. Press CTRL+C to exit.');
+  })
   .catch((error) => {
-    console.error(error);
+    console.error('Failed to deploy contracts or set up listeners:', error);
     process.exit(1);
   });
