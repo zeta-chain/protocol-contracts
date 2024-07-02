@@ -11,6 +11,8 @@
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.8.3",
+    "@openzeppelin/contracts-upgradeable": "^4.8.3",
+    "@openzeppelin/hardhat-upgrades": "1.28.0",
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.3.1",
@@ -22,7 +24,7 @@
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@uniswap/v3-periphery": "^1.4.3",
-    "@zetachain/networks": "8.0.0-rc1",
+    "@zetachain/networks": "8.0.0",
     "axios": "^1.6.5",
     "chai": "^4.3.6",
     "cpx": "^1.5.0",
@@ -54,7 +56,8 @@
     "ts-node": "10.8.1",
     "tsconfig-paths": "^3.14.1",
     "typechain": "^8.1.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "uniswap-v2-deploy-plugin": "^0.0.4"
   },
   "files": [
     "contracts",
@@ -81,6 +84,7 @@
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
+    "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",

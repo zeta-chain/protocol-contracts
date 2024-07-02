@@ -87,11 +87,11 @@ function withdraw(bytes memory to, uint256 amount) external returns (bool);
 function withdrawGasFee() external view returns (address, uint256);
 ```
 
-### PROTOCOL_FEE
+### PROTOCOL_FLAT_FEE
 
 
 ```solidity
-function PROTOCOL_FEE() external view returns (uint256);
+function PROTOCOL_FLAT_FEE() external view returns (uint256);
 ```
 
 ## Events
