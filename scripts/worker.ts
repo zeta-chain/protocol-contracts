@@ -9,7 +9,7 @@ const hre = require("hardhat");
 
 export const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
 
-export const startLocalnet = async () => {
+export const startWorker = async () => {
   console.log("deploying contracts");
   // EVM
   let receiverEVM: Contract;
@@ -155,7 +155,7 @@ export const startLocalnet = async () => {
   process.stdin.resume();
 };
 
-startLocalnet()
+startWorker()
   .then(() => {
     console.log("Setup complete, monitoring events. Press CTRL+C to exit.");
   })

@@ -82,7 +82,7 @@
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json",
     "lint:sol": "solhint 'contracts/**/*.sol'",
-    "localnet": "npx hardhat run scripts/worker.ts --network localhost",
+    "worker": "npx hardhat run scripts/worker.ts --network localhost",
     "localnode": "npx hardhat node",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
