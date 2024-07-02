@@ -29,7 +29,7 @@ export const startLocalnet = async () => {
   [ownerEVM, ownerZEVM, destination, tssAddress, ...addrs] = await ethers.getSigners();
   // Prepare EVM
   const TestERC20 = await ethers.getContractFactory("TestERC20");
-  const ReceiverEVM = await ethers.getContractFactory("Receiver");
+  const ReceiverEVM = await ethers.getContractFactory("ReceiverEVM");
   const GatewayEVM = await ethers.getContractFactory("GatewayEVM");
   const Custody = await ethers.getContractFactory("ERC20CustodyNew");
 
@@ -103,7 +103,7 @@ export const startLocalnet = async () => {
   console.log(`ZEVM: ${ownerZEVM.address} approved GatewayZEVM ${gatewayZEVM.address} 100TKN`);
 
   // including abi of gatewayZEVM events, so hardhat can decode them automatically
-  const senderArtifact = await hre.artifacts.readArtifact("Sender");
+  const senderArtifact = await hre.artifacts.readArtifact("SenderZEVM");
   const gatewayZEVMArtifact = await hre.artifacts.readArtifact("GatewayZEVM");
   const senderABI = [
     ...senderArtifact.abi,
@@ -119,6 +119,7 @@ export const startLocalnet = async () => {
 
   gatewayEVM.on("Deposit", (...args: Array<any>) => {
     console.log("EVM: GatewayEVM Deposit event:", args);
+    console.log("payload: ", args[5].args["payload"]);
   });
 
   process.stdin.resume();

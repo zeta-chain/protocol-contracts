@@ -29,7 +29,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     [ownerEVM, ownerZEVM, destination, tssAddress, ...addrs] = await ethers.getSigners();
     // Prepare EVM
     const TestERC20 = await ethers.getContractFactory("TestERC20");
-    const ReceiverEVM = await ethers.getContractFactory("Receiver");
+    const ReceiverEVM = await ethers.getContractFactory("ReceiverEVM");
     const GatewayEVM = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
 
@@ -89,7 +89,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await ZRC20Contract.connect(ownerZEVM).approve(gatewayZEVM.address, parseEther("100"));
 
     // including abi of gatewayZEVM events, so hardhat can decode them automatically
-    const senderArtifact = await hre.artifacts.readArtifact("Sender");
+    const senderArtifact = await hre.artifacts.readArtifact("SenderZEVM");
     const gatewayZEVMArtifact = await hre.artifacts.readArtifact("GatewayZEVM");
     const senderABI = [
       ...senderArtifact.abi,
@@ -110,8 +110,8 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
-    const callTx = await gatewayZEVM.connect(ownerZEVM).call(ethers.utils.arrayify(addrs[0].address), message);
-    await expect(callTx).to.emit(gatewayZEVM, "Call").withArgs(ownerZEVM.address, addrs[0].address, message);
+    const callTx = await gatewayZEVM.connect(ownerZEVM).call(ethers.utils.arrayify(receiverEVM.address), message);
+    await expect(callTx).to.emit(gatewayZEVM, "Call").withArgs(ownerZEVM.address, receiverEVM.address, message);
 
     // Get message from events
     const callTxReceipt = await callTx.wait();

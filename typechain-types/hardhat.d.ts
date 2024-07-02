@@ -349,9 +349,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayEVM__factory>;
     getContractFactory(
-      name: "Receiver",
+      name: "ReceiverEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Receiver__factory>;
+    ): Promise<Contracts.ReceiverEVM__factory>;
     getContractFactory(
       name: "TestERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -365,9 +365,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayZEVM__factory>;
     getContractFactory(
-      name: "Sender",
+      name: "SenderZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Sender__factory>;
+    ): Promise<Contracts.SenderZEVM__factory>;
     getContractFactory(
       name: "TestZContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -870,10 +870,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IGatewayEVM>;
     getContractAt(
-      name: "Receiver",
+      name: "ReceiverEVM",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Receiver>;
+    ): Promise<Contracts.ReceiverEVM>;
     getContractAt(
       name: "TestERC20",
       address: string,
@@ -890,10 +890,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IGatewayZEVM>;
     getContractAt(
-      name: "Sender",
+      name: "SenderZEVM",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Sender>;
+    ): Promise<Contracts.SenderZEVM>;
     getContractAt(
       name: "TestZContract",
       address: string,
