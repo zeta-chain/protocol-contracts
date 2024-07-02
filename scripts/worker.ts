@@ -23,6 +23,7 @@ export const startLocalnet = async () => {
   let ZRC20Contract: ZRC20;
   let systemContract: SystemContract;
   let gatewayZEVM: Contract;
+  let testZContract: Contract;
   let ownerZEVM: SignerWithAddress;
   let addrs: SignerWithAddress[];
 
@@ -80,6 +81,10 @@ export const startLocalnet = async () => {
   });
   console.log("ZEVM: GatewayZEVM deployed to:", gatewayZEVM.address);
 
+  const TestZContract = await ethers.getContractFactory("TestZContract");
+  testZContract = await TestZContract.deploy();
+  console.log("ZEVM: TestZContract deployed to:", testZContract.address);
+
   const ZRC20Factory = await ethers.getContractFactory("ZRC20New");
   ZRC20Contract = (await ZRC20Factory.connect(fungibleModuleSigner).deploy(
     "TOKEN",
@@ -126,6 +131,25 @@ export const startLocalnet = async () => {
 
   receiverEVM.on("ReceivedA", () => {
     console.log("ReceiverEVM: receiveA called!");
+  });
+
+  gatewayEVM.on("Call", async (...args: Array<any>) => {
+    console.log("Worker: Call event on GatewayEVM.");
+    console.log("Worker: Calling TestZContract through GatewayZEVM...");
+    const executeTx = await gatewayZEVM
+      .connect(fungibleModuleSigner)
+      .execute(
+        [gatewayZEVM.address, fungibleModuleSigner.address, 1],
+        ZRC20Contract.address,
+        parseEther("0"),
+        testZContract.address,
+        args[2]
+      );
+    await executeTx.wait();
+  });
+
+  testZContract.on("ContextData", async () => {
+    console.log("TestZContract: onCrosschainCall called!");
   });
 
   process.stdin.resume();

@@ -24,3 +24,17 @@ task("call-evm-receiver", "calls evm receiver from zevm account")
     await callTx.wait();
     console.log("ReceiverEVM called from ZEVM");
   });
+
+task("call-zevm-zcontract", "calls zevm zcontract from evm account")
+  .addOptionalParam("gatewayEVM", "contract address of gateway on EVM", "0xAD523115cd35a8d4E60B3C0953E0E0ac10418309")
+  .addOptionalParam("zContract", "contract address of zContract on ZEVM", "0x71089Ba41e478702e1904692385Be3972B2cBf9e")
+  .setAction(async (taskArgs) => {
+    const gatewayEVM = await hre.ethers.getContractAt("GatewayEVM", taskArgs.gatewayEVM);
+    const zContract = await hre.ethers.getContractAt("TestZContract", taskArgs.zContract);
+
+    const message = hre.ethers.utils.defaultAbiCoder.encode(["string"], ["hello"]);
+    const callTx = await gatewayEVM.call(zContract.address, message);
+
+    await callTx.wait();
+    console.log("TestZContract called from EVM");
+  });
