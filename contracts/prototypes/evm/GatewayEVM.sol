@@ -2,19 +2,22 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-
 // The GatewayEVM contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+    using SafeERC20 for IERC20;
+
     error ExecutionFailed();
     error DepositFailed();
     error InsufficientETHAmount();
     error InsufficientERC20Amount();
     error ZeroAddress();
+    error ApprovalFailed();
 
     address public custody;
     address public tssAddress;
@@ -73,19 +76,19 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         bytes calldata data
     ) external returns (bytes memory) {
         // Approve the target contract to spend the tokens
-        IERC20(token).approve(to, 0);
-        IERC20(token).approve(to, amount);
+        if(!IERC20(token).approve(to, 0)) revert ApprovalFailed();
+        if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
 
         // Execute the call on the target contract
         bytes memory result = _execute(to, data);
 
         // Reset approval
-        IERC20(token).approve(to, 0);
+        if(!IERC20(token).approve(to, 0)) revert ApprovalFailed();
 
         // Transfer any remaining tokens back to the custody contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            IERC20(token).transfer(address(custody), remainingBalance);
+            IERC20(token).safeTransfer(address(custody), remainingBalance);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
@@ -108,7 +111,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // Deposit ERC20 tokens to custody
     function deposit(address receiver, uint256 amount, address asset) external {
         if (amount == 0) revert InsufficientERC20Amount();
-        IERC20(asset).transferFrom(msg.sender, address(custody), amount);
+        IERC20(asset).safeTransferFrom(msg.sender, address(custody), amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, "");
     }
@@ -128,7 +131,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     // Deposit ERC20 tokens to custody and call an omnichain smart contract
     function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
         if (amount == 0) revert InsufficientERC20Amount();
-        IERC20(asset).transferFrom(msg.sender, address(custody), amount);
+        IERC20(asset).safeTransferFrom(msg.sender, address(custody), amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, payload);
     }

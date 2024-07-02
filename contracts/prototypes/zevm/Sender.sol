@@ -7,6 +7,7 @@ import "../../zevm/interfaces/IZRC20.sol";
 
 contract Sender {
     address public gateway;
+    error ApprovalFailed();
 
     constructor(address _gateway) {
         gateway = _gateway;
@@ -27,7 +28,7 @@ contract Sender {
         bytes memory message = abi.encodeWithSignature("receiveA(string,uint256,bool)", str, num, flag);
 
         // Approve gateway to withdraw
-        IZRC20(zrc20).approve(gateway, amount);
+        if(!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message);
