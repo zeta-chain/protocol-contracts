@@ -10,7 +10,7 @@ const hre = require("hardhat");
 export const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
 
 export const startLocalnet = async () => {
-  console.log('deploying contracts')
+  console.log("deploying contracts");
   // EVM
   let receiverEVM: Contract;
   let gatewayEVM: Contract;
@@ -89,7 +89,7 @@ export const startLocalnet = async () => {
     1,
     0,
     systemContract.address,
-    gatewayZEVM.address,
+    gatewayZEVM.address
   )) as ZRC20;
   console.log("ZEVM: ZRC20(TKN) contract deployed to:", ZRC20Contract.address);
 
@@ -118,17 +118,17 @@ export const startLocalnet = async () => {
   console.log("ZEVM: Fungible module deposited 100TKN to sender:", senderZEVM.address);
 
   gatewayEVM.on("Deposit", (...args: Array<any>) => {
-    console.log("EVM: GatewayEVM Deposit event:", args)
-  })
+    console.log("EVM: GatewayEVM Deposit event:", args);
+  });
 
   process.stdin.resume();
-}
+};
 
 startLocalnet()
   .then(() => {
-    console.log('Setup complete, monitoring events. Press CTRL+C to exit.');
+    console.log("Setup complete, monitoring events. Press CTRL+C to exit.");
   })
   .catch((error) => {
-    console.error('Failed to deploy contracts or set up listeners:', error);
+    console.error("Failed to deploy contracts or set up listeners:", error);
     process.exit(1);
   });
