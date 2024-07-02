@@ -2,8 +2,11 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract Receiver {
+    using SafeERC20 for IERC20;
+
     event ReceivedA(address sender, uint256 value, string str, uint256 num, bool flag);
     event ReceivedB(address sender, string[] strs, uint256[] nums, bool flag);
     event ReceivedC(address sender, uint256 amount, address token, address destination);
@@ -22,7 +25,7 @@ contract Receiver {
     // Function using IERC20
     function receiveC(uint256 amount, address token, address destination) external {
         // Transfer tokens from the Gateway contract to the destination address
-        IERC20(token).transferFrom(msg.sender, destination, amount);
+        IERC20(token).safeTransferFrom(msg.sender, destination, amount);
 
         emit ReceivedC(msg.sender, amount, token, destination);
     }
