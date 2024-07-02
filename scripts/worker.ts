@@ -117,9 +117,15 @@ export const startLocalnet = async () => {
   await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
   console.log("ZEVM: Fungible module deposited 100TKN to sender:", senderZEVM.address);
 
-  gatewayEVM.on("Deposit", (...args: Array<any>) => {
-    console.log("EVM: GatewayEVM Deposit event:", args);
-    console.log("payload: ", args[5].args["payload"]);
+  gatewayZEVM.on("Call", async (...args: Array<any>) => {
+    console.log("Worker: Call event on GatewayZEVM.");
+    console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
+    const executeTx = await gatewayEVM.execute(receiverEVM.address, args[3].args.message, { value: 0 });
+    await executeTx.wait();
+  });
+
+  receiverEVM.on("ReceivedA", () => {
+    console.log("ReceiverEVM: receiveA called!");
   });
 
   process.stdin.resume();
