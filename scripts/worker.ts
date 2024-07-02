@@ -120,7 +120,7 @@ export const startLocalnet = async () => {
   gatewayZEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
-    const executeTx = await gatewayEVM.execute(receiverEVM.address, args[3].args.message, { value: 0 });
+    const executeTx = await gatewayEVM.execute(args[1], args[2], { value: 0 });
     await executeTx.wait();
   });
 

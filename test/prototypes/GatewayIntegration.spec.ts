@@ -110,8 +110,10 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
-    const callTx = await gatewayZEVM.connect(ownerZEVM).call(ethers.utils.arrayify(receiverEVM.address), message);
-    await expect(callTx).to.emit(gatewayZEVM, "Call").withArgs(ownerZEVM.address, receiverEVM.address, message);
+    const callTx = await gatewayZEVM.connect(ownerZEVM).call(receiverEVM.address, message);
+    await expect(callTx)
+      .to.emit(gatewayZEVM, "Call")
+      .withArgs(ownerZEVM.address, receiverEVM.address.toLowerCase(), message);
 
     // Get message from events
     const callTxReceipt = await callTx.wait();
@@ -179,7 +181,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     const expectedMessage = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
     await expect(callTx)
       .to.emit(gatewayZEVM, "Call")
-      .withArgs(senderZEVM.address, receiverEVM.address, expectedMessage);
+      .withArgs(senderZEVM.address, receiverEVM.address.toLowerCase(), expectedMessage);
 
     const callEvent = callTxReceipt.events[0];
     const callMessage = callEvent.args[2];

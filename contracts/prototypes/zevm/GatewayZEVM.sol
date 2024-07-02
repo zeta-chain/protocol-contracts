@@ -18,7 +18,7 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error CallerIsNotFungibleModule();
     error InvalidTarget();
 
-    event Call(address indexed sender, bytes indexed receiver, bytes message);
+    event Call(address indexed sender, bytes receiver, bytes message);
     event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
 
     /// @custom:oz-upgrades-unsafe-allow constructor

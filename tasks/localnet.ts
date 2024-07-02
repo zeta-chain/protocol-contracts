@@ -19,7 +19,7 @@ task("call-evm-receiver", "calls evm receiver from zevm account")
 
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
-    const callTx = await gatewayZEVM.call(hre.ethers.utils.arrayify(receiverEVM.address), message);
+    const callTx = await gatewayZEVM.call(receiverEVM.address, message);
 
     await callTx.wait();
     console.log("ReceiverEVM called from ZEVM");
