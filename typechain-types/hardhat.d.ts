@@ -13,6 +13,38 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "OwnableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.OwnableUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC1822ProxiableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC1822ProxiableUpgradeable__factory>;
+    getContractFactory(
+      name: "IERC1967Upgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC1967Upgradeable__factory>;
+    getContractFactory(
+      name: "IBeaconUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IBeaconUpgradeable__factory>;
+    getContractFactory(
+      name: "ERC1967UpgradeUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC1967UpgradeUpgradeable__factory>;
+    getContractFactory(
+      name: "Initializable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Initializable__factory>;
+    getContractFactory(
+      name: "UUPSUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.UUPSUpgradeable__factory>;
+    getContractFactory(
+      name: "ContextUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ContextUpgradeable__factory>;
+    getContractFactory(
       name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
@@ -301,6 +333,54 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaConnectorNonEth__factory>;
     getContractFactory(
+      name: "ERC20CustodyNew",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20CustodyNew__factory>;
+    getContractFactory(
+      name: "GatewayEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayEVM__factory>;
+    getContractFactory(
+      name: "GatewayEVMUpgradeTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayEVMUpgradeTest__factory>;
+    getContractFactory(
+      name: "IGatewayEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGatewayEVM__factory>;
+    getContractFactory(
+      name: "Receiver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Receiver__factory>;
+    getContractFactory(
+      name: "TestERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TestERC20__factory>;
+    getContractFactory(
+      name: "GatewayZEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayZEVM__factory>;
+    getContractFactory(
+      name: "IGatewayZEVM",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGatewayZEVM__factory>;
+    getContractFactory(
+      name: "Sender",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Sender__factory>;
+    getContractFactory(
+      name: "TestZContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TestZContract__factory>;
+    getContractFactory(
+      name: "ZRC20Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20Errors__factory>;
+    getContractFactory(
+      name: "ZRC20New",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20New__factory>;
+    getContractFactory(
       name: "ISystem",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ISystem__factory>;
@@ -369,6 +449,46 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZRC20Errors__factory>;
 
+    getContractAt(
+      name: "OwnableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.OwnableUpgradeable>;
+    getContractAt(
+      name: "IERC1822ProxiableUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC1822ProxiableUpgradeable>;
+    getContractAt(
+      name: "IERC1967Upgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC1967Upgradeable>;
+    getContractAt(
+      name: "IBeaconUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IBeaconUpgradeable>;
+    getContractAt(
+      name: "ERC1967UpgradeUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC1967UpgradeUpgradeable>;
+    getContractAt(
+      name: "Initializable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Initializable>;
+    getContractAt(
+      name: "UUPSUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.UUPSUpgradeable>;
+    getContractAt(
+      name: "ContextUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ContextUpgradeable>;
     getContractAt(
       name: "Ownable",
       address: string,
@@ -729,6 +849,66 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaConnectorNonEth>;
+    getContractAt(
+      name: "ERC20CustodyNew",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20CustodyNew>;
+    getContractAt(
+      name: "GatewayEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayEVM>;
+    getContractAt(
+      name: "GatewayEVMUpgradeTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayEVMUpgradeTest>;
+    getContractAt(
+      name: "IGatewayEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGatewayEVM>;
+    getContractAt(
+      name: "Receiver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Receiver>;
+    getContractAt(
+      name: "TestERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TestERC20>;
+    getContractAt(
+      name: "GatewayZEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayZEVM>;
+    getContractAt(
+      name: "IGatewayZEVM",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGatewayZEVM>;
+    getContractAt(
+      name: "Sender",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Sender>;
+    getContractAt(
+      name: "TestZContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TestZContract>;
+    getContractAt(
+      name: "ZRC20Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20Errors>;
+    getContractAt(
+      name: "ZRC20New",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20New>;
     getContractAt(
       name: "ISystem",
       address: string,
