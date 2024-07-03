@@ -4,9 +4,6 @@ reviews:
     - "!typechain-types/**"
     - "!docs/**"
     - "!data/**"
-    - "contracts/**"
-    - "scripts/**"
-    - "tasks/**"
   path_instructions:
     - path: 'contracts/**'
       instructions: >-
