@@ -19,10 +19,13 @@ task("zevm-call", "calls evm contract from zevm account")
 
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
-    const callTx = await gatewayZEVM.call(receiverEVM.address, message);
-    await callTx.wait();
-
-    console.log("ReceiverEVM called from ZEVM");
+    try {
+      const callTx = await gatewayZEVM.call(receiverEVM.address, message);
+      await callTx.wait();
+      console.log("ReceiverEVM called from ZEVM");
+    } catch (e) {
+      console.error("Error calling ReceiverEVM:", e);
+    }
   });
 
 task("zevm-withdraw-and-call", "withdraws zrc20 and calls evm contract from zevm account")
@@ -42,12 +45,16 @@ task("zevm-withdraw-and-call", "withdraws zrc20 and calls evm contract from zevm
 
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
-    const callTx = await gatewayZEVM
-      .connect(ownerZEVM)
-      .withdrawAndCall(receiverEVM.address, hre.ethers.utils.parseEther(taskArgs.amount), zrc20.address, message);
-    await callTx.wait();
 
-    console.log("ReceiverEVM called from ZEVM");
+    try {
+      const callTx = await gatewayZEVM
+        .connect(ownerZEVM)
+        .withdrawAndCall(receiverEVM.address, hre.ethers.utils.parseEther(taskArgs.amount), zrc20.address, message);
+      await callTx.wait();
+      console.log("ReceiverEVM called from ZEVM");
+    } catch (e) {
+      console.error("Error calling ReciverEVM:", e);
+    }
   });
 
 task("evm-call", "calls zevm zcontract from evm account")
@@ -58,10 +65,14 @@ task("evm-call", "calls zevm zcontract from evm account")
     const zContract = await hre.ethers.getContractAt("TestZContract", taskArgs.zContract);
 
     const message = hre.ethers.utils.defaultAbiCoder.encode(["string"], ["hello"]);
-    const callTx = await gatewayEVM.call(zContract.address, message);
-    await callTx.wait();
 
-    console.log("TestZContract called from EVM");
+    try {
+      const callTx = await gatewayEVM.call(zContract.address, message);
+      await callTx.wait();
+      console.log("TestZContract called from EVM");
+    } catch (e) {
+      console.error("Error calling TestZContract:", e);
+    }
   });
 
 task("evm-deposit-and-call", "deposits erc20 and calls zevm zcontract from evm account")
@@ -77,13 +88,17 @@ task("evm-deposit-and-call", "deposits erc20 and calls zevm zcontract from evm a
     await erc20.approve(gatewayEVM.address, hre.ethers.utils.parseEther(taskArgs.amount));
 
     const payload = hre.ethers.utils.defaultAbiCoder.encode(["string"], ["hello"]);
-    const callTx = await gatewayEVM["depositAndCall(address,uint256,address,bytes)"](
-      zContract.address,
-      hre.ethers.utils.parseEther(taskArgs.amount),
-      erc20.address,
-      payload
-    );
-    await callTx.wait();
 
-    console.log("TestZContract called from EVM");
+    try {
+      const callTx = await gatewayEVM["depositAndCall(address,uint256,address,bytes)"](
+        zContract.address,
+        hre.ethers.utils.parseEther(taskArgs.amount),
+        erc20.address,
+        payload
+      );
+      await callTx.wait();
+      console.log("TestZContract called from EVM");
+    } catch (e) {
+      console.error("Error calling TestZContract:", e);
+    }
   });
