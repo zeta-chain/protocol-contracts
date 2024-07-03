@@ -129,8 +129,8 @@ export const startWorker = async () => {
     await executeTx.wait();
   });
 
-  receiverEVM.on("ReceivedA", () => {
-    console.log("ReceiverEVM: receiveA called!");
+  receiverEVM.on("ReceivedPayable", () => {
+    console.log("ReceiverEVM: receivePayable called!");
   });
 
   gatewayEVM.on("Call", async (...args: Array<any>) => {

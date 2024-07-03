@@ -6,7 +6,7 @@ declare const hre: any;
 // To make use of default contract addresses on localnet, start localnode and localnet from scratch, so contracts are deployed on same addresses
 // Otherwise, provide custom addresses as parameters
 
-task("call-evm-receiver", "calls evm receiver from zevm account")
+task("call-evm", "calls evm contract from zevm account")
   .addOptionalParam("gatewayZEVM", "contract address of gateway on ZEVM", "0x5133BBdfCCa3Eb4F739D599ee4eC45cBCD0E16c5")
   .addOptionalParam("receiverEVM", "contract address of receiver on EVM", "0xB06c856C8eaBd1d8321b687E188204C1018BC4E5")
   .setAction(async (taskArgs) => {
@@ -18,14 +18,14 @@ task("call-evm-receiver", "calls evm receiver from zevm account")
     const flag = true;
 
     // Encode the function call data and call on zevm
-    const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     const callTx = await gatewayZEVM.call(receiverEVM.address, message);
 
     await callTx.wait();
     console.log("ReceiverEVM called from ZEVM");
   });
 
-task("call-zevm-zcontract", "calls zevm zcontract from evm account")
+task("call-zevm", "calls zevm zcontract from evm account")
   .addOptionalParam("gatewayEVM", "contract address of gateway on EVM", "0xAD523115cd35a8d4E60B3C0953E0E0ac10418309")
   .addOptionalParam("zContract", "contract address of zContract on ZEVM", "0x71089Ba41e478702e1904692385Be3972B2cBf9e")
   .setAction(async (taskArgs) => {
