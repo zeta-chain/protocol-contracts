@@ -2,9 +2,9 @@ import { task } from "hardhat/config";
 
 declare const hre: any;
 
-// Contains tasks to make it easier to interact with prototype contracts localnet
-// To make use of default contract addresses on localnet, start localnode and localnet from scratch, so contracts are deployed on same addresses
-// Otherwise, provide custom addresses as parameters
+// Contains tasks to make it easier to interact with prototype contracts localnet.
+// To make use of default contract addresses on localnet, start localnet from scratch, so contracts are deployed on same addresses.
+// Otherwise, provide custom addresses as parameters.
 
 task("zevm-call", "calls evm contract from zevm account")
   .addOptionalParam("gatewayZEVM", "contract address of gateway on ZEVM", "0x5133BBdfCCa3Eb4F739D599ee4eC45cBCD0E16c5")

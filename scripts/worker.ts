@@ -16,7 +16,7 @@ export const startWorker = async () => {
   let gatewayEVM: Contract;
   let token: Contract;
   let custody: Contract;
-  let ownerEVM: any, destination: any, tssAddress: any;
+  let ownerEVM: any, tssAddress: any;
 
   // ZEVM
   let senderZEVM: Contract;
@@ -27,7 +27,8 @@ export const startWorker = async () => {
   let ownerZEVM: SignerWithAddress;
   let addrs: SignerWithAddress[];
 
-  [ownerEVM, ownerZEVM, destination, tssAddress, ...addrs] = await ethers.getSigners();
+  [ownerEVM, ownerZEVM, tssAddress, ...addrs] = await ethers.getSigners();
+
   // Prepare EVM
   const TestERC20 = await ethers.getContractFactory("TestERC20");
   const ReceiverEVM = await ethers.getContractFactory("ReceiverEVM");
@@ -60,6 +61,7 @@ export const startWorker = async () => {
   console.log("EVM: 500TTK transfered to custody from:", ownerEVM.address);
 
   // Prepare ZEVM
+
   // Impersonate the fungible module account
   await hre.network.provider.request({
     method: "hardhat_impersonateAccount",
@@ -137,7 +139,7 @@ export const startWorker = async () => {
     console.log("Worker: Withdrawal event on GatewayZEVM.");
     const receiver = args[1];
     const message = args[5];
-    if (args[5] != "0x") {
+    if (message != "0x") {
       console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
       const executeTx = await gatewayEVM.execute(receiver, message, { value: 0 });
       await executeTx.wait();
@@ -171,7 +173,7 @@ export const startWorker = async () => {
     const receiver = args[1];
     const asset = args[3];
     const payload = args[4];
-    if (args[4] != "0x") {
+    if (payload != "0x") {
       console.log("Worker: Calling TestZContract through GatewayZEVM...");
       const executeTx = await gatewayZEVM
         .connect(fungibleModuleSigner)
