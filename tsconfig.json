@@ -9,8 +9,8 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "paths": {
-      "@typechain-types": ["typechain-types"],
-      "@openzeppelin/*": ["node_modules/@openzeppelin/*"]
+      "@openzeppelin/*": ["node_modules/@openzeppelin/*"],
+      "@typechain-types": ["typechain-types"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
