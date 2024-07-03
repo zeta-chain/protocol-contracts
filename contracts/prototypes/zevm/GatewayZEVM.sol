@@ -14,6 +14,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
 
     error WithdrawalFailed();
     error InsufficientZRC20Amount();
+    error ZRC20BurnFailed();
+    error ZRC20TransferFailed();
     error GasFeeTransferFailed();
     error CallerIsNotFungibleModule();
     error InvalidTarget();
@@ -39,8 +41,11 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
             revert GasFeeTransferFailed();
         }
 
-        IZRC20(zrc20).transferFrom(msg.sender, address(this), amount);
-        IZRC20(zrc20).burn(amount);
+        if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
+            revert ZRC20TransferFailed();
+        }
+
+        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
 
         return gasFee;
     }
