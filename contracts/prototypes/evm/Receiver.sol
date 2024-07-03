@@ -7,31 +7,31 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract Receiver {
     using SafeERC20 for IERC20;
 
-    event ReceivedA(address sender, uint256 value, string str, uint256 num, bool flag);
-    event ReceivedB(address sender, string[] strs, uint256[] nums, bool flag);
-    event ReceivedC(address sender, uint256 amount, address token, address destination);
-    event ReceivedD(address sender);
+    event ReceivedPayable(address sender, uint256 value, string str, uint256 num, bool flag);
+    event ReceivedNonPayable(address sender, string[] strs, uint256[] nums, bool flag);
+    event ReceivedERC20(address sender, uint256 amount, address token, address destination);
+    event ReceivedNoParams(address sender);
 
     // Payable function
-    function receiveA(string memory str, uint256 num, bool flag) external payable {
-        emit ReceivedA(msg.sender, msg.value, str, num, flag);
+    function receivePayable(string memory str, uint256 num, bool flag) external payable {
+        emit ReceivedPayable(msg.sender, msg.value, str, num, flag);
     }
 
     // Non-payable function
-    function receiveB(string[] memory strs, uint256[] memory nums, bool flag) external {
-        emit ReceivedB(msg.sender, strs, nums, flag);
+    function receiveNonPayable(string[] memory strs, uint256[] memory nums, bool flag) external {
+        emit ReceivedNonPayable(msg.sender, strs, nums, flag);
     }
 
     // Function using IERC20
-    function receiveC(uint256 amount, address token, address destination) external {
+    function receiveERC20(uint256 amount, address token, address destination) external {
         // Transfer tokens from the Gateway contract to the destination address
         IERC20(token).safeTransferFrom(msg.sender, destination, amount);
 
-        emit ReceivedC(msg.sender, amount, token, destination);
+        emit ReceivedERC20(msg.sender, amount, token, destination);
     }
 
     // Function without parameters
-    function receiveD() external {
-        emit ReceivedD(msg.sender);
+    function receiveNoParams() external {
+        emit ReceivedNoParams(msg.sender);
     }
 }

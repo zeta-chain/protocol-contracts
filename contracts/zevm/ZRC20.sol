@@ -235,9 +235,8 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
      */
     function withdrawGasFee() public view override returns (address, uint256) {
         address gasZRC20 = ISystem(SYSTEM_CONTRACT_ADDRESS).gasCoinZRC20ByChainId(CHAIN_ID);
-        if (gasZRC20 == address(0)) {
-            revert ZeroGasCoin();
-        }
+        if (gasZRC20 == address(0)) revert ZeroGasCoin();
+
         uint256 gasPrice = ISystem(SYSTEM_CONTRACT_ADDRESS).gasPriceByChainId(CHAIN_ID);
         if (gasPrice == 0) {
             revert ZeroGasPrice();

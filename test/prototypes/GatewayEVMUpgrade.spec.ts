@@ -57,14 +57,14 @@ describe("GatewayEVM upgrade", function () {
     const value = ethers.utils.parseEther("1.0");
 
     // Encode the function call data
-    const data = receiver.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const data = receiver.interface.encodeFunctionData("receivePayable", [str, num, flag]);
 
     // Call execute on the GatewayV2 contract
     const tx = await gatewayUpgradeTest.execute(receiver.address, data, { value: value });
 
     // Listen for the event
     await expect(tx).to.emit(gatewayUpgradeTest, "ExecutedV2").withArgs(receiver.address, value, data);
-    await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gatewayUpgradeTest.address, value, str, num, flag);
+    await expect(tx).to.emit(receiver, "ReceivedPayable").withArgs(gatewayUpgradeTest.address, value, str, num, flag);
 
     // Check that storage is not changed
     expect(await gatewayUpgradeTest.custody()).to.equal(custodyBeforeUpgrade);

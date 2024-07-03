@@ -41,37 +41,37 @@ describe("GatewayEVM inbound", function () {
     const value = ethers.utils.parseEther("1.0");
 
     // Encode the function call data
-    const data = receiver.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const data = receiver.interface.encodeFunctionData("receivePayable", [str, num, flag]);
 
     // Call execute on the Gateway contract
     const tx = await gateway.execute(receiver.address, data, { value: value });
 
     // Listen for the event
     await expect(tx).to.emit(gateway, "Executed").withArgs(receiver.address, value, data);
-    await expect(tx).to.emit(receiver, "ReceivedA").withArgs(gateway.address, value, str, num, flag);
+    await expect(tx).to.emit(receiver, "ReceivedPayable").withArgs(gateway.address, value, str, num, flag);
   });
 
-  it("should forward call to Receiver's receiveB function", async function () {
+  it("should forward call to Receiver's receiveNonPayable function", async function () {
     const strs = ["Hello", "Hardhat"];
     const nums = [1, 2, 3];
     const flag = false;
-    const data = receiver.interface.encodeFunctionData("receiveB", [strs, nums, flag]);
+    const data = receiver.interface.encodeFunctionData("receiveNonPayable", [strs, nums, flag]);
     const tx = await gateway.execute(receiver.address, data);
-    await expect(tx).to.emit(receiver, "ReceivedB").withArgs(gateway.address, strs, nums, flag);
+    await expect(tx).to.emit(receiver, "ReceivedNonPayable").withArgs(gateway.address, strs, nums, flag);
   });
 
   it("should forward call with withdrawAndCall and give allowance to destination contract", async function () {
     const amount = ethers.utils.parseEther("100");
 
-    // Encode the function call data for receiveC
-    const data = receiver.interface.encodeFunctionData("receiveC", [amount, token.address, destination.address]);
+    // Encode the function call data for receiveERC20
+    const data = receiver.interface.encodeFunctionData("receiveERC20", [amount, token.address, destination.address]);
 
     // Withdraw and call
     const tx = await custody.withdrawAndCall(token.address, receiver.address, amount, data);
 
     // Verify the event was emitted
     await expect(tx)
-      .to.emit(receiver, "ReceivedC")
+      .to.emit(receiver, "ReceivedERC20")
       .withArgs(gateway.address, amount, token.address, destination.address);
 
     // Verify that the tokens were transferred to the destination address
@@ -87,28 +87,28 @@ describe("GatewayEVM inbound", function () {
     expect(allowance).to.equal(0);
   });
 
-  it("should forward call to Receiver's receiveD function", async function () {
-    const data = receiver.interface.encodeFunctionData("receiveD");
+  it("should forward call to Receiver's receiveNoParams function", async function () {
+    const data = receiver.interface.encodeFunctionData("receiveNoParams");
 
     // Execute the call
     const tx = await gateway.execute(receiver.address, data);
 
     // Verify the event was emitted
-    await expect(tx).to.emit(receiver, "ReceivedD").withArgs(gateway.address);
+    await expect(tx).to.emit(receiver, "ReceivedNoParams").withArgs(gateway.address);
   });
 
-  it("should forward call to Receiver's receiveD function through withdrawAndCall and return ERC20 tokens to custody", async function () {
+  it("should forward call to Receiver's receiveNoParams function through withdrawAndCall and return ERC20 tokens to custody", async function () {
     const amount = ethers.utils.parseEther("100");
 
-    // Encode the function call data for receiveD
-    const data = receiver.interface.encodeFunctionData("receiveD");
+    // Encode the function call data for receiveNoParams
+    const data = receiver.interface.encodeFunctionData("receiveNoParams");
 
     // Withdraw and call
     await custody.withdrawAndCall(token.address, receiver.address, amount, data);
 
     // Verify the event was emitted
     await expect(custody.withdrawAndCall(token.address, receiver.address, amount, data))
-      .to.emit(receiver, "ReceivedD")
+      .to.emit(receiver, "ReceivedNoParams")
       .withArgs(gateway.address);
 
     // Verify that the remaining tokens were refunded to the Custody contract

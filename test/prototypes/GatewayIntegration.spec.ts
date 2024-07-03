@@ -109,7 +109,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     const value = ethers.utils.parseEther("1.0");
 
     // Encode the function call data and call on zevm
-    const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     const callTx = await gatewayZEVM.connect(ownerZEVM).call(ethers.utils.arrayify(addrs[0].address), message);
     await expect(callTx).to.emit(gatewayZEVM, "Call").withArgs(ownerZEVM.address, addrs[0].address, message);
 
@@ -123,7 +123,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Listen for the event
     await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
-    await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+    await expect(executeTx).to.emit(receiverEVM, "ReceivedPayable").withArgs(gatewayEVM.address, value, str, num, flag);
   });
 
   it("should withdraw and call Receiver contract on EVM from ZEVM account", async function () {
@@ -133,7 +133,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     const value = ethers.utils.parseEther("1.0");
 
     // Encode the function call data and call on zevm
-    const message = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     const callTx = await gatewayZEVM
       .connect(ownerZEVM)
       .withdrawAndCall(receiverEVM.address, parseEther("1"), ZRC20Contract.address, message);
@@ -159,7 +159,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Listen for the event
     await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
-    await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+    await expect(executeTx).to.emit(receiverEVM, "ReceivedPayable").withArgs(gatewayEVM.address, value, str, num, flag);
 
     const balanceOfAfterWithdrawal = await ZRC20Contract.balanceOf(ownerZEVM.address);
     expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));
@@ -176,7 +176,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Get message from events
     const callTxReceipt = await callTx.wait();
-    const expectedMessage = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const expectedMessage = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     await expect(callTx)
       .to.emit(gatewayZEVM, "Call")
       .withArgs(senderZEVM.address, receiverEVM.address, expectedMessage);
@@ -189,7 +189,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Listen for the event
     await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
-    await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+    await expect(executeTx).to.emit(receiverEVM, "ReceivedPayable").withArgs(gatewayEVM.address, value, str, num, flag);
   });
 
   it("should withdrawn and call Receiver contract on EVM from Sender contract on ZEVM", async function () {
@@ -205,7 +205,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Get message from events
     const callTxReceipt = await callTx.wait();
-    const expectedMessage = receiverEVM.interface.encodeFunctionData("receiveA", [str, num, flag]);
+    const expectedMessage = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
 
     await expect(callTx)
       .to.emit(gatewayZEVM, "Withdrawal")
@@ -226,7 +226,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Listen for the event
     await expect(executeTx).to.emit(gatewayEVM, "Executed").withArgs(receiverEVM.address, value, callMessage);
-    await expect(executeTx).to.emit(receiverEVM, "ReceivedA").withArgs(gatewayEVM.address, value, str, num, flag);
+    await expect(executeTx).to.emit(receiverEVM, "ReceivedPayable").withArgs(gatewayEVM.address, value, str, num, flag);
 
     const balanceOfAfterWithdrawal = await ZRC20Contract.balanceOf(senderZEVM.address);
     expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));

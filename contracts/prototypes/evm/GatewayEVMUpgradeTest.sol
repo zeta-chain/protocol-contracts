@@ -37,9 +37,8 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         __Ownable_init();
         __UUPSUpgradeable_init();
 
-        if (_tssAddress == address(0)) {
-            revert ZeroAddress();
-        }
+        if (_tssAddress == address(0)) revert ZeroAddress();
+        
         tssAddress = _tssAddress;
     }
 
@@ -48,9 +47,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
     
-        if (!success) {
-            revert ExecutionFailed();
-        }
+        if (!success) revert ExecutionFailed();
 
         return result;
     }
@@ -106,15 +103,11 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
 
     // Transfer specified ETH amount to TSS address and emits event
     function send(bytes calldata recipient, uint256 amount) external payable {
-        if (msg.value == 0) {
-            revert InsufficientETHAmount();
-        }
+        if (msg.value == 0) revert InsufficientETHAmount();
 
         (bool sent, ) = tssAddress.call{value: msg.value}("");
 
-        if (sent == false) {
-            revert SendFailed();
-        }
+        if (sent == false) revert SendFailed();
 
         emit Send(recipient, msg.value);
     }
