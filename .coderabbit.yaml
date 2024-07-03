@@ -1,9 +1,9 @@
 reviews:
   path_filters:
-    - "pkg/**"
-    - "typechain-types/**"
-    - "docs/**"
-    - "data/**"
+    - "!pkg/**"
+    - "!typechain-types/**"
+    - "!docs/**"
+    - "!data/**"
   path_instructions:
     - path: 'contracts/**'
       instructions: >-
@@ -13,7 +13,10 @@ reviews:
         Review the test files for proper coverage, edge cases, and best practices.
     - path: 'scripts/**'
       instructions: >-
-        Review the scripts for best practices.
+        Review the Hardhat scripts for best practices.
+    - path: 'tasks/**'
+      instructions: >-
+        Review the Hardhat tasks for best practices.
   auto_review:
     base_branches:
       - main
