@@ -102,7 +102,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
   });
 
-  it("should call Receiver contract on EVM from ZEVM account", async function () {
+  it("should call ReceiverEVM from ZEVM account", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;
@@ -110,8 +110,10 @@ describe("GatewayEVM GatewayZEVM integration", function () {
 
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
-    const callTx = await gatewayZEVM.connect(ownerZEVM).call(ethers.utils.arrayify(addrs[0].address), message);
-    await expect(callTx).to.emit(gatewayZEVM, "Call").withArgs(ownerZEVM.address, addrs[0].address, message);
+    const callTx = await gatewayZEVM.connect(ownerZEVM).call(receiverEVM.address, message);
+    await expect(callTx)
+      .to.emit(gatewayZEVM, "Call")
+      .withArgs(ownerZEVM.address, receiverEVM.address.toLowerCase(), message);
 
     // Get message from events
     const callTxReceipt = await callTx.wait();
@@ -126,7 +128,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await expect(executeTx).to.emit(receiverEVM, "ReceivedPayable").withArgs(gatewayEVM.address, value, str, num, flag);
   });
 
-  it("should withdraw and call Receiver contract on EVM from ZEVM account", async function () {
+  it("should withdraw and call ReceiverEVM from ZEVM account", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;
@@ -165,7 +167,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));
   });
 
-  it("should call Receiver contract on EVM from Sender contract on ZEVM", async function () {
+  it("should call ReceiverEVM from SenderZEVM", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;
@@ -179,7 +181,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     const expectedMessage = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     await expect(callTx)
       .to.emit(gatewayZEVM, "Call")
-      .withArgs(senderZEVM.address, receiverEVM.address, expectedMessage);
+      .withArgs(senderZEVM.address, receiverEVM.address.toLowerCase(), expectedMessage);
 
     const callEvent = callTxReceipt.events[0];
     const callMessage = callEvent.args[2];
@@ -192,7 +194,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await expect(executeTx).to.emit(receiverEVM, "ReceivedPayable").withArgs(gatewayEVM.address, value, str, num, flag);
   });
 
-  it("should withdrawn and call Receiver contract on EVM from Sender contract on ZEVM", async function () {
+  it("should withdrawn and call ReceiverEVM from SenderZEVM", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;
