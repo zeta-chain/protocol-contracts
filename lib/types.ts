@@ -3,6 +3,7 @@ export type ParamSymbol =
   | "BTC.BTC"
   | "ETH.ETH"
   | "gETH"
+  | "MATIC.AMOY"
   | "sETH.SEPOLIA"
   | "tBNB"
   | "tBTC"
@@ -14,6 +15,7 @@ export type ParamSymbol =
   | "USDT.BSC"
   | "USDT.ETH";
 export type ParamChainName =
+  | "amoy_testnet"
   | "bsc_mainnet"
   | "bsc_testnet"
   | "btc_mainnet"
