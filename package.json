@@ -88,7 +88,7 @@
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch",
     "worker": "npx hardhat run scripts/worker.ts --network localhost",
-    "localnet": "concurrently \"npx hardhat node\" \"yarn worker\""
+    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"yarn worker\""
   },
   "types": "./dist/lib/index.d.ts",
   "version": "0.0.8"
