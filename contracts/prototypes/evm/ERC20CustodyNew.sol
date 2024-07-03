@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 // ERC20Custody doesn't call smart contract directly, it passes through the Gateway contract
 contract ERC20CustodyNew is ReentrancyGuard{
     using SafeERC20 for IERC20;
+    error ZeroAddress();
 
     IGatewayEVM public gateway;
 
@@ -18,10 +19,15 @@ contract ERC20CustodyNew is ReentrancyGuard{
     event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
 
     constructor(address _gateway) {
+         if (_gateway == address(0)) {
+            revert ZeroAddress();
+        }
         gateway = IGatewayEVM(_gateway);
     }
     
     // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract call
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function withdraw(address token, address to, uint256 amount) external nonReentrant {
         IERC20(token).safeTransfer(to, amount);
 
@@ -30,9 +36,11 @@ contract ERC20CustodyNew is ReentrancyGuard{
 
     // WithdrawAndCall is called by TSS address, it transfers the tokens and call a contract
     // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) external nonReentrant {
         // Transfer the tokens to the Gateway contract
-        IERC20(token).transfer(address(gateway), amount);
+        IERC20(token).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
         gateway.executeWithERC20(token, to, amount, data);

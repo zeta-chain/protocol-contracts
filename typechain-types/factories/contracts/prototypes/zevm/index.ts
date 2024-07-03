@@ -4,5 +4,6 @@
 export * as zrc20NewSol from "./ZRC20New.sol";
 export * as interfacesSol from "./interfaces.sol";
 export { GatewayZEVM__factory } from "./GatewayZEVM__factory";
+export { Sender__factory } from "./Sender__factory";
 export { SenderZEVM__factory } from "./SenderZEVM__factory";
 export { TestZContract__factory } from "./TestZContract__factory";

@@ -36,9 +36,8 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         __Ownable_init();
         __UUPSUpgradeable_init();
 
-        if (_tssAddress == address(0)) {
-            revert ZeroAddress();
-        }
+        if (_tssAddress == address(0)) revert ZeroAddress();
+
         tssAddress = _tssAddress;
     }
 
@@ -47,9 +46,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
     
-        if (!success) {
-            revert ExecutionFailed();
-        }
+        if (!success) revert ExecutionFailed();
 
         return result;
     }
@@ -75,15 +72,16 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         uint256 amount,
         bytes calldata data
     ) external returns (bytes memory) {
+        if (amount == 0) revert InsufficientETHAmount();
         // Approve the target contract to spend the tokens
-        if(!IERC20(token).approve(to, 0)) revert ApprovalFailed();
+        if(!resetApproval(token, to)) revert ApprovalFailed();
         if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
 
         // Execute the call on the target contract
         bytes memory result = _execute(to, data);
 
         // Reset approval
-        if(!IERC20(token).approve(to, 0)) revert ApprovalFailed();
+        if(!resetApproval(token, to)) revert ApprovalFailed();
 
         // Transfer any remaining tokens back to the custody contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
@@ -101,9 +99,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited, ) = tssAddress.call{value: msg.value}("");
 
-        if (deposited == false) {
-            revert DepositFailed();
-        }
+        if (deposited == false) revert DepositFailed();
         
         emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
@@ -121,9 +117,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited, ) = tssAddress.call{value: msg.value}("");
 
-        if (deposited == false) {
-            revert DepositFailed();
-        }
+        if (deposited == false) revert DepositFailed();
         
         emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
     }
@@ -143,5 +137,9 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
 
     function setCustody(address _custody) external {
         custody = _custody;
+    }
+
+    function resetApproval(address token, address to) private returns (bool) {
+        return IERC20(token).approve(to, 0);
     }
 }

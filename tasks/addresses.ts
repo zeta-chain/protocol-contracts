@@ -2,6 +2,7 @@ import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json
 import SwapRouter from "@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json";
 import { getEndpoints } from "@zetachain/networks";
 import axios, { AxiosResponse } from "axios";
+import { ethers } from "ethers";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { isEqual } from "lodash";
@@ -134,12 +135,12 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
   }
 };
 
-const fetchAthensAddresses = async (addresses: any, hre: any, network: Network) => {
+const fetchAthensAddresses = async (addresses: any, network: Network) => {
   const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === network && a.type === "systemContract";
   })?.address;
-  const provider = new hre.ethers.providers.JsonRpcProvider(api[network].evm);
+  const provider = new ethers.providers.JsonRpcProvider(api[network].evm);
   const sc = SystemContract__factory.connect(systemContract, provider);
   const common = {
     category: "omnichain",
@@ -207,7 +208,7 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
       if (erc20Custody) {
         if (["18332", "8332"].includes(chain.chain_id)) return;
         const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
-        const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+        const provider = new ethers.providers.JsonRpcProvider(rpc);
         const custody = ERC20Custody__factory.connect(erc20Custody, provider);
         return custody.TSSAddressUpdater().then((address: string) => {
           addresses.push({
@@ -232,7 +233,7 @@ const fetchPauser = async (chains: any, addresses: any) => {
       if (erc20Custody) {
         if (["18332", "8332", "7001", "7000"].includes(chain.chain_id)) return;
         const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
-        const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+        const provider = new ethers.providers.JsonRpcProvider(rpc);
         const connector = ZetaConnectorBase__factory.connect(erc20Custody, provider);
         return connector.pauserAddress().then((address: string) => {
           addresses.push({
@@ -248,13 +249,13 @@ const fetchPauser = async (chains: any, addresses: any) => {
   );
 };
 
-const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+const fetchFactoryV2 = async (addresses: any, network: Network) => {
   const routers = addresses.filter((a: any) => a.type === "uniswapV2Router02");
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
-    const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
-    const routerContract = new hre.ethers.Contract(router.address, uniswapV2Router.abi, provider);
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const routerContract = new ethers.Contract(router.address, uniswapV2Router.abi, provider);
 
     try {
       const wethAddress = await routerContract.WETH();
@@ -284,13 +285,13 @@ const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
   }
 };
 
-const fetchFactoryV3 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+const fetchFactoryV3 = async (addresses: any, network: Network) => {
   const routers = addresses.filter((a: any) => a.type === "uniswapV3Router");
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
-    const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
-    const routerContract = new hre.ethers.Contract(router.address, SwapRouter.abi, provider);
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const routerContract = new ethers.Contract(router.address, SwapRouter.abi, provider);
 
     try {
       const wethAddress = await routerContract.WETH9();
@@ -339,12 +340,12 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   await fetchTssData(chains, addresses, network);
   await fetchSystemContract(addresses, network);
   await fetchForeignCoinsData(chains, addresses, network);
-  await fetchAthensAddresses(addresses, hre, network);
+  await fetchAthensAddresses(addresses, network);
   await fetchChainSpecificAddresses(chains, addresses, network);
   await fetchTSSUpdater(chains, addresses);
   await fetchPauser(chains, addresses);
-  await fetchFactoryV2(addresses, hre, network);
-  await fetchFactoryV3(addresses, hre, network);
+  await fetchFactoryV2(addresses, network);
+  await fetchFactoryV3(addresses, network);
 
   addresses = addresses.sort((a: AddressDetails, b: AddressDetails) => {
     if (a.chain_id !== b.chain_id) {

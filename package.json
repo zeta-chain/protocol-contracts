@@ -17,6 +17,7 @@
     "@typechain/hardhat": "^6.1.2",
     "@types/chai": "^4.3.1",
     "@types/inquirer": "^8.2.1",
+    "@types/lodash": "^4.17.6",
     "@types/mocha": "^10.0.1",
     "@types/node": "^17.0.25",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
@@ -24,7 +25,7 @@
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@uniswap/v3-periphery": "^1.4.3",
-    "@zetachain/networks": "8.0.0",
+    "@zetachain/networks": "^8.0.0",
     "axios": "^1.6.5",
     "chai": "^4.3.6",
     "concurrently": "^8.2.2",
@@ -83,12 +84,12 @@
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json",
     "lint:sol": "solhint 'contracts/**/*.sol'",
+    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"yarn worker\"",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch",
-    "worker": "npx hardhat run scripts/worker.ts --network localhost",
-    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"yarn worker\""
+    "worker": "npx hardhat run scripts/worker.ts --network localhost"
   },
   "types": "./dist/lib/index.d.ts",
   "version": "0.0.8"

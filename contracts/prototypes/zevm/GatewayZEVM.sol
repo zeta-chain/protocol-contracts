@@ -14,6 +14,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
 
     error WithdrawalFailed();
     error InsufficientZRC20Amount();
+    error ZRC20BurnFailed();
+    error ZRC20TransferFailed();
     error GasFeeTransferFailed();
     error CallerIsNotFungibleModule();
     error InvalidTarget();
@@ -39,8 +41,11 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
             revert GasFeeTransferFailed();
         }
 
-        IZRC20(zrc20).transferFrom(msg.sender, address(this), amount);
-        IZRC20(zrc20).burn(amount);
+        if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
+            revert ZRC20TransferFailed();
+        }
+
+        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
 
         return gasFee;
     }
@@ -63,6 +68,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Deposit foreign coins into ZRC20
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function deposit(
         address zrc20,
         uint256 amount,
@@ -75,6 +82,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Execute user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function execute(
         zContext calldata context,
         address zrc20,
@@ -88,6 +97,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Deposit foreign coins into ZRC20 and call user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function depositAndCall(
         zContext calldata context,
         address zrc20,
