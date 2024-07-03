@@ -43,6 +43,11 @@ const config: HardhatUserConfig = {
   },
   networks: {
     ...getHardhatConfigNetworks(),
+    localhost: {
+      gas: 30_000_000,
+      gasLimit: 30_000_000,
+      url: "http://localhost:8545",
+    },
   },
   solidity: {
     compilers: [

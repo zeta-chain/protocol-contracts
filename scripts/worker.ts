@@ -10,7 +10,7 @@ const hre = require("hardhat");
 export const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
 
 export const startWorker = async () => {
-  console.log("deploying contracts");
+  console.log("worker starting");
   // EVM
   let receiverEVM: Contract;
   let gatewayEVM: Contract;
@@ -122,30 +122,70 @@ export const startWorker = async () => {
   await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
   console.log("ZEVM: Fungible module deposited 100TKN to sender:", senderZEVM.address);
 
+  // event Call(address indexed sender, bytes receiver, bytes message);
   gatewayZEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
-    const executeTx = await gatewayEVM.execute(args[1], args[2], { value: 0 });
+    const receiver = args[1];
+    const message = args[2];
+    const executeTx = await gatewayEVM.execute(receiver, message, { value: 0 });
     await executeTx.wait();
+  });
+
+  // event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+  gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
+    console.log("Worker: Withdrawal event on GatewayZEVM.");
+    const receiver = args[1];
+    const message = args[5];
+    if (args[5] != "0x") {
+      console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
+      const executeTx = await gatewayEVM.execute(receiver, message, { value: 0 });
+      await executeTx.wait();
+    }
   });
 
   receiverEVM.on("ReceivedPayable", () => {
     console.log("ReceiverEVM: receivePayable called!");
   });
 
+  // event Call(address indexed sender, address indexed receiver, bytes payload);
   gatewayEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayEVM.");
     console.log("Worker: Calling TestZContract through GatewayZEVM...");
+    const zContract = args[1];
+    const payload = args[2]
     const executeTx = await gatewayZEVM
       .connect(fungibleModuleSigner)
       .execute(
         [gatewayZEVM.address, fungibleModuleSigner.address, 1],
+        // onCrosschainCall contains zrc20 and amount which is not available in Call event
         ZRC20Contract.address,
         parseEther("0"),
-        testZContract.address,
-        args[2]
+        zContract,
+        payload,
       );
     await executeTx.wait();
+  });
+
+  // event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+  gatewayEVM.on("Deposit", async (...args: Array<any>) => {
+    console.log("Worker: Deposit event on GatewayEVM.");
+    const receiver = args[1];
+    const asset = args[3];
+    const payload = args[4];
+    if (args[4] != "0x") {
+      console.log("Worker: Calling TestZContract through GatewayZEVM...");
+      const executeTx = await gatewayZEVM
+        .connect(fungibleModuleSigner)
+        .execute(
+          [gatewayZEVM.address, fungibleModuleSigner.address, 1],
+          asset,
+          parseEther("0"),
+          receiver,
+          payload,
+        );
+      await executeTx.wait();
+    }
   });
 
   testZContract.on("ContextData", async () => {
