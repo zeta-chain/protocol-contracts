@@ -27,6 +27,7 @@
     "@zetachain/networks": "8.0.0",
     "axios": "^1.6.5",
     "chai": "^4.3.6",
+    "concurrently": "^8.2.2",
     "cpx": "^1.5.0",
     "del-cli": "^5.0.0",
     "dotenv": "^16.0.0",
@@ -82,12 +83,12 @@
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json",
     "lint:sol": "solhint 'contracts/**/*.sol'",
-    "worker": "npx hardhat run scripts/worker.ts --network localhost",
-    "localnode": "npx hardhat node",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
-    "tsc:watch": "npx tsc --watch"
+    "tsc:watch": "npx tsc --watch",
+    "worker": "npx hardhat run scripts/worker.ts --network localhost",
+    "localnet": "concurrently \"npx hardhat node\" \"yarn worker\""
   },
   "types": "./dist/lib/index.d.ts",
   "version": "0.0.8"
