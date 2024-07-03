@@ -101,9 +101,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited, ) = tssAddress.call{value: msg.value}("");
 
-        if (deposited == false) {
-            revert DepositFailed();
-        }
+        if (deposited == false) revert DepositFailed();
         
         emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
