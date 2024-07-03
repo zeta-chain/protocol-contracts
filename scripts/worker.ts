@@ -153,17 +153,15 @@ export const startWorker = async () => {
     console.log("Worker: Call event on GatewayEVM.");
     console.log("Worker: Calling TestZContract through GatewayZEVM...");
     const zContract = args[1];
-    const payload = args[2]
-    const executeTx = await gatewayZEVM
-      .connect(fungibleModuleSigner)
-      .execute(
-        [gatewayZEVM.address, fungibleModuleSigner.address, 1],
-        // onCrosschainCall contains zrc20 and amount which is not available in Call event
-        ZRC20Contract.address,
-        parseEther("0"),
-        zContract,
-        payload,
-      );
+    const payload = args[2];
+    const executeTx = await gatewayZEVM.connect(fungibleModuleSigner).execute(
+      [gatewayZEVM.address, fungibleModuleSigner.address, 1],
+      // onCrosschainCall contains zrc20 and amount which is not available in Call event
+      ZRC20Contract.address,
+      parseEther("0"),
+      zContract,
+      payload
+    );
     await executeTx.wait();
   });
 
@@ -177,13 +175,7 @@ export const startWorker = async () => {
       console.log("Worker: Calling TestZContract through GatewayZEVM...");
       const executeTx = await gatewayZEVM
         .connect(fungibleModuleSigner)
-        .execute(
-          [gatewayZEVM.address, fungibleModuleSigner.address, 1],
-          asset,
-          parseEther("0"),
-          receiver,
-          payload,
-        );
+        .execute([gatewayZEVM.address, fungibleModuleSigner.address, 1], asset, parseEther("0"), receiver, payload);
       await executeTx.wait();
     }
   });
