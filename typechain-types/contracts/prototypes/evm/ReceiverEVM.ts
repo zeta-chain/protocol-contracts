@@ -30,26 +30,34 @@ import type {
 
 export interface ReceiverEVMInterface extends utils.Interface {
   functions: {
-    "receiveA(string,uint256,bool)": FunctionFragment;
-    "receiveB(string[],uint256[],bool)": FunctionFragment;
-    "receiveC(uint256,address,address)": FunctionFragment;
-    "receiveD()": FunctionFragment;
+    "receiveERC20(uint256,address,address)": FunctionFragment;
+    "receiveNoParams()": FunctionFragment;
+    "receiveNonPayable(string[],uint256[],bool)": FunctionFragment;
+    "receivePayable(string,uint256,bool)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "receiveA" | "receiveB" | "receiveC" | "receiveD"
+    nameOrSignatureOrTopic:
+      | "receiveERC20"
+      | "receiveNoParams"
+      | "receiveNonPayable"
+      | "receivePayable"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "receiveA",
+    functionFragment: "receiveERC20",
     values: [
-      PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<boolean>
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "receiveB",
+    functionFragment: "receiveNoParams",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "receiveNonPayable",
     values: [
       PromiseOrValue<string>[],
       PromiseOrValue<BigNumberish>[],
@@ -57,79 +65,95 @@ export interface ReceiverEVMInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "receiveC",
+    functionFragment: "receivePayable",
     values: [
-      PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
-      PromiseOrValue<string>
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>
     ]
   ): string;
-  encodeFunctionData(functionFragment: "receiveD", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "receiveA", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "receiveB", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "receiveC", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "receiveD", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "receiveERC20",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "receiveNoParams",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "receiveNonPayable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "receivePayable",
+    data: BytesLike
+  ): Result;
 
   events: {
-    "ReceivedA(address,uint256,string,uint256,bool)": EventFragment;
-    "ReceivedB(address,string[],uint256[],bool)": EventFragment;
-    "ReceivedC(address,uint256,address,address)": EventFragment;
-    "ReceivedD(address)": EventFragment;
+    "ReceivedERC20(address,uint256,address,address)": EventFragment;
+    "ReceivedNoParams(address)": EventFragment;
+    "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
+    "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "ReceivedA"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ReceivedB"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ReceivedC"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ReceivedD"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedERC20"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedNoParams"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedNonPayable"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedPayable"): EventFragment;
 }
 
-export interface ReceivedAEventObject {
+export interface ReceivedERC20EventObject {
+  sender: string;
+  amount: BigNumber;
+  token: string;
+  destination: string;
+}
+export type ReceivedERC20Event = TypedEvent<
+  [string, BigNumber, string, string],
+  ReceivedERC20EventObject
+>;
+
+export type ReceivedERC20EventFilter = TypedEventFilter<ReceivedERC20Event>;
+
+export interface ReceivedNoParamsEventObject {
+  sender: string;
+}
+export type ReceivedNoParamsEvent = TypedEvent<
+  [string],
+  ReceivedNoParamsEventObject
+>;
+
+export type ReceivedNoParamsEventFilter =
+  TypedEventFilter<ReceivedNoParamsEvent>;
+
+export interface ReceivedNonPayableEventObject {
+  sender: string;
+  strs: string[];
+  nums: BigNumber[];
+  flag: boolean;
+}
+export type ReceivedNonPayableEvent = TypedEvent<
+  [string, string[], BigNumber[], boolean],
+  ReceivedNonPayableEventObject
+>;
+
+export type ReceivedNonPayableEventFilter =
+  TypedEventFilter<ReceivedNonPayableEvent>;
+
+export interface ReceivedPayableEventObject {
   sender: string;
   value: BigNumber;
   str: string;
   num: BigNumber;
   flag: boolean;
 }
-export type ReceivedAEvent = TypedEvent<
+export type ReceivedPayableEvent = TypedEvent<
   [string, BigNumber, string, BigNumber, boolean],
-  ReceivedAEventObject
+  ReceivedPayableEventObject
 >;
 
-export type ReceivedAEventFilter = TypedEventFilter<ReceivedAEvent>;
-
-export interface ReceivedBEventObject {
-  sender: string;
-  strs: string[];
-  nums: BigNumber[];
-  flag: boolean;
-}
-export type ReceivedBEvent = TypedEvent<
-  [string, string[], BigNumber[], boolean],
-  ReceivedBEventObject
->;
-
-export type ReceivedBEventFilter = TypedEventFilter<ReceivedBEvent>;
-
-export interface ReceivedCEventObject {
-  sender: string;
-  amount: BigNumber;
-  token: string;
-  destination: string;
-}
-export type ReceivedCEvent = TypedEvent<
-  [string, BigNumber, string, string],
-  ReceivedCEventObject
->;
-
-export type ReceivedCEventFilter = TypedEventFilter<ReceivedCEvent>;
-
-export interface ReceivedDEventObject {
-  sender: string;
-}
-export type ReceivedDEvent = TypedEvent<[string], ReceivedDEventObject>;
-
-export type ReceivedDEventFilter = TypedEventFilter<ReceivedDEvent>;
+export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
 
 export interface ReceiverEVM extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -158,179 +182,179 @@ export interface ReceiverEVM extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    receiveA(
-      str: PromiseOrValue<string>,
-      num: PromiseOrValue<BigNumberish>,
-      flag: PromiseOrValue<boolean>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    receiveB(
-      strs: PromiseOrValue<string>[],
-      nums: PromiseOrValue<BigNumberish>[],
-      flag: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    receiveC(
+    receiveERC20(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    receiveD(
+    receiveNoParams(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    receiveNonPayable(
+      strs: PromiseOrValue<string>[],
+      nums: PromiseOrValue<BigNumberish>[],
+      flag: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    receivePayable(
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
-  receiveA(
-    str: PromiseOrValue<string>,
-    num: PromiseOrValue<BigNumberish>,
-    flag: PromiseOrValue<boolean>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  receiveB(
-    strs: PromiseOrValue<string>[],
-    nums: PromiseOrValue<BigNumberish>[],
-    flag: PromiseOrValue<boolean>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  receiveC(
+  receiveERC20(
     amount: PromiseOrValue<BigNumberish>,
     token: PromiseOrValue<string>,
     destination: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  receiveD(
+  receiveNoParams(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  receiveNonPayable(
+    strs: PromiseOrValue<string>[],
+    nums: PromiseOrValue<BigNumberish>[],
+    flag: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  receivePayable(
+    str: PromiseOrValue<string>,
+    num: PromiseOrValue<BigNumberish>,
+    flag: PromiseOrValue<boolean>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
-    receiveA(
-      str: PromiseOrValue<string>,
-      num: PromiseOrValue<BigNumberish>,
-      flag: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    receiveB(
-      strs: PromiseOrValue<string>[],
-      nums: PromiseOrValue<BigNumberish>[],
-      flag: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    receiveC(
+    receiveERC20(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    receiveD(overrides?: CallOverrides): Promise<void>;
+    receiveNoParams(overrides?: CallOverrides): Promise<void>;
+
+    receiveNonPayable(
+      strs: PromiseOrValue<string>[],
+      nums: PromiseOrValue<BigNumberish>[],
+      flag: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    receivePayable(
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
-    "ReceivedA(address,uint256,string,uint256,bool)"(
+    "ReceivedERC20(address,uint256,address,address)"(
+      sender?: null,
+      amount?: null,
+      token?: null,
+      destination?: null
+    ): ReceivedERC20EventFilter;
+    ReceivedERC20(
+      sender?: null,
+      amount?: null,
+      token?: null,
+      destination?: null
+    ): ReceivedERC20EventFilter;
+
+    "ReceivedNoParams(address)"(sender?: null): ReceivedNoParamsEventFilter;
+    ReceivedNoParams(sender?: null): ReceivedNoParamsEventFilter;
+
+    "ReceivedNonPayable(address,string[],uint256[],bool)"(
+      sender?: null,
+      strs?: null,
+      nums?: null,
+      flag?: null
+    ): ReceivedNonPayableEventFilter;
+    ReceivedNonPayable(
+      sender?: null,
+      strs?: null,
+      nums?: null,
+      flag?: null
+    ): ReceivedNonPayableEventFilter;
+
+    "ReceivedPayable(address,uint256,string,uint256,bool)"(
       sender?: null,
       value?: null,
       str?: null,
       num?: null,
       flag?: null
-    ): ReceivedAEventFilter;
-    ReceivedA(
+    ): ReceivedPayableEventFilter;
+    ReceivedPayable(
       sender?: null,
       value?: null,
       str?: null,
       num?: null,
       flag?: null
-    ): ReceivedAEventFilter;
-
-    "ReceivedB(address,string[],uint256[],bool)"(
-      sender?: null,
-      strs?: null,
-      nums?: null,
-      flag?: null
-    ): ReceivedBEventFilter;
-    ReceivedB(
-      sender?: null,
-      strs?: null,
-      nums?: null,
-      flag?: null
-    ): ReceivedBEventFilter;
-
-    "ReceivedC(address,uint256,address,address)"(
-      sender?: null,
-      amount?: null,
-      token?: null,
-      destination?: null
-    ): ReceivedCEventFilter;
-    ReceivedC(
-      sender?: null,
-      amount?: null,
-      token?: null,
-      destination?: null
-    ): ReceivedCEventFilter;
-
-    "ReceivedD(address)"(sender?: null): ReceivedDEventFilter;
-    ReceivedD(sender?: null): ReceivedDEventFilter;
+    ): ReceivedPayableEventFilter;
   };
 
   estimateGas: {
-    receiveA(
+    receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    receiveNoParams(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    receiveNonPayable(
+      strs: PromiseOrValue<string>[],
+      nums: PromiseOrValue<BigNumberish>[],
+      flag: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    receivePayable(
       str: PromiseOrValue<string>,
       num: PromiseOrValue<BigNumberish>,
       flag: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    receiveB(
-      strs: PromiseOrValue<string>[],
-      nums: PromiseOrValue<BigNumberish>[],
-      flag: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    receiveC(
-      amount: PromiseOrValue<BigNumberish>,
-      token: PromiseOrValue<string>,
-      destination: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    receiveD(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    receiveA(
-      str: PromiseOrValue<string>,
-      num: PromiseOrValue<BigNumberish>,
-      flag: PromiseOrValue<boolean>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    receiveB(
-      strs: PromiseOrValue<string>[],
-      nums: PromiseOrValue<BigNumberish>[],
-      flag: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    receiveC(
+    receiveERC20(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    receiveD(
+    receiveNoParams(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    receiveNonPayable(
+      strs: PromiseOrValue<string>[],
+      nums: PromiseOrValue<BigNumberish>[],
+      flag: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    receivePayable(
+      str: PromiseOrValue<string>,
+      num: PromiseOrValue<BigNumberish>,
+      flag: PromiseOrValue<boolean>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

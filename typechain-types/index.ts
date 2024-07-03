@@ -164,8 +164,6 @@ export type { GatewayEVMUpgradeTest } from "./contracts/prototypes/evm/GatewayEV
 export { GatewayEVMUpgradeTest__factory } from "./factories/contracts/prototypes/evm/GatewayEVMUpgradeTest__factory";
 export type { IGatewayEVM } from "./contracts/prototypes/evm/interfaces.sol/IGatewayEVM";
 export { IGatewayEVM__factory } from "./factories/contracts/prototypes/evm/interfaces.sol/IGatewayEVM__factory";
-export type { Receiver } from "./contracts/prototypes/evm/Receiver";
-export { Receiver__factory } from "./factories/contracts/prototypes/evm/Receiver__factory";
 export type { ReceiverEVM } from "./contracts/prototypes/evm/ReceiverEVM";
 export { ReceiverEVM__factory } from "./factories/contracts/prototypes/evm/ReceiverEVM__factory";
 export type { TestERC20 } from "./contracts/prototypes/evm/TestERC20";
