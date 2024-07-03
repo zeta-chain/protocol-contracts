@@ -59,7 +59,8 @@
     "tsconfig-paths": "^3.14.1",
     "typechain": "^8.1.0",
     "typescript": "^4.6.3",
-    "uniswap-v2-deploy-plugin": "^0.0.4"
+    "uniswap-v2-deploy-plugin": "^0.0.4",
+    "wait-on": "^7.2.0"
   },
   "files": [
     "contracts",
@@ -84,12 +85,12 @@
     "lint": "npx eslint . --ext .js,.ts",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json",
     "lint:sol": "solhint 'contracts/**/*.sol'",
-    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"yarn worker\"",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch",
-    "worker": "npx hardhat run scripts/worker.ts --network localhost"
+    "worker": "npx hardhat run scripts/worker.ts --network localhost",
+    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"wait-on tcp:8545 && yarn worker\""
   },
   "types": "./dist/lib/index.d.ts",
   "version": "0.0.8"
