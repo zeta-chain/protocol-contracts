@@ -135,7 +135,7 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
   }
 };
 
-const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+const fetchAthensAddresses = async (addresses: any, network: Network) => {
   const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === network && a.type === "systemContract";
@@ -249,7 +249,7 @@ const fetchPauser = async (chains: any, addresses: any) => {
   );
 };
 
-const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+const fetchFactoryV2 = async (addresses: any, network: Network) => {
   const routers = addresses.filter((a: any) => a.type === "uniswapV2Router02");
 
   for (const router of routers) {
@@ -285,7 +285,7 @@ const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
   }
 };
 
-const fetchFactoryV3 = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
+const fetchFactoryV3 = async (addresses: any, network: Network) => {
   const routers = addresses.filter((a: any) => a.type === "uniswapV3Router");
 
   for (const router of routers) {
@@ -340,12 +340,12 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   await fetchTssData(chains, addresses, network);
   await fetchSystemContract(addresses, network);
   await fetchForeignCoinsData(chains, addresses, network);
-  await fetchAthensAddresses(addresses, hre, network);
+  await fetchAthensAddresses(addresses, network);
   await fetchChainSpecificAddresses(chains, addresses, network);
   await fetchTSSUpdater(chains, addresses);
   await fetchPauser(chains, addresses);
-  await fetchFactoryV2(addresses, hre, network);
-  await fetchFactoryV3(addresses, hre, network);
+  await fetchFactoryV2(addresses, network);
+  await fetchFactoryV3(addresses, network);
 
   addresses = addresses.sort((a: AddressDetails, b: AddressDetails) => {
     if (a.chain_id !== b.chain_id) {
