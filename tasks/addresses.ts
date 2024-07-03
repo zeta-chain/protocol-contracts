@@ -2,7 +2,7 @@ import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json
 import SwapRouter from "@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json";
 import { getEndpoints } from "@zetachain/networks";
 import axios, { AxiosResponse } from "axios";
-import { ethers } from "ethers"; // Import ethers from hardhat
+import { ethers } from "ethers";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { isEqual } from "lodash";
