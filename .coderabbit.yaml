@@ -14,6 +14,9 @@ reviews:
     - path: 'scripts/**'
       instructions: >-
         Review the scripts for best practices.
+    - path: 'tasks/**'
+      instructions: >-
+        Review the tasks for best practices.
   auto_review:
     base_branches:
       - main
