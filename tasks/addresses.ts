@@ -1,3 +1,4 @@
+import { ethers } from "ethers"; // Import ethers from hardhat
 import uniswapV2Router from "@uniswap/v2-periphery/build/IUniswapV2Router02.json";
 import SwapRouter from "@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json";
 import { getEndpoints } from "@zetachain/networks";
@@ -134,12 +135,12 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
   }
 };
 
-const fetchAthensAddresses = async (addresses: any, hre: any, network: Network) => {
+const fetchAthensAddresses = async (addresses: any, hre: HardhatRuntimeEnvironment, network: Network) => {
   const chain_id = network === "zeta_mainnet" ? 7000 : 7001;
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === network && a.type === "systemContract";
   })?.address;
-  const provider = new hre.ethers.providers.JsonRpcProvider(api[network].evm);
+  const provider = new ethers.providers.JsonRpcProvider(api[network].evm);
   const sc = SystemContract__factory.connect(systemContract, provider);
   const common = {
     category: "omnichain",
@@ -207,7 +208,7 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
       if (erc20Custody) {
         if (["18332", "8332"].includes(chain.chain_id)) return;
         const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
-        const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+        const provider = new ethers.providers.JsonRpcProvider(rpc);
         const custody = ERC20Custody__factory.connect(erc20Custody, provider);
         return custody.TSSAddressUpdater().then((address: string) => {
           addresses.push({
@@ -232,7 +233,7 @@ const fetchPauser = async (chains: any, addresses: any) => {
       if (erc20Custody) {
         if (["18332", "8332", "7001", "7000"].includes(chain.chain_id)) return;
         const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
-        const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
+        const provider = new ethers.providers.JsonRpcProvider(rpc);
         const connector = ZetaConnectorBase__factory.connect(erc20Custody, provider);
         return connector.pauserAddress().then((address: string) => {
           addresses.push({
@@ -253,8 +254,8 @@ const fetchFactoryV2 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
-    const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
-    const routerContract = new hre.ethers.Contract(router.address, uniswapV2Router.abi, provider);
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const routerContract = new ethers.Contract(router.address, uniswapV2Router.abi, provider);
 
     try {
       const wethAddress = await routerContract.WETH();
@@ -289,8 +290,8 @@ const fetchFactoryV3 = async (addresses: any, hre: HardhatRuntimeEnvironment, ne
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
-    const provider = new hre.ethers.providers.JsonRpcProvider(rpc);
-    const routerContract = new hre.ethers.Contract(router.address, SwapRouter.abi, provider);
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const routerContract = new ethers.Contract(router.address, SwapRouter.abi, provider);
 
     try {
       const wethAddress = await routerContract.WETH9();
