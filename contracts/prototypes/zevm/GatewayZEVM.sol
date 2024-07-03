@@ -63,6 +63,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Deposit foreign coins into ZRC20
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function deposit(
         address zrc20,
         uint256 amount,
@@ -75,6 +77,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Execute user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function execute(
         zContext calldata context,
         address zrc20,
@@ -88,6 +92,8 @@ contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     // Deposit foreign coins into ZRC20 and call user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function depositAndCall(
         zContext calldata context,
         address zrc20,
