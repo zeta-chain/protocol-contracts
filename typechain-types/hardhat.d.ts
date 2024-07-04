@@ -337,9 +337,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20CustodyNew__factory>;
     getContractFactory(
+      name: "ERC20CustodyNewEchidnaTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20CustodyNewEchidnaTest__factory>;
+    getContractFactory(
       name: "GatewayEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVM__factory>;
+    getContractFactory(
+      name: "GatewayEVMEchidnaTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayEVMEchidnaTest__factory>;
     getContractFactory(
       name: "GatewayEVMUpgradeTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -855,10 +863,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.ERC20CustodyNew>;
     getContractAt(
+      name: "ERC20CustodyNewEchidnaTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC20CustodyNewEchidnaTest>;
+    getContractAt(
       name: "GatewayEVM",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVM>;
+    getContractAt(
+      name: "GatewayEVMEchidnaTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayEVMEchidnaTest>;
     getContractAt(
       name: "GatewayEVMUpgradeTest",
       address: string,

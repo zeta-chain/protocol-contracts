@@ -158,8 +158,12 @@ export type { ZetaConnectorNonEth } from "./contracts/evm/ZetaConnector.non-eth.
 export { ZetaConnectorNonEth__factory } from "./factories/contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth__factory";
 export type { ERC20CustodyNew } from "./contracts/prototypes/evm/ERC20CustodyNew";
 export { ERC20CustodyNew__factory } from "./factories/contracts/prototypes/evm/ERC20CustodyNew__factory";
+export type { ERC20CustodyNewEchidnaTest } from "./contracts/prototypes/evm/ERC20CustodyNewEchidnaTest";
+export { ERC20CustodyNewEchidnaTest__factory } from "./factories/contracts/prototypes/evm/ERC20CustodyNewEchidnaTest__factory";
 export type { GatewayEVM } from "./contracts/prototypes/evm/GatewayEVM";
 export { GatewayEVM__factory } from "./factories/contracts/prototypes/evm/GatewayEVM__factory";
+export type { GatewayEVMEchidnaTest } from "./contracts/prototypes/evm/GatewayEVMEchidnaTest";
+export { GatewayEVMEchidnaTest__factory } from "./factories/contracts/prototypes/evm/GatewayEVMEchidnaTest__factory";
 export type { GatewayEVMUpgradeTest } from "./contracts/prototypes/evm/GatewayEVMUpgradeTest";
 export { GatewayEVMUpgradeTest__factory } from "./factories/contracts/prototypes/evm/GatewayEVMUpgradeTest__factory";
 export type { IGatewayEVM } from "./contracts/prototypes/evm/interfaces.sol/IGatewayEVM";

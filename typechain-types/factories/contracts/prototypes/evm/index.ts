@@ -3,7 +3,9 @@
 /* eslint-disable */
 export * as interfacesSol from "./interfaces.sol";
 export { ERC20CustodyNew__factory } from "./ERC20CustodyNew__factory";
+export { ERC20CustodyNewEchidnaTest__factory } from "./ERC20CustodyNewEchidnaTest__factory";
 export { GatewayEVM__factory } from "./GatewayEVM__factory";
+export { GatewayEVMEchidnaTest__factory } from "./GatewayEVMEchidnaTest__factory";
 export { GatewayEVMUpgradeTest__factory } from "./GatewayEVMUpgradeTest__factory";
 export { ReceiverEVM__factory } from "./ReceiverEVM__factory";
 export { TestERC20__factory } from "./TestERC20__factory";
