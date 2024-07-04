@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 
-contract Sender {
+contract SenderZEVM {
     address public gateway;
     error ApprovalFailed();
 

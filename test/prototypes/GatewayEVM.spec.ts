@@ -11,7 +11,7 @@ describe("GatewayEVM inbound", function () {
 
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
-    const Receiver = await ethers.getContractFactory("Receiver");
+    const Receiver = await ethers.getContractFactory("ReceiverEVM");
     const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
     [owner, destination, tssAddress] = await ethers.getSigners();
@@ -34,7 +34,7 @@ describe("GatewayEVM inbound", function () {
     await token.transfer(custody.address, ethers.utils.parseEther("500"));
   });
 
-  it("should forward call to Receiver's receiveA function", async function () {
+  it("should forward call to Receiver's receivePayable function", async function () {
     const str = "Hello, Hardhat!";
     const num = 42;
     const flag = true;

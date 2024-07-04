@@ -11,7 +11,7 @@ describe("GatewayEVM upgrade", function () {
 
   beforeEach(async function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
-    const Receiver = await ethers.getContractFactory("Receiver");
+    const Receiver = await ethers.getContractFactory("ReceiverEVM");
     const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
     [owner, destination, randomSigner, tssAddress] = await ethers.getSigners();

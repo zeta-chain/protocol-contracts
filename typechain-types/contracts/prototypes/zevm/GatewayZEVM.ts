@@ -554,12 +554,12 @@ export interface GatewayZEVM extends BaseContract {
 
     "Call(address,bytes,bytes)"(
       sender?: PromiseOrValue<string> | null,
-      receiver?: PromiseOrValue<BytesLike> | null,
+      receiver?: null,
       message?: null
     ): CallEventFilter;
     Call(
       sender?: PromiseOrValue<string> | null,
-      receiver?: PromiseOrValue<BytesLike> | null,
+      receiver?: null,
       message?: null
     ): CallEventFilter;
 

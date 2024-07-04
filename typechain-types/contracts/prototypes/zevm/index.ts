@@ -6,5 +6,5 @@ export type { zrc20NewSol };
 import type * as interfacesSol from "./interfaces.sol";
 export type { interfacesSol };
 export type { GatewayZEVM } from "./GatewayZEVM";
-export type { Sender } from "./Sender";
+export type { SenderZEVM } from "./SenderZEVM";
 export type { TestZContract } from "./TestZContract";
