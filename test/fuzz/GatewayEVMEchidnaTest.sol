@@ -1,6 +1,6 @@
-import "./GatewayEVM.sol";
-import "./TestERC20.sol";
-import "./ERC20CustodyNew.sol";
+import "../../contracts/prototypes/evm/GatewayEVM.sol";
+import "../../contracts/prototypes/evm/TestERC20.sol";
+import "../../contracts/prototypes/evm/ERC20CustodyNew.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -16,7 +16,6 @@ contract GatewayEVMEchidnaTest is GatewayEVM {
         custody = address(new ERC20CustodyNew(address(this)));
     }
 
-    // Test executeWithERC20 with assertions
     function testExecuteWithERC20(address to, uint256 amount, bytes calldata data) public {
         testERC20.mint(address(this), amount);
 
