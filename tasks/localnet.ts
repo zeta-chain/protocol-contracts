@@ -7,8 +7,8 @@ declare const hre: any;
 // Otherwise, provide custom addresses as parameters.
 
 task("zevm-call", "calls evm contract from zevm account")
-  .addOptionalParam("gatewayZEVM", "contract address of gateway on ZEVM", "0x5133BBdfCCa3Eb4F739D599ee4eC45cBCD0E16c5")
-  .addOptionalParam("receiverEVM", "contract address of receiver on EVM", "0xB06c856C8eaBd1d8321b687E188204C1018BC4E5")
+  .addOptionalParam("gatewayZEVM", "contract address of gateway on ZEVM", "0x413b1AfCa96a3df5A686d8BFBF93d30688a7f7D9")
+  .addOptionalParam("receiverEVM", "contract address of receiver on EVM", "0x821f3361D454cc98b7555221A06Be563a7E2E0A6")
   .setAction(async (taskArgs) => {
     const gatewayZEVM = await hre.ethers.getContractAt("GatewayZEVM", taskArgs.gatewayZEVM);
     const receiverEVM = await hre.ethers.getContractAt("ReceiverEVM", taskArgs.receiverEVM);
@@ -29,8 +29,8 @@ task("zevm-call", "calls evm contract from zevm account")
   });
 
 task("zevm-withdraw-and-call", "withdraws zrc20 and calls evm contract from zevm account")
-  .addOptionalParam("gatewayZEVM", "contract address of gateway on ZEVM", "0x5133BBdfCCa3Eb4F739D599ee4eC45cBCD0E16c5")
-  .addOptionalParam("receiverEVM", "contract address of receiver on EVM", "0xB06c856C8eaBd1d8321b687E188204C1018BC4E5")
+  .addOptionalParam("gatewayZEVM", "contract address of gateway on ZEVM", "0x413b1AfCa96a3df5A686d8BFBF93d30688a7f7D9")
+  .addOptionalParam("receiverEVM", "contract address of receiver on EVM", "0x821f3361D454cc98b7555221A06Be563a7E2E0A6")
   .addOptionalParam("zrc20", "contract address of zrc20", "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c")
   .addOptionalParam("amount", "amount to withdraw", "1")
   .setAction(async (taskArgs) => {
@@ -58,7 +58,7 @@ task("zevm-withdraw-and-call", "withdraws zrc20 and calls evm contract from zevm
   });
 
 task("evm-call", "calls zevm zcontract from evm account")
-  .addOptionalParam("gatewayEVM", "contract address of gateway on EVM", "0xAD523115cd35a8d4E60B3C0953E0E0ac10418309")
+  .addOptionalParam("gatewayEVM", "contract address of gateway on EVM", "0xB06c856C8eaBd1d8321b687E188204C1018BC4E5")
   .addOptionalParam("zContract", "contract address of zContract on ZEVM", "0x71089Ba41e478702e1904692385Be3972B2cBf9e")
   .setAction(async (taskArgs) => {
     const gatewayEVM = await hre.ethers.getContractAt("GatewayEVM", taskArgs.gatewayEVM);
@@ -76,9 +76,9 @@ task("evm-call", "calls zevm zcontract from evm account")
   });
 
 task("evm-deposit-and-call", "deposits erc20 and calls zevm zcontract from evm account")
-  .addOptionalParam("gatewayEVM", "contract address of gateway on EVM", "0xAD523115cd35a8d4E60B3C0953E0E0ac10418309")
+  .addOptionalParam("gatewayEVM", "contract address of gateway on EVM", "0xB06c856C8eaBd1d8321b687E188204C1018BC4E5")
   .addOptionalParam("zContract", "contract address of zContract on ZEVM", "0x71089Ba41e478702e1904692385Be3972B2cBf9e")
-  .addOptionalParam("erc20", "contract address of erc20", "0xddE78e6202518FF4936b5302cC2891ec180E8bFf")
+  .addOptionalParam("erc20", "contract address of erc20", "0x02df3a3F960393F5B349E40A599FEda91a7cc1A7")
   .addOptionalParam("amount", "amount to deposit", "1")
   .setAction(async (taskArgs) => {
     const gatewayEVM = await hre.ethers.getContractAt("GatewayEVM", taskArgs.gatewayEVM);

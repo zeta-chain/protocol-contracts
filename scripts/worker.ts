@@ -1,7 +1,6 @@
 import { AddressZero } from "@ethersproject/constants";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { SystemContract, ZRC20 } from "@typechain-types";
-import { Contract } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ethers, upgrades } from "hardhat";
 
@@ -9,58 +8,103 @@ const hre = require("hardhat");
 
 export const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
 
-export const startWorker = async () => {
-  console.log("worker starting");
-  // EVM
-  let receiverEVM: Contract;
-  let gatewayEVM: Contract;
-  let token: Contract;
-  let custody: Contract;
-  let ownerEVM: any, tssAddress: any;
-
-  // ZEVM
-  let senderZEVM: Contract;
-  let ZRC20Contract: ZRC20;
-  let systemContract: SystemContract;
-  let gatewayZEVM: Contract;
-  let testZContract: Contract;
-  let ownerZEVM: SignerWithAddress;
-  let addrs: SignerWithAddress[];
-
-  [ownerEVM, ownerZEVM, tssAddress, ...addrs] = await ethers.getSigners();
-
+const deploySystemContracts = async (tss: SignerWithAddress) => {
   // Prepare EVM
-  const TestERC20 = await ethers.getContractFactory("TestERC20");
-  const ReceiverEVM = await ethers.getContractFactory("ReceiverEVM");
+  // Deploy system contracts (gateway and custody)
   const GatewayEVM = await ethers.getContractFactory("GatewayEVM");
   const Custody = await ethers.getContractFactory("ERC20CustodyNew");
 
-  // Deploy the contracts
-  token = await TestERC20.deploy("Test Token", "TTK");
-  console.log("EVM: ERC20(TTK) token deployed to:", token.address);
-
-  receiverEVM = await ReceiverEVM.deploy();
-  console.log("EVM: Receiver deployed to:", receiverEVM.address);
-
-  gatewayEVM = await upgrades.deployProxy(GatewayEVM, [tssAddress.address], {
+  const gatewayEVM = await upgrades.deployProxy(GatewayEVM, [tss.address], {
     initializer: "initialize",
     kind: "uups",
   });
-  console.log("EVM: GatewayEVM deployed to:", gatewayEVM.address);
+  console.log("GatewayEVM:", gatewayEVM.address);
 
-  custody = await Custody.deploy(gatewayEVM.address);
-  gatewayEVM.setCustody(custody.address);
-  console.log("EVM: ERC20Custody deployed to:", custody.address);
-
-  // Mint initial supply to the owner
-  await token.mint(ownerEVM.address, ethers.utils.parseEther("1000"));
-  console.log("EVM: 1000TTK minted to:", ownerEVM.address);
-
-  // Transfer some tokens to the custody contract
-  await token.transfer(custody.address, ethers.utils.parseEther("500"));
-  console.log("EVM: 500TTK transfered to custody from:", ownerEVM.address);
+  const custody = await Custody.deploy(gatewayEVM.address);
+  await gatewayEVM.setCustody(custody.address);
 
   // Prepare ZEVM
+  // Deploy system contracts (gateway and system)
+  const SystemContractFactory = await ethers.getContractFactory("SystemContractMock");
+  const systemContract = (await SystemContractFactory.deploy(AddressZero, AddressZero, AddressZero)) as SystemContract;
+
+  const GatewayZEVM = await ethers.getContractFactory("GatewayZEVM");
+  const gatewayZEVM = await upgrades.deployProxy(GatewayZEVM, [], {
+    initializer: "initialize",
+    kind: "uups",
+  });
+  console.log("GatewayZEVM:", gatewayZEVM.address);
+
+  return {
+    custody,
+    gatewayEVM,
+    gatewayZEVM,
+    systemContract,
+  };
+};
+
+const deployTestContracts = async (
+  systemContracts,
+  ownerEVM: SignerWithAddress,
+  ownerZEVM: SignerWithAddress,
+  fungibleModuleSigner: SignerWithAddress
+) => {
+  // Prepare EVM
+  // Deploy test contracts (erc20, receiver) and mint funds to test accounts
+  const TestERC20 = await ethers.getContractFactory("TestERC20");
+  const ReceiverEVM = await ethers.getContractFactory("ReceiverEVM");
+
+  const token = await TestERC20.deploy("Test Token", "TTK");
+  const receiverEVM = await ReceiverEVM.deploy();
+  await token.mint(ownerEVM.address, ethers.utils.parseEther("1000"));
+
+  // Transfer some tokens to the custody contract
+  await token.transfer(systemContracts.custody.address, ethers.utils.parseEther("500"));
+
+  // Prepare ZEVM
+  // Deploy test contracts (test zContract, zrc20, sender) and mint funds to test accounts
+  const TestZContract = await ethers.getContractFactory("TestZContract");
+  const testZContract = await TestZContract.deploy();
+
+  const ZRC20Factory = await ethers.getContractFactory("ZRC20New");
+  const ZRC20Contract = (await ZRC20Factory.connect(fungibleModuleSigner).deploy(
+    "TOKEN",
+    "TKN",
+    18,
+    1,
+    1,
+    0,
+    systemContracts.systemContract.address,
+    systemContracts.gatewayZEVM.address
+  )) as ZRC20;
+
+  await systemContracts.systemContract.setGasCoinZRC20(1, ZRC20Contract.address);
+  await systemContracts.systemContract.setGasPrice(1, ZRC20Contract.address);
+  await ZRC20Contract.connect(fungibleModuleSigner).deposit(ownerZEVM.address, parseEther("100"));
+  await ZRC20Contract.connect(ownerZEVM).approve(systemContracts.gatewayZEVM.address, parseEther("100"));
+
+  // Include abi of gatewayZEVM events, so hardhat can decode them automatically
+  const senderArtifact = await hre.artifacts.readArtifact("SenderZEVM");
+  const gatewayZEVMArtifact = await hre.artifacts.readArtifact("GatewayZEVM");
+  const senderABI = [
+    ...senderArtifact.abi,
+    ...gatewayZEVMArtifact.abi.filter((f: ethers.utils.Fragment) => f.type === "event"),
+  ];
+
+  const SenderZEVM = new ethers.ContractFactory(senderABI, senderArtifact.bytecode, ownerZEVM);
+  const senderZEVM = await SenderZEVM.deploy(systemContracts.gatewayZEVM.address);
+  await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
+
+  return {
+    ZRC20Contract,
+    receiverEVM,
+    senderZEVM,
+    testZContract,
+  };
+};
+
+export const startWorker = async () => {
+  const [ownerEVM, ownerZEVM, tss] = await ethers.getSigners();
 
   // Impersonate the fungible module account
   await hre.network.provider.request({
@@ -72,94 +116,47 @@ export const startWorker = async () => {
   const fungibleModuleSigner = await ethers.getSigner(FUNGIBLE_MODULE_ADDRESS);
   hre.network.provider.send("hardhat_setBalance", [FUNGIBLE_MODULE_ADDRESS, parseEther("1000000").toHexString()]);
 
-  const SystemContractFactory = await ethers.getContractFactory("SystemContractMock");
-  systemContract = (await SystemContractFactory.deploy(AddressZero, AddressZero, AddressZero)) as SystemContract;
-  console.log("ZEVM: SystemContract deployed to:", systemContract.address);
+  // Deploy system and test contracts
+  const systemContracts = await deploySystemContracts(tss);
+  const testContracts = await deployTestContracts(systemContracts, ownerEVM, ownerZEVM, fungibleModuleSigner);
 
-  const GatewayZEVM = await ethers.getContractFactory("GatewayZEVM");
-  gatewayZEVM = await upgrades.deployProxy(GatewayZEVM, [], {
-    initializer: "initialize",
-    kind: "uups",
-  });
-  console.log("ZEVM: GatewayZEVM deployed to:", gatewayZEVM.address);
-
-  const TestZContract = await ethers.getContractFactory("TestZContract");
-  testZContract = await TestZContract.deploy();
-  console.log("ZEVM: TestZContract deployed to:", testZContract.address);
-
-  const ZRC20Factory = await ethers.getContractFactory("ZRC20New");
-  ZRC20Contract = (await ZRC20Factory.connect(fungibleModuleSigner).deploy(
-    "TOKEN",
-    "TKN",
-    18,
-    1,
-    1,
-    0,
-    systemContract.address,
-    gatewayZEVM.address
-  )) as ZRC20;
-  console.log("ZEVM: ZRC20(TKN) contract deployed to:", ZRC20Contract.address);
-
-  await systemContract.setGasCoinZRC20(1, ZRC20Contract.address);
-  await systemContract.setGasPrice(1, ZRC20Contract.address);
-
-  await ZRC20Contract.connect(fungibleModuleSigner).deposit(ownerZEVM.address, parseEther("100"));
-  console.log("ZEVM: Fungible module deposited 100TKN to:", ownerZEVM.address);
-
-  await ZRC20Contract.connect(ownerZEVM).approve(gatewayZEVM.address, parseEther("100"));
-  console.log(`ZEVM: ${ownerZEVM.address} approved GatewayZEVM ${gatewayZEVM.address} 100TKN`);
-
-  // including abi of gatewayZEVM events, so hardhat can decode them automatically
-  const senderArtifact = await hre.artifacts.readArtifact("SenderZEVM");
-  const gatewayZEVMArtifact = await hre.artifacts.readArtifact("GatewayZEVM");
-  const senderABI = [
-    ...senderArtifact.abi,
-    ...gatewayZEVMArtifact.abi.filter((f: ethers.utils.Fragment) => f.type === "event"),
-  ];
-
-  const SenderZEVM = new ethers.ContractFactory(senderABI, senderArtifact.bytecode, ownerZEVM);
-  senderZEVM = await SenderZEVM.deploy(gatewayZEVM.address);
-  console.log("ZEVM: Sender contract deployed to:", senderZEVM.address);
-
-  await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
-  console.log("ZEVM: Fungible module deposited 100TKN to sender:", senderZEVM.address);
-
+  // Listen to contracts events
   // event Call(address indexed sender, bytes receiver, bytes message);
-  gatewayZEVM.on("Call", async (...args: Array<any>) => {
+  systemContracts.gatewayZEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     const receiver = args[1];
     const message = args[2];
-    const executeTx = await gatewayEVM.execute(receiver, message, { value: 0 });
+    const executeTx = await systemContracts.gatewayEVM.execute(receiver, message, { value: 0 });
     await executeTx.wait();
   });
 
   // event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
-  gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
+  systemContracts.gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
     console.log("Worker: Withdrawal event on GatewayZEVM.");
     const receiver = args[1];
     const message = args[5];
     if (message != "0x") {
       console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
-      const executeTx = await gatewayEVM.execute(receiver, message, { value: 0 });
+      const executeTx = await systemContracts.gatewayEVM.execute(receiver, message, { value: 0 });
       await executeTx.wait();
     }
   });
 
-  receiverEVM.on("ReceivedPayable", () => {
+  testContracts.receiverEVM.on("ReceivedPayable", () => {
     console.log("ReceiverEVM: receivePayable called!");
   });
 
   // event Call(address indexed sender, address indexed receiver, bytes payload);
-  gatewayEVM.on("Call", async (...args: Array<any>) => {
+  systemContracts.gatewayEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayEVM.");
     console.log("Worker: Calling TestZContract through GatewayZEVM...");
     const zContract = args[1];
     const payload = args[2];
-    const executeTx = await gatewayZEVM.connect(fungibleModuleSigner).execute(
-      [gatewayZEVM.address, fungibleModuleSigner.address, 1],
+    const executeTx = await systemContracts.gatewayZEVM.connect(fungibleModuleSigner).execute(
+      [systemContracts.gatewayZEVM.address, fungibleModuleSigner.address, 1],
       // onCrosschainCall contains zrc20 and amount which is not available in Call event
-      ZRC20Contract.address,
+      testContracts.ZRC20Contract.address,
       parseEther("0"),
       zContract,
       payload
@@ -168,21 +165,27 @@ export const startWorker = async () => {
   });
 
   // event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
-  gatewayEVM.on("Deposit", async (...args: Array<any>) => {
+  systemContracts.gatewayEVM.on("Deposit", async (...args: Array<any>) => {
     console.log("Worker: Deposit event on GatewayEVM.");
     const receiver = args[1];
     const asset = args[3];
     const payload = args[4];
     if (payload != "0x") {
       console.log("Worker: Calling TestZContract through GatewayZEVM...");
-      const executeTx = await gatewayZEVM
+      const executeTx = await systemContracts.gatewayZEVM
         .connect(fungibleModuleSigner)
-        .execute([gatewayZEVM.address, fungibleModuleSigner.address, 1], asset, parseEther("0"), receiver, payload);
+        .execute(
+          [systemContracts.gatewayZEVM.address, fungibleModuleSigner.address, 1],
+          asset,
+          parseEther("0"),
+          receiver,
+          payload
+        );
       await executeTx.wait();
     }
   });
 
-  testZContract.on("ContextData", async () => {
+  testContracts.testZContract.on("ContextData", async () => {
     console.log("TestZContract: onCrosschainCall called!");
   });
 
