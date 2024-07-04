@@ -8,7 +8,7 @@ const hre = require("hardhat");
 
 export const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
 
-const deploySystemContracts = async(tss: SignerWithAddress) => {
+const deploySystemContracts = async (tss: SignerWithAddress) => {
   // Prepare EVM
   // Deploy system contracts (gateway and custody)
   const GatewayEVM = await ethers.getContractFactory("GatewayEVM");
@@ -36,14 +36,19 @@ const deploySystemContracts = async(tss: SignerWithAddress) => {
   console.log("GatewayZEVM:", gatewayZEVM.address);
 
   return {
-    gatewayEVM,
     custody,
+    gatewayEVM,
     gatewayZEVM,
     systemContract,
   };
-}
+};
 
-const deployTestContracts = async (systemContracts, ownerEVM: SignerWithAddress, ownerZEVM: SignerWithAddress, fungibleModuleSigner: SignerWithAddress) => {
+const deployTestContracts = async (
+  systemContracts,
+  ownerEVM: SignerWithAddress,
+  ownerZEVM: SignerWithAddress,
+  fungibleModuleSigner: SignerWithAddress
+) => {
   // Prepare EVM
   // Deploy test contracts (erc20, receiver) and mint funds to test accounts
   const TestERC20 = await ethers.getContractFactory("TestERC20");
@@ -91,9 +96,9 @@ const deployTestContracts = async (systemContracts, ownerEVM: SignerWithAddress,
   await ZRC20Contract.connect(fungibleModuleSigner).deposit(senderZEVM.address, parseEther("100"));
 
   return {
+    ZRC20Contract,
     receiverEVM,
     senderZEVM,
-    ZRC20Contract,
     testZContract,
   };
 };
@@ -169,7 +174,13 @@ export const startWorker = async () => {
       console.log("Worker: Calling TestZContract through GatewayZEVM...");
       const executeTx = await systemContracts.gatewayZEVM
         .connect(fungibleModuleSigner)
-        .execute([systemContracts.gatewayZEVM.address, fungibleModuleSigner.address, 1], asset, parseEther("0"), receiver, payload);
+        .execute(
+          [systemContracts.gatewayZEVM.address, fungibleModuleSigner.address, 1],
+          asset,
+          parseEther("0"),
+          receiver,
+          payload
+        );
       await executeTx.wait();
     }
   });
