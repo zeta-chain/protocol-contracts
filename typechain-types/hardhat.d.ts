@@ -373,9 +373,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMTest__factory>;
     getContractFactory(
-      name: "GatewayIntegrationTest",
+      name: "GatewayEVMZEVMTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GatewayIntegrationTest__factory>;
+    ): Promise<Contracts.GatewayEVMZEVMTest__factory>;
     getContractFactory(
       name: "GatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -384,6 +384,10 @@ declare module "hardhat/types/runtime" {
       name: "IGatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayZEVM__factory>;
+    getContractFactory(
+      name: "IGatewayZEVMErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGatewayZEVMErrors__factory>;
     getContractFactory(
       name: "IGatewayZEVMEvents",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -992,10 +996,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVMTest>;
     getContractAt(
-      name: "GatewayIntegrationTest",
+      name: "GatewayEVMZEVMTest",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.GatewayIntegrationTest>;
+    ): Promise<Contracts.GatewayEVMZEVMTest>;
     getContractAt(
       name: "GatewayZEVM",
       address: string,
@@ -1006,6 +1010,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IGatewayZEVM>;
+    getContractAt(
+      name: "IGatewayZEVMErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGatewayZEVMErrors>;
     getContractAt(
       name: "IGatewayZEVMEvents",
       address: string,

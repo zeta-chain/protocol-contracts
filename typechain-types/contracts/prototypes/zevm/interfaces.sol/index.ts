@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IGatewayZEVM } from "./IGatewayZEVM";
+export type { IGatewayZEVMErrors } from "./IGatewayZEVMErrors";
 export type { IGatewayZEVMEvents } from "./IGatewayZEVMEvents";

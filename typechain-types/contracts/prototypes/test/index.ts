@@ -3,5 +3,5 @@
 /* eslint-disable */
 import type * as gatewayEvmTSol from "./GatewayEVM.t.sol";
 export type { gatewayEvmTSol };
-import type * as gatewayIntegrationTSol from "./GatewayIntegration.t.sol";
-export type { gatewayIntegrationTSol };
+import type * as gatewayEvmzevmTSol from "./GatewayEVMZEVM.t.sol";
+export type { gatewayEvmzevmTSol };

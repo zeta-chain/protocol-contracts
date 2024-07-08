@@ -21,7 +21,7 @@ import "../evm/interfaces.sol";
 import "../zevm/interfaces.sol";
 import "forge-std/console.sol";
 
-contract GatewayIntegrationTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGatewayZEVMEvents, IReceiverEVMEvents {
+contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGatewayZEVMEvents, IGatewayZEVMErrors, IReceiverEVMEvents {
     // evm
     using SafeERC20 for IERC20;
 
@@ -63,10 +63,9 @@ contract GatewayIntegrationTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, I
         receiverEVM = new ReceiverEVM();
 
         // zevm
-        // Impersonate the fungible module account
         gatewayZEVM = new GatewayZEVM();
-
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
+        // Impersonate the fungible module account
         address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
         vm.startPrank(fungibleModuleAddress);
         systemContract = new SystemContractMock(address(0), address(0), address(0));

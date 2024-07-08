@@ -2,4 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as gatewayEvmTSol from "./GatewayEVM.t.sol";
-export * as gatewayIntegrationTSol from "./GatewayIntegration.t.sol";
+export * as gatewayEvmzevmTSol from "./GatewayEVMZEVM.t.sol";

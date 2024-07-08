@@ -54,7 +54,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectCall(address(receiver), value, data);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), value, data);
-        // TODO: can not check event emitted in Receiver?
         
         gateway.execute{value: value}(address(receiver), data);
     }

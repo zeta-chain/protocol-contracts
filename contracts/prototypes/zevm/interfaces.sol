@@ -37,3 +37,13 @@ interface IGatewayZEVMEvents {
     event Call(address indexed sender, bytes receiver, bytes message);
     event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
 }
+
+interface IGatewayZEVMErrors {
+    error WithdrawalFailed();
+    error InsufficientZRC20Amount();
+    error ZRC20BurnFailed();
+    error ZRC20TransferFailed();
+    error GasFeeTransferFailed();
+    error CallerIsNotFungibleModule();
+    error InvalidTarget();
+}

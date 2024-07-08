@@ -10,16 +10,8 @@ import "./interfaces.sol";
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayZEVM is IGatewayZEVMEvents, Initializable, OwnableUpgradeable, UUPSUpgradeable {
+contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable {
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
-
-    error WithdrawalFailed();
-    error InsufficientZRC20Amount();
-    error ZRC20BurnFailed();
-    error ZRC20TransferFailed();
-    error GasFeeTransferFailed();
-    error CallerIsNotFungibleModule();
-    error InvalidTarget();
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
