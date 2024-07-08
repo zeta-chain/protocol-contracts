@@ -3,7 +3,9 @@
 /* eslint-disable */
 import type * as iwzetaSol from "./IWZETA.sol";
 export type { iwzetaSol };
+import type * as izrc20Sol from "./IZRC20.sol";
+export type { izrc20Sol };
+export type { ISystem } from "./ISystem";
 export type { IUniswapV2Router01 } from "./IUniswapV2Router01";
 export type { IUniswapV2Router02 } from "./IUniswapV2Router02";
-export type { IZRC20 } from "./IZRC20";
 export type { ZContract } from "./ZContract";

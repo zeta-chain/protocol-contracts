@@ -295,7 +295,7 @@ export interface WithdrawalEventObject {
   from: string;
   to: string;
   value: BigNumber;
-  gasfee: BigNumber;
+  gasFee: BigNumber;
   protocolFlatFee: BigNumber;
 }
 export type WithdrawalEvent = TypedEvent<
@@ -642,14 +642,14 @@ export interface ZRC20 extends BaseContract {
       from?: PromiseOrValue<string> | null,
       to?: null,
       value?: null,
-      gasfee?: null,
+      gasFee?: null,
       protocolFlatFee?: null
     ): WithdrawalEventFilter;
     Withdrawal(
       from?: PromiseOrValue<string> | null,
       to?: null,
       value?: null,
-      gasfee?: null,
+      gasFee?: null,
       protocolFlatFee?: null
     ): WithdrawalEventFilter;
   };

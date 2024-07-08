@@ -341,10 +341,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVM__factory>;
     getContractFactory(
-      name: "GatewayEVMTest",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GatewayEVMTest__factory>;
-    getContractFactory(
       name: "GatewayEVMUpgradeTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMUpgradeTest__factory>;
@@ -373,6 +369,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TestERC20__factory>;
     getContractFactory(
+      name: "GatewayEVMTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayEVMTest__factory>;
+    getContractFactory(
+      name: "GatewayIntegrationTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayIntegrationTest__factory>;
+    getContractFactory(
       name: "GatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayZEVM__factory>;
@@ -380,6 +384,10 @@ declare module "hardhat/types/runtime" {
       name: "IGatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayZEVM__factory>;
+    getContractFactory(
+      name: "IGatewayZEVMEvents",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGatewayZEVMEvents__factory>;
     getContractFactory(
       name: "SenderZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -389,25 +397,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TestZContract__factory>;
     getContractFactory(
-      name: "ZRC20Errors",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZRC20Errors__factory>;
-    getContractFactory(
-      name: "ZRC20New",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZRC20New__factory>;
-    getContractFactory(
       name: "ISystem",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ISystem__factory>;
-    getContractFactory(
-      name: "IZRC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IZRC20__factory>;
-    getContractFactory(
-      name: "IZRC20Metadata",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IZRC20Metadata__factory>;
     getContractFactory(
       name: "IUniswapV2Router01",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -421,9 +413,21 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IWETH9__factory>;
     getContractFactory(
+      name: "ISystem",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISystem__factory>;
+    getContractFactory(
       name: "IZRC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IZRC20__factory>;
+    getContractFactory(
+      name: "IZRC20Metadata",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IZRC20Metadata__factory>;
+    getContractFactory(
+      name: "ZRC20Events",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20Events__factory>;
     getContractFactory(
       name: "ZContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -464,6 +468,14 @@ declare module "hardhat/types/runtime" {
       name: "ZRC20Errors",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZRC20Errors__factory>;
+    getContractFactory(
+      name: "ZRC20Errors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20Errors__factory>;
+    getContractFactory(
+      name: "ZRC20New",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZRC20New__factory>;
     getContractFactory(
       name: "IERC165",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -940,11 +952,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVM>;
     getContractAt(
-      name: "GatewayEVMTest",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.GatewayEVMTest>;
-    getContractAt(
       name: "GatewayEVMUpgradeTest",
       address: string,
       signer?: ethers.Signer
@@ -980,6 +987,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TestERC20>;
     getContractAt(
+      name: "GatewayEVMTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayEVMTest>;
+    getContractAt(
+      name: "GatewayIntegrationTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayIntegrationTest>;
+    getContractAt(
       name: "GatewayZEVM",
       address: string,
       signer?: ethers.Signer
@@ -989,6 +1006,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IGatewayZEVM>;
+    getContractAt(
+      name: "IGatewayZEVMEvents",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGatewayZEVMEvents>;
     getContractAt(
       name: "SenderZEVM",
       address: string,
@@ -1000,30 +1022,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TestZContract>;
     getContractAt(
-      name: "ZRC20Errors",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ZRC20Errors>;
-    getContractAt(
-      name: "ZRC20New",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ZRC20New>;
-    getContractAt(
       name: "ISystem",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ISystem>;
-    getContractAt(
-      name: "IZRC20",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IZRC20>;
-    getContractAt(
-      name: "IZRC20Metadata",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IZRC20Metadata>;
     getContractAt(
       name: "IUniswapV2Router01",
       address: string,
@@ -1040,10 +1042,25 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IWETH9>;
     getContractAt(
+      name: "ISystem",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISystem>;
+    getContractAt(
       name: "IZRC20",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IZRC20>;
+    getContractAt(
+      name: "IZRC20Metadata",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IZRC20Metadata>;
+    getContractAt(
+      name: "ZRC20Events",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20Events>;
     getContractAt(
       name: "ZContract",
       address: string,
@@ -1094,6 +1111,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZRC20Errors>;
+    getContractAt(
+      name: "ZRC20Errors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20Errors>;
+    getContractAt(
+      name: "ZRC20New",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZRC20New>;
     getContractAt(
       name: "IERC165",
       address: string,
