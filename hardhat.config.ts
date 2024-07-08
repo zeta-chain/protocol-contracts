@@ -9,6 +9,7 @@ import "hardhat-gas-reporter";
 import "./tasks/addresses";
 import "./tasks/localnet";
 import "@openzeppelin/hardhat-upgrades";
+import "@nomicfoundation/hardhat-foundry";
 
 import { getHardhatConfigNetworks } from "@zetachain/networks";
 import * as dotenv from "dotenv";
