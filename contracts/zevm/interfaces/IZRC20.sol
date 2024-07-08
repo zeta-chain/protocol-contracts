@@ -1,6 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
+/**
+ * @dev Interfaces of SystemContract and ZRC20 to make easier to import.
+ */
+interface ISystem {
+    function FUNGIBLE_MODULE_ADDRESS() external view returns (address);
+
+    function wZetaContractAddress() external view returns (address);
+
+    function uniswapv2FactoryAddress() external view returns (address);
+
+    function gasPriceByChainId(uint256 chainID) external view returns (uint256);
+
+    function gasCoinZRC20ByChainId(uint256 chainID) external view returns (address);
+
+    function gasZetaPoolByChainId(uint256 chainID) external view returns (address);
+}
+
 interface IZRC20 {
     function totalSupply() external view returns (uint256);
 
@@ -11,10 +28,6 @@ interface IZRC20 {
     function allowance(address owner, address spender) external view returns (uint256);
 
     function approve(address spender, uint256 amount) external returns (bool);
-
-    function decreaseAllowance(address spender, uint256 amount) external returns (bool);
-
-    function increaseAllowance(address spender, uint256 amount) external returns (bool);
 
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 
@@ -27,7 +40,17 @@ interface IZRC20 {
     function withdrawGasFee() external view returns (address, uint256);
 
     function PROTOCOL_FLAT_FEE() external view returns (uint256);
+}
 
+interface IZRC20Metadata is IZRC20 {
+    function name() external view returns (string memory);
+
+    function symbol() external view returns (string memory);
+
+    function decimals() external view returns (uint8);
+}
+
+interface ZRC20Events {
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
     event Deposit(bytes from, address indexed to, uint256 value);
@@ -35,4 +58,11 @@ interface IZRC20 {
     event UpdatedSystemContract(address systemContract);
     event UpdatedGasLimit(uint256 gasLimit);
     event UpdatedProtocolFlatFee(uint256 protocolFlatFee);
+}
+
+/// @dev Coin types for ZRC20. Zeta value should not be used.
+enum CoinType {
+    Zeta,
+    Gas,
+    ERC20
 }

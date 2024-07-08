@@ -32,3 +32,8 @@ interface IGatewayZEVM {
         bytes calldata message
     ) external;
 }
+
+interface IGatewayZEVMEvents {
+    event Call(address indexed sender, bytes receiver, bytes message);
+    event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+}
