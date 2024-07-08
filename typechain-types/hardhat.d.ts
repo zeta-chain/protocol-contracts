@@ -341,6 +341,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVM__factory>;
     getContractFactory(
+      name: "GatewayEVMTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayEVMTest__factory>;
+    getContractFactory(
       name: "GatewayEVMUpgradeTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMUpgradeTest__factory>;
@@ -348,6 +352,18 @@ declare module "hardhat/types/runtime" {
       name: "IGatewayEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayEVM__factory>;
+    getContractFactory(
+      name: "IGatewayEVMErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGatewayEVMErrors__factory>;
+    getContractFactory(
+      name: "IGatewayEVMEvents",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IGatewayEVMEvents__factory>;
+    getContractFactory(
+      name: "IReceiverEVMEvents",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IReceiverEVMEvents__factory>;
     getContractFactory(
       name: "ReceiverEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -448,6 +464,70 @@ declare module "hardhat/types/runtime" {
       name: "ZRC20Errors",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZRC20Errors__factory>;
+    getContractFactory(
+      name: "IERC165",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC165__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "IERC721",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721__factory>;
+    getContractFactory(
+      name: "IERC721Enumerable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721Enumerable__factory>;
+    getContractFactory(
+      name: "IERC721Metadata",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721Metadata__factory>;
+    getContractFactory(
+      name: "IERC721TokenReceiver",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721TokenReceiver__factory>;
+    getContractFactory(
+      name: "IMulticall3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMulticall3__factory>;
+    getContractFactory(
+      name: "MockERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockERC20__factory>;
+    getContractFactory(
+      name: "MockERC721",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MockERC721__factory>;
+    getContractFactory(
+      name: "StdAssertions",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StdAssertions__factory>;
+    getContractFactory(
+      name: "StdError",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StdError__factory>;
+    getContractFactory(
+      name: "StdInvariant",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StdInvariant__factory>;
+    getContractFactory(
+      name: "StdStorageSafe",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StdStorageSafe__factory>;
+    getContractFactory(
+      name: "Test",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Test__factory>;
+    getContractFactory(
+      name: "Vm",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Vm__factory>;
+    getContractFactory(
+      name: "VmSafe",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.VmSafe__factory>;
 
     getContractAt(
       name: "OwnableUpgradeable",
@@ -860,6 +940,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVM>;
     getContractAt(
+      name: "GatewayEVMTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayEVMTest>;
+    getContractAt(
       name: "GatewayEVMUpgradeTest",
       address: string,
       signer?: ethers.Signer
@@ -869,6 +954,21 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IGatewayEVM>;
+    getContractAt(
+      name: "IGatewayEVMErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGatewayEVMErrors>;
+    getContractAt(
+      name: "IGatewayEVMEvents",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IGatewayEVMEvents>;
+    getContractAt(
+      name: "IReceiverEVMEvents",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IReceiverEVMEvents>;
     getContractAt(
       name: "ReceiverEVM",
       address: string,
@@ -994,6 +1094,86 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZRC20Errors>;
+    getContractAt(
+      name: "IERC165",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC165>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "IERC721",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721>;
+    getContractAt(
+      name: "IERC721Enumerable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721Enumerable>;
+    getContractAt(
+      name: "IERC721Metadata",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721Metadata>;
+    getContractAt(
+      name: "IERC721TokenReceiver",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721TokenReceiver>;
+    getContractAt(
+      name: "IMulticall3",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMulticall3>;
+    getContractAt(
+      name: "MockERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "MockERC721",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.MockERC721>;
+    getContractAt(
+      name: "StdAssertions",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StdAssertions>;
+    getContractAt(
+      name: "StdError",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StdError>;
+    getContractAt(
+      name: "StdInvariant",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StdInvariant>;
+    getContractAt(
+      name: "StdStorageSafe",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StdStorageSafe>;
+    getContractAt(
+      name: "Test",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Test>;
+    getContractAt(
+      name: "Vm",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Vm>;
+    getContractAt(
+      name: "VmSafe",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.VmSafe>;
 
     // default types
     getContractFactory(

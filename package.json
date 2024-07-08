@@ -84,7 +84,7 @@
     "docs": "forge doc",
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts",
-    "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json",
+    "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/forge-std/ --ignore-pattern out",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"wait-on tcp:8545 && yarn worker\"",
     "prepublishOnly": "yarn build",
