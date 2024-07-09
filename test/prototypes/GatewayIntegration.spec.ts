@@ -32,17 +32,21 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     const ReceiverEVM = await ethers.getContractFactory("ReceiverEVM");
     const GatewayEVM = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
+    const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNew");
 
     // Deploy the contracts
+    const zeta = await TestERC20.deploy("Zeta", "ZETA");
     token = await TestERC20.deploy("Test Token", "TTK");
     receiverEVM = await ReceiverEVM.deploy();
-    gatewayEVM = await upgrades.deployProxy(GatewayEVM, [tssAddress.address], {
+    gatewayEVM = await upgrades.deployProxy(GatewayEVM, [tssAddress.address, zeta.address], {
       initializer: "initialize",
       kind: "uups",
     });
     custody = await Custody.deploy(gatewayEVM.address);
+    const zetaConnector = await ZetaConnector.deploy(gatewayEVM.address, zeta.address);
 
     gatewayEVM.setCustody(custody.address);
+    gatewayEVM.setConnector(zetaConnector.address);
 
     // Mint initial supply to the owner
     await token.mint(ownerEVM.address, ethers.utils.parseEther("1000"));

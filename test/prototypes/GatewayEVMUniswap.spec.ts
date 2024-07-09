@@ -56,14 +56,19 @@ describe("Uniswap Integration with GatewayEVM", function () {
       Math.floor(Date.now() / 1000) + 60 * 20
     );
 
-    // Deploy Gateway and Custody Contracts
+    // Deploy contracts
     const Gateway = await ethers.getContractFactory("GatewayEVM");
     const ERC20CustodyNew = await ethers.getContractFactory("ERC20CustodyNew");
-    gateway = (await upgrades.deployProxy(Gateway, [tssAddress.address], {
+    const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNew");
+    const zeta = await TestERC20.deploy("Zeta", "ZETA");
+    gateway = (await upgrades.deployProxy(Gateway, [tssAddress.address, zeta.address], {
       initializer: "initialize",
       kind: "uups",
     })) as GatewayEVM;
     custody = (await ERC20CustodyNew.deploy(gateway.address)) as ERC20CustodyNew;
+    gateway.setCustody(custody.address);
+    const zetaConnector = await ZetaConnector.deploy(gateway.address, zeta.address);
+    gateway.setConnector(zetaConnector.address);
 
     // Transfer some tokens to the custody contract
     await tokenA.transfer(custody.address, ethers.utils.parseEther("100"));

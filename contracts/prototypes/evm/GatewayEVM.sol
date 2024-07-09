@@ -15,16 +15,19 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     address public custody;
     address public tssAddress;
+    address public zetaConnector;
+    address public zetaAsset;
 
     constructor() {}
 
-    function initialize(address _tssAddress) public initializer {
+    function initialize(address _tssAddress, address _zetaAsset) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
 
         if (_tssAddress == address(0)) revert ZeroAddress();
 
         tssAddress = _tssAddress;
+        zetaAsset = _zetaAsset;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -69,10 +72,14 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         // Reset approval
         if(!resetApproval(token, to)) revert ApprovalFailed();
 
-        // Transfer any remaining tokens back to the custody contract
+        // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            IERC20(token).safeTransfer(address(custody), remainingBalance);
+             address destination = address(custody);
+            if (token == zetaAsset) {
+                destination = address(zetaConnector);
+            }
+            IERC20(token).safeTransfer(address(destination), remainingBalance);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
@@ -93,7 +100,12 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     // Deposit ERC20 tokens to custody
     function deposit(address receiver, uint256 amount, address asset) external {
         if (amount == 0) revert InsufficientERC20Amount();
-        IERC20(asset).safeTransferFrom(msg.sender, address(custody), amount);
+
+        address destination = address(custody);
+        if (asset == zetaAsset) {
+            destination = address(zetaConnector);
+        }
+        IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, "");
     }
@@ -111,7 +123,12 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     // Deposit ERC20 tokens to custody and call an omnichain smart contract
     function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
         if (amount == 0) revert InsufficientERC20Amount();
-        IERC20(asset).safeTransferFrom(msg.sender, address(custody), amount);
+       
+        address destination = address(custody);
+        if (asset == zetaAsset) {
+            destination = address(zetaConnector);
+        }
+        IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, payload);
     }
@@ -124,6 +141,11 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     function setCustody(address _custody) external {
         if (custody != address(0)) revert CustodyInitialized();
         custody = _custody;
+    }
+
+     function setConnector(address _zetaConnector) external {
+        if (zetaConnector != address(0)) revert CustodyInitialized();
+        zetaConnector = _zetaConnector;
     }
 
     function resetApproval(address token, address to) private returns (bool) {

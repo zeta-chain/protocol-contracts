@@ -7,3 +7,4 @@ export { GatewayEVM__factory } from "./GatewayEVM__factory";
 export { GatewayEVMUpgradeTest__factory } from "./GatewayEVMUpgradeTest__factory";
 export { ReceiverEVM__factory } from "./ReceiverEVM__factory";
 export { TestERC20__factory } from "./TestERC20__factory";
+export { ZetaConnectorNew__factory } from "./ZetaConnectorNew__factory";

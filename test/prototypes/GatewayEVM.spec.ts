@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 
-describe("GatewayEVM inbound", function () {
+describe("GatewayEVM execute", function () {
   let receiver: Contract;
   let gateway: Contract;
   let token: Contract;
@@ -14,18 +14,22 @@ describe("GatewayEVM inbound", function () {
     const Receiver = await ethers.getContractFactory("ReceiverEVM");
     const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
+    const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNew");
     [owner, destination, tssAddress] = await ethers.getSigners();
 
     // Deploy the contracts
+    const zeta = await TestERC20.deploy("Zeta", "ZETA");
     token = await TestERC20.deploy("Test Token", "TTK");
     receiver = await Receiver.deploy();
-    gateway = await upgrades.deployProxy(Gateway, [tssAddress.address], {
+    gateway = await upgrades.deployProxy(Gateway, [tssAddress.address, zeta.address], {
       initializer: "initialize",
       kind: "uups",
     });
     custody = await Custody.deploy(gateway.address);
+    const zetaConnector = await ZetaConnector.deploy(gateway.address, zeta.address);
 
     gateway.setCustody(custody.address);
+    gateway.setConnector(zetaConnector.address);
 
     // Mint initial supply to the owner
     await token.mint(owner.address, ethers.utils.parseEther("1000"));
@@ -131,17 +135,21 @@ describe("GatewayEVM inbound", function () {
     const TestERC20 = await ethers.getContractFactory("TestERC20");
     const Gateway = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
+    const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNew");
     [owner, destination, tssAddress] = await ethers.getSigners();
 
     // Deploy the contracts
+    const zeta = await TestERC20.deploy("Zeta", "ZETA");
     token = await TestERC20.deploy("Test Token", "TTK");
-    gateway = await upgrades.deployProxy(Gateway, [tssAddress.address], {
+    gateway = await upgrades.deployProxy(Gateway, [tssAddress.address, zeta.address], {
       initializer: "initialize",
       kind: "uups",
     });
     custody = await Custody.deploy(gateway.address);
+    const zetaConnector = await ZetaConnector.deploy(gateway.address, zeta.address);
 
     gateway.setCustody(custody.address);
+    gateway.setConnector(zetaConnector.address);
 
     // Mint initial supply to the owner
     await token.mint(owner.address, ethers.utils.parseEther("1000"));

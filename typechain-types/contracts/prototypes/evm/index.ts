@@ -8,3 +8,4 @@ export type { GatewayEVM } from "./GatewayEVM";
 export type { GatewayEVMUpgradeTest } from "./GatewayEVMUpgradeTest";
 export type { ReceiverEVM } from "./ReceiverEVM";
 export type { TestERC20 } from "./TestERC20";
+export type { ZetaConnectorNew } from "./ZetaConnectorNew";

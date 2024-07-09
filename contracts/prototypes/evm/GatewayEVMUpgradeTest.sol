@@ -6,40 +6,31 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-
+import "./interfaces.sol";
 
 // NOTE: Purpose of this contract is to test upgrade process, the only difference should be name of Executed event
 // The Gateway contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents {
     using SafeERC20 for IERC20;
-
-    error ExecutionFailed();
-    error SendFailed();
-    error InsufficientETHAmount();
-    error ZeroAddress();
-    error ApprovalFailed();
 
     address public custody;
     address public tssAddress;
+    address public zetaConnector;
+    address public zetaAsset;
 
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
-    event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-    event SendERC20(bytes recipient, address indexed asset, uint256 amount);
-    event Send(bytes recipient, uint256 amount);
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
+    constructor() {}
 
-    function initialize(address _tssAddress) public initializer {
+    function initialize(address _tssAddress, address _zetaAsset) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
 
         if (_tssAddress == address(0)) revert ZeroAddress();
-        
+
         tssAddress = _tssAddress;
+        zetaAsset = _zetaAsset;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -72,21 +63,26 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         address to,
         uint256 amount,
         bytes calldata data
-    ) external returns (bytes memory) {
+    ) public returns (bytes memory) {
+        if (amount == 0) revert InsufficientETHAmount();
         // Approve the target contract to spend the tokens
-        if(!IERC20(token).approve(to, 0)) revert ApprovalFailed();
+        if(!resetApproval(token, to)) revert ApprovalFailed();
         if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
 
         // Execute the call on the target contract
         bytes memory result = _execute(to, data);
 
         // Reset approval
-        if(!IERC20(token).approve(to, 0)) revert ApprovalFailed();
+        if(!resetApproval(token, to)) revert ApprovalFailed();
 
-        // Transfer any remaining tokens back to the custody contract
+        // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            IERC20(token).safeTransfer(address(custody), remainingBalance);
+             address destination = address(custody);
+            if (token == zetaAsset) {
+                destination = address(zetaConnector);
+            }
+            IERC20(token).safeTransfer(address(destination), remainingBalance);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
@@ -94,25 +90,68 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         return result;
     }
 
-    // Transfer specified token amount to ERC20Custody and emits event
-    function sendERC20(bytes calldata recipient, address token, uint256 amount) external {
-        IERC20(token).safeTransferFrom(msg.sender, address(custody), amount);
+    // Deposit ETH to tss
+    function deposit(address receiver) external payable {
+        if (msg.value == 0) revert InsufficientETHAmount();
+        (bool deposited, ) = tssAddress.call{value: msg.value}("");
 
-        emit SendERC20(recipient, token, amount);
+        if (deposited == false) revert DepositFailed();
+        
+        emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
 
-    // Transfer specified ETH amount to TSS address and emits event
-    function send(bytes calldata recipient, uint256 amount) external payable {
+    // Deposit ERC20 tokens to custody
+    function deposit(address receiver, uint256 amount, address asset) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+
+        address destination = address(custody);
+        if (asset == zetaAsset) {
+            destination = address(zetaConnector);
+        }
+        IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
+
+        emit Deposit(msg.sender, receiver, amount, asset, "");
+    }
+
+    // Deposit ETH to tss and call an omnichain smart contract
+    function depositAndCall(address receiver, bytes calldata payload) external payable {
         if (msg.value == 0) revert InsufficientETHAmount();
+        (bool deposited, ) = tssAddress.call{value: msg.value}("");
 
-        (bool sent, ) = tssAddress.call{value: msg.value}("");
+        if (deposited == false) revert DepositFailed();
+        
+        emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
+    }
 
-        if (sent == false) revert SendFailed();
+    // Deposit ERC20 tokens to custody and call an omnichain smart contract
+    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+       
+        address destination = address(custody);
+        if (asset == zetaAsset) {
+            destination = address(zetaConnector);
+        }
+        IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
 
-        emit Send(recipient, msg.value);
+        emit Deposit(msg.sender, receiver, amount, asset, payload);
+    }
+
+    // Call an omnichain smart contract without asset transfer
+    function call(address receiver, bytes calldata payload) external {
+        emit Call(msg.sender, receiver, payload);
     }
 
     function setCustody(address _custody) external {
+        if (custody != address(0)) revert CustodyInitialized();
         custody = _custody;
+    }
+
+     function setConnector(address _zetaConnector) external {
+        if (zetaConnector != address(0)) revert CustodyInitialized();
+        zetaConnector = _zetaConnector;
+    }
+
+    function resetApproval(address token, address to) private returns (bool) {
+        return IERC20(token).approve(to, 0);
     }
 }

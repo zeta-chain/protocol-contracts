@@ -7,6 +7,7 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
+import "contracts/prototypes/evm/ZetaConnectorNew.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 
@@ -25,6 +26,8 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     using SafeERC20 for IERC20;
 
     GatewayEVM gatewayEVM;
+    ZetaConnectorNew zetaConnector;
+    TestERC20 zeta;
     ERC20CustodyNew custody;
     TestERC20 token;
     ReceiverEVM receiverEVM;
@@ -47,11 +50,17 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ownerZEVM = address(0x4321);
 
         token = new TestERC20("test", "TTK");
+        zeta = new TestERC20("zeta", "ZETA");
+
         gatewayEVM = new GatewayEVM();
         custody = new ERC20CustodyNew(address(gatewayEVM));
+        zetaConnector = new ZetaConnectorNew(address(gatewayEVM), address(zeta));
 
-        gatewayEVM.initialize(tssAddress);
+        gatewayEVM.initialize(tssAddress, address(zeta));
+        custody = new ERC20CustodyNew(address(gatewayEVM));
+
         gatewayEVM.setCustody(address(custody));
+        gatewayEVM.setConnector(address(zetaConnector));
 
         // Mint initial supply to the ownerEVM
         token.mint(ownerEVM, 1000000);
