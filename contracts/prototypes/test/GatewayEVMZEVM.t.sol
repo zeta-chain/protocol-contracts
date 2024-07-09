@@ -19,7 +19,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "../evm/interfaces.sol";
 import "../zevm/interfaces.sol";
-import "forge-std/console.sol";
 
 contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGatewayZEVMEvents, IGatewayZEVMErrors, IReceiverEVMEvents {
     // evm
