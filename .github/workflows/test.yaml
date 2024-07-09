@@ -35,6 +35,14 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Test
+      - name: Test (hardhat)
         run: yarn test
+
+      - name: Test v2 (hardhat)
+        run: yarn test:prototypes
+
+      - name: Test v2 (forge)
+        run: yarn test:forge
+
+      
     

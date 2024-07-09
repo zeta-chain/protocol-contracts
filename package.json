@@ -90,6 +90,7 @@
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
+    "test:forge": "forge test -vvv",
     "tsc:watch": "npx tsc --watch",
     "worker": "npx hardhat run scripts/worker.ts --network localhost"
   },

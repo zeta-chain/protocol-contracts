@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 import "./interfaces/IZRC20.sol";
+import "./interfaces/ISystem.sol";
 
 /**
  * @dev Custom errors for ZRC20
