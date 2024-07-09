@@ -17,7 +17,7 @@ export interface IGatewayZEVMEventsInterface extends utils.Interface {
 
   events: {
     "Call(address,bytes,bytes)": EventFragment;
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
+    "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
@@ -35,6 +35,7 @@ export type CallEventFilter = TypedEventFilter<CallEvent>;
 
 export interface WithdrawalEventObject {
   from: string;
+  zrc20: string;
   to: string;
   value: BigNumber;
   gasfee: BigNumber;
@@ -42,7 +43,7 @@ export interface WithdrawalEventObject {
   message: string;
 }
 export type WithdrawalEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, string],
+  [string, string, string, BigNumber, BigNumber, BigNumber, string],
   WithdrawalEventObject
 >;
 
@@ -90,8 +91,9 @@ export interface IGatewayZEVMEvents extends BaseContract {
       message?: null
     ): CallEventFilter;
 
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)"(
+    "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)"(
       from?: PromiseOrValue<string> | null,
+      zrc20?: null,
       to?: null,
       value?: null,
       gasfee?: null,
@@ -100,6 +102,7 @@ export interface IGatewayZEVMEvents extends BaseContract {
     ): WithdrawalEventFilter;
     Withdrawal(
       from?: PromiseOrValue<string> | null,
+      zrc20?: null,
       to?: null,
       value?: null,
       gasfee?: null,

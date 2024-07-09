@@ -11,7 +11,7 @@ contract GatewayEVMEchidnaTest is GatewayEVM {
     address public echidnaCaller = msg.sender;
 
     constructor() {
-        initialize(echidnaCaller);
+        initialize(echidnaCaller, address(0x123));
         testERC20 = new TestERC20("test", "TEST");
         custody = address(new ERC20CustodyNew(address(this)));
     }

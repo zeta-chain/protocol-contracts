@@ -1,6 +1,6 @@
 import { AddressZero } from "@ethersproject/constants";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { SystemContract, ZRC20 } from "@typechain-types";
+import { SystemContract, ZRC20, WETH9 } from "@typechain-types";
 import { expect } from "chai";
 import { Contract } from "ethers";
 import { parseEther } from "ethers/lib/utils";
@@ -33,8 +33,10 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     const GatewayEVM = await ethers.getContractFactory("GatewayEVM");
     const Custody = await ethers.getContractFactory("ERC20CustodyNew");
     const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNew");
+    const WZETAFactory = await ethers.getContractFactory("contracts/zevm/WZETA.sol:WETH9");
 
     // Deploy the contracts
+    const zetaTokenContract = (await WZETAFactory.deploy()) as WETH9;
     const zeta = await TestERC20.deploy("Zeta", "ZETA");
     token = await TestERC20.deploy("Test Token", "TTK");
     receiverEVM = await ReceiverEVM.deploy();
@@ -85,7 +87,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     await ZRC20Contract.connect(fungibleModuleSigner).deposit(ownerZEVM.address, parseEther("100"));
 
     const GatewayZEVM = await ethers.getContractFactory("GatewayZEVM");
-    gatewayZEVM = await upgrades.deployProxy(GatewayZEVM, [], {
+    gatewayZEVM = await upgrades.deployProxy(GatewayZEVM, [zetaTokenContract.address], {
       initializer: "initialize",
       kind: "uups",
     });
@@ -141,13 +143,13 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     const callTx = await gatewayZEVM
-      .connect(ownerZEVM)
-      .withdrawAndCall(receiverEVM.address, parseEther("1"), ZRC20Contract.address, message);
+      .connect(ownerZEVM)["withdrawAndCall(bytes,uint256,address,bytes)"](receiverEVM.address, parseEther("1"), ZRC20Contract.address, message);
 
     await expect(callTx)
       .to.emit(gatewayZEVM, "Withdrawal")
       .withArgs(
         ethers.utils.getAddress(ownerZEVM.address),
+        ethers.utils.getAddress(ZRC20Contract.address),
         receiverEVM.address.toLowerCase(),
         parseEther("1"),
         0,
@@ -158,7 +160,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     // Get message from events
     const callTxReceipt = await callTx.wait();
     const callEvent = callTxReceipt.events.filter((e) => e.event == "Withdrawal")[0];
-    const callMessage = callEvent.args[5];
+    const callMessage = callEvent.args[6];
 
     // Call execute on evm
     const executeTx = await gatewayEVM.execute(receiverEVM.address, callMessage, { value: value });
@@ -217,6 +219,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
       .to.emit(gatewayZEVM, "Withdrawal")
       .withArgs(
         ethers.utils.getAddress(senderZEVM.address),
+        ethers.utils.getAddress(ZRC20Contract.address),
         receiverEVM.address.toLowerCase(),
         parseEther("1"),
         0,
@@ -225,7 +228,7 @@ describe("GatewayEVM GatewayZEVM integration", function () {
       );
 
     const callEvent = callTxReceipt.events.filter((e) => e.event == "Withdrawal")[0];
-    const callMessage = callEvent.args[5];
+    const callMessage = callEvent.args[6];
 
     // Call execute on evm
     const executeTx = await gatewayEVM.execute(receiverEVM.address, callMessage, { value: value });

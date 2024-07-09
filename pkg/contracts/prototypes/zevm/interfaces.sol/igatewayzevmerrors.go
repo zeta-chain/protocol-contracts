@@ -31,7 +31,7 @@ var (
 
 // IGatewayZEVMErrorsMetaData contains all meta data concerning the IGatewayZEVMErrors contract.
 var IGatewayZEVMErrorsMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"name\":\"CallerIsNotFungibleModule\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"GasFeeTransferFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientZRC20Amount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidTarget\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"WithdrawalFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZRC20BurnFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZRC20TransferFailed\",\"type\":\"error\"}]",
+	ABI: "[{\"inputs\":[],\"name\":\"CallerIsNotFungibleModule\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedZetaSent\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"GasFeeTransferFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientZRC20Amount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidTarget\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"WZETATransferFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"WithdrawalFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZRC20BurnFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZRC20TransferFailed\",\"type\":\"error\"}]",
 }
 
 // IGatewayZEVMErrorsABI is the input ABI used to generate the binding from.

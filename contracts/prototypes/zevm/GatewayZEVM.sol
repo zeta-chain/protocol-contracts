@@ -7,25 +7,29 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 import "../../zevm/interfaces/zContract.sol";
 import "./interfaces.sol";
+import "../../zevm/interfaces/IWZETA.sol";
+
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable {
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+    address public wzeta;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize(address _wzeta) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
+        wzeta = wzeta;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
 
-    function _withdraw(uint256 amount, address zrc20) internal returns (uint256) {
+    function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFee();
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
@@ -40,16 +44,35 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         return gasFee;
     }
 
+    function _withdrawZETA(uint256 amount) internal {
+        if (!IWETH9(wzeta).transferFrom(msg.sender, address(this), amount)) revert WZETATransferFailed();
+        IWETH9(wzeta).withdraw(amount);
+        (bool sent, ) = FUNGIBLE_MODULE_ADDRESS.call{value: amount}("");
+        if (!sent) revert FailedZetaSent();
+    }
+
     // Withdraw ZRC20 tokens to external chain
     function withdraw(bytes memory receiver, uint256 amount, address zrc20) external {
-        uint256 gasFee = _withdraw(amount, zrc20);
-        emit Withdrawal(msg.sender, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
+        uint256 gasFee = _withdrawZRC20(amount, zrc20);
+        emit Withdrawal(msg.sender, zrc20, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
     }
 
     // Withdraw ZRC20 tokens and call smart contract on external chain
     function withdrawAndCall(bytes memory receiver, uint256 amount, address zrc20, bytes calldata message) external {
-        uint256 gasFee = _withdraw(amount, zrc20);
-        emit Withdrawal(msg.sender, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
+        uint256 gasFee = _withdrawZRC20(amount, zrc20);
+        emit Withdrawal(msg.sender, zrc20, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
+    }
+
+    // Withdraw ZETA to external chain
+    function withdraw(uint256 amount) external {
+        _withdrawZETA(amount);
+        emit Withdrawal(msg.sender, address(0), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, "");
+    }
+
+    // Withdraw ZETA and call smart contract on external chain
+    function withdrawAndCall(uint256 amount, bytes calldata message) external {
+        _withdrawZETA(amount);
+        emit Withdrawal(msg.sender, address(0), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message);
     }
 
     // Call smart contract on external chain without asset transfer

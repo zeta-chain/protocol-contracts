@@ -131,11 +131,11 @@ export const startWorker = async () => {
     await executeTx.wait();
   });
 
-  // event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+  // event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
   systemContracts.gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
     console.log("Worker: Withdrawal event on GatewayZEVM.");
     const receiver = args[1];
-    const message = args[5];
+    const message = args[6];
     if (message != "0x") {
       console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
       const executeTx = await systemContracts.gatewayEVM.execute(receiver, message, { value: 0 });
