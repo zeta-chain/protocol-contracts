@@ -13,11 +13,7 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -25,7 +21,7 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../../common";
+} from "../../../../common";
 
 export type ZContextStruct = {
   origin: PromiseOrValue<BytesLike>;
@@ -39,27 +35,12 @@ export type ZContextStructOutput = [string, string, BigNumber] & {
   chainID: BigNumber;
 };
 
-export type RevertContextStruct = {
-  origin: PromiseOrValue<BytesLike>;
-  sender: PromiseOrValue<string>;
-  chainID: PromiseOrValue<BigNumberish>;
-};
-
-export type RevertContextStructOutput = [string, string, BigNumber] & {
-  origin: string;
-  sender: string;
-  chainID: BigNumber;
-};
-
-export interface TestZContractInterface extends utils.Interface {
+export interface ZContractInterface extends utils.Interface {
   functions: {
     "onCrossChainCall((bytes,address,uint256),address,uint256,bytes)": FunctionFragment;
-    "onRevert((bytes,address,uint256),address,uint256,bytes)": FunctionFragment;
   };
 
-  getFunction(
-    nameOrSignatureOrTopic: "onCrossChainCall" | "onRevert"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "onCrossChainCall"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "onCrossChainCall",
@@ -70,49 +51,21 @@ export interface TestZContractInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "onRevert",
-    values: [
-      RevertContextStruct,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BytesLike>
-    ]
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "onCrossChainCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
 
-  events: {
-    "ContextData(bytes,address,uint256,address,string)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "ContextData"): EventFragment;
+  events: {};
 }
 
-export interface ContextDataEventObject {
-  origin: string;
-  sender: string;
-  chainID: BigNumber;
-  msgSender: string;
-  message: string;
-}
-export type ContextDataEvent = TypedEvent<
-  [string, string, BigNumber, string, string],
-  ContextDataEventObject
->;
-
-export type ContextDataEventFilter = TypedEventFilter<ContextDataEvent>;
-
-export interface TestZContract extends BaseContract {
+export interface ZContract extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: TestZContractInterface;
+  interface: ZContractInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -141,26 +94,10 @@ export interface TestZContract extends BaseContract {
       message: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    onRevert(
-      context: RevertContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   onCrossChainCall(
     context: ZContextStruct,
-    zrc20: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
-    message: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  onRevert(
-    context: RevertContextStruct,
     zrc20: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     message: PromiseOrValue<BytesLike>,
@@ -175,44 +112,13 @@ export interface TestZContract extends BaseContract {
       message: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    onRevert(
-      context: RevertContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
   };
 
-  filters: {
-    "ContextData(bytes,address,uint256,address,string)"(
-      origin?: null,
-      sender?: null,
-      chainID?: null,
-      msgSender?: null,
-      message?: null
-    ): ContextDataEventFilter;
-    ContextData(
-      origin?: null,
-      sender?: null,
-      chainID?: null,
-      msgSender?: null,
-      message?: null
-    ): ContextDataEventFilter;
-  };
+  filters: {};
 
   estimateGas: {
     onCrossChainCall(
       context: ZContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    onRevert(
-      context: RevertContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,
@@ -223,14 +129,6 @@ export interface TestZContract extends BaseContract {
   populateTransaction: {
     onCrossChainCall(
       context: ZContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    onRevert(
-      context: RevertContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       message: PromiseOrValue<BytesLike>,

@@ -13,11 +13,7 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -25,7 +21,7 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../../common";
+} from "../../../../common";
 
 export type ZContextStruct = {
   origin: PromiseOrValue<BytesLike>;
@@ -51,7 +47,7 @@ export type RevertContextStructOutput = [string, string, BigNumber] & {
   chainID: BigNumber;
 };
 
-export interface TestZContractInterface extends utils.Interface {
+export interface UniversalContractInterface extends utils.Interface {
   functions: {
     "onCrossChainCall((bytes,address,uint256),address,uint256,bytes)": FunctionFragment;
     "onRevert((bytes,address,uint256),address,uint256,bytes)": FunctionFragment;
@@ -86,33 +82,15 @@ export interface TestZContractInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
 
-  events: {
-    "ContextData(bytes,address,uint256,address,string)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "ContextData"): EventFragment;
+  events: {};
 }
 
-export interface ContextDataEventObject {
-  origin: string;
-  sender: string;
-  chainID: BigNumber;
-  msgSender: string;
-  message: string;
-}
-export type ContextDataEvent = TypedEvent<
-  [string, string, BigNumber, string, string],
-  ContextDataEventObject
->;
-
-export type ContextDataEventFilter = TypedEventFilter<ContextDataEvent>;
-
-export interface TestZContract extends BaseContract {
+export interface UniversalContract extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: TestZContractInterface;
+  interface: UniversalContractInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -185,22 +163,7 @@ export interface TestZContract extends BaseContract {
     ): Promise<void>;
   };
 
-  filters: {
-    "ContextData(bytes,address,uint256,address,string)"(
-      origin?: null,
-      sender?: null,
-      chainID?: null,
-      msgSender?: null,
-      message?: null
-    ): ContextDataEventFilter;
-    ContextData(
-      origin?: null,
-      sender?: null,
-      chainID?: null,
-      msgSender?: null,
-      message?: null
-    ): ContextDataEventFilter;
-  };
+  filters: {};
 
   estimateGas: {
     onCrossChainCall(

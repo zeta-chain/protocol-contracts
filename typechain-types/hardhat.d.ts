@@ -433,6 +433,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZRC20Events__factory>;
     getContractFactory(
+      name: "UniversalContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.UniversalContract__factory>;
+    getContractFactory(
       name: "ZContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZContract__factory>;
@@ -1070,6 +1074,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZRC20Events>;
+    getContractAt(
+      name: "UniversalContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.UniversalContract>;
     getContractAt(
       name: "ZContract",
       address: string,

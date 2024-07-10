@@ -106,7 +106,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
 
-        zContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
     // Deposit foreign coins into ZRC20 and call user specified contract on ZEVM
@@ -123,7 +123,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
-        zContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
     // Deposit zeta and call user specified contract on ZEVM
@@ -141,6 +141,38 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (!IWETH9(wzeta).transferFrom(msg.sender, address(this), amount)) revert WZETATransferFailed();
         IWETH9(wzeta).withdraw(amount);
         (bool sent, ) = target.call{value: amount}("");
-        zContract(target).onCrossChainCall(context, wzeta, amount, message);
+        UniversalContract(target).onCrossChainCall(context, wzeta, amount, message);
+    }
+
+    // Revert user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
+    function revert(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+
+        UniversalContract(target).onRevert(context, zrc20, amount, message);
+    }
+
+    // Deposit foreign coins into ZRC20 and revert user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
+    function revertAndCall(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        IZRC20(zrc20).deposit(target, amount);
+        UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
 }
