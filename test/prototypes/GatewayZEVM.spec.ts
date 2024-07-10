@@ -35,7 +35,7 @@ describe("GatewayZEVM", function () {
     systemContract = (await SystemContractFactory.deploy(AddressZero, AddressZero, AddressZero)) as SystemContract;
     const WZETAFactory = await ethers.getContractFactory("contracts/zevm/WZETA.sol:WETH9");
 
-    const zetaTokenContract = (await WZETAFactory.deploy());
+    const zetaTokenContract = await WZETAFactory.deploy();
     const Gateway = await ethers.getContractFactory("GatewayZEVM");
     gateway = await upgrades.deployProxy(Gateway, [zetaTokenContract.address], {
       initializer: "initialize",
@@ -69,7 +69,11 @@ describe("GatewayZEVM", function () {
     it("should withdraw zrc20 and emit event", async function () {
       const tx = await gateway
         .connect(owner)
-        ["withdraw(bytes,uint256,address)"](ethers.utils.arrayify(addrs[0].address), parseEther("1"), ZRC20Contract.address);
+        ["withdraw(bytes,uint256,address)"](
+          ethers.utils.arrayify(addrs[0].address),
+          parseEther("1"),
+          ZRC20Contract.address
+        );
 
       const balanceOfAfterWithdrawal = (await ZRC20Contract.balanceOf(owner.address)) as BigNumber;
       expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));
@@ -94,7 +98,12 @@ describe("GatewayZEVM", function () {
 
       const tx = await gateway
         .connect(owner)
-        ["withdrawAndCall(bytes,uint256,address,bytes)"](ethers.utils.arrayify(addrs[0].address), parseEther("1"), ZRC20Contract.address, message);
+        ["withdrawAndCall(bytes,uint256,address,bytes)"](
+          ethers.utils.arrayify(addrs[0].address),
+          parseEther("1"),
+          ZRC20Contract.address,
+          message
+        );
 
       const balanceOfAfterWithdrawal = (await ZRC20Contract.balanceOf(owner.address)) as BigNumber;
       expect(balanceOfAfterWithdrawal).to.equal(parseEther("99"));
@@ -165,7 +174,7 @@ describe("GatewayZEVM", function () {
       const message = ethers.utils.defaultAbiCoder.encode(["string"], ["hello"]);
       const tx = await gateway
         .connect(fungibleModuleSigner)
-        .depositAndCall(
+        ["depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"](
           [gateway.address, fungibleModuleSigner.address, 1],
           ZRC20Contract.address,
           parseEther("1"),

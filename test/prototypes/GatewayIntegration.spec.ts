@@ -1,6 +1,6 @@
 import { AddressZero } from "@ethersproject/constants";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { SystemContract, ZRC20, WETH9 } from "@typechain-types";
+import { SystemContract, WETH9, ZRC20 } from "@typechain-types";
 import { expect } from "chai";
 import { Contract } from "ethers";
 import { parseEther } from "ethers/lib/utils";
@@ -143,7 +143,13 @@ describe("GatewayEVM GatewayZEVM integration", function () {
     // Encode the function call data and call on zevm
     const message = receiverEVM.interface.encodeFunctionData("receivePayable", [str, num, flag]);
     const callTx = await gatewayZEVM
-      .connect(ownerZEVM)["withdrawAndCall(bytes,uint256,address,bytes)"](receiverEVM.address, parseEther("1"), ZRC20Contract.address, message);
+      .connect(ownerZEVM)
+      ["withdrawAndCall(bytes,uint256,address,bytes)"](
+        receiverEVM.address,
+        parseEther("1"),
+        ZRC20Contract.address,
+        message
+      );
 
     await expect(callTx)
       .to.emit(gatewayZEVM, "Withdrawal")
