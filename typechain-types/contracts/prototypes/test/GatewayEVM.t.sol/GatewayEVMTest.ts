@@ -199,6 +199,8 @@ export interface GatewayEVMTestInterface extends utils.Interface {
     "ReceivedNoParams(address)": EventFragment;
     "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
     "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
+    "Reverted(address,uint256,bytes)": EventFragment;
+    "RevertedWithERC20(address,address,uint256,bytes)": EventFragment;
     "log(string)": EventFragment;
     "log_address(address)": EventFragment;
     "log_array(uint256[])": EventFragment;
@@ -231,6 +233,8 @@ export interface GatewayEVMTestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ReceivedNoParams"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNonPayable"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedPayable"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Reverted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RevertedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log_address"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log_array(uint256[])"): EventFragment;
@@ -361,6 +365,32 @@ export type ReceivedPayableEvent = TypedEvent<
 >;
 
 export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
+
+export interface RevertedEventObject {
+  destination: string;
+  value: BigNumber;
+  data: string;
+}
+export type RevertedEvent = TypedEvent<
+  [string, BigNumber, string],
+  RevertedEventObject
+>;
+
+export type RevertedEventFilter = TypedEventFilter<RevertedEvent>;
+
+export interface RevertedWithERC20EventObject {
+  token: string;
+  to: string;
+  amount: BigNumber;
+  data: string;
+}
+export type RevertedWithERC20Event = TypedEvent<
+  [string, string, BigNumber, string],
+  RevertedWithERC20EventObject
+>;
+
+export type RevertedWithERC20EventFilter =
+  TypedEventFilter<RevertedWithERC20Event>;
 
 export interface logEventObject {
   arg0: string;
@@ -850,6 +880,30 @@ export interface GatewayEVMTest extends BaseContract {
       num?: null,
       flag?: null
     ): ReceivedPayableEventFilter;
+
+    "Reverted(address,uint256,bytes)"(
+      destination?: PromiseOrValue<string> | null,
+      value?: null,
+      data?: null
+    ): RevertedEventFilter;
+    Reverted(
+      destination?: PromiseOrValue<string> | null,
+      value?: null,
+      data?: null
+    ): RevertedEventFilter;
+
+    "RevertedWithERC20(address,address,uint256,bytes)"(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): RevertedWithERC20EventFilter;
+    RevertedWithERC20(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): RevertedWithERC20EventFilter;
 
     "log(string)"(arg0?: null): logEventFilter;
     log(arg0?: null): logEventFilter;

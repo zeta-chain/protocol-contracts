@@ -341,6 +341,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVM__factory>;
     getContractFactory(
+      name: "Revertable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Revertable__factory>;
+    getContractFactory(
       name: "GatewayEVMUpgradeTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMUpgradeTest__factory>;
@@ -959,6 +963,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVM>;
+    getContractAt(
+      name: "Revertable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Revertable>;
     getContractAt(
       name: "GatewayEVMUpgradeTest",
       address: string,

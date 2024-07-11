@@ -3,7 +3,9 @@ pragma solidity 0.8.7;
 
 interface IGatewayEVMEvents {
     event Executed(address indexed destination, uint256 value, bytes data);
+    event Reverted(address indexed destination, uint256 value, bytes data);
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
+    event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
     event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
     event Call(address indexed sender, address indexed receiver, bytes payload);
 }
@@ -34,4 +36,11 @@ interface IGatewayEVM {
     ) external returns (bytes memory);
 
     function execute(address destination, bytes calldata data) external payable returns (bytes memory);
+
+    function revertWithERC20(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    ) external;
 }

@@ -17,6 +17,7 @@ contract ERC20CustodyNew is ReentrancyGuard{
 
     event Withdraw(address indexed token, address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
+    event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data);
 
     constructor(address _gateway) {
          if (_gateway == address(0)) {
@@ -46,5 +47,19 @@ contract ERC20CustodyNew is ReentrancyGuard{
         gateway.executeWithERC20(token, to, amount, data);
 
         emit WithdrawAndCall(token, to, amount, data);
+    }
+
+    // WithdrawAndRevert is called by TSS address, it transfers the tokens and call a contract
+    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
+    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data) public nonReentrant {
+        // Transfer the tokens to the Gateway contract
+        IERC20(token).safeTransfer(address(gateway), amount);
+
+        // Forward the call to the Gateway contract
+        gateway.executeWithERC20(token, to, amount, data);
+
+        emit WithdrawAndRevert(token, to, amount, data);
     }
 }

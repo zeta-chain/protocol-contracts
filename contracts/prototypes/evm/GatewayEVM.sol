@@ -8,6 +8,10 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./interfaces.sol";
 
+interface Revertable {
+    function onRevert(bytes calldata data) external;
+}
+
 // The GatewayEVM contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents {
@@ -34,10 +38,19 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
-    
         if (!success) revert ExecutionFailed();
 
         return result;
+    }
+
+    // Called by the TSS
+    // Calling onRevert directly
+    function revert(address destination, bytes calldata data) public payable {
+        (bool success, bytes memory result) = destination.call{value: msg.value}(data);
+        if (!success) revert ExecutionFailed();
+        Revertable(destination).onRevert(data);
+        
+        emit Reverted(destination, msg.value, data);
     }
 
     // Called by the TSS
@@ -85,6 +98,22 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         emit ExecutedWithERC20(token, to, amount, data);
 
         return result;
+    }
+
+    // Called by the ERC20Custody contract
+    // Directly transfers ERC20 and calls onRevert
+    function revertWithERC20(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    ) external {
+        if (amount == 0) revert InsufficientERC20Amount();
+
+        IERC20(token).safeTransfer(address(to), amount);
+        Revertable(to).onRevert(data);
+
+        emit RevertedWithERC20(token, to, amount, data);
     }
 
     // Deposit ETH to tss

@@ -26,9 +26,9 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../../../common";
+} from "../../../../common";
 
-export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
+export interface GatewayEVMInterface extends utils.Interface {
   functions: {
     "call(address,bytes)": FunctionFragment;
     "custody()": FunctionFragment;
@@ -42,6 +42,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "revert(address,bytes)": FunctionFragment;
+    "revertWithERC20(address,address,uint256,bytes)": FunctionFragment;
     "setConnector(address)": FunctionFragment;
     "setCustody(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -66,6 +68,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
+      | "revert"
+      | "revertWithERC20"
       | "setConnector"
       | "setCustody"
       | "transferOwnership"
@@ -133,6 +137,19 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "revert",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revertWithERC20",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setConnector",
     values: [PromiseOrValue<string>]
   ): string;
@@ -195,6 +212,11 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "revert", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "revertWithERC20",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setConnector",
     data: BytesLike
@@ -222,7 +244,6 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     "Call(address,address,bytes)": EventFragment;
     "Deposit(address,address,uint256,address,bytes)": EventFragment;
     "Executed(address,uint256,bytes)": EventFragment;
-    "ExecutedV2(address,uint256,bytes)": EventFragment;
     "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
@@ -236,7 +257,6 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExecutedV2"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
@@ -300,18 +320,6 @@ export type ExecutedEvent = TypedEvent<
 >;
 
 export type ExecutedEventFilter = TypedEventFilter<ExecutedEvent>;
-
-export interface ExecutedV2EventObject {
-  destination: string;
-  value: BigNumber;
-  data: string;
-}
-export type ExecutedV2Event = TypedEvent<
-  [string, BigNumber, string],
-  ExecutedV2EventObject
->;
-
-export type ExecutedV2EventFilter = TypedEventFilter<ExecutedV2Event>;
 
 export interface ExecutedWithERC20EventObject {
   token: string;
@@ -379,12 +387,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface GatewayEVMUpgradeTest extends BaseContract {
+export interface GatewayEVM extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: GatewayEVMUpgradeTestInterface;
+  interface: GatewayEVMInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -465,6 +473,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    revert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    revertWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -563,6 +585,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  revert(
+    destination: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  revertWithERC20(
+    token: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setConnector(
     _zetaConnector: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -656,6 +692,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
+    revert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    revertWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setConnector(
       _zetaConnector: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -742,17 +792,6 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       value?: null,
       data?: null
     ): ExecutedEventFilter;
-
-    "ExecutedV2(address,uint256,bytes)"(
-      destination?: PromiseOrValue<string> | null,
-      value?: null,
-      data?: null
-    ): ExecutedV2EventFilter;
-    ExecutedV2(
-      destination?: PromiseOrValue<string> | null,
-      value?: null,
-      data?: null
-    ): ExecutedV2EventFilter;
 
     "ExecutedWithERC20(address,address,uint256,bytes)"(
       token?: PromiseOrValue<string> | null,
@@ -874,6 +913,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    revert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    revertWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setConnector(
       _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -967,6 +1020,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revertWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

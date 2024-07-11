@@ -32,10 +32,15 @@ export interface ERC20CustodyNewInterface extends utils.Interface {
     "gateway()": FunctionFragment;
     "withdraw(address,address,uint256)": FunctionFragment;
     "withdrawAndCall(address,address,uint256,bytes)": FunctionFragment;
+    "withdrawAndRevert(address,address,uint256,bytes)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "gateway" | "withdraw" | "withdrawAndCall"
+    nameOrSignatureOrTopic:
+      | "gateway"
+      | "withdraw"
+      | "withdrawAndCall"
+      | "withdrawAndRevert"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
@@ -56,6 +61,15 @@ export interface ERC20CustodyNewInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndRevert",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
 
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
@@ -63,14 +77,20 @@ export interface ERC20CustodyNewInterface extends utils.Interface {
     functionFragment: "withdrawAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndRevert",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Withdraw(address,address,uint256)": EventFragment;
     "WithdrawAndCall(address,address,uint256,bytes)": EventFragment;
+    "WithdrawAndRevert(address,address,uint256,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WithdrawAndCall"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawAndRevert"): EventFragment;
 }
 
 export interface WithdrawEventObject {
@@ -97,6 +117,20 @@ export type WithdrawAndCallEvent = TypedEvent<
 >;
 
 export type WithdrawAndCallEventFilter = TypedEventFilter<WithdrawAndCallEvent>;
+
+export interface WithdrawAndRevertEventObject {
+  token: string;
+  to: string;
+  amount: BigNumber;
+  data: string;
+}
+export type WithdrawAndRevertEvent = TypedEvent<
+  [string, string, BigNumber, string],
+  WithdrawAndRevertEventObject
+>;
+
+export type WithdrawAndRevertEventFilter =
+  TypedEventFilter<WithdrawAndRevertEvent>;
 
 export interface ERC20CustodyNew extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -141,6 +175,14 @@ export interface ERC20CustodyNew extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    withdrawAndRevert(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   gateway(overrides?: CallOverrides): Promise<string>;
@@ -160,6 +202,14 @@ export interface ERC20CustodyNew extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  withdrawAndRevert(
+    token: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     gateway(overrides?: CallOverrides): Promise<string>;
 
@@ -171,6 +221,14 @@ export interface ERC20CustodyNew extends BaseContract {
     ): Promise<void>;
 
     withdrawAndCall(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdrawAndRevert(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -203,6 +261,19 @@ export interface ERC20CustodyNew extends BaseContract {
       amount?: null,
       data?: null
     ): WithdrawAndCallEventFilter;
+
+    "WithdrawAndRevert(address,address,uint256,bytes)"(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): WithdrawAndRevertEventFilter;
+    WithdrawAndRevert(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): WithdrawAndRevertEventFilter;
   };
 
   estimateGas: {
@@ -222,6 +293,14 @@ export interface ERC20CustodyNew extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    withdrawAndRevert(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -235,6 +314,14 @@ export interface ERC20CustodyNew extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     withdrawAndCall(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawAndRevert(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
