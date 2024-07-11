@@ -31,3 +31,5 @@ scripts/slither-results/*
 !scripts/slither-results/.gitkeep
 
 abi
+
+crytic-export

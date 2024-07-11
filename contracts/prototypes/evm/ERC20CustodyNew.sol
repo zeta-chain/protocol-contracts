@@ -38,7 +38,7 @@ contract ERC20CustodyNew is ReentrancyGuard{
     // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
     // TODO: Finalize access control
     // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) external nonReentrant {
+    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) public nonReentrant {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 

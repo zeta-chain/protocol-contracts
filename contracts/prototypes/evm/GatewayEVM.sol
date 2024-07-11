@@ -18,6 +18,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     error InsufficientERC20Amount();
     error ZeroAddress();
     error ApprovalFailed();
+    error CustodyInitialized();
 
     address public custody;
     address public tssAddress;
@@ -27,9 +28,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
     event Call(address indexed sender, address indexed receiver, bytes payload);
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
-        _disableInitializers();
     }
 
     function initialize(address _tssAddress) public initializer {
@@ -71,7 +70,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         address to,
         uint256 amount,
         bytes calldata data
-    ) external returns (bytes memory) {
+    ) public returns (bytes memory) {
         if (amount == 0) revert InsufficientETHAmount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
@@ -136,6 +135,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     }
 
     function setCustody(address _custody) external {
+        if (custody != address(0)) revert CustodyInitialized();
         custody = _custody;
     }
 
