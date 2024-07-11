@@ -31,7 +31,7 @@ var (
 
 // IGatewayEVMMetaData contains all meta data concerning the IGatewayEVM contract.
 var IGatewayEVMMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeWithERC20\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"recipient\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"send\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"recipient\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"sendERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeWithERC20\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IGatewayEVMABI is the input ABI used to generate the binding from.
@@ -220,46 +220,4 @@ func (_IGatewayEVM *IGatewayEVMSession) ExecuteWithERC20(token common.Address, t
 // Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns(bytes)
 func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
 	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
-}
-
-// Send is a paid mutator transaction binding the contract method 0x9372c4ab.
-//
-// Solidity: function send(bytes recipient, uint256 amount) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) Send(opts *bind.TransactOpts, recipient []byte, amount *big.Int) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "send", recipient, amount)
-}
-
-// Send is a paid mutator transaction binding the contract method 0x9372c4ab.
-//
-// Solidity: function send(bytes recipient, uint256 amount) payable returns()
-func (_IGatewayEVM *IGatewayEVMSession) Send(recipient []byte, amount *big.Int) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Send(&_IGatewayEVM.TransactOpts, recipient, amount)
-}
-
-// Send is a paid mutator transaction binding the contract method 0x9372c4ab.
-//
-// Solidity: function send(bytes recipient, uint256 amount) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) Send(recipient []byte, amount *big.Int) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Send(&_IGatewayEVM.TransactOpts, recipient, amount)
-}
-
-// SendERC20 is a paid mutator transaction binding the contract method 0xcb0271ed.
-//
-// Solidity: function sendERC20(bytes recipient, address asset, uint256 amount) returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) SendERC20(opts *bind.TransactOpts, recipient []byte, asset common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "sendERC20", recipient, asset, amount)
-}
-
-// SendERC20 is a paid mutator transaction binding the contract method 0xcb0271ed.
-//
-// Solidity: function sendERC20(bytes recipient, address asset, uint256 amount) returns()
-func (_IGatewayEVM *IGatewayEVMSession) SendERC20(recipient []byte, asset common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.SendERC20(&_IGatewayEVM.TransactOpts, recipient, asset, amount)
-}
-
-// SendERC20 is a paid mutator transaction binding the contract method 0xcb0271ed.
-//
-// Solidity: function sendERC20(bytes recipient, address asset, uint256 amount) returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) SendERC20(recipient []byte, asset common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.SendERC20(&_IGatewayEVM.TransactOpts, recipient, asset, amount)
 }

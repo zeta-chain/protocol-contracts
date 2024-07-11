@@ -19,11 +19,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "18"
           registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
@@ -37,6 +39,9 @@ jobs:
           wget https://gethstore.blob.core.windows.net/builds/geth-alltools-linux-amd64-1.11.5-a38f4108.tar.gz
           tar -zxvf geth-alltools-linux-amd64-1.11.5-a38f4108.tar.gz
           sudo mv geth-alltools-linux-amd64-1.11.5-a38f4108/abigen /usr/local/bin/
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
 
       - name: Generate Go packages and typechain-types
         run: |

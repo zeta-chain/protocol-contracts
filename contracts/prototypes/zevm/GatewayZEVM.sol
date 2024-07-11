@@ -6,22 +6,12 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 import "../../zevm/interfaces/zContract.sol";
+import "./interfaces.sol";
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayZEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable {
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
-
-    error WithdrawalFailed();
-    error InsufficientZRC20Amount();
-    error ZRC20BurnFailed();
-    error ZRC20TransferFailed();
-    error GasFeeTransferFailed();
-    error CallerIsNotFungibleModule();
-    error InvalidTarget();
-
-    event Call(address indexed sender, bytes receiver, bytes message);
-    event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {

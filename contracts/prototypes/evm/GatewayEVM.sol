@@ -6,30 +6,17 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "./interfaces.sol";
 
 // The GatewayEVM contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents {
     using SafeERC20 for IERC20;
-
-    error ExecutionFailed();
-    error DepositFailed();
-    error InsufficientETHAmount();
-    error InsufficientERC20Amount();
-    error ZeroAddress();
-    error ApprovalFailed();
-    error CustodyInitialized();
 
     address public custody;
     address public tssAddress;
 
-    event Executed(address indexed destination, uint256 value, bytes data);
-    event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
-    event Call(address indexed sender, address indexed receiver, bytes payload);
-
-    constructor() {
-    }
+    constructor() {}
 
     function initialize(address _tssAddress) public initializer {
         __Ownable_init();

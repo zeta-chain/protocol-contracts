@@ -2,3 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export { IGatewayEVM__factory } from "./IGatewayEVM__factory";
+export { IGatewayEVMErrors__factory } from "./IGatewayEVMErrors__factory";
+export { IGatewayEVMEvents__factory } from "./IGatewayEVMEvents__factory";
+export { IReceiverEVMEvents__factory } from "./IReceiverEVMEvents__factory";

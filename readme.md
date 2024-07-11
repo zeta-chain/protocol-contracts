@@ -77,6 +77,24 @@ yarn compile
 This will compile the Solidity contracts and output the resulting JSON artifacts
 to the `artifacts` directory.
 
+## Test
+
+To run v1 tests (hardhat):
+
+```
+yarn test
+```
+
+To run v2 tests (hardhat):
+```
+yarn test:prototypes
+```
+
+To run v2 tests (forge):
+```
+forge test -vvvv
+```
+
 ## Generating Go Bindings and Contract Addresses
 
 To generate Go bindings for the Solidity contracts and fetch, run the following

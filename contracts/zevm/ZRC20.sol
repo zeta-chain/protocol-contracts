@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
-import "./Interfaces.sol";
+import "./interfaces/IZRC20.sol";
+import "./interfaces/ISystem.sol";
 
 /**
  * @dev Custom errors for ZRC20
@@ -17,7 +18,7 @@ interface ZRC20Errors {
     error ZeroAddress();
 }
 
-contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
+contract ZRC20 is IZRC20Metadata, ZRC20Events, ZRC20Errors {
     /// @notice Fungible address is always the same, maintained at the protocol level
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice Chain id.abi
@@ -29,7 +30,7 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
     /// @notice Gas limit.
     uint256 public GAS_LIMIT;
     /// @notice Protocol flat fee.
-    uint256 public PROTOCOL_FLAT_FEE;
+    uint256 public override PROTOCOL_FLAT_FEE;
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
@@ -170,7 +171,7 @@ contract ZRC20 is IZRC20, IZRC20Metadata, ZRC20Errors {
      * @param amount, amount to burn.
      * @return true/false if succeeded/failed.
      */
-    function burn(uint256 amount) external returns (bool) {
+    function burn(uint256 amount) external override returns (bool) {
         _burn(msg.sender, amount);
         return true;
     }

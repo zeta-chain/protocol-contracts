@@ -33,3 +33,6 @@ scripts/slither-results/*
 abi
 
 crytic-export
+
+out
+cache_forge
