@@ -1,5 +1,5 @@
 {
-  "compile_force_framework": "foundry",
+  "compile_force_framework": "hardhat",
   "detectors_to_exclude": "",
   "filter_paths": "forge-std,artifacts,cache,data,dist,docs,lib,node_modules,pkg,scripts,tasks,test,testing,typechain-types"
 }
