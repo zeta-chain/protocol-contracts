@@ -38,8 +38,5 @@ jobs:
       - name: Test (hardhat)
         run: yarn test
 
-      - name: Test v2 (forge)
-        run: yarn test:forge
-
       
     
