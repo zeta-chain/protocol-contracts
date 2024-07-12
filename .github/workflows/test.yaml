@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: "18.0.0"
           registry-url: "https://registry.npmjs.org"
+      
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
 
       - name: Install Dependencies
         run: yarn install
