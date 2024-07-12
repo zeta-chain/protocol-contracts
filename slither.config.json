@@ -1,5 +1,6 @@
 {
   "compile_force_framework": "hardhat",
   "detectors_to_exclude": "",
+  "npx_disable": true,
   "filter_paths": "forge-std,artifacts,cache,data,dist,docs,lib,node_modules,pkg,scripts,tasks,test,testing,typechain-types"
 }
