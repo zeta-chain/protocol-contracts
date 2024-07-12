@@ -1,5 +1,4 @@
 {
-  "compile_force_framework": "foundry",
   "detectors_to_exclude": "",
   "filter_paths": "forge-std,artifacts,cache,data,dist,docs,lib,node_modules,pkg,scripts,tasks,test,testing,typechain-types"
 }
