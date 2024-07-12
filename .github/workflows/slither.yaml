@@ -33,19 +33,19 @@ jobs:
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
-      
-      - name: Install Dependencies
+
+      - name: Install dependencies
         run: yarn install
 
-      - name: Compile contracts
-        run: yarn compile
+      - name: Build project
+        run: yarn build
 
       - name: Run Slither
         uses: crytic/slither-action@main
         id: slither
         continue-on-error: true
         with:
-          sarif: results.sarifs
+          sarif: results.sarif
           node-version: "18"
           fail-on: none
 
