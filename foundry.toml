@@ -6,3 +6,5 @@ test = 'test'
 cache_path  = 'cache_forge'
 no-match-contract = '.*EchidnaTest$'
 auto_detect_solc = true
+optimizer = true
+optimizer_runs = 10_000
