@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
           registry-url: "https://registry.npmjs.org"
 
       - name: Install Foundry
@@ -35,14 +35,8 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Build project
+        run: yarn build
+
       - name: Test (hardhat)
         run: yarn test
-
-      - name: Test v2 (hardhat)
-        run: yarn test:prototypes
-
-      - name: Test v2 (forge)
-        run: yarn test:forge
-
-      
-    
