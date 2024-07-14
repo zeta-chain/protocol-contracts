@@ -79,8 +79,8 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         zrc20.approve(address(gatewayZEVM), 1000000);
     }
 
-      function testCallReceiverEVMFromZEVM() public {
-        string memory str = "Hello, Hardhat!";
+    function testCallReceiverEVMFromZEVM() public {
+        string memory str = "Hello!";
         uint256 num = 42;
         bool flag = true;
         uint256 value = 1 ether;
@@ -97,5 +97,86 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
+    }
+
+    function testCallReceiverEVMFromSenderZEVM() public {
+        string memory str = "Hello!";
+        uint256 num = 42;
+        bool flag = true;
+        uint256 value = 1 ether;
+
+        // Encode the function call data and call on zevm
+        bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
+        bytes memory data = abi.encodeWithSignature("call(bytes,bytes)", abi.encodePacked(receiverEVM), message);
+        vm.expectCall(address(gatewayZEVM), 0, data);
+        vm.prank(ownerZEVM);
+        senderZEVM.callReceiver(abi.encodePacked(receiverEVM), str, num, flag);
+
+        // Call execute on evm
+        vm.deal(address(gatewayEVM), value);
+        vm.expectEmit(true, true, true, true, address(gatewayEVM));
+        emit Executed(address(receiverEVM), value, message);
+        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+    }
+
+    function testWithdrawAndCallReceiverEVMFromZEVM() public {
+        string memory str = "Hello!";
+        uint256 num = 42;
+        bool flag = true;
+        uint256 value = 1 ether;
+
+        // Encode the function call data and call on zevm
+        bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
+        vm.expectEmit(true, true, true, true, address(gatewayZEVM));
+        emit Withdrawal(
+            ownerZEVM,
+            abi.encodePacked(receiverEVM),
+            1000000,
+            0,
+            zrc20.PROTOCOL_FLAT_FEE(),
+            message
+        );
+        vm.prank(ownerZEVM);
+        gatewayZEVM.withdrawAndCall(
+            abi.encodePacked(receiverEVM),
+            1000000,
+            address(zrc20),
+            message
+        );
+
+        // Check the balance after withdrawal
+        uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
+        assertEq(balanceOfAfterWithdrawal, 0);
+
+        // Call execute on evm
+        vm.deal(address(gatewayEVM), value);
+        vm.expectEmit(true, true, true, true, address(gatewayEVM));
+        emit Executed(address(receiverEVM), value, message);
+        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+    }
+
+    function testWithdrawAndCallReceiverEVMFromSenderZEVM() public {
+        string memory str = "Hello!";
+        uint256 num = 42;
+        bool flag = true;
+        uint256 value = 1 ether;
+
+        // Encode the function call data and call on zevm
+        uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
+        bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
+        bytes memory data = abi.encodeWithSignature("withdrawAndCall(bytes,uint256,address,bytes)", abi.encodePacked(receiverEVM), 1000000,  address(zrc20), message);
+        vm.expectCall(address(gatewayZEVM), 0, data);
+        vm.prank(ownerZEVM);
+        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), 1000000, address(zrc20), str, num, flag);
+
+        // Call execute on evm
+        vm.deal(address(gatewayEVM), value);
+        vm.expectEmit(true, true, true, true, address(gatewayEVM));
+        emit Executed(address(receiverEVM), value, message);
+        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+
+        // Check the balance after withdrawal
+        uint256 senderBalanceAfterWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
+        assertEq(senderBalanceAfterWithdrawal, senderBalanceBeforeWithdrawal - 1000000);
     }
 }

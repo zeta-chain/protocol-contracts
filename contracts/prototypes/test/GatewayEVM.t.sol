@@ -56,4 +56,31 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         
         gateway.execute{value: value}(address(receiver), data);
     }
+
+    function testForwardCallToReceiveNonPayable() public {
+        string memory str = "Hello, Foundry!";
+        uint256 num = 42;
+        bool flag = true;
+        uint256 value = 1 ether;
+
+        bytes memory data = abi.encodeWithSignature("receiveNonPayable(string,uint256,bool)", str, num, flag);
+        
+        vm.expectCall(address(receiver), value, data);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Executed(address(receiver), value, data);
+        
+        gateway.execute{value: value}(address(receiver), data);
+    }
+
+    function testForwardCallToReceiveNoParams() public {
+        uint256 value = 1 ether;
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+        
+        vm.expectCall(address(receiver), value, data);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Executed(address(receiver), value, data);
+        
+        gateway.execute{value: value}(address(receiver), data);
+    }
 }
