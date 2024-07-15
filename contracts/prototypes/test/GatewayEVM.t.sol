@@ -89,4 +89,185 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         
         gateway.execute(address(receiver), data);
     }
+
+    function testForwardCallToReceiveERC20ThroughCustody() public {
+        uint256 amount = 100000;
+        bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
+        uint256 balanceBefore = token.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedERC20(address(gateway), amount, address(token), destination);
+        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+
+        // Verify that the tokens were transferred to the destination address
+        uint256 balanceAfter = token.balanceOf(destination);
+        assertEq(balanceAfter, amount);
+
+        // Verify that the remaining tokens were refunded to the Custody contract
+        uint256 balanceAfterCustody = token.balanceOf(address(custody));
+        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
+
+        // Verify that the approval was reset
+        uint256 allowance = token.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+    }
+
+    function testForwardCallToReceiveNoParamsThroughCustody() public {
+        uint256 amount = 100000;
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+        uint256 balanceBefore = token.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedNoParams(address(gateway));
+        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+
+        // Verify that the tokens were not transferred to the destination address
+        uint256 balanceAfter = token.balanceOf(destination);
+        assertEq(balanceAfter, 0);
+
+        // Verify that the remaining tokens were refunded to the Custody contract
+        uint256 balanceAfterCustody = token.balanceOf(address(custody));
+        assertEq(balanceAfterCustody, balanceBeforeCustody);
+
+        // Verify that the approval was reset
+        uint256 allowance = token.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+    }
+}
+
+contract GatewayEVMTestInbound is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
+    using SafeERC20 for IERC20;
+
+    GatewayEVM gateway;
+    ERC20CustodyNew custody;
+    TestERC20 token;
+    address owner;
+    address destination;
+    address tssAddress;
+
+    uint256 ownerAmount = 1000000;
+
+    function setUp() public {
+        owner = address(this);
+        destination = address(0x1234);
+        tssAddress = address(0x5678);
+
+        token = new TestERC20("test", "TTK");
+        gateway = new GatewayEVM();
+        custody = new ERC20CustodyNew(address(gateway));
+
+        gateway.initialize(tssAddress);
+        gateway.setCustody(address(custody));
+
+        // Mint initial supply to the owner
+        token.mint(owner, ownerAmount);
+    }
+
+    function testDepositERC20ToCustody() public {
+        uint256 amount = 100000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        assertEq(0, custodyBalanceBefore);
+
+        token.approve(address(gateway), amount);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposit(owner, destination, amount, address(token), "");
+        gateway.deposit(destination, amount, address(token));
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        assertEq(amount, custodyBalanceAfter);
+
+        uint256 ownerAmountAfter = token.balanceOf(owner);
+        assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
+    function testFailDepositERC20ToCustodyIfAmountIs0() public {
+        uint256 amount = 0;
+
+        token.approve(address(gateway), amount);
+
+        vm.expectRevert("InsufficientERC20Amount");
+        gateway.deposit(destination, amount, address(token));
+    }
+
+    function testDepositEthToTss() public {
+        uint256 amount = 100000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposit(owner, destination, amount, address(0), "");
+        gateway.deposit{value: amount}(destination);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        assertEq(tssBalanceBefore + amount, tssBalanceAfter);
+    }
+
+    function testFailDepositEthToTssIfAmountIs0() public {
+        uint256 amount = 0;
+
+        vm.expectRevert("InsufficientETHAmount");
+        gateway.deposit{value: amount}(destination);
+    }
+
+    function testDepositERC20ToCustodyWithPayload() public {
+        uint256 amount = 100000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        assertEq(0, custodyBalanceBefore);
+
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposit(owner, destination, amount, address(token), payload);
+        gateway.depositAndCall(destination, amount, address(token), payload);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        assertEq(amount, custodyBalanceAfter);
+
+        uint256 ownerAmountAfter = token.balanceOf(owner);
+        assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
+    function testFailDepositERC20ToCustodyWithPayloadIfAmountIs0() public {
+        uint256 amount = 0;
+
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert("InsufficientERC20Amount");
+        gateway.depositAndCall(destination, amount, address(token), payload);
+    }
+
+    function testDepositEthToTssWithPayload() public {
+        uint256 amount = 100000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposit(owner, destination, amount, address(0), payload);
+        gateway.depositAndCall{value: amount}(destination, payload);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        assertEq(tssBalanceBefore + amount, tssBalanceAfter);
+    }
+
+    function testFailDepositEthToTssWithPayloadIfAmountIs0() public {
+        uint256 amount = 0;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert("InsufficientETHAmount");
+        gateway.depositAndCall{value: amount}(destination, payload);
+    }
+
+    function testCallWithPayload() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Call(owner, destination, payload);
+        gateway.call(destination, payload);
+    }
 }
