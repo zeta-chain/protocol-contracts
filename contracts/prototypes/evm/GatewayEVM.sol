@@ -31,7 +31,6 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{value: msg.value}(data);
-    
         if (!success) revert ExecutionFailed();
 
         return result;

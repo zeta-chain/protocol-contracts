@@ -31,6 +31,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token = new TestERC20("test", "TTK");
         gateway = new GatewayEVM();
         custody = new ERC20CustodyNew(address(gateway));
+        receiver = new ReceiverEVM();
 
         gateway.initialize(tssAddress);
         gateway.setCustody(address(custody));
@@ -51,36 +52,41 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         bytes memory data = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
         
         vm.expectCall(address(receiver), value, data);
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedPayable(address(gateway), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), value, data);
-        
+      
         gateway.execute{value: value}(address(receiver), data);
     }
 
     function testForwardCallToReceiveNonPayable() public {
-        string memory str = "Hello, Foundry!";
-        uint256 num = 42;
+        string[] memory str = new string[](1);
+        str[0] = "Hello, Foundry!";
+        uint256[] memory num = new uint256[](1);
+        num[0] = 42;
         bool flag = true;
-        uint256 value = 1 ether;
 
-        bytes memory data = abi.encodeWithSignature("receiveNonPayable(string,uint256,bool)", str, num, flag);
+        bytes memory data = abi.encodeWithSignature("receiveNonPayable(string[],uint256[],bool)", str, num, flag);
         
-        vm.expectCall(address(receiver), value, data);
+        vm.expectCall(address(receiver), 0, data);
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedNonPayable(address(gateway), str, num, flag);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Executed(address(receiver), value, data);
+        emit Executed(address(receiver), 0, data);
         
-        gateway.execute{value: value}(address(receiver), data);
+        gateway.execute(address(receiver), data);
     }
 
     function testForwardCallToReceiveNoParams() public {
-        uint256 value = 1 ether;
-
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");
         
-        vm.expectCall(address(receiver), value, data);
+        vm.expectCall(address(receiver), 0, data);
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Executed(address(receiver), value, data);
+        emit Executed(address(receiver), 0, data);
         
-        gateway.execute{value: value}(address(receiver), data);
+        gateway.execute(address(receiver), data);
     }
 }
