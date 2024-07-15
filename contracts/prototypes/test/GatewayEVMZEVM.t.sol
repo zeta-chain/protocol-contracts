@@ -114,6 +114,8 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
+        vm.expectEmit(true, true, true, true, address(receiverEVM));
+        emit ReceivedPayable(address(gatewayEVM), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
@@ -150,6 +152,8 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
+        vm.expectEmit(true, true, true, true, address(receiverEVM));
+        emit ReceivedPayable(address(gatewayEVM), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
@@ -171,6 +175,8 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
+        vm.expectEmit(true, true, true, true, address(receiverEVM));
+        emit ReceivedPayable(address(gatewayEVM), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
