@@ -12,7 +12,7 @@ import "contracts/prototypes/evm/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import "../evm/interfaces.sol";
+import "contracts/prototypes/evm/interfaces.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
 contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
