@@ -37,6 +37,9 @@ jobs:
 
       - name: Build project
         run: yarn build
+      
+      - name: Test (foundry)
+        run: yarn forge:test
 
       - name: Test (hardhat)
         run: yarn test
