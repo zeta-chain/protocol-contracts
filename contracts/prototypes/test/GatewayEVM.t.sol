@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
@@ -10,7 +10,9 @@ import "contracts/prototypes/evm/ERC20CustodyNew.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "../evm/interfaces.sol";
+import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
 contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
@@ -157,10 +159,13 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-        gateway = new GatewayEVM();
+         address proxy = address(new ERC1967Proxy(
+            address(new GatewayEVM()),
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+        ));
+        gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
 
-        gateway.initialize(tssAddress);
         gateway.setCustody(address(custody));
 
         // Mint initial supply to the owner

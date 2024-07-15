@@ -7,3 +7,8 @@ cache_path  = 'cache_forge'
 no-match-contract = '.*EchidnaTest$'
 optimizer = true
 optimizer_runs = 10_000
+ffi = true
+ast = true
+build_info = true
+extra_output = ["storageLayout"]
+fs_permissions = [{ access = "read", path = "out"}]

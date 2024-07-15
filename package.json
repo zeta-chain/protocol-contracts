@@ -89,7 +89,7 @@
     "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"npx hardhat node\" \"wait-on tcp:8545 && yarn worker\"",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
-    "test:forge": "forge test -vvv",
+    "test:forge": "forge clean && forge test -vvv",
     "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch",
     "worker": "npx hardhat run scripts/worker.ts --network localhost"
