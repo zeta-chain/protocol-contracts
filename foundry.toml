@@ -12,3 +12,4 @@ ast = true
 build_info = true
 extra_output = ["storageLayout"]
 fs_permissions = [{ access = "read", path = "out"}]
+evm_version = "london"
