@@ -369,6 +369,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TestERC20__factory>;
     getContractFactory(
+      name: "GatewayEVMInboundTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayEVMInboundTest__factory>;
+    getContractFactory(
       name: "GatewayEVMTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMTest__factory>;
@@ -376,6 +380,14 @@ declare module "hardhat/types/runtime" {
       name: "GatewayEVMZEVMTest",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMZEVMTest__factory>;
+    getContractFactory(
+      name: "GatewayZEVMInboundTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayZEVMInboundTest__factory>;
+    getContractFactory(
+      name: "GatewayZEVMOutboundTest",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GatewayZEVMOutboundTest__factory>;
     getContractFactory(
       name: "GatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -987,6 +999,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TestERC20>;
     getContractAt(
+      name: "GatewayEVMInboundTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayEVMInboundTest>;
+    getContractAt(
       name: "GatewayEVMTest",
       address: string,
       signer?: ethers.Signer
@@ -996,6 +1013,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVMZEVMTest>;
+    getContractAt(
+      name: "GatewayZEVMInboundTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayZEVMInboundTest>;
+    getContractAt(
+      name: "GatewayZEVMOutboundTest",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.GatewayZEVMOutboundTest>;
     getContractAt(
       name: "GatewayZEVM",
       address: string,

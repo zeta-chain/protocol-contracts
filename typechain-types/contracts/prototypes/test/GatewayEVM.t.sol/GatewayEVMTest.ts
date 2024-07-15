@@ -73,6 +73,10 @@ export interface GatewayEVMTestInterface extends utils.Interface {
     "targetInterfaces()": FunctionFragment;
     "targetSelectors()": FunctionFragment;
     "targetSenders()": FunctionFragment;
+    "testForwardCallToReceiveERC20ThroughCustody()": FunctionFragment;
+    "testForwardCallToReceiveNoParams()": FunctionFragment;
+    "testForwardCallToReceiveNoParamsThroughCustody()": FunctionFragment;
+    "testForwardCallToReceiveNonPayable()": FunctionFragment;
     "testForwardCallToReceivePayable()": FunctionFragment;
   };
 
@@ -91,6 +95,10 @@ export interface GatewayEVMTestInterface extends utils.Interface {
       | "targetInterfaces"
       | "targetSelectors"
       | "targetSenders"
+      | "testForwardCallToReceiveERC20ThroughCustody"
+      | "testForwardCallToReceiveNoParams"
+      | "testForwardCallToReceiveNoParamsThroughCustody"
+      | "testForwardCallToReceiveNonPayable"
       | "testForwardCallToReceivePayable"
   ): FunctionFragment;
 
@@ -135,6 +143,22 @@ export interface GatewayEVMTestInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "targetSenders",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testForwardCallToReceiveERC20ThroughCustody",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testForwardCallToReceiveNoParams",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testForwardCallToReceiveNoParamsThroughCustody",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testForwardCallToReceiveNonPayable",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -183,6 +207,22 @@ export interface GatewayEVMTestInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "targetSenders",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testForwardCallToReceiveERC20ThroughCustody",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testForwardCallToReceiveNoParams",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testForwardCallToReceiveNoParamsThroughCustody",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testForwardCallToReceiveNonPayable",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -673,6 +713,22 @@ export interface GatewayEVMTest extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string[]] & { targetedSenders_: string[] }>;
 
+    testForwardCallToReceiveERC20ThroughCustody(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testForwardCallToReceiveNoParams(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testForwardCallToReceiveNoParamsThroughCustody(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testForwardCallToReceiveNonPayable(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     testForwardCallToReceivePayable(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -714,6 +770,22 @@ export interface GatewayEVMTest extends BaseContract {
 
   targetSenders(overrides?: CallOverrides): Promise<string[]>;
 
+  testForwardCallToReceiveERC20ThroughCustody(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testForwardCallToReceiveNoParams(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testForwardCallToReceiveNoParamsThroughCustody(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testForwardCallToReceiveNonPayable(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   testForwardCallToReceivePayable(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -752,6 +824,20 @@ export interface GatewayEVMTest extends BaseContract {
     ): Promise<StdInvariant.FuzzSelectorStructOutput[]>;
 
     targetSenders(overrides?: CallOverrides): Promise<string[]>;
+
+    testForwardCallToReceiveERC20ThroughCustody(
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    testForwardCallToReceiveNoParams(overrides?: CallOverrides): Promise<void>;
+
+    testForwardCallToReceiveNoParamsThroughCustody(
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    testForwardCallToReceiveNonPayable(
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     testForwardCallToReceivePayable(overrides?: CallOverrides): Promise<void>;
   };
@@ -980,6 +1066,22 @@ export interface GatewayEVMTest extends BaseContract {
 
     targetSenders(overrides?: CallOverrides): Promise<BigNumber>;
 
+    testForwardCallToReceiveERC20ThroughCustody(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testForwardCallToReceiveNoParams(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testForwardCallToReceiveNoParamsThroughCustody(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testForwardCallToReceiveNonPayable(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     testForwardCallToReceivePayable(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1015,6 +1117,22 @@ export interface GatewayEVMTest extends BaseContract {
     targetSelectors(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     targetSenders(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    testForwardCallToReceiveERC20ThroughCustody(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testForwardCallToReceiveNoParams(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testForwardCallToReceiveNoParamsThroughCustody(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testForwardCallToReceiveNonPayable(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     testForwardCallToReceivePayable(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
