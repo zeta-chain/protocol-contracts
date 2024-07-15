@@ -139,7 +139,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 }
 
-contract GatewayEVMTestInbound is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
+contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
 
     GatewayEVM gateway;
