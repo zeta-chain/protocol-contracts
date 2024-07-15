@@ -17,6 +17,7 @@ import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
 
+    address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20CustodyNew custody;
@@ -31,11 +32,14 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-        gateway = new GatewayEVM();
+        proxy = address(new ERC1967Proxy(
+            address(new GatewayEVM()),
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+        ));
+        gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
         receiver = new ReceiverEVM();
 
-        gateway.initialize(tssAddress);
         gateway.setCustody(address(custody));
 
         // Mint initial supply to the owner

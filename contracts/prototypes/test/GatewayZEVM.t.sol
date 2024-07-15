@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
@@ -10,8 +10,11 @@ import "contracts/zevm/SystemContract.sol";
 import "contracts/zevm/interfaces/IZRC20.sol";
 import "contracts/prototypes/zevm/TestZContract.sol";
 import "../zevm/interfaces.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
 contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
+    address proxy;
     GatewayZEVM gateway;
     ZRC20New zrc20;
     SystemContract systemContract;
@@ -23,7 +26,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         owner = address(this);
         addr1 = address(0x1234);
 
-        gateway = new GatewayZEVM();
+        proxy = address(new ERC1967Proxy(
+            address(new GatewayZEVM()),
+            abi.encodeWithSelector(GatewayZEVM.initialize.selector, "")
+        ));
+        gateway = GatewayZEVM(proxy);
         testZContract = new TestZContract();
 
         vm.startPrank(gateway.FUNGIBLE_MODULE_ADDRESS());

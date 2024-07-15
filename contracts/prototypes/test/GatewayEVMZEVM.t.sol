@@ -19,11 +19,14 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "../evm/interfaces.sol";
 import "../zevm/interfaces.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
 contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGatewayZEVMEvents, IGatewayZEVMErrors, IReceiverEVMEvents {
     // evm
     using SafeERC20 for IERC20;
 
+    address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20CustodyNew custody;
     TestERC20 token;
@@ -33,6 +36,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     address tssAddress;
 
     // zevm
+    address proxyZEVM;
     GatewayZEVM gatewayZEVM;
     SenderZEVM senderZEVM;
     SystemContractMock systemContract;
@@ -47,10 +51,13 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ownerZEVM = address(0x4321);
 
         token = new TestERC20("test", "TTK");
-        gatewayEVM = new GatewayEVM();
+        proxyEVM = address(new ERC1967Proxy(
+            address(new GatewayEVM()),
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+        ));
+        gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20CustodyNew(address(gatewayEVM));
 
-        gatewayEVM.initialize(tssAddress);
         gatewayEVM.setCustody(address(custody));
 
         // Mint initial supply to the ownerEVM
@@ -62,7 +69,11 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         receiverEVM = new ReceiverEVM();
 
         // zevm
-        gatewayZEVM = new GatewayZEVM();
+        proxyZEVM = address(new ERC1967Proxy(
+            address(new GatewayZEVM()),
+            abi.encodeWithSelector(GatewayZEVM.initialize.selector, "")
+        ));
+        gatewayZEVM = GatewayZEVM(proxyZEVM);
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
         // Impersonate the fungible module account
         address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
