@@ -31,6 +31,7 @@
     "chai": "^4.3.6",
     "concurrently": "^8.2.2",
     "cpx": "^1.5.0",
+    "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
@@ -80,7 +81,7 @@
   "scripts": {
     "build": "yarn compile && npx del-cli dist abi && npx tsc || true && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "compile": "npx hardhat compile --force",
-    "coverage": "forge clean && forge coverage --report lcov",
+    "coverage": "forge clean && cross-env FOUNDRY_SRC='contracts/prototypes' forge coverage --report lcov",
     "docs": "forge doc",
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts --ignore-pattern lib/",
