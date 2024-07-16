@@ -26,6 +26,9 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     address destination;
     address tssAddress;
 
+    event Withdraw(address indexed token, address indexed to, uint256 amount);
+    event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
+
     function setUp() public {
         owner = address(this);
         destination = address(0x1234);
@@ -102,6 +105,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(token), destination);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit WithdrawAndCall(address(token), address(receiver), amount, data);
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
 
         // Verify that the tokens were transferred to the destination address
@@ -126,6 +131,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit WithdrawAndCall(address(token), address(receiver), amount, data);
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
 
         // Verify that the tokens were not transferred to the destination address
@@ -139,6 +146,25 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that the approval was reset
         uint256 allowance = token.allowance(address(gateway), address(receiver));
         assertEq(allowance, 0);
+    }
+
+    function testWithdrawThroughCustody() public {
+        uint256 amount = 100000;
+        uint256 balanceBefore = token.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
+
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit Withdraw(address(token), destination, amount);
+        custody.withdraw(address(token), destination, amount);
+
+        // Verify that the tokens were transferred to the destination address
+        uint256 balanceAfter = token.balanceOf(destination);
+        assertEq(balanceAfter, amount);
+
+        // Verify that the tokens were substracted from custody
+        uint256 balanceAfterCustody = token.balanceOf(address(custody));
+        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
     }
 }
 
