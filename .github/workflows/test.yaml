@@ -39,7 +39,7 @@ jobs:
         run: yarn build
       
       - name: Test (foundry)
-        run: yarn forge:test
+        run: yarn test:foundry
 
       - name: Test (hardhat)
         run: yarn test
