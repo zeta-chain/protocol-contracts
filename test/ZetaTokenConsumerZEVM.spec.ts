@@ -11,6 +11,7 @@ import {
 import chai, { expect } from "chai";
 import { BigNumber, providers } from "ethers";
 import { ethers } from "hardhat";
+const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
 import { WETH9__factory } from "../typechain-types/factories/contracts/zevm/WZETA.sol/WETH9__factory";
 import { parseZetaConsumerLog } from "./test.helpers";
@@ -46,6 +47,7 @@ describe("ZetaTokenConsumerZEVM tests", () => {
   };
 
   beforeEach(async () => {
+    await reset("https://rpc.ankr.com/eth", 14672712);
     accounts = await ethers.getSigners();
     [deployer, randomSigner] = accounts;
 
@@ -53,6 +55,10 @@ describe("ZetaTokenConsumerZEVM tests", () => {
 
     const zetaTokenConsumerZEVMFactory = new ZetaTokenConsumerZEVM__factory(deployer);
     zetaTokenConsumerZEVM = await zetaTokenConsumerZEVMFactory.deploy(WETH_ADDRESS, UNI_V2_ROUTER_ADDRESS);
+  });
+
+  afterEach(async () => {
+    await reset();
   });
 
   describe("getZetaFromEth", () => {

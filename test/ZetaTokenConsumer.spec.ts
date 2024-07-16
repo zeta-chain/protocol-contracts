@@ -13,6 +13,7 @@ import chai, { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { getNonZetaAddress } from "lib";
+const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
 import { getTestAddress } from "../lib/address.helpers";
 import {
@@ -55,6 +56,7 @@ describe("ZetaTokenConsumer tests", () => {
   };
 
   beforeEach(async () => {
+    await reset("https://rpc.ankr.com/eth", 14672712);
     accounts = await ethers.getSigners();
     [tssUpdater, tssSigner, randomSigner] = accounts;
 
@@ -92,6 +94,10 @@ describe("ZetaTokenConsumer tests", () => {
     zetaTokenConsumerUniV3 = await getZetaTokenConsumerUniV3Strategy({
       deployParams: [zetaTokenNonEthAddress, uniswapV3RouterAddr, UNI_FACTORY_V3, WETH9, 3000, 3000],
     });
+  });
+  
+  afterEach(async () => {
+    await reset();
   });
 
   describe("getZetaFromEth", () => {
