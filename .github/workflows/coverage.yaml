@@ -27,11 +27,14 @@ jobs:
           node-version: "18"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
       - name: Install Dependencies
         run: yarn install
 
       - name: Test with coverage
-        run: yarn coverage || true
+        run: yarn coverage
     
       - name: Verify lcov.info presence
         run: |
