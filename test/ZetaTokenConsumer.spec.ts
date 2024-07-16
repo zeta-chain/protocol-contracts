@@ -95,7 +95,7 @@ describe("ZetaTokenConsumer tests", () => {
       deployParams: [zetaTokenNonEthAddress, uniswapV3RouterAddr, UNI_FACTORY_V3, WETH9, 3000, 3000],
     });
   });
-  
+
   afterEach(async () => {
     await reset();
   });
