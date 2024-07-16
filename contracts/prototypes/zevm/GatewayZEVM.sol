@@ -24,7 +24,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     function initialize(address _wzeta) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
-        wzeta = wzeta;
+        wzeta = _wzeta;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -44,10 +44,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         return gasFee;
     }
 
-    function _withdrawZETA(uint256 amount) internal {
+    function _transferZETA(uint256 amount, address to) internal {
         if (!IWETH9(wzeta).transferFrom(msg.sender, address(this), amount)) revert WZETATransferFailed();
         IWETH9(wzeta).withdraw(amount);
-        (bool sent, ) = FUNGIBLE_MODULE_ADDRESS.call{value: amount}("");
+        (bool sent, ) = to.call{value: amount}("");
         if (!sent) revert FailedZetaSent();
     }
 
@@ -65,13 +65,13 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
 
     // Withdraw ZETA to external chain
     function withdraw(uint256 amount) external {
-        _withdrawZETA(amount);
+        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawal(msg.sender, address(0), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, "");
     }
 
     // Withdraw ZETA and call smart contract on external chain
     function withdrawAndCall(uint256 amount, bytes calldata message) external {
-        _withdrawZETA(amount);
+        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawal(msg.sender, address(0), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message);
     }
 
@@ -138,9 +138,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IWETH9(wzeta).transferFrom(msg.sender, address(this), amount)) revert WZETATransferFailed();
-        IWETH9(wzeta).withdraw(amount);
-        (bool sent, ) = target.call{value: amount}("");
+        _transferZETA(amount, target);
         zContract(target).onCrossChainCall(context, wzeta, amount, message);
     }
 }
