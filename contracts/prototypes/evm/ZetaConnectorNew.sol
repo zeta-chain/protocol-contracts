@@ -10,8 +10,8 @@ contract ZetaConnectorNew is ReentrancyGuard{
     using SafeERC20 for IERC20;
     error ZeroAddress();
 
-    IGatewayEVM public gateway;
-    IERC20 public zeta;
+    IGatewayEVM public immutable gateway;
+    IERC20 public immutable zeta;
 
     event Withdraw(address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed to, uint256 amount, bytes data);
@@ -28,6 +28,7 @@ contract ZetaConnectorNew is ReentrancyGuard{
     // TODO: Finalize access control
     // https://github.com/zeta-chain/protocol-contracts/issues/204
     function withdraw(address to, uint256 amount) external nonReentrant {
+        // TODO: mint?
         zeta.safeTransfer(to, amount);
 
         emit Withdraw(to, amount);
@@ -38,6 +39,7 @@ contract ZetaConnectorNew is ReentrancyGuard{
     // TODO: Finalize access control
     // https://github.com/zeta-chain/protocol-contracts/issues/204
     function withdrawAndCall(address to, uint256 amount, bytes calldata data) public nonReentrant {
+        // TODO: mint?
         // Transfer zeta to the Gateway contract
         zeta.safeTransfer(address(gateway), amount);
 

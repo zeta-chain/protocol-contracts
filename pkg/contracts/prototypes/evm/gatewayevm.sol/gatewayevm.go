@@ -326,12 +326,12 @@ func (_GatewayEVM *GatewayEVMCallerSession) TssAddress() (common.Address, error)
 	return _GatewayEVM.Contract.TssAddress(&_GatewayEVM.CallOpts)
 }
 
-// ZetaAsset is a free data retrieval call binding the contract method 0xf31e62bf.
+// Zeta is a free data retrieval call binding the contract method 0xe8f9cb3a.
 //
-// Solidity: function zetaAsset() view returns(address)
-func (_GatewayEVM *GatewayEVMCaller) ZetaAsset(opts *bind.CallOpts) (common.Address, error) {
+// Solidity: function zeta() view returns(address)
+func (_GatewayEVM *GatewayEVMCaller) Zeta(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _GatewayEVM.contract.Call(opts, &out, "zetaAsset")
+	err := _GatewayEVM.contract.Call(opts, &out, "zeta")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -343,18 +343,18 @@ func (_GatewayEVM *GatewayEVMCaller) ZetaAsset(opts *bind.CallOpts) (common.Addr
 
 }
 
-// ZetaAsset is a free data retrieval call binding the contract method 0xf31e62bf.
+// Zeta is a free data retrieval call binding the contract method 0xe8f9cb3a.
 //
-// Solidity: function zetaAsset() view returns(address)
-func (_GatewayEVM *GatewayEVMSession) ZetaAsset() (common.Address, error) {
-	return _GatewayEVM.Contract.ZetaAsset(&_GatewayEVM.CallOpts)
+// Solidity: function zeta() view returns(address)
+func (_GatewayEVM *GatewayEVMSession) Zeta() (common.Address, error) {
+	return _GatewayEVM.Contract.Zeta(&_GatewayEVM.CallOpts)
 }
 
-// ZetaAsset is a free data retrieval call binding the contract method 0xf31e62bf.
+// Zeta is a free data retrieval call binding the contract method 0xe8f9cb3a.
 //
-// Solidity: function zetaAsset() view returns(address)
-func (_GatewayEVM *GatewayEVMCallerSession) ZetaAsset() (common.Address, error) {
-	return _GatewayEVM.Contract.ZetaAsset(&_GatewayEVM.CallOpts)
+// Solidity: function zeta() view returns(address)
+func (_GatewayEVM *GatewayEVMCallerSession) Zeta() (common.Address, error) {
+	return _GatewayEVM.Contract.Zeta(&_GatewayEVM.CallOpts)
 }
 
 // ZetaConnector is a free data retrieval call binding the contract method 0x57bec62f.
@@ -537,23 +537,23 @@ func (_GatewayEVM *GatewayEVMTransactorSession) ExecuteWithERC20(token common.Ad
 
 // Initialize is a paid mutator transaction binding the contract method 0x485cc955.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaAsset) returns()
-func (_GatewayEVM *GatewayEVMTransactor) Initialize(opts *bind.TransactOpts, _tssAddress common.Address, _zetaAsset common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.contract.Transact(opts, "initialize", _tssAddress, _zetaAsset)
+// Solidity: function initialize(address _tssAddress, address _zeta) returns()
+func (_GatewayEVM *GatewayEVMTransactor) Initialize(opts *bind.TransactOpts, _tssAddress common.Address, _zeta common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "initialize", _tssAddress, _zeta)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x485cc955.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaAsset) returns()
-func (_GatewayEVM *GatewayEVMSession) Initialize(_tssAddress common.Address, _zetaAsset common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zetaAsset)
+// Solidity: function initialize(address _tssAddress, address _zeta) returns()
+func (_GatewayEVM *GatewayEVMSession) Initialize(_tssAddress common.Address, _zeta common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zeta)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x485cc955.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaAsset) returns()
-func (_GatewayEVM *GatewayEVMTransactorSession) Initialize(_tssAddress common.Address, _zetaAsset common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zetaAsset)
+// Solidity: function initialize(address _tssAddress, address _zeta) returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) Initialize(_tssAddress common.Address, _zeta common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zeta)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
