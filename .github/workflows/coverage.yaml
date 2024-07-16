@@ -33,6 +33,11 @@ jobs:
       - name: Test with coverage
         run: yarn coverage || true
     
+      - name: Verify lcov.info presence
+        run: |
+          echo "Listing files in the root directory to verify lcov.info presence"
+          ls -la
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
