@@ -60,10 +60,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
 
         gatewayEVM.setCustody(address(custody));
 
-        // Mint initial supply to the ownerEVM
         token.mint(ownerEVM, 1000000);
-
-        // Transfer some tokens to the custody contract
         token.transfer(address(custody), 500000);
 
         receiverEVM = new ReceiverEVM();
@@ -75,7 +72,6 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ));
         gatewayZEVM = GatewayZEVM(proxyZEVM);
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
-        // Impersonate the fungible module account
         address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
         vm.startPrank(fungibleModuleAddress);
         systemContract = new SystemContractMock(address(0), address(0), address(0));

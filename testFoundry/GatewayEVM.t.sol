@@ -42,10 +42,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         gateway.setCustody(address(custody));
 
-        // Mint initial supply to the owner
         token.mint(owner, 1000000);
-
-        // Transfer some tokens to the custody contract
         token.transfer(address(custody), 500000);
     }
 
@@ -172,7 +169,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         gateway.setCustody(address(custody));
 
-        // Mint initial supply to the owner
         token.mint(owner, ownerAmount);
     }
 
