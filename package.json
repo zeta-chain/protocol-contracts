@@ -80,7 +80,7 @@
   "scripts": {
     "build": "yarn compile && npx del-cli dist abi && npx tsc || true && npx del-cli './dist/typechain-types/**/*.js' && npx cpx './data/**/*' dist/data && npx cpx './artifacts/contracts/**/*' ./abi && npx del-cli './abi/**/*.dbg.json'",
     "compile": "npx hardhat compile --force",
-    "coverage": "npx hardhat coverage --temp ./coverage-artifacts",
+    "coverage": "forge clean && forge coverage --report lcov",
     "docs": "forge doc",
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
     "lint": "npx eslint . --ext .js,.ts --ignore-pattern lib/",
