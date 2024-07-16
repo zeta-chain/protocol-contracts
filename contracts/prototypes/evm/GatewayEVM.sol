@@ -47,8 +47,9 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     // Called by the TSS
     // Calling onRevert directly
+    // TODO: this shadows built in symbol, need different name
     function revert(address destination, bytes calldata data) public payable {
-        (bool success, bytes memory result) = destination.call{value: msg.value}(data);
+        (bool success, bytes memory result) = destination.call{value: msg.value}("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
         

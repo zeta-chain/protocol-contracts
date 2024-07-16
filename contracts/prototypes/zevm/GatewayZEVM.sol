@@ -144,6 +144,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
 
     // Revert user specified contract on ZEVM
     // TODO: Finalize access control
+    // TODO: this shadows built in symbol, need different name
     // https://github.com/zeta-chain/protocol-contracts/issues/204
     function revert(
         revertContext calldata context,

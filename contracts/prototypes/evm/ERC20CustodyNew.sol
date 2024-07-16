@@ -58,7 +58,7 @@ contract ERC20CustodyNew is ReentrancyGuard{
         IERC20(token).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
-        gateway.executeWithERC20(token, to, amount, data);
+        gateway.revertWithERC20(token, to, amount, data);
 
         emit WithdrawAndRevert(token, to, amount, data);
     }
