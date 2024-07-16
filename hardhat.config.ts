@@ -44,6 +44,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     ...getHardhatConfigNetworks(),
+    hardhat: {},
   },
   solidity: {
     compilers: [
