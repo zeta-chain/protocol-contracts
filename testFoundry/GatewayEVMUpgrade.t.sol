@@ -8,6 +8,7 @@ import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/GatewayEVMUpgradeTest.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
+import "contracts/prototypes/evm/ZetaConnectorNew.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -23,7 +24,9 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20CustodyNew custody;
+    ZetaConnectorNew zetaConnector;
     TestERC20 token;
+    TestERC20 zeta;
     address owner;
     address destination;
     address tssAddress;
@@ -34,17 +37,20 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
+        zeta = new TestERC20("zeta", "ZETA");
 
         proxy = address(new ERC1967Proxy(
             address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, zeta)
         ));
         gateway = GatewayEVM(proxy);
 
         custody = new ERC20CustodyNew(address(gateway));
+        zetaConnector = new ZetaConnectorNew(address(gateway), address(zeta));
         receiver = new ReceiverEVM();
 
         gateway.setCustody(address(custody));
+        gateway.setConnector(address(zetaConnector));
 
         token.mint(owner, 1000000);
         token.transfer(address(custody), 500000);

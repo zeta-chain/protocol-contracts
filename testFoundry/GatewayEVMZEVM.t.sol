@@ -7,6 +7,7 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
+import "contracts/prototypes/evm/ZetaConnectorNew.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 
@@ -29,7 +30,9 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20CustodyNew custody;
+    ZetaConnectorNew zetaConnector;
     TestERC20 token;
+    TestERC20 zeta;
     ReceiverEVM receiverEVM;
     address ownerEVM;
     address destination;
@@ -51,14 +54,18 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ownerZEVM = address(0x4321);
 
         token = new TestERC20("test", "TTK");
+        zeta = new TestERC20("zeta", "ZETA");
+
         proxyEVM = address(new ERC1967Proxy(
             address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zeta))
         ));
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20CustodyNew(address(gatewayEVM));
+        zetaConnector = new ZetaConnectorNew(address(gatewayEVM), address(zeta));
 
         gatewayEVM.setCustody(address(custody));
+        gatewayEVM.setConnector(address(zetaConnector));
 
         token.mint(ownerEVM, 1000000);
         token.transfer(address(custody), 500000);
@@ -139,6 +146,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Withdrawal(
             ownerZEVM,
+            address(zrc20),
             abi.encodePacked(receiverEVM),
             1000000,
             0,

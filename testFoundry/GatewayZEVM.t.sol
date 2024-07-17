@@ -51,7 +51,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawal(owner, abi.encodePacked(addr1), 1, 0, zrc20.PROTOCOL_FLAT_FEE(), "");
+        emit Withdrawal(owner, address(zrc20), abi.encodePacked(addr1), 1, 0, zrc20.PROTOCOL_FLAT_FEE(), "");
         gateway.withdraw(abi.encodePacked(addr1), 1, address(zrc20));
 
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
@@ -63,7 +63,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawal(owner, abi.encodePacked(addr1), 1, 0, zrc20.PROTOCOL_FLAT_FEE(), message);
+        emit Withdrawal(owner, address(zrc20), abi.encodePacked(addr1), 1, 0, zrc20.PROTOCOL_FLAT_FEE(), message);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message);
 
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);

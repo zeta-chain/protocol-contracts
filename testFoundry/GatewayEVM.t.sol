@@ -42,7 +42,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         proxy = address(new ERC1967Proxy(
             address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress, zeta))
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zeta))
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
@@ -180,7 +180,9 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     GatewayEVM gateway;
     ERC20CustodyNew custody;
+    ZetaConnectorNew zetaConnector;
     TestERC20 token;
+    TestERC20 zeta;
     address owner;
     address destination;
     address tssAddress;
@@ -193,14 +195,17 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-         address proxy = address(new ERC1967Proxy(
+        zeta = new TestERC20("zeta", "ZETA");
+        address proxy = address(new ERC1967Proxy(
             address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zeta))
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
+        zetaConnector = new ZetaConnectorNew(address(gateway), address(zeta));
 
         gateway.setCustody(address(custody));
+        gateway.setConnector(address(zetaConnector));
 
         token.mint(owner, ownerAmount);
     }

@@ -18,20 +18,20 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
     address public custody;
     address public tssAddress;
     address public zetaConnector;
-    address public zetaAsset;
+    address public zeta;
 
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
 
     constructor() {}
 
-    function initialize(address _tssAddress, address _zetaAsset) public initializer {
+    function initialize(address _tssAddress, address _zeta) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
 
         if (_tssAddress == address(0)) revert ZeroAddress();
 
         tssAddress = _tssAddress;
-        zetaAsset = _zetaAsset;
+        zeta = _zeta;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -80,7 +80,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
              address destination = address(custody);
-            if (token == zetaAsset) {
+            if (token == zeta) {
                 destination = address(zetaConnector);
             }
             IERC20(token).safeTransfer(address(destination), remainingBalance);
@@ -106,7 +106,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         if (amount == 0) revert InsufficientERC20Amount();
 
         address destination = address(custody);
-        if (asset == zetaAsset) {
+        if (asset == zeta) {
             destination = address(zetaConnector);
         }
         IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
@@ -129,7 +129,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         if (amount == 0) revert InsufficientERC20Amount();
        
         address destination = address(custody);
-        if (asset == zetaAsset) {
+        if (asset == zeta) {
             destination = address(zetaConnector);
         }
         IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
