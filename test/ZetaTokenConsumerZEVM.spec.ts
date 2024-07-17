@@ -14,7 +14,7 @@ import { ethers } from "hardhat";
 const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
 import { WETH9__factory } from "../typechain-types/factories/contracts/zevm/WZETA.sol/WETH9__factory";
-import { parseZetaConsumerLog } from "./test.helpers";
+import { parseZetaConsumerLog, MAINNET_FORK_URL, MAINNET_FORK_BLOCK } from "./test.helpers";
 
 chai.should();
 
@@ -47,7 +47,7 @@ describe("ZetaTokenConsumerZEVM tests", () => {
   };
 
   beforeEach(async () => {
-    await reset("https://rpc.ankr.com/eth", 14672712);
+    await reset(MAINNET_FORK_URL, MAINNET_FORK_BLOCK);
     accounts = await ethers.getSigners();
     [deployer, randomSigner] = accounts;
 

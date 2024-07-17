@@ -15,13 +15,13 @@ import { ethers } from "hardhat";
 import { getNonZetaAddress } from "lib";
 const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
-import { getTestAddress } from "../lib/address.helpers";
+import { getTestAddress} from "../lib/address.helpers";
 import {
   deployZetaNonEth,
   getZetaTokenConsumerUniV2Strategy,
   getZetaTokenConsumerUniV3Strategy,
 } from "../lib/contracts.helpers";
-import { parseZetaConsumerLog } from "./test.helpers";
+import { parseZetaConsumerLog, MAINNET_FORK_URL, MAINNET_FORK_BLOCK } from "./test.helpers";
 
 chai.should();
 
@@ -56,7 +56,7 @@ describe("ZetaTokenConsumer tests", () => {
   };
 
   beforeEach(async () => {
-    await reset("https://rpc.ankr.com/eth", 14672712);
+    await reset(MAINNET_FORK_URL, MAINNET_FORK_BLOCK);
     accounts = await ethers.getSigners();
     [tssUpdater, tssSigner, randomSigner] = accounts;
 
