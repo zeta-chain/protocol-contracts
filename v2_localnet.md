@@ -98,7 +98,7 @@ yarn localnet --hide="NODE"
 The `localnet` command launches two processes:
 
 - A local Ethereum network (using Anvil) with the two gateway contracta deployed
-- A background worker that relay messages between the two gateway contracts. It simulates the cross-chain message relaying that would normally happen between live networks with the [observers/signers](https://www.zetachain.com/docs/developers/architecture/observers/). This allows to simulate a cross-chain environment on a single local chain.
+- A background worker that relay messages between the two gateway contracts. It simulates the cross-chain message relaying that would normally happen between live networks with the [observers/signers](https://www.zetachain.com/docs/developers/architecture/observers/) mechanism. This allows to simulate a cross-chain environment on a single local chain.
 
 Running the command will deploy the two gateway contracts:
 
