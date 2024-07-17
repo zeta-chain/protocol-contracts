@@ -11,9 +11,10 @@ import {
 import chai, { expect } from "chai";
 import { BigNumber, providers } from "ethers";
 import { ethers } from "hardhat";
+const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
 import { WETH9__factory } from "../typechain-types/factories/contracts/zevm/WZETA.sol/WETH9__factory";
-import { parseZetaConsumerLog } from "./test.helpers";
+import { MAINNET_FORK_BLOCK, MAINNET_FORK_URL, parseZetaConsumerLog } from "./test.helpers";
 
 chai.should();
 
@@ -46,6 +47,7 @@ describe("ZetaTokenConsumerZEVM tests", () => {
   };
 
   beforeEach(async () => {
+    await reset(MAINNET_FORK_URL, MAINNET_FORK_BLOCK);
     accounts = await ethers.getSigners();
     [deployer, randomSigner] = accounts;
 
@@ -53,6 +55,10 @@ describe("ZetaTokenConsumerZEVM tests", () => {
 
     const zetaTokenConsumerZEVMFactory = new ZetaTokenConsumerZEVM__factory(deployer);
     zetaTokenConsumerZEVM = await zetaTokenConsumerZEVMFactory.deploy(WETH_ADDRESS, UNI_V2_ROUTER_ADDRESS);
+  });
+
+  afterEach(async () => {
+    await reset();
   });
 
   describe("getZetaFromEth", () => {

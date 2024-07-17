@@ -11,6 +11,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 // NOTE: Purpose of this contract is to test upgrade process, the only difference should be name of Executed event
 // The Gateway contract is the endpoint to call smart contracts on external chains
 // The contract doesn't hold any funds and should never have active allowances
+/// @custom:oz-upgrades-from GatewayEVM
 contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     using SafeERC20 for IERC20;
 
