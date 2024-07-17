@@ -14,7 +14,7 @@ import { ethers } from "hardhat";
 const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
 import { WETH9__factory } from "../typechain-types/factories/contracts/zevm/WZETA.sol/WETH9__factory";
-import { parseZetaConsumerLog, MAINNET_FORK_URL, MAINNET_FORK_BLOCK } from "./test.helpers";
+import { MAINNET_FORK_BLOCK, MAINNET_FORK_URL, parseZetaConsumerLog } from "./test.helpers";
 
 chai.should();
 

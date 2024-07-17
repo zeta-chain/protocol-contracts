@@ -3,8 +3,8 @@ import { BigNumber, ContractReceipt } from "ethers";
 
 export const FUNGIBLE_MODULE_ADDRESS = "0x735b14BB79463307AAcBED86DAf3322B1e6226aB";
 
-export const MAINNET_FORK_URL = "https://rpc.ankr.com/eth"
-export const MAINNET_FORK_BLOCK = 14672712
+export const MAINNET_FORK_URL = "https://rpc.ankr.com/eth";
+export const MAINNET_FORK_BLOCK = 14672712;
 
 export const parseZetaConsumerLog = (logs: ContractReceipt["logs"]) => {
   const iface = ZetaTokenConsumer__factory.createInterface();

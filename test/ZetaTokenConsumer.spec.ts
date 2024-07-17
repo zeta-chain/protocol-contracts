@@ -15,13 +15,13 @@ import { ethers } from "hardhat";
 import { getNonZetaAddress } from "lib";
 const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
-import { getTestAddress} from "../lib/address.helpers";
+import { getTestAddress } from "../lib/address.helpers";
 import {
   deployZetaNonEth,
   getZetaTokenConsumerUniV2Strategy,
   getZetaTokenConsumerUniV3Strategy,
 } from "../lib/contracts.helpers";
-import { parseZetaConsumerLog, MAINNET_FORK_URL, MAINNET_FORK_BLOCK } from "./test.helpers";
+import { MAINNET_FORK_BLOCK, MAINNET_FORK_URL, parseZetaConsumerLog } from "./test.helpers";
 
 chai.should();
 
