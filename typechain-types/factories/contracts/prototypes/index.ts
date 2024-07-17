@@ -2,5 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as evm from "./evm";
-export * as test from "./test";
 export * as zevm from "./zevm";

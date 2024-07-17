@@ -3,3 +3,4 @@
 /* eslint-disable */
 export * as gatewayEvmTSol from "./GatewayEVM.t.sol";
 export * as gatewayEvmzevmTSol from "./GatewayEVMZEVM.t.sol";
+export * as gatewayZevmTSol from "./GatewayZEVM.t.sol";
