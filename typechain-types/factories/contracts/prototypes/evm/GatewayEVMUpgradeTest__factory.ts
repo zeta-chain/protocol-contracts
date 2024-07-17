@@ -506,7 +506,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_zetaAsset",
+        name: "_zeta",
         type: "address",
       },
     ],
@@ -633,7 +633,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "zetaAsset",
+    name: "zeta",
     outputs: [
       {
         internalType: "address",

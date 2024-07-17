@@ -326,12 +326,12 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCallerSession) TssAddress() (
 	return _GatewayEVMUpgradeTest.Contract.TssAddress(&_GatewayEVMUpgradeTest.CallOpts)
 }
 
-// ZetaAsset is a free data retrieval call binding the contract method 0xf31e62bf.
+// Zeta is a free data retrieval call binding the contract method 0xe8f9cb3a.
 //
-// Solidity: function zetaAsset() view returns(address)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCaller) ZetaAsset(opts *bind.CallOpts) (common.Address, error) {
+// Solidity: function zeta() view returns(address)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCaller) Zeta(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _GatewayEVMUpgradeTest.contract.Call(opts, &out, "zetaAsset")
+	err := _GatewayEVMUpgradeTest.contract.Call(opts, &out, "zeta")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -343,18 +343,18 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCaller) ZetaAsset(opts *bind.
 
 }
 
-// ZetaAsset is a free data retrieval call binding the contract method 0xf31e62bf.
+// Zeta is a free data retrieval call binding the contract method 0xe8f9cb3a.
 //
-// Solidity: function zetaAsset() view returns(address)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) ZetaAsset() (common.Address, error) {
-	return _GatewayEVMUpgradeTest.Contract.ZetaAsset(&_GatewayEVMUpgradeTest.CallOpts)
+// Solidity: function zeta() view returns(address)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Zeta() (common.Address, error) {
+	return _GatewayEVMUpgradeTest.Contract.Zeta(&_GatewayEVMUpgradeTest.CallOpts)
 }
 
-// ZetaAsset is a free data retrieval call binding the contract method 0xf31e62bf.
+// Zeta is a free data retrieval call binding the contract method 0xe8f9cb3a.
 //
-// Solidity: function zetaAsset() view returns(address)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCallerSession) ZetaAsset() (common.Address, error) {
-	return _GatewayEVMUpgradeTest.Contract.ZetaAsset(&_GatewayEVMUpgradeTest.CallOpts)
+// Solidity: function zeta() view returns(address)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCallerSession) Zeta() (common.Address, error) {
+	return _GatewayEVMUpgradeTest.Contract.Zeta(&_GatewayEVMUpgradeTest.CallOpts)
 }
 
 // ZetaConnector is a free data retrieval call binding the contract method 0x57bec62f.
@@ -537,23 +537,23 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) ExecuteWit
 
 // Initialize is a paid mutator transaction binding the contract method 0x485cc955.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaAsset) returns()
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) Initialize(opts *bind.TransactOpts, _tssAddress common.Address, _zetaAsset common.Address) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.contract.Transact(opts, "initialize", _tssAddress, _zetaAsset)
+// Solidity: function initialize(address _tssAddress, address _zeta) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) Initialize(opts *bind.TransactOpts, _tssAddress common.Address, _zeta common.Address) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.contract.Transact(opts, "initialize", _tssAddress, _zeta)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x485cc955.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaAsset) returns()
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Initialize(_tssAddress common.Address, _zetaAsset common.Address) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.Initialize(&_GatewayEVMUpgradeTest.TransactOpts, _tssAddress, _zetaAsset)
+// Solidity: function initialize(address _tssAddress, address _zeta) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Initialize(_tssAddress common.Address, _zeta common.Address) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.Initialize(&_GatewayEVMUpgradeTest.TransactOpts, _tssAddress, _zeta)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x485cc955.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaAsset) returns()
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Initialize(_tssAddress common.Address, _zetaAsset common.Address) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.Initialize(&_GatewayEVMUpgradeTest.TransactOpts, _tssAddress, _zetaAsset)
+// Solidity: function initialize(address _tssAddress, address _zeta) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Initialize(_tssAddress common.Address, _zeta common.Address) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.Initialize(&_GatewayEVMUpgradeTest.TransactOpts, _tssAddress, _zeta)
 }
 
 // RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.

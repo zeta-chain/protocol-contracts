@@ -25,6 +25,7 @@ tsconfig.tsbuildinfo
 # Coverage
 coverage
 coverage.json
+lcov.info
 
 # Slither
 scripts/slither-results/*

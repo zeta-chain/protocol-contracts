@@ -13,6 +13,7 @@ import chai, { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { getNonZetaAddress } from "lib";
+const { reset } = require("@nomicfoundation/hardhat-network-helpers");
 
 import { getTestAddress } from "../lib/address.helpers";
 import {
@@ -20,7 +21,7 @@ import {
   getZetaTokenConsumerUniV2Strategy,
   getZetaTokenConsumerUniV3Strategy,
 } from "../lib/contracts.helpers";
-import { parseZetaConsumerLog } from "./test.helpers";
+import { MAINNET_FORK_BLOCK, MAINNET_FORK_URL, parseZetaConsumerLog } from "./test.helpers";
 
 chai.should();
 
@@ -55,6 +56,7 @@ describe("ZetaTokenConsumer tests", () => {
   };
 
   beforeEach(async () => {
+    await reset(MAINNET_FORK_URL, MAINNET_FORK_BLOCK);
     accounts = await ethers.getSigners();
     [tssUpdater, tssSigner, randomSigner] = accounts;
 
@@ -92,6 +94,10 @@ describe("ZetaTokenConsumer tests", () => {
     zetaTokenConsumerUniV3 = await getZetaTokenConsumerUniV3Strategy({
       deployParams: [zetaTokenNonEthAddress, uniswapV3RouterAddr, UNI_FACTORY_V3, WETH9, 3000, 3000],
     });
+  });
+
+  afterEach(async () => {
+    await reset();
   });
 
   describe("getZetaFromEth", () => {

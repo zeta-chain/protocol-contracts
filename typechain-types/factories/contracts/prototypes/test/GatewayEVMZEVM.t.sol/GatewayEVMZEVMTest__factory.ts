@@ -1027,7 +1027,28 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "testCallReceiverEVMFromSenderZEVM",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "testCallReceiverEVMFromZEVM",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "testWithdrawAndCallReceiverEVMFromSenderZEVM",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "testWithdrawAndCallReceiverEVMFromZEVM",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
