@@ -369,6 +369,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TestERC20__factory>;
     getContractFactory(
+      name: "ZetaConnectorNew",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaConnectorNew__factory>;
+    getContractFactory(
       name: "GatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayZEVM__factory>;
@@ -914,6 +918,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.TestERC20>;
+    getContractAt(
+      name: "ZetaConnectorNew",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaConnectorNew>;
     getContractAt(
       name: "GatewayZEVM",
       address: string,
