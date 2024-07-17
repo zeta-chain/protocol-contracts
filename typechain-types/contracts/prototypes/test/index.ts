@@ -5,3 +5,5 @@ import type * as gatewayEvmTSol from "./GatewayEVM.t.sol";
 export type { gatewayEvmTSol };
 import type * as gatewayEvmzevmTSol from "./GatewayEVMZEVM.t.sol";
 export type { gatewayEvmzevmTSol };
+import type * as gatewayZevmTSol from "./GatewayZEVM.t.sol";
+export type { gatewayZevmTSol };
