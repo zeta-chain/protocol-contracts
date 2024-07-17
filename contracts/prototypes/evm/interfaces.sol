@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.0;
 
 interface IGatewayEVMEvents {
     event Executed(address indexed destination, uint256 value, bytes data);

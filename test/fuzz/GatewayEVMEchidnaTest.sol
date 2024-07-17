@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
 import "../../contracts/prototypes/evm/GatewayEVM.sol";
 import "../../contracts/prototypes/evm/TestERC20.sol";
 import "../../contracts/prototypes/evm/ERC20CustodyNew.sol";
@@ -11,7 +14,7 @@ contract GatewayEVMEchidnaTest is GatewayEVM {
     address public echidnaCaller = msg.sender;
 
     constructor() {
-        initialize(echidnaCaller);
+        tssAddress = echidnaCaller;
         testERC20 = new TestERC20("test", "TEST");
         custody = address(new ERC20CustodyNew(address(this)));
     }

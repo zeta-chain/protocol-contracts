@@ -58,7 +58,7 @@ export declare namespace StdInvariant {
   };
 }
 
-export interface GatewayEVMZEVMTestInterface extends utils.Interface {
+export interface GatewayEVMInboundTestInterface extends utils.Interface {
   functions: {
     "IS_TEST()": FunctionFragment;
     "excludeArtifacts()": FunctionFragment;
@@ -73,10 +73,15 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     "targetInterfaces()": FunctionFragment;
     "targetSelectors()": FunctionFragment;
     "targetSenders()": FunctionFragment;
-    "testCallReceiverEVMFromSenderZEVM()": FunctionFragment;
-    "testCallReceiverEVMFromZEVM()": FunctionFragment;
-    "testWithdrawAndCallReceiverEVMFromSenderZEVM()": FunctionFragment;
-    "testWithdrawAndCallReceiverEVMFromZEVM()": FunctionFragment;
+    "testCallWithPayload()": FunctionFragment;
+    "testDepositERC20ToCustody()": FunctionFragment;
+    "testDepositERC20ToCustodyWithPayload()": FunctionFragment;
+    "testDepositEthToTss()": FunctionFragment;
+    "testDepositEthToTssWithPayload()": FunctionFragment;
+    "testFailDepositERC20ToCustodyIfAmountIs0()": FunctionFragment;
+    "testFailDepositERC20ToCustodyWithPayloadIfAmountIs0()": FunctionFragment;
+    "testFailDepositEthToTssIfAmountIs0()": FunctionFragment;
+    "testFailDepositEthToTssWithPayloadIfAmountIs0()": FunctionFragment;
   };
 
   getFunction(
@@ -94,10 +99,15 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
       | "targetInterfaces"
       | "targetSelectors"
       | "targetSenders"
-      | "testCallReceiverEVMFromSenderZEVM"
-      | "testCallReceiverEVMFromZEVM"
-      | "testWithdrawAndCallReceiverEVMFromSenderZEVM"
-      | "testWithdrawAndCallReceiverEVMFromZEVM"
+      | "testCallWithPayload"
+      | "testDepositERC20ToCustody"
+      | "testDepositERC20ToCustodyWithPayload"
+      | "testDepositEthToTss"
+      | "testDepositEthToTssWithPayload"
+      | "testFailDepositERC20ToCustodyIfAmountIs0"
+      | "testFailDepositERC20ToCustodyWithPayloadIfAmountIs0"
+      | "testFailDepositEthToTssIfAmountIs0"
+      | "testFailDepositEthToTssWithPayloadIfAmountIs0"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "IS_TEST", values?: undefined): string;
@@ -144,19 +154,39 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "testCallReceiverEVMFromSenderZEVM",
+    functionFragment: "testCallWithPayload",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "testCallReceiverEVMFromZEVM",
+    functionFragment: "testDepositERC20ToCustody",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "testWithdrawAndCallReceiverEVMFromSenderZEVM",
+    functionFragment: "testDepositERC20ToCustodyWithPayload",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "testWithdrawAndCallReceiverEVMFromZEVM",
+    functionFragment: "testDepositEthToTss",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testDepositEthToTssWithPayload",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testFailDepositERC20ToCustodyIfAmountIs0",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testFailDepositERC20ToCustodyWithPayloadIfAmountIs0",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testFailDepositEthToTssIfAmountIs0",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "testFailDepositEthToTssWithPayloadIfAmountIs0",
     values?: undefined
   ): string;
 
@@ -204,24 +234,43 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "testCallReceiverEVMFromSenderZEVM",
+    functionFragment: "testCallWithPayload",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "testCallReceiverEVMFromZEVM",
+    functionFragment: "testDepositERC20ToCustody",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "testWithdrawAndCallReceiverEVMFromSenderZEVM",
+    functionFragment: "testDepositERC20ToCustodyWithPayload",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "testWithdrawAndCallReceiverEVMFromZEVM",
+    functionFragment: "testDepositEthToTss",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testDepositEthToTssWithPayload",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testFailDepositERC20ToCustodyIfAmountIs0",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testFailDepositERC20ToCustodyWithPayloadIfAmountIs0",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testFailDepositEthToTssIfAmountIs0",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "testFailDepositEthToTssWithPayloadIfAmountIs0",
     data: BytesLike
   ): Result;
 
   events: {
-    "Call(address,bytes,bytes)": EventFragment;
     "Call(address,address,bytes)": EventFragment;
     "Deposit(address,address,uint256,address,bytes)": EventFragment;
     "Executed(address,uint256,bytes)": EventFragment;
@@ -230,7 +279,6 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     "ReceivedNoParams(address)": EventFragment;
     "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
     "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
     "log(string)": EventFragment;
     "log_address(address)": EventFragment;
     "log_array(uint256[])": EventFragment;
@@ -255,10 +303,7 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     "logs(bytes)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Call(address,bytes,bytes)"): EventFragment;
-  getEvent(
-    nameOrSignatureOrTopic: "Call(address,address,bytes)"
-  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
@@ -266,7 +311,6 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ReceivedNoParams"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNonPayable"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedPayable"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log_address"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log_array(uint256[])"): EventFragment;
@@ -297,31 +341,14 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "logs"): EventFragment;
 }
 
-export interface Call_address_bytes_bytes_EventObject {
-  sender: string;
-  receiver: string;
-  message: string;
-}
-export type Call_address_bytes_bytes_Event = TypedEvent<
-  [string, string, string],
-  Call_address_bytes_bytes_EventObject
->;
-
-export type Call_address_bytes_bytes_EventFilter =
-  TypedEventFilter<Call_address_bytes_bytes_Event>;
-
-export interface Call_address_address_bytes_EventObject {
+export interface CallEventObject {
   sender: string;
   receiver: string;
   payload: string;
 }
-export type Call_address_address_bytes_Event = TypedEvent<
-  [string, string, string],
-  Call_address_address_bytes_EventObject
->;
+export type CallEvent = TypedEvent<[string, string, string], CallEventObject>;
 
-export type Call_address_address_bytes_EventFilter =
-  TypedEventFilter<Call_address_address_bytes_Event>;
+export type CallEventFilter = TypedEventFilter<CallEvent>;
 
 export interface DepositEventObject {
   sender: string;
@@ -414,21 +441,6 @@ export type ReceivedPayableEvent = TypedEvent<
 >;
 
 export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
-
-export interface WithdrawalEventObject {
-  from: string;
-  to: string;
-  value: BigNumber;
-  gasfee: BigNumber;
-  protocolFlatFee: BigNumber;
-  message: string;
-}
-export type WithdrawalEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, string],
-  WithdrawalEventObject
->;
-
-export type WithdrawalEventFilter = TypedEventFilter<WithdrawalEvent>;
 
 export interface logEventObject {
   arg0: string;
@@ -650,12 +662,12 @@ export type logsEvent = TypedEvent<[string], logsEventObject>;
 
 export type logsEventFilter = TypedEventFilter<logsEvent>;
 
-export interface GatewayEVMZEVMTest extends BaseContract {
+export interface GatewayEVMInboundTest extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: GatewayEVMZEVMTestInterface;
+  interface: GatewayEVMInboundTestInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -741,19 +753,39 @@ export interface GatewayEVMZEVMTest extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string[]] & { targetedSenders_: string[] }>;
 
-    testCallReceiverEVMFromSenderZEVM(
+    testCallWithPayload(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    testCallReceiverEVMFromZEVM(
+    testDepositERC20ToCustody(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    testWithdrawAndCallReceiverEVMFromSenderZEVM(
+    testDepositERC20ToCustodyWithPayload(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    testWithdrawAndCallReceiverEVMFromZEVM(
+    testDepositEthToTss(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testDepositEthToTssWithPayload(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testFailDepositERC20ToCustodyIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testFailDepositERC20ToCustodyWithPayloadIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testFailDepositEthToTssIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    testFailDepositEthToTssWithPayloadIfAmountIs0(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -794,19 +826,39 @@ export interface GatewayEVMZEVMTest extends BaseContract {
 
   targetSenders(overrides?: CallOverrides): Promise<string[]>;
 
-  testCallReceiverEVMFromSenderZEVM(
+  testCallWithPayload(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  testCallReceiverEVMFromZEVM(
+  testDepositERC20ToCustody(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  testWithdrawAndCallReceiverEVMFromSenderZEVM(
+  testDepositERC20ToCustodyWithPayload(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  testWithdrawAndCallReceiverEVMFromZEVM(
+  testDepositEthToTss(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testDepositEthToTssWithPayload(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testFailDepositERC20ToCustodyIfAmountIs0(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testFailDepositERC20ToCustodyWithPayloadIfAmountIs0(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testFailDepositEthToTssIfAmountIs0(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  testFailDepositEthToTssWithPayloadIfAmountIs0(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -845,30 +897,46 @@ export interface GatewayEVMZEVMTest extends BaseContract {
 
     targetSenders(overrides?: CallOverrides): Promise<string[]>;
 
-    testCallReceiverEVMFromSenderZEVM(overrides?: CallOverrides): Promise<void>;
+    testCallWithPayload(overrides?: CallOverrides): Promise<void>;
 
-    testCallReceiverEVMFromZEVM(overrides?: CallOverrides): Promise<void>;
+    testDepositERC20ToCustody(overrides?: CallOverrides): Promise<void>;
 
-    testWithdrawAndCallReceiverEVMFromSenderZEVM(
+    testDepositERC20ToCustodyWithPayload(
       overrides?: CallOverrides
     ): Promise<void>;
 
-    testWithdrawAndCallReceiverEVMFromZEVM(
+    testDepositEthToTss(overrides?: CallOverrides): Promise<void>;
+
+    testDepositEthToTssWithPayload(overrides?: CallOverrides): Promise<void>;
+
+    testFailDepositERC20ToCustodyIfAmountIs0(
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    testFailDepositERC20ToCustodyWithPayloadIfAmountIs0(
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    testFailDepositEthToTssIfAmountIs0(
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    testFailDepositEthToTssWithPayloadIfAmountIs0(
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
-    "Call(address,bytes,bytes)"(
-      sender?: PromiseOrValue<string> | null,
-      receiver?: null,
-      message?: null
-    ): Call_address_bytes_bytes_EventFilter;
     "Call(address,address,bytes)"(
       sender?: PromiseOrValue<string> | null,
       receiver?: PromiseOrValue<string> | null,
       payload?: null
-    ): Call_address_address_bytes_EventFilter;
+    ): CallEventFilter;
+    Call(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      payload?: null
+    ): CallEventFilter;
 
     "Deposit(address,address,uint256,address,bytes)"(
       sender?: PromiseOrValue<string> | null,
@@ -952,23 +1020,6 @@ export interface GatewayEVMZEVMTest extends BaseContract {
       num?: null,
       flag?: null
     ): ReceivedPayableEventFilter;
-
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)"(
-      from?: PromiseOrValue<string> | null,
-      to?: null,
-      value?: null,
-      gasfee?: null,
-      protocolFlatFee?: null,
-      message?: null
-    ): WithdrawalEventFilter;
-    Withdrawal(
-      from?: PromiseOrValue<string> | null,
-      to?: null,
-      value?: null,
-      gasfee?: null,
-      protocolFlatFee?: null,
-      message?: null
-    ): WithdrawalEventFilter;
 
     "log(string)"(arg0?: null): logEventFilter;
     log(arg0?: null): logEventFilter;
@@ -1099,19 +1150,39 @@ export interface GatewayEVMZEVMTest extends BaseContract {
 
     targetSenders(overrides?: CallOverrides): Promise<BigNumber>;
 
-    testCallReceiverEVMFromSenderZEVM(
+    testCallWithPayload(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    testCallReceiverEVMFromZEVM(
+    testDepositERC20ToCustody(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    testWithdrawAndCallReceiverEVMFromSenderZEVM(
+    testDepositERC20ToCustodyWithPayload(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    testWithdrawAndCallReceiverEVMFromZEVM(
+    testDepositEthToTss(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testDepositEthToTssWithPayload(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testFailDepositERC20ToCustodyIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testFailDepositERC20ToCustodyWithPayloadIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testFailDepositEthToTssIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    testFailDepositEthToTssWithPayloadIfAmountIs0(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -1147,19 +1218,39 @@ export interface GatewayEVMZEVMTest extends BaseContract {
 
     targetSenders(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    testCallReceiverEVMFromSenderZEVM(
+    testCallWithPayload(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    testCallReceiverEVMFromZEVM(
+    testDepositERC20ToCustody(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    testWithdrawAndCallReceiverEVMFromSenderZEVM(
+    testDepositERC20ToCustodyWithPayload(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    testWithdrawAndCallReceiverEVMFromZEVM(
+    testDepositEthToTss(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testDepositEthToTssWithPayload(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testFailDepositERC20ToCustodyIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testFailDepositERC20ToCustodyWithPayloadIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testFailDepositEthToTssIfAmountIs0(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    testFailDepositEthToTssWithPayloadIfAmountIs0(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
