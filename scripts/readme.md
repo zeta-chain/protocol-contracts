@@ -3,6 +3,7 @@
 To start localnet execute:
 
 ```
+yarn compile
 yarn localnet
 ```
 
