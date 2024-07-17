@@ -52,7 +52,7 @@ function depositAndCall(address receiver, bytes calldata payload) payable
 depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload)
 ```
 
-* Simple universal app contract call
+* Simple Universal App contract call:
 
 ```
 function call(address receiver, bytes calldata payload)
@@ -66,13 +66,13 @@ function call(address receiver, bytes calldata payload)
 function withdraw(bytes memory receiver, uint256 amount, address zrc20)
 ```
 
-* Withdraw of ZRC-20 tokens and smart contract call on connected chain\:
+* Withdraw of ZRC-20 tokens and smart contract call on connected chain:
 
 ```
 function withdrawAndCall(bytes memory receiver, uint256 amount, address zrc20, bytes calldata message)
 ```
 
-* Simple call to a contract on a connected chain
+* Simple call to a contract on a connected chain:
 
 ```
 function call(bytes memory receiver, bytes calldata message) external
@@ -80,7 +80,7 @@ function call(bytes memory receiver, bytes calldata message) external
 
 ## Experimenting with the New Architecture
 
-To experiment with the new architecture, you can deploy a local network using Anvil and test the gateways using the following commands:
+To experiment with the new architecture, you can deploy a local network using Hardhat and test the gateways using the following commands:
 
 Clone the repository
 ```
@@ -97,7 +97,7 @@ yarn localnet --hide="NODE"
 
 The `localnet` command launches two processes:
 
-- A local Ethereum network (using Anvil) with the two gateway contracta deployed
+- A local Ethereum network (using Hardhat) with the two gateway contract deployed
 - A background worker that relay messages between the two gateway contracts. It simulates the cross-chain message relaying that would normally happen between live networks with the [observers/signers](https://www.zetachain.com/docs/developers/architecture/observers/) mechanism. This allows to simulate a cross-chain environment on a single local chain.
 
 Running the command will deploy the two gateway contracts:
