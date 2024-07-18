@@ -32,11 +32,15 @@ export interface ZetaConnectorNewInterface extends utils.Interface {
     "gateway()": FunctionFragment;
     "withdraw(address,uint256)": FunctionFragment;
     "withdrawAndCall(address,uint256,bytes)": FunctionFragment;
-    "zeta()": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "gateway" | "withdraw" | "withdrawAndCall" | "zeta"
+    nameOrSignatureOrTopic:
+      | "gateway"
+      | "withdraw"
+      | "withdrawAndCall"
+      | "zetaToken"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
@@ -52,7 +56,7 @@ export interface ZetaConnectorNewInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
-  encodeFunctionData(functionFragment: "zeta", values?: undefined): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
@@ -60,7 +64,7 @@ export interface ZetaConnectorNewInterface extends utils.Interface {
     functionFragment: "withdrawAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "zeta", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "Withdraw(address,uint256)": EventFragment;
@@ -136,7 +140,7 @@ export interface ZetaConnectorNew extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    zeta(overrides?: CallOverrides): Promise<[string]>;
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
   gateway(overrides?: CallOverrides): Promise<string>;
@@ -154,7 +158,7 @@ export interface ZetaConnectorNew extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  zeta(overrides?: CallOverrides): Promise<string>;
+  zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     gateway(overrides?: CallOverrides): Promise<string>;
@@ -172,7 +176,7 @@ export interface ZetaConnectorNew extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    zeta(overrides?: CallOverrides): Promise<string>;
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -213,7 +217,7 @@ export interface ZetaConnectorNew extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    zeta(overrides?: CallOverrides): Promise<BigNumber>;
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -232,6 +236,6 @@ export interface ZetaConnectorNew extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    zeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

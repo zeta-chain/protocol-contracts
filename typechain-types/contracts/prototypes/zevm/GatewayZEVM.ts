@@ -59,7 +59,7 @@ export interface GatewayZEVMInterface extends utils.Interface {
     "withdraw(uint256)": FunctionFragment;
     "withdrawAndCall(uint256,bytes)": FunctionFragment;
     "withdrawAndCall(bytes,uint256,address,bytes)": FunctionFragment;
-    "wzeta()": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
@@ -81,7 +81,7 @@ export interface GatewayZEVMInterface extends utils.Interface {
       | "withdraw(uint256)"
       | "withdrawAndCall(uint256,bytes)"
       | "withdrawAndCall(bytes,uint256,address,bytes)"
-      | "wzeta"
+      | "zetaToken"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -179,7 +179,7 @@ export interface GatewayZEVMInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
-  encodeFunctionData(functionFragment: "wzeta", values?: undefined): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "FUNGIBLE_MODULE_ADDRESS",
@@ -231,7 +231,7 @@ export interface GatewayZEVMInterface extends utils.Interface {
     functionFragment: "withdrawAndCall(bytes,uint256,address,bytes)",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "wzeta", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -393,7 +393,7 @@ export interface GatewayZEVM extends BaseContract {
     ): Promise<ContractTransaction>;
 
     initialize(
-      _wzeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -447,7 +447,7 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    wzeta(overrides?: CallOverrides): Promise<[string]>;
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
   FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -492,7 +492,7 @@ export interface GatewayZEVM extends BaseContract {
   ): Promise<ContractTransaction>;
 
   initialize(
-    _wzeta: PromiseOrValue<string>,
+    _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -546,7 +546,7 @@ export interface GatewayZEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  wzeta(overrides?: CallOverrides): Promise<string>;
+  zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     FUNGIBLE_MODULE_ADDRESS(overrides?: CallOverrides): Promise<string>;
@@ -591,7 +591,7 @@ export interface GatewayZEVM extends BaseContract {
     ): Promise<void>;
 
     initialize(
-      _wzeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -643,7 +643,7 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    wzeta(overrides?: CallOverrides): Promise<string>;
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -756,7 +756,7 @@ export interface GatewayZEVM extends BaseContract {
     ): Promise<BigNumber>;
 
     initialize(
-      _wzeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -810,7 +810,7 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    wzeta(overrides?: CallOverrides): Promise<BigNumber>;
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -858,7 +858,7 @@ export interface GatewayZEVM extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     initialize(
-      _wzeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -912,6 +912,6 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    wzeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

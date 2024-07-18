@@ -48,8 +48,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     "tssAddress()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
-    "zeta()": FunctionFragment;
     "zetaConnector()": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
@@ -72,8 +72,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
       | "tssAddress"
       | "upgradeTo"
       | "upgradeToAndCall"
-      | "zeta"
       | "zetaConnector"
+      | "zetaToken"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -156,11 +156,11 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
-  encodeFunctionData(functionFragment: "zeta", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "zetaConnector",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
@@ -210,11 +210,11 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "zeta", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "zetaConnector",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -426,7 +426,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -466,9 +466,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    zeta(overrides?: CallOverrides): Promise<[string]>;
-
     zetaConnector(overrides?: CallOverrides): Promise<[string]>;
+
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
   call(
@@ -521,7 +521,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   initialize(
     _tssAddress: PromiseOrValue<string>,
-    _zeta: PromiseOrValue<string>,
+    _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -561,9 +561,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  zeta(overrides?: CallOverrides): Promise<string>;
-
   zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+  zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     call(
@@ -616,7 +616,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -654,9 +654,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    zeta(overrides?: CallOverrides): Promise<string>;
-
     zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -808,7 +808,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -848,9 +848,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    zeta(overrides?: CallOverrides): Promise<BigNumber>;
-
     zetaConnector(overrides?: CallOverrides): Promise<BigNumber>;
+
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -904,7 +904,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -944,8 +944,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    zeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     zetaConnector(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }
