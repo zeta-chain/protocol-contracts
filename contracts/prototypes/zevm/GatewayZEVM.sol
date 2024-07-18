@@ -144,9 +144,8 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
 
     // Revert user specified contract on ZEVM
     // TODO: Finalize access control
-    // TODO: this shadows built in symbol, need different name
     // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function revert(
+    function executeRevert(
         revertContext calldata context,
         address zrc20,
         uint256 amount,
@@ -161,7 +160,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     // Deposit foreign coins into ZRC20 and revert user specified contract on ZEVM
     // TODO: Finalize access control
     // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function revertAndCall(
+    function depositAndRevert(
         revertContext calldata context,
         address zrc20,
         uint256 amount,
@@ -173,5 +172,20 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
 
         IZRC20(zrc20).deposit(target, amount);
         UniversalContract(target).onRevert(context, zrc20, amount, message);
+    }
+
+    // Revert user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
+    function revert(
+        zContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+
+        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 }
