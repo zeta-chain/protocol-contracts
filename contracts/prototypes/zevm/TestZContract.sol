@@ -13,7 +13,10 @@ contract TestZContract is UniversalContract {
         uint256 amount,
         bytes calldata message
     ) external override {
-        string memory decodedMessage = abi.decode(message, (string));
+        string memory decodedMessage;
+        if (message.length > 0) {
+            decodedMessage = abi.decode(message, (string));
+        }
         emit ContextData(context.origin, context.sender, context.chainID, msg.sender, decodedMessage);
     }
 
@@ -23,7 +26,10 @@ contract TestZContract is UniversalContract {
         uint256 amount,
         bytes calldata message
     ) external override {
-        string memory decodedMessage = abi.decode(message, (string));
+        string memory decodedMessage;
+        if (message.length > 0) {
+            decodedMessage = abi.decode(message, (string));
+        }
         emit ContextData(context.origin, context.sender, context.chainID, msg.sender, decodedMessage);
     }
 }
