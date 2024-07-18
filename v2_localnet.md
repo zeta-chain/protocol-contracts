@@ -30,31 +30,31 @@ The motivation behind this interface is intuitiveness and simplicity. We support
 
 * Deposit of native tokens to addresses on ZetaChain:
 
-```
+```solidity
 function deposit(address receiver) payable
 ```
 
 * Deposit of ERC-20 tokens to addresses on ZetaChain:
 
-```
+```solidity
 function deposit(address receiver, uint256 amount, address asset)
 ```
 
 * Deposit of native tokens and smart contract call on ZetaChain:
 
-```
+```solidity
 function depositAndCall(address receiver, bytes calldata payload) payable
 ```
 
 * Deposit of ERC-20 tokens and smart contract call on ZetaChain:
 
-```
+```solidity
 depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload)
 ```
 
 * Simple Universal App contract call:
 
-```
+```solidity
 function call(address receiver, bytes calldata payload)
 ```
 
@@ -62,19 +62,19 @@ function call(address receiver, bytes calldata payload)
 
 * Withdraw of ZRC-20 tokens to its native connected chain:
 
-```
+```solidity
 function withdraw(bytes memory receiver, uint256 amount, address zrc20)
 ```
 
 * Withdraw of ZRC-20 tokens and smart contract call on connected chain:
 
-```
+```solidity
 function withdrawAndCall(bytes memory receiver, uint256 amount, address zrc20, bytes calldata message)
 ```
 
 * Simple call to a contract on a connected chain:
 
-```
+```solidity
 function call(bytes memory receiver, bytes calldata message) external
 ```
 
@@ -97,7 +97,7 @@ yarn localnet --hide="NODE"
 
 The `localnet` command launches two processes:
 
-- A local Ethereum network (using Hardhat) with the two gateway contract deployed
+- A local Ethereum network (using Hardhat) with the two gateway contracts deployed
 - A background worker that relay messages between the two gateway contracts. It simulates the cross-chain message relaying that would normally happen between live networks with the [observers/signers](https://www.zetachain.com/docs/developers/architecture/observers/) mechanism. This allows to simulate a cross-chain environment on a single local chain.
 
 Running the command will deploy the two gateway contracts:
@@ -109,7 +109,7 @@ Running the command will deploy the two gateway contracts:
 
 The developers can develop application using these addresses, the messages will automatically be relayed by the worker.
 
-The local environment uses Anvil. Therefore, the default Anvil accounts can be used to interact with the network.
+The local environment uses Hardhat localnet. Therefore, the default Hardhat localnet accounts can be used to interact with the network.
 
 ```
 Account #0: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 (10000 ETH)
