@@ -37,12 +37,12 @@ export interface GatewayEVMInterface extends utils.Interface {
     "depositAndCall(address,bytes)": FunctionFragment;
     "depositAndCall(address,uint256,address,bytes)": FunctionFragment;
     "execute(address,bytes)": FunctionFragment;
+    "executeRevert(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
     "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "revert(address,bytes)": FunctionFragment;
     "revertWithERC20(address,address,uint256,bytes)": FunctionFragment;
     "setConnector(address)": FunctionFragment;
     "setCustody(address)": FunctionFragment;
@@ -63,12 +63,12 @@ export interface GatewayEVMInterface extends utils.Interface {
       | "depositAndCall(address,bytes)"
       | "depositAndCall(address,uint256,address,bytes)"
       | "execute"
+      | "executeRevert"
       | "executeWithERC20"
       | "initialize"
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
-      | "revert"
       | "revertWithERC20"
       | "setConnector"
       | "setCustody"
@@ -115,6 +115,10 @@ export interface GatewayEVMInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
+    functionFragment: "executeRevert",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "executeWithERC20",
     values: [
       PromiseOrValue<string>,
@@ -135,10 +139,6 @@ export interface GatewayEVMInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revert",
-    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "revertWithERC20",
@@ -199,6 +199,10 @@ export interface GatewayEVMInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "executeRevert",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "executeWithERC20",
     data: BytesLike
   ): Result;
@@ -212,7 +216,6 @@ export interface GatewayEVMInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "revert", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "revertWithERC20",
     data: BytesLike
@@ -454,6 +457,12 @@ export interface GatewayEVM extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    executeRevert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -474,12 +483,6 @@ export interface GatewayEVM extends BaseContract {
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    revert(
-      destination: PromiseOrValue<string>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     revertWithERC20(
@@ -563,6 +566,12 @@ export interface GatewayEVM extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  executeRevert(
+    destination: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   executeWithERC20(
     token: PromiseOrValue<string>,
     to: PromiseOrValue<string>,
@@ -583,12 +592,6 @@ export interface GatewayEVM extends BaseContract {
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  revert(
-    destination: PromiseOrValue<string>,
-    data: PromiseOrValue<BytesLike>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   revertWithERC20(
@@ -672,6 +675,12 @@ export interface GatewayEVM extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    executeRevert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -691,12 +700,6 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    revert(
-      destination: PromiseOrValue<string>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     revertWithERC20(
       token: PromiseOrValue<string>,
@@ -891,6 +894,12 @@ export interface GatewayEVM extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    executeRevert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -911,12 +920,6 @@ export interface GatewayEVM extends BaseContract {
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    revert(
-      destination: PromiseOrValue<string>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     revertWithERC20(
@@ -1001,6 +1004,12 @@ export interface GatewayEVM extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    executeRevert(
+      destination: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     executeWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -1021,12 +1030,6 @@ export interface GatewayEVM extends BaseContract {
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revert(
-      destination: PromiseOrValue<string>,
-      data: PromiseOrValue<BytesLike>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     revertWithERC20(
