@@ -46,6 +46,6 @@ interface IGatewayZEVMErrors {
     error GasFeeTransferFailed();
     error CallerIsNotFungibleModule();
     error InvalidTarget();
-    error WZETATransferFailed();
+    error ZetaTokenTransferFailed();
     error FailedZetaSent();
 }

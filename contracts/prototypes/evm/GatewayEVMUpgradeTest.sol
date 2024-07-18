@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "./interfaces.sol";
+import "./IGatewayEVM.sol";
 
 // NOTE: Purpose of this contract is to test upgrade process, the only difference should be name of Executed event
 // The Gateway contract is the endpoint to call smart contracts on external chains
@@ -18,20 +18,20 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
     address public custody;
     address public tssAddress;
     address public zetaConnector;
-    address public zeta;
+    address public zetaToken;
 
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
 
     constructor() {}
 
-    function initialize(address _tssAddress, address _zeta) public initializer {
+    function initialize(address _tssAddress, address _zetaToken) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
 
         if (_tssAddress == address(0)) revert ZeroAddress();
 
         tssAddress = _tssAddress;
-        zeta = _zeta;
+        zetaToken = _zetaToken;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -80,7 +80,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
              address destination = address(custody);
-            if (token == zeta) {
+            if (token == zetaToken) {
                 destination = address(zetaConnector);
             }
             IERC20(token).safeTransfer(address(destination), remainingBalance);
@@ -106,7 +106,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         if (amount == 0) revert InsufficientERC20Amount();
 
         address destination = address(custody);
-        if (asset == zeta) {
+        if (asset == zetaToken) {
             destination = address(zetaConnector);
         }
         IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
@@ -129,7 +129,7 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
         if (amount == 0) revert InsufficientERC20Amount();
        
         address destination = address(custody);
-        if (asset == zeta) {
+        if (asset == zetaToken) {
             destination = address(zetaConnector);
         }
         IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);

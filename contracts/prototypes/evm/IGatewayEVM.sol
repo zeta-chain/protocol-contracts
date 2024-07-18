@@ -18,20 +18,13 @@ interface IGatewayEVMErrors {
     error CustodyInitialized();
 }
 
-interface IReceiverEVMEvents {
-    event ReceivedPayable(address sender, uint256 value, string str, uint256 num, bool flag);
-    event ReceivedNonPayable(address sender, string[] strs, uint256[] nums, bool flag);
-    event ReceivedERC20(address sender, uint256 amount, address token, address destination);
-    event ReceivedNoParams(address sender);
-}
-
 interface IGatewayEVM {
     function executeWithERC20(
         address token,
         address to,
         uint256 amount,
         bytes calldata data
-    ) external returns (bytes memory);
+    ) external;
 
     function execute(address destination, bytes calldata data) external payable returns (bytes memory);
 }

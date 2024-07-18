@@ -9,7 +9,7 @@ import "contracts/zevm/ZRC20New.sol";
 import "contracts/zevm/SystemContract.sol";
 import "contracts/zevm/interfaces/IZRC20.sol";
 import "contracts/prototypes/zevm/TestZContract.sol";
-import "contracts/prototypes/zevm/interfaces.sol";
+import "contracts/prototypes/zevm/IGatewayZEVM.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 

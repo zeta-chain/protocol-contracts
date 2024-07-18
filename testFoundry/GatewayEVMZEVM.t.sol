@@ -18,8 +18,9 @@ import "contracts/zevm/testing/SystemContractMock.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "contracts/prototypes/evm/interfaces.sol";
-import "contracts/prototypes/zevm/interfaces.sol";
+import "contracts/prototypes/evm/IGatewayEVM.sol";
+import "contracts/prototypes/evm/IReceiverEVM.sol";
+import "contracts/prototypes/zevm/IGatewayZEVM.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
