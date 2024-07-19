@@ -34,13 +34,13 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     }
 
     function initialize(address _tssAddress, address _zetaToken) public initializer {
-        __Ownable_init();
-        __UUPSUpgradeable_init();
-        __ReentrancyGuard_init();
-
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
+        
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
 
         tssAddress = _tssAddress;
         zetaToken = _zetaToken;

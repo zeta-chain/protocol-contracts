@@ -4,6 +4,7 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 import "../../zevm/interfaces/zContract.sol";
@@ -13,7 +14,7 @@ import "../../zevm/interfaces/IWZETA.sol";
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuard {
+contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
     error ZeroAddress();
 
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
@@ -31,6 +32,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     
         __Ownable_init();
         __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
         zetaToken = _zetaToken;
     }
 
