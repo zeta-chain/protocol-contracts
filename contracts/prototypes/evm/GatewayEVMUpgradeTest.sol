@@ -23,16 +23,13 @@ contract GatewayEVMUpgradeTest is Initializable, OwnableUpgradeable, UUPSUpgrade
     /// @notice The address of the TSS (Threshold Signature Scheme) contract.
     address public tssAddress;
     /// @notice The address of the ZetaConnector contract.
-    address public zetaConnector;    address public zeta;
+    address public zetaConnector;
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
+    constructor() {}
 
     function initialize(address _tssAddress, address _zetaToken) public initializer {
         if (_tssAddress == address(0) || _zetaToken == address(0)) {

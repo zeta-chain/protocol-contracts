@@ -24,7 +24,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     /// @notice The address of the TSS (Threshold Signature Scheme) contract.
     address public tssAddress;
     /// @notice The address of the ZetaConnector contract.
-    address public zetaConnector;    address public zeta;
+    address public zetaConnector;
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
