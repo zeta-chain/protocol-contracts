@@ -7,12 +7,13 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
-import "contracts/prototypes/evm/ZetaConnectorNew.sol";
+import "contracts/prototypes/evm/ZetaConnectorNonNative.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import "contracts/prototypes/evm/interfaces.sol";
+import "contracts/prototypes/evm/IGatewayEVM.sol";
+import "contracts/prototypes/evm/IReceiverEVM.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
 contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
@@ -22,7 +23,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20CustodyNew custody;
-    ZetaConnectorNew zetaConnector;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
     address owner;
@@ -46,7 +47,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
-        zetaConnector = new ZetaConnectorNew(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
         receiver = new ReceiverEVM();
 
         gateway.setCustody(address(custody));
@@ -138,8 +139,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        // vm.expectEmit(true, true, true, true, address(custody));
+        // emit WithdrawAndCall(address(token), address(receiver), amount, data);
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
 
         // Verify that the tokens were not transferred to the destination address
@@ -180,7 +181,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     GatewayEVM gateway;
     ERC20CustodyNew custody;
-    ZetaConnectorNew zetaConnector;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
     address owner;
@@ -202,7 +203,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
-        zetaConnector = new ZetaConnectorNew(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
 
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));

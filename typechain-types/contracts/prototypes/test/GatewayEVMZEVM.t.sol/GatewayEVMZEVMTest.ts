@@ -230,8 +230,6 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     "ReceivedNoParams(address)": EventFragment;
     "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
     "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
-    "Reverted(address,uint256,bytes)": EventFragment;
-    "RevertedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
     "log(string)": EventFragment;
     "log_address(address)": EventFragment;
@@ -983,30 +981,6 @@ export interface GatewayEVMZEVMTest extends BaseContract {
       num?: null,
       flag?: null
     ): ReceivedPayableEventFilter;
-
-    "Reverted(address,uint256,bytes)"(
-      destination?: PromiseOrValue<string> | null,
-      value?: null,
-      data?: null
-    ): RevertedEventFilter;
-    Reverted(
-      destination?: PromiseOrValue<string> | null,
-      value?: null,
-      data?: null
-    ): RevertedEventFilter;
-
-    "RevertedWithERC20(address,address,uint256,bytes)"(
-      token?: PromiseOrValue<string> | null,
-      to?: PromiseOrValue<string> | null,
-      amount?: null,
-      data?: null
-    ): RevertedWithERC20EventFilter;
-    RevertedWithERC20(
-      token?: PromiseOrValue<string> | null,
-      to?: PromiseOrValue<string> | null,
-      amount?: null,
-      data?: null
-    ): RevertedWithERC20EventFilter;
 
     "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)"(
       from?: PromiseOrValue<string> | null,

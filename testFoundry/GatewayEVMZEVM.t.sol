@@ -7,7 +7,7 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
-import "contracts/prototypes/evm/ZetaConnectorNew.sol";
+import "contracts/prototypes/evm/ZetaConnectorNonNative.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 
@@ -18,8 +18,9 @@ import "contracts/zevm/testing/SystemContractMock.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "contracts/prototypes/evm/interfaces.sol";
-import "contracts/prototypes/zevm/interfaces.sol";
+import "contracts/prototypes/evm/IGatewayEVM.sol";
+import "contracts/prototypes/evm/IReceiverEVM.sol";
+import "contracts/prototypes/zevm/IGatewayZEVM.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
@@ -30,7 +31,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20CustodyNew custody;
-    ZetaConnectorNew zetaConnector;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
     ReceiverEVM receiverEVM;
@@ -62,7 +63,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ));
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20CustodyNew(address(gatewayEVM));
-        zetaConnector = new ZetaConnectorNew(address(gatewayEVM), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta));
 
         gatewayEVM.setCustody(address(custody));
         gatewayEVM.setConnector(address(zetaConnector));

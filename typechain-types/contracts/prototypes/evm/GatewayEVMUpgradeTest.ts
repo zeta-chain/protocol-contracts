@@ -48,8 +48,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     "tssAddress()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
-    "zeta()": FunctionFragment;
     "zetaConnector()": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
@@ -72,8 +72,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
       | "tssAddress"
       | "upgradeTo"
       | "upgradeToAndCall"
-      | "zeta"
       | "zetaConnector"
+      | "zetaToken"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -156,11 +156,11 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
-  encodeFunctionData(functionFragment: "zeta", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "zetaConnector",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
@@ -210,11 +210,11 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "zeta", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "zetaConnector",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -226,8 +226,6 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Reverted(address,uint256,bytes)": EventFragment;
-    "RevertedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -240,8 +238,6 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Reverted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RevertedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -346,32 +342,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
-export interface RevertedEventObject {
-  destination: string;
-  value: BigNumber;
-  data: string;
-}
-export type RevertedEvent = TypedEvent<
-  [string, BigNumber, string],
-  RevertedEventObject
->;
-
-export type RevertedEventFilter = TypedEventFilter<RevertedEvent>;
-
-export interface RevertedWithERC20EventObject {
-  token: string;
-  to: string;
-  amount: BigNumber;
-  data: string;
-}
-export type RevertedWithERC20Event = TypedEvent<
-  [string, string, BigNumber, string],
-  RevertedWithERC20EventObject
->;
-
-export type RevertedWithERC20EventFilter =
-  TypedEventFilter<RevertedWithERC20Event>;
-
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -456,7 +426,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -496,9 +466,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    zeta(overrides?: CallOverrides): Promise<[string]>;
-
     zetaConnector(overrides?: CallOverrides): Promise<[string]>;
+
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
   call(
@@ -551,7 +521,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   initialize(
     _tssAddress: PromiseOrValue<string>,
-    _zeta: PromiseOrValue<string>,
+    _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -591,9 +561,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  zeta(overrides?: CallOverrides): Promise<string>;
-
   zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+  zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     call(
@@ -646,7 +616,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -684,9 +654,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    zeta(overrides?: CallOverrides): Promise<string>;
-
     zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -779,30 +749,6 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
-    "Reverted(address,uint256,bytes)"(
-      destination?: PromiseOrValue<string> | null,
-      value?: null,
-      data?: null
-    ): RevertedEventFilter;
-    Reverted(
-      destination?: PromiseOrValue<string> | null,
-      value?: null,
-      data?: null
-    ): RevertedEventFilter;
-
-    "RevertedWithERC20(address,address,uint256,bytes)"(
-      token?: PromiseOrValue<string> | null,
-      to?: PromiseOrValue<string> | null,
-      amount?: null,
-      data?: null
-    ): RevertedWithERC20EventFilter;
-    RevertedWithERC20(
-      token?: PromiseOrValue<string> | null,
-      to?: PromiseOrValue<string> | null,
-      amount?: null,
-      data?: null
-    ): RevertedWithERC20EventFilter;
-
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -862,7 +808,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -902,9 +848,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    zeta(overrides?: CallOverrides): Promise<BigNumber>;
-
     zetaConnector(overrides?: CallOverrides): Promise<BigNumber>;
+
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -958,7 +904,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
-      _zeta: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -998,8 +944,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    zeta(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     zetaConnector(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

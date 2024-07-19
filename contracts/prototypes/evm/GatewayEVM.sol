@@ -7,38 +7,43 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "./interfaces.sol";
+import "./IGatewayEVM.sol";
+import "./ZetaConnectorNewBase.sol";
 
-interface Revertable {
-    function onRevert(bytes calldata data) external;
-}
-
-// The GatewayEVM contract is the endpoint to call smart contracts on external chains
-// The contract doesn't hold any funds and should never have active allowances
+/**
+ * @title GatewayEVM
+ * @notice The GatewayEVM contract is the endpoint to call smart contracts on external chains.
+ * @dev The contract doesn't hold any funds and should never have active allowances.
+ */
 contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents, ReentrancyGuardUpgradeable {
     using SafeERC20 for IERC20;
 
+    /// @notice The address of the custody contract.
     address public custody;
+
+    /// @notice The address of the TSS (Threshold Signature Scheme) contract.
     address public tssAddress;
-    address public zetaConnector;
-    address public zeta;
+    /// @notice The address of the ZetaConnector contract.
+    address public zetaConnector;    address public zeta;
+    /// @notice The address of the Zeta token contract.
+    address public zetaToken;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address _tssAddress, address _zeta) public initializer {
+    function initialize(address _tssAddress, address _zetaToken) public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
 
-        if (_tssAddress == address(0) || _zeta == address(0)) {
+        if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
 
         tssAddress = _tssAddress;
-        zeta = _zeta;
+        zetaToken = _zetaToken;
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
@@ -80,7 +85,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) public nonReentrant returns (bytes memory) {
+    ) public nonReentrant {
         if (amount == 0) revert InsufficientETHAmount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
@@ -95,16 +100,10 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            address destination = address(custody);
-            if (token == zeta) {
-                destination = address(zetaConnector);
-            }
-            IERC20(token).safeTransfer(address(destination), remainingBalance);
+            transferToAssetHandler(token, amount);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
-
-        return result;
     }
 
     // Called by the ERC20Custody contract
@@ -137,11 +136,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     function deposit(address receiver, uint256 amount, address asset) external {
         if (amount == 0) revert InsufficientERC20Amount();
 
-        address destination = address(custody);
-        if (asset == zeta) {
-            destination = address(zetaConnector);
-        }
-        IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
+        transferFromToAssetHandler(msg.sender, asset, amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, "");
     }
@@ -160,11 +155,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
         if (amount == 0) revert InsufficientERC20Amount();
        
-        address destination = address(custody);
-        if (asset == zeta) {
-            destination = address(zetaConnector);
-        }
-        IERC20(asset).safeTransferFrom(msg.sender, address(destination), amount);
+        transferFromToAssetHandler(msg.sender, asset, amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, payload);
     }
@@ -190,5 +181,29 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     function resetApproval(address token, address to) private returns (bool) {
         return IERC20(token).approve(to, 0);
+    }
+
+    function transferFromToAssetHandler(address from, address token, uint256 amount) private {
+        if (token == zetaToken) { // transfer to connector
+            // transfer amount to gateway
+            IERC20(token).safeTransferFrom(from, address(this), amount);
+            // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            IERC20(token).approve(zetaConnector, amount);
+            // send tokens to connector
+            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+        } else { // transfer to custody
+            IERC20(token).safeTransferFrom(from, custody, amount);
+        }
+    }
+
+    function transferToAssetHandler(address token, uint256 amount) private {
+        if (token == zetaToken) { // transfer to connector
+            // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            IERC20(token).approve(zetaConnector, amount);
+            // send tokens to connector
+            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+        } else { // transfer to custody
+            IERC20(token).safeTransfer(custody, amount);
+        }
     }
 }
