@@ -66,7 +66,6 @@ export interface GatewayZEVMInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "revert((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -91,7 +90,6 @@ export interface GatewayZEVMInterface extends utils.Interface {
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
-      | "revert"
       | "transferOwnership"
       | "upgradeTo"
       | "upgradeToAndCall"
@@ -181,16 +179,6 @@ export interface GatewayZEVMInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "revert",
-    values: [
-      ZContextStruct,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BytesLike>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
@@ -262,7 +250,6 @@ export interface GatewayZEVMInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "revert", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -480,15 +467,6 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    revert(
-      context: ZContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      target: PromiseOrValue<string>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -606,15 +584,6 @@ export interface GatewayZEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  revert(
-    context: ZContextStruct,
-    zrc20: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
-    target: PromiseOrValue<string>,
-    message: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   transferOwnership(
     newOwner: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -729,15 +698,6 @@ export interface GatewayZEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    revert(
-      context: ZContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      target: PromiseOrValue<string>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -924,15 +884,6 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    revert(
-      context: ZContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      target: PromiseOrValue<string>,
-      message: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     transferOwnership(
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1050,15 +1001,6 @@ export interface GatewayZEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revert(
-      context: ZContextStruct,
-      zrc20: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      target: PromiseOrValue<string>,
-      message: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
