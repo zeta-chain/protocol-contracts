@@ -1,7 +1,7 @@
 // Code generated - DO NOT EDIT.
 // This file is a generated binding and any manual changes will be lost.
 
-package interfaces
+package igatewayzevm
 
 import (
 	"errors"
@@ -31,7 +31,7 @@ var (
 
 // IGatewayZEVMEventsMetaData contains all meta data concerning the IGatewayZEVMEvents contract.
 var IGatewayZEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Call\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"to\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"gasfee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"protocolFlatFee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Withdrawal\",\"type\":\"event\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"receiver\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Call\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"to\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"gasfee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"protocolFlatFee\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"Withdrawal\",\"type\":\"event\"}]",
 }
 
 // IGatewayZEVMEventsABI is the input ABI used to generate the binding from.
@@ -396,6 +396,7 @@ func (it *IGatewayZEVMEventsWithdrawalIterator) Close() error {
 // IGatewayZEVMEventsWithdrawal represents a Withdrawal event raised by the IGatewayZEVMEvents contract.
 type IGatewayZEVMEventsWithdrawal struct {
 	From            common.Address
+	Zrc20           common.Address
 	To              []byte
 	Value           *big.Int
 	Gasfee          *big.Int
@@ -404,9 +405,9 @@ type IGatewayZEVMEventsWithdrawal struct {
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawal is a free log retrieval operation binding the contract event 0x1866ad2994816c79f4103e1eddacc7b085eb7c635205243a28940be69b01536d.
+// FilterWithdrawal is a free log retrieval operation binding the contract event 0x2265ce9ec38ea098a1143406678482665a6e1ccd82ab22d37eea3a78abc57716.
 //
-// Solidity: event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterWithdrawal(opts *bind.FilterOpts, from []common.Address) (*IGatewayZEVMEventsWithdrawalIterator, error) {
 
 	var fromRule []interface{}
@@ -421,9 +422,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterWithdrawal(opts *bi
 	return &IGatewayZEVMEventsWithdrawalIterator{contract: _IGatewayZEVMEvents.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawal is a free log subscription operation binding the contract event 0x1866ad2994816c79f4103e1eddacc7b085eb7c635205243a28940be69b01536d.
+// WatchWithdrawal is a free log subscription operation binding the contract event 0x2265ce9ec38ea098a1143406678482665a6e1ccd82ab22d37eea3a78abc57716.
 //
-// Solidity: event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsWithdrawal, from []common.Address) (event.Subscription, error) {
 
 	var fromRule []interface{}
@@ -463,9 +464,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bin
 	}), nil
 }
 
-// ParseWithdrawal is a log parse operation binding the contract event 0x1866ad2994816c79f4103e1eddacc7b085eb7c635205243a28940be69b01536d.
+// ParseWithdrawal is a log parse operation binding the contract event 0x2265ce9ec38ea098a1143406678482665a6e1ccd82ab22d37eea3a78abc57716.
 //
-// Solidity: event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) ParseWithdrawal(log types.Log) (*IGatewayZEVMEventsWithdrawal, error) {
 	event := new(IGatewayZEVMEventsWithdrawal)
 	if err := _IGatewayZEVMEvents.contract.UnpackLog(event, "Withdrawal", log); err != nil {

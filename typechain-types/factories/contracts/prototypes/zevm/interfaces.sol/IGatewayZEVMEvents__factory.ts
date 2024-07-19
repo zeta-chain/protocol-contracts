@@ -46,6 +46,12 @@ const _abi = [
       },
       {
         indexed: false,
+        internalType: "address",
+        name: "zrc20",
+        type: "address",
+      },
+      {
+        indexed: false,
         internalType: "bytes",
         name: "to",
         type: "bytes",

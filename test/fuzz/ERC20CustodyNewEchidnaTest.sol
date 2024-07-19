@@ -17,7 +17,7 @@ contract ERC20CustodyNewEchidnaTest is ERC20CustodyNew {
 
     address proxy = address(new ERC1967Proxy(
         address(new GatewayEVM()),
-        abi.encodeWithSelector(GatewayEVM.initialize.selector, (echidnaCaller))
+        abi.encodeWithSelector(GatewayEVM.initialize.selector, (echidnaCaller, address(0x123)))
     ));
     GatewayEVM testGateway = GatewayEVM(proxy);
 

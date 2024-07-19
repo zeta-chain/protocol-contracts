@@ -37,6 +37,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "FailedZetaSent",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "GasFeeTransferFailed",
     type: "error",
   },
@@ -58,6 +63,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidTarget",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "WZETATransferFailed",
     type: "error",
   },
   {
@@ -342,6 +352,12 @@ const _abi = [
         indexed: true,
         internalType: "address",
         name: "from",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "zrc20",
         type: "address",
       },
       {

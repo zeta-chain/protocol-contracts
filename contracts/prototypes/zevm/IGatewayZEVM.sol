@@ -35,7 +35,7 @@ interface IGatewayZEVM {
 
 interface IGatewayZEVMEvents {
     event Call(address indexed sender, bytes receiver, bytes message);
-    event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+    event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
 }
 
 interface IGatewayZEVMErrors {
@@ -46,4 +46,5 @@ interface IGatewayZEVMErrors {
     error GasFeeTransferFailed();
     error CallerIsNotFungibleModule();
     error InvalidTarget();
+    error FailedZetaSent();
 }

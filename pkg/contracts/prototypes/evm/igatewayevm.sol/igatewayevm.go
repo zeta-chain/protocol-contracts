@@ -1,7 +1,7 @@
 // Code generated - DO NOT EDIT.
 // This file is a generated binding and any manual changes will be lost.
 
-package interfaces
+package igatewayevm
 
 import (
 	"errors"
@@ -31,7 +31,7 @@ var (
 
 // IGatewayEVMMetaData contains all meta data concerning the IGatewayEVM contract.
 var IGatewayEVMMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeWithERC20\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"destination\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"executeWithERC20\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IGatewayEVMABI is the input ABI used to generate the binding from.
@@ -203,21 +203,21 @@ func (_IGatewayEVM *IGatewayEVMTransactorSession) Execute(destination common.Add
 
 // ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns(bytes)
+// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
 func (_IGatewayEVM *IGatewayEVMTransactor) ExecuteWithERC20(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
 	return _IGatewayEVM.contract.Transact(opts, "executeWithERC20", token, to, amount, data)
 }
 
 // ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns(bytes)
+// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
 func (_IGatewayEVM *IGatewayEVMSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
 	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
 }
 
 // ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns(bytes)
+// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
 func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
 	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
 }

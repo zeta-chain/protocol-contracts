@@ -30,41 +30,82 @@ import type {
 
 export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
   functions: {
+    "call(address,bytes)": FunctionFragment;
     "custody()": FunctionFragment;
+    "deposit(address)": FunctionFragment;
+    "deposit(address,uint256,address)": FunctionFragment;
+    "depositAndCall(address,bytes)": FunctionFragment;
+    "depositAndCall(address,uint256,address,bytes)": FunctionFragment;
     "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
-    "initialize(address)": FunctionFragment;
+    "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "send(bytes,uint256)": FunctionFragment;
-    "sendERC20(bytes,address,uint256)": FunctionFragment;
+    "setConnector(address)": FunctionFragment;
     "setCustody(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "tssAddress()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "zetaConnector()": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "call"
       | "custody"
+      | "deposit(address)"
+      | "deposit(address,uint256,address)"
+      | "depositAndCall(address,bytes)"
+      | "depositAndCall(address,uint256,address,bytes)"
       | "execute"
       | "executeWithERC20"
       | "initialize"
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
-      | "send"
-      | "sendERC20"
+      | "setConnector"
       | "setCustody"
       | "transferOwnership"
       | "tssAddress"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "zetaConnector"
+      | "zetaToken"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "call",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
   encodeFunctionData(functionFragment: "custody", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address)",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address,uint256,address)",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,bytes)",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
   encodeFunctionData(
     functionFragment: "execute",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
@@ -80,7 +121,7 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -92,16 +133,8 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "send",
-    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "sendERC20",
-    values: [
-      PromiseOrValue<BytesLike>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>
-    ]
+    functionFragment: "setConnector",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCustody",
@@ -123,8 +156,30 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "zetaConnector",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address,uint256,address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeWithERC20",
@@ -140,8 +195,10 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "send", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "sendERC20", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setConnector",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setCustody", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -153,27 +210,34 @@ export interface GatewayEVMUpgradeTestInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "zetaConnector",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "Call(address,address,bytes)": EventFragment;
+    "Deposit(address,address,uint256,address,bytes)": EventFragment;
+    "Executed(address,uint256,bytes)": EventFragment;
     "ExecutedV2(address,uint256,bytes)": EventFragment;
     "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "Send(bytes,uint256)": EventFragment;
-    "SendERC20(bytes,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedV2"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Send"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SendERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -197,6 +261,41 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface CallEventObject {
+  sender: string;
+  receiver: string;
+  payload: string;
+}
+export type CallEvent = TypedEvent<[string, string, string], CallEventObject>;
+
+export type CallEventFilter = TypedEventFilter<CallEvent>;
+
+export interface DepositEventObject {
+  sender: string;
+  receiver: string;
+  amount: BigNumber;
+  asset: string;
+  payload: string;
+}
+export type DepositEvent = TypedEvent<
+  [string, string, BigNumber, string, string],
+  DepositEventObject
+>;
+
+export type DepositEventFilter = TypedEventFilter<DepositEvent>;
+
+export interface ExecutedEventObject {
+  destination: string;
+  value: BigNumber;
+  data: string;
+}
+export type ExecutedEvent = TypedEvent<
+  [string, BigNumber, string],
+  ExecutedEventObject
+>;
+
+export type ExecutedEventFilter = TypedEventFilter<ExecutedEvent>;
 
 export interface ExecutedV2EventObject {
   destination: string;
@@ -243,26 +342,6 @@ export type OwnershipTransferredEvent = TypedEvent<
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
-export interface SendEventObject {
-  recipient: string;
-  amount: BigNumber;
-}
-export type SendEvent = TypedEvent<[string, BigNumber], SendEventObject>;
-
-export type SendEventFilter = TypedEventFilter<SendEvent>;
-
-export interface SendERC20EventObject {
-  recipient: string;
-  asset: string;
-  amount: BigNumber;
-}
-export type SendERC20Event = TypedEvent<
-  [string, string, BigNumber],
-  SendERC20EventObject
->;
-
-export type SendERC20EventFilter = TypedEventFilter<SendERC20Event>;
-
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -297,7 +376,39 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     custody(overrides?: CallOverrides): Promise<[string]>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -315,6 +426,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -326,16 +438,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -361,9 +465,45 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<[string]>;
+
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
+  call(
+    receiver: PromiseOrValue<string>,
+    payload: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   custody(overrides?: CallOverrides): Promise<string>;
+
+  "deposit(address)"(
+    receiver: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "deposit(address,uint256,address)"(
+    receiver: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    asset: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "depositAndCall(address,bytes)"(
+    receiver: PromiseOrValue<string>,
+    payload: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "depositAndCall(address,uint256,address,bytes)"(
+    receiver: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    asset: PromiseOrValue<string>,
+    payload: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   execute(
     destination: PromiseOrValue<string>,
@@ -381,6 +521,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   initialize(
     _tssAddress: PromiseOrValue<string>,
+    _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -392,16 +533,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  send(
-    recipient: PromiseOrValue<BytesLike>,
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  sendERC20(
-    recipient: PromiseOrValue<BytesLike>,
-    token: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
+  setConnector(
+    _zetaConnector: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -428,8 +561,44 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+  zetaToken(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     custody(overrides?: CallOverrides): Promise<string>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -447,6 +616,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -456,16 +626,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -491,6 +653,10 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -509,6 +675,43 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     BeaconUpgraded(
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
+
+    "Call(address,address,bytes)"(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      payload?: null
+    ): CallEventFilter;
+    Call(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      payload?: null
+    ): CallEventFilter;
+
+    "Deposit(address,address,uint256,address,bytes)"(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      amount?: null,
+      asset?: null,
+      payload?: null
+    ): DepositEventFilter;
+    Deposit(
+      sender?: PromiseOrValue<string> | null,
+      receiver?: PromiseOrValue<string> | null,
+      amount?: null,
+      asset?: null,
+      payload?: null
+    ): DepositEventFilter;
+
+    "Executed(address,uint256,bytes)"(
+      destination?: PromiseOrValue<string> | null,
+      value?: null,
+      data?: null
+    ): ExecutedEventFilter;
+    Executed(
+      destination?: PromiseOrValue<string> | null,
+      value?: null,
+      data?: null
+    ): ExecutedEventFilter;
 
     "ExecutedV2(address,uint256,bytes)"(
       destination?: PromiseOrValue<string> | null,
@@ -546,20 +749,6 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
 
-    "Send(bytes,uint256)"(recipient?: null, amount?: null): SendEventFilter;
-    Send(recipient?: null, amount?: null): SendEventFilter;
-
-    "SendERC20(bytes,address,uint256)"(
-      recipient?: null,
-      asset?: PromiseOrValue<string> | null,
-      amount?: null
-    ): SendERC20EventFilter;
-    SendERC20(
-      recipient?: null,
-      asset?: PromiseOrValue<string> | null,
-      amount?: null
-    ): SendERC20EventFilter;
-
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -569,7 +758,39 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   };
 
   estimateGas: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     custody(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -587,6 +808,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -598,16 +820,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -633,10 +847,46 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<BigNumber>;
+
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    call(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     custody(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "deposit(address)"(
+      receiver: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "deposit(address,uint256,address)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "depositAndCall(address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "depositAndCall(address,uint256,address,bytes)"(
+      receiver: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      asset: PromiseOrValue<string>,
+      payload: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     execute(
       destination: PromiseOrValue<string>,
@@ -654,6 +904,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -665,16 +916,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    send(
-      recipient: PromiseOrValue<BytesLike>,
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    sendERC20(
-      recipient: PromiseOrValue<BytesLike>,
-      token: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -700,5 +943,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

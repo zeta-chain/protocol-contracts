@@ -38,15 +38,18 @@ export interface GatewayEVMInterface extends utils.Interface {
     "depositAndCall(address,uint256,address,bytes)": FunctionFragment;
     "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
-    "initialize(address)": FunctionFragment;
+    "initialize(address,address)": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "setConnector(address)": FunctionFragment;
     "setCustody(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "tssAddress()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "zetaConnector()": FunctionFragment;
+    "zetaToken()": FunctionFragment;
   };
 
   getFunction(
@@ -63,11 +66,14 @@ export interface GatewayEVMInterface extends utils.Interface {
       | "owner"
       | "proxiableUUID"
       | "renounceOwnership"
+      | "setConnector"
       | "setCustody"
       | "transferOwnership"
       | "tssAddress"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "zetaConnector"
+      | "zetaToken"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -115,7 +121,7 @@ export interface GatewayEVMInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -125,6 +131,10 @@ export interface GatewayEVMInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setConnector",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setCustody",
@@ -146,6 +156,11 @@ export interface GatewayEVMInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "zetaConnector",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
@@ -180,6 +195,10 @@ export interface GatewayEVMInterface extends utils.Interface {
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "setConnector",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setCustody", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -191,6 +210,11 @@ export interface GatewayEVMInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "zetaConnector",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -388,6 +412,7 @@ export interface GatewayEVM extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -396,6 +421,11 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -421,6 +451,10 @@ export interface GatewayEVM extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<[string]>;
+
+    zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
   call(
@@ -473,6 +507,7 @@ export interface GatewayEVM extends BaseContract {
 
   initialize(
     _tssAddress: PromiseOrValue<string>,
+    _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -481,6 +516,11 @@ export interface GatewayEVM extends BaseContract {
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setConnector(
+    _zetaConnector: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -506,6 +546,10 @@ export interface GatewayEVM extends BaseContract {
     data: PromiseOrValue<BytesLike>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+  zetaToken(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     call(
@@ -554,10 +598,11 @@ export interface GatewayEVM extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<void>;
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -566,6 +611,11 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setCustody(
       _custody: PromiseOrValue<string>,
@@ -589,6 +639,10 @@ export interface GatewayEVM extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<string>;
+
+    zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -729,6 +783,7 @@ export interface GatewayEVM extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -737,6 +792,11 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -762,6 +822,10 @@ export interface GatewayEVM extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<BigNumber>;
+
+    zetaToken(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -815,6 +879,7 @@ export interface GatewayEVM extends BaseContract {
 
     initialize(
       _tssAddress: PromiseOrValue<string>,
+      _zetaToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -823,6 +888,11 @@ export interface GatewayEVM extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setConnector(
+      _zetaConnector: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -848,5 +918,9 @@ export interface GatewayEVM extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    zetaConnector(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    zetaToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

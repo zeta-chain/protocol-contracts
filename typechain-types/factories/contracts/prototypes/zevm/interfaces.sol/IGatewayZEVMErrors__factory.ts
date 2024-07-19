@@ -17,6 +17,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "FailedZetaSent",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "GasFeeTransferFailed",
     type: "error",
   },
@@ -28,6 +33,11 @@ const _abi = [
   {
     inputs: [],
     name: "InvalidTarget",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "WZETATransferFailed",
     type: "error",
   },
   {

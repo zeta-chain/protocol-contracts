@@ -7,6 +7,7 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
+import "contracts/prototypes/evm/ZetaConnectorNonNative.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 
@@ -17,8 +18,9 @@ import "contracts/zevm/testing/SystemContractMock.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "contracts/prototypes/evm/interfaces.sol";
-import "contracts/prototypes/zevm/interfaces.sol";
+import "contracts/prototypes/evm/IGatewayEVM.sol";
+import "contracts/prototypes/evm/IReceiverEVM.sol";
+import "contracts/prototypes/zevm/IGatewayZEVM.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
@@ -29,7 +31,9 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20CustodyNew custody;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
+    TestERC20 zeta;
     ReceiverEVM receiverEVM;
     address ownerEVM;
     address destination;
@@ -51,14 +55,18 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ownerZEVM = address(0x4321);
 
         token = new TestERC20("test", "TTK");
+        zeta = new TestERC20("zeta", "ZETA");
+
         proxyEVM = address(new ERC1967Proxy(
             address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, (tssAddress))
+            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zeta))
         ));
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20CustodyNew(address(gatewayEVM));
+        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta));
 
         gatewayEVM.setCustody(address(custody));
+        gatewayEVM.setConnector(address(zetaConnector));
 
         token.mint(ownerEVM, 1000000);
         token.transfer(address(custody), 500000);
@@ -139,6 +147,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Withdrawal(
             ownerZEVM,
+            address(zrc20),
             abi.encodePacked(receiverEVM),
             1000000,
             0,

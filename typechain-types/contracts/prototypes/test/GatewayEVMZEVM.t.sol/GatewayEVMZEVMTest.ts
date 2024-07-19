@@ -230,7 +230,7 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
     "ReceivedNoParams(address)": EventFragment;
     "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
     "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
+    "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)": EventFragment;
     "log(string)": EventFragment;
     "log_address(address)": EventFragment;
     "log_array(uint256[])": EventFragment;
@@ -417,6 +417,7 @@ export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
 
 export interface WithdrawalEventObject {
   from: string;
+  zrc20: string;
   to: string;
   value: BigNumber;
   gasfee: BigNumber;
@@ -424,7 +425,7 @@ export interface WithdrawalEventObject {
   message: string;
 }
 export type WithdrawalEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber, string],
+  [string, string, string, BigNumber, BigNumber, BigNumber, string],
   WithdrawalEventObject
 >;
 
@@ -953,8 +954,9 @@ export interface GatewayEVMZEVMTest extends BaseContract {
       flag?: null
     ): ReceivedPayableEventFilter;
 
-    "Withdrawal(address,bytes,uint256,uint256,uint256,bytes)"(
+    "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)"(
       from?: PromiseOrValue<string> | null,
+      zrc20?: null,
       to?: null,
       value?: null,
       gasfee?: null,
@@ -963,6 +965,7 @@ export interface GatewayEVMZEVMTest extends BaseContract {
     ): WithdrawalEventFilter;
     Withdrawal(
       from?: PromiseOrValue<string> | null,
+      zrc20?: null,
       to?: null,
       value?: null,
       gasfee?: null,
