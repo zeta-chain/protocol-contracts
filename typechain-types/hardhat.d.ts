@@ -361,6 +361,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IReceiverEVMEvents__factory>;
     getContractFactory(
+      name: "IZetaNonEthNew",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IZetaNonEthNew__factory>;
+    getContractFactory(
       name: "ReceiverEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ReceiverEVM__factory>;
@@ -369,9 +373,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TestERC20__factory>;
     getContractFactory(
-      name: "ZetaConnectorNew",
+      name: "ZetaConnectorNewBase",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZetaConnectorNew__factory>;
+    ): Promise<Contracts.ZetaConnectorNewBase__factory>;
+    getContractFactory(
+      name: "ZetaConnectorNewEth",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaConnectorNewEth__factory>;
+    getContractFactory(
+      name: "ZetaConnectorNewNonEth",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaConnectorNewNonEth__factory>;
     getContractFactory(
       name: "GatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -909,6 +921,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IReceiverEVMEvents>;
     getContractAt(
+      name: "IZetaNonEthNew",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IZetaNonEthNew>;
+    getContractAt(
       name: "ReceiverEVM",
       address: string,
       signer?: ethers.Signer
@@ -919,10 +936,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TestERC20>;
     getContractAt(
-      name: "ZetaConnectorNew",
+      name: "ZetaConnectorNewBase",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ZetaConnectorNew>;
+    ): Promise<Contracts.ZetaConnectorNewBase>;
+    getContractAt(
+      name: "ZetaConnectorNewEth",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaConnectorNewEth>;
+    getContractAt(
+      name: "ZetaConnectorNewNonEth",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaConnectorNewNonEth>;
     getContractAt(
       name: "GatewayZEVM",
       address: string,
