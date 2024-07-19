@@ -7,6 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./IGatewayEVM.sol";
+import "./ZetaConnectorNewBase.sol";
 
 /**
  * @title GatewayEVM
@@ -89,7 +90,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            IERC20(token).safeTransfer(getAssetHandler(token), remainingBalance);
+            transferToAssetHandler(token, amount);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
@@ -109,7 +110,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     function deposit(address receiver, uint256 amount, address asset) external {
         if (amount == 0) revert InsufficientERC20Amount();
 
-        IERC20(asset).safeTransferFrom(msg.sender, getAssetHandler(asset), amount);
+        transferFromToAssetHandler(msg.sender, asset, amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, "");
     }
@@ -128,7 +129,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
         if (amount == 0) revert InsufficientERC20Amount();
        
-        IERC20(asset).safeTransferFrom(msg.sender, getAssetHandler(asset), amount);
+        transferFromToAssetHandler(msg.sender, asset, amount);
 
         emit Deposit(msg.sender, receiver, amount, asset, payload);
     }
@@ -156,12 +157,27 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         return IERC20(token).approve(to, 0);
     }
 
-    function getAssetHandler(address token) private returns (address) {
-        address assetHandler = address(custody);
-        if (token == zetaToken) {
-            assetHandler = address(zetaConnector);
+    function transferFromToAssetHandler(address from, address token, uint256 amount) private {
+        if (token == zetaToken) { // transfer to connector
+            // transfer amount to gateway
+            IERC20(token).safeTransferFrom(from, address(this), amount);
+            // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            IERC20(token).approve(zetaConnector, amount);
+            // send tokens to connector
+            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+        } else { // transfer to custody
+            IERC20(token).safeTransferFrom(from, custody, amount);
         }
+    }
 
-        return assetHandler;
+    function transferToAssetHandler(address token, uint256 amount) private {
+        if (token == zetaToken) { // transfer to connector
+            // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            IERC20(token).approve(zetaConnector, amount);
+            // send tokens to connector
+            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+        } else { // transfer to custody
+            IERC20(token).safeTransfer(custody, amount);
+        }
     }
 }
