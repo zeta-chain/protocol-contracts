@@ -160,10 +160,8 @@ export type { ZetaConnectorNonEth } from "./contracts/evm/ZetaConnector.non-eth.
 export { ZetaConnectorNonEth__factory } from "./factories/contracts/evm/ZetaConnector.non-eth.sol/ZetaConnectorNonEth__factory";
 export type { ERC20CustodyNew } from "./contracts/prototypes/evm/ERC20CustodyNew";
 export { ERC20CustodyNew__factory } from "./factories/contracts/prototypes/evm/ERC20CustodyNew__factory";
-export type { GatewayEVM } from "./contracts/prototypes/evm/GatewayEVM.sol/GatewayEVM";
-export { GatewayEVM__factory } from "./factories/contracts/prototypes/evm/GatewayEVM.sol/GatewayEVM__factory";
-export type { Revertable } from "./contracts/prototypes/evm/GatewayEVM.sol/Revertable";
-export { Revertable__factory } from "./factories/contracts/prototypes/evm/GatewayEVM.sol/Revertable__factory";
+export type { GatewayEVM } from "./contracts/prototypes/evm/GatewayEVM";
+export { GatewayEVM__factory } from "./factories/contracts/prototypes/evm/GatewayEVM__factory";
 export type { GatewayEVMUpgradeTest } from "./contracts/prototypes/evm/GatewayEVMUpgradeTest";
 export { GatewayEVMUpgradeTest__factory } from "./factories/contracts/prototypes/evm/GatewayEVMUpgradeTest__factory";
 export type { IGatewayEVM } from "./contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVM";
@@ -172,6 +170,8 @@ export type { IGatewayEVMErrors } from "./contracts/prototypes/evm/IGatewayEVM.s
 export { IGatewayEVMErrors__factory } from "./factories/contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVMErrors__factory";
 export type { IGatewayEVMEvents } from "./contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVMEvents";
 export { IGatewayEVMEvents__factory } from "./factories/contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVMEvents__factory";
+export type { Revertable } from "./contracts/prototypes/evm/IGatewayEVM.sol/Revertable";
+export { Revertable__factory } from "./factories/contracts/prototypes/evm/IGatewayEVM.sol/Revertable__factory";
 export type { IReceiverEVMEvents } from "./contracts/prototypes/evm/IReceiverEVM.sol/IReceiverEVMEvents";
 export { IReceiverEVMEvents__factory } from "./factories/contracts/prototypes/evm/IReceiverEVM.sol/IReceiverEVMEvents__factory";
 export type { IZetaNonEthNew } from "./contracts/prototypes/evm/IZetaNonEthNew";

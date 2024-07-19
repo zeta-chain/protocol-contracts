@@ -6,6 +6,7 @@ export type { iGatewayEvmSol };
 import type * as iReceiverEvmSol from "./IReceiverEVM.sol";
 export type { iReceiverEvmSol };
 export type { ERC20CustodyNew } from "./ERC20CustodyNew";
+export type { GatewayEVM } from "./GatewayEVM";
 export type { GatewayEVMUpgradeTest } from "./GatewayEVMUpgradeTest";
 export type { IZetaNonEthNew } from "./IZetaNonEthNew";
 export type { ReceiverEVM } from "./ReceiverEVM";

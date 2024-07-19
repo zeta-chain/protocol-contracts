@@ -28,10 +28,11 @@ export interface IGatewayEVMInterface extends utils.Interface {
   functions: {
     "execute(address,bytes)": FunctionFragment;
     "executeWithERC20(address,address,uint256,bytes)": FunctionFragment;
+    "revertWithERC20(address,address,uint256,bytes)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "execute" | "executeWithERC20"
+    nameOrSignatureOrTopic: "execute" | "executeWithERC20" | "revertWithERC20"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -47,10 +48,23 @@ export interface IGatewayEVMInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "revertWithERC20",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
 
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeWithERC20",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revertWithERC20",
     data: BytesLike
   ): Result;
 
@@ -97,6 +111,14 @@ export interface IGatewayEVM extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    revertWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   execute(
@@ -113,6 +135,14 @@ export interface IGatewayEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  revertWithERC20(
+    token: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     execute(
       destination: PromiseOrValue<string>,
@@ -121,6 +151,14 @@ export interface IGatewayEVM extends BaseContract {
     ): Promise<string>;
 
     executeWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    revertWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -145,6 +183,14 @@ export interface IGatewayEVM extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    revertWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -155,6 +201,14 @@ export interface IGatewayEVM extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     executeWithERC20(
+      token: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revertWithERC20(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,

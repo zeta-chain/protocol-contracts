@@ -4,6 +4,7 @@
 export * as iGatewayEvmSol from "./IGatewayEVM.sol";
 export * as iReceiverEvmSol from "./IReceiverEVM.sol";
 export { ERC20CustodyNew__factory } from "./ERC20CustodyNew__factory";
+export { GatewayEVM__factory } from "./GatewayEVM__factory";
 export { GatewayEVMUpgradeTest__factory } from "./GatewayEVMUpgradeTest__factory";
 export { IZetaNonEthNew__factory } from "./IZetaNonEthNew__factory";
 export { ReceiverEVM__factory } from "./ReceiverEVM__factory";
