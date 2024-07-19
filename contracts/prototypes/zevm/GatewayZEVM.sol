@@ -146,7 +146,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
-        UniversalContract(target).onCrossChainCall(context, wzeta, amount, message);
+        UniversalContract(target).onCrossChainCall(context, zetaToken, amount, message);
     }
 
     // Revert user specified contract on ZEVM
@@ -179,21 +179,5 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
 
         IZRC20(zrc20).deposit(target, amount);
         UniversalContract(target).onRevert(context, zrc20, amount, message);
-    }
-
-    // Deposit zeta and call user specified contract on ZEVM
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function depositAndCall(
-        zContext calldata context,
-        uint256 amount,
-        address target,
-        bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
-
-        _transferZETA(amount, target);
-        zContract(target).onCrossChainCall(context, zetaToken, amount, message);
     }
 }
