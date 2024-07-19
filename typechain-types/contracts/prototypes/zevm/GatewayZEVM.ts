@@ -40,6 +40,18 @@ export type ZContextStructOutput = [string, string, BigNumber] & {
   chainID: BigNumber;
 };
 
+export type RevertContextStruct = {
+  origin: PromiseOrValue<BytesLike>;
+  sender: PromiseOrValue<string>;
+  chainID: PromiseOrValue<BigNumberish>;
+};
+
+export type RevertContextStructOutput = [string, string, BigNumber] & {
+  origin: string;
+  sender: string;
+  chainID: BigNumber;
+};
+
 export interface GatewayZEVMInterface extends utils.Interface {
   functions: {
     "FUNGIBLE_MODULE_ADDRESS()": FunctionFragment;
@@ -47,7 +59,9 @@ export interface GatewayZEVMInterface extends utils.Interface {
     "deposit(address,uint256,address)": FunctionFragment;
     "depositAndCall((bytes,address,uint256),uint256,address,bytes)": FunctionFragment;
     "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
+    "depositAndRevert((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
     "execute((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
+    "executeRevert((bytes,address,uint256),address,uint256,address,bytes)": FunctionFragment;
     "initialize(address)": FunctionFragment;
     "owner()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
@@ -69,7 +83,9 @@ export interface GatewayZEVMInterface extends utils.Interface {
       | "deposit"
       | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
+      | "depositAndRevert"
       | "execute"
+      | "executeRevert"
       | "initialize"
       | "owner"
       | "proxiableUUID"
@@ -120,9 +136,29 @@ export interface GatewayZEVMInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "depositAndRevert",
+    values: [
+      RevertContextStruct,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "execute",
     values: [
       ZContextStruct,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeRevert",
+    values: [
+      RevertContextStruct,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
@@ -195,7 +231,15 @@ export interface GatewayZEVMInterface extends utils.Interface {
     functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndRevert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeRevert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -383,8 +427,26 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    depositAndRevert(
+      context: RevertContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     execute(
       context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    executeRevert(
+      context: RevertContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
@@ -482,8 +544,26 @@ export interface GatewayZEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  depositAndRevert(
+    context: RevertContextStruct,
+    zrc20: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    message: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   execute(
     context: ZContextStruct,
+    zrc20: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    target: PromiseOrValue<string>,
+    message: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  executeRevert(
+    context: RevertContextStruct,
     zrc20: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     target: PromiseOrValue<string>,
@@ -581,8 +661,26 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    depositAndRevert(
+      context: RevertContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     execute(
       context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    executeRevert(
+      context: RevertContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
@@ -746,8 +844,26 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    depositAndRevert(
+      context: RevertContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     execute(
       context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    executeRevert(
+      context: RevertContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,
@@ -848,8 +964,26 @@ export interface GatewayZEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    depositAndRevert(
+      context: RevertContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     execute(
       context: ZContextStruct,
+      zrc20: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      target: PromiseOrValue<string>,
+      message: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    executeRevert(
+      context: RevertContextStruct,
       zrc20: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       target: PromiseOrValue<string>,

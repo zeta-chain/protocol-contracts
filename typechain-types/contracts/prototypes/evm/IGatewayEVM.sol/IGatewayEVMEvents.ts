@@ -20,12 +20,16 @@ export interface IGatewayEVMEventsInterface extends utils.Interface {
     "Deposit(address,address,uint256,address,bytes)": EventFragment;
     "Executed(address,uint256,bytes)": EventFragment;
     "ExecutedWithERC20(address,address,uint256,bytes)": EventFragment;
+    "Reverted(address,uint256,bytes)": EventFragment;
+    "RevertedWithERC20(address,address,uint256,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Executed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExecutedWithERC20"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Reverted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RevertedWithERC20"): EventFragment;
 }
 
 export interface CallEventObject {
@@ -76,6 +80,32 @@ export type ExecutedWithERC20Event = TypedEvent<
 
 export type ExecutedWithERC20EventFilter =
   TypedEventFilter<ExecutedWithERC20Event>;
+
+export interface RevertedEventObject {
+  destination: string;
+  value: BigNumber;
+  data: string;
+}
+export type RevertedEvent = TypedEvent<
+  [string, BigNumber, string],
+  RevertedEventObject
+>;
+
+export type RevertedEventFilter = TypedEventFilter<RevertedEvent>;
+
+export interface RevertedWithERC20EventObject {
+  token: string;
+  to: string;
+  amount: BigNumber;
+  data: string;
+}
+export type RevertedWithERC20Event = TypedEvent<
+  [string, string, BigNumber, string],
+  RevertedWithERC20EventObject
+>;
+
+export type RevertedWithERC20EventFilter =
+  TypedEventFilter<RevertedWithERC20Event>;
 
 export interface IGatewayEVMEvents extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -157,6 +187,30 @@ export interface IGatewayEVMEvents extends BaseContract {
       amount?: null,
       data?: null
     ): ExecutedWithERC20EventFilter;
+
+    "Reverted(address,uint256,bytes)"(
+      destination?: PromiseOrValue<string> | null,
+      value?: null,
+      data?: null
+    ): RevertedEventFilter;
+    Reverted(
+      destination?: PromiseOrValue<string> | null,
+      value?: null,
+      data?: null
+    ): RevertedEventFilter;
+
+    "RevertedWithERC20(address,address,uint256,bytes)"(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): RevertedWithERC20EventFilter;
+    RevertedWithERC20(
+      token?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): RevertedWithERC20EventFilter;
   };
 
   estimateGas: {};

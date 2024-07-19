@@ -31,8 +31,8 @@ var (
 
 // ERC20CustodyNewMetaData contains all meta data concerning the ERC20CustodyNew contract.
 var ERC20CustodyNewMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_gateway\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"WithdrawAndCall\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"gateway\",\"outputs\":[{\"internalType\":\"contractIGatewayEVM\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"withdrawAndCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
-	Bin: "0x608060405234801561001057600080fd5b50604051610ee2380380610ee2833981810160405281019061003291906100fd565b6001600081905550600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100a1576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b80600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050610178565b6000815190506100f781610161565b92915050565b6000602082840312156101135761011261015c565b5b6000610121848285016100e8565b91505092915050565b60006101358261013c565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600080fd5b61016a8161012a565b811461017557600080fd5b50565b610d5b806101876000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c8063116191b61461004657806321fc65f214610064578063d9caed1214610080575b600080fd5b61004e61009c565b60405161005b91906109b9565b60405180910390f35b61007e60048036038101906100799190610726565b6100c2565b005b61009a600480360381019061009591906106d3565b610224565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6100ca6102c9565b610117600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16848773ffffffffffffffffffffffffffffffffffffffff166103199092919063ffffffff16565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16635131ab5986868686866040518663ffffffff1660e01b815260040161017a959493929190610942565b600060405180830381600087803b15801561019457600080fd5b505af11580156101a8573d6000803e3d6000fd5b505050508373ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff167f85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e85858560405161020d93929190610a91565b60405180910390a361021d61039f565b5050505050565b61022c6102c9565b61025782828573ffffffffffffffffffffffffffffffffffffffff166103199092919063ffffffff16565b8173ffffffffffffffffffffffffffffffffffffffff168373ffffffffffffffffffffffffffffffffffffffff167f9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb836040516102b49190610a76565b60405180910390a36102c461039f565b505050565b6002600054141561030f576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161030690610a56565b60405180910390fd5b6002600081905550565b61039a8363a9059cbb60e01b8484604051602401610338929190610990565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050506103a9565b505050565b6001600081905550565b600061040b826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c65648152508573ffffffffffffffffffffffffffffffffffffffff166104709092919063ffffffff16565b905060008151111561046b578080602001905181019061042b91906107ae565b61046a576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161046190610a36565b60405180910390fd5b5b505050565b606061047f8484600085610488565b90509392505050565b6060824710156104cd576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016104c4906109f6565b60405180910390fd5b6000808673ffffffffffffffffffffffffffffffffffffffff1685876040516104f6919061092b565b60006040518083038185875af1925050503d8060008114610533576040519150601f19603f3d011682016040523d82523d6000602084013e610538565b606091505b509150915061054987838387610555565b92505050949350505050565b606083156105b8576000835114156105b057610570856105cb565b6105af576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016105a690610a16565b60405180910390fd5b5b8290506105c3565b6105c283836105ee565b5b949350505050565b6000808273ffffffffffffffffffffffffffffffffffffffff163b119050919050565b6000825111156106015781518083602001fd5b806040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161063591906109d4565b60405180910390fd5b60008135905061064d81610ce0565b92915050565b60008151905061066281610cf7565b92915050565b60008083601f84011261067e5761067d610bcb565b5b8235905067ffffffffffffffff81111561069b5761069a610bc6565b5b6020830191508360018202830111156106b7576106b6610bd0565b5b9250929050565b6000813590506106cd81610d0e565b92915050565b6000806000606084860312156106ec576106eb610bda565b5b60006106fa8682870161063e565b935050602061070b8682870161063e565b925050604061071c868287016106be565b9150509250925092565b60008060008060006080868803121561074257610741610bda565b5b60006107508882890161063e565b95505060206107618882890161063e565b9450506040610772888289016106be565b935050606086013567ffffffffffffffff81111561079357610792610bd5565b5b61079f88828901610668565b92509250509295509295909350565b6000602082840312156107c4576107c3610bda565b5b60006107d284828501610653565b91505092915050565b6107e481610b06565b82525050565b60006107f68385610ad9565b9350610803838584610b84565b61080c83610bdf565b840190509392505050565b600061082282610ac3565b61082c8185610aea565b935061083c818560208601610b93565b80840191505092915050565b61085181610b4e565b82525050565b600061086282610ace565b61086c8185610af5565b935061087c818560208601610b93565b61088581610bdf565b840191505092915050565b600061089d602683610af5565b91506108a882610bf0565b604082019050919050565b60006108c0601d83610af5565b91506108cb82610c3f565b602082019050919050565b60006108e3602a83610af5565b91506108ee82610c68565b604082019050919050565b6000610906601f83610af5565b915061091182610cb7565b602082019050919050565b61092581610b44565b82525050565b60006109378284610817565b915081905092915050565b600060808201905061095760008301886107db565b61096460208301876107db565b610971604083018661091c565b81810360608301526109848184866107ea565b90509695505050505050565b60006040820190506109a560008301856107db565b6109b2602083018461091c565b9392505050565b60006020820190506109ce6000830184610848565b92915050565b600060208201905081810360008301526109ee8184610857565b905092915050565b60006020820190508181036000830152610a0f81610890565b9050919050565b60006020820190508181036000830152610a2f816108b3565b9050919050565b60006020820190508181036000830152610a4f816108d6565b9050919050565b60006020820190508181036000830152610a6f816108f9565b9050919050565b6000602082019050610a8b600083018461091c565b92915050565b6000604082019050610aa6600083018661091c565b8181036020830152610ab98184866107ea565b9050949350505050565b600081519050919050565b600081519050919050565b600082825260208201905092915050565b600081905092915050565b600082825260208201905092915050565b6000610b1182610b24565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b6000610b5982610b60565b9050919050565b6000610b6b82610b72565b9050919050565b6000610b7d82610b24565b9050919050565b82818337600083830152505050565b60005b83811015610bb1578082015181840152602081019050610b96565b83811115610bc0576000848401525b50505050565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f416464726573733a20696e73756666696369656e742062616c616e636520666f60008201527f722063616c6c0000000000000000000000000000000000000000000000000000602082015250565b7f416464726573733a2063616c6c20746f206e6f6e2d636f6e7472616374000000600082015250565b7f5361666545524332303a204552433230206f7065726174696f6e20646964206e60008201527f6f74207375636365656400000000000000000000000000000000000000000000602082015250565b7f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00600082015250565b610ce981610b06565b8114610cf457600080fd5b50565b610d0081610b18565b8114610d0b57600080fd5b50565b610d1781610b44565b8114610d2257600080fd5b5056fea2646970667358221220e0308fb4ed96edbeb2c69e14a5ca1b29a3ef7df2a96cb8bc20f2642e1f32fae964736f6c63430008070033",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_gateway\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"WithdrawAndCall\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"WithdrawAndRevert\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"gateway\",\"outputs\":[{\"internalType\":\"contractIGatewayEVM\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"withdrawAndCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"withdrawAndRevert\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	Bin: "0x60806040523480156200001157600080fd5b506040516200107f3803806200107f833981810160405281019062000037919062000106565b6001600081905550600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff161415620000a7576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b80600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550506200018b565b600081519050620001008162000171565b92915050565b6000602082840312156200011f576200011e6200016c565b5b60006200012f84828501620000ef565b91505092915050565b600062000145826200014c565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600080fd5b6200017c8162000138565b81146200018857600080fd5b50565b610ee4806200019b6000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c8063116191b61461005157806321fc65f21461006f578063c8a023621461008b578063d9caed12146100a7575b600080fd5b6100596100c3565b6040516100669190610b42565b60405180910390f35b610089600480360381019061008491906108af565b6100e9565b005b6100a560048036038101906100a091906108af565b61024b565b005b6100c160048036038101906100bc919061085c565b6103ad565b005b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6100f1610452565b61013e600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16848773ffffffffffffffffffffffffffffffffffffffff166104a29092919063ffffffff16565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16635131ab5986868686866040518663ffffffff1660e01b81526004016101a1959493929190610acb565b600060405180830381600087803b1580156101bb57600080fd5b505af11580156101cf573d6000803e3d6000fd5b505050508373ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff167f85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e85858560405161023493929190610c1a565b60405180910390a3610244610528565b5050505050565b610253610452565b6102a0600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16848773ffffffffffffffffffffffffffffffffffffffff166104a29092919063ffffffff16565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b8969bd486868686866040518663ffffffff1660e01b8152600401610303959493929190610acb565b600060405180830381600087803b15801561031d57600080fd5b505af1158015610331573d6000803e3d6000fd5b505050508373ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff167fb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c885858560405161039693929190610c1a565b60405180910390a36103a6610528565b5050505050565b6103b5610452565b6103e082828573ffffffffffffffffffffffffffffffffffffffff166104a29092919063ffffffff16565b8173ffffffffffffffffffffffffffffffffffffffff168373ffffffffffffffffffffffffffffffffffffffff167f9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb8360405161043d9190610bff565b60405180910390a361044d610528565b505050565b60026000541415610498576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161048f90610bdf565b60405180910390fd5b6002600081905550565b6105238363a9059cbb60e01b84846040516024016104c1929190610b19565b604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050610532565b505050565b6001600081905550565b6000610594826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c65648152508573ffffffffffffffffffffffffffffffffffffffff166105f99092919063ffffffff16565b90506000815111156105f457808060200190518101906105b49190610937565b6105f3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016105ea90610bbf565b60405180910390fd5b5b505050565b60606106088484600085610611565b90509392505050565b606082471015610656576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161064d90610b7f565b60405180910390fd5b6000808673ffffffffffffffffffffffffffffffffffffffff16858760405161067f9190610ab4565b60006040518083038185875af1925050503d80600081146106bc576040519150601f19603f3d011682016040523d82523d6000602084013e6106c1565b606091505b50915091506106d2878383876106de565b92505050949350505050565b6060831561074157600083511415610739576106f985610754565b610738576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040161072f90610b9f565b60405180910390fd5b5b82905061074c565b61074b8383610777565b5b949350505050565b6000808273ffffffffffffffffffffffffffffffffffffffff163b119050919050565b60008251111561078a5781518083602001fd5b806040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016107be9190610b5d565b60405180910390fd5b6000813590506107d681610e69565b92915050565b6000815190506107eb81610e80565b92915050565b60008083601f84011261080757610806610d54565b5b8235905067ffffffffffffffff81111561082457610823610d4f565b5b6020830191508360018202830111156108405761083f610d59565b5b9250929050565b60008135905061085681610e97565b92915050565b60008060006060848603121561087557610874610d63565b5b6000610883868287016107c7565b9350506020610894868287016107c7565b92505060406108a586828701610847565b9150509250925092565b6000806000806000608086880312156108cb576108ca610d63565b5b60006108d9888289016107c7565b95505060206108ea888289016107c7565b94505060406108fb88828901610847565b935050606086013567ffffffffffffffff81111561091c5761091b610d5e565b5b610928888289016107f1565b92509250509295509295909350565b60006020828403121561094d5761094c610d63565b5b600061095b848285016107dc565b91505092915050565b61096d81610c8f565b82525050565b600061097f8385610c62565b935061098c838584610d0d565b61099583610d68565b840190509392505050565b60006109ab82610c4c565b6109b58185610c73565b93506109c5818560208601610d1c565b80840191505092915050565b6109da81610cd7565b82525050565b60006109eb82610c57565b6109f58185610c7e565b9350610a05818560208601610d1c565b610a0e81610d68565b840191505092915050565b6000610a26602683610c7e565b9150610a3182610d79565b604082019050919050565b6000610a49601d83610c7e565b9150610a5482610dc8565b602082019050919050565b6000610a6c602a83610c7e565b9150610a7782610df1565b604082019050919050565b6000610a8f601f83610c7e565b9150610a9a82610e40565b602082019050919050565b610aae81610ccd565b82525050565b6000610ac082846109a0565b915081905092915050565b6000608082019050610ae06000830188610964565b610aed6020830187610964565b610afa6040830186610aa5565b8181036060830152610b0d818486610973565b90509695505050505050565b6000604082019050610b2e6000830185610964565b610b3b6020830184610aa5565b9392505050565b6000602082019050610b5760008301846109d1565b92915050565b60006020820190508181036000830152610b7781846109e0565b905092915050565b60006020820190508181036000830152610b9881610a19565b9050919050565b60006020820190508181036000830152610bb881610a3c565b9050919050565b60006020820190508181036000830152610bd881610a5f565b9050919050565b60006020820190508181036000830152610bf881610a82565b9050919050565b6000602082019050610c146000830184610aa5565b92915050565b6000604082019050610c2f6000830186610aa5565b8181036020830152610c42818486610973565b9050949350505050565b600081519050919050565b600081519050919050565b600082825260208201905092915050565b600081905092915050565b600082825260208201905092915050565b6000610c9a82610cad565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b6000610ce282610ce9565b9050919050565b6000610cf482610cfb565b9050919050565b6000610d0682610cad565b9050919050565b82818337600083830152505050565b60005b83811015610d3a578082015181840152602081019050610d1f565b83811115610d49576000848401525b50505050565b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f416464726573733a20696e73756666696369656e742062616c616e636520666f60008201527f722063616c6c0000000000000000000000000000000000000000000000000000602082015250565b7f416464726573733a2063616c6c20746f206e6f6e2d636f6e7472616374000000600082015250565b7f5361666545524332303a204552433230206f7065726174696f6e20646964206e60008201527f6f74207375636365656400000000000000000000000000000000000000000000602082015250565b7f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00600082015250565b610e7281610c8f565b8114610e7d57600080fd5b50565b610e8981610ca1565b8114610e9457600080fd5b50565b610ea081610ccd565b8114610eab57600080fd5b5056fea264697066735822122004af522ce13639b271307b4d29ba4ac4a6b589721315ec5393584474746ecd2864736f6c63430008070033",
 }
 
 // ERC20CustodyNewABI is the input ABI used to generate the binding from.
@@ -273,6 +273,27 @@ func (_ERC20CustodyNew *ERC20CustodyNewSession) WithdrawAndCall(token common.Add
 // Solidity: function withdrawAndCall(address token, address to, uint256 amount, bytes data) returns()
 func (_ERC20CustodyNew *ERC20CustodyNewTransactorSession) WithdrawAndCall(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
 	return _ERC20CustodyNew.Contract.WithdrawAndCall(&_ERC20CustodyNew.TransactOpts, token, to, amount, data)
+}
+
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc8a02362.
+//
+// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data) returns()
+func (_ERC20CustodyNew *ERC20CustodyNewTransactor) WithdrawAndRevert(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _ERC20CustodyNew.contract.Transact(opts, "withdrawAndRevert", token, to, amount, data)
+}
+
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc8a02362.
+//
+// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data) returns()
+func (_ERC20CustodyNew *ERC20CustodyNewSession) WithdrawAndRevert(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _ERC20CustodyNew.Contract.WithdrawAndRevert(&_ERC20CustodyNew.TransactOpts, token, to, amount, data)
+}
+
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc8a02362.
+//
+// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data) returns()
+func (_ERC20CustodyNew *ERC20CustodyNewTransactorSession) WithdrawAndRevert(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _ERC20CustodyNew.Contract.WithdrawAndRevert(&_ERC20CustodyNew.TransactOpts, token, to, amount, data)
 }
 
 // ERC20CustodyNewWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the ERC20CustodyNew contract.
@@ -578,6 +599,161 @@ func (_ERC20CustodyNew *ERC20CustodyNewFilterer) WatchWithdrawAndCall(opts *bind
 func (_ERC20CustodyNew *ERC20CustodyNewFilterer) ParseWithdrawAndCall(log types.Log) (*ERC20CustodyNewWithdrawAndCall, error) {
 	event := new(ERC20CustodyNewWithdrawAndCall)
 	if err := _ERC20CustodyNew.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ERC20CustodyNewWithdrawAndRevertIterator is returned from FilterWithdrawAndRevert and is used to iterate over the raw logs and unpacked data for WithdrawAndRevert events raised by the ERC20CustodyNew contract.
+type ERC20CustodyNewWithdrawAndRevertIterator struct {
+	Event *ERC20CustodyNewWithdrawAndRevert // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ERC20CustodyNewWithdrawAndRevertIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ERC20CustodyNewWithdrawAndRevert)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ERC20CustodyNewWithdrawAndRevert)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ERC20CustodyNewWithdrawAndRevertIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ERC20CustodyNewWithdrawAndRevertIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ERC20CustodyNewWithdrawAndRevert represents a WithdrawAndRevert event raised by the ERC20CustodyNew contract.
+type ERC20CustodyNewWithdrawAndRevert struct {
+	Token  common.Address
+	To     common.Address
+	Amount *big.Int
+	Data   []byte
+	Raw    types.Log // Blockchain specific contextual infos
+}
+
+// FilterWithdrawAndRevert is a free log retrieval operation binding the contract event 0xb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c8.
+//
+// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_ERC20CustodyNew *ERC20CustodyNewFilterer) FilterWithdrawAndRevert(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*ERC20CustodyNewWithdrawAndRevertIterator, error) {
+
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+
+	logs, sub, err := _ERC20CustodyNew.contract.FilterLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ERC20CustodyNewWithdrawAndRevertIterator{contract: _ERC20CustodyNew.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
+}
+
+// WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0xb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c8.
+//
+// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_ERC20CustodyNew *ERC20CustodyNewFilterer) WatchWithdrawAndRevert(opts *bind.WatchOpts, sink chan<- *ERC20CustodyNewWithdrawAndRevert, token []common.Address, to []common.Address) (event.Subscription, error) {
+
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+
+	logs, sub, err := _ERC20CustodyNew.contract.WatchLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ERC20CustodyNewWithdrawAndRevert)
+				if err := _ERC20CustodyNew.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseWithdrawAndRevert is a log parse operation binding the contract event 0xb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c8.
+//
+// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_ERC20CustodyNew *ERC20CustodyNewFilterer) ParseWithdrawAndRevert(log types.Log) (*ERC20CustodyNewWithdrawAndRevert, error) {
+	event := new(ERC20CustodyNewWithdrawAndRevert)
+	if err := _ERC20CustodyNew.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

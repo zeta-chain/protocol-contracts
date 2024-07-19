@@ -41,6 +41,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UUPSUpgradeable__factory>;
     getContractFactory(
+      name: "ReentrancyGuardUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ReentrancyGuardUpgradeable__factory>;
+    getContractFactory(
       name: "ContextUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ContextUpgradeable__factory>;
@@ -357,6 +361,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayEVMEvents__factory>;
     getContractFactory(
+      name: "Revertable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Revertable__factory>;
+    getContractFactory(
       name: "IReceiverEVMEvents",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IReceiverEVMEvents__factory>;
@@ -436,6 +444,10 @@ declare module "hardhat/types/runtime" {
       name: "ZRC20Events",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZRC20Events__factory>;
+    getContractFactory(
+      name: "UniversalContract",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.UniversalContract__factory>;
     getContractFactory(
       name: "ZContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -520,6 +532,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.UUPSUpgradeable>;
+    getContractAt(
+      name: "ReentrancyGuardUpgradeable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ReentrancyGuardUpgradeable>;
     getContractAt(
       name: "ContextUpgradeable",
       address: string,
@@ -916,6 +933,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IGatewayEVMEvents>;
     getContractAt(
+      name: "Revertable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Revertable>;
+    getContractAt(
       name: "IReceiverEVMEvents",
       address: string,
       signer?: ethers.Signer
@@ -1015,6 +1037,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZRC20Events>;
+    getContractAt(
+      name: "UniversalContract",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.UniversalContract>;
     getContractAt(
       name: "ZContract",
       address: string,

@@ -4,6 +4,7 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "../../zevm/interfaces/IZRC20.sol";
 import "../../zevm/interfaces/zContract.sol";
@@ -13,7 +14,7 @@ import "../../zevm/interfaces/IWZETA.sol";
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuard {
+contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
     error ZeroAddress();
 
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
@@ -31,6 +32,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     
         __Ownable_init();
         __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
         zetaToken = _zetaToken;
     }
 
@@ -113,7 +115,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
 
-        zContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
     // Deposit foreign coins into ZRC20 and call user specified contract on ZEVM
@@ -130,7 +132,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
-        zContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
     // Deposit zeta and call user specified contract on ZEVM
@@ -146,6 +148,38 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
-        zContract(target).onCrossChainCall(context, zetaToken, amount, message);
+        UniversalContract(target).onCrossChainCall(context, zetaToken, amount, message);
+    }
+
+    // Revert user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
+    function executeRevert(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+
+        UniversalContract(target).onRevert(context, zrc20, amount, message);
+    }
+
+    // Deposit foreign coins into ZRC20 and revert user specified contract on ZEVM
+    // TODO: Finalize access control
+    // https://github.com/zeta-chain/protocol-contracts/issues/204
+    function depositAndRevert(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    ) external {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        IZRC20(zrc20).deposit(target, amount);
+        UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
 }

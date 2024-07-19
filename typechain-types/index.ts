@@ -22,6 +22,8 @@ export type { Initializable } from "./@openzeppelin/contracts-upgradeable/proxy/
 export { Initializable__factory } from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/Initializable__factory";
 export type { UUPSUpgradeable } from "./@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable";
 export { UUPSUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable__factory";
+export type { ReentrancyGuardUpgradeable } from "./@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable";
+export { ReentrancyGuardUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable__factory";
 export type { ContextUpgradeable } from "./@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable";
 export { ContextUpgradeable__factory } from "./factories/@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable__factory";
 export type { Ownable } from "./@openzeppelin/contracts/access/Ownable";
@@ -168,6 +170,8 @@ export type { IGatewayEVMErrors } from "./contracts/prototypes/evm/IGatewayEVM.s
 export { IGatewayEVMErrors__factory } from "./factories/contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVMErrors__factory";
 export type { IGatewayEVMEvents } from "./contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVMEvents";
 export { IGatewayEVMEvents__factory } from "./factories/contracts/prototypes/evm/IGatewayEVM.sol/IGatewayEVMEvents__factory";
+export type { Revertable } from "./contracts/prototypes/evm/IGatewayEVM.sol/Revertable";
+export { Revertable__factory } from "./factories/contracts/prototypes/evm/IGatewayEVM.sol/Revertable__factory";
 export type { IReceiverEVMEvents } from "./contracts/prototypes/evm/IReceiverEVM.sol/IReceiverEVMEvents";
 export { IReceiverEVMEvents__factory } from "./factories/contracts/prototypes/evm/IReceiverEVM.sol/IReceiverEVMEvents__factory";
 export type { IZetaNonEthNew } from "./contracts/prototypes/evm/IZetaNonEthNew";
@@ -204,8 +208,10 @@ export type { IZRC20Metadata } from "./contracts/zevm/interfaces/IZRC20.sol/IZRC
 export { IZRC20Metadata__factory } from "./factories/contracts/zevm/interfaces/IZRC20.sol/IZRC20Metadata__factory";
 export type { ZRC20Events } from "./contracts/zevm/interfaces/IZRC20.sol/ZRC20Events";
 export { ZRC20Events__factory } from "./factories/contracts/zevm/interfaces/IZRC20.sol/ZRC20Events__factory";
-export type { ZContract } from "./contracts/zevm/interfaces/ZContract";
-export { ZContract__factory } from "./factories/contracts/zevm/interfaces/ZContract__factory";
+export type { UniversalContract } from "./contracts/zevm/interfaces/zContract.sol/UniversalContract";
+export { UniversalContract__factory } from "./factories/contracts/zevm/interfaces/zContract.sol/UniversalContract__factory";
+export type { ZContract } from "./contracts/zevm/interfaces/zContract.sol/ZContract";
+export { ZContract__factory } from "./factories/contracts/zevm/interfaces/zContract.sol/ZContract__factory";
 export type { SystemContract } from "./contracts/zevm/SystemContract.sol/SystemContract";
 export { SystemContract__factory } from "./factories/contracts/zevm/SystemContract.sol/SystemContract__factory";
 export type { SystemContractErrors } from "./contracts/zevm/SystemContract.sol/SystemContractErrors";

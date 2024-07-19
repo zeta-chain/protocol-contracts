@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "./IGatewayEVM.sol";
 import "./ZetaConnectorNewBase.sol";
 
@@ -14,7 +15,7 @@ import "./ZetaConnectorNewBase.sol";
  * @notice The GatewayEVM contract is the endpoint to call smart contracts on external chains.
  * @dev The contract doesn't hold any funds and should never have active allowances.
  */
-contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents {
+contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents, ReentrancyGuardUpgradeable {
     using SafeERC20 for IERC20;
 
     /// @notice The address of the custody contract.
@@ -22,10 +23,8 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     /// @notice The address of the TSS (Threshold Signature Scheme) contract.
     address public tssAddress;
-
     /// @notice The address of the ZetaConnector contract.
     address public zetaConnector;
-
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
@@ -35,12 +34,13 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     }
 
     function initialize(address _tssAddress, address _zetaToken) public initializer {
-        __Ownable_init();
-        __UUPSUpgradeable_init();
-
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
+        
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
 
         tssAddress = _tssAddress;
         zetaToken = _zetaToken;
@@ -53,6 +53,16 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         if (!success) revert ExecutionFailed();
 
         return result;
+    }
+
+    // Called by the TSS
+    // Calling onRevert directly
+    function executeRevert(address destination, bytes calldata data) public payable {
+        (bool success, bytes memory result) = destination.call{value: msg.value}("");
+        if (!success) revert ExecutionFailed();
+        Revertable(destination).onRevert(data);
+        
+        emit Reverted(destination, msg.value, data);
     }
 
     // Called by the TSS
@@ -75,7 +85,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) public {
+    ) public nonReentrant {
         if (amount == 0) revert InsufficientETHAmount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
@@ -94,6 +104,22 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
+    }
+
+    // Called by the ERC20Custody contract
+    // Directly transfers ERC20 and calls onRevert
+    function revertWithERC20(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    ) external nonReentrant {
+        if (amount == 0) revert InsufficientERC20Amount();
+
+        IERC20(token).safeTransfer(address(to), amount);
+        Revertable(to).onRevert(data);
+
+        emit RevertedWithERC20(token, to, amount, data);
     }
 
     // Deposit ETH to tss

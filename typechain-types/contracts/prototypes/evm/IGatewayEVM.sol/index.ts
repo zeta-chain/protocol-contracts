@@ -4,3 +4,4 @@
 export type { IGatewayEVM } from "./IGatewayEVM";
 export type { IGatewayEVMErrors } from "./IGatewayEVMErrors";
 export type { IGatewayEVMEvents } from "./IGatewayEVMEvents";
+export type { Revertable } from "./Revertable";

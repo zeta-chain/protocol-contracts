@@ -266,6 +266,8 @@ export interface GatewayEVMZEVMTestInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ReceivedNoParams"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNonPayable"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedPayable"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Reverted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RevertedWithERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdrawal"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "log_address"): EventFragment;
@@ -414,6 +416,32 @@ export type ReceivedPayableEvent = TypedEvent<
 >;
 
 export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
+
+export interface RevertedEventObject {
+  destination: string;
+  value: BigNumber;
+  data: string;
+}
+export type RevertedEvent = TypedEvent<
+  [string, BigNumber, string],
+  RevertedEventObject
+>;
+
+export type RevertedEventFilter = TypedEventFilter<RevertedEvent>;
+
+export interface RevertedWithERC20EventObject {
+  token: string;
+  to: string;
+  amount: BigNumber;
+  data: string;
+}
+export type RevertedWithERC20Event = TypedEvent<
+  [string, string, BigNumber, string],
+  RevertedWithERC20EventObject
+>;
+
+export type RevertedWithERC20EventFilter =
+  TypedEventFilter<RevertedWithERC20Event>;
 
 export interface WithdrawalEventObject {
   from: string;

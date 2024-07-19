@@ -7,6 +7,13 @@ struct zContext {
     uint256 chainID;
 }
 
+// TODO: define revertContext
+struct revertContext {
+    bytes origin;
+    address sender;
+    uint256 chainID;
+}
+
 interface zContract {
     function onCrossChainCall(
         zContext calldata context,
@@ -14,4 +21,22 @@ interface zContract {
         uint256 amount,
         bytes calldata message
     ) external;
+}
+
+interface UniversalContract {
+    function onCrossChainCall(
+        zContext calldata context,
+        address zrc20,
+        uint256 amount,
+        bytes calldata message
+    ) external;
+
+    // TODO: define onRevert
+    function onRevert(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        bytes calldata message
+    ) external;
+
 }
