@@ -5,7 +5,7 @@ import "./ZetaConnectorNewBase.sol";
 import "./IZetaNonEthNew.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-contract ZetaConnectorNewNonEth is ZetaConnectorNewBase {
+contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     constructor(address _gateway, address _zetaToken)
         ZetaConnectorNewBase(_gateway, _zetaToken)
     {}

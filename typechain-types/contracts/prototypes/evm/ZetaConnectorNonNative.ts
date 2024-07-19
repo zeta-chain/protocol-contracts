@@ -27,7 +27,7 @@ import type {
   PromiseOrValue,
 } from "../../../common";
 
-export interface ZetaConnectorNewNonEthInterface extends utils.Interface {
+export interface ZetaConnectorNonNativeInterface extends utils.Interface {
   functions: {
     "gateway()": FunctionFragment;
     "receiveTokens(uint256)": FunctionFragment;
@@ -113,12 +113,12 @@ export type WithdrawAndCallEvent = TypedEvent<
 
 export type WithdrawAndCallEventFilter = TypedEventFilter<WithdrawAndCallEvent>;
 
-export interface ZetaConnectorNewNonEth extends BaseContract {
+export interface ZetaConnectorNonNative extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: ZetaConnectorNewNonEthInterface;
+  interface: ZetaConnectorNonNativeInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

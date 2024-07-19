@@ -50,11 +50,6 @@ const _abi = [
     name: "ZRC20TransferFailed",
     type: "error",
   },
-  {
-    inputs: [],
-    name: "ZetaTokenTransferFailed",
-    type: "error",
-  },
 ] as const;
 
 export class IGatewayZEVMErrors__factory {

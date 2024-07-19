@@ -14,6 +14,8 @@ import "../../zevm/interfaces/IWZETA.sol";
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuard {
+    error ZeroAddress();
+
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     address public zetaToken;
 
@@ -23,6 +25,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     function initialize(address _zetaToken) public initializer {
+        if (_zetaToken == address(0)) {
+            revert ZeroAddress();
+        }
+    
         __Ownable_init();
         __UUPSUpgradeable_init();
         zetaToken = _zetaToken;
@@ -46,7 +52,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     function _transferZETA(uint256 amount, address to) internal {
-        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert ZetaTokenTransferFailed();
+        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
         IWETH9(zetaToken).withdraw(amount);
         (bool sent, ) = to.call{value: amount}("");
         if (!sent) revert FailedZetaSent();

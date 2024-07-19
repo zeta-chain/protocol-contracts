@@ -7,7 +7,7 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
-import "contracts/prototypes/evm/ZetaConnectorNewNonEth.sol";
+import "contracts/prototypes/evm/ZetaConnectorNonNative.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 
@@ -31,7 +31,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20CustodyNew custody;
-    ZetaConnectorNewNonEth zetaConnector;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
     ReceiverEVM receiverEVM;
@@ -63,7 +63,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         ));
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20CustodyNew(address(gatewayEVM));
-        zetaConnector = new ZetaConnectorNewNonEth(address(gatewayEVM), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta));
 
         gatewayEVM.setCustody(address(custody));
         gatewayEVM.setConnector(address(zetaConnector));

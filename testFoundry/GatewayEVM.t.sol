@@ -7,7 +7,7 @@ import "forge-std/Vm.sol";
 import "contracts/prototypes/evm/GatewayEVM.sol";
 import "contracts/prototypes/evm/ReceiverEVM.sol";
 import "contracts/prototypes/evm/ERC20CustodyNew.sol";
-import "contracts/prototypes/evm/ZetaConnectorNewNonEth.sol";
+import "contracts/prototypes/evm/ZetaConnectorNonNative.sol";
 import "contracts/prototypes/evm/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -23,7 +23,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20CustodyNew custody;
-    ZetaConnectorNewNonEth zetaConnector;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
     address owner;
@@ -47,7 +47,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
-        zetaConnector = new ZetaConnectorNewNonEth(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
         receiver = new ReceiverEVM();
 
         gateway.setCustody(address(custody));
@@ -181,7 +181,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     GatewayEVM gateway;
     ERC20CustodyNew custody;
-    ZetaConnectorNewNonEth zetaConnector;
+    ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
     address owner;
@@ -203,7 +203,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway));
-        zetaConnector = new ZetaConnectorNewNonEth(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
 
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));

@@ -59,7 +59,7 @@ describe("Uniswap Integration with GatewayEVM", function () {
     // Deploy contracts
     const Gateway = await ethers.getContractFactory("GatewayEVM");
     const ERC20CustodyNew = await ethers.getContractFactory("ERC20CustodyNew");
-    const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNewNonEth");
+    const ZetaConnector = await ethers.getContractFactory("ZetaConnectorNonNative");
     const zeta = await TestERC20.deploy("Zeta", "ZETA");
     gateway = (await upgrades.deployProxy(Gateway, [tssAddress.address, zeta.address], {
       initializer: "initialize",

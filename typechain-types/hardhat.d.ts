@@ -373,17 +373,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TestERC20__factory>;
     getContractFactory(
+      name: "ZetaConnectorNative",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ZetaConnectorNative__factory>;
+    getContractFactory(
       name: "ZetaConnectorNewBase",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZetaConnectorNewBase__factory>;
     getContractFactory(
-      name: "ZetaConnectorNewEth",
+      name: "ZetaConnectorNonNative",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZetaConnectorNewEth__factory>;
-    getContractFactory(
-      name: "ZetaConnectorNewNonEth",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZetaConnectorNewNonEth__factory>;
+    ): Promise<Contracts.ZetaConnectorNonNative__factory>;
     getContractFactory(
       name: "GatewayZEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -936,20 +936,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TestERC20>;
     getContractAt(
+      name: "ZetaConnectorNative",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ZetaConnectorNative>;
+    getContractAt(
       name: "ZetaConnectorNewBase",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZetaConnectorNewBase>;
     getContractAt(
-      name: "ZetaConnectorNewEth",
+      name: "ZetaConnectorNonNative",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ZetaConnectorNewEth>;
-    getContractAt(
-      name: "ZetaConnectorNewNonEth",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ZetaConnectorNewNonEth>;
+    ): Promise<Contracts.ZetaConnectorNonNative>;
     getContractAt(
       name: "GatewayZEVM",
       address: string,

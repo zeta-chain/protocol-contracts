@@ -11,6 +11,6 @@ export type { GatewayEVMUpgradeTest } from "./GatewayEVMUpgradeTest";
 export type { IZetaNonEthNew } from "./IZetaNonEthNew";
 export type { ReceiverEVM } from "./ReceiverEVM";
 export type { TestERC20 } from "./TestERC20";
+export type { ZetaConnectorNative } from "./ZetaConnectorNative";
 export type { ZetaConnectorNewBase } from "./ZetaConnectorNewBase";
-export type { ZetaConnectorNewEth } from "./ZetaConnectorNewEth";
-export type { ZetaConnectorNewNonEth } from "./ZetaConnectorNewNonEth";
+export type { ZetaConnectorNonNative } from "./ZetaConnectorNonNative";
