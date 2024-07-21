@@ -30,6 +30,14 @@ contract ReceiverEVM {
         emit ReceivedERC20(msg.sender, amount, token, destination);
     }
 
+    // Function using IERC20 to partially transfer tokens
+    function receiveERC20Partial(uint256 amount, address token, address destination) external {
+        // Transfer half the tokens from the Gateway contract to the destination address
+        IERC20(token).safeTransferFrom(msg.sender, destination, amount / 2);
+
+        emit ReceivedERC20(msg.sender, amount / 2, token, destination);
+    }
+
     // Function without parameters
     function receiveNoParams() external {
         emit ReceivedNoParams(msg.sender);

@@ -90,7 +90,6 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
         if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
-
         // Execute the call on the target contract
         bytes memory result = _execute(to, data);
 
@@ -100,7 +99,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            transferToAssetHandler(token, amount);
+            transferToAssetHandler(token, remainingBalance);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);

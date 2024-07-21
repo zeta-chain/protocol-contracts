@@ -130,6 +130,32 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(allowance, 0);
     }
 
+    function testForwardCallToReceiveERC20PartialThroughCustody() public {
+        uint256 amount = 100000;
+        bytes memory data = abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
+        uint256 balanceBefore = token.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedERC20(address(gateway), amount / 2, address(token), destination);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+
+        // Verify that the tokens were transferred to the destination address
+        uint256 balanceAfter = token.balanceOf(destination);
+        assertEq(balanceAfter, amount / 2);
+
+        // Verify that the remaining tokens were refunded to the Custody contract
+        uint256 balanceAfterCustody = token.balanceOf(address(custody));
+        assertEq(balanceAfterCustody, balanceBeforeCustody - amount / 2);
+
+        // Verify that the approval was reset
+        uint256 allowance = token.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+    }
+
     function testForwardCallToReceiveNoParamsThroughCustody() public {
         uint256 amount = 100000;
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");
@@ -139,8 +165,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
-        // vm.expectEmit(true, true, true, true, address(custody));
-        // emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit WithdrawAndCall(address(token), address(receiver), amount, data);
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
 
         // Verify that the tokens were not transferred to the destination address
