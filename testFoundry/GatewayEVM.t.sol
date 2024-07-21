@@ -128,6 +128,10 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that the approval was reset
         uint256 allowance = token.allowance(address(gateway), address(receiver));
         assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
     }
 
     function testForwardCallToReceiveERC20PartialThroughCustody() public {
@@ -154,6 +158,10 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that the approval was reset
         uint256 allowance = token.allowance(address(gateway), address(receiver));
         assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
     }
 
     function testForwardCallToReceiveNoParamsThroughCustody() public {
@@ -180,6 +188,10 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that the approval was reset
         uint256 allowance = token.allowance(address(gateway), address(receiver));
         assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
     }
 
     function testWithdrawThroughCustody() public {
@@ -199,6 +211,10 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that the tokens were substracted from custody
         uint256 balanceAfterCustody = token.balanceOf(address(custody));
         assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
     }
 }
 
