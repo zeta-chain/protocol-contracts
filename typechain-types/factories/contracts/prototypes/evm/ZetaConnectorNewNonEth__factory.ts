@@ -5,9 +5,9 @@ import { Signer, utils, Contract, ContractFactory, Overrides } from "ethers";
 import type { Provider, TransactionRequest } from "@ethersproject/providers";
 import type { PromiseOrValue } from "../../../../common";
 import type {
-  ZetaConnectorNewNonEth,
-  ZetaConnectorNewNonEthInterface,
-} from "../../../../contracts/prototypes/evm/ZetaConnectorNewNonEth";
+  ZetaConnectorNonNative,
+  ZetaConnectorNonNativeInterface,
+} from "../../../../contracts/prototypes/evm/ZetaConnectorNonNative";
 
 const _abi = [
   {
@@ -191,12 +191,12 @@ export class ZetaConnectorNewNonEth__factory extends ContractFactory {
     _gateway: PromiseOrValue<string>,
     _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ZetaConnectorNewNonEth> {
+  ): Promise<ZetaConnectorNonNative> {
     return super.deploy(
       _gateway,
       _zetaToken,
       overrides || {}
-    ) as Promise<ZetaConnectorNewNonEth>;
+    ) as Promise<ZetaConnectorNonNative>;
   }
   override getDeployTransaction(
     _gateway: PromiseOrValue<string>,
@@ -205,8 +205,8 @@ export class ZetaConnectorNewNonEth__factory extends ContractFactory {
   ): TransactionRequest {
     return super.getDeployTransaction(_gateway, _zetaToken, overrides || {});
   }
-  override attach(address: string): ZetaConnectorNewNonEth {
-    return super.attach(address) as ZetaConnectorNewNonEth;
+  override attach(address: string): ZetaConnectorNonNative {
+    return super.attach(address) as ZetaConnectorNonNative;
   }
   override connect(signer: Signer): ZetaConnectorNewNonEth__factory {
     return super.connect(signer) as ZetaConnectorNewNonEth__factory;
@@ -214,17 +214,17 @@ export class ZetaConnectorNewNonEth__factory extends ContractFactory {
 
   static readonly bytecode = _bytecode;
   static readonly abi = _abi;
-  static createInterface(): ZetaConnectorNewNonEthInterface {
-    return new utils.Interface(_abi) as ZetaConnectorNewNonEthInterface;
+  static createInterface(): ZetaConnectorNonNativeInterface {
+    return new utils.Interface(_abi) as ZetaConnectorNonNativeInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): ZetaConnectorNewNonEth {
+  ): ZetaConnectorNonNative {
     return new Contract(
       address,
       _abi,
       signerOrProvider
-    ) as ZetaConnectorNewNonEth;
+    ) as ZetaConnectorNonNative;
   }
 }

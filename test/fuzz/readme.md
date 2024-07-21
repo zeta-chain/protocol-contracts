@@ -2,7 +2,7 @@
 
 ```
 brew install echidna
-solc-select use 0.8.7
+solc-select use 0.8.18
 ```
 
 ## Execute contract tests
