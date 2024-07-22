@@ -45,8 +45,8 @@ type ZContext struct {
 
 // TestZContractMetaData contains all meta data concerning the TestZContract contract.
 var TestZContractMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"msgSender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"ContextData\",\"type\":\"event\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structzContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"onCrossChainCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structrevertContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"onRevert\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
-	Bin: "0x608060405234801561001057600080fd5b506107cb806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806369582bee1461003b578063de43156e14610057575b600080fd5b61005560048036038101906100509190610331565b610073565b005b610071600480360381019061006c91906103d5565b610100565b005b6060600083839050111561009357828281019061009091906102e8565b90505b7fcdc8ee677dc5ebe680fb18cebda5e26ba5ea1f0ba504a47e2a9a2ecb476dc98e8680600001906100c49190610560565b8860200160208101906100d791906102bb565b896040013533866040516100f0969594939291906104fd565b60405180910390a1505050505050565b6060600083839050111561012057828281019061011d91906102e8565b90505b7fcdc8ee677dc5ebe680fb18cebda5e26ba5ea1f0ba504a47e2a9a2ecb476dc98e8680600001906101519190610560565b88602001602081019061016491906102bb565b8960400135338660405161017d969594939291906104fd565b60405180910390a1505050505050565b60006101a061019b846105e8565b6105c3565b9050828152602081018484840111156101bc576101bb610747565b5b6101c7848285610682565b509392505050565b6000813590506101de81610767565b92915050565b60008083601f8401126101fa576101f9610729565b5b8235905067ffffffffffffffff81111561021757610216610724565b5b6020830191508360018202830111156102335761023261073d565b5b9250929050565b600082601f83011261024f5761024e610729565b5b813561025f84826020860161018d565b91505092915050565b60006060828403121561027e5761027d610733565b5b81905092915050565b60006060828403121561029d5761029c610733565b5b81905092915050565b6000813590506102b58161077e565b92915050565b6000602082840312156102d1576102d0610751565b5b60006102df848285016101cf565b91505092915050565b6000602082840312156102fe576102fd610751565b5b600082013567ffffffffffffffff81111561031c5761031b61074c565b5b6103288482850161023a565b91505092915050565b60008060008060006080868803121561034d5761034c610751565b5b600086013567ffffffffffffffff81111561036b5761036a61074c565b5b61037788828901610268565b9550506020610388888289016101cf565b9450506040610399888289016102a6565b935050606086013567ffffffffffffffff8111156103ba576103b961074c565b5b6103c6888289016101e4565b92509250509295509295909350565b6000806000806000608086880312156103f1576103f0610751565b5b600086013567ffffffffffffffff81111561040f5761040e61074c565b5b61041b88828901610287565b955050602061042c888289016101cf565b945050604061043d888289016102a6565b935050606086013567ffffffffffffffff81111561045e5761045d61074c565b5b61046a888289016101e4565b92509250509295509295909350565b61048281610646565b82525050565b60006104948385610624565b93506104a1838584610682565b6104aa83610756565b840190509392505050565b60006104c082610619565b6104ca8185610635565b93506104da818560208601610691565b6104e381610756565b840191505092915050565b6104f781610678565b82525050565b600060a082019050818103600083015261051881888a610488565b90506105276020830187610479565b61053460408301866104ee565b6105416060830185610479565b818103608083015261055381846104b5565b9050979650505050505050565b6000808335600160200384360303811261057d5761057c610738565b5b80840192508235915067ffffffffffffffff82111561059f5761059e61072e565b5b6020830192506001820236038313156105bb576105ba610742565b5b509250929050565b60006105cd6105de565b90506105d982826106c4565b919050565b6000604051905090565b600067ffffffffffffffff821115610603576106026106f5565b5b61060c82610756565b9050602081019050919050565b600081519050919050565b600082825260208201905092915050565b600082825260208201905092915050565b600061065182610658565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b838110156106af578082015181840152602081019050610694565b838111156106be576000848401525b50505050565b6106cd82610756565b810181811067ffffffffffffffff821117156106ec576106eb6106f5565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b61077081610646565b811461077b57600080fd5b50565b61078781610678565b811461079257600080fd5b5056fea2646970667358221220996d3660341a1bd04005b32d62cd8d770a9af1acdfbed4e5684f1a111d225cde64736f6c63430008070033",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"msgSender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"ContextData\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"msgSender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"message\",\"type\":\"string\"}],\"name\":\"ContextDataRevert\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structzContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"onCrossChainCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"bytes\",\"name\":\"origin\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"chainID\",\"type\":\"uint256\"}],\"internalType\":\"structrevertContext\",\"name\":\"context\",\"type\":\"tuple\"},{\"internalType\":\"address\",\"name\":\"zrc20\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"message\",\"type\":\"bytes\"}],\"name\":\"onRevert\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}]",
+	Bin: "0x608060405234801561001057600080fd5b506107e0806100206000396000f3fe60806040526004361061002d5760003560e01c806369582bee14610036578063de43156e1461005f57610034565b3661003457005b005b34801561004257600080fd5b5061005d60048036038101906100589190610346565b610088565b005b34801561006b57600080fd5b50610086600480360381019061008191906103ea565b610115565b005b606060008383905011156100a85782828101906100a591906102fd565b90505b7ffdc887992b033668833927e252058e468fac0b6bd196d520f09c61b740e999488680600001906100d99190610575565b8860200160208101906100ec91906102d0565b8960400135338660405161010596959493929190610512565b60405180910390a1505050505050565b6060600083839050111561013557828281019061013291906102fd565b90505b7fcdc8ee677dc5ebe680fb18cebda5e26ba5ea1f0ba504a47e2a9a2ecb476dc98e8680600001906101669190610575565b88602001602081019061017991906102d0565b8960400135338660405161019296959493929190610512565b60405180910390a1505050505050565b60006101b56101b0846105fd565b6105d8565b9050828152602081018484840111156101d1576101d061075c565b5b6101dc848285610697565b509392505050565b6000813590506101f38161077c565b92915050565b60008083601f84011261020f5761020e61073e565b5b8235905067ffffffffffffffff81111561022c5761022b610739565b5b60208301915083600182028301111561024857610247610752565b5b9250929050565b600082601f8301126102645761026361073e565b5b81356102748482602086016101a2565b91505092915050565b60006060828403121561029357610292610748565b5b81905092915050565b6000606082840312156102b2576102b1610748565b5b81905092915050565b6000813590506102ca81610793565b92915050565b6000602082840312156102e6576102e5610766565b5b60006102f4848285016101e4565b91505092915050565b60006020828403121561031357610312610766565b5b600082013567ffffffffffffffff81111561033157610330610761565b5b61033d8482850161024f565b91505092915050565b60008060008060006080868803121561036257610361610766565b5b600086013567ffffffffffffffff8111156103805761037f610761565b5b61038c8882890161027d565b955050602061039d888289016101e4565b94505060406103ae888289016102bb565b935050606086013567ffffffffffffffff8111156103cf576103ce610761565b5b6103db888289016101f9565b92509250509295509295909350565b60008060008060006080868803121561040657610405610766565b5b600086013567ffffffffffffffff81111561042457610423610761565b5b6104308882890161029c565b9550506020610441888289016101e4565b9450506040610452888289016102bb565b935050606086013567ffffffffffffffff81111561047357610472610761565b5b61047f888289016101f9565b92509250509295509295909350565b6104978161065b565b82525050565b60006104a98385610639565b93506104b6838584610697565b6104bf8361076b565b840190509392505050565b60006104d58261062e565b6104df818561064a565b93506104ef8185602086016106a6565b6104f88161076b565b840191505092915050565b61050c8161068d565b82525050565b600060a082019050818103600083015261052d81888a61049d565b905061053c602083018761048e565b6105496040830186610503565b610556606083018561048e565b818103608083015261056881846104ca565b9050979650505050505050565b600080833560016020038436030381126105925761059161074d565b5b80840192508235915067ffffffffffffffff8211156105b4576105b3610743565b5b6020830192506001820236038313156105d0576105cf610757565b5b509250929050565b60006105e26105f3565b90506105ee82826106d9565b919050565b6000604051905090565b600067ffffffffffffffff8211156106185761061761070a565b5b6106218261076b565b9050602081019050919050565b600081519050919050565b600082825260208201905092915050565b600082825260208201905092915050565b60006106668261066d565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b838110156106c45780820151818401526020810190506106a9565b838111156106d3576000848401525b50505050565b6106e28261076b565b810181811067ffffffffffffffff821117156107015761070061070a565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b6107858161065b565b811461079057600080fd5b50565b61079c8161068d565b81146107a757600080fd5b5056fea26469706673582212206e1d5161a8564bff4ad3771706535f8697b52467c67a937ab41be2b7692b6a3a64736f6c63430008070033",
 }
 
 // TestZContractABI is the input ABI used to generate the binding from.
@@ -258,6 +258,48 @@ func (_TestZContract *TestZContractTransactorSession) OnRevert(context RevertCon
 	return _TestZContract.Contract.OnRevert(&_TestZContract.TransactOpts, context, zrc20, amount, message)
 }
 
+// Fallback is a paid mutator transaction binding the contract fallback function.
+//
+// Solidity: fallback() payable returns()
+func (_TestZContract *TestZContractTransactor) Fallback(opts *bind.TransactOpts, calldata []byte) (*types.Transaction, error) {
+	return _TestZContract.contract.RawTransact(opts, calldata)
+}
+
+// Fallback is a paid mutator transaction binding the contract fallback function.
+//
+// Solidity: fallback() payable returns()
+func (_TestZContract *TestZContractSession) Fallback(calldata []byte) (*types.Transaction, error) {
+	return _TestZContract.Contract.Fallback(&_TestZContract.TransactOpts, calldata)
+}
+
+// Fallback is a paid mutator transaction binding the contract fallback function.
+//
+// Solidity: fallback() payable returns()
+func (_TestZContract *TestZContractTransactorSession) Fallback(calldata []byte) (*types.Transaction, error) {
+	return _TestZContract.Contract.Fallback(&_TestZContract.TransactOpts, calldata)
+}
+
+// Receive is a paid mutator transaction binding the contract receive function.
+//
+// Solidity: receive() payable returns()
+func (_TestZContract *TestZContractTransactor) Receive(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _TestZContract.contract.RawTransact(opts, nil) // calldata is disallowed for receive function
+}
+
+// Receive is a paid mutator transaction binding the contract receive function.
+//
+// Solidity: receive() payable returns()
+func (_TestZContract *TestZContractSession) Receive() (*types.Transaction, error) {
+	return _TestZContract.Contract.Receive(&_TestZContract.TransactOpts)
+}
+
+// Receive is a paid mutator transaction binding the contract receive function.
+//
+// Solidity: receive() payable returns()
+func (_TestZContract *TestZContractTransactorSession) Receive() (*types.Transaction, error) {
+	return _TestZContract.Contract.Receive(&_TestZContract.TransactOpts)
+}
+
 // TestZContractContextDataIterator is returned from FilterContextData and is used to iterate over the raw logs and unpacked data for ContextData events raised by the TestZContract contract.
 type TestZContractContextDataIterator struct {
 	Event *TestZContractContextData // Event containing the contract specifics and raw log
@@ -390,6 +432,144 @@ func (_TestZContract *TestZContractFilterer) WatchContextData(opts *bind.WatchOp
 func (_TestZContract *TestZContractFilterer) ParseContextData(log types.Log) (*TestZContractContextData, error) {
 	event := new(TestZContractContextData)
 	if err := _TestZContract.contract.UnpackLog(event, "ContextData", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// TestZContractContextDataRevertIterator is returned from FilterContextDataRevert and is used to iterate over the raw logs and unpacked data for ContextDataRevert events raised by the TestZContract contract.
+type TestZContractContextDataRevertIterator struct {
+	Event *TestZContractContextDataRevert // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *TestZContractContextDataRevertIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(TestZContractContextDataRevert)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(TestZContractContextDataRevert)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *TestZContractContextDataRevertIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *TestZContractContextDataRevertIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// TestZContractContextDataRevert represents a ContextDataRevert event raised by the TestZContract contract.
+type TestZContractContextDataRevert struct {
+	Origin    []byte
+	Sender    common.Address
+	ChainID   *big.Int
+	MsgSender common.Address
+	Message   string
+	Raw       types.Log // Blockchain specific contextual infos
+}
+
+// FilterContextDataRevert is a free log retrieval operation binding the contract event 0xfdc887992b033668833927e252058e468fac0b6bd196d520f09c61b740e99948.
+//
+// Solidity: event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message)
+func (_TestZContract *TestZContractFilterer) FilterContextDataRevert(opts *bind.FilterOpts) (*TestZContractContextDataRevertIterator, error) {
+
+	logs, sub, err := _TestZContract.contract.FilterLogs(opts, "ContextDataRevert")
+	if err != nil {
+		return nil, err
+	}
+	return &TestZContractContextDataRevertIterator{contract: _TestZContract.contract, event: "ContextDataRevert", logs: logs, sub: sub}, nil
+}
+
+// WatchContextDataRevert is a free log subscription operation binding the contract event 0xfdc887992b033668833927e252058e468fac0b6bd196d520f09c61b740e99948.
+//
+// Solidity: event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message)
+func (_TestZContract *TestZContractFilterer) WatchContextDataRevert(opts *bind.WatchOpts, sink chan<- *TestZContractContextDataRevert) (event.Subscription, error) {
+
+	logs, sub, err := _TestZContract.contract.WatchLogs(opts, "ContextDataRevert")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(TestZContractContextDataRevert)
+				if err := _TestZContract.contract.UnpackLog(event, "ContextDataRevert", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseContextDataRevert is a log parse operation binding the contract event 0xfdc887992b033668833927e252058e468fac0b6bd196d520f09c61b740e99948.
+//
+// Solidity: event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message)
+func (_TestZContract *TestZContractFilterer) ParseContextDataRevert(log types.Log) (*TestZContractContextDataRevert, error) {
+	event := new(TestZContractContextDataRevert)
+	if err := _TestZContract.contract.UnpackLog(event, "ContextDataRevert", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
