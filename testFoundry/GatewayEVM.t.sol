@@ -111,6 +111,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceBefore, 0);
         uint256 balanceBeforeCustody = token.balanceOf(address(custody));
 
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
+        vm.expectCall(address(token), 0, transferData);
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
@@ -141,6 +143,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceBefore, 0);
         uint256 balanceBeforeCustody = token.balanceOf(address(custody));
 
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
+        vm.expectCall(address(token), 0, transferData);
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount / 2, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
@@ -171,6 +175,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceBefore, 0);
         uint256 balanceBeforeCustody = token.balanceOf(address(custody));
 
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
+        vm.expectCall(address(token), 0, transferData);
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(custody));
@@ -200,6 +206,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceBefore, 0);
         uint256 balanceBeforeCustody = token.balanceOf(address(custody));
 
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(destination), amount);
+        vm.expectCall(address(token), 0, transferData);
         vm.expectEmit(true, true, true, true, address(custody));
         emit Withdraw(address(token), destination, amount);
         custody.withdraw(address(token), destination, amount);
