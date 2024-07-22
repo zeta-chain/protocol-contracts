@@ -30,7 +30,7 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
     }
 
     // Function to handle token transfer
-    function receiveTokens(uint256 amount) external override nonReentrant {
+    function receiveTokens(uint256 amount) external override {
         // Transfer tokens from the sender to this contract
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), amount);
     }
