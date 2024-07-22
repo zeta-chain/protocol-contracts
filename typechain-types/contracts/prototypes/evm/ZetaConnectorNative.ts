@@ -33,6 +33,7 @@ export interface ZetaConnectorNativeInterface extends utils.Interface {
     "receiveTokens(uint256)": FunctionFragment;
     "withdraw(address,uint256,bytes32)": FunctionFragment;
     "withdrawAndCall(address,uint256,bytes,bytes32)": FunctionFragment;
+    "withdrawAndRevert(address,uint256,bytes,bytes32)": FunctionFragment;
     "zetaToken()": FunctionFragment;
   };
 
@@ -42,6 +43,7 @@ export interface ZetaConnectorNativeInterface extends utils.Interface {
       | "receiveTokens"
       | "withdraw"
       | "withdrawAndCall"
+      | "withdrawAndRevert"
       | "zetaToken"
   ): FunctionFragment;
 
@@ -67,6 +69,15 @@ export interface ZetaConnectorNativeInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndRevert",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
@@ -79,15 +90,21 @@ export interface ZetaConnectorNativeInterface extends utils.Interface {
     functionFragment: "withdrawAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndRevert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
     "Withdraw(address,uint256)": EventFragment;
     "WithdrawAndCall(address,uint256,bytes)": EventFragment;
+    "WithdrawAndRevert(address,uint256,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WithdrawAndCall"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawAndRevert"): EventFragment;
 }
 
 export interface WithdrawEventObject {
@@ -112,6 +129,19 @@ export type WithdrawAndCallEvent = TypedEvent<
 >;
 
 export type WithdrawAndCallEventFilter = TypedEventFilter<WithdrawAndCallEvent>;
+
+export interface WithdrawAndRevertEventObject {
+  to: string;
+  amount: BigNumber;
+  data: string;
+}
+export type WithdrawAndRevertEvent = TypedEvent<
+  [string, BigNumber, string],
+  WithdrawAndRevertEventObject
+>;
+
+export type WithdrawAndRevertEventFilter =
+  TypedEventFilter<WithdrawAndRevertEvent>;
 
 export interface ZetaConnectorNative extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -162,6 +192,14 @@ export interface ZetaConnectorNative extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    withdrawAndRevert(
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     zetaToken(overrides?: CallOverrides): Promise<[string]>;
   };
 
@@ -180,6 +218,14 @@ export interface ZetaConnectorNative extends BaseContract {
   ): Promise<ContractTransaction>;
 
   withdrawAndCall(
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    data: PromiseOrValue<BytesLike>,
+    internalSendHash: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  withdrawAndRevert(
     to: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     data: PromiseOrValue<BytesLike>,
@@ -212,6 +258,14 @@ export interface ZetaConnectorNative extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    withdrawAndRevert(
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     zetaToken(overrides?: CallOverrides): Promise<string>;
   };
 
@@ -235,6 +289,17 @@ export interface ZetaConnectorNative extends BaseContract {
       amount?: null,
       data?: null
     ): WithdrawAndCallEventFilter;
+
+    "WithdrawAndRevert(address,uint256,bytes)"(
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): WithdrawAndRevertEventFilter;
+    WithdrawAndRevert(
+      to?: PromiseOrValue<string> | null,
+      amount?: null,
+      data?: null
+    ): WithdrawAndRevertEventFilter;
   };
 
   estimateGas: {
@@ -253,6 +318,14 @@ export interface ZetaConnectorNative extends BaseContract {
     ): Promise<BigNumber>;
 
     withdrawAndCall(
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    withdrawAndRevert(
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
@@ -279,6 +352,14 @@ export interface ZetaConnectorNative extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     withdrawAndCall(
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      data: PromiseOrValue<BytesLike>,
+      internalSendHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawAndRevert(
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,

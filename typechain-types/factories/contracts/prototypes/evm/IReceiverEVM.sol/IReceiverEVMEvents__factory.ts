@@ -122,6 +122,25 @@ const _abi = [
     name: "ReceivedPayable",
     type: "event",
   },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "ReceivedRevert",
+    type: "event",
+  },
 ] as const;
 
 export class IReceiverEVMEvents__factory {
