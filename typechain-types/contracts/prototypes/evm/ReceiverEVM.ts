@@ -31,6 +31,7 @@ import type {
 export interface ReceiverEVMInterface extends utils.Interface {
   functions: {
     "receiveERC20(uint256,address,address)": FunctionFragment;
+    "receiveERC20Partial(uint256,address,address)": FunctionFragment;
     "receiveNoParams()": FunctionFragment;
     "receiveNonPayable(string[],uint256[],bool)": FunctionFragment;
     "receivePayable(string,uint256,bool)": FunctionFragment;
@@ -39,6 +40,7 @@ export interface ReceiverEVMInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "receiveERC20"
+      | "receiveERC20Partial"
       | "receiveNoParams"
       | "receiveNonPayable"
       | "receivePayable"
@@ -46,6 +48,14 @@ export interface ReceiverEVMInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "receiveERC20",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "receiveERC20Partial",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
@@ -75,6 +85,10 @@ export interface ReceiverEVMInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "receiveERC20",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "receiveERC20Partial",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -189,6 +203,13 @@ export interface ReceiverEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    receiveERC20Partial(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     receiveNoParams(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -215,6 +236,13 @@ export interface ReceiverEVM extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  receiveERC20Partial(
+    amount: PromiseOrValue<BigNumberish>,
+    token: PromiseOrValue<string>,
+    destination: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   receiveNoParams(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -235,6 +263,13 @@ export interface ReceiverEVM extends BaseContract {
 
   callStatic: {
     receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    receiveERC20Partial(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
@@ -312,6 +347,13 @@ export interface ReceiverEVM extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    receiveERC20Partial(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     receiveNoParams(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -333,6 +375,13 @@ export interface ReceiverEVM extends BaseContract {
 
   populateTransaction: {
     receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    receiveERC20Partial(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
