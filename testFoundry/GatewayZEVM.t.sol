@@ -10,13 +10,15 @@ import "contracts/zevm/SystemContract.sol";
 import "contracts/zevm/interfaces/IZRC20.sol";
 import "contracts/prototypes/zevm/TestZContract.sol";
 import "contracts/prototypes/zevm/IGatewayZEVM.sol";
+import "contracts/zevm/WZETA.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
 
 contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
-    address proxy;
+    address payable proxy;
     GatewayZEVM gateway;
     ZRC20New zrc20;
+    WETH9 zetaToken;
     SystemContract systemContract;
     TestZContract testZContract;
     address owner;
@@ -26,10 +28,12 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         owner = address(this);
         addr1 = address(0x1234);
 
-        proxy = address(new ERC1967Proxy(
+        zetaToken = new WETH9();
+
+        proxy = payable(address(new ERC1967Proxy(
             address(new GatewayZEVM()),
-            abi.encodeWithSelector(GatewayZEVM.initialize.selector, "")
-        ));
+            abi.encodeWithSelector(GatewayZEVM.initialize.selector, address(zetaToken))
+        )));
         gateway = GatewayZEVM(proxy);
         testZContract = new TestZContract();
 
@@ -38,13 +42,17 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zrc20 = new ZRC20New("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
-
         vm.deal(gateway.FUNGIBLE_MODULE_ADDRESS(), 1000000000);
+        zetaToken.deposit{value: 10}();
+        zetaToken.approve(address(gateway), 10);
         zrc20.deposit(owner, 100000);
         vm.stopPrank();
 
-        vm.prank(owner);
+        vm.startPrank(owner);
         zrc20.approve(address(gateway), 100000);
+        zetaToken.deposit{value: 10}();
+        zetaToken.approve(address(gateway), 10);
+        vm.stopPrank();
     }
 
     function testWithdrawZRC20() public {
@@ -70,6 +78,47 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
     }
 
+    function testWithdrawZETA() public {
+        uint256 amount = 1;
+        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 fungibleModuleBalanceBefore = gateway.FUNGIBLE_MODULE_ADDRESS().balance;
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawal(owner, address(zetaToken), abi.encodePacked(gateway.FUNGIBLE_MODULE_ADDRESS()), amount, 0, 0, "");
+        gateway.withdraw(amount);
+
+        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+
+        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+        
+        // Verify amount is transfered to fungible module
+        assertEq(fungibleModuleBalanceBefore + 1, gateway.FUNGIBLE_MODULE_ADDRESS().balance);
+    }
+
+    function testWithdrawZETAWithMessage() public {
+        uint256 amount = 1;
+        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 fungibleModuleBalanceBefore = gateway.FUNGIBLE_MODULE_ADDRESS().balance;
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawal(owner, address(zetaToken), abi.encodePacked(gateway.FUNGIBLE_MODULE_ADDRESS()), amount, 0, 0, message);
+        gateway.withdrawAndCall(amount, message);
+
+        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+
+        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+        
+        // Verify amount is transfered to fungible module
+        assertEq(fungibleModuleBalanceBefore + 1, gateway.FUNGIBLE_MODULE_ADDRESS().balance);
+    }
+
     function testCall() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectEmit(true, true, true, true, address(gateway));
@@ -79,19 +128,29 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 }
 
 contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
+    address payable proxy;
     GatewayZEVM gateway;
     ZRC20New zrc20;
+    WETH9 zetaToken;
     SystemContract systemContract;
     TestZContract testZContract;
     address owner;
     address addr1;
     event ContextData(bytes origin, address sender, uint256 chainID, address msgSender, string message);
+    event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message);
 
     function setUp() public {
         owner = address(this);
         addr1 = address(0x1234);
 
-        gateway = new GatewayZEVM();
+        zetaToken = new WETH9();
+
+        proxy = payable(address(new ERC1967Proxy(
+            address(new GatewayZEVM()),
+            abi.encodeWithSelector(GatewayZEVM.initialize.selector, address(zetaToken))
+        )));
+        gateway = GatewayZEVM(proxy);
+
         testZContract = new TestZContract();
 
         vm.startPrank(gateway.FUNGIBLE_MODULE_ADDRESS());
@@ -99,13 +158,17 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         zrc20 = new ZRC20New("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
-
         vm.deal(gateway.FUNGIBLE_MODULE_ADDRESS(), 1000000000);
+        zetaToken.deposit{value: 10}();
+        zetaToken.approve(address(gateway), 10);
         zrc20.deposit(owner, 100000);
         vm.stopPrank();
 
-        vm.prank(owner);
+        vm.startPrank(owner);
         zrc20.approve(address(gateway), 100000);
+        zetaToken.deposit{value: 10}();
+        zetaToken.approve(address(gateway), 10);
+        vm.stopPrank();
     }
 
     function testDeposit() public {
@@ -132,8 +195,22 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.prank(gateway.FUNGIBLE_MODULE_ADDRESS());
         gateway.execute(context, address(zrc20), 1, address(testZContract), message);
     }
+
+    function testExecuteRevertZContract() public {
+        bytes memory message = abi.encode("hello");
+        revertContext memory context = revertContext({
+            origin: abi.encodePacked(address(gateway)),
+            sender: gateway.FUNGIBLE_MODULE_ADDRESS(),
+            chainID: 1
+        });
+
+        vm.expectEmit(true, true, true, true, address(testZContract));
+        emit ContextDataRevert(abi.encodePacked(gateway), gateway.FUNGIBLE_MODULE_ADDRESS(), 1, address(gateway), "hello");
+        vm.prank(gateway.FUNGIBLE_MODULE_ADDRESS());
+        gateway.executeRevert(context, address(zrc20), 1, address(testZContract), message);
+    }
    
-    function testDepositAndCallZContract() public {
+    function testDepositZRC20AndCallZContract() public {
         uint256 balanceBefore = zrc20.balanceOf(address(testZContract));
         assertEq(0, balanceBefore);
 
@@ -151,5 +228,52 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         uint256 balanceAfter = zrc20.balanceOf(address(testZContract));
         assertEq(1, balanceAfter);
+    }
+
+    function testDepositAndRevertZRC20AndCallZContract() public {
+        uint256 balanceBefore = zrc20.balanceOf(address(testZContract));
+        assertEq(0, balanceBefore);
+
+        bytes memory message = abi.encode("hello");
+        revertContext memory context = revertContext({
+            origin: abi.encodePacked(address(gateway)),
+            sender: gateway.FUNGIBLE_MODULE_ADDRESS(),
+            chainID: 1
+        });
+    
+        vm.expectEmit(true, true, true, true, address(testZContract));
+        emit ContextDataRevert(abi.encodePacked(gateway), gateway.FUNGIBLE_MODULE_ADDRESS(), 1, address(gateway), "hello");
+        vm.prank(gateway.FUNGIBLE_MODULE_ADDRESS());
+        gateway.depositAndRevert(context, address(zrc20), 1, address(testZContract), message);
+
+        uint256 balanceAfter = zrc20.balanceOf(address(testZContract));
+        assertEq(1, balanceAfter);
+    }
+
+    function testDepositZETAAndCallZContract() public {
+        uint256 amount = 1;
+        uint256 fungibleBalanceBefore = zetaToken.balanceOf(gateway.FUNGIBLE_MODULE_ADDRESS());
+        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 destinationBalanceBefore = address(testZContract).balance;
+        bytes memory message = abi.encode("hello");
+        zContext memory context = zContext({
+            origin: abi.encodePacked(address(gateway)),
+            sender: gateway.FUNGIBLE_MODULE_ADDRESS(),
+            chainID: 1
+        });
+
+        vm.expectEmit(true, true, true, true, address(testZContract));
+        emit ContextData(abi.encodePacked(gateway), gateway.FUNGIBLE_MODULE_ADDRESS(), amount, address(gateway), "hello");
+        vm.prank(gateway.FUNGIBLE_MODULE_ADDRESS());
+        gateway.depositAndCall(context, amount, address(testZContract), message);
+
+        uint256 fungibleBalanceAfter = zetaToken.balanceOf(gateway.FUNGIBLE_MODULE_ADDRESS());
+        assertEq(fungibleBalanceBefore - amount, fungibleBalanceAfter);
+
+        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+        
+        // Verify amount is transfered to destination
+        assertEq(destinationBalanceBefore + amount, address(testZContract).balance);
     }
 }

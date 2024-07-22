@@ -47,4 +47,5 @@ interface IGatewayZEVMErrors {
     error CallerIsNotFungibleModule();
     error InvalidTarget();
     error FailedZetaSent();
+    error OnlyWZETAOrFungible();
 }

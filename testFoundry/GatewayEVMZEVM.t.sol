@@ -40,7 +40,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     address tssAddress;
 
     // zevm
-    address proxyZEVM;
+    address payable proxyZEVM;
     GatewayZEVM gatewayZEVM;
     SenderZEVM senderZEVM;
     SystemContractMock systemContract;
@@ -74,10 +74,10 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         receiverEVM = new ReceiverEVM();
 
         // zevm
-        proxyZEVM = address(new ERC1967Proxy(
+        proxyZEVM = payable(address(new ERC1967Proxy(
             address(new GatewayZEVM()),
             abi.encodeWithSelector(GatewayZEVM.initialize.selector, "")
-        ));
+        )));
         gatewayZEVM = GatewayZEVM(proxyZEVM);
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
         address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
