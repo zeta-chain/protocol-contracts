@@ -29,6 +29,17 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         emit WithdrawAndCall(to, amount, data);
     }
 
+    // WithdrawAndRevert is called by TSS address, it transfers zetaToken to the gateway and calls onRevert on a contract
+    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant {
+        // Transfer zetaToken to the Gateway contract
+        IERC20(zetaToken).safeTransfer(address(gateway), amount);
+
+        // Forward the call to the Gateway contract
+        gateway.revertWithERC20(address(zetaToken), to, amount, data);
+
+        emit WithdrawAndRevert(to, amount, data);
+    }
+
     // Function to handle token transfer
     function receiveTokens(uint256 amount) external override {
         // Transfer tokens from the sender to this contract

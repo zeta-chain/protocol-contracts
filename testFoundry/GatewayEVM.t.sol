@@ -32,6 +32,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
     event Withdraw(address indexed token, address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
+    event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data);
 
     function setUp() public {
         owner = address(this);
@@ -223,6 +224,59 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that gateway doesn't hold any tokens
         uint256 balanceGateway = token.balanceOf(address(gateway));
         assertEq(balanceGateway, 0);
+    }
+
+    function testWithdrawAndRevertThroughCustody() public {
+        uint256 amount = 100000;
+        bytes memory data = abi.encodePacked("hello");
+        uint256 balanceBefore = token.balanceOf(address(receiver));
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
+
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
+        vm.expectCall(address(token), 0, transferData);
+        // Verify that onRevert callback was called
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedRevert(address(gateway), data);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit RevertedWithERC20(address(token), address(receiver), amount, data);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit WithdrawAndRevert(address(token), address(receiver), amount, data);
+        custody.withdrawAndRevert(address(token), address(receiver), amount, data);
+
+        // Verify that the tokens were transferred to the receiver address
+        uint256 balanceAfter = token.balanceOf(address(receiver));
+        assertEq(balanceAfter, amount);
+
+        // Verify that zeta connector doesn't get more tokens
+        uint256 balanceAfterCustody = token.balanceOf(address(custody));
+        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
+
+        // Verify that the approval was reset
+        uint256 allowance = token.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
+    }
+
+    function testExecuteRevert() public {
+        uint256 value = 1 ether;
+        bytes memory data = abi.encodePacked("hello");
+        uint256 balanceBefore = address(receiver).balance;
+        assertEq(balanceBefore, 0);
+
+        // Verify that onRevert callback was called
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedRevert(address(gateway), data);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Reverted(address(receiver), 1 ether, data);
+        gateway.executeRevert{value: value}(address(receiver), data);
+
+        // Verify that the tokens were transferred to the receiver address
+        uint256 balanceAfter = address(receiver).balance;
+        assertEq(balanceAfter, 1 ether);
     }
 }
 

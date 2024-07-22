@@ -3,14 +3,10 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "./IReceiverEVM.sol";
 
-contract ReceiverEVM {
+contract ReceiverEVM is IReceiverEVMEvents {
     using SafeERC20 for IERC20;
-
-    event ReceivedPayable(address sender, uint256 value, string str, uint256 num, bool flag);
-    event ReceivedNonPayable(address sender, string[] strs, uint256[] nums, bool flag);
-    event ReceivedERC20(address sender, uint256 amount, address token, address destination);
-    event ReceivedNoParams(address sender);
 
     // Payable function
     function receivePayable(string memory str, uint256 num, bool flag) external payable {
@@ -42,4 +38,12 @@ contract ReceiverEVM {
     function receiveNoParams() external {
         emit ReceivedNoParams(msg.sender);
     }
+
+    // onRevertCallback
+    function onRevert(bytes calldata data) external {
+        emit ReceivedRevert(msg.sender, data);
+    }
+
+    receive() external payable {}
+    fallback() external payable {}
 }

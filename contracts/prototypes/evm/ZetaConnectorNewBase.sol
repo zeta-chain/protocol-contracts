@@ -16,6 +16,7 @@ abstract contract ZetaConnectorNewBase is ReentrancyGuard {
 
     event Withdraw(address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed to, uint256 amount, bytes data);
+    event WithdrawAndRevert(address indexed to, uint256 amount, bytes data);
 
     constructor(address _gateway, address _zetaToken) {
         if (_gateway == address(0) || _zetaToken == address(0)) {
@@ -28,6 +29,8 @@ abstract contract ZetaConnectorNewBase is ReentrancyGuard {
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external virtual;
 
     function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external virtual;
+
+    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external virtual;
 
     function receiveTokens(uint256 amount) external virtual;
 }

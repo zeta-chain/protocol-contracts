@@ -31,6 +31,7 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
 
     event Withdraw(address indexed to, uint256 amount);
     event WithdrawAndCall(address indexed to, uint256 amount, bytes data);
+    event WithdrawAndRevert(address indexed to, uint256 amount, bytes data);
 
     function setUp() public {
         owner = address(this);
@@ -159,6 +160,42 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         // Verify that zeta connector doesn't get more tokens
         uint256 balanceAfterZetaConnector = zetaToken.balanceOf(address(zetaConnector));
         assertEq(balanceAfterZetaConnector, balanceBeforeZetaConnector - amount / 2);
+
+        // Verify that the approval was reset
+        uint256 allowance = zetaToken.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = zetaToken.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
+    }
+
+    function testWithdrawAndRevert() public {
+        uint256 amount = 100000;
+        bytes32 internalSendHash = "";
+        bytes memory data = abi.encodePacked("hello");
+        uint256 balanceBefore = zetaToken.balanceOf(address(receiver));
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
+
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
+        vm.expectCall(address(zetaToken), 0, transferData);
+        // Verify that onRevert callback was called
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedRevert(address(gateway), data);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit RevertedWithERC20(address(zetaToken), address(receiver), amount, data);
+        vm.expectEmit(true, true, true, true, address(zetaConnector));
+        emit WithdrawAndRevert(address(receiver), amount, data);
+        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+
+        // Verify that the tokens were transferred to the receiver address
+        uint256 balanceAfter = zetaToken.balanceOf(address(receiver));
+        assertEq(balanceAfter, amount);
+
+        // Verify that zeta connector doesn't get more tokens
+        uint256 balanceAfterZetaConnector = zetaToken.balanceOf(address(zetaConnector));
+        assertEq(balanceAfterZetaConnector, balanceBeforeZetaConnector - amount);
 
         // Verify that the approval was reset
         uint256 allowance = zetaToken.allowance(address(gateway), address(receiver));

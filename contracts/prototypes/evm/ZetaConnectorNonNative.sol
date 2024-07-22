@@ -27,6 +27,17 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
         emit WithdrawAndCall(to, amount, data);
     }
 
+    // WithdrawAndRevert is called by TSS address, it mints zetaToken to the gateway and calls onRevert on a contract
+    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant {
+        // Mint zetaToken to the Gateway contract
+        IZetaNonEthNew(zetaToken).mint(address(gateway), amount, internalSendHash);
+
+        // Forward the call to the Gateway contract
+        gateway.revertWithERC20(address(zetaToken), to, amount, data);
+
+        emit WithdrawAndRevert(to, amount, data);
+    }
+
     // Function to handle token transfer and burn them
     function receiveTokens(uint256 amount) external override {
         // Burn the tokens
