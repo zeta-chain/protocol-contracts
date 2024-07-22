@@ -58,23 +58,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token.transfer(address(custody), 500000);
     }
 
-    function testForwardCallToReceivePayable() public {
-        string memory str = "Hello, Foundry!";
-        uint256 num = 42;
-        bool flag = true;
-        uint256 value = 1 ether;
-
-        bytes memory data = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
-        
-        vm.expectCall(address(receiver), value, data);
-        vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedPayable(address(gateway), value, str, num, flag);
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Executed(address(receiver), value, data);
-      
-        gateway.execute{value: value}(address(receiver), data);
-    }
-
     function testForwardCallToReceiveNonPayable() public {
         string[] memory str = new string[](1);
         str[0] = "Hello, Foundry!";
@@ -91,6 +74,26 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         emit Executed(address(receiver), 0, data);
         
         gateway.execute(address(receiver), data);
+    }
+
+    function testForwardCallToReceivePayable() public {
+        string memory str = "Hello, Foundry!";
+        uint256 num = 42;
+        bool flag = true;
+        uint256 value = 1 ether;
+        assertEq(0, address(receiver).balance);
+
+        bytes memory data = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
+        
+        vm.expectCall(address(receiver), 1 ether, data);
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedPayable(address(gateway), value, str, num, flag);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Executed(address(receiver), 1 ether, data);
+        
+        gateway.execute{value: value}(address(receiver), data);
+
+        assertEq(value, address(receiver).balance);
     }
 
     function testForwardCallToReceiveNoParams() public {
@@ -137,6 +140,13 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceGateway, 0);
     }
 
+    function testForwardCallToReceiveERC20ThroughCustodyFailsIfAmountIs0() public {
+        uint256 amount = 0;
+        bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
+        vm.expectRevert(InsufficientERC20Amount.selector);
+        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+    }
+
     function testForwardCallToReceiveERC20PartialThroughCustody() public {
         uint256 amount = 100000;
         bytes memory data = abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
@@ -168,6 +178,14 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         uint256 balanceGateway = token.balanceOf(address(gateway));
         assertEq(balanceGateway, 0);
     }
+
+    function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfAmountIs0() public {
+        uint256 amount = 0;
+        bytes memory data = abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
+        vm.expectRevert(InsufficientERC20Amount.selector);
+        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+    }
+
 
     function testForwardCallToReceiveNoParamsThroughCustody() public {
         uint256 amount = 100000;
@@ -259,6 +277,15 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         // Verify that gateway doesn't hold any tokens
         uint256 balanceGateway = token.balanceOf(address(gateway));
         assertEq(balanceGateway, 0);
+    }
+
+
+    function testWithdrawAndRevertThroughCustodyFailsIfAmountIs0() public {
+        uint256 amount = 0;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.expectRevert(InsufficientERC20Amount.selector);
+        custody.withdrawAndRevert(address(token), address(receiver), amount, data);
     }
 
     function testExecuteRevert() public {

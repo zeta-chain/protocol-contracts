@@ -85,7 +85,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         uint256 amount,
         bytes calldata data
     ) public nonReentrant {
-        if (amount == 0) revert InsufficientETHAmount();
+        if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
         if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
