@@ -20,12 +20,14 @@ export interface IReceiverEVMEventsInterface extends utils.Interface {
     "ReceivedNoParams(address)": EventFragment;
     "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
     "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
+    "ReceivedRevert(address,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ReceivedERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNoParams"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNonPayable"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedPayable"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedRevert"): EventFragment;
 }
 
 export interface ReceivedERC20EventObject {
@@ -79,6 +81,17 @@ export type ReceivedPayableEvent = TypedEvent<
 >;
 
 export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
+
+export interface ReceivedRevertEventObject {
+  sender: string;
+  data: string;
+}
+export type ReceivedRevertEvent = TypedEvent<
+  [string, string],
+  ReceivedRevertEventObject
+>;
+
+export type ReceivedRevertEventFilter = TypedEventFilter<ReceivedRevertEvent>;
 
 export interface IReceiverEVMEvents extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -154,6 +167,12 @@ export interface IReceiverEVMEvents extends BaseContract {
       num?: null,
       flag?: null
     ): ReceivedPayableEventFilter;
+
+    "ReceivedRevert(address,bytes)"(
+      sender?: null,
+      data?: null
+    ): ReceivedRevertEventFilter;
+    ReceivedRevert(sender?: null, data?: null): ReceivedRevertEventFilter;
   };
 
   estimateGas: {};

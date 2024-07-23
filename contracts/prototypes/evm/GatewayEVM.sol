@@ -20,7 +20,6 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     /// @notice The address of the custody contract.
     address public custody;
-
     /// @notice The address of the TSS (Threshold Signature Scheme) contract.
     address public tssAddress;
     /// @notice The address of the ZetaConnector contract.
@@ -86,11 +85,10 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         uint256 amount,
         bytes calldata data
     ) public nonReentrant {
-        if (amount == 0) revert InsufficientETHAmount();
+        if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
         if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
-
         // Execute the call on the target contract
         bytes memory result = _execute(to, data);
 
@@ -100,7 +98,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            transferToAssetHandler(token, amount);
+            transferToAssetHandler(token, remainingBalance);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);

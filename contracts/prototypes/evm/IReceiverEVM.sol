@@ -6,4 +6,5 @@ interface IReceiverEVMEvents {
     event ReceivedNonPayable(address sender, string[] strs, uint256[] nums, bool flag);
     event ReceivedERC20(address sender, uint256 amount, address token, address destination);
     event ReceivedNoParams(address sender);
+    event ReceivedRevert(address sender, bytes data);
 }

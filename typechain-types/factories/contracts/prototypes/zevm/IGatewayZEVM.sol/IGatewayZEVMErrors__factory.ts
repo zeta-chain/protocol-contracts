@@ -37,6 +37,11 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "OnlyWZETAOrFungible",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "WithdrawalFailed",
     type: "error",
   },

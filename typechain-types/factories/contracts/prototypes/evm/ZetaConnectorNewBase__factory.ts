@@ -60,6 +60,31 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "WithdrawAndRevert",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "gateway",
     outputs: [
@@ -132,6 +157,34 @@ const _abi = [
       },
     ],
     name: "withdrawAndCall",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes32",
+        name: "internalSendHash",
+        type: "bytes32",
+      },
+    ],
+    name: "withdrawAndRevert",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

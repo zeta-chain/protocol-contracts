@@ -30,7 +30,9 @@ import type {
 
 export interface ReceiverEVMInterface extends utils.Interface {
   functions: {
+    "onRevert(bytes)": FunctionFragment;
     "receiveERC20(uint256,address,address)": FunctionFragment;
+    "receiveERC20Partial(uint256,address,address)": FunctionFragment;
     "receiveNoParams()": FunctionFragment;
     "receiveNonPayable(string[],uint256[],bool)": FunctionFragment;
     "receivePayable(string,uint256,bool)": FunctionFragment;
@@ -38,14 +40,28 @@ export interface ReceiverEVMInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "onRevert"
       | "receiveERC20"
+      | "receiveERC20Partial"
       | "receiveNoParams"
       | "receiveNonPayable"
       | "receivePayable"
   ): FunctionFragment;
 
   encodeFunctionData(
+    functionFragment: "onRevert",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "receiveERC20",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "receiveERC20Partial",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
@@ -73,8 +89,13 @@ export interface ReceiverEVMInterface extends utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "receiveERC20",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "receiveERC20Partial",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -95,12 +116,14 @@ export interface ReceiverEVMInterface extends utils.Interface {
     "ReceivedNoParams(address)": EventFragment;
     "ReceivedNonPayable(address,string[],uint256[],bool)": EventFragment;
     "ReceivedPayable(address,uint256,string,uint256,bool)": EventFragment;
+    "ReceivedRevert(address,bytes)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ReceivedERC20"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNoParams"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedNonPayable"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReceivedPayable"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReceivedRevert"): EventFragment;
 }
 
 export interface ReceivedERC20EventObject {
@@ -155,6 +178,17 @@ export type ReceivedPayableEvent = TypedEvent<
 
 export type ReceivedPayableEventFilter = TypedEventFilter<ReceivedPayableEvent>;
 
+export interface ReceivedRevertEventObject {
+  sender: string;
+  data: string;
+}
+export type ReceivedRevertEvent = TypedEvent<
+  [string, string],
+  ReceivedRevertEventObject
+>;
+
+export type ReceivedRevertEventFilter = TypedEventFilter<ReceivedRevertEvent>;
+
 export interface ReceiverEVM extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -182,7 +216,19 @@ export interface ReceiverEVM extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    onRevert(
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    receiveERC20Partial(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
@@ -208,7 +254,19 @@ export interface ReceiverEVM extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  onRevert(
+    data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   receiveERC20(
+    amount: PromiseOrValue<BigNumberish>,
+    token: PromiseOrValue<string>,
+    destination: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  receiveERC20Partial(
     amount: PromiseOrValue<BigNumberish>,
     token: PromiseOrValue<string>,
     destination: PromiseOrValue<string>,
@@ -234,7 +292,19 @@ export interface ReceiverEVM extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    onRevert(
+      data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    receiveERC20Partial(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
@@ -302,10 +372,28 @@ export interface ReceiverEVM extends BaseContract {
       num?: null,
       flag?: null
     ): ReceivedPayableEventFilter;
+
+    "ReceivedRevert(address,bytes)"(
+      sender?: null,
+      data?: null
+    ): ReceivedRevertEventFilter;
+    ReceivedRevert(sender?: null, data?: null): ReceivedRevertEventFilter;
   };
 
   estimateGas: {
+    onRevert(
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    receiveERC20Partial(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,
@@ -332,7 +420,19 @@ export interface ReceiverEVM extends BaseContract {
   };
 
   populateTransaction: {
+    onRevert(
+      data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     receiveERC20(
+      amount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      destination: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    receiveERC20Partial(
       amount: PromiseOrValue<BigNumberish>,
       token: PromiseOrValue<string>,
       destination: PromiseOrValue<string>,

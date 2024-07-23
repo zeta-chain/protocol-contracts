@@ -4,8 +4,10 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../../zevm/interfaces/zContract.sol";
 
+// @notice This contract is used just for testing
 contract TestZContract is UniversalContract {
     event ContextData(bytes origin, address sender, uint256 chainID, address msgSender, string message);
+    event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message);
 
     function onCrossChainCall(
         zContext calldata context,
@@ -30,6 +32,9 @@ contract TestZContract is UniversalContract {
         if (message.length > 0) {
             decodedMessage = abi.decode(message, (string));
         }
-        emit ContextData(context.origin, context.sender, context.chainID, msg.sender, decodedMessage);
+        emit ContextDataRevert(context.origin, context.sender, context.chainID, msg.sender, decodedMessage);
     }
+
+    receive() external payable {}
+    fallback() external payable {}
 }

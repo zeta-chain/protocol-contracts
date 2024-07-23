@@ -11,7 +11,6 @@ import "../../zevm/interfaces/zContract.sol";
 import "./IGatewayZEVM.sol";
 import "../../zevm/interfaces/IWZETA.sol";
 
-
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
 contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
@@ -37,6 +36,11 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
+
+    /// @dev Receive function to receive ZETA from WETH9.withdraw().
+    receive() external payable {
+        if (msg.sender != zetaToken && msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyWZETAOrFungible();
+    }
 
     function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFee();
@@ -75,13 +79,13 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     // Withdraw ZETA to external chain
     function withdraw(uint256 amount) external nonReentrant {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, address(0), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, "");
+        emit Withdrawal(msg.sender, address(zetaToken), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, "");
     }
 
     // Withdraw ZETA and call smart contract on external chain
     function withdrawAndCall(uint256 amount, bytes calldata message) external nonReentrant {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, address(0), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message);
+        emit Withdrawal(msg.sender, address(zetaToken), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message);
     }
 
     // Call smart contract on external chain without asset transfer
