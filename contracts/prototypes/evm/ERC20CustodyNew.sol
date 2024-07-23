@@ -2,24 +2,20 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./IGatewayEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+import "./IGatewayEVM.sol";
+import "./IERC20CustodyNew.sol";
 
 // As the current version, ERC20CustodyNew hold the ERC20s deposited on ZetaChain
 // This version include a functionality allowing to call a contract
 // ERC20Custody doesn't call smart contract directly, it passes through the Gateway contract
-contract ERC20CustodyNew is ReentrancyGuard {
+contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, ReentrancyGuard {
     using SafeERC20 for IERC20;
-    error ZeroAddress();
-    error InvalidSender();
 
     IGatewayEVM public gateway;
     address public tssAddress;
-
-    event Withdraw(address indexed token, address indexed to, uint256 amount);
-    event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
-    event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data);
 
     // @dev Only TSS address allowed modifier.
     modifier onlyTSS() {

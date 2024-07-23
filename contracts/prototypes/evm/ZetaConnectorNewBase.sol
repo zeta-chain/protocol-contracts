@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 abstract contract ZetaConnectorNewBase is ReentrancyGuard {
     using SafeERC20 for IERC20;
-
     error ZeroAddress();
 
     IGatewayEVM public immutable gateway;
