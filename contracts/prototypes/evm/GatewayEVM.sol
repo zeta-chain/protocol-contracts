@@ -27,6 +27,22 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
+    // @dev Only TSS address allowed modifier.
+    modifier onlyTSS() {
+        if (msg.sender != tssAddress) {
+            revert InvalidSender();
+        }
+        _;
+    }
+
+    // @dev Only custody address allowed modifier.
+    modifier onlyCustodyOrConnector() {
+        if (msg.sender != custody && msg.sender != zetaConnector) {
+            revert InvalidSender();
+        }
+        _;
+    }
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -56,7 +72,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     // Called by the TSS
     // Calling onRevert directly
-    function executeRevert(address destination, bytes calldata data) public payable {
+    function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
         (bool success, bytes memory result) = destination.call{value: msg.value}("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
@@ -67,7 +83,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     // Called by the TSS
     // Execution without ERC20 tokens, it is payable and can be used in the case of WithdrawAndCall for Gas ZRC20
     // It can be also used for contract call without asset movement
-    function execute(address destination, bytes calldata data) external payable returns (bytes memory) {
+    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory)  {
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -84,7 +100,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) public nonReentrant {
+    ) public nonReentrant onlyCustodyOrConnector {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
@@ -111,7 +127,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) external nonReentrant {
+    ) external nonReentrant onlyCustodyOrConnector {
         if (amount == 0) revert InsufficientERC20Amount();
 
         IERC20(token).safeTransfer(address(to), amount);

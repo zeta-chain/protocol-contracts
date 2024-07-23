@@ -54,6 +54,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         token.mint(owner, 1000000);
         token.transfer(address(custody), 500000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testForwardCallToReceiveNonPayable() public {
@@ -70,7 +72,20 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         emit ReceivedNonPayable(address(gateway), str, num, flag);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), 0, data);
+        vm.prank(tssAddress);
+        gateway.execute(address(receiver), data);
+    }
+
+    function testForwardCallToReceiveNonPayableFailsIfSenderIsNotTSS() public {
+        string[] memory str = new string[](1);
+        str[0] = "Hello, Foundry!";
+        uint256[] memory num = new uint256[](1);
+        num[0] = 42;
+        bool flag = true;
+        bytes memory data = abi.encodeWithSignature("receiveNonPayable(string[],uint256[],bool)", str, num, flag);
         
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
         gateway.execute(address(receiver), data);
     }
 
@@ -88,7 +103,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         emit ReceivedPayable(address(gateway), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), 1 ether, data);
-        
+        vm.prank(tssAddress);
         gateway.execute{value: value}(address(receiver), data);
 
         assertEq(value, address(receiver).balance);
@@ -102,8 +117,26 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), 0, data);
-        
+        vm.prank(tssAddress);
         gateway.execute(address(receiver), data);
+    }
+
+    function testExecuteWithERC20FailsIfNotCustoryOrConnector() public {
+        uint256 amount = 100000;
+        bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
+
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
+        gateway.executeWithERC20(address(token), destination, amount, data);
+    }
+
+    function testRevertWithERC20FailsIfNotCustoryOrConnector() public {
+        uint256 amount = 100000;
+        bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
+
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
+        gateway.revertWithERC20(address(token), destination, amount, data);
     }
 
     function testForwardCallToReceiveERC20ThroughCustody() public {
@@ -340,11 +373,21 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         emit ReceivedRevert(address(gateway), data);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Reverted(address(receiver), 1 ether, data);
+        vm.prank(tssAddress);
         gateway.executeRevert{value: value}(address(receiver), data);
 
         // Verify that the tokens were transferred to the receiver address
         uint256 balanceAfter = address(receiver).balance;
         assertEq(balanceAfter, 1 ether);
+    }
+
+    function testExecuteRevertFailsIfSenderIsNotTSS() public {
+        uint256 value = 1 ether;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
+        gateway.executeRevert{value: value}(address(receiver), data);
     }
 }
 

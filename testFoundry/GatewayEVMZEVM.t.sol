@@ -92,6 +92,8 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
 
         vm.prank(ownerZEVM);
         zrc20.approve(address(gatewayZEVM), 1000000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testCallReceiverEVMFromZEVM() public {
@@ -111,6 +113,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.deal(address(gatewayEVM), value);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
+        vm.prank(tssAddress);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
     }
 
@@ -133,6 +136,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         emit ReceivedPayable(address(gatewayEVM), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
+        vm.prank(tssAddress);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
     }
 
@@ -172,6 +176,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         emit ReceivedPayable(address(gatewayEVM), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
+        vm.prank(tssAddress);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
     }
 
@@ -195,6 +200,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         emit ReceivedPayable(address(gatewayEVM), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
+        vm.prank(tssAddress);
         gatewayEVM.execute{value: value}(address(receiverEVM), message);
 
         // Check the balance after withdrawal
