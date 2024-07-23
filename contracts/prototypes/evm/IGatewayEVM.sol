@@ -18,6 +18,7 @@ interface IGatewayEVMErrors {
     error ZeroAddress();
     error ApprovalFailed();
     error CustodyInitialized();
+    error InvalidSender();
 }
 
 interface IGatewayEVM {

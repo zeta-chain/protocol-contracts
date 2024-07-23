@@ -45,7 +45,7 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
             abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zetaToken))
         ));
         gateway = GatewayEVM(proxy);
-        custody = new ERC20CustodyNew(address(gateway));
+        custody = new ERC20CustodyNew(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNative(address(gateway), address(zetaToken));
 
         receiver = new ReceiverEVM();
