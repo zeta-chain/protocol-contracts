@@ -50,8 +50,12 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
 
+        vm.deal(tssAddress, 1 ether);
+
+        vm.startPrank(tssAddress);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
+        vm.stopPrank();
 
         token.mint(owner, 1000000);
         token.transfer(address(custody), 500000);

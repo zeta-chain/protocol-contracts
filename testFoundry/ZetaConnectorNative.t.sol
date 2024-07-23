@@ -48,12 +48,14 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
 
         receiver = new ReceiverEVM();
 
+        vm.deal(tssAddress, 1 ether);
+
+        vm.startPrank(tssAddress);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
+        vm.stopPrank();
 
         zetaToken.mint(address(zetaConnector), 5000000);
-
-        vm.deal(tssAddress, 1 ether);
     }
 
     function testWithdraw() public {

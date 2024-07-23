@@ -179,14 +179,14 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         emit Call(msg.sender, receiver, payload);
     }
 
-    function setCustody(address _custody) external {
+    function setCustody(address _custody) external onlyTSS {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
 
         custody = _custody;
     }
 
-     function setConnector(address _zetaConnector) external {
+     function setConnector(address _zetaConnector) external onlyTSS {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
 

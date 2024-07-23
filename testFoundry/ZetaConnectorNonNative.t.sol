@@ -52,10 +52,12 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
 
         receiver = new ReceiverEVM();
 
+        vm.deal(tssAddress, 1 ether);
+
+        vm.startPrank(tssAddress);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
-
-        vm.deal(tssAddress, 1 ether);
+        vm.stopPrank();
     }
 
     function testWithdraw() public {

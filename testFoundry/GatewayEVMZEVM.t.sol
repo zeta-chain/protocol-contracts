@@ -65,8 +65,12 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         custody = new ERC20CustodyNew(address(gatewayEVM), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress);
 
+        vm.deal(tssAddress, 1 ether);
+
+        vm.startPrank(tssAddress);
         gatewayEVM.setCustody(address(custody));
         gatewayEVM.setConnector(address(zetaConnector));
+        vm.stopPrank();
 
         token.mint(ownerEVM, 1000000);
         token.transfer(address(custody), 500000);
