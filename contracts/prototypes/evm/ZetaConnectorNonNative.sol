@@ -6,8 +6,11 @@ import "./IZetaNonEthNew.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract ZetaConnectorNonNative is ZetaConnectorNewBase {
+    /// @notice Max supply for minting
     uint256 public maxSupply = 2 ** 256 - 1;
 
+    /// @notice Event triggered when max supply is updated
+    /// @param maxSupply New max supply
     event MaxSupplyUpdated(uint256 maxSupply);
     error ExceedsMaxSupply();
 
@@ -15,12 +18,13 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
         ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
     {}
 
-    /// @notice set max supply for minting
-    function setMaxSupply(uint256 maxSupply_) external onlyTSS() {
-        maxSupply = maxSupply_;
-        emit MaxSupplyUpdated(maxSupply_);
+    /// @notice Set max supply for minting
+    /// @param _maxSupply New max supply
+    /// @dev Caller must be TSS
+    function setMaxSupply(uint256 _maxSupply) external onlyTSS() {
+        maxSupply = _maxSupply;
+        emit MaxSupplyUpdated(_maxSupply);
     }
-
 
     /// @dev withdraw is called by TSS address, it mints zetaToken to the destination address
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant onlyTSS {
