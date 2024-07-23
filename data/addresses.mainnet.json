@@ -118,6 +118,50 @@
     "chain_name": "bsc_mainnet",
     "type": "zetaToken"
   },
+
+  {
+    "address": "",
+    "category": "messaging",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "connector"
+  },
+  {
+    "address": "",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "",
+    "category": "messaging",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "pauser"
+  },
+  {
+    "address": "",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "tss"
+  },
+  {
+    "address": "",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "",
+    "category": "messaging",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "zetaToken"
+  },
+
   {
     "address": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
     "category": "messaging",

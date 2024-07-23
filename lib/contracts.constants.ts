@@ -6,6 +6,12 @@ export const MAX_ETH_ADDRESS = "0xffffffffffffffffffffffffffffffffffffffff";
 
 // dev: this values should be calculated using get-salt script
 const SALT_NUMBERS = {
+  polygon_mainnet: {
+    zetaConnector: "0",
+    zetaConsumer: "0",
+    zetaERC20Custody: "0",
+    zetaToken: "0",
+  },
   baobab_testnet: {
     zetaConnector: "71733",
     zetaConsumer: "0",
