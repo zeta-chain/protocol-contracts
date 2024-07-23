@@ -32,6 +32,7 @@ abstract contract ZetaConnectorNewBase is IZetaConnectorEvents, ReentrancyGuard 
         }
         gateway = IGatewayEVM(_gateway);
         zetaToken = _zetaToken;
+        tssAddress = _tssAddress;
     }
 
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external virtual;

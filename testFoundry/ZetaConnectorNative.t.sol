@@ -52,21 +52,33 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         gateway.setConnector(address(zetaConnector));
 
         zetaToken.mint(address(zetaConnector), 5000000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testWithdraw() public {
         uint256 amount = 100000;
-        uint256 balanceBefore = zetaToken.balanceOf(destination);
         bytes32 internalSendHash = "";
+        uint256 balanceBefore = zetaToken.balanceOf(destination);
         assertEq(balanceBefore, 0);
 
         bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", destination, amount);
         vm.expectCall(address(zetaToken), 0, data);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit Withdraw(destination, amount);
+        vm.prank(tssAddress);
         zetaConnector.withdraw(destination, amount, internalSendHash);
         uint256 balanceAfter = zetaToken.balanceOf(destination);
         assertEq(balanceAfter, amount);
+    }
+
+    function testWithdrawFailsIfSenderIsNotTSS() public {
+        uint256 amount = 100000;
+        bytes32 internalSendHash = "";
+
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
+        zetaConnector.withdraw(destination, amount, internalSendHash);
     }
 
     function testWithdrawAndCallReceiveERC20() public {
@@ -83,6 +95,7 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         emit ReceivedERC20(address(gateway), amount, address(zetaToken), destination);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawAndCall(address(receiver), amount, data);
+        vm.prank(tssAddress);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
 
         // Verify that the tokens were transferred to the destination address
@@ -102,6 +115,16 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         assertEq(balanceGateway, 0);
     }
 
+    function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotTSS() public {
+        uint256 amount = 100000;
+        bytes32 internalSendHash = "";
+        bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
+
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
+        zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
+    }
+
     function testWithdrawAndCallReceiveNoParams() public {
         uint256 amount = 100000;
         bytes32 internalSendHash = "";
@@ -116,6 +139,7 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawAndCall(address(receiver), amount, data);
+        vm.prank(tssAddress);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
 
         // Verify that the no tokens were transferred to the destination address
@@ -149,6 +173,7 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         emit ReceivedERC20(address(gateway), amount / 2, address(zetaToken), destination);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawAndCall(address(receiver), amount, data);
+        vm.prank(tssAddress);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
 
         // Verify that the tokens were transferred to the destination address
@@ -185,6 +210,7 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         emit RevertedWithERC20(address(zetaToken), address(receiver), amount, data);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawAndRevert(address(receiver), amount, data);
+        vm.prank(tssAddress);
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
 
         // Verify that the tokens were transferred to the receiver address
@@ -202,5 +228,15 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         // Verify that gateway doesn't hold any tokens
         uint256 balanceGateway = zetaToken.balanceOf(address(gateway));
         assertEq(balanceGateway, 0);
+    }
+
+    function testWithdrawAndRevertFailsIfSenderIsNotTSS() public {
+        uint256 amount = 100000;
+        bytes32 internalSendHash = "";
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(owner);
+        vm.expectRevert(InvalidSender.selector);
+        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
     }
 }
