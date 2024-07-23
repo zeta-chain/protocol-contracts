@@ -12,13 +12,13 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         ZetaConnectorNewBase(_gateway, _zetaToken)
     {}
 
-    // Withdraw is called by TSS address, it directly transfers zetaToken to the destination address without contract call
+    // @dev withdraw is called by TSS address, it directly transfers zetaToken to the destination address without contract call
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant {
         IERC20(zetaToken).safeTransfer(to, amount);
         emit Withdraw(to, amount);
     }
 
-    // WithdrawAndCall is called by TSS address, it transfers zetaToken to the gateway and calls a contract
+    // @dev withdrawAndCall is called by TSS address, it transfers zetaToken to the gateway and calls a contract
     function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
@@ -29,7 +29,7 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         emit WithdrawAndCall(to, amount, data);
     }
 
-    // WithdrawAndRevert is called by TSS address, it transfers zetaToken to the gateway and calls onRevert on a contract
+    // @dev withdrawAndRevert is called by TSS address, it transfers zetaToken to the gateway and calls onRevert on a contract
     function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
@@ -40,9 +40,8 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         emit WithdrawAndRevert(to, amount, data);
     }
 
-    // Function to handle token transfer
+    // @dev receiveTokens handles token transfer and burn them
     function receiveTokens(uint256 amount) external override {
-        // Transfer tokens from the sender to this contract
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), amount);
     }
 }

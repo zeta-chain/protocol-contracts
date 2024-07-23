@@ -4,6 +4,7 @@ pragma solidity 0.8.7;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../../zevm/interfaces/zContract.sol";
 
+// @notice This contract is used just for testing
 contract TestZContract is UniversalContract {
     event ContextData(bytes origin, address sender, uint256 chainID, address msgSender, string message);
     event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message);

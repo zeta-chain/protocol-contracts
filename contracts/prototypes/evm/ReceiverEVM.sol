@@ -5,8 +5,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./IReceiverEVM.sol";
 
+// @notice This contract is used just for testing
 contract ReceiverEVM is IReceiverEVMEvents {
     using SafeERC20 for IERC20;
+    error ZeroAmount();
 
     // Payable function
     function receivePayable(string memory str, uint256 num, bool flag) external payable {
@@ -28,10 +30,12 @@ contract ReceiverEVM is IReceiverEVMEvents {
 
     // Function using IERC20 to partially transfer tokens
     function receiveERC20Partial(uint256 amount, address token, address destination) external {
-        // Transfer half the tokens from the Gateway contract to the destination address
-        IERC20(token).safeTransferFrom(msg.sender, destination, amount / 2);
+        uint256 amountToSend = amount / 2;
+        if (amountToSend == 0) revert ZeroAmount();
 
-        emit ReceivedERC20(msg.sender, amount / 2, token, destination);
+        IERC20(token).safeTransferFrom(msg.sender, destination, amountToSend);
+
+        emit ReceivedERC20(msg.sender, amountToSend, token, destination);
     }
 
     // Function without parameters
