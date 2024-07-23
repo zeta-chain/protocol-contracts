@@ -3,10 +3,11 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./IReceiverEVM.sol";
 
 // @notice This contract is used just for testing
-contract ReceiverEVM is IReceiverEVMEvents {
+contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
     using SafeERC20 for IERC20;
     error ZeroAmount();
 
@@ -21,7 +22,7 @@ contract ReceiverEVM is IReceiverEVMEvents {
     }
 
     // Function using IERC20
-    function receiveERC20(uint256 amount, address token, address destination) external {
+    function receiveERC20(uint256 amount, address token, address destination) external nonReentrant {
         // Transfer tokens from the Gateway contract to the destination address
         IERC20(token).safeTransferFrom(msg.sender, destination, amount);
 
@@ -29,7 +30,7 @@ contract ReceiverEVM is IReceiverEVMEvents {
     }
 
     // Function using IERC20 to partially transfer tokens
-    function receiveERC20Partial(uint256 amount, address token, address destination) external {
+    function receiveERC20Partial(uint256 amount, address token, address destination) external nonReentrant {
         uint256 amountToSend = amount / 2;
         if (amountToSend == 0) revert ZeroAmount();
 
