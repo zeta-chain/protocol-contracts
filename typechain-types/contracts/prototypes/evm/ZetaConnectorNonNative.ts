@@ -30,7 +30,9 @@ import type {
 export interface ZetaConnectorNonNativeInterface extends utils.Interface {
   functions: {
     "gateway()": FunctionFragment;
+    "maxSupply()": FunctionFragment;
     "receiveTokens(uint256)": FunctionFragment;
+    "setMaxSupply(uint256)": FunctionFragment;
     "tssAddress()": FunctionFragment;
     "withdraw(address,uint256,bytes32)": FunctionFragment;
     "withdrawAndCall(address,uint256,bytes,bytes32)": FunctionFragment;
@@ -41,7 +43,9 @@ export interface ZetaConnectorNonNativeInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "gateway"
+      | "maxSupply"
       | "receiveTokens"
+      | "setMaxSupply"
       | "tssAddress"
       | "withdraw"
       | "withdrawAndCall"
@@ -50,8 +54,13 @@ export interface ZetaConnectorNonNativeInterface extends utils.Interface {
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
+  encodeFunctionData(functionFragment: "maxSupply", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "receiveTokens",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMaxSupply",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -87,8 +96,13 @@ export interface ZetaConnectorNonNativeInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "maxSupply", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "receiveTokens",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMaxSupply",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
@@ -104,15 +118,28 @@ export interface ZetaConnectorNonNativeInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 
   events: {
+    "MaxSupplyUpdated(uint256)": EventFragment;
     "Withdraw(address,uint256)": EventFragment;
     "WithdrawAndCall(address,uint256,bytes)": EventFragment;
     "WithdrawAndRevert(address,uint256,bytes)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "MaxSupplyUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WithdrawAndCall"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WithdrawAndRevert"): EventFragment;
 }
+
+export interface MaxSupplyUpdatedEventObject {
+  maxSupply: BigNumber;
+}
+export type MaxSupplyUpdatedEvent = TypedEvent<
+  [BigNumber],
+  MaxSupplyUpdatedEventObject
+>;
+
+export type MaxSupplyUpdatedEventFilter =
+  TypedEventFilter<MaxSupplyUpdatedEvent>;
 
 export interface WithdrawEventObject {
   to: string;
@@ -179,8 +206,15 @@ export interface ZetaConnectorNonNative extends BaseContract {
   functions: {
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
+    maxSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     receiveTokens(
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setMaxSupply(
+      maxSupply_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -214,8 +248,15 @@ export interface ZetaConnectorNonNative extends BaseContract {
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
+  maxSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
   receiveTokens(
     amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setMaxSupply(
+    maxSupply_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -249,8 +290,15 @@ export interface ZetaConnectorNonNative extends BaseContract {
   callStatic: {
     gateway(overrides?: CallOverrides): Promise<string>;
 
+    maxSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
     receiveTokens(
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setMaxSupply(
+      maxSupply_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -283,6 +331,9 @@ export interface ZetaConnectorNonNative extends BaseContract {
   };
 
   filters: {
+    "MaxSupplyUpdated(uint256)"(maxSupply?: null): MaxSupplyUpdatedEventFilter;
+    MaxSupplyUpdated(maxSupply?: null): MaxSupplyUpdatedEventFilter;
+
     "Withdraw(address,uint256)"(
       to?: PromiseOrValue<string> | null,
       amount?: null
@@ -318,8 +369,15 @@ export interface ZetaConnectorNonNative extends BaseContract {
   estimateGas: {
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
+    maxSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
     receiveTokens(
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setMaxSupply(
+      maxSupply_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -354,8 +412,15 @@ export interface ZetaConnectorNonNative extends BaseContract {
   populateTransaction: {
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    maxSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     receiveTokens(
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setMaxSupply(
+      maxSupply_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
