@@ -47,7 +47,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         gateway = GatewayEVM(proxy);
 
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
 
         gateway.setCustody(address(custody));

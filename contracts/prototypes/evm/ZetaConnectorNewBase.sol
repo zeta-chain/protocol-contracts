@@ -12,12 +12,22 @@ abstract contract ZetaConnectorNewBase is IZetaConnectorEvents, ReentrancyGuard 
     using SafeERC20 for IERC20;
 
     error ZeroAddress();
+    error InvalidSender();
 
     IGatewayEVM public immutable gateway;
     address public immutable zetaToken;
+    address public tssAddress;
 
-    constructor(address _gateway, address _zetaToken) {
-        if (_gateway == address(0) || _zetaToken == address(0)) {
+    // @dev Only TSS address allowed modifier.
+    modifier onlyTSS() {
+        if (msg.sender != tssAddress) {
+            revert InvalidSender();
+        }
+        _;
+    }
+
+    constructor(address _gateway, address _zetaToken, address _tssAddress) {
+        if (_gateway == address(0) || _zetaToken == address(0) || _tssAddress == address(0)) {
             revert ZeroAddress();
         }
         gateway = IGatewayEVM(_gateway);

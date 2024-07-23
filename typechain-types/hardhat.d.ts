@@ -349,6 +349,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GatewayEVMUpgradeTest__factory>;
     getContractFactory(
+      name: "IERC20CustodyNewErrors",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20CustodyNewErrors__factory>;
+    getContractFactory(
+      name: "IERC20CustodyNewEvents",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20CustodyNewEvents__factory>;
+    getContractFactory(
       name: "IGatewayEVM",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IGatewayEVM__factory>;
@@ -368,6 +376,10 @@ declare module "hardhat/types/runtime" {
       name: "IReceiverEVMEvents",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IReceiverEVMEvents__factory>;
+    getContractFactory(
+      name: "IZetaConnectorEvents",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IZetaConnectorEvents__factory>;
     getContractFactory(
       name: "IZetaNonEthNew",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -918,6 +930,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.GatewayEVMUpgradeTest>;
     getContractAt(
+      name: "IERC20CustodyNewErrors",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20CustodyNewErrors>;
+    getContractAt(
+      name: "IERC20CustodyNewEvents",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20CustodyNewEvents>;
+    getContractAt(
       name: "IGatewayEVM",
       address: string,
       signer?: ethers.Signer
@@ -942,6 +964,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IReceiverEVMEvents>;
+    getContractAt(
+      name: "IZetaConnectorEvents",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IZetaConnectorEvents>;
     getContractAt(
       name: "IZetaNonEthNew",
       address: string,

@@ -31,6 +31,7 @@ export interface ZetaConnectorNewBaseInterface extends utils.Interface {
   functions: {
     "gateway()": FunctionFragment;
     "receiveTokens(uint256)": FunctionFragment;
+    "tssAddress()": FunctionFragment;
     "withdraw(address,uint256,bytes32)": FunctionFragment;
     "withdrawAndCall(address,uint256,bytes,bytes32)": FunctionFragment;
     "withdrawAndRevert(address,uint256,bytes,bytes32)": FunctionFragment;
@@ -41,6 +42,7 @@ export interface ZetaConnectorNewBaseInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "gateway"
       | "receiveTokens"
+      | "tssAddress"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
@@ -51,6 +53,10 @@ export interface ZetaConnectorNewBaseInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "receiveTokens",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tssAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
@@ -85,6 +91,7 @@ export interface ZetaConnectorNewBaseInterface extends utils.Interface {
     functionFragment: "receiveTokens",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -177,6 +184,8 @@ export interface ZetaConnectorNewBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    tssAddress(overrides?: CallOverrides): Promise<[string]>;
+
     withdraw(
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -210,6 +219,8 @@ export interface ZetaConnectorNewBase extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  tssAddress(overrides?: CallOverrides): Promise<string>;
+
   withdraw(
     to: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
@@ -242,6 +253,8 @@ export interface ZetaConnectorNewBase extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    tssAddress(overrides?: CallOverrides): Promise<string>;
 
     withdraw(
       to: PromiseOrValue<string>,
@@ -310,6 +323,8 @@ export interface ZetaConnectorNewBase extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    tssAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     withdraw(
       to: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -343,6 +358,8 @@ export interface ZetaConnectorNewBase extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    tssAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdraw(
       to: PromiseOrValue<string>,

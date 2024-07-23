@@ -6,8 +6,8 @@ import "./IZetaNonEthNew.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract ZetaConnectorNonNative is ZetaConnectorNewBase {
-    constructor(address _gateway, address _zetaToken)
-        ZetaConnectorNewBase(_gateway, _zetaToken)
+    constructor(address _gateway, address _zetaToken, address _tssAddress)
+        ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
     {}
 
     // @dev withdraw is called by TSS address, it mints zetaToken to the destination address

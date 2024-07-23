@@ -46,7 +46,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
 
         gateway.setCustody(address(custody));
@@ -418,7 +418,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
 
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));

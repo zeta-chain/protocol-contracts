@@ -12,6 +12,11 @@ import type {
 const _abi = [
   {
     inputs: [],
+    name: "InvalidSender",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "ZeroAddress",
     type: "error",
   },
@@ -108,6 +113,19 @@ const _abi = [
     name: "receiveTokens",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "tssAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

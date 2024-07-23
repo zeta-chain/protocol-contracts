@@ -45,7 +45,7 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
         ));
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken));
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress);
 
         vm.prank(tssAddress);
         zetaToken.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));

@@ -30,6 +30,7 @@ import type {
 export interface ERC20CustodyNewInterface extends utils.Interface {
   functions: {
     "gateway()": FunctionFragment;
+    "tssAddress()": FunctionFragment;
     "withdraw(address,address,uint256)": FunctionFragment;
     "withdrawAndCall(address,address,uint256,bytes)": FunctionFragment;
     "withdrawAndRevert(address,address,uint256,bytes)": FunctionFragment;
@@ -38,12 +39,17 @@ export interface ERC20CustodyNewInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "gateway"
+      | "tssAddress"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "tssAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [
@@ -72,6 +78,7 @@ export interface ERC20CustodyNewInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -161,6 +168,8 @@ export interface ERC20CustodyNew extends BaseContract {
   functions: {
     gateway(overrides?: CallOverrides): Promise<[string]>;
 
+    tssAddress(overrides?: CallOverrides): Promise<[string]>;
+
     withdraw(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -187,6 +196,8 @@ export interface ERC20CustodyNew extends BaseContract {
 
   gateway(overrides?: CallOverrides): Promise<string>;
 
+  tssAddress(overrides?: CallOverrides): Promise<string>;
+
   withdraw(
     token: PromiseOrValue<string>,
     to: PromiseOrValue<string>,
@@ -212,6 +223,8 @@ export interface ERC20CustodyNew extends BaseContract {
 
   callStatic: {
     gateway(overrides?: CallOverrides): Promise<string>;
+
+    tssAddress(overrides?: CallOverrides): Promise<string>;
 
     withdraw(
       token: PromiseOrValue<string>,
@@ -279,6 +292,8 @@ export interface ERC20CustodyNew extends BaseContract {
   estimateGas: {
     gateway(overrides?: CallOverrides): Promise<BigNumber>;
 
+    tssAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     withdraw(
       token: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
@@ -305,6 +320,8 @@ export interface ERC20CustodyNew extends BaseContract {
 
   populateTransaction: {
     gateway(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tssAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdraw(
       token: PromiseOrValue<string>,
