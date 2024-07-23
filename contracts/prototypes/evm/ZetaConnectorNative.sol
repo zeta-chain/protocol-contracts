@@ -40,7 +40,7 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         emit WithdrawAndRevert(to, amount, data);
     }
 
-    // @dev receiveTokens handles token transfer and burn them
+    // @dev receiveTokens handles token transfer back to connector
     function receiveTokens(uint256 amount) external override {
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), amount);
     }

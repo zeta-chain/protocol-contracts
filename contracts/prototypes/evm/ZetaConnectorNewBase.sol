@@ -2,20 +2,19 @@
 pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./IGatewayEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-abstract contract ZetaConnectorNewBase is ReentrancyGuard {
+import "./IGatewayEVM.sol";
+import "./IZetaConnector.sol";
+
+abstract contract ZetaConnectorNewBase is IZetaConnectorEvents, ReentrancyGuard {
     using SafeERC20 for IERC20;
+
     error ZeroAddress();
 
     IGatewayEVM public immutable gateway;
     address public immutable zetaToken;
-
-    event Withdraw(address indexed to, uint256 amount);
-    event WithdrawAndCall(address indexed to, uint256 amount, bytes data);
-    event WithdrawAndRevert(address indexed to, uint256 amount, bytes data);
 
     constructor(address _gateway, address _zetaToken) {
         if (_gateway == address(0) || _zetaToken == address(0)) {
