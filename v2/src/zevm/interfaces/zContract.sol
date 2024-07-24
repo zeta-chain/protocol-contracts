@@ -20,7 +20,8 @@ interface zContract {
         address zrc20,
         uint256 amount,
         bytes calldata message
-    ) external;
+    )
+        external;
 }
 
 interface UniversalContract {
@@ -29,14 +30,9 @@ interface UniversalContract {
         address zrc20,
         uint256 amount,
         bytes calldata message
-    ) external;
+    )
+        external;
 
     // TODO: define onRevert
-    function onRevert(
-        revertContext calldata context,
-        address zrc20,
-        uint256 amount,
-        bytes calldata message
-    ) external;
-
+    function onRevert(revertContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
 }

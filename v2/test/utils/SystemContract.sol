@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "src/zevm/interfaces/zContract.sol";
 import "src/zevm/interfaces/IZRC20.sol";
+import "src/zevm/interfaces/zContract.sol";
 
 /**
  * @dev Custom errors for SystemContract
@@ -24,7 +24,8 @@ contract SystemContract is SystemContractErrors {
     mapping(uint256 => uint256) public gasPriceByChainId;
     /// @notice Map to know the ZRC20 address of a token given a chain id, ex zETH, zBNB etc.
     mapping(uint256 => address) public gasCoinZRC20ByChainId;
-    // @dev: Map to know uniswap V2 pool of ZETA/ZRC20 given a chain id. This refer to the build in uniswap deployed at genesis.
+    // @dev: Map to know uniswap V2 pool of ZETA/ZRC20 given a chain id. This refer to the build in uniswap deployed at
+    // genesis.
     mapping(uint256 => address) public gasZetaPoolByChainId;
 
     /// @notice Fungible address is always the same, it's on protocol level.
@@ -70,7 +71,9 @@ contract SystemContract is SystemContractErrors {
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
+    )
+        external
+    {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 

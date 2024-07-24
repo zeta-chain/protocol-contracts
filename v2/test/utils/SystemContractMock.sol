@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "src/zevm/interfaces/zContract.sol";
 import "src/zevm/interfaces/IZRC20.sol";
+import "src/zevm/interfaces/zContract.sol";
 
 interface SystemContractErrors {
     error CallerIsNotFungibleModule();
@@ -78,7 +78,7 @@ contract SystemContractMock is SystemContractErrors {
     }
 
     function onCrossChainCall(address target, address zrc20, uint256 amount, bytes calldata message) external {
-        zContext memory context = zContext({sender: msg.sender, origin: "", chainID: block.chainid});
+        zContext memory context = zContext({ sender: msg.sender, origin: "", chainID: block.chainid });
         IZRC20(zrc20).transfer(target, amount);
         zContract(target).onCrossChainCall(context, zrc20, amount, message);
     }

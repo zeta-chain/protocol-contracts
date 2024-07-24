@@ -10,11 +10,7 @@ interface IGatewayZEVM {
 
     function call(bytes memory receiver, bytes calldata message) external;
 
-    function deposit(
-        address zrc20,
-        uint256 amount,
-        address target
-    ) external;
+    function deposit(address zrc20, uint256 amount, address target) external;
 
     function execute(
         zContext calldata context,
@@ -22,7 +18,8 @@ interface IGatewayZEVM {
         uint256 amount,
         address target,
         bytes calldata message
-    ) external;
+    )
+        external;
 
     function depositAndCall(
         zContext calldata context,
@@ -30,12 +27,21 @@ interface IGatewayZEVM {
         uint256 amount,
         address target,
         bytes calldata message
-    ) external;
+    )
+        external;
 }
 
 interface IGatewayZEVMEvents {
     event Call(address indexed sender, bytes receiver, bytes message);
-    event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+    event Withdrawal(
+        address indexed from,
+        address zrc20,
+        bytes to,
+        uint256 value,
+        uint256 gasfee,
+        uint256 protocolFlatFee,
+        bytes message
+    );
 }
 
 interface IGatewayZEVMErrors {

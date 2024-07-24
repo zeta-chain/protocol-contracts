@@ -23,3 +23,14 @@ ast = true
 build_info = true
 extra_output = ["storageLayout"]
 evm_version = "london"
+
+[fmt]
+bracket_spacing = true
+int_types = "long"
+line_length = 120
+multiline_func_header = "all"
+number_underscore = "thousands"
+quote_style = "double"
+tab_width = 4
+wrap_comments = true
+sort_imports=true

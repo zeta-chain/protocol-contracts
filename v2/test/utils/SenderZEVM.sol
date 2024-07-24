@@ -8,6 +8,7 @@ import "src/zevm/interfaces/IZRC20.sol";
 // @notice This contract is used just for testing
 contract SenderZEVM {
     address public gateway;
+
     error ApprovalFailed();
 
     constructor(address _gateway) {
@@ -24,12 +25,21 @@ contract SenderZEVM {
     }
 
     // Withdraw and call receiver on EVM
-    function withdrawAndCallReceiver(bytes memory receiver, uint256 amount, address zrc20, string memory str, uint256 num, bool flag) external {
+    function withdrawAndCallReceiver(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        string memory str,
+        uint256 num,
+        bool flag
+    )
+        external
+    {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
         // Approve gateway to withdraw
-        if(!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
+        if (!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message);

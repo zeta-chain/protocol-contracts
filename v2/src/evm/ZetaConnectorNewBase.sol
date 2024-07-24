@@ -37,9 +37,23 @@ abstract contract ZetaConnectorNewBase is IZetaConnectorEvents, ReentrancyGuard 
 
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external virtual;
 
-    function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external virtual;
+    function withdrawAndCall(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        virtual;
 
-    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external virtual;
+    function withdrawAndRevert(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        virtual;
 
     function receiveTokens(uint256 amount) external virtual;
 }

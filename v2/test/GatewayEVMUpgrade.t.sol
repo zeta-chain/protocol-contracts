@@ -4,21 +4,23 @@ pragma solidity ^0.8.20;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
-import "src/evm/GatewayEVM.sol";
 import "./utils/GatewayEVMUpgradeTest.sol";
+
+import "./utils/IReceiverEVM.sol";
 import "./utils/ReceiverEVM.sol";
-import "src/evm/ERC20CustodyNew.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
 import "./utils/TestERC20.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/GatewayEVM.sol";
+import "src/evm/ZetaConnectorNonNative.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
-import "./utils/IReceiverEVM.sol";
 
 contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
+
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
 
     address proxy;
@@ -41,8 +43,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         zeta = new TestERC20("zeta", "ZETA");
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol",
-            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gateway = GatewayEVM(proxy);
 
@@ -57,8 +58,8 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
 
-        token.mint(owner, 1000000);
-        token.transfer(address(custody), 500000);
+        token.mint(owner, 1_000_000);
+        token.transfer(address(custody), 500_000);
     }
 
     function testUpgradeAndForwardCallToReceivePayable() public {
@@ -70,12 +71,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         bool flag = true;
         uint256 value = 1 ether;
 
-        Upgrades.upgradeProxy(
-            proxy,
-            "GatewayEVMUpgradeTest.sol",
-            "",
-            owner
-        );
+        Upgrades.upgradeProxy(proxy, "GatewayEVMUpgradeTest.sol", "", owner);
 
         bytes memory data = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
         GatewayEVMUpgradeTest gatewayUpgradeTest = GatewayEVMUpgradeTest(proxy);
@@ -85,7 +81,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         emit ReceivedPayable(address(gateway), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit ExecutedV2(address(receiver), value, data);
-        gateway.execute{value: value}(address(receiver), data);
+        gateway.execute{ value: value }(address(receiver), data);
 
         assertEq(custodyBeforeUpgrade, gateway.custody());
         assertEq(tssBeforeUpgrade, gateway.tssAddress());

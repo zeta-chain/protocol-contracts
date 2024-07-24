@@ -22,21 +22,11 @@ interface IGatewayEVMErrors {
 }
 
 interface IGatewayEVM {
-    function executeWithERC20(
-        address token,
-        address to,
-        uint256 amount,
-        bytes calldata data
-    ) external;
+    function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
 
     function execute(address destination, bytes calldata data) external payable returns (bytes memory);
 
-    function revertWithERC20(
-        address token,
-        address to,
-        uint256 amount,
-        bytes calldata data
-    ) external;
+    function revertWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
 }
 
 interface Revertable {

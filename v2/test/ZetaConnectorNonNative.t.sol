@@ -4,22 +4,30 @@ pragma solidity ^0.8.20;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
-import "src/evm/GatewayEVM.sol";
 import "./utils/ReceiverEVM.sol";
-import "src/evm/ERC20CustodyNew.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
+
 import "./utils/TestERC20.sol";
+
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/GatewayEVM.sol";
+import "src/evm/ZetaConnectorNonNative.sol";
 
+import "./utils/IReceiverEVM.sol";
 import "./utils/Zeta.non-eth.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
-import "./utils/IReceiverEVM.sol";
 import "src/evm/interfaces/IZetaConnector.sol";
 
-contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IZetaConnectorEvents {
+contract ZetaConnectorNonNativeTest is
+    Test,
+    IGatewayEVMErrors,
+    IGatewayEVMEvents,
+    IReceiverEVMEvents,
+    IZetaConnectorEvents
+{
     using SafeERC20 for IERC20;
 
     address proxy;
@@ -67,7 +75,8 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     //     assertEq(balanceBefore, 0);
     //     bytes32 internalSendHash = "";
 
-    //     bytes memory data = abi.encodeWithSignature("mint(address,uint256,bytes32)", destination, amount, internalSendHash);
+    //     bytes memory data = abi.encodeWithSignature("mint(address,uint256,bytes32)", destination, amount,
+    // internalSendHash);
     //     vm.expectCall(address(zetaToken), 0, data);
     //     vm.expectEmit(true, true, true, true, address(zetaConnector));
     //     emit Withdraw(destination, amount);
@@ -89,13 +98,15 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     // function testWithdrawAndCallReceiveERC20() public {
     //     uint256 amount = 100000;
     //     bytes32 internalSendHash = "";
-    //     bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
+    //     bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount,
+    // address(zetaToken), destination);
     //     uint256 balanceBefore = zetaToken.balanceOf(destination);
     //     assertEq(balanceBefore, 0);
     //     uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
     //     assertEq(balanceBeforeZetaConnector, 0);
 
-    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount, internalSendHash);
+    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount,
+    // internalSendHash);
     //     vm.expectCall(address(zetaToken), 0, mintData);
     //     vm.expectEmit(true, true, true, true, address(receiver));
     //     emit ReceivedERC20(address(gateway), amount, address(zetaToken), destination);
@@ -124,7 +135,8 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     // function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotTSS() public {
     //     uint256 amount = 100000;
     //     bytes32 internalSendHash = "";
-    //     bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
+    //     bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount,
+    // address(zetaToken), destination);
 
     //     vm.prank(owner);
     //     vm.expectRevert(InvalidSender.selector);
@@ -140,7 +152,8 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     //     uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
     //     assertEq(balanceBeforeZetaConnector, 0);
 
-    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount, internalSendHash);
+    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount,
+    // internalSendHash);
     //     vm.expectCall(address(zetaToken), 0, mintData);
     //     vm.expectEmit(true, true, true, true, address(receiver));
     //     emit ReceivedNoParams(address(gateway));
@@ -169,13 +182,15 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     // function testWithdrawAndCallReceiveERC20Partial() public {
     //     uint256 amount = 100000;
     //     bytes32 internalSendHash = "";
-    //     bytes memory data = abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(zetaToken), destination);
+    //     bytes memory data = abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount,
+    // address(zetaToken), destination);
     //     uint256 balanceBefore = zetaToken.balanceOf(destination);
     //     assertEq(balanceBefore, 0);
     //     uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
     //     assertEq(balanceBeforeZetaConnector, 0);
 
-    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount, internalSendHash);
+    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount,
+    // internalSendHash);
     //     vm.expectCall(address(zetaToken), 0, mintData);
     //     vm.expectEmit(true, true, true, true, address(receiver));
     //     emit ReceivedERC20(address(gateway), amount / 2, address(zetaToken), destination);
@@ -209,7 +224,8 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     //     assertEq(balanceBefore, 0);
     //     uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
 
-    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount, internalSendHash);
+    //     bytes memory mintData = abi.encodeWithSignature("mint(address,uint256,bytes32)", address(gateway), amount,
+    // internalSendHash);
     //     vm.expectCall(address(zetaToken), 0, mintData);
     //     // Verify that onRevert callback was called
     //     vm.expectEmit(true, true, true, true, address(receiver));
@@ -242,7 +258,7 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     //     uint256 amount = 100000;
     //     bytes32 internalSendHash = "";
     //     bytes memory data = abi.encodePacked("hello");
-    
+
     //     vm.prank(owner);
     //     vm.expectRevert(InvalidSender.selector);
     //     zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);

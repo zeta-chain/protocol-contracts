@@ -8,18 +8,33 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract ZetaConnectorNative is ZetaConnectorNewBase {
     using SafeERC20 for IERC20;
 
-    constructor(address _gateway, address _zetaToken, address _tssAddress)
+    constructor(
+        address _gateway,
+        address _zetaToken,
+        address _tssAddress
+    )
         ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
-    {}
+    { }
 
-    // @dev withdraw is called by TSS address, it directly transfers zetaToken to the destination address without contract call
+    // @dev withdraw is called by TSS address, it directly transfers zetaToken to the destination address without
+    // contract call
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant onlyTSS {
         IERC20(zetaToken).safeTransfer(to, amount);
         emit Withdraw(to, amount);
     }
 
     // @dev withdrawAndCall is called by TSS address, it transfers zetaToken to the gateway and calls a contract
-    function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    function withdrawAndCall(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyTSS
+    {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
 
@@ -29,8 +44,19 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         emit WithdrawAndCall(to, amount, data);
     }
 
-    // @dev withdrawAndRevert is called by TSS address, it transfers zetaToken to the gateway and calls onRevert on a contract
-    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    // @dev withdrawAndRevert is called by TSS address, it transfers zetaToken to the gateway and calls onRevert on a
+    // contract
+    function withdrawAndRevert(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyTSS
+    {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
 

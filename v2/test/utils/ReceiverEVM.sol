@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "./IReceiverEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "./IReceiverEVM.sol";
 
 // @notice This contract is used just for testing
 contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
     using SafeERC20 for IERC20;
+
     error ZeroAmount();
 
     // Payable function
@@ -49,6 +50,6 @@ contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
         emit ReceivedRevert(msg.sender, data);
     }
 
-    receive() external payable {}
-    fallback() external payable {}
+    receive() external payable { }
+    fallback() external payable { }
 }

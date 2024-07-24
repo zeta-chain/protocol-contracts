@@ -26,14 +26,15 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
     }
 
     constructor(address _gateway, address _tssAddress) {
-         if (_gateway == address(0) || _tssAddress == address(0)) {
+        if (_gateway == address(0) || _tssAddress == address(0)) {
             revert ZeroAddress();
         }
         gateway = IGatewayEVM(_gateway);
         tssAddress = _tssAddress;
     }
 
-    // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract call
+    // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract
+    // call
     function withdraw(address token, address to, uint256 amount) external nonReentrant onlyTSS {
         IERC20(token).safeTransfer(to, amount);
 
@@ -41,8 +42,18 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
     }
 
     // WithdrawAndCall is called by TSS address, it transfers the tokens and call a contract
-    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
-    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) public nonReentrant onlyTSS {
+    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls
+    // the contract
+    function withdrawAndCall(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        public
+        nonReentrant
+        onlyTSS
+    {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
@@ -53,8 +64,18 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
     }
 
     // WithdrawAndRevert is called by TSS address, it transfers the tokens and call a contract
-    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
-    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data) public nonReentrant onlyTSS {
+    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls
+    // the contract
+    function withdrawAndRevert(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        public
+        nonReentrant
+        onlyTSS
+    {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 

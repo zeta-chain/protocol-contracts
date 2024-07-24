@@ -4,26 +4,35 @@ pragma solidity ^0.8.20;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
-import "src/evm/GatewayEVM.sol";
 import "./utils/ReceiverEVM.sol";
-import "src/evm/ERC20CustodyNew.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
+
 import "./utils/TestERC20.sol";
+import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/GatewayEVM.sol";
+import "src/evm/ZetaConnectorNonNative.sol";
 
-import "src/zevm/GatewayZEVM.sol";
 import "./utils/SenderZEVM.sol";
-import "./utils/ZRC20New.sol";
-import "./utils/SystemContractMock.sol";
 
-import "src/evm/interfaces/IGatewayEVM.sol";
+import "./utils/SystemContractMock.sol";
+import "./utils/ZRC20New.sol";
+import "src/zevm/GatewayZEVM.sol";
+
 import "./utils/IReceiverEVM.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
 import "src/zevm/interfaces/IGatewayZEVM.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
-contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGatewayZEVMEvents, IGatewayZEVMErrors, IReceiverEVMEvents {
+contract GatewayEVMZEVMTest is
+    Test,
+    IGatewayEVMErrors,
+    IGatewayEVMEvents,
+    IGatewayZEVMEvents,
+    IGatewayZEVMErrors,
+    IReceiverEVMEvents
+{
     // evm
     using SafeERC20 for IERC20;
 
@@ -45,7 +54,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
     SystemContractMock systemContract;
     ZRC20New zrc20;
     address ownerZEVM;
-    
+
     function setUp() public {
         // evm
         ownerEVM = address(this);
@@ -57,8 +66,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         zeta = new TestERC20("zeta", "ZETA");
 
         proxyEVM = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol",
-            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gatewayEVM = GatewayEVM(proxyEVM);
 
@@ -72,16 +80,15 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         gatewayEVM.setConnector(address(zetaConnector));
         vm.stopPrank();
 
-        token.mint(ownerEVM, 1000000);
-        token.transfer(address(custody), 500000);
+        token.mint(ownerEVM, 1_000_000);
+        token.transfer(address(custody), 500_000);
 
         receiverEVM = new ReceiverEVM();
 
         // zevm
-        proxyZEVM = payable(Upgrades.deployUUPSProxy(
-            "GatewayZEVM.sol",
-            abi.encodeCall(GatewayZEVM.initialize, (address(zeta)))
-        ));
+        proxyZEVM = payable(
+            Upgrades.deployUUPSProxy("GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zeta))))
+        );
         gatewayZEVM = GatewayZEVM(proxyZEVM);
 
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
@@ -91,12 +98,12 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         zrc20 = new ZRC20New("TOKEN", "TKN", 18, 1, CoinType.Zeta, 0, address(systemContract), address(gatewayZEVM));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
-        zrc20.deposit(ownerZEVM, 1000000);
-        zrc20.deposit(address(senderZEVM), 1000000);
+        zrc20.deposit(ownerZEVM, 1_000_000);
+        zrc20.deposit(address(senderZEVM), 1_000_000);
         vm.stopPrank();
 
         vm.prank(ownerZEVM);
-        zrc20.approve(address(gatewayZEVM), 1000000);
+        zrc20.approve(address(gatewayZEVM), 1_000_000);
 
         vm.deal(tssAddress, 1 ether);
     }
@@ -119,7 +126,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testCallReceiverEVMFromSenderZEVM() public {
@@ -142,7 +149,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromZEVM() public {
@@ -155,21 +162,10 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Withdrawal(
-            ownerZEVM,
-            address(zrc20),
-            abi.encodePacked(receiverEVM),
-            1000000,
-            0,
-            zrc20.PROTOCOL_FLAT_FEE(),
-            message
+            ownerZEVM, address(zrc20), abi.encodePacked(receiverEVM), 1_000_000, 0, zrc20.PROTOCOL_FLAT_FEE(), message
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(
-            abi.encodePacked(receiverEVM),
-            1000000,
-            address(zrc20),
-            message
-        );
+        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), message);
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
@@ -182,7 +178,7 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromSenderZEVM() public {
@@ -194,10 +190,16 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         // Encode the function call data and call on zevm
         uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
-        bytes memory data = abi.encodeWithSignature("withdrawAndCall(bytes,uint256,address,bytes)", abi.encodePacked(receiverEVM), 1000000,  address(zrc20), message);
+        bytes memory data = abi.encodeWithSignature(
+            "withdrawAndCall(bytes,uint256,address,bytes)",
+            abi.encodePacked(receiverEVM),
+            1_000_000,
+            address(zrc20),
+            message
+        );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
-        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), 1000000, address(zrc20), str, num, flag);
+        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), str, num, flag);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
@@ -206,10 +208,10 @@ contract GatewayEVMZEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IGate
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
 
         // Check the balance after withdrawal
         uint256 senderBalanceAfterWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
-        assertEq(senderBalanceAfterWithdrawal, senderBalanceBeforeWithdrawal - 1000000);
+        assertEq(senderBalanceAfterWithdrawal, senderBalanceBeforeWithdrawal - 1_000_000);
     }
 }

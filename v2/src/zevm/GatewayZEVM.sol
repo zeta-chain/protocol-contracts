@@ -1,18 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import "./interfaces/IZRC20.sol";
-import "./interfaces/zContract.sol";
 import "./interfaces/IGatewayZEVM.sol";
 import "./interfaces/IWZETA.sol";
+import "./interfaces/IZRC20.sol";
+import "./interfaces/zContract.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 // The GatewayZEVM contract is the endpoint to call smart contracts on omnichain
 // The contract doesn't hold any funds and should never have active allowances
-contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
+contract GatewayZEVM is
+    IGatewayZEVMEvents,
+    IGatewayZEVMErrors,
+    Initializable,
+    OwnableUpgradeable,
+    UUPSUpgradeable,
+    ReentrancyGuardUpgradeable
+{
     error ZeroAddress();
 
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
@@ -35,14 +42,14 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         if (_zetaToken == address(0)) {
             revert ZeroAddress();
         }
-    
+
         __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
         zetaToken = _zetaToken;
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable {
@@ -67,7 +74,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     function _transferZETA(uint256 amount, address to) internal {
         if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
         IWETH9(zetaToken).withdraw(amount);
-        (bool sent, ) = to.call{value: amount}("");
+        (bool sent,) = to.call{ value: amount }("");
         if (!sent) revert FailedZetaSent();
     }
 
@@ -78,7 +85,15 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     // Withdraw ZRC20 tokens and call smart contract on external chain
-    function withdrawAndCall(bytes memory receiver, uint256 amount, address zrc20, bytes calldata message) external nonReentrant {
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        bytes calldata message
+    )
+        external
+        nonReentrant
+    {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawal(msg.sender, zrc20, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
     }
@@ -92,7 +107,9 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     // Withdraw ZETA and call smart contract on external chain
     function withdrawAndCall(uint256 amount, bytes calldata message) external nonReentrant {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, address(zetaToken), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message);
+        emit Withdrawal(
+            msg.sender, address(zetaToken), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message
+        );
     }
 
     // Call smart contract on external chain without asset transfer
@@ -101,11 +118,7 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     // Deposit foreign coins into ZRC20
-    function deposit(
-        address zrc20,
-        uint256 amount,
-        address target
-    ) external onlyFungible {
+    function deposit(address zrc20, uint256 amount, address target) external onlyFungible {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
@@ -118,7 +131,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible {
+    )
+        external
+        onlyFungible
+    {
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
@@ -129,7 +145,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible {
+    )
+        external
+        onlyFungible
+    {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
@@ -142,7 +161,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible {
+    )
+        external
+        onlyFungible
+    {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
@@ -156,7 +178,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible {
+    )
+        external
+        onlyFungible
+    {
         UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
 
@@ -167,7 +192,10 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible {
+    )
+        external
+        onlyFungible
+    {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-import "src/zevm/interfaces/IZRC20.sol";
+
 import "src/zevm/interfaces/ISystem.sol";
+import "src/zevm/interfaces/IZRC20.sol";
 
 /**
  * @dev Custom errors for ZRC20
@@ -29,7 +30,7 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     CoinType public immutable COIN_TYPE;
     /// @notice System contract address.
     address public SYSTEM_CONTRACT_ADDRESS;
-     /// @notice Gateway contract address.
+    /// @notice Gateway contract address.
     address public GATEWAY_CONTRACT_ADDRESS;
     /// @notice Gas limit.
     uint256 public GAS_LIMIT;
@@ -230,7 +231,10 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @return true/false if succeeded/failed.
      */
     function deposit(address to, uint256 amount) external override returns (bool) {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS && msg.sender != GATEWAY_CONTRACT_ADDRESS) revert InvalidSender();
+        if (
+            msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS
+                && msg.sender != GATEWAY_CONTRACT_ADDRESS
+        ) revert InvalidSender();
         _mint(to, amount);
         emit Deposit(abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), to, amount);
         return true;
@@ -238,7 +242,8 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
 
     /**
      * @dev Withdraws gas fees.
-     * @return returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for withdraw()
+     * @return returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for
+     * withdraw()
      */
     function withdrawGasFee() public view override returns (address, uint256) {
         address gasZRC20 = ISystem(SYSTEM_CONTRACT_ADDRESS).gasCoinZRC20ByChainId(CHAIN_ID);
@@ -253,7 +258,8 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     }
 
     /**
-     * @dev Withraws ZRC20 tokens to external chains, this function causes cctx module to send out outbound tx to the outbound chain
+     * @dev Withraws ZRC20 tokens to external chains, this function causes cctx module to send out outbound tx to the
+     * outbound chain
      * this contract should be given enough allowance of the gas ZRC20 to pay for outbound tx gas fee.
      * @param to, recipient address.
      * @param amount, amount to deposit.
