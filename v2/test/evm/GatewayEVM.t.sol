@@ -42,7 +42,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol",
-            abi.encodeCall(GatewayEVM.initialize, ssAddress, address(zeta))
+            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
 
         gateway = GatewayEVM(proxy);
