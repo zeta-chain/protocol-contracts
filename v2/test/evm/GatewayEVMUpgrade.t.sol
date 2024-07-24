@@ -44,7 +44,6 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
             "GatewayEVM.sol",
             abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
-
         gateway = GatewayEVM(proxy);
 
         custody = new ERC20CustodyNew(address(gateway), tssAddress);

@@ -12,7 +12,7 @@ import "src/evm/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "src/evm/IGatewayEVM.sol";
 import "src/evm/IERC20CustodyNew.sol";
@@ -40,12 +40,12 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
-        address proxy = Upgrades.deployUUPSProxy(
+        proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol",
             abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
-
         gateway = GatewayEVM(proxy);
+        
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
