@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "./ZetaConnectorNewBase.sol";
-import "./IZetaNonEthNew.sol";
+import "./interfaces/IZetaNonEthNew.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract ZetaConnectorNonNative is ZetaConnectorNewBase {

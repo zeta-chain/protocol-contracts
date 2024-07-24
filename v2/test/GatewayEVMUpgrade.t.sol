@@ -5,17 +5,17 @@ import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
 import "src/evm/GatewayEVM.sol";
-import "src/evm/GatewayEVMUpgradeTest.sol";
-import "src/evm/ReceiverEVM.sol";
+import "./utils/GatewayEVMUpgradeTest.sol";
+import "./utils/ReceiverEVM.sol";
 import "src/evm/ERC20CustodyNew.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
-import "src/evm/TestERC20.sol";
+import "./utils/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
-import "src/evm/IGatewayEVM.sol";
-import "src/evm/IReceiverEVM.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
+import "./utils/IReceiverEVM.sol";
 
 contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;

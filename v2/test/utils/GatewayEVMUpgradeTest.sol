@@ -7,8 +7,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import "./IGatewayEVM.sol";
-import "./ZetaConnectorNewBase.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
+import "src/evm/ZetaConnectorNewBase.sol";
 
 // NOTE: Purpose of this contract is to test upgrade process, the only difference should be name of Executed event
 // The Gateway contract is the endpoint to call smart contracts on external chains

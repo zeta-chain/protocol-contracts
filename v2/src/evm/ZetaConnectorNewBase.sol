@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-import "./IGatewayEVM.sol";
-import "./IZetaConnector.sol";
+import "./interfaces/IGatewayEVM.sol";
+import "./interfaces/IZetaConnector.sol";
 
 abstract contract ZetaConnectorNewBase is IZetaConnectorEvents, ReentrancyGuard {
     using SafeERC20 for IERC20;

@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-import "./IGatewayEVM.sol";
-import "./IERC20CustodyNew.sol";
+import "./interfaces//IGatewayEVM.sol";
+import "./interfaces/IERC20CustodyNew.sol";
 
 // As the current version, ERC20CustodyNew hold the ERC20s deposited on ZetaChain
 // This version include a functionality allowing to call a contract

@@ -5,18 +5,17 @@ import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
 import "src/evm/GatewayEVM.sol";
-import "src/evm/ReceiverEVM.sol";
+import "./utils/ReceiverEVM.sol";
 import "src/evm/ERC20CustodyNew.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
-import "src/evm/TestERC20.sol";
+import "./utils/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
-import "src/evm/IGatewayEVM.sol";
-import "src/evm/IERC20CustodyNew.sol";
-import "src/evm/IReceiverEVM.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
+import "src/evm/interfaces/IERC20CustodyNew.sol";
+import "./utils/IReceiverEVM.sol";
 
 contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyNewEvents {
     using SafeERC20 for IERC20;
@@ -397,6 +396,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
 
+    address proxy;
     GatewayEVM gateway;
     ERC20CustodyNew custody;
     ZetaConnectorNonNative zetaConnector;
@@ -415,11 +415,13 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
-        address proxy = address(new ERC1967Proxy(
-            address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zeta))
-        ));
+
+        proxy = Upgrades.deployUUPSProxy(
+            "GatewayEVM.sol",
+            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+        );
         gateway = GatewayEVM(proxy);
+
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
 
