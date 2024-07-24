@@ -1,7 +1,7 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["node_modules"]
+libs = ["node_modules", "lib"]
 
 remappings = [
   "forge-std/=node_modules/forge-std/src",
@@ -12,8 +12,14 @@ remappings = [
   "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/"
 ]
 
-fs_permissions = [
-  { access = "read-write", path = "./script" },
-]
+no-match-contract = '.*EchidnaTest$'
+optimizer = true
+optimizer_runs = 10_000
 
-allow_paths = ["../core"]
+fs_permissions = [{ access = "read", path = "out"}]
+
+ffi = true
+ast = true
+build_info = true
+extra_output = ["storageLayout"]
+evm_version = "london"

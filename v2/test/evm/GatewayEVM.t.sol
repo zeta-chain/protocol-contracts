@@ -40,10 +40,11 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
-        proxy = address(new ERC1967Proxy(
-            address(new GatewayEVM()),
-            abi.encodeWithSelector(GatewayEVM.initialize.selector, tssAddress, address(zeta))
-        ));
+        address proxy = Upgrades.deployUUPSProxy(
+            "GatewayEVM.sol",
+            abi.encodeCall(GatewayEVM.initialize, ssAddress, address(zeta))
+        );
+
         gateway = GatewayEVM(proxy);
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
