@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @notice Max supply for minting
-    uint256 public maxSupply = 2 ** 256 - 1;
+    uint256 public maxSupply = type(uint256).max;
 
     /// @notice Event triggered when max supply is updated
     /// @param maxSupply New max supply
