@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import "../../contracts/prototypes/evm/TestERC20.sol";
-import "../../contracts/prototypes/evm/ERC20CustodyNew.sol";
-import "../../contracts/prototypes/evm/GatewayEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/GatewayEVM.sol";
+import "test/utils/TestERC20.sol";
 
 contract ERC20CustodyNewEchidnaTest is ERC20CustodyNew {
     using SafeERC20 for IERC20;
@@ -15,10 +14,9 @@ contract ERC20CustodyNewEchidnaTest is ERC20CustodyNew {
     TestERC20 public testERC20;
     address public echidnaCaller = msg.sender;
 
-    address proxy = address(new ERC1967Proxy(
-        address(new GatewayEVM()),
-        abi.encodeWithSelector(GatewayEVM.initialize.selector, (echidnaCaller, address(0x123)))
-    ));
+    address proxy = Upgrades.deployUUPSProxy(
+        "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (echidnaCaller, address(0x123)))
+    );
     GatewayEVM testGateway = GatewayEVM(proxy);
 
     constructor() ERC20CustodyNew(address(testGateway), echidnaCaller) {
