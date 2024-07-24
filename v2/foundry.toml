@@ -4,12 +4,12 @@ out = "out"
 libs = ["node_modules", "lib"]
 
 remappings = [
-  "forge-std/=node_modules/forge-std/src",
   "ds-test/=node_modules/ds-test/src",
   "src/=src",
   "test/=test",
   "@openzeppelin/=node_modules/@openzeppelin/",
-  "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/"
+  "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/",
+  "forge-std/=lib/forge-std/src/"
 ]
 
 no-match-contract = '.*EchidnaTest$'
