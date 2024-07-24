@@ -1,15 +1,15 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["node_modules", "lib"]
+libs = ["lib"]
 
 remappings = [
   "ds-test/=node_modules/ds-test/src",
   "src/=src",
   "test/=test",
-  "@openzeppelin/=node_modules/@openzeppelin/",
-  "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/",
-  "forge-std/=lib/forge-std/src/"
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/",
+  "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
 ]
 
 no-match-contract = '.*EchidnaTest$'
