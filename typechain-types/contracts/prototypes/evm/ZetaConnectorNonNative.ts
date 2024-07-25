@@ -214,7 +214,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
     ): Promise<ContractTransaction>;
 
     setMaxSupply(
-      maxSupply_: PromiseOrValue<BigNumberish>,
+      _maxSupply: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -256,7 +256,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
   ): Promise<ContractTransaction>;
 
   setMaxSupply(
-    maxSupply_: PromiseOrValue<BigNumberish>,
+    _maxSupply: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -298,7 +298,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
     ): Promise<void>;
 
     setMaxSupply(
-      maxSupply_: PromiseOrValue<BigNumberish>,
+      _maxSupply: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -377,7 +377,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
     ): Promise<BigNumber>;
 
     setMaxSupply(
-      maxSupply_: PromiseOrValue<BigNumberish>,
+      _maxSupply: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -420,7 +420,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     setMaxSupply(
-      maxSupply_: PromiseOrValue<BigNumberish>,
+      _maxSupply: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
