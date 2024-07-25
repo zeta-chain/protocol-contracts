@@ -56,6 +56,8 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
         vm.stopPrank();
 
         zetaToken.mint(address(zetaConnector), 5000000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testWithdraw() public {

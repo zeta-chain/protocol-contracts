@@ -58,6 +58,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         token.mint(owner, 1000000);
         token.transfer(address(custody), 500000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testForwardCallToReceiveNonPayable() public {
