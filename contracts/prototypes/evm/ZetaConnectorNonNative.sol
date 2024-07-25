@@ -9,9 +9,26 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 /// @notice Implementation of ZetaConnectorNewBase for non-native token handling.
 /// @dev This contract mints and burns Zeta tokens and interacts with the Gateway contract.
 contract ZetaConnectorNonNative is ZetaConnectorNewBase {
+    /// @notice Max supply for minting.
+    uint256 public maxSupply = type(uint256).max;
+
+    /// @notice Event triggered when max supply is updated.
+    /// @param maxSupply New max supply.
+    event MaxSupplyUpdated(uint256 maxSupply);
+    error ExceedsMaxSupply();
+
     constructor(address _gateway, address _zetaToken, address _tssAddress)
         ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
     {}
+
+   
+    /// @notice Set max supply for minting.
+    /// @param _maxSupply New max supply.
+    /// @dev This function can only be called by the TSS address.
+    function setMaxSupply(uint256 _maxSupply) external onlyTSS() {
+        maxSupply = _maxSupply;
+        emit MaxSupplyUpdated(_maxSupply);
+    }
 
     /// @notice Withdraw tokens to a specified address.
     /// @param to The address to withdraw tokens to.
@@ -19,6 +36,8 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
+
         IZetaNonEthNew(zetaToken).mint(to, amount, internalSendHash);
         emit Withdraw(to, amount);
     }
@@ -28,8 +47,10 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
-    /// @dev This function can only be called by the TSS address.
+    /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
     function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
+
         // Mint zetaToken to the Gateway contract
         IZetaNonEthNew(zetaToken).mint(address(gateway), amount, internalSendHash);
 
@@ -44,8 +65,10 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
-    /// @dev This function can only be called by the TSS address.
+    /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
     function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
+
         // Mint zetaToken to the Gateway contract
         IZetaNonEthNew(zetaToken).mint(address(gateway), amount, internalSendHash);
 

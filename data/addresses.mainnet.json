@@ -119,6 +119,48 @@
     "type": "zetaToken"
   },
   {
+    "address": "0x73cE2544d30A71D833C70D418FB5Ddf7a4A75455",
+    "category": "messaging",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x69727Ef241ebD6e42Fc3A798092077069B415B2D",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x7828F92E7d79E141189f24C98aceF71Bc07bad3f",
+    "category": "messaging",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "pauser"
+  },
+  {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "tss"
+  },
+  {
+    "address": "0x7828F92E7d79E141189f24C98aceF71Bc07bad3f",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x2eff750c9D770BaBE6dBe84d05E40e4C65d7938d",
+    "category": "messaging",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "zetaToken"
+  },
+  {
     "address": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
     "category": "messaging",
     "chain_id": 7000,
@@ -262,6 +304,19 @@
     "description": "ZetaChain ZRC20 USDT on BSC",
     "foreign_chain_id": "56",
     "symbol": "USDT.BSC",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xADF73ebA3Ebaa7254E859549A44c74eF7cff7501",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Polygon POL-polygon_mainnet",
+    "foreign_chain_id": "137",
+    "symbol": "POL.POLYGON",
     "type": "zrc20"
   },
   {

@@ -35,7 +35,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     }
 
     /// @notice Only custody or connector address allowed modifier.
-    modifier onlyCustodyOrConnector() {
+    modifier onlyAssetHandler() {
         if (msg.sender != custody && msg.sender != zetaConnector) {
             revert InvalidSender();
         }
@@ -112,7 +112,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) public nonReentrant onlyCustodyOrConnector {
+    ) public nonReentrant onlyAssetHandler {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
         if(!resetApproval(token, to)) revert ApprovalFailed();
@@ -143,7 +143,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) external nonReentrant onlyCustodyOrConnector {
+    ) external nonReentrant onlyAssetHandler {
         if (amount == 0) revert InsufficientERC20Amount();
 
         IERC20(token).safeTransfer(address(to), amount);
@@ -209,7 +209,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     /// @notice Sets the custody contract address.
     /// @param _custody Address of the custody contract.
-    function setCustody(address _custody) external {
+    function setCustody(address _custody) external onlyTSS {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
 
@@ -218,7 +218,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     /// @notice Sets the connector contract address.
     /// @param _zetaConnector Address of the connector contract.
-    function setConnector(address _zetaConnector) external {
+    function setConnector(address _zetaConnector) external onlyTSS {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
 
