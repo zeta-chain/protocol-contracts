@@ -19,6 +19,14 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     address public zetaToken;
 
+    // @dev Only Fungible module address allowed modifier.
+    modifier onlyFungible() {
+        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) {
+            revert CallerIsNotFungibleModule();
+        }
+        _;
+    }
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -94,45 +102,35 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     // Deposit foreign coins into ZRC20
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function deposit(
         address zrc20,
         uint256 amount,
         address target
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+    ) external onlyFungible {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
     }
 
     // Execute user specified contract on ZEVM
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function execute(
         zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
-
+    ) external onlyFungible {
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
     // Deposit foreign coins into ZRC20 and call user specified contract on ZEVM
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function depositAndCall(
         zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+    ) external onlyFungible {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
@@ -140,15 +138,12 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     // Deposit zeta and call user specified contract on ZEVM
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function depositAndCall(
         zContext calldata context,
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+    ) external onlyFungible {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
@@ -156,31 +151,24 @@ contract GatewayZEVM is IGatewayZEVMEvents, IGatewayZEVMErrors, Initializable, O
     }
 
     // Revert user specified contract on ZEVM
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function executeRevert(
         revertContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
-
+    ) external onlyFungible {
         UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
 
     // Deposit foreign coins into ZRC20 and revert user specified contract on ZEVM
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function depositAndRevert(
         revertContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+    ) external onlyFungible {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);

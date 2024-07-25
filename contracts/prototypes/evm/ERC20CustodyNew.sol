@@ -2,34 +2,39 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./IGatewayEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+import "./IGatewayEVM.sol";
+import "./IERC20CustodyNew.sol";
 
 // As the current version, ERC20CustodyNew hold the ERC20s deposited on ZetaChain
 // This version include a functionality allowing to call a contract
 // ERC20Custody doesn't call smart contract directly, it passes through the Gateway contract
-contract ERC20CustodyNew is ReentrancyGuard{
+contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, ReentrancyGuard {
     using SafeERC20 for IERC20;
-    error ZeroAddress();
 
     IGatewayEVM public gateway;
+    address public tssAddress;
 
-    event Withdraw(address indexed token, address indexed to, uint256 amount);
-    event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data);
-    event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data);
+    // @dev Only TSS address allowed modifier.
+    modifier onlyTSS() {
+        if (msg.sender != tssAddress) {
+            revert InvalidSender();
+        }
+        _;
+    }
 
-    constructor(address _gateway) {
-         if (_gateway == address(0)) {
+    constructor(address _gateway, address _tssAddress) {
+         if (_gateway == address(0) || _tssAddress == address(0)) {
             revert ZeroAddress();
         }
         gateway = IGatewayEVM(_gateway);
+        tssAddress = _tssAddress;
     }
-    
+
     // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract call
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function withdraw(address token, address to, uint256 amount) external nonReentrant {
+    function withdraw(address token, address to, uint256 amount) external nonReentrant onlyTSS {
         IERC20(token).safeTransfer(to, amount);
 
         emit Withdraw(token, to, amount);
@@ -37,9 +42,7 @@ contract ERC20CustodyNew is ReentrancyGuard{
 
     // WithdrawAndCall is called by TSS address, it transfers the tokens and call a contract
     // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) public nonReentrant {
+    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) public nonReentrant onlyTSS {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
@@ -51,9 +54,7 @@ contract ERC20CustodyNew is ReentrancyGuard{
 
     // WithdrawAndRevert is called by TSS address, it transfers the tokens and call a contract
     // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls the contract
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
-    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data) public nonReentrant {
+    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data) public nonReentrant onlyTSS {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
