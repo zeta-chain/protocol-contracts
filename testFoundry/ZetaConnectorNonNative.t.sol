@@ -32,9 +32,6 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
     address destination;
     address tssAddress;
 
-    error ExceedsMaxSupply();
-    event MaxSupplyUpdated(uint256 maxSupply);
-
     function setUp() public {
         owner = address(this);
         destination = address(0x1234);
@@ -79,23 +76,6 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
         zetaConnector.withdraw(destination, amount, internalSendHash);
         uint256 balanceAfter = zetaToken.balanceOf(destination);
         assertEq(balanceAfter, amount);
-    }
-
-    function testWithdrawFailsIfMaxSupplyReached() public {
-        uint256 amount = 100000;
-        uint256 balanceBefore = zetaToken.balanceOf(destination);
-        assertEq(balanceBefore, 0);
-        bytes32 internalSendHash = "";
-
-        uint256 maxSupply = 90000;
-        vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit MaxSupplyUpdated(maxSupply);
-        vm.prank(tssAddress);
-        zetaConnector.setMaxSupply(maxSupply);
-
-        vm.prank(tssAddress);
-        vm.expectRevert(ExceedsMaxSupply.selector);
-        zetaConnector.withdraw(destination, amount, internalSendHash);
     }
 
     function testWithdrawFailsIfSenderIsNotTSS() public {
@@ -149,22 +129,6 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
 
         vm.prank(owner);
         vm.expectRevert(InvalidSender.selector);
-        zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
-    }
-
-    function testWithdrawAndCallReceiveERC20FailsIfMaxSupplyReached() public {
-        uint256 amount = 100000;
-        bytes32 internalSendHash = "";
-        bytes memory data = abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
-
-        uint256 maxSupply = 90000;
-        vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit MaxSupplyUpdated(maxSupply);
-        vm.prank(tssAddress);
-        zetaConnector.setMaxSupply(maxSupply);
-
-        vm.prank(tssAddress);
-        vm.expectRevert(ExceedsMaxSupply.selector);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
     }
 
@@ -275,29 +239,13 @@ contract ZetaConnectorNonNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvent
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawAndRevertFailsIfSenderIsNotTSS() public {
+     function testWithdrawAndRevertFailsIfSenderIsNotTSS() public {
         uint256 amount = 100000;
         bytes32 internalSendHash = "";
         bytes memory data = abi.encodePacked("hello");
     
         vm.prank(owner);
         vm.expectRevert(InvalidSender.selector);
-        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
-    }
-
-    function testWithdrawAndRevertFailsIfMaxSupplyReached() public {
-        uint256 amount = 100000;
-        bytes32 internalSendHash = "";
-        bytes memory data = abi.encodePacked("hello");
-
-        uint256 maxSupply = 90000;
-        vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit MaxSupplyUpdated(maxSupply);
-        vm.prank(tssAddress);
-        zetaConnector.setMaxSupply(maxSupply);
-    
-        vm.prank(tssAddress);
-        vm.expectRevert(ExceedsMaxSupply.selector);
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
     }
 }
