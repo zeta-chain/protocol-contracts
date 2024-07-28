@@ -17,9 +17,19 @@ const _abi = [
         name: "_gateway",
         type: "address",
       },
+      {
+        internalType: "address",
+        name: "_tssAddress",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "InvalidSender",
+    type: "error",
   },
   {
     inputs: [],
@@ -119,6 +129,19 @@ const _abi = [
     outputs: [
       {
         internalType: "contract IGatewayEVM",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "tssAddress",
+    outputs: [
+      {
+        internalType: "address",
         name: "",
         type: "address",
       },
@@ -229,15 +252,21 @@ export class ERC20CustodyNew__factory extends ContractFactory {
 
   override deploy(
     _gateway: PromiseOrValue<string>,
+    _tssAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ERC20CustodyNew> {
-    return super.deploy(_gateway, overrides || {}) as Promise<ERC20CustodyNew>;
+    return super.deploy(
+      _gateway,
+      _tssAddress,
+      overrides || {}
+    ) as Promise<ERC20CustodyNew>;
   }
   override getDeployTransaction(
     _gateway: PromiseOrValue<string>,
+    _tssAddress: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): TransactionRequest {
-    return super.getDeployTransaction(_gateway, overrides || {});
+    return super.getDeployTransaction(_gateway, _tssAddress, overrides || {});
   }
   override attach(address: string): ERC20CustodyNew {
     return super.attach(address) as ERC20CustodyNew;

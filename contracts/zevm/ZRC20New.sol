@@ -229,8 +229,6 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @param amount, amount to deposit.
      * @return true/false if succeeded/failed.
      */
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function deposit(address to, uint256 amount) external override returns (bool) {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS && msg.sender != GATEWAY_CONTRACT_ADDRESS) revert InvalidSender();
         _mint(to, amount);
@@ -275,8 +273,6 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @dev Updates system contract address. Can only be updated by the fungible module.
      * @param addr, new system contract address.
      */
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function updateSystemContractAddress(address addr) external onlyFungible {
         SYSTEM_CONTRACT_ADDRESS = addr;
         emit UpdatedSystemContract(addr);
@@ -286,8 +282,6 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @dev Updates gas limit. Can only be updated by the fungible module.
      * @param gasLimit, new gas limit.
      */
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function updateGasLimit(uint256 gasLimit) external onlyFungible {
         GAS_LIMIT = gasLimit;
         emit UpdatedGasLimit(gasLimit);
@@ -297,8 +291,6 @@ contract ZRC20New is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @dev Updates protocol flat fee. Can only be updated by the fungible module.
      * @param protocolFlatFee, new protocol flat fee.
      */
-    // TODO: Finalize access control
-    // https://github.com/zeta-chain/protocol-contracts/issues/204
     function updateProtocolFlatFee(uint256 protocolFlatFee) external onlyFungible {
         PROTOCOL_FLAT_FEE = protocolFlatFee;
         emit UpdatedProtocolFlatFee(protocolFlatFee);
