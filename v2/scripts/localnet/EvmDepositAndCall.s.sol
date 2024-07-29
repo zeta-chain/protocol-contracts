@@ -6,6 +6,8 @@ import "src/evm/GatewayEVM.sol";
 import "test/utils/TestZContract.sol";
 import "test/utils/TestERC20.sol";
 
+// EvmDepositAndCallScript executes depositAndCall method on GatewayEVM and it should be used on localnet.
+// It uses anvil private key, and sets default contract addresses deployed on fresh localnet, that can be overriden with env vars.
 contract EvmDepositAndCallScript is Script {
     function run() external {
         address payable gatewayEVMAddress = payable(vm.envOr("GATEWAY_EVM", 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0));

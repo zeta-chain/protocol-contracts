@@ -6,6 +6,8 @@ import "src/zevm/GatewayZEVM.sol";
 import "test/utils/ReceiverEVM.sol";
 import "test/utils/ZRC20New.sol";
 
+// ZevmWithdrawAndCallScript executes withdrawAndCall method on GatewayZEVM and it should be used on localnet.
+// It uses anvil private key, and sets default contract addresses deployed on fresh localnet, that can be overriden with env vars.
 contract ZevmWithdrawAndCallScript is Script {
     function run() external {
         address payable gatewayZEVMAddress = payable(vm.envOr("GATEWAY_ZEVM", 0x610178dA211FEF7D417bC0e6FeD39F05609AD788));
