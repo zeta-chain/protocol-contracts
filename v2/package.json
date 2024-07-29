@@ -1,17 +1,16 @@
 {
   "name": "v2",
   "version": "1.0.0",
-  "description": "**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**",
-  "main": "index.js",
+  "author": "zetachain",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
-    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"anvil --auto-impersonate\" \"wait-on tcp:8545 && npx ts-node scripts/localnet/worker.ts\""
+    "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"anvil --auto-impersonate\" \"wait-on tcp:8545 && npx ts-node scripts/localnet/worker.ts\"",
+    "test": "forge clean && forge test -vv"
   },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
@@ -23,8 +22,7 @@
     "typescript-eslint": "^7.17.0",
     "wait-on": "^7.2.0"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ethers": "^6.13.1"
   }

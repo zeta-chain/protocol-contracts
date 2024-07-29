@@ -5,17 +5,26 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "src/zevm/interfaces/IGatewayZEVM.sol";
 import "src/zevm/interfaces/IZRC20.sol";
 
-// @notice This contract is used just for testing
+/// @title SenderZEVM
+/// @notice This contract is used just for testing.
+/// @dev Provides functions to call a receiver on EVM and to withdraw and call a receiver on EVM.
 contract SenderZEVM {
+    /// @notice The address of the gateway contract.
     address public gateway;
 
+    /// @notice Error indicating that the approval of tokens failed.
     error ApprovalFailed();
 
     constructor(address _gateway) {
         gateway = _gateway;
     }
 
-    // Call receiver on EVM
+    /// @notice Call a receiver on EVM.
+    /// @param receiver The address of the receiver on the external chain.
+    /// @param str A string parameter to pass to the receiver's function.
+    /// @param num A numeric parameter to pass to the receiver's function.
+    /// @param flag A boolean parameter to pass to the receiver's function.
+    /// @dev Encodes the function call and passes it to the gateway.
     function callReceiver(bytes memory receiver, string memory str, uint256 num, bool flag) external {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
@@ -24,7 +33,14 @@ contract SenderZEVM {
         IGatewayZEVM(gateway).call(receiver, message);
     }
 
-    // Withdraw and call receiver on EVM
+    /// @notice Withdraw and call a receiver on EVM.
+    /// @param receiver The address of the receiver on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param str A string parameter to pass to the receiver's function.
+    /// @param num A numeric parameter to pass to the receiver's function.
+    /// @param flag A boolean parameter to pass to the receiver's function.
+    /// @dev Approves the gateway to withdraw tokens and encodes the function call to pass to the gateway.
     function withdrawAndCallReceiver(
         bytes memory receiver,
         uint256 amount,

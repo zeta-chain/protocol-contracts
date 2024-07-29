@@ -1,23 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "./interfaces//IGatewayEVM.sol";
+import "./interfaces/IERC20CustodyNew.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-import "./interfaces//IGatewayEVM.sol";
-import "./interfaces/IERC20CustodyNew.sol";
-
-// As the current version, ERC20CustodyNew hold the ERC20s deposited on ZetaChain
-// This version include a functionality allowing to call a contract
-// ERC20Custody doesn't call smart contract directly, it passes through the Gateway contract
+/// @title ERC20CustodyNew
+/// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
+/// @dev This contract does not call smart contracts directly, it passes through the Gateway contract.
 contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
+    /// @notice Gateway contract.
     IGatewayEVM public gateway;
+    /// @notice TSS address.
     address public tssAddress;
 
-    // @dev Only TSS address allowed modifier.
+    /// @notice Only TSS address allowed modifier.
     modifier onlyTSS() {
         if (msg.sender != tssAddress) {
             revert InvalidSender();
@@ -33,17 +34,23 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
         tssAddress = _tssAddress;
     }
 
-    // Withdraw is called by TSS address, it directly transfers the tokens to the destination address without contract
-    // call
+    /// @notice Withdraw directly transfers the tokens to the destination address without contract call.
+    /// @dev This function can only be called by the TSS address.
+    /// @param token Address of the ERC20 token.
+    /// @param to Destination address for the tokens.
+    /// @param amount Amount of tokens to withdraw.
     function withdraw(address token, address to, uint256 amount) external nonReentrant onlyTSS {
         IERC20(token).safeTransfer(to, amount);
 
         emit Withdraw(token, to, amount);
     }
 
-    // WithdrawAndCall is called by TSS address, it transfers the tokens and call a contract
-    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls
-    // the contract
+    /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.
+    /// @dev This function can only be called by the TSS address.
+    /// @param token Address of the ERC20 token.
+    /// @param to Address of the contract to call.
+    /// @param amount Amount of tokens to withdraw.
+    /// @param data Calldata to pass to the contract call.
     function withdrawAndCall(
         address token,
         address to,
@@ -63,9 +70,13 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
         emit WithdrawAndCall(token, to, amount, data);
     }
 
-    // WithdrawAndRevert is called by TSS address, it transfers the tokens and call a contract
-    // For this, it passes through the Gateway contract, it transfers the tokens to the Gateway contract and then calls
-    // the contract
+    /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through
+    /// the Gateway.
+    /// @dev This function can only be called by the TSS address.
+    /// @param token Address of the ERC20 token.
+    /// @param to Address of the contract to call.
+    /// @param amount Amount of tokens to withdraw.
+    /// @param data Calldata to pass to the contract call.
     function withdrawAndRevert(
         address token,
         address to,

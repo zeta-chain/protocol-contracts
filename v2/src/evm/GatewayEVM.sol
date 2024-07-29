@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "./ZetaConnectorNewBase.sol";
 import "./interfaces/IGatewayEVM.sol";
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -10,11 +11,9 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-/**
- * @title GatewayEVM
- * @notice The GatewayEVM contract is the endpoint to call smart contracts on external chains.
- * @dev The contract doesn't hold any funds and should never have active allowances.
- */
+/// @title GatewayEVM
+/// @notice The GatewayEVM contract is the endpoint to call smart contracts on external chains.
+/// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayEVM is
     Initializable,
     OwnableUpgradeable,
@@ -34,7 +33,7 @@ contract GatewayEVM is
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
-    // @dev Only TSS address allowed modifier.
+    /// @notice Only TSS address allowed modifier.
     modifier onlyTSS() {
         if (msg.sender != tssAddress) {
             revert InvalidSender();
@@ -42,8 +41,8 @@ contract GatewayEVM is
         _;
     }
 
-    // @dev Only custody address allowed modifier.
-    modifier onlyCustodyOrConnector() {
+    /// @notice Only custody or connector address allowed modifier.
+    modifier onlyAssetHandler() {
         if (msg.sender != custody && msg.sender != zetaConnector) {
             revert InvalidSender();
         }
@@ -68,8 +67,14 @@ contract GatewayEVM is
         zetaToken = _zetaToken;
     }
 
+    /// @dev Authorizes the upgrade of the contract, sender must be owner.
+    /// @param newImplementation Address of the new implementation.
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
 
+    /// @dev Internal function to execute a call to a destination address.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
@@ -77,8 +82,10 @@ contract GatewayEVM is
         return result;
     }
 
-    // Called by the TSS
-    // Calling onRevert directly
+    /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
     function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
         (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
@@ -87,9 +94,11 @@ contract GatewayEVM is
         emit Reverted(destination, msg.value, data);
     }
 
-    // Called by the TSS
-    // Execution without ERC20 tokens, it is payable and can be used in the case of WithdrawAndCall for Gas ZRC20
-    // It can be also used for contract call without asset movement
+    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
     function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory) {
         bytes memory result = _execute(destination, data);
 
@@ -98,12 +107,13 @@ contract GatewayEVM is
         return result;
     }
 
-    // Called by the ERC20Custody contract
-    // It call a function using ERC20 transfer
-    // Since the goal is to allow calling contract not designed for ZetaChain specifically, it uses ERC20 allowance
-    // system
-    // It provides allowance to destination contract and call destination contract. In the end, it remove remaining
-    // allowance and transfer remaining tokens back to the custody contract for security purposes
+    /// @notice Executes a call to a destination contract using ERC20 tokens.
+    /// @dev This function can only be called by the custody or connector address.
+    ///      It uses the ERC20 allowance system, resetting gateway allowance at the end.
+    /// @param token Address of the ERC20 token.
+    /// @param to Address of the contract to call.
+    /// @param amount Amount of tokens to transfer.
+    /// @param data Calldata to pass to the call.
     function executeWithERC20(
         address token,
         address to,
@@ -112,7 +122,7 @@ contract GatewayEVM is
     )
         public
         nonReentrant
-        onlyCustodyOrConnector
+        onlyAssetHandler
     {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
@@ -133,8 +143,12 @@ contract GatewayEVM is
         emit ExecutedWithERC20(token, to, amount, data);
     }
 
-    // Called by the ERC20Custody contract
-    // Directly transfers ERC20 and calls onRevert
+    /// @notice Directly transfers ERC20 tokens and calls onRevert.
+    /// @dev This function can only be called by the custody or connector address.
+    /// @param token Address of the ERC20 token.
+    /// @param to Address of the contract to call.
+    /// @param amount Amount of tokens to transfer.
+    /// @param data Calldata to pass to the call.
     function revertWithERC20(
         address token,
         address to,
@@ -143,7 +157,7 @@ contract GatewayEVM is
     )
         external
         nonReentrant
-        onlyCustodyOrConnector
+        onlyAssetHandler
     {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -153,7 +167,8 @@ contract GatewayEVM is
         emit RevertedWithERC20(token, to, amount, data);
     }
 
-    // Deposit ETH to tss
+    /// @notice Deposits ETH to the TSS address.
+    /// @param receiver Address of the receiver.
     function deposit(address receiver) external payable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
@@ -163,7 +178,10 @@ contract GatewayEVM is
         emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
 
-    // Deposit ERC20 tokens to custody/connector
+    /// @notice Deposits ERC20 tokens to the custody or connector contract.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of tokens to deposit.
+    /// @param asset Address of the ERC20 token.
     function deposit(address receiver, uint256 amount, address asset) external {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -172,7 +190,9 @@ contract GatewayEVM is
         emit Deposit(msg.sender, receiver, amount, asset, "");
     }
 
-    // Deposit ETH to tss and call an omnichain smart contract
+    /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
+    /// @param receiver Address of the receiver.
+    /// @param payload Calldata to pass to the call.
     function depositAndCall(address receiver, bytes calldata payload) external payable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
@@ -182,7 +202,11 @@ contract GatewayEVM is
         emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
     }
 
-    // Deposit ERC20 tokens to custody/connector and call an omnichain smart contract
+    /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of tokens to deposit.
+    /// @param asset Address of the ERC20 token.
+    /// @param payload Calldata to pass to the call.
     function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -191,11 +215,15 @@ contract GatewayEVM is
         emit Deposit(msg.sender, receiver, amount, asset, payload);
     }
 
-    // Call an omnichain smart contract without asset transfer
+    /// @notice Calls an omnichain smart contract without asset transfer.
+    /// @param receiver Address of the receiver.
+    /// @param payload Calldata to pass to the call.
     function call(address receiver, bytes calldata payload) external {
         emit Call(msg.sender, receiver, payload);
     }
 
+    /// @notice Sets the custody contract address.
+    /// @param _custody Address of the custody contract.
     function setCustody(address _custody) external onlyTSS {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
@@ -203,6 +231,8 @@ contract GatewayEVM is
         custody = _custody;
     }
 
+    /// @notice Sets the connector contract address.
+    /// @param _zetaConnector Address of the connector contract.
     function setConnector(address _zetaConnector) external onlyTSS {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
@@ -210,10 +240,21 @@ contract GatewayEVM is
         zetaConnector = _zetaConnector;
     }
 
+    /// @dev Resets the approval of a token for a specified address.
+    /// This is used to ensure that the approval is set to zero before setting it to a new value.
+    /// @param token Address of the ERC20 token.
+    /// @param to Address to reset the approval for.
+    /// @return True if the approval reset was successful, false otherwise.
     function resetApproval(address token, address to) private returns (bool) {
         return IERC20(token).approve(to, 0);
     }
 
+    /// @dev Transfers tokens from the sender to the asset handler.
+    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset
+    /// type.
+    /// @param from Address of the sender.
+    /// @param token Address of the ERC20 token.
+    /// @param amount Amount of tokens to transfer.
     function transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
             // transfer to connector
@@ -229,6 +270,11 @@ contract GatewayEVM is
         }
     }
 
+    /// @dev Transfers tokens to the asset handler.
+    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset
+    /// type.
+    /// @param token Address of the ERC20 token.
+    /// @param amount Amount of tokens to transfer.
     function transferToAssetHandler(address token, uint256 amount) private {
         if (token == zetaToken) {
             // transfer to connector

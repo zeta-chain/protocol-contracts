@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+/// @title IZRC20
+/// @notice Interface for the ZRC20 token contract.
 interface IZRC20 {
     function totalSupply() external view returns (uint256);
 
@@ -25,6 +27,8 @@ interface IZRC20 {
     function PROTOCOL_FLAT_FEE() external view returns (uint256);
 }
 
+/// @title IZRC20Metadata
+/// @notice Interface for the ZRC20 metadata.
 interface IZRC20Metadata is IZRC20 {
     function name() external view returns (string memory);
 
@@ -33,6 +37,8 @@ interface IZRC20Metadata is IZRC20 {
     function decimals() external view returns (uint8);
 }
 
+/// @title ZRC20Events
+/// @notice Interface for the ZRC20 events.
 interface ZRC20Events {
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);

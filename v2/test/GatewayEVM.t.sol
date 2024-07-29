@@ -7,14 +7,16 @@ import "forge-std/Vm.sol";
 import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
+
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+
+import "./utils/IReceiverEVM.sol";
 import "src/evm/ERC20CustodyNew.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
-
-import "./utils/IReceiverEVM.sol";
 import "src/evm/interfaces/IERC20CustodyNew.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
 
@@ -44,7 +46,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gateway = GatewayEVM(proxy);
-
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
@@ -58,6 +59,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         token.mint(owner, 1_000_000);
         token.transfer(address(custody), 500_000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testForwardCallToReceiveNonPayable() public {
@@ -428,7 +431,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gateway = GatewayEVM(proxy);
-
         custody = new ERC20CustodyNew(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
 

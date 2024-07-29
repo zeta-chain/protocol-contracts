@@ -10,9 +10,14 @@ import "./utils/IReceiverEVM.sol";
 import "./utils/ReceiverEVM.sol";
 import "./utils/TestERC20.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+
+import "./utils/IReceiverEVM.sol";
+
 import "src/evm/ERC20CustodyNew.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
@@ -60,6 +65,8 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
 
         token.mint(owner, 1_000_000);
         token.transfer(address(custody), 500_000);
+
+        vm.deal(tssAddress, 1 ether);
     }
 
     function testUpgradeAndForwardCallToReceivePayable() public {
@@ -81,7 +88,8 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         emit ReceivedPayable(address(gateway), value, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit ExecutedV2(address(receiver), value, data);
-        gateway.execute{ value: value }(address(receiver), data);
+        vm.prank(tssAddress);
+        gatewayUpgradeTest.execute{ value: value }(address(receiver), data);
 
         assertEq(custodyBeforeUpgrade, gateway.custody());
         assertEq(tssBeforeUpgrade, gateway.tssAddress());
