@@ -102,7 +102,7 @@ contract GatewayEVMZEVMTest is
         vm.stopPrank();
 
         vm.prank(ownerZEVM);
-        zrc20.approve(address(gatewayZEVM), 1000000);
+        zrc20.approve(address(gatewayZEVM), 1_000_000);
 
         vm.deal(tssAddress, 1 ether);
     }
@@ -125,7 +125,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testCallReceiverEVMFromSenderZEVM() public {
@@ -148,7 +148,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromZEVM() public {
@@ -177,7 +177,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromSenderZEVM() public {
@@ -207,7 +207,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
 
         // Check the balance after withdrawal
         uint256 senderBalanceAfterWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));

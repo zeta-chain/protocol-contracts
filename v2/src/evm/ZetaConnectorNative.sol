@@ -11,9 +11,13 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract ZetaConnectorNative is ZetaConnectorNewBase {
     using SafeERC20 for IERC20;
 
-    constructor(address _gateway, address _zetaToken, address _tssAddress)
+    constructor(
+        address _gateway,
+        address _zetaToken,
+        address _tssAddress
+    )
         ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
-    {}
+    { }
 
     /// @notice Withdraw tokens to a specified address.
     /// @param to The address to withdraw tokens to.
@@ -31,7 +35,17 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
-    function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    function withdrawAndCall(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyTSS
+    {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
 
@@ -47,7 +61,17 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
-    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    function withdrawAndRevert(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyTSS
+    {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
 

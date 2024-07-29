@@ -3,17 +3,25 @@ pragma solidity ^0.8.20;
 
 import "./ZetaConnectorNewBase.sol";
 import "./interfaces/IGatewayEVM.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /// @title GatewayEVM
 /// @notice The GatewayEVM contract is the endpoint to call smart contracts on external chains.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
-contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGatewayEVMErrors, IGatewayEVMEvents, ReentrancyGuardUpgradeable {
+contract GatewayEVM is
+    Initializable,
+    OwnableUpgradeable,
+    UUPSUpgradeable,
+    IGatewayEVMErrors,
+    IGatewayEVMEvents,
+    ReentrancyGuardUpgradeable
+{
     using SafeERC20 for IERC20;
 
     /// @notice The address of the custody contract.
@@ -61,7 +69,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
 
     /// @dev Internal function to execute a call to a destination address.
     /// @param destination Address to call.
@@ -79,7 +87,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
-        (bool success, bytes memory result) = destination.call{value: msg.value}("");
+        (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
 
@@ -91,7 +99,7 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory)  {
+    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory) {
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -111,7 +119,11 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) public nonReentrant onlyAssetHandler {
+    )
+        public
+        nonReentrant
+        onlyAssetHandler
+    {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
         if (!resetApproval(token, to)) revert ApprovalFailed();
@@ -142,7 +154,11 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
         address to,
         uint256 amount,
         bytes calldata data
-    ) external nonReentrant onlyAssetHandler {
+    )
+        external
+        nonReentrant
+        onlyAssetHandler
+    {
         if (amount == 0) revert InsufficientERC20Amount();
 
         IERC20(token).safeTransfer(address(to), amount);
@@ -234,7 +250,8 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     }
 
     /// @dev Transfers tokens from the sender to the asset handler.
-    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset type.
+    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset
+    /// type.
     /// @param from Address of the sender.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to transfer.
@@ -254,7 +271,8 @@ contract GatewayEVM is Initializable, OwnableUpgradeable, UUPSUpgradeable, IGate
     }
 
     /// @dev Transfers tokens to the asset handler.
-    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset type.
+    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset
+    /// type.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to transfer.
     function transferToAssetHandler(address token, uint256 amount) private {

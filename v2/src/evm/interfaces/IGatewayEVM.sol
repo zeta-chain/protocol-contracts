@@ -81,12 +81,7 @@ interface IGatewayEVM {
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function executeWithERC20(
-        address token,
-        address to,
-        uint256 amount,
-        bytes calldata data
-    ) external;
+    function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
 
     /// @notice Executes a call to a contract.
     /// @param destination The address of the contract to call.
@@ -99,12 +94,7 @@ interface IGatewayEVM {
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function revertWithERC20(
-        address token,
-        address to,
-        uint256 amount,
-        bytes calldata data
-    ) external;
+    function revertWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
 }
 
 /// @title Revertable

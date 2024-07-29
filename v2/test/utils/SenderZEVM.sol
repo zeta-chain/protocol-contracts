@@ -41,7 +41,16 @@ contract SenderZEVM {
     /// @param num A numeric parameter to pass to the receiver's function.
     /// @param flag A boolean parameter to pass to the receiver's function.
     /// @dev Approves the gateway to withdraw tokens and encodes the function call to pass to the gateway.
-    function withdrawAndCallReceiver(bytes memory receiver, uint256 amount, address zrc20, string memory str, uint256 num, bool flag) external {
+    function withdrawAndCallReceiver(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        string memory str,
+        uint256 num,
+        bool flag
+    )
+        external
+    {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 

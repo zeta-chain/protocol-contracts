@@ -15,17 +15,21 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @notice Event triggered when max supply is updated.
     /// @param maxSupply New max supply.
     event MaxSupplyUpdated(uint256 maxSupply);
+
     error ExceedsMaxSupply();
 
-    constructor(address _gateway, address _zetaToken, address _tssAddress)
+    constructor(
+        address _gateway,
+        address _zetaToken,
+        address _tssAddress
+    )
         ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
-    {}
+    { }
 
-   
     /// @notice Set max supply for minting.
     /// @param _maxSupply New max supply.
     /// @dev This function can only be called by the TSS address.
-    function setMaxSupply(uint256 _maxSupply) external onlyTSS() {
+    function setMaxSupply(uint256 _maxSupply) external onlyTSS {
         maxSupply = _maxSupply;
         emit MaxSupplyUpdated(_maxSupply);
     }
@@ -48,7 +52,17 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
-    function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    function withdrawAndCall(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyTSS
+    {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
 
         // Mint zetaToken to the Gateway contract
@@ -66,7 +80,17 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
-    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    function withdrawAndRevert(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyTSS
+    {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
 
         // Mint zetaToken to the Gateway contract

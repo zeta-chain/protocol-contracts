@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-import "src/evm/interfaces/IGatewayEVM.sol";
 import "src/evm/ZetaConnectorNewBase.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
 
 /// @title GatewayEVMUpgradeTest
 /// @notice Modified GatewayEVM contract for testing upgrades
@@ -37,7 +37,6 @@ contract GatewayEVMUpgradeTest is
     /// @dev Modified event for testing upgrade.
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
 
-
     /// @notice Only TSS address allowed modifier.
     modifier onlyTSS() {
         if (msg.sender != tssAddress) {
@@ -60,7 +59,7 @@ contract GatewayEVMUpgradeTest is
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
-        
+
         __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
@@ -71,7 +70,7 @@ contract GatewayEVMUpgradeTest is
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner() {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
 
     /// @dev Internal function to execute a call to a destination address.
     /// @param destination Address to call.
@@ -89,7 +88,7 @@ contract GatewayEVMUpgradeTest is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
-        (bool success, bytes memory result) = destination.call{value: msg.value}("");
+        (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
 
@@ -101,7 +100,7 @@ contract GatewayEVMUpgradeTest is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory)  {
+    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory) {
         bytes memory result = _execute(destination, data);
 
         emit ExecutedV2(destination, msg.value, data);
@@ -121,11 +120,15 @@ contract GatewayEVMUpgradeTest is
         address to,
         uint256 amount,
         bytes calldata data
-    ) public nonReentrant onlyCustodyOrConnector {
+    )
+        public
+        nonReentrant
+        onlyCustodyOrConnector
+    {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
-        if(!resetApproval(token, to)) revert ApprovalFailed();
-        if(!IERC20(token).approve(to, amount)) revert ApprovalFailed();
+        if (!resetApproval(token, to)) revert ApprovalFailed();
+        if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
         bytes memory result = _execute(to, data);
 
@@ -152,7 +155,11 @@ contract GatewayEVMUpgradeTest is
         address to,
         uint256 amount,
         bytes calldata data
-    ) external nonReentrant onlyCustodyOrConnector {
+    )
+        external
+        nonReentrant
+        onlyCustodyOrConnector
+    {
         if (amount == 0) revert InsufficientERC20Amount();
 
         IERC20(token).safeTransfer(address(to), amount);
@@ -244,7 +251,8 @@ contract GatewayEVMUpgradeTest is
     }
 
     /// @dev Transfers tokens from the sender to the asset handler.
-    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset type.
+    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset
+    /// type.
     /// @param from Address of the sender.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to transfer.
@@ -264,7 +272,8 @@ contract GatewayEVMUpgradeTest is
     }
 
     /// @dev Transfers tokens to the asset handler.
-    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset type.
+    /// This function handles the transfer of tokens to either the connector or custody contract based on the asset
+    /// type.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to transfer.
     function transferToAssetHandler(address token, uint256 amount) private {

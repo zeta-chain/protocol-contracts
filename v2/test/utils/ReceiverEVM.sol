@@ -72,8 +72,8 @@ contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
     }
 
     /// @notice Receives ETH.
-    receive() external payable {}
+    receive() external payable { }
 
     /// @notice Fallback function to receive ETH.
-    fallback() external payable {}
+    fallback() external payable { }
 }

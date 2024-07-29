@@ -54,14 +54,28 @@ abstract contract ZetaConnectorNewBase is IZetaConnectorEvents, ReentrancyGuard 
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
-    function withdrawAndCall(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external virtual;
+    function withdrawAndCall(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        virtual;
 
     /// @notice Withdraw tokens and call a contract with a revert callback through Gateway.
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
-    function withdrawAndRevert(address to, uint256 amount, bytes calldata data, bytes32 internalSendHash) external virtual;
+    function withdrawAndRevert(
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        bytes32 internalSendHash
+    )
+        external
+        virtual;
 
     /// @notice Handle received tokens.
     /// @param amount The amount of tokens received.

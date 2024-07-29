@@ -29,11 +29,7 @@ interface IGatewayZEVM {
     /// @param zrc20 The address of the ZRC20 token.
     /// @param amount The amount of tokens to deposit.
     /// @param target The target address to receive the deposited tokens.
-    function deposit(
-        address zrc20,
-        uint256 amount,
-        address target
-    ) external;
+    function deposit(address zrc20, uint256 amount, address target) external;
 
     /// @notice Execute a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
@@ -83,7 +79,15 @@ interface IGatewayZEVMEvents {
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
-    event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+    event Withdrawal(
+        address indexed from,
+        address zrc20,
+        bytes to,
+        uint256 value,
+        uint256 gasfee,
+        uint256 protocolFlatFee,
+        bytes message
+    );
 }
 
 /// @title IGatewayZEVMErrors

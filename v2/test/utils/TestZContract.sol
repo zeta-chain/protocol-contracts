@@ -69,8 +69,8 @@ contract TestZContract is UniversalContract {
     }
 
     /// @notice Allows the contract to receive ETH.
-    receive() external payable {}
+    receive() external payable { }
 
     /// @notice Fallback function to receive ETH.
-    fallback() external payable {}
+    fallback() external payable { }
 }

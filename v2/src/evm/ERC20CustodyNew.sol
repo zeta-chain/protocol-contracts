@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "./interfaces//IGatewayEVM.sol";
+import "./interfaces/IERC20CustodyNew.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "./interfaces//IGatewayEVM.sol";
-import "./interfaces/IERC20CustodyNew.sol";
 
 /// @title ERC20CustodyNew
 /// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
@@ -51,7 +51,16 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
-    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) public nonReentrant onlyTSS {
+    function withdrawAndCall(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        public
+        nonReentrant
+        onlyTSS
+    {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
@@ -61,13 +70,23 @@ contract ERC20CustodyNew is IERC20CustodyNewEvents, IERC20CustodyNewErrors, Reen
         emit WithdrawAndCall(token, to, amount, data);
     }
 
-    /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through the Gateway.
+    /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through
+    /// the Gateway.
     /// @dev This function can only be called by the TSS address.
     /// @param token Address of the ERC20 token.
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
-    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data) public nonReentrant onlyTSS {
+    function withdrawAndRevert(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        public
+        nonReentrant
+        onlyTSS
+    {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
