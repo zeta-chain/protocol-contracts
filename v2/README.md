@@ -1,19 +1,8 @@
-## Foundry
+### ⚠️ Important Notice: V2 in Development
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+We are currently developing Version 2 (V2) of our smart contract architecture. This new version will significantly enhance the developer experience for building Universal Apps.
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
+Developers can already begin testing the new interface by referring to [the V2 Localnet guide](/v2_localnet.md).
 
 ### Build
 
