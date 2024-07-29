@@ -41,5 +41,5 @@ jobs:
       - name: Install Dependencies
         run: yarn install
   
-      - name: Test (hardhat)
+      - name: Test
         run: yarn test
