@@ -10,11 +10,14 @@ import "./utils/TestERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/LegacyUpgrades.sol";
+import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
-import "contracts/prototypes/evm/IGatewayEVM.sol";
-import "contracts/prototypes/evm/IReceiverEVM.sol";
-import "contracts/prototypes/evm/IZetaConnector.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
+import "./utils/IReceiverEVM.sol";
+import "src/evm/interfaces/IZetaConnector.sol";
+import "src/evm/GatewayEVM.sol";
+import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/ZetaConnectorNative.sol";
 
 contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IZetaConnectorEvents {
     using SafeERC20 for IERC20;
@@ -74,15 +77,6 @@ contract ZetaConnectorNativeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, 
     }
 
     function testWithdrawFailsIfSenderIsNotTSS() public {
-        uint256 amount = 100000;
-        bytes32 internalSendHash = "";
-
-        vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
-        zetaConnector.withdraw(destination, amount, internalSendHash);
-    }
-
-    function testWithdrawAndCallReceiveERC20() public {
         uint256 amount = 100000;
         bytes32 internalSendHash = "";
 

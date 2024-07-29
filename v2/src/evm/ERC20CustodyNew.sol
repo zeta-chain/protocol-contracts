@@ -4,12 +4,8 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-
 import "./interfaces//IGatewayEVM.sol";
 import "./interfaces/IERC20CustodyNew.sol";
-
-import "./IGatewayEVM.sol";
-import "./IERC20CustodyNew.sol";
 
 /// @title ERC20CustodyNew
 /// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.

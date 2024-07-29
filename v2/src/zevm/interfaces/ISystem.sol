@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/**
- * @dev Interfaces of SystemContract and ZRC20 to make easier to import.
- */
+/// @title ISystem
+/// @notice Interface for the System contract.
+/// @dev Defines functions for system contract callable by fungible module.
 interface ISystem {
     function FUNGIBLE_MODULE_ADDRESS() external view returns (address);
 
