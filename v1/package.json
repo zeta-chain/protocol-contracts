@@ -87,7 +87,6 @@
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "prepublishOnly": "yarn build",
     "test": "npx hardhat test",
-    "test:prototypes": "yarn compile && npx hardhat test test/prototypes/*",
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
