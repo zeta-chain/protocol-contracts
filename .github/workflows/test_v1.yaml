@@ -39,5 +39,5 @@ jobs:
       - name: Build project
         run: yarn build
   
-      - name: Test (hardhat)
+      - name: Test
         run: yarn test
