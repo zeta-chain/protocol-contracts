@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.26;
 
 /// @title IERC20CustodyNewEvents
 /// @notice Interface for the events emitted by the ERC20 custody contract.
