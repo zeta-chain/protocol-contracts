@@ -9,5 +9,5 @@ Contracts of official protocol contracts deployed by the core ZetaChain team.
 
 ## Packages
 
-- [v1 legacy contracts](v1)
-- [v2 new contracts (currently in development)](v2)
+* [v1 legacy contracts](v1)
+* [v2 new contracts (currently in development)](v2)
