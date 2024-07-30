@@ -2,7 +2,7 @@
 
 We are currently developing Version 2 (V2) of our smart contract architecture. This new version will significantly enhance the developer experience for building Universal Apps.
 
-Developers can already begin testing the new interface by referring to [the V2 Localnet guide](/v2_localnet.md).
+Developers can already begin testing the new interface by referring to [the V2 Localnet guide](./scripts/localnet//v2_localnet.md).
 
 ### Build
 
@@ -34,10 +34,10 @@ $ forge snapshot
 $ anvil
 ```
 
-### Deploy
+### Deploy using script
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/<DeployScript>.s.sol:<DeployScript> --rpc-url <your_rpc_url> --private-key <your_private_key>
 ```
 
 ### Cast
