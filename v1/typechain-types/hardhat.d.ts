@@ -372,10 +372,6 @@ declare module "hardhat/types/runtime" {
       name: "ZRC20Errors",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ZRC20Errors__factory>;
-    getContractFactory(
-      name: "ZRC20Errors",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ZRC20Errors__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -822,11 +818,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ZRC20>;
-    getContractAt(
-      name: "ZRC20Errors",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ZRC20Errors>;
     getContractAt(
       name: "ZRC20Errors",
       address: string,
