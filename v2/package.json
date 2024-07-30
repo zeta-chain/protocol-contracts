@@ -13,7 +13,7 @@
     "test": "forge clean && forge test -vv",
     "coverage": "forge clean && forge coverage --report lcov",
     "typechain": "typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir typechain-types",
-    "generate": "forge clean && forge build && ./scripts/generate_go.sh || true && yarn lint:fix && forge fmt"
+    "generate": "forge clean && forge build && ./scripts/generate_go.sh || true && yarn lint:fix && forge fmt && yarn typechain"
   },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
