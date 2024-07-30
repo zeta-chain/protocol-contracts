@@ -12,7 +12,7 @@
     "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"anvil --auto-impersonate\" \"wait-on tcp:8545 && npx ts-node scripts/localnet/worker.ts\"",
     "test": "forge clean && forge test -vv",
     "coverage": "forge clean && forge coverage --report lcov",
-    "typechain": "typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir typechain-types",
+    "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir typechain-types",
     "generate": "forge clean && forge build && ./scripts/generate_go.sh || true && yarn lint:fix && forge fmt && yarn typechain"
   },
   "devDependencies": {

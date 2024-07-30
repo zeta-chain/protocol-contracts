@@ -18,7 +18,7 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
 
-import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
@@ -31,7 +31,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
     address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
-    ERC20CustodyNew custody;
+    ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
@@ -52,7 +52,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         );
         gateway = GatewayEVM(proxy);
 
-        custody = new ERC20CustodyNew(address(gateway), tssAddress);
+        custody = new ERC20Custody(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
 

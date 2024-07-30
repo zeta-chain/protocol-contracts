@@ -166,5 +166,3 @@ export type { ZRC20 } from "./contracts/zevm/ZRC20.sol/ZRC20";
 export { ZRC20__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20__factory";
 export type { ZRC20Errors } from "./contracts/zevm/ZRC20.sol/ZRC20Errors";
 export { ZRC20Errors__factory } from "./factories/contracts/zevm/ZRC20.sol/ZRC20Errors__factory";
-export type { ZRC20New } from "./contracts/zevm/ZRC20New.sol/ZRC20New";
-export { ZRC20New__factory } from "./factories/contracts/zevm/ZRC20New.sol/ZRC20New__factory";

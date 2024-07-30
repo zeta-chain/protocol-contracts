@@ -12,7 +12,7 @@ import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
-import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
 
@@ -33,7 +33,7 @@ contract ZetaConnectorNonNativeTest is
     address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
-    ERC20CustodyNew custody;
+    ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     // ZetaNonEth zetaToken;
     address owner;
@@ -53,7 +53,7 @@ contract ZetaConnectorNonNativeTest is
         // );
         // gateway = GatewayEVM(proxy);
 
-        // custody = new ERC20CustodyNew(address(gateway), tssAddress);
+        // custody = new ERC20Custody(address(gateway), tssAddress);
         // zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress);
 
         // vm.prank(tssAddress);

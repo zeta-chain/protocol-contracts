@@ -7,14 +7,14 @@ import "forge-std/Vm.sol";
 import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
-import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
 
 import "./utils/SenderZEVM.sol";
 
 import "./utils/SystemContractMock.sol";
-import "./utils/ZRC20New.sol";
+import "./utils/ZRC20.sol";
 import "src/zevm/GatewayZEVM.sol";
 
 import "./utils/IReceiverEVM.sol";
@@ -38,7 +38,7 @@ contract GatewayEVMZEVMTest is
 
     address proxyEVM;
     GatewayEVM gatewayEVM;
-    ERC20CustodyNew custody;
+    ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
@@ -52,7 +52,7 @@ contract GatewayEVMZEVMTest is
     GatewayZEVM gatewayZEVM;
     SenderZEVM senderZEVM;
     SystemContractMock systemContract;
-    ZRC20New zrc20;
+    ZRC20 zrc20;
     address ownerZEVM;
 
     function setUp() public {
@@ -69,7 +69,7 @@ contract GatewayEVMZEVMTest is
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gatewayEVM = GatewayEVM(proxyEVM);
-        custody = new ERC20CustodyNew(address(gatewayEVM), tssAddress);
+        custody = new ERC20Custody(address(gatewayEVM), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress);
 
         vm.deal(tssAddress, 1 ether);
@@ -94,7 +94,7 @@ contract GatewayEVMZEVMTest is
         address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
         vm.startPrank(fungibleModuleAddress);
         systemContract = new SystemContractMock(address(0), address(0), address(0));
-        zrc20 = new ZRC20New("TOKEN", "TKN", 18, 1, CoinType.Zeta, 0, address(systemContract), address(gatewayZEVM));
+        zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Zeta, 0, address(systemContract), address(gatewayZEVM));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
         zrc20.deposit(ownerZEVM, 1_000_000);

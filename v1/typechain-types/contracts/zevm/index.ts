@@ -7,8 +7,6 @@ import type * as wzetaSol from "./WZETA.sol";
 export type { wzetaSol };
 import type * as zrc20Sol from "./ZRC20.sol";
 export type { zrc20Sol };
-import type * as zrc20NewSol from "./ZRC20New.sol";
-export type { zrc20NewSol };
 import type * as zetaConnectorZevmSol from "./ZetaConnectorZEVM.sol";
 export type { zetaConnectorZevmSol };
 import type * as interfaces from "./interfaces";

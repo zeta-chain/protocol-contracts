@@ -14,19 +14,19 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
-import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
-import "src/evm/interfaces/IERC20CustodyNew.sol";
+import "src/evm/interfaces/IERC20Custody.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
 
-contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyNewEvents {
+contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyEvents {
     using SafeERC20 for IERC20;
 
     address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
-    ERC20CustodyNew custody;
+    ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
@@ -46,7 +46,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20CustodyNew(address(gateway), tssAddress);
+        custody = new ERC20Custody(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
         receiver = new ReceiverEVM();
 
@@ -409,7 +409,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     address proxy;
     GatewayEVM gateway;
-    ERC20CustodyNew custody;
+    ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
     TestERC20 zeta;
@@ -431,7 +431,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20CustodyNew(address(gateway), tssAddress);
+        custody = new ERC20Custody(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
 
         vm.deal(tssAddress, 1 ether);

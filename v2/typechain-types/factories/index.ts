@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as erc20 from "./ERC20";
-export * as ierc20CustodyNewSol from "./IERC20CustodyNew.sol";
+export * as ierc20CustodySol from "./IERC20Custody.sol";
 export * as ierc721Sol from "./IERC721.sol";
 export * as iGatewayEvmSol from "./IGatewayEVM.sol";
 export * as iGatewayZevmSol from "./IGatewayZEVM.sol";
@@ -17,7 +17,7 @@ export * as systemContractMockSol from "./SystemContractMock.sol";
 export * as transparentUpgradeableProxySol from "./TransparentUpgradeableProxy.sol";
 export * as vmSol from "./Vm.sol";
 export * as wzetaSol from "./WZETA.sol";
-export * as zrc20NewSol from "./ZRC20New.sol";
+export * as zrc20Sol from "./ZRC20.sol";
 export * as zetaNonEthSol from "./Zeta.non-eth.sol";
 export * as draftIerc1822Sol from "./draft-IERC1822.sol";
 export * as draftIerc6093Sol from "./draft-IERC6093.sol";
@@ -30,8 +30,8 @@ export { ERC1967Proxy__factory } from "./ERC1967Proxy__factory";
 export { ERC1967Utils__factory } from "./ERC1967Utils__factory";
 export { ERC20__factory } from "./ERC20__factory";
 export { ERC20Burnable__factory } from "./ERC20Burnable__factory";
-export { ERC20CustodyNew__factory } from "./ERC20CustodyNew__factory";
-export { ERC20CustodyNewEchidnaTest__factory } from "./ERC20CustodyNewEchidnaTest__factory";
+export { ERC20Custody__factory } from "./ERC20Custody__factory";
+export { ERC20CustodyEchidnaTest__factory } from "./ERC20CustodyEchidnaTest__factory";
 export { GatewayEVM__factory } from "./GatewayEVM__factory";
 export { GatewayEVMEchidnaTest__factory } from "./GatewayEVMEchidnaTest__factory";
 export { GatewayEVMUpgradeTest__factory } from "./GatewayEVMUpgradeTest__factory";
@@ -68,6 +68,6 @@ export { TestERC20__factory } from "./TestERC20__factory";
 export { TestZContract__factory } from "./TestZContract__factory";
 export { UUPSUpgradeable__factory } from "./UUPSUpgradeable__factory";
 export { UpgradeableBeacon__factory } from "./UpgradeableBeacon__factory";
+export { ZetaConnectorBase__factory } from "./ZetaConnectorBase__factory";
 export { ZetaConnectorNative__factory } from "./ZetaConnectorNative__factory";
-export { ZetaConnectorNewBase__factory } from "./ZetaConnectorNewBase__factory";
 export { ZetaConnectorNonNative__factory } from "./ZetaConnectorNonNative__factory";

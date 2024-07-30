@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorNewBase.sol";
+import "./ZetaConnectorBase.sol";
 import "./interfaces/IZetaNonEthNew.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 /// @title ZetaConnectorNonNative
-/// @notice Implementation of ZetaConnectorNewBase for non-native token handling.
+/// @notice Implementation of ZetaConnectorBase for non-native token handling.
 /// @dev This contract mints and burns Zeta tokens and interacts with the Gateway contract.
-contract ZetaConnectorNonNative is ZetaConnectorNewBase {
+contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @notice Max supply for minting.
     uint256 public maxSupply = type(uint256).max;
 
@@ -23,7 +23,7 @@ contract ZetaConnectorNonNative is ZetaConnectorNewBase {
         address _zetaToken,
         address _tssAddress
     )
-        ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
+        ZetaConnectorBase(_gateway, _zetaToken, _tssAddress)
     { }
 
     /// @notice Set max supply for minting.
