@@ -242,6 +242,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x236b0DE675cC8F46AE186897fCCeFe3370C9eDeD",
+    "asset": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 PEPE on ETH",
+    "foreign_chain_id": "1",
+    "symbol": "PEPE.ETH",
+    "type": "zrc20"
+  },
+  {
     "address": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
     "asset": "",
     "category": "omnichain",
@@ -252,6 +265,19 @@
     "description": "ZetaChain ZRC20 BNB-bsc_mainnet",
     "foreign_chain_id": "56",
     "symbol": "BNB.BSC",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x777915D031d1e8144c90D025C594b3b8Bf07a08d",
+    "asset": "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 SHIB on ETH",
+    "foreign_chain_id": "1",
+    "symbol": "SHIB.ETH",
     "type": "zrc20"
   },
   {
@@ -278,6 +304,32 @@
     "description": "ZetaChain ZRC20 USDT on BSC",
     "foreign_chain_id": "56",
     "symbol": "USDT.BSC",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xADF73ebA3Ebaa7254E859549A44c74eF7cff7501",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Polygon POL-polygon_mainnet",
+    "foreign_chain_id": "137",
+    "symbol": "POL.POLYGON",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xcC683A782f4B30c138787CB5576a86AF66fdc31d",
+    "asset": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 DAI on ETH",
+    "foreign_chain_id": "1",
+    "symbol": "DAI.ETH",
     "type": "zrc20"
   },
   {

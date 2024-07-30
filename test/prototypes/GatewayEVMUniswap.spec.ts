@@ -65,10 +65,10 @@ describe("Uniswap Integration with GatewayEVM", function () {
       initializer: "initialize",
       kind: "uups",
     })) as GatewayEVM;
-    custody = (await ERC20CustodyNew.deploy(gateway.address)) as ERC20CustodyNew;
-    gateway.setCustody(custody.address);
-    const zetaConnector = await ZetaConnector.deploy(gateway.address, zeta.address);
-    gateway.setConnector(zetaConnector.address);
+    custody = (await ERC20CustodyNew.deploy(gateway.address, tssAddress.address)) as ERC20CustodyNew;
+    gateway.connect(tssAddress).setCustody(custody.address);
+    const zetaConnector = await ZetaConnector.deploy(gateway.address, zeta.address, tssAddress.address);
+    gateway.connect(tssAddress).setConnector(zetaConnector.address);
 
     // Transfer some tokens to the custody contract
     await tokenA.transfer(custody.address, ethers.utils.parseEther("100"));
@@ -87,7 +87,7 @@ describe("Uniswap Integration with GatewayEVM", function () {
     ]);
 
     // Withdraw and call
-    await custody.withdrawAndCall(tokenA.address, router.address, amountIn, data);
+    await custody.connect(tssAddress).withdrawAndCall(tokenA.address, router.address, amountIn, data);
 
     // Verify the destination address received the tokens
     const destBalance = await tokenB.balanceOf(addr2.address);

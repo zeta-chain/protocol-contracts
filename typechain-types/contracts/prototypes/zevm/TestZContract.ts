@@ -88,9 +88,11 @@ export interface TestZContractInterface extends utils.Interface {
 
   events: {
     "ContextData(bytes,address,uint256,address,string)": EventFragment;
+    "ContextDataRevert(bytes,address,uint256,address,string)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "ContextData"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ContextDataRevert"): EventFragment;
 }
 
 export interface ContextDataEventObject {
@@ -106,6 +108,21 @@ export type ContextDataEvent = TypedEvent<
 >;
 
 export type ContextDataEventFilter = TypedEventFilter<ContextDataEvent>;
+
+export interface ContextDataRevertEventObject {
+  origin: string;
+  sender: string;
+  chainID: BigNumber;
+  msgSender: string;
+  message: string;
+}
+export type ContextDataRevertEvent = TypedEvent<
+  [string, string, BigNumber, string, string],
+  ContextDataRevertEventObject
+>;
+
+export type ContextDataRevertEventFilter =
+  TypedEventFilter<ContextDataRevertEvent>;
 
 export interface TestZContract extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -200,6 +217,21 @@ export interface TestZContract extends BaseContract {
       msgSender?: null,
       message?: null
     ): ContextDataEventFilter;
+
+    "ContextDataRevert(bytes,address,uint256,address,string)"(
+      origin?: null,
+      sender?: null,
+      chainID?: null,
+      msgSender?: null,
+      message?: null
+    ): ContextDataRevertEventFilter;
+    ContextDataRevert(
+      origin?: null,
+      sender?: null,
+      chainID?: null,
+      msgSender?: null,
+      message?: null
+    ): ContextDataRevertEventFilter;
   };
 
   estimateGas: {
