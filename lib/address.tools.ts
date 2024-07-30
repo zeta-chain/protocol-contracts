@@ -66,8 +66,8 @@ export const nonZetaAddress: NonZetaAddress[] = [
   "weth9",
 ];
 
-export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet" | "zeta_mainnet";
-export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet", "zeta_mainnet"];
+export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet" | "zeta_mainnet" | "polygon_mainnet";
+export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet", "polygon_mainnet", "zeta_mainnet"];
 
 export declare type ZetaProtocolNetwork = ZetaProtocolMainNetwork | ZetaProtocolTestNetwork;
 export const zetaProtocolNetworks: ZetaProtocolNetwork[] = [...zetaProtocolTestNetworks, ...zetaProtocolMainNetworks];
