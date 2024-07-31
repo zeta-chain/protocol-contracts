@@ -80,15 +80,15 @@ interface IGatewayZEVM {
 interface IGatewayZEVMEvents {
     /// @notice Emitted when a cross-chain call is made.
     /// @param sender The address of the sender.
-    /// @param receiver The receiver address on the external chain.
     /// @param chainId Chain id of external chain.
+    /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
-    event Call(address indexed sender, bytes receiver, uint256 indexed chainId, bytes message);
+    event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
 
     /// @notice Emitted when a withdrawal is made.
     /// @param sender The address from which the tokens are withdrawn.
-    /// @param receiver The receiver address on the external chain.
     /// @param chainId Chain id of external chain.
+    /// @param receiver The receiver address on the external chain.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param value The amount of tokens withdrawn.
     /// @param gasfee The gas fee for the withdrawal.
@@ -96,8 +96,8 @@ interface IGatewayZEVMEvents {
     /// @param message The calldata passed to the contract call.
     event Withdrawal(
         address indexed sender,
-        bytes receiver,
         uint256 indexed chainId,
+        bytes receiver,
         address zrc20,
         uint256 value,
         uint256 gasfee,
