@@ -167,7 +167,7 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
     .approve(protocolContracts.gatewayZEVM.target, ethers.parseEther("100"), deployOpts);
 
   // Include abi of gatewayZEVM events, so hardhat can decode them automatically
-  const senderABI = [...SenderZEVM.abi, ...GatewayZEVM.abi.filter((f) => f.type === "event")];
+  const senderABI = [...SenderZEVM.abi, ...GatewayZEVM.abi.filter((f: any) => f.type === "event")];
 
   const senderZEVMFactory = new ethers.ContractFactory(senderABI, SenderZEVM.bytecode, deployer);
   const senderZEVM = await senderZEVMFactory.deploy(protocolContracts.gatewayZEVM.target, deployOpts);
