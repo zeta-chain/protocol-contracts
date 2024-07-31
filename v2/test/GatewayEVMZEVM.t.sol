@@ -66,7 +66,7 @@ contract GatewayEVMZEVMTest is
         zeta = new TestERC20("zeta", "ZETA");
 
         proxyEVM = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), ownerEVM))
         );
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20Custody(address(gatewayEVM), tssAddress);
@@ -74,7 +74,7 @@ contract GatewayEVMZEVMTest is
 
         vm.deal(tssAddress, 1 ether);
 
-        vm.startPrank(tssAddress);
+        vm.startPrank(ownerEVM);
         gatewayEVM.setCustody(address(custody));
         gatewayEVM.setConnector(address(zetaConnector));
         vm.stopPrank();
@@ -86,7 +86,7 @@ contract GatewayEVMZEVMTest is
 
         // zevm
         proxyZEVM = payable(
-            Upgrades.deployUUPSProxy("GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zeta))))
+            Upgrades.deployUUPSProxy("GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zeta), ownerZEVM)))
         );
         gatewayZEVM = GatewayZEVM(proxyZEVM);
 

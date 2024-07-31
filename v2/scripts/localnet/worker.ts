@@ -40,6 +40,7 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
   const gatewayEVMInitdata = gatewayEVMInterface.encodeFunctionData(gatewayEVMInitFragment as ethers.FunctionFragment, [
     await deployer.getAddress(),
     testEVMZeta.target,
+    await deployer.getAddress(),
   ]);
 
   const proxyEVMFactory = new ethers.ContractFactory(ERC1967Proxy.abi, ERC1967Proxy.bytecode, deployer);
@@ -86,7 +87,7 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
   const gatewayZEVMInitFragment = gatewayZEVMInterface.getFunction("initialize");
   const gatewayZEVMInitData = gatewayEVMInterface.encodeFunctionData(
     gatewayZEVMInitFragment as ethers.FunctionFragment,
-    [wzeta.target]
+    [wzeta.target, await deployer.getAddress()]
   );
 
   const proxyZEVMFactory = new ethers.ContractFactory(ERC1967Proxy.abi, ERC1967Proxy.bytecode, deployer);

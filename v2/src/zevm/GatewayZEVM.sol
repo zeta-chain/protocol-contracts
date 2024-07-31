@@ -5,7 +5,7 @@ import "./interfaces/IGatewayZEVM.sol";
 import "./interfaces/IWZETA.sol";
 import "./interfaces/IZRC20.sol";
 import "./interfaces/zContract.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
@@ -17,7 +17,7 @@ contract GatewayZEVM is
     IGatewayZEVMEvents,
     IGatewayZEVMErrors,
     Initializable,
-    OwnableUpgradeable,
+    AccessControlUpgradeable,
     UUPSUpgradeable,
     ReentrancyGuardUpgradeable
 {
@@ -42,12 +42,14 @@ contract GatewayZEVM is
         _disableInitializers();
     }
 
-    function initialize(address _zetaToken) public initializer {
+    /// @notice Initialize with address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
+    /// @dev Using admin to authorize upgrades.
+    function initialize(address _zetaToken, address _admin) public initializer {
         if (_zetaToken == address(0)) {
             revert ZeroAddress();
         }
 
-        __Ownable_init(msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
         zetaToken = _zetaToken;
@@ -55,7 +57,7 @@ contract GatewayZEVM is
 
     /// @dev Authorizes the upgrade of the contract.
     /// @param newImplementation The address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable {

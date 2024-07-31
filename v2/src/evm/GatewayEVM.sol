@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import "./ZetaConnectorBase.sol";
 import "./interfaces/IGatewayEVM.sol";
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayEVM is
     Initializable,
-    OwnableUpgradeable,
+    AccessControlUpgradeable,
     UUPSUpgradeable,
     IGatewayEVMErrors,
     IGatewayEVMEvents,
@@ -33,43 +33,37 @@ contract GatewayEVM is
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
-    /// @notice Only TSS address allowed modifier.
-    modifier onlyTSS() {
-        if (msg.sender != tssAddress) {
-            revert InvalidSender();
-        }
-        _;
-    }
+    /// @notice New role identifier for tss role.
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    /// @notice New role identifier for asset handler role.
+    bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
 
-    /// @notice Only custody or connector address allowed modifier.
-    modifier onlyAssetHandler() {
-        if (msg.sender != custody && msg.sender != zetaConnector) {
-            revert InvalidSender();
-        }
-        _;
-    }
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address _tssAddress, address _zetaToken) public initializer {
+    /// @notice Initialize with tss address. address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
+    /// @dev Using admin to authorize upgrades, and tss for tss role.
+    function initialize(address _tssAddress, address _zetaToken, address _admin) public initializer {
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
 
-        __Ownable_init(msg.sender);
+        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
+        tssAddress = _tssAddress;
+        _grantRole(TSS_ROLE, _tssAddress);
+        
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
 
-        tssAddress = _tssAddress;
         zetaToken = _zetaToken;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Internal function to execute a call to a destination address.
     /// @param destination Address to call.
@@ -86,7 +80,7 @@ contract GatewayEVM is
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
+    function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) {
         (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
@@ -99,7 +93,7 @@ contract GatewayEVM is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory) {
+    function execute(address destination, bytes calldata data) external payable onlyRole(TSS_ROLE) returns (bytes memory) {
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -122,7 +116,7 @@ contract GatewayEVM is
     )
         public
         nonReentrant
-        onlyAssetHandler
+        onlyRole(ASSET_HANDLER_ROLE)
     {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
@@ -157,7 +151,7 @@ contract GatewayEVM is
     )
         external
         nonReentrant
-        onlyAssetHandler
+        onlyRole(ASSET_HANDLER_ROLE)
     {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -224,19 +218,21 @@ contract GatewayEVM is
 
     /// @notice Sets the custody contract address.
     /// @param _custody Address of the custody contract.
-    function setCustody(address _custody) external onlyTSS {
+    function setCustody(address _custody) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
 
+        _grantRole(ASSET_HANDLER_ROLE, _custody);
         custody = _custody;
     }
 
     /// @notice Sets the connector contract address.
     /// @param _zetaConnector Address of the connector contract.
-    function setConnector(address _zetaConnector) external onlyTSS {
+    function setConnector(address _zetaConnector) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
 
+        _grantRole(ASSET_HANDLER_ROLE, _zetaConnector);
         zetaConnector = _zetaConnector;
     }
 

@@ -34,6 +34,10 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     address destination;
     address tssAddress;
 
+    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
+
     function setUp() public {
         owner = address(this);
         destination = address(0x1234);
@@ -43,7 +47,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         zeta = new TestERC20("zeta", "ZETA");
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress);
@@ -52,7 +56,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.deal(tssAddress, 1 ether);
 
-        vm.startPrank(tssAddress);
+        vm.startPrank(owner);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
@@ -90,7 +94,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         bytes memory data = abi.encodeWithSignature("receiveNonPayable(string[],uint256[],bool)", str, num, flag);
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         gateway.execute(address(receiver), data);
     }
 
@@ -132,7 +136,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, ASSET_HANDLER_ROLE));
         gateway.executeWithERC20(address(token), destination, amount, data);
     }
 
@@ -142,7 +146,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, ASSET_HANDLER_ROLE));
         gateway.revertWithERC20(address(token), destination, amount, data);
     }
 
@@ -399,7 +403,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         bytes memory data = abi.encodePacked("hello");
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         gateway.executeRevert{ value: value }(address(receiver), data);
     }
 }
@@ -428,7 +432,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         zeta = new TestERC20("zeta", "ZETA");
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress);
@@ -436,7 +440,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.deal(tssAddress, 1 ether);
 
-        vm.startPrank(tssAddress);
+        vm.startPrank(owner);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
