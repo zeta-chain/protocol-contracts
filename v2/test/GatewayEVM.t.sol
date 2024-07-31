@@ -34,9 +34,11 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     address destination;
     address tssAddress;
 
+    error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -120,6 +122,36 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
     function testForwardCallToReceiveNoParams() public {
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.expectCall(address(receiver), 0, data);
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedNoParams(address(gateway));
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Executed(address(receiver), 0, data);
+        vm.prank(tssAddress);
+        gateway.execute(address(receiver), data);
+    }
+
+    function testForwardCallToReceiveNoParamsTogglePause() public {
+        vm.prank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        gateway.pause();
+
+        vm.prank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        gateway.unpause();
+
+        vm.prank(owner);
+        gateway.pause();
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(tssAddress);
+        gateway.execute(address(receiver), data);
+
+        vm.prank(owner);
+        gateway.unpause();
 
         vm.expectCall(address(receiver), 0, data);
         vm.expectEmit(true, true, true, true, address(receiver));

@@ -222,6 +222,10 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     event ContextData(bytes origin, address sender, uint256 chainID, address msgSender, string message);
     event ContextDataRevert(bytes origin, address sender, uint256 chainID, address msgSender, string message);
 
+    error EnforcedPause();
+    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+
     function setUp() public {
         owner = address(this);
         addr1 = address(0x1234);
@@ -257,6 +261,37 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
     function testDeposit() public {
         uint256 amount = 1;
+        uint256 balanceBefore = zrc20.balanceOf(addr1);
+        assertEq(0, balanceBefore);
+
+        vm.prank(fungibleModule);
+        gateway.deposit(address(zrc20), amount, addr1);
+
+        uint256 balanceAfter = zrc20.balanceOf(addr1);
+        assertEq(amount, balanceAfter);
+    }
+
+    function testDepositTogglePause() public {
+        vm.prank(fungibleModule);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, fungibleModule, PAUSER_ROLE));
+        gateway.pause();
+
+        vm.prank(fungibleModule);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, fungibleModule, PAUSER_ROLE));
+        gateway.unpause();
+
+        vm.prank(owner);
+        gateway.pause();
+        
+        uint256 amount = 1;
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(fungibleModule);
+        gateway.deposit(address(zrc20), amount, addr1);
+
+        vm.prank(owner);
+        gateway.unpause();
+
         uint256 balanceBefore = zrc20.balanceOf(addr1);
         assertEq(0, balanceBefore);
 
