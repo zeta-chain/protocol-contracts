@@ -197,15 +197,15 @@ const startWorker = async () => {
   testContracts = await deployTestContracts(protocolContracts, deployer, fungibleModuleSigner);
 
   // Listen to contracts events
-  // event Call(address indexed sender, bytes receiver, bytes message);
+  // event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
   protocolContracts.gatewayZEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     try {
       (deployer as NonceManager).reset();
 
-      const receiver = args[1];
-      const message = args[2];
+      const receiver = args[2];
+      const message = args[3];
 
       const executeTx = await protocolContracts.gatewayEVM.connect(deployer).execute(receiver, message, deployOpts);
       await executeTx.wait();
@@ -214,13 +214,13 @@ const startWorker = async () => {
     }
   });
 
-  // event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+  // event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
   protocolContracts.gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
     console.log("Worker: Withdrawal event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     try {
       const receiver = args[2];
-      const message = args[6];
+      const message = args[7];
       (deployer as NonceManager).reset();
 
       if (message != "0x") {
