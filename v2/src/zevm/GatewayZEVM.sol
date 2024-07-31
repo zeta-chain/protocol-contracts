@@ -9,6 +9,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 /// @title GatewayZEVM
 /// @notice The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
@@ -19,7 +20,8 @@ contract GatewayZEVM is
     Initializable,
     AccessControlUpgradeable,
     UUPSUpgradeable,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    PausableUpgradeable
 {
     /// @notice Error indicating a zero address was provided.
     error ZeroAddress();
@@ -28,6 +30,9 @@ contract GatewayZEVM is
     address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice The address of the Zeta token.
     address public zetaToken;
+
+    /// @notice New role identifier for pauser role.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @dev Only Fungible module address allowed modifier.
     modifier onlyFungible() {
@@ -43,15 +48,18 @@ contract GatewayZEVM is
     }
 
     /// @notice Initialize with address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
-    /// @dev Using admin to authorize upgrades.
+    /// @dev Using admin to authorize upgrades and pause.
     function initialize(address _zetaToken, address _admin) public initializer {
         if (_zetaToken == address(0)) {
             revert ZeroAddress();
         }
+        __UUPSUpgradeable_init();
+        __AccessControl_init();
+        __Pausable_init();
+        __ReentrancyGuard_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);
-        __UUPSUpgradeable_init();
-        __ReentrancyGuard_init();
+        _grantRole(PAUSER_ROLE, _admin);
         zetaToken = _zetaToken;
     }
 
@@ -62,6 +70,16 @@ contract GatewayZEVM is
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable {
         if (msg.sender != zetaToken && msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyWZETAOrFungible();
+    }
+
+    /// @notice Pause contract.
+    function pause() external onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+
+    /// @notice Unpause contract.
+    function unpause() external onlyRole(PAUSER_ROLE) {
+        _unpause();
     }
 
     /// @dev Internal function to withdraw ZRC20 tokens.

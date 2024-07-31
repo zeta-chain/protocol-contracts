@@ -7,6 +7,7 @@ import "./interfaces/IGatewayEVM.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -20,7 +21,8 @@ contract GatewayEVM is
     UUPSUpgradeable,
     IGatewayEVMErrors,
     IGatewayEVMEvents,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    PausableUpgradeable
 {
     using SafeERC20 for IERC20;
 
@@ -37,7 +39,8 @@ contract GatewayEVM is
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     /// @notice New role identifier for asset handler role.
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
-
+    /// @notice New role identifier for pauser role.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -45,18 +48,20 @@ contract GatewayEVM is
     }
 
     /// @notice Initialize with tss address. address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
-    /// @dev Using admin to authorize upgrades, and tss for tss role.
+    /// @dev Using admin to authorize upgrades and pause, and tss for tss role.
     function initialize(address _tssAddress, address _zetaToken, address _admin) public initializer {
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
-
-        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
-        tssAddress = _tssAddress;
-        _grantRole(TSS_ROLE, _tssAddress);
-        
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
+        __AccessControl_init();
+        __Pausable_init();
+
+        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
+        _grantRole(PAUSER_ROLE, _admin);
+        tssAddress = _tssAddress;
+        _grantRole(TSS_ROLE, _tssAddress);
 
         zetaToken = _zetaToken;
     }
@@ -74,6 +79,16 @@ contract GatewayEVM is
         if (!success) revert ExecutionFailed();
 
         return result;
+    }
+
+    /// @notice Pause contract.
+    function pause() external onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+
+    /// @notice Unpause contract.
+    function unpause() external onlyRole(PAUSER_ROLE) {
+        _unpause();
     }
 
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
