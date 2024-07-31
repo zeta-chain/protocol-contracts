@@ -19,6 +19,11 @@ const _abi = [
         internalType: "bytes",
       },
       {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
         name: "message",
         type: "bytes",
         internalType: "bytes",
@@ -155,9 +160,32 @@ const _abi = [
     name: "withdraw",
     inputs: [
       {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "withdraw",
+    inputs: [
+      {
         name: "receiver",
         type: "bytes",
         internalType: "bytes",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
       },
       {
         name: "amount",
@@ -183,6 +211,11 @@ const _abi = [
         internalType: "bytes",
       },
       {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
         name: "amount",
         type: "uint256",
         internalType: "uint256",
@@ -191,6 +224,29 @@ const _abi = [
         name: "zrc20",
         type: "address",
         internalType: "address",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "withdrawAndCall",
+    inputs: [
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
       },
       {
         name: "message",

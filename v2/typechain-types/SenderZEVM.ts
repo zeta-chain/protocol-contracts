@@ -28,13 +28,14 @@ export interface SenderZEVMInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "callReceiver",
-    values: [BytesLike, string, BigNumberish, boolean]
+    values: [BytesLike, BigNumberish, string, BigNumberish, boolean]
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCallReceiver",
     values: [
       BytesLike,
+      BigNumberish,
       BigNumberish,
       AddressLike,
       string,
@@ -98,7 +99,13 @@ export interface SenderZEVM extends BaseContract {
   ): Promise<this>;
 
   callReceiver: TypedContractMethod<
-    [receiver: BytesLike, str: string, num: BigNumberish, flag: boolean],
+    [
+      receiver: BytesLike,
+      chainId: BigNumberish,
+      str: string,
+      num: BigNumberish,
+      flag: boolean
+    ],
     [void],
     "nonpayable"
   >;
@@ -108,6 +115,7 @@ export interface SenderZEVM extends BaseContract {
   withdrawAndCallReceiver: TypedContractMethod<
     [
       receiver: BytesLike,
+      chainId: BigNumberish,
       amount: BigNumberish,
       zrc20: AddressLike,
       str: string,
@@ -125,7 +133,13 @@ export interface SenderZEVM extends BaseContract {
   getFunction(
     nameOrSignature: "callReceiver"
   ): TypedContractMethod<
-    [receiver: BytesLike, str: string, num: BigNumberish, flag: boolean],
+    [
+      receiver: BytesLike,
+      chainId: BigNumberish,
+      str: string,
+      num: BigNumberish,
+      flag: boolean
+    ],
     [void],
     "nonpayable"
   >;
@@ -137,6 +151,7 @@ export interface SenderZEVM extends BaseContract {
   ): TypedContractMethod<
     [
       receiver: BytesLike,
+      chainId: BigNumberish,
       amount: BigNumberish,
       zrc20: AddressLike,
       str: string,

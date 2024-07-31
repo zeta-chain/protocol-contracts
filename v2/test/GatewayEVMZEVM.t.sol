@@ -140,7 +140,8 @@ contract GatewayEVMZEVMTest is
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
-        bytes memory data = abi.encodeWithSignature("call(bytes,uint256,bytes)", abi.encodePacked(receiverEVM), chainId, message);
+        bytes memory data =
+            abi.encodeWithSignature("call(bytes,uint256,bytes)", abi.encodePacked(receiverEVM), chainId, message);
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
         senderZEVM.callReceiver(abi.encodePacked(receiverEVM), chainId, str, num, flag);
@@ -166,10 +167,17 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Withdrawal(
-            ownerZEVM, chainId, abi.encodePacked(receiverEVM), address(zrc20), 1_000_000, 0, zrc20.PROTOCOL_FLAT_FEE(), message
+            ownerZEVM,
+            chainId,
+            abi.encodePacked(receiverEVM),
+            address(zrc20),
+            1_000_000,
+            0,
+            zrc20.PROTOCOL_FLAT_FEE(),
+            message
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), chainId, 1_000_000, address(zrc20),  message);
+        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), chainId, 1_000_000, address(zrc20), message);
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
@@ -205,7 +213,9 @@ contract GatewayEVMZEVMTest is
         );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
-        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), chainId, 1_000_000, address(zrc20), str, num, flag);
+        senderZEVM.withdrawAndCallReceiver(
+            abi.encodePacked(receiverEVM), chainId, 1_000_000, address(zrc20), str, num, flag
+        );
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);

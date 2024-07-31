@@ -117,7 +117,16 @@ contract GatewayZEVM is
     /// @param chainId Chain id of the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
-    function withdraw(bytes memory receiver, uint256 chainId, uint256 amount, address zrc20) external nonReentrant whenNotPaused {
+    function withdraw(
+        bytes memory receiver,
+        uint256 chainId,
+        uint256 amount,
+        address zrc20
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawal(msg.sender, chainId, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
     }
@@ -139,21 +148,33 @@ contract GatewayZEVM is
         whenNotPaused
     {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(msg.sender, chainId, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
+        emit Withdrawal(
+            msg.sender, chainId, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message
+        );
     }
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param amount The amount of tokens to withdraw.
     function withdraw(uint256 amount, uint256 chainId) external nonReentrant whenNotPaused {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, "");
+        emit Withdrawal(
+            msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, ""
+        );
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param chainId Chain id of the external chain.
     /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(uint256 amount, uint256 chainId, bytes calldata message) external nonReentrant whenNotPaused {
+    function withdrawAndCall(
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawal(
             msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, message

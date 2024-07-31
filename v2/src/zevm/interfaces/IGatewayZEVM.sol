@@ -24,7 +24,14 @@ interface IGatewayZEVM {
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(bytes memory receiver, uint256 chainId, uint256 amount, address zrc20, bytes calldata message) external;
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 chainId,
+        uint256 amount,
+        address zrc20,
+        bytes calldata message
+    )
+        external;
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param amount The amount of tokens to withdraw.
