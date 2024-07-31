@@ -114,13 +114,14 @@ contract GatewayEVMZEVMTest is
         uint256 num = 42;
         bool flag = true;
         uint256 value = 1 ether;
+        uint256 chainId = 1;
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Call(address(ownerZEVM), abi.encodePacked(receiverEVM), message);
-        gatewayZEVM.call(abi.encodePacked(receiverEVM), message);
+        emit Call(address(ownerZEVM), abi.encodePacked(receiverEVM), chainId, message);
+        gatewayZEVM.call(abi.encodePacked(receiverEVM), chainId, message);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
@@ -135,13 +136,14 @@ contract GatewayEVMZEVMTest is
         uint256 num = 42;
         bool flag = true;
         uint256 value = 1 ether;
+        uint256 chainId = 1;
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
-        bytes memory data = abi.encodeWithSignature("call(bytes,bytes)", abi.encodePacked(receiverEVM), message);
+        bytes memory data = abi.encodeWithSignature("call(bytes,uint256,bytes)", abi.encodePacked(receiverEVM), chainId, message);
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
-        senderZEVM.callReceiver(abi.encodePacked(receiverEVM), str, num, flag);
+        senderZEVM.callReceiver(abi.encodePacked(receiverEVM), chainId, str, num, flag);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
@@ -158,15 +160,16 @@ contract GatewayEVMZEVMTest is
         uint256 num = 42;
         bool flag = true;
         uint256 value = 1 ether;
+        uint256 chainId = 1;
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Withdrawal(
-            ownerZEVM, address(zrc20), abi.encodePacked(receiverEVM), 1_000_000, 0, zrc20.PROTOCOL_FLAT_FEE(), message
+            ownerZEVM, abi.encodePacked(receiverEVM), chainId, address(zrc20), 1_000_000, 0, zrc20.PROTOCOL_FLAT_FEE(), message
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), message);
+        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), chainId, 1_000_000, address(zrc20),  message);
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
@@ -187,20 +190,22 @@ contract GatewayEVMZEVMTest is
         uint256 num = 42;
         bool flag = true;
         uint256 value = 1 ether;
+        uint256 chainId = 1;
 
         // Encode the function call data and call on zevm
         uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "withdrawAndCall(bytes,uint256,address,bytes)",
+            "withdrawAndCall(bytes,uint256,uint256,address,bytes)",
             abi.encodePacked(receiverEVM),
+            chainId,
             1_000_000,
             address(zrc20),
             message
         );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
-        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), str, num, flag);
+        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), chainId, 1_000_000, address(zrc20), str, num, flag);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
