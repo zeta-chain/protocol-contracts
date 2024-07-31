@@ -108,7 +108,16 @@ contract GatewayEVM is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyRole(TSS_ROLE) whenNotPaused returns (bytes memory) {
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        returns (bytes memory)
+    {
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -180,7 +189,7 @@ contract GatewayEVM is
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
-    function deposit(address receiver) external whenNotPaused payable {
+    function deposit(address receiver) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -204,7 +213,7 @@ contract GatewayEVM is
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, bytes calldata payload) external whenNotPaused payable {
+    function depositAndCall(address receiver, bytes calldata payload) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -218,7 +227,15 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external whenNotPaused {
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
+        address asset,
+        bytes calldata payload
+    )
+        external
+        whenNotPaused
+    {
         if (amount == 0) revert InsufficientERC20Amount();
 
         transferFromToAssetHandler(msg.sender, asset, amount);

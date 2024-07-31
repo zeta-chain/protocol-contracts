@@ -41,11 +41,6 @@ const _abi = [
   },
   {
     type: "error",
-    name: "InvalidSender",
-    inputs: [],
-  },
-  {
-    type: "error",
     name: "ZeroAddress",
     inputs: [],
   },

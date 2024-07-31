@@ -41,6 +41,7 @@ contract ZetaConnectorNonNativeTest is
     address tssAddress;
 
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
     function setUp() public {

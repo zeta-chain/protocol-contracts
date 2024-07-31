@@ -112,7 +112,15 @@ contract GatewayEVMUpgradeTest is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyRole(TSS_ROLE) returns (bytes memory) {
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        returns (bytes memory)
+    {
         bytes memory result = _execute(destination, data);
 
         emit ExecutedV2(destination, msg.value, data);

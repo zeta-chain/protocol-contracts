@@ -86,7 +86,9 @@ contract GatewayEVMZEVMTest is
 
         // zevm
         proxyZEVM = payable(
-            Upgrades.deployUUPSProxy("GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zeta), ownerZEVM)))
+            Upgrades.deployUUPSProxy(
+                "GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zeta), ownerZEVM))
+            )
         );
         gatewayZEVM = GatewayZEVM(proxyZEVM);
 

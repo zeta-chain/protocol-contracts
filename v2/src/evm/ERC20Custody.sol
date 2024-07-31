@@ -3,11 +3,12 @@ pragma solidity 0.8.26;
 
 import "./interfaces//IGatewayEVM.sol";
 import "./interfaces/IERC20Custody.sol";
+
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title ERC20Custody
 /// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
@@ -53,7 +54,16 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     /// @param token Address of the ERC20 token.
     /// @param to Destination address for the tokens.
     /// @param amount Amount of tokens to withdraw.
-    function withdraw(address token, address to, uint256 amount) external nonReentrant onlyRole(TSS_ROLE) whenNotPaused {
+    function withdraw(
+        address token,
+        address to,
+        uint256 amount
+    )
+        external
+        nonReentrant
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+    {
         IERC20(token).safeTransfer(to, amount);
 
         emit Withdraw(token, to, amount);

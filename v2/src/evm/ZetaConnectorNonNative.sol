@@ -40,7 +40,17 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @param amount The amount of tokens to withdraw.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
-    function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant onlyRole(TSS_ROLE) whenNotPaused {
+    function withdraw(
+        address to,
+        uint256 amount,
+        bytes32 internalSendHash
+    )
+        external
+        override
+        nonReentrant
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+    {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
 
         IZetaNonEthNew(zetaToken).mint(to, amount, internalSendHash);

@@ -8,8 +8,9 @@ import "./interfaces/zContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 /// @title GatewayZEVM
 /// @notice The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
@@ -68,7 +69,7 @@ contract GatewayZEVM is
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
-    receive() external whenNotPaused payable {
+    receive() external payable whenNotPaused {
         if (msg.sender != zetaToken && msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyWZETAOrFungible();
     }
 

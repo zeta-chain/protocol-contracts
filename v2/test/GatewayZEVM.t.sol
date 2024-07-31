@@ -33,7 +33,9 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zetaToken = new WETH9();
 
         proxy = payable(
-            Upgrades.deployUUPSProxy("GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zetaToken), owner)))
+            Upgrades.deployUUPSProxy(
+                "GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zetaToken), owner))
+            )
         );
         gateway = GatewayZEVM(proxy);
 
@@ -224,6 +226,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
     error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     function setUp() public {
@@ -233,7 +236,9 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         zetaToken = new WETH9();
 
         proxy = payable(
-            Upgrades.deployUUPSProxy("GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zetaToken), owner)))
+            Upgrades.deployUUPSProxy(
+                "GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zetaToken), owner))
+            )
         );
         gateway = GatewayZEVM(proxy);
 
@@ -282,7 +287,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.prank(owner);
         gateway.pause();
-        
+
         uint256 amount = 1;
 
         vm.expectRevert(EnforcedPause.selector);
