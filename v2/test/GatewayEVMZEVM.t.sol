@@ -69,7 +69,7 @@ contract GatewayEVMZEVMTest is
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), ownerEVM))
         );
         gatewayEVM = GatewayEVM(proxyEVM);
-        custody = new ERC20Custody(address(gatewayEVM), tssAddress);
+        custody = new ERC20Custody(address(gatewayEVM), tssAddress, ownerEVM);
         zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress);
 
         vm.deal(tssAddress, 1 ether);

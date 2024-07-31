@@ -6,11 +6,13 @@ import "./interfaces/IERC20Custody.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
 /// @title ERC20Custody
 /// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
 /// @dev This contract does not call smart contracts directly, it passes through the Gateway contract.
-contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGuard {
+contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGuard, AccessControl, Pausable {
     using SafeERC20 for IERC20;
 
     /// @notice Gateway contract.
@@ -18,20 +20,32 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     /// @notice TSS address.
     address public tssAddress;
 
-    /// @notice Only TSS address allowed modifier.
-    modifier onlyTSS() {
-        if (msg.sender != tssAddress) {
-            revert InvalidSender();
-        }
-        _;
-    }
+    /// @notice New role identifier for tss role.
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    /// @notice New role identifier for pauser role.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    constructor(address _gateway, address _tssAddress) {
+    /// @notice Constructor for ERC20Custody.
+    /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
+    constructor(address _gateway, address _tssAddress, address _admin) {
         if (_gateway == address(0) || _tssAddress == address(0)) {
             revert ZeroAddress();
         }
         gateway = IGatewayEVM(_gateway);
         tssAddress = _tssAddress;
+        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
+        _grantRole(PAUSER_ROLE, _admin);
+        _grantRole(TSS_ROLE, _tssAddress);
+    }
+
+    /// @notice Pause contract.
+    function pause() external onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+
+    /// @notice Unpause contract.
+    function unpause() external onlyRole(PAUSER_ROLE) {
+        _unpause();
     }
 
     /// @notice Withdraw directly transfers the tokens to the destination address without contract call.
@@ -39,7 +53,7 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     /// @param token Address of the ERC20 token.
     /// @param to Destination address for the tokens.
     /// @param amount Amount of tokens to withdraw.
-    function withdraw(address token, address to, uint256 amount) external nonReentrant onlyTSS {
+    function withdraw(address token, address to, uint256 amount) external nonReentrant onlyRole(TSS_ROLE) whenNotPaused {
         IERC20(token).safeTransfer(to, amount);
 
         emit Withdraw(token, to, amount);
@@ -59,7 +73,8 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     )
         public
         nonReentrant
-        onlyTSS
+        onlyRole(TSS_ROLE)
+        whenNotPaused
     {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
@@ -85,7 +100,8 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     )
         public
         nonReentrant
-        onlyTSS
+        onlyRole(TSS_ROLE)
+        whenNotPaused
     {
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);

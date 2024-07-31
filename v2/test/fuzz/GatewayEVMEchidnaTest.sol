@@ -17,7 +17,7 @@ contract GatewayEVMEchidnaTest is GatewayEVM {
         tssAddress = echidnaCaller;
         zetaConnector = address(0x123);
         testERC20 = new TestERC20("test", "TEST");
-        custody = address(new ERC20Custody(address(this), tssAddress));
+        custody = address(new ERC20Custody(address(this), tssAddress, address(this)));
     }
 
     function testExecuteWithERC20(address to, uint256 amount, bytes calldata data) public {

@@ -19,7 +19,7 @@ contract ERC20CustodyEchidnaTest is ERC20Custody {
     );
     GatewayEVM testGateway = GatewayEVM(proxy);
 
-    constructor() ERC20Custody(address(testGateway), echidnaCaller) {
+    constructor() ERC20Custody(address(testGateway), echidnaCaller, echidnaCaller) {
         testERC20 = new TestERC20("test", "TEST");
         testGateway.setCustody(address(this));
     }
