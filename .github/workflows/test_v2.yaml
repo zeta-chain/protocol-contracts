@@ -9,6 +9,8 @@ on:
   pull_request:
     branches:
       - "*"
+    paths:
+      - 'v2/**'
     types:
       - synchronize
       - opened
