@@ -32,23 +32,17 @@ export declare type ZetaZEVMAddress =
 
 export declare type ZetaProtocolTestNetwork =
   | "amoy_testnet"
-  | "baobab_testnet"
   | "bsc_testnet"
   | "btc_testnet"
-  | "goerli_testnet"
-  | "mumbai_testnet"
   | "sepolia_testnet"
   | "zeta_testnet";
 
 export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
-  "baobab_testnet",
+  "amoy_testnet",
   "bsc_testnet",
   "btc_testnet",
-  "goerli_testnet",
   "sepolia_testnet",
-  "mumbai_testnet",
   "zeta_testnet",
-  "amoy_testnet",
 ];
 
 export declare type NonZetaAddress =
@@ -66,23 +60,35 @@ export const nonZetaAddress: NonZetaAddress[] = [
   "weth9",
 ];
 
-export declare type ZetaProtocolMainNetwork = "bsc_mainnet" | "eth_mainnet" | "zeta_mainnet" | "polygon_mainnet";
-export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = ["eth_mainnet", "bsc_mainnet", "polygon_mainnet", "zeta_mainnet"];
+export declare type ZetaProtocolMainNetwork =
+  | "bsc_mainnet"
+  | "btc_mainnet"
+  | "eth_mainnet"
+  | "polygon_mainnet"
+  | "zeta_mainnet";
+
+export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = [
+  "bsc_mainnet",
+  "btc_mainnet",
+  "eth_mainnet",
+  "polygon_mainnet",
+  "zeta_mainnet",
+];
 
 export declare type ZetaProtocolNetwork = ZetaProtocolMainNetwork | ZetaProtocolTestNetwork;
 export const zetaProtocolNetworks: ZetaProtocolNetwork[] = [...zetaProtocolTestNetworks, ...zetaProtocolMainNetworks];
 
-export declare type ZetaProtocolEnviroment = "mainnet" | "testnet";
+export declare type ZetaProtocolEnvironment = "mainnet" | "testnet";
 
 export const isProtocolNetworkName = (str: string): str is ZetaProtocolNetwork =>
   zetaProtocolNetworks.includes(str as ZetaProtocolNetwork);
 
-export const isTestnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
-  return zetaProtocolTestNetworks.includes(network);
+export const isTestnetNetwork = (network: string): boolean => {
+  return zetaProtocolTestNetworks.includes(network as ZetaProtocolTestNetwork);
 };
 
-export const isMainnetNetwork = (network: ZetaProtocolTestNetwork): boolean => {
-  return false;
+export const isMainnetNetwork = (network: string): boolean => {
+  return zetaProtocolMainNetworks.includes(network as ZetaProtocolMainNetwork);
 };
 
 export const getZRC20Address = (network: ZetaProtocolNetwork): string => {
