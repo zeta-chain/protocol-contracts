@@ -68,7 +68,7 @@ contract GatewayZEVM is
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
-    receive() external payable {
+    receive() external whenNotPaused payable {
         if (msg.sender != zetaToken && msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyWZETAOrFungible();
     }
 
@@ -115,7 +115,7 @@ contract GatewayZEVM is
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
-    function withdraw(bytes memory receiver, uint256 amount, address zrc20) external nonReentrant {
+    function withdraw(bytes memory receiver, uint256 amount, address zrc20) external nonReentrant whenNotPaused {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawal(msg.sender, zrc20, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
     }
@@ -133,6 +133,7 @@ contract GatewayZEVM is
     )
         external
         nonReentrant
+        whenNotPaused
     {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawal(msg.sender, zrc20, receiver, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
@@ -140,7 +141,7 @@ contract GatewayZEVM is
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param amount The amount of tokens to withdraw.
-    function withdraw(uint256 amount) external nonReentrant {
+    function withdraw(uint256 amount) external nonReentrant whenNotPaused {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawal(msg.sender, address(zetaToken), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, "");
     }
@@ -148,7 +149,7 @@ contract GatewayZEVM is
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(uint256 amount, bytes calldata message) external nonReentrant {
+    function withdrawAndCall(uint256 amount, bytes calldata message) external nonReentrant whenNotPaused {
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawal(
             msg.sender, address(zetaToken), abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), amount, 0, 0, message
@@ -158,7 +159,7 @@ contract GatewayZEVM is
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata to pass to the contract call.
-    function call(bytes memory receiver, bytes calldata message) external nonReentrant {
+    function call(bytes memory receiver, bytes calldata message) external nonReentrant whenNotPaused {
         emit Call(msg.sender, receiver, message);
     }
 
@@ -166,7 +167,7 @@ contract GatewayZEVM is
     /// @param zrc20 The address of the ZRC20 token.
     /// @param amount The amount of tokens to deposit.
     /// @param target The target address to receive the deposited tokens.
-    function deposit(address zrc20, uint256 amount, address target) external onlyFungible {
+    function deposit(address zrc20, uint256 amount, address target) external onlyFungible whenNotPaused {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         IZRC20(zrc20).deposit(target, amount);
@@ -187,6 +188,7 @@ contract GatewayZEVM is
     )
         external
         onlyFungible
+        whenNotPaused
     {
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
@@ -206,6 +208,7 @@ contract GatewayZEVM is
     )
         external
         onlyFungible
+        whenNotPaused
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
@@ -226,6 +229,7 @@ contract GatewayZEVM is
     )
         external
         onlyFungible
+        whenNotPaused
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
@@ -248,6 +252,7 @@ contract GatewayZEVM is
     )
         external
         onlyFungible
+        whenNotPaused
     {
         UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
@@ -267,6 +272,7 @@ contract GatewayZEVM is
     )
         external
         onlyFungible
+        whenNotPaused
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 

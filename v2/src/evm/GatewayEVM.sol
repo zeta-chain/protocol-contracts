@@ -95,7 +95,7 @@ contract GatewayEVM is
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) {
+    function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) whenNotPaused {
         (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
@@ -108,7 +108,7 @@ contract GatewayEVM is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyRole(TSS_ROLE) returns (bytes memory) {
+    function execute(address destination, bytes calldata data) external payable onlyRole(TSS_ROLE) whenNotPaused returns (bytes memory) {
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -132,6 +132,7 @@ contract GatewayEVM is
         public
         nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
+        whenNotPaused
     {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
@@ -167,6 +168,7 @@ contract GatewayEVM is
         external
         nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
+        whenNotPaused
     {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -178,7 +180,7 @@ contract GatewayEVM is
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
-    function deposit(address receiver) external payable {
+    function deposit(address receiver) external whenNotPaused payable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -191,7 +193,7 @@ contract GatewayEVM is
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
-    function deposit(address receiver, uint256 amount, address asset) external {
+    function deposit(address receiver, uint256 amount, address asset) external whenNotPaused {
         if (amount == 0) revert InsufficientERC20Amount();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
@@ -202,7 +204,7 @@ contract GatewayEVM is
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, bytes calldata payload) external payable {
+    function depositAndCall(address receiver, bytes calldata payload) external whenNotPaused payable {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -216,7 +218,7 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
+    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external whenNotPaused {
         if (amount == 0) revert InsufficientERC20Amount();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
@@ -227,7 +229,7 @@ contract GatewayEVM is
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function call(address receiver, bytes calldata payload) external {
+    function call(address receiver, bytes calldata payload) external whenNotPaused {
         emit Call(msg.sender, receiver, payload);
     }
 
