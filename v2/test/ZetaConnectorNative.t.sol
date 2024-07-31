@@ -40,6 +40,9 @@ contract ZetaConnectorNativeTest is
     address destination;
     address tssAddress;
 
+    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+
     function setUp() public {
         owner = address(this);
         destination = address(0x1234);
@@ -52,7 +55,7 @@ contract ZetaConnectorNativeTest is
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNative(address(gateway), address(zetaToken), tssAddress);
+        zetaConnector = new ZetaConnectorNative(address(gateway), address(zetaToken), tssAddress, owner);
 
         receiver = new ReceiverEVM();
 
@@ -89,7 +92,7 @@ contract ZetaConnectorNativeTest is
         bytes32 internalSendHash = "";
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.withdraw(destination, amount, internalSendHash);
     }
 
@@ -135,7 +138,7 @@ contract ZetaConnectorNativeTest is
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
     }
 
@@ -252,7 +255,7 @@ contract ZetaConnectorNativeTest is
         bytes memory data = abi.encodePacked("hello");
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
     }
 }

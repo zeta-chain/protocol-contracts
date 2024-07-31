@@ -40,6 +40,9 @@ contract ZetaConnectorNonNativeTest is
     address destination;
     address tssAddress;
 
+    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+
     function setUp() public {
         owner = address(this);
         destination = address(0x1234);
@@ -53,7 +56,7 @@ contract ZetaConnectorNonNativeTest is
         gateway = GatewayEVM(proxy);
 
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress);
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress, owner);
 
         vm.prank(tssAddress);
         zetaToken.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
@@ -90,7 +93,7 @@ contract ZetaConnectorNonNativeTest is
         bytes32 internalSendHash = "";
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.withdraw(destination, amount, internalSendHash);
     }
 
@@ -138,7 +141,7 @@ contract ZetaConnectorNonNativeTest is
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
     }
 
@@ -260,7 +263,7 @@ contract ZetaConnectorNonNativeTest is
         bytes memory data = abi.encodePacked("hello");
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
     }
 }

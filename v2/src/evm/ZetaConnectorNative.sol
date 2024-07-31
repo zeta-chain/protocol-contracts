@@ -14,9 +14,10 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     constructor(
         address _gateway,
         address _zetaToken,
-        address _tssAddress
+        address _tssAddress,
+        address _admin
     )
-        ZetaConnectorBase(_gateway, _zetaToken, _tssAddress)
+        ZetaConnectorBase(_gateway, _zetaToken, _tssAddress, _admin)
     { }
 
     /// @notice Withdraw tokens to a specified address.
@@ -24,7 +25,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     /// @param amount The amount of tokens to withdraw.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
-    function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant onlyTSS {
+    function withdraw(address to, uint256 amount, bytes32 internalSendHash) external override nonReentrant onlyRole(TSS_ROLE) whenNotPaused {
         IERC20(zetaToken).safeTransfer(to, amount);
         emit Withdraw(to, amount);
     }
@@ -44,7 +45,8 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyTSS
+        onlyRole(TSS_ROLE)
+        whenNotPaused
     {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
@@ -70,7 +72,8 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyTSS
+        onlyRole(TSS_ROLE)
+        whenNotPaused
     {
         // Transfer zetaToken to the Gateway contract
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
@@ -83,7 +86,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
 
     /// @notice Handle received tokens.
     /// @param amount The amount of tokens received.
-    function receiveTokens(uint256 amount) external override {
+    function receiveTokens(uint256 amount) external override whenNotPaused {
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), amount);
     }
 }

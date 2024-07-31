@@ -70,7 +70,7 @@ contract GatewayEVMZEVMTest is
         );
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20Custody(address(gatewayEVM), tssAddress, ownerEVM);
-        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress);
+        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress, ownerEVM);
 
         vm.deal(tssAddress, 1 ether);
 

@@ -54,11 +54,11 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
     ZetaConnectorNonNative.bytecode,
     deployer
   );
-  const zetaConnector = await zetaConnectorFactory.deploy(gatewayEVM.target, testEVMZeta.target, deployer, deployOpts);
+  const zetaConnector = await zetaConnectorFactory.deploy(gatewayEVM.target, testEVMZeta.target, await deployer.getAddress(),  await deployer.getAddress(), deployOpts);
   console.log("ZetaConnector:", zetaConnector.target);
 
   const custodyFactory = new ethers.ContractFactory(Custody.abi, Custody.bytecode, deployer);
-  const custody = await custodyFactory.deploy(gatewayEVM.target, await deployer.getAddress(), deployOpts);
+  const custody = await custodyFactory.deploy(gatewayEVM.target, await deployer.getAddress(), await deployer.getAddress(), deployOpts);
   console.log("Custody:", custody.target);
 
   await (gatewayEVM as any).connect(deployer).setCustody(custody.target, deployOpts);
