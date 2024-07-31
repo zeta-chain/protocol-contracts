@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-import "src/evm/ZetaConnectorNewBase.sol";
+import "src/evm/ZetaConnectorBase.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
 
 /// @title GatewayEVMUpgradeTest
@@ -264,7 +264,7 @@ contract GatewayEVMUpgradeTest is
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             IERC20(token).approve(zetaConnector, amount);
             // send tokens to connector
-            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
             IERC20(token).safeTransferFrom(from, custody, amount);
@@ -282,7 +282,7 @@ contract GatewayEVMUpgradeTest is
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             IERC20(token).approve(zetaConnector, amount);
             // send tokens to connector
-            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
             IERC20(token).safeTransfer(custody, amount);

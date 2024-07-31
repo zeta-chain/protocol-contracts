@@ -1,6 +1,6 @@
 import { ethers, NonceManager, Signer } from "ethers";
 import * as GatewayEVM from "../../out/GatewayEVM.sol/GatewayEVM.json";
-import * as Custody from "../../out/ERC20CustodyNew.sol/ERC20CustodyNew.json";
+import * as Custody from "../../out/ERC20Custody.sol/ERC20Custody.json";
 import * as ReceiverEVM from "../../out/ReceiverEVM.sol/ReceiverEVM.json";
 import * as SenderZEVM from "../../out/SenderZEVM.sol/SenderZEVM.json";
 import * as ERC1967Proxy from "../../out/ERC1967Proxy.sol/ERC1967Proxy.json";
@@ -8,7 +8,7 @@ import * as TestERC20 from "../../out/TestERC20.sol/TestERC20.json";
 import * as SystemContract from "../../out/SystemContractMock.sol/SystemContractMock.json";
 import * as GatewayZEVM from "../../out/GatewayZEVM.sol/GatewayZEVM.json";
 import * as TestZContract from "../../out/TestZContract.sol/TestZContract.json";
-import * as ZRC20New from "../../out/ZRC20New.sol/ZRC20New.json";
+import * as ZRC20 from "../../out/ZRC20.sol/ZRC20.json";
 import * as ZetaConnectorNonNative from "../../out/ZetaConnectorNonNative.sol/ZetaConnectorNonNative.json";
 import * as WETH9 from "../../out/WZETA.sol/WETH9.json";
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -140,7 +140,7 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
   const testZContract = await testZContractFactory.deploy(deployOpts);
   console.log("TestZContract:", testZContract.target);
 
-  const zrc20Factory = new ethers.ContractFactory(ZRC20New.abi, ZRC20New.bytecode, deployer);
+  const zrc20Factory = new ethers.ContractFactory(ZRC20.abi, ZRC20.bytecode, deployer);
   const zrc20 = await zrc20Factory
     .connect(fungibleModuleSigner)
     .deploy(

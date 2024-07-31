@@ -15,7 +15,7 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
 
-import "src/evm/ERC20CustodyNew.sol";
+import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNative.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
@@ -33,7 +33,7 @@ contract ZetaConnectorNativeTest is
     address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
-    ERC20CustodyNew custody;
+    ERC20Custody custody;
     ZetaConnectorNative zetaConnector;
     TestERC20 zetaToken;
     address owner;
@@ -51,7 +51,7 @@ contract ZetaConnectorNativeTest is
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken)))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20CustodyNew(address(gateway), tssAddress);
+        custody = new ERC20Custody(address(gateway), tssAddress);
         zetaConnector = new ZetaConnectorNative(address(gateway), address(zetaToken), tssAddress);
 
         receiver = new ReceiverEVM();

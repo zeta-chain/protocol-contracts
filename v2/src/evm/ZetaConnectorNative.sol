@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorNewBase.sol";
+import "./ZetaConnectorBase.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /// @title ZetaConnectorNative
-/// @notice Implementation of ZetaConnectorNewBase for native token handling.
+/// @notice Implementation of ZetaConnectorBase for native token handling.
 /// @dev This contract directly transfers Zeta tokens and interacts with the Gateway contract.
-contract ZetaConnectorNative is ZetaConnectorNewBase {
+contract ZetaConnectorNative is ZetaConnectorBase {
     using SafeERC20 for IERC20;
 
     constructor(
@@ -16,7 +16,7 @@ contract ZetaConnectorNative is ZetaConnectorNewBase {
         address _zetaToken,
         address _tssAddress
     )
-        ZetaConnectorNewBase(_gateway, _zetaToken, _tssAddress)
+        ZetaConnectorBase(_gateway, _zetaToken, _tssAddress)
     { }
 
     /// @notice Withdraw tokens to a specified address.

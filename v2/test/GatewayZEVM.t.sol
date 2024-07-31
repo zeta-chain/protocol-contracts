@@ -9,7 +9,7 @@ import "./utils/SystemContract.sol";
 import "./utils/TestZContract.sol";
 
 import "./utils/WZETA.sol";
-import "./utils/ZRC20New.sol";
+import "./utils/ZRC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 import "src/zevm/GatewayZEVM.sol";
 import "src/zevm/interfaces/IGatewayZEVM.sol";
@@ -18,7 +18,7 @@ import "src/zevm/interfaces/IZRC20.sol";
 contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
     address payable proxy;
     GatewayZEVM gateway;
-    ZRC20New zrc20;
+    ZRC20 zrc20;
     WETH9 zetaToken;
     SystemContract systemContract;
     TestZContract testZContract;
@@ -42,7 +42,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.startPrank(fungibleModule);
         systemContract = new SystemContract(address(0), address(0), address(0));
-        zrc20 = new ZRC20New("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
+        zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
         vm.deal(fungibleModule, 1_000_000_000);
@@ -211,7 +211,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
     address payable proxy;
     GatewayZEVM gateway;
-    ZRC20New zrc20;
+    ZRC20 zrc20;
     WETH9 zetaToken;
     SystemContract systemContract;
     TestZContract testZContract;
@@ -239,7 +239,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.startPrank(fungibleModule);
         systemContract = new SystemContract(address(0), address(0), address(0));
-        zrc20 = new ZRC20New("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
+        zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
         vm.deal(fungibleModule, 1_000_000_000);

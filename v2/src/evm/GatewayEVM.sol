@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorNewBase.sol";
+import "./ZetaConnectorBase.sol";
 import "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -263,7 +263,7 @@ contract GatewayEVM is
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             IERC20(token).approve(zetaConnector, amount);
             // send tokens to connector
-            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
             IERC20(token).safeTransferFrom(from, custody, amount);
@@ -281,7 +281,7 @@ contract GatewayEVM is
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             IERC20(token).approve(zetaConnector, amount);
             // send tokens to connector
-            ZetaConnectorNewBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
             IERC20(token).safeTransfer(custody, amount);
