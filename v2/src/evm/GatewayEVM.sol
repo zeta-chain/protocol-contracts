@@ -224,7 +224,9 @@ contract GatewayEVM is
 
     /// @notice Sets the custody contract address.
     /// @param _custody Address of the custody contract.
-    function setCustody(address _custody) external onlyTSS {
+    // TODO: Set right access control for the method
+    // https://github.com/zeta-chain/protocol-contracts/issues/255
+    function setCustody(address _custody) external {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
 
@@ -233,7 +235,9 @@ contract GatewayEVM is
 
     /// @notice Sets the connector contract address.
     /// @param _zetaConnector Address of the connector contract.
-    function setConnector(address _zetaConnector) external onlyTSS {
+    // TODO: Set right access control for the method
+    // https://github.com/zeta-chain/protocol-contracts/issues/255
+    function setConnector(address _zetaConnector) external {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
 
