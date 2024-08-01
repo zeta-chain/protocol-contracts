@@ -429,7 +429,7 @@ export interface ZRC20 extends BaseContract {
   >;
 
   updateGasLimit: TypedContractMethod<
-    [gasLimit: BigNumberish],
+    [gasLimit_: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -441,7 +441,7 @@ export interface ZRC20 extends BaseContract {
   >;
 
   updateProtocolFlatFee: TypedContractMethod<
-    [protocolFlatFee: BigNumberish],
+    [protocolFlatFee_: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -540,13 +540,17 @@ export interface ZRC20 extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "updateGasLimit"
-  ): TypedContractMethod<[gasLimit: BigNumberish], [void], "nonpayable">;
+  ): TypedContractMethod<[gasLimit_: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "updateGatewayAddress"
   ): TypedContractMethod<[addr: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "updateProtocolFlatFee"
-  ): TypedContractMethod<[protocolFlatFee: BigNumberish], [void], "nonpayable">;
+  ): TypedContractMethod<
+    [protocolFlatFee_: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "updateSystemContractAddress"
   ): TypedContractMethod<[addr: AddressLike], [void], "nonpayable">;

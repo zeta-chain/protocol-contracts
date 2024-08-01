@@ -135,12 +135,12 @@ contract ZRC20Test is Test, ZRC20Errors {
     function testDeposit() public {
         uint256 totalSupplyStart = zrc20.totalSupply();
         assertEq(100_000, totalSupplyStart);
-        
+
         vm.prank(proxy);
-        zrc20.deposit(owner, 100_000);   
+        zrc20.deposit(owner, 100_000);
 
         uint256 totalSupplyEnd = zrc20.totalSupply();
-        assertEq(200_000, totalSupplyEnd); 
+        assertEq(200_000, totalSupplyEnd);
     }
 
     function testWithdrawGasFee() public {
@@ -199,7 +199,7 @@ contract ZRC20Test is Test, ZRC20Errors {
 
     function testDepositFailsIfSenderIsNotGateway() public {
         vm.expectRevert(InvalidSender.selector);
-        zrc20.deposit(owner, 100_000);   
+        zrc20.deposit(owner, 100_000);
     }
 
     function testUpdateSystemContractAddress() public {
@@ -218,7 +218,7 @@ contract ZRC20Test is Test, ZRC20Errors {
         zrc20.updateGatewayAddress(address(0x3211));
         assertEq(zrc20.gatewayAddress(), address(0x3211));
     }
-    
+
     function testUpdateGatewayAddressFailsIfSenderIsNotFungible() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.updateGatewayAddress(address(0x3211));
