@@ -36,7 +36,6 @@ contract SenderZEVM {
 
     /// @notice Withdraw and call a receiver on EVM.
     /// @param receiver The address of the receiver on the external chain.
-    /// @param chainId Chain id of the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param str A string parameter to pass to the receiver's function.
@@ -45,7 +44,6 @@ contract SenderZEVM {
     /// @dev Approves the gateway to withdraw tokens and encodes the function call to pass to the gateway.
     function withdrawAndCallReceiver(
         bytes memory receiver,
-        uint256 chainId,
         uint256 amount,
         address zrc20,
         string memory str,
@@ -61,6 +59,6 @@ contract SenderZEVM {
         if (!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
 
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).withdrawAndCall(receiver, chainId, amount, zrc20, message);
+        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message);
     }
 }

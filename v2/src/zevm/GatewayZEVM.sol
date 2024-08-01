@@ -114,12 +114,10 @@ contract GatewayZEVM is
 
     /// @notice Withdraw ZRC20 tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
-    /// @param chainId Chain id of the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     function withdraw(
         bytes memory receiver,
-        uint256 chainId,
         uint256 amount,
         address zrc20
     )
@@ -128,7 +126,7 @@ contract GatewayZEVM is
         whenNotPaused
     {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(msg.sender, chainId, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
+        emit Withdrawal(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
     }
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
@@ -138,7 +136,6 @@ contract GatewayZEVM is
     /// @param message The calldata to pass to the contract call.
     function withdrawAndCall(
         bytes memory receiver,
-        uint256 chainId,
         uint256 amount,
         address zrc20,
         bytes calldata message
@@ -149,7 +146,7 @@ contract GatewayZEVM is
     {
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawal(
-            msg.sender, chainId, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message
         );
     }
 

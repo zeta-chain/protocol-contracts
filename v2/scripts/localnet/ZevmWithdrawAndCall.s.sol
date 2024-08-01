@@ -27,7 +27,6 @@ contract ZevmWithdrawAndCallScript is Script {
         string memory str = "Hello!";
         uint256 num = 42;
         bool flag = true;
-        uint256 chainId = 1;
 
         // Encode the function call data
         bytes memory message = abi.encodeWithSelector(
@@ -39,7 +38,6 @@ contract ZevmWithdrawAndCallScript is Script {
 
         try gatewayZEVM.withdrawAndCall(
             abi.encodePacked(receiverEVMAddress),
-            chainId,
             amount,
             address(zrc20),
             message

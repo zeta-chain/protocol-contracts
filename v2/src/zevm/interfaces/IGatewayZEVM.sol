@@ -9,10 +9,9 @@ import "./zContract.sol";
 interface IGatewayZEVM {
     /// @notice Withdraw ZRC20 tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
-    /// @param chainId Chain id of the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
-    function withdraw(bytes memory receiver, uint256 chainId, uint256 amount, address zrc20) external;
+    function withdraw(bytes memory receiver, uint256 amount, address zrc20) external;
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param amount The amount of tokens to withdraw.
@@ -20,13 +19,11 @@ interface IGatewayZEVM {
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
-    /// @param chainId Chain id of the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
     function withdrawAndCall(
         bytes memory receiver,
-        uint256 chainId,
         uint256 amount,
         address zrc20,
         bytes calldata message
