@@ -20,6 +20,12 @@ const _abi = [
         internalType: "address",
       },
       {
+        name: "chainId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
         name: "receiver",
         type: "bytes",
         indexed: false,
@@ -39,22 +45,28 @@ const _abi = [
     name: "Withdrawal",
     inputs: [
       {
-        name: "from",
+        name: "sender",
         type: "address",
         indexed: true,
         internalType: "address",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "receiver",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
       },
       {
         name: "zrc20",
         type: "address",
         indexed: false,
         internalType: "address",
-      },
-      {
-        name: "to",
-        type: "bytes",
-        indexed: false,
-        internalType: "bytes",
       },
       {
         name: "value",

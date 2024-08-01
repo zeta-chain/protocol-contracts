@@ -31,7 +31,7 @@ var (
 
 // IGatewayZEVMEventsMetaData contains all meta data concerning the IGatewayZEVMEvents contract.
 var IGatewayZEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"from\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
 }
 
 // IGatewayZEVMEventsABI is the input ABI used to generate the binding from.
@@ -250,39 +250,48 @@ func (it *IGatewayZEVMEventsCallIterator) Close() error {
 // IGatewayZEVMEventsCall represents a Call event raised by the IGatewayZEVMEvents contract.
 type IGatewayZEVMEventsCall struct {
 	Sender   common.Address
+	ChainId  *big.Int
 	Receiver []byte
 	Message  []byte
 	Raw      types.Log // Blockchain specific contextual infos
 }
 
-// FilterCall is a free log retrieval operation binding the contract event 0x2b5af078ce280d812dc2241658dc5435c93408020e5418eef55a2b536de51c0f.
+// FilterCall is a free log retrieval operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
 //
-// Solidity: event Call(address indexed sender, bytes receiver, bytes message)
-func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address) (*IGatewayZEVMEventsCallIterator, error) {
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMEventsCallIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
 		senderRule = append(senderRule, senderItem)
 	}
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
 
-	logs, sub, err := _IGatewayZEVMEvents.contract.FilterLogs(opts, "Call", senderRule)
+	logs, sub, err := _IGatewayZEVMEvents.contract.FilterLogs(opts, "Call", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
 	return &IGatewayZEVMEventsCallIterator{contract: _IGatewayZEVMEvents.contract, event: "Call", logs: logs, sub: sub}, nil
 }
 
-// WatchCall is a free log subscription operation binding the contract event 0x2b5af078ce280d812dc2241658dc5435c93408020e5418eef55a2b536de51c0f.
+// WatchCall is a free log subscription operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
 //
-// Solidity: event Call(address indexed sender, bytes receiver, bytes message)
-func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsCall, sender []common.Address) (event.Subscription, error) {
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsCall, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
 		senderRule = append(senderRule, senderItem)
 	}
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
 
-	logs, sub, err := _IGatewayZEVMEvents.contract.WatchLogs(opts, "Call", senderRule)
+	logs, sub, err := _IGatewayZEVMEvents.contract.WatchLogs(opts, "Call", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -314,9 +323,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchCall(opts *bind.Watc
 	}), nil
 }
 
-// ParseCall is a log parse operation binding the contract event 0x2b5af078ce280d812dc2241658dc5435c93408020e5418eef55a2b536de51c0f.
+// ParseCall is a log parse operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
 //
-// Solidity: event Call(address indexed sender, bytes receiver, bytes message)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) ParseCall(log types.Log) (*IGatewayZEVMEventsCall, error) {
 	event := new(IGatewayZEVMEventsCall)
 	if err := _IGatewayZEVMEvents.contract.UnpackLog(event, "Call", log); err != nil {
@@ -395,9 +404,10 @@ func (it *IGatewayZEVMEventsWithdrawalIterator) Close() error {
 
 // IGatewayZEVMEventsWithdrawal represents a Withdrawal event raised by the IGatewayZEVMEvents contract.
 type IGatewayZEVMEventsWithdrawal struct {
-	From            common.Address
+	Sender          common.Address
+	ChainId         *big.Int
+	Receiver        []byte
 	Zrc20           common.Address
-	To              []byte
 	Value           *big.Int
 	Gasfee          *big.Int
 	ProtocolFlatFee *big.Int
@@ -405,34 +415,42 @@ type IGatewayZEVMEventsWithdrawal struct {
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawal is a free log retrieval operation binding the contract event 0x2265ce9ec38ea098a1143406678482665a6e1ccd82ab22d37eea3a78abc57716.
+// FilterWithdrawal is a free log retrieval operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
 //
-// Solidity: event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
-func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterWithdrawal(opts *bind.FilterOpts, from []common.Address) (*IGatewayZEVMEventsWithdrawalIterator, error) {
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterWithdrawal(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMEventsWithdrawalIterator, error) {
 
-	var fromRule []interface{}
-	for _, fromItem := range from {
-		fromRule = append(fromRule, fromItem)
+	var senderRule []interface{}
+	for _, senderItem := range sender {
+		senderRule = append(senderRule, senderItem)
+	}
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVMEvents.contract.FilterLogs(opts, "Withdrawal", fromRule)
+	logs, sub, err := _IGatewayZEVMEvents.contract.FilterLogs(opts, "Withdrawal", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
 	return &IGatewayZEVMEventsWithdrawalIterator{contract: _IGatewayZEVMEvents.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawal is a free log subscription operation binding the contract event 0x2265ce9ec38ea098a1143406678482665a6e1ccd82ab22d37eea3a78abc57716.
+// WatchWithdrawal is a free log subscription operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
 //
-// Solidity: event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
-func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsWithdrawal, from []common.Address) (event.Subscription, error) {
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsWithdrawal, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
-	var fromRule []interface{}
-	for _, fromItem := range from {
-		fromRule = append(fromRule, fromItem)
+	var senderRule []interface{}
+	for _, senderItem := range sender {
+		senderRule = append(senderRule, senderItem)
+	}
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVMEvents.contract.WatchLogs(opts, "Withdrawal", fromRule)
+	logs, sub, err := _IGatewayZEVMEvents.contract.WatchLogs(opts, "Withdrawal", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -464,9 +482,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bin
 	}), nil
 }
 
-// ParseWithdrawal is a log parse operation binding the contract event 0x2265ce9ec38ea098a1143406678482665a6e1ccd82ab22d37eea3a78abc57716.
+// ParseWithdrawal is a log parse operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
 //
-// Solidity: event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) ParseWithdrawal(log types.Log) (*IGatewayZEVMEventsWithdrawal, error) {
 	event := new(IGatewayZEVMEventsWithdrawal)
 	if err := _IGatewayZEVMEvents.contract.UnpackLog(event, "Withdrawal", log); err != nil {

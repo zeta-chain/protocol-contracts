@@ -21,16 +21,17 @@ contract SenderZEVM {
 
     /// @notice Call a receiver on EVM.
     /// @param receiver The address of the receiver on the external chain.
+    /// @param chainId Chain id of the external chain.
     /// @param str A string parameter to pass to the receiver's function.
     /// @param num A numeric parameter to pass to the receiver's function.
     /// @param flag A boolean parameter to pass to the receiver's function.
     /// @dev Encodes the function call and passes it to the gateway.
-    function callReceiver(bytes memory receiver, string memory str, uint256 num, bool flag) external {
+    function callReceiver(bytes memory receiver, uint256 chainId, string memory str, uint256 num, bool flag) external {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).call(receiver, message);
+        IGatewayZEVM(gateway).call(receiver, chainId, message);
     }
 
     /// @notice Withdraw and call a receiver on EVM.

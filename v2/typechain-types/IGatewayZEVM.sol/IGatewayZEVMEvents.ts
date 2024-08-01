@@ -28,12 +28,19 @@ export interface IGatewayZEVMEventsInterface extends Interface {
 export namespace CallEvent {
   export type InputTuple = [
     sender: AddressLike,
+    chainId: BigNumberish,
     receiver: BytesLike,
     message: BytesLike
   ];
-  export type OutputTuple = [sender: string, receiver: string, message: string];
+  export type OutputTuple = [
+    sender: string,
+    chainId: bigint,
+    receiver: string,
+    message: string
+  ];
   export interface OutputObject {
     sender: string;
+    chainId: bigint;
     receiver: string;
     message: string;
   }
@@ -45,27 +52,30 @@ export namespace CallEvent {
 
 export namespace WithdrawalEvent {
   export type InputTuple = [
-    from: AddressLike,
+    sender: AddressLike,
+    chainId: BigNumberish,
+    receiver: BytesLike,
     zrc20: AddressLike,
-    to: BytesLike,
     value: BigNumberish,
     gasfee: BigNumberish,
     protocolFlatFee: BigNumberish,
     message: BytesLike
   ];
   export type OutputTuple = [
-    from: string,
+    sender: string,
+    chainId: bigint,
+    receiver: string,
     zrc20: string,
-    to: string,
     value: bigint,
     gasfee: bigint,
     protocolFlatFee: bigint,
     message: string
   ];
   export interface OutputObject {
-    from: string;
+    sender: string;
+    chainId: bigint;
+    receiver: string;
     zrc20: string;
-    to: string;
     value: bigint;
     gasfee: bigint;
     protocolFlatFee: bigint;
@@ -140,7 +150,7 @@ export interface IGatewayZEVMEvents extends BaseContract {
   >;
 
   filters: {
-    "Call(address,bytes,bytes)": TypedContractEvent<
+    "Call(address,uint256,bytes,bytes)": TypedContractEvent<
       CallEvent.InputTuple,
       CallEvent.OutputTuple,
       CallEvent.OutputObject
@@ -151,7 +161,7 @@ export interface IGatewayZEVMEvents extends BaseContract {
       CallEvent.OutputObject
     >;
 
-    "Withdrawal(address,address,bytes,uint256,uint256,uint256,bytes)": TypedContractEvent<
+    "Withdrawal(address,uint256,bytes,address,uint256,uint256,uint256,bytes)": TypedContractEvent<
       WithdrawalEvent.InputTuple,
       WithdrawalEvent.OutputTuple,
       WithdrawalEvent.OutputObject
