@@ -210,9 +210,7 @@ contract GatewayEVMZEVMTest is
         );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
-        senderZEVM.withdrawAndCallReceiver(
-            abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), str, num, flag
-        );
+        senderZEVM.withdrawAndCallReceiver(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), str, num, flag);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);

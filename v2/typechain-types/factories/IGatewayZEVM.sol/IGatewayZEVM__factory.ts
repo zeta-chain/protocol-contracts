@@ -160,32 +160,9 @@ const _abi = [
     name: "withdraw",
     inputs: [
       {
-        name: "amount",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "withdraw",
-    inputs: [
-      {
         name: "receiver",
         type: "bytes",
         internalType: "bytes",
-      },
-      {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
       },
       {
         name: "amount",
@@ -203,17 +180,30 @@ const _abi = [
   },
   {
     type: "function",
+    name: "withdraw",
+    inputs: [
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "withdrawAndCall",
     inputs: [
       {
         name: "receiver",
         type: "bytes",
         internalType: "bytes",
-      },
-      {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
       },
       {
         name: "amount",

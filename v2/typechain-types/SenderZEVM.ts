@@ -36,7 +36,6 @@ export interface SenderZEVMInterface extends Interface {
     values: [
       BytesLike,
       BigNumberish,
-      BigNumberish,
       AddressLike,
       string,
       BigNumberish,
@@ -115,7 +114,6 @@ export interface SenderZEVM extends BaseContract {
   withdrawAndCallReceiver: TypedContractMethod<
     [
       receiver: BytesLike,
-      chainId: BigNumberish,
       amount: BigNumberish,
       zrc20: AddressLike,
       str: string,
@@ -151,7 +149,6 @@ export interface SenderZEVM extends BaseContract {
   ): TypedContractMethod<
     [
       receiver: BytesLike,
-      chainId: BigNumberish,
       amount: BigNumberish,
       zrc20: AddressLike,
       str: string,
