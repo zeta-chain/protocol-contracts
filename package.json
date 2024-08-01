@@ -84,6 +84,7 @@
     "coverage": "forge clean && cross-env FOUNDRY_SRC='contracts/prototypes' forge coverage --report lcov",
     "docs": "forge doc",
     "generate": "yarn compile && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix",
+    "generate:diagrams": "./scripts/generate_uml_diagrams.sh",
     "lint": "npx eslint . --ext .js,.ts --ignore-pattern lib/",
     "lint:fix": "npx eslint . --ext .js,.ts,.json --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "lint:sol": "solhint 'contracts/**/*.sol'",
@@ -96,5 +97,8 @@
     "worker": "npx hardhat run scripts/worker.ts --network localhost"
   },
   "types": "./dist/lib/index.d.ts",
-  "version": "0.0.8"
+  "version": "0.0.8",
+  "dependencies": {
+    "sol2uml": "^2.5.20"
+  }
 }
