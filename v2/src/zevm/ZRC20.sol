@@ -294,19 +294,19 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
 
     /**
      * @dev Updates gas limit. Can only be updated by the fungible module.
-     * @param gasLimit, new gas limit.
+     * @param _gasLimit, new gas limit.
      */
-    function updateGasLimit(uint256 gasLimit) external onlyFungible {
-        gasLimit = gasLimit;
+    function updateGasLimit(uint256 gasLimit_) external onlyFungible {
+        gasLimit = gasLimit_;
         emit UpdatedGasLimit(gasLimit);
     }
 
     /**
      * @dev Updates protocol flat fee. Can only be updated by the fungible module.
-     * @param protocolFlatFee, new protocol flat fee.
+     * @param _protocolFlatFee, new protocol flat fee.
      */
-    function updateProtocolFlatFee(uint256 protocolFlatFee) external onlyFungible {
-        protocolFlatFee = protocolFlatFee;
+    function updateProtocolFlatFee(uint256 protocolFlatFee_) external onlyFungible {
+        protocolFlatFee = protocolFlatFee_;
         emit UpdatedProtocolFlatFee(protocolFlatFee);
     }
 }
