@@ -39,7 +39,7 @@ contract ZevmWithdrawAndCallScript is Script {
         try gatewayZEVM.withdrawAndCall(
             abi.encodePacked(receiverEVMAddress),
             amount,
-            zrc20Address,
+            address(zrc20),
             message
         ) {
             console.log("ReceiverEVM called from ZEVM.");

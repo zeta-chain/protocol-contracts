@@ -30,7 +30,6 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
   // Deploy protocol contracts (gateway and custody)
   const testERC20Factory = new ethers.ContractFactory(TestERC20.abi, TestERC20.bytecode, deployer);
   const testEVMZeta = await testERC20Factory.deploy("zeta", "ZETA", deployOpts);
-  console.log("TestEVMZeta:", testEVMZeta.target);
 
   const gatewayEVMFactory = new ethers.ContractFactory(GatewayEVM.abi, GatewayEVM.bytecode, deployer);
   const gatewayEVMImpl = await gatewayEVMFactory.deploy(deployOpts);
@@ -40,6 +39,7 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
   const gatewayEVMInitdata = gatewayEVMInterface.encodeFunctionData(gatewayEVMInitFragment as ethers.FunctionFragment, [
     await deployer.getAddress(),
     testEVMZeta.target,
+    await deployer.getAddress(),
   ]);
 
   const proxyEVMFactory = new ethers.ContractFactory(ERC1967Proxy.abi, ERC1967Proxy.bytecode, deployer);
@@ -53,12 +53,10 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
     ZetaConnectorNonNative.bytecode,
     deployer
   );
-  const zetaConnector = await zetaConnectorFactory.deploy(gatewayEVM.target, testEVMZeta.target, deployer, deployOpts);
-  console.log("ZetaConnector:", zetaConnector.target);
+  const zetaConnector = await zetaConnectorFactory.deploy(gatewayEVM.target, testEVMZeta.target, await deployer.getAddress(),  await deployer.getAddress(), deployOpts);
 
   const custodyFactory = new ethers.ContractFactory(Custody.abi, Custody.bytecode, deployer);
-  const custody = await custodyFactory.deploy(gatewayEVM.target, await deployer.getAddress(), deployOpts);
-  console.log("Custody:", custody.target);
+  const custody = await custodyFactory.deploy(gatewayEVM.target, await deployer.getAddress(), await deployer.getAddress(), deployOpts);
 
   await (gatewayEVM as any).connect(deployer).setCustody(custody.target, deployOpts);
   await (gatewayEVM as any).connect(deployer).setConnector(zetaConnector.target, deployOpts);
@@ -67,7 +65,6 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
   // Deploy protocol contracts (gateway and system)
   const weth9Factory = new ethers.ContractFactory(WETH9.abi, WETH9.bytecode, deployer);
   const wzeta = await weth9Factory.deploy(deployOpts);
-  console.log("WZeta:", wzeta.target);
 
   const systemContractFactory = new ethers.ContractFactory(SystemContract.abi, SystemContract.bytecode, deployer);
   const systemContract = await systemContractFactory.deploy(
@@ -77,8 +74,6 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
     deployOpts
   );
 
-  console.log("SystemContract:", systemContract.target);
-
   const gatewayZEVMFactory = new ethers.ContractFactory(GatewayZEVM.abi, GatewayZEVM.bytecode, deployer);
   const gatewayZEVMImpl = await gatewayZEVMFactory.deploy(deployOpts);
 
@@ -86,7 +81,7 @@ const deployProtocolContracts = async (deployer: Signer, fungibleModuleSigner: S
   const gatewayZEVMInitFragment = gatewayZEVMInterface.getFunction("initialize");
   const gatewayZEVMInitData = gatewayEVMInterface.encodeFunctionData(
     gatewayZEVMInitFragment as ethers.FunctionFragment,
-    [wzeta.target]
+    [wzeta.target, await deployer.getAddress()]
   );
 
   const proxyZEVMFactory = new ethers.ContractFactory(ERC1967Proxy.abi, ERC1967Proxy.bytecode, deployer);
@@ -119,15 +114,12 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
     gasLimit: 6721975,
   };
   const testERC20Factory = new ethers.ContractFactory(TestERC20.abi, TestERC20.bytecode, deployer);
-  const testEVMZeta = await testERC20Factory.deploy("zeta", "ZETA", deployOpts);
-  console.log("TestEVMZeta:", testEVMZeta.target);
+  await testERC20Factory.deploy("zeta", "ZETA", deployOpts);
 
   const token = await testERC20Factory.deploy("Test Token", "TTK", deployOpts);
-  console.log("TestERC20:", token.target);
 
   const receiverEVMFactory = new ethers.ContractFactory(ReceiverEVM.abi, ReceiverEVM.bytecode, deployer);
   const receiverEVM = await receiverEVMFactory.deploy(deployOpts);
-  console.log("ReceiverEVM:", receiverEVM.target);
 
   await (token as any).connect(deployer).mint(await deployer.getAddress(), ethers.parseEther("1000"), deployOpts);
   await (token as any)
@@ -138,7 +130,6 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
   // Deploy test contracts (test zContract, zrc20, sender) and mint funds to test accounts
   const testZContractFactory = new ethers.ContractFactory(TestZContract.abi, TestZContract.bytecode, deployer);
   const testZContract = await testZContractFactory.deploy(deployOpts);
-  console.log("TestZContract:", testZContract.target);
 
   const zrc20Factory = new ethers.ContractFactory(ZRC20.abi, ZRC20.bytecode, deployer);
   const zrc20 = await zrc20Factory
@@ -154,7 +145,6 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
       protocolContracts.gatewayZEVM.target,
       deployOpts
     );
-  console.log("ZRC20:", zrc20.target);
 
   await protocolContracts.systemContract.setGasCoinZRC20(1, zrc20.target, deployOpts);
   await protocolContracts.systemContract.setGasPrice(1, zrc20.target, deployOpts);
@@ -166,7 +156,7 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
     .approve(protocolContracts.gatewayZEVM.target, ethers.parseEther("100"), deployOpts);
 
   // Include abi of gatewayZEVM events, so hardhat can decode them automatically
-  const senderABI = [...SenderZEVM.abi, ...GatewayZEVM.abi.filter((f) => f.type === "event")];
+  const senderABI = [...SenderZEVM.abi, ...GatewayZEVM.abi.filter((f: any) => f.type === "event")];
 
   const senderZEVMFactory = new ethers.ContractFactory(senderABI, SenderZEVM.bytecode, deployer);
   const senderZEVM = await senderZEVMFactory.deploy(protocolContracts.gatewayZEVM.target, deployOpts);
@@ -196,15 +186,15 @@ const startWorker = async () => {
   testContracts = await deployTestContracts(protocolContracts, deployer, fungibleModuleSigner);
 
   // Listen to contracts events
-  // event Call(address indexed sender, bytes receiver, bytes message);
+  // event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
   protocolContracts.gatewayZEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     try {
       (deployer as NonceManager).reset();
 
-      const receiver = args[1];
-      const message = args[2];
+      const receiver = args[2];
+      const message = args[3];
 
       const executeTx = await protocolContracts.gatewayEVM.connect(deployer).execute(receiver, message, deployOpts);
       await executeTx.wait();
@@ -213,13 +203,13 @@ const startWorker = async () => {
     }
   });
 
-  // event Withdrawal(address indexed from, address zrc20, bytes to, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+  // event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
   protocolContracts.gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
     console.log("Worker: Withdrawal event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     try {
       const receiver = args[2];
-      const message = args[6];
+      const message = args[7];
       (deployer as NonceManager).reset();
 
       if (message != "0x") {

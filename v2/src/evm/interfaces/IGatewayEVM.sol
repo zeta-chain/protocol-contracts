@@ -68,9 +68,6 @@ interface IGatewayEVMErrors {
 
     /// @notice Error for already initialized custody.
     error CustodyInitialized();
-
-    /// @notice Error for invalid sender.
-    error InvalidSender();
 }
 
 /// @title IGatewayEVM

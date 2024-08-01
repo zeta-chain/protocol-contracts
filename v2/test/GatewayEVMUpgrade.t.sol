@@ -48,17 +48,17 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         zeta = new TestERC20("zeta", "ZETA");
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
 
-        custody = new ERC20Custody(address(gateway), tssAddress);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress);
+        custody = new ERC20Custody(address(gateway), tssAddress, owner);
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
         receiver = new ReceiverEVM();
 
         vm.deal(tssAddress, 1 ether);
 
-        vm.startPrank(tssAddress);
+        vm.startPrank(owner);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();

@@ -26,6 +26,10 @@ import type {
 export interface GatewayEVMUpgradeTestInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "ASSET_HANDLER_ROLE"
+      | "DEFAULT_ADMIN_ROLE"
+      | "PAUSER_ROLE"
+      | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
@@ -36,15 +40,21 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "execute"
       | "executeRevert"
       | "executeWithERC20"
+      | "getRoleAdmin"
+      | "grantRole"
+      | "hasRole"
       | "initialize"
-      | "owner"
+      | "pause"
+      | "paused"
       | "proxiableUUID"
-      | "renounceOwnership"
+      | "renounceRole"
       | "revertWithERC20"
+      | "revokeRole"
       | "setConnector"
       | "setCustody"
-      | "transferOwnership"
+      | "supportsInterface"
       | "tssAddress"
+      | "unpause"
       | "upgradeToAndCall"
       | "zetaConnector"
       | "zetaToken"
@@ -58,12 +68,29 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "ExecutedV2"
       | "ExecutedWithERC20"
       | "Initialized"
-      | "OwnershipTransferred"
+      | "Paused"
       | "Reverted"
       | "RevertedWithERC20"
+      | "RoleAdminChanged"
+      | "RoleGranted"
+      | "RoleRevoked"
+      | "Unpaused"
       | "Upgraded"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "ASSET_HANDLER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
@@ -102,21 +129,38 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     values: [AddressLike, AddressLike, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values: [AddressLike, AddressLike]
+    functionFragment: "getRoleAdmin",
+    values: [BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "grantRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hasRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [AddressLike, AddressLike, AddressLike]
+  ): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
+    functionFragment: "renounceRole",
+    values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "revertWithERC20",
     values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeRole",
+    values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "setConnector",
@@ -127,13 +171,14 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [AddressLike]
+    functionFragment: "supportsInterface",
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "tssAddress",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
@@ -144,6 +189,19 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
+  decodeFunctionResult(
+    functionFragment: "ASSET_HANDLER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
@@ -175,30 +233,39 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     functionFragment: "executeWithERC20",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getRoleAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "renounceOwnership",
+    functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "revertWithERC20",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setConnector",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setCustody", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transferOwnership",
+    functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
@@ -329,12 +396,11 @@ export namespace InitializedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace OwnershipTransferredEvent {
-  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
-  export type OutputTuple = [previousOwner: string, newOwner: string];
+export namespace PausedEvent {
+  export type InputTuple = [account: AddressLike];
+  export type OutputTuple = [account: string];
   export interface OutputObject {
-    previousOwner: string;
-    newOwner: string;
+    account: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -378,6 +444,76 @@ export namespace RevertedWithERC20Event {
     to: string;
     amount: bigint;
     data: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RoleAdminChangedEvent {
+  export type InputTuple = [
+    role: BytesLike,
+    previousAdminRole: BytesLike,
+    newAdminRole: BytesLike
+  ];
+  export type OutputTuple = [
+    role: string,
+    previousAdminRole: string,
+    newAdminRole: string
+  ];
+  export interface OutputObject {
+    role: string;
+    previousAdminRole: string;
+    newAdminRole: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RoleGrantedEvent {
+  export type InputTuple = [
+    role: BytesLike,
+    account: AddressLike,
+    sender: AddressLike
+  ];
+  export type OutputTuple = [role: string, account: string, sender: string];
+  export interface OutputObject {
+    role: string;
+    account: string;
+    sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RoleRevokedEvent {
+  export type InputTuple = [
+    role: BytesLike,
+    account: AddressLike,
+    sender: AddressLike
+  ];
+  export type OutputTuple = [role: string, account: string, sender: string];
+  export interface OutputObject {
+    role: string;
+    account: string;
+    sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UnpausedEvent {
+  export type InputTuple = [account: AddressLike];
+  export type OutputTuple = [account: string];
+  export interface OutputObject {
+    account: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -439,6 +575,14 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   removeAllListeners<TCEvent extends TypedContractEvent>(
     event?: TCEvent
   ): Promise<this>;
+
+  ASSET_HANDLER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
+
+  PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  TSS_ROLE: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
@@ -502,17 +646,37 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  initialize: TypedContractMethod<
-    [_tssAddress: AddressLike, _zetaToken: AddressLike],
+  getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
+
+  grantRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
     [void],
     "nonpayable"
   >;
 
-  owner: TypedContractMethod<[], [string], "view">;
+  hasRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [boolean],
+    "view"
+  >;
+
+  initialize: TypedContractMethod<
+    [_tssAddress: AddressLike, _zetaToken: AddressLike, _admin: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  pause: TypedContractMethod<[], [void], "nonpayable">;
+
+  paused: TypedContractMethod<[], [boolean], "view">;
 
   proxiableUUID: TypedContractMethod<[], [string], "view">;
 
-  renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
+  renounceRole: TypedContractMethod<
+    [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   revertWithERC20: TypedContractMethod<
     [
@@ -521,6 +685,12 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       amount: BigNumberish,
       data: BytesLike
     ],
+    [void],
+    "nonpayable"
+  >;
+
+  revokeRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -537,13 +707,15 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  transferOwnership: TypedContractMethod<
-    [newOwner: AddressLike],
-    [void],
-    "nonpayable"
+  supportsInterface: TypedContractMethod<
+    [interfaceId: BytesLike],
+    [boolean],
+    "view"
   >;
 
   tssAddress: TypedContractMethod<[], [string], "view">;
+
+  unpause: TypedContractMethod<[], [void], "nonpayable">;
 
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
@@ -559,6 +731,18 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "ASSET_HANDLER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "DEFAULT_ADMIN_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "TSS_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
@@ -628,21 +812,45 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "initialize"
+    nameOrSignature: "getRoleAdmin"
+  ): TypedContractMethod<[role: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "grantRole"
   ): TypedContractMethod<
-    [_tssAddress: AddressLike, _zetaToken: AddressLike],
+    [role: BytesLike, account: AddressLike],
     [void],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "owner"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "hasRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [_tssAddress: AddressLike, _zetaToken: AddressLike, _admin: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "pause"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "paused"
+  ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
     nameOrSignature: "proxiableUUID"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "renounceOwnership"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+    nameOrSignature: "renounceRole"
+  ): TypedContractMethod<
+    [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "revertWithERC20"
   ): TypedContractMethod<
@@ -656,17 +864,27 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "revokeRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "setConnector"
   ): TypedContractMethod<[_zetaConnector: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setCustody"
   ): TypedContractMethod<[_custody: AddressLike], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "transferOwnership"
-  ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
+    nameOrSignature: "supportsInterface"
+  ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
     nameOrSignature: "tssAddress"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "unpause"
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<
@@ -724,11 +942,11 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     InitializedEvent.OutputObject
   >;
   getEvent(
-    key: "OwnershipTransferred"
+    key: "Paused"
   ): TypedContractEvent<
-    OwnershipTransferredEvent.InputTuple,
-    OwnershipTransferredEvent.OutputTuple,
-    OwnershipTransferredEvent.OutputObject
+    PausedEvent.InputTuple,
+    PausedEvent.OutputTuple,
+    PausedEvent.OutputObject
   >;
   getEvent(
     key: "Reverted"
@@ -743,6 +961,34 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     RevertedWithERC20Event.InputTuple,
     RevertedWithERC20Event.OutputTuple,
     RevertedWithERC20Event.OutputObject
+  >;
+  getEvent(
+    key: "RoleAdminChanged"
+  ): TypedContractEvent<
+    RoleAdminChangedEvent.InputTuple,
+    RoleAdminChangedEvent.OutputTuple,
+    RoleAdminChangedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleGranted"
+  ): TypedContractEvent<
+    RoleGrantedEvent.InputTuple,
+    RoleGrantedEvent.OutputTuple,
+    RoleGrantedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleRevoked"
+  ): TypedContractEvent<
+    RoleRevokedEvent.InputTuple,
+    RoleRevokedEvent.OutputTuple,
+    RoleRevokedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Unpaused"
+  ): TypedContractEvent<
+    UnpausedEvent.InputTuple,
+    UnpausedEvent.OutputTuple,
+    UnpausedEvent.OutputObject
   >;
   getEvent(
     key: "Upgraded"
@@ -819,15 +1065,15 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       InitializedEvent.OutputObject
     >;
 
-    "OwnershipTransferred(address,address)": TypedContractEvent<
-      OwnershipTransferredEvent.InputTuple,
-      OwnershipTransferredEvent.OutputTuple,
-      OwnershipTransferredEvent.OutputObject
+    "Paused(address)": TypedContractEvent<
+      PausedEvent.InputTuple,
+      PausedEvent.OutputTuple,
+      PausedEvent.OutputObject
     >;
-    OwnershipTransferred: TypedContractEvent<
-      OwnershipTransferredEvent.InputTuple,
-      OwnershipTransferredEvent.OutputTuple,
-      OwnershipTransferredEvent.OutputObject
+    Paused: TypedContractEvent<
+      PausedEvent.InputTuple,
+      PausedEvent.OutputTuple,
+      PausedEvent.OutputObject
     >;
 
     "Reverted(address,uint256,bytes)": TypedContractEvent<
@@ -850,6 +1096,50 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       RevertedWithERC20Event.InputTuple,
       RevertedWithERC20Event.OutputTuple,
       RevertedWithERC20Event.OutputObject
+    >;
+
+    "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
+      RoleAdminChangedEvent.InputTuple,
+      RoleAdminChangedEvent.OutputTuple,
+      RoleAdminChangedEvent.OutputObject
+    >;
+    RoleAdminChanged: TypedContractEvent<
+      RoleAdminChangedEvent.InputTuple,
+      RoleAdminChangedEvent.OutputTuple,
+      RoleAdminChangedEvent.OutputObject
+    >;
+
+    "RoleGranted(bytes32,address,address)": TypedContractEvent<
+      RoleGrantedEvent.InputTuple,
+      RoleGrantedEvent.OutputTuple,
+      RoleGrantedEvent.OutputObject
+    >;
+    RoleGranted: TypedContractEvent<
+      RoleGrantedEvent.InputTuple,
+      RoleGrantedEvent.OutputTuple,
+      RoleGrantedEvent.OutputObject
+    >;
+
+    "RoleRevoked(bytes32,address,address)": TypedContractEvent<
+      RoleRevokedEvent.InputTuple,
+      RoleRevokedEvent.OutputTuple,
+      RoleRevokedEvent.OutputObject
+    >;
+    RoleRevoked: TypedContractEvent<
+      RoleRevokedEvent.InputTuple,
+      RoleRevokedEvent.OutputTuple,
+      RoleRevokedEvent.OutputObject
+    >;
+
+    "Unpaused(address)": TypedContractEvent<
+      UnpausedEvent.InputTuple,
+      UnpausedEvent.OutputTuple,
+      UnpausedEvent.OutputObject
+    >;
+    Unpaused: TypedContractEvent<
+      UnpausedEvent.InputTuple,
+      UnpausedEvent.OutputTuple,
+      UnpausedEvent.OutputObject
     >;
 
     "Upgraded(address)": TypedContractEvent<

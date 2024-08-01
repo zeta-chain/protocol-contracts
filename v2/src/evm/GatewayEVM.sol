@@ -4,9 +4,10 @@ pragma solidity 0.8.26;
 import "./ZetaConnectorBase.sol";
 import "./interfaces/IGatewayEVM.sol";
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -16,11 +17,12 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayEVM is
     Initializable,
-    OwnableUpgradeable,
+    AccessControlUpgradeable,
     UUPSUpgradeable,
     IGatewayEVMErrors,
     IGatewayEVMEvents,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    PausableUpgradeable
 {
     using SafeERC20 for IERC20;
 
@@ -33,43 +35,40 @@ contract GatewayEVM is
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
-    /// @notice Only TSS address allowed modifier.
-    modifier onlyTSS() {
-        if (msg.sender != tssAddress) {
-            revert InvalidSender();
-        }
-        _;
-    }
-
-    /// @notice Only custody or connector address allowed modifier.
-    modifier onlyAssetHandler() {
-        if (msg.sender != custody && msg.sender != zetaConnector) {
-            revert InvalidSender();
-        }
-        _;
-    }
+    /// @notice New role identifier for tss role.
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    /// @notice New role identifier for asset handler role.
+    bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
+    /// @notice New role identifier for pauser role.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
-    function initialize(address _tssAddress, address _zetaToken) public initializer {
+    /// @notice Initialize with tss address. address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
+    /// @dev Using admin to authorize upgrades and pause, and tss for tss role.
+    function initialize(address _tssAddress, address _zetaToken, address _admin) public initializer {
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
-
-        __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
+        __AccessControl_init();
+        __Pausable_init();
 
+        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
+        _grantRole(PAUSER_ROLE, _admin);
         tssAddress = _tssAddress;
+        _grantRole(TSS_ROLE, _tssAddress);
+
         zetaToken = _zetaToken;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Internal function to execute a call to a destination address.
     /// @param destination Address to call.
@@ -82,11 +81,21 @@ contract GatewayEVM is
         return result;
     }
 
+    /// @notice Pause contract.
+    function pause() external onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+
+    /// @notice Unpause contract.
+    function unpause() external onlyRole(PAUSER_ROLE) {
+        _unpause();
+    }
+
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
+    function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) whenNotPaused {
         (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
@@ -99,7 +108,16 @@ contract GatewayEVM is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory) {
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        returns (bytes memory)
+    {
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -122,7 +140,8 @@ contract GatewayEVM is
     )
         public
         nonReentrant
-        onlyAssetHandler
+        onlyRole(ASSET_HANDLER_ROLE)
+        whenNotPaused
     {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
@@ -157,7 +176,8 @@ contract GatewayEVM is
     )
         external
         nonReentrant
-        onlyAssetHandler
+        onlyRole(ASSET_HANDLER_ROLE)
+        whenNotPaused
     {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -169,7 +189,7 @@ contract GatewayEVM is
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
-    function deposit(address receiver) external payable {
+    function deposit(address receiver) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -182,7 +202,7 @@ contract GatewayEVM is
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
-    function deposit(address receiver, uint256 amount, address asset) external {
+    function deposit(address receiver, uint256 amount, address asset) external whenNotPaused {
         if (amount == 0) revert InsufficientERC20Amount();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
@@ -193,7 +213,7 @@ contract GatewayEVM is
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, bytes calldata payload) external payable {
+    function depositAndCall(address receiver, bytes calldata payload) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -207,7 +227,15 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external {
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
+        address asset,
+        bytes calldata payload
+    )
+        external
+        whenNotPaused
+    {
         if (amount == 0) revert InsufficientERC20Amount();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
@@ -218,25 +246,27 @@ contract GatewayEVM is
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function call(address receiver, bytes calldata payload) external {
+    function call(address receiver, bytes calldata payload) external whenNotPaused {
         emit Call(msg.sender, receiver, payload);
     }
 
     /// @notice Sets the custody contract address.
     /// @param _custody Address of the custody contract.
-    function setCustody(address _custody) external onlyTSS {
+    function setCustody(address _custody) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
 
+        _grantRole(ASSET_HANDLER_ROLE, _custody);
         custody = _custody;
     }
 
     /// @notice Sets the connector contract address.
     /// @param _zetaConnector Address of the connector contract.
-    function setConnector(address _zetaConnector) external onlyTSS {
+    function setConnector(address _zetaConnector) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
 
+        _grantRole(ASSET_HANDLER_ROLE, _zetaConnector);
         zetaConnector = _zetaConnector;
     }
 

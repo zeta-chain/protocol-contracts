@@ -30,7 +30,4 @@ interface IERC20CustodyEvents {
 interface IERC20CustodyErrors {
     /// @notice Error for zero address input.
     error ZeroAddress();
-
-    /// @notice Error for invalid sender.
-    error InvalidSender();
 }

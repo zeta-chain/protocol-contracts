@@ -31,8 +31,8 @@ var (
 
 // GatewayEVMMetaData contains all meta data concerning the GatewayEVM contract.
 var GatewayEVMMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"constructor\",\"inputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"UPGRADE_INTERFACE_VERSION\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"string\",\"internalType\":\"string\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"custody\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"initialize\",\"inputs\":[{\"name\":\"_tssAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_zetaToken\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"owner\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"proxiableUUID\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"renounceOwnership\",\"inputs\":[],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revertWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setConnector\",\"inputs\":[{\"name\":\"_zetaConnector\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setCustody\",\"inputs\":[{\"name\":\"_custody\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"transferOwnership\",\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"tssAddress\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"upgradeToAndCall\",\"inputs\":[{\"name\":\"newImplementation\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"zetaConnector\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"zetaToken\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposit\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Initialized\",\"inputs\":[{\"name\":\"version\",\"type\":\"uint64\",\"indexed\":false,\"internalType\":\"uint64\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"OwnershipTransferred\",\"inputs\":[{\"name\":\"previousOwner\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"newOwner\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RevertedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Upgraded\",\"inputs\":[{\"name\":\"implementation\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"AddressEmptyCode\",\"inputs\":[{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"AddressInsufficientBalance\",\"inputs\":[{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ApprovalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"CustodyInitialized\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ERC1967InvalidImplementation\",\"inputs\":[{\"name\":\"implementation\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ERC1967NonPayable\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ExecutionFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"FailedInnerCall\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientERC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientETHAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidInitialization\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidSender\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"NotInitializing\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"OwnableInvalidOwner\",\"inputs\":[{\"name\":\"owner\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"OwnableUnauthorizedAccount\",\"inputs\":[{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ReentrancyGuardReentrantCall\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"SafeERC20FailedOperation\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"UUPSUnauthorizedCallContext\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"UUPSUnsupportedProxiableUUID\",\"inputs\":[{\"name\":\"slot\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
-	Bin: "0x60a06040523060805234801561001457600080fd5b5061001d610022565b6100d4565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00805468010000000000000000900460ff16156100725760405163f92ee8a960e01b815260040160405180910390fd5b80546001600160401b03908116146100d15780546001600160401b0319166001600160401b0390811782556040519081527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b50565b6080516125cc6100fd600039600081816114fb01528181611524015261196a01526125cc6000f3fe6080604052600436106101755760003560e01c80635b112591116100cb578063ae7a3a6f1161007f578063f2fde38b11610059578063f2fde38b14610414578063f340fa0114610434578063f45346dc1461044757600080fd5b8063ae7a3a6f146103b4578063b8969bd4146103d4578063dda79b75146103f457600080fd5b80638c6f037f116100b05780638c6f037f1461030e5780638da5cb5b1461032e578063ad3cb1cc1461036b57600080fd5b80635b112591146102d9578063715018a6146102f957600080fd5b806335c018db1161012d5780635131ab59116101075780635131ab591461027657806352d1902d1461029657806357bec62f146102b957600080fd5b806335c018db14610230578063485cc955146102435780634f1ef2861461026357600080fd5b80631cff79cd1161015e5780631cff79cd146101bc57806321e093b1146101e557806329c59b5d1461021d57600080fd5b806310188aef1461017a5780631b8b921d1461019c575b600080fd5b34801561018657600080fd5b5061019a6101953660046120e9565b610467565b005b3480156101a857600080fd5b5061019a6101b736600461214d565b610568565b6101cf6101ca36600461214d565b6105ba565b6040516101dc919061220e565b60405180910390f35b3480156101f157600080fd5b50600354610205906001600160a01b031681565b6040516001600160a01b0390911681526020016101dc565b61019a61022b36600461214d565b61065f565b61019a61023e36600461214d565b610784565b34801561024f57600080fd5b5061019a61025e366004612221565b61091c565b61019a610271366004612283565b610b49565b34801561028257600080fd5b5061019a61029136600461238a565b610b68565b3480156102a257600080fd5b506102ab610e6f565b6040519081526020016101dc565b3480156102c557600080fd5b50600254610205906001600160a01b031681565b3480156102e557600080fd5b50600154610205906001600160a01b031681565b34801561030557600080fd5b5061019a610e9e565b34801561031a57600080fd5b5061019a6103293660046123f9565b610eb2565b34801561033a57600080fd5b507f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c199300546001600160a01b0316610205565b34801561037757600080fd5b506101cf6040518060400160405280600581526020017f352e302e3000000000000000000000000000000000000000000000000000000081525081565b3480156103c057600080fd5b5061019a6103cf3660046120e9565b610f4f565b3480156103e057600080fd5b5061019a6103ef36600461238a565b611050565b34801561040057600080fd5b50600054610205906001600160a01b031681565b34801561042057600080fd5b5061019a61042f3660046120e9565b6111f4565b61019a6104423660046120e9565b611250565b34801561045357600080fd5b5061019a61046236600461244b565b611375565b6001546001600160a01b031633146104ab576040517fddb5de5e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6002546001600160a01b0316156104ee576040517fb337f37800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001600160a01b03811661052e576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600280547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055565b826001600160a01b0316336001600160a01b03167f2a21062ee9199c2e205622999eeb7c3da73153674f36a0acd3f74fa6af67bde384846040516105ad9291906124d0565b60405180910390a3505050565b6001546060906001600160a01b03163314610601576040517fddb5de5e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600061060e858585611420565b9050846001600160a01b03167fcaf938de11c367272220bfd1d2baa99ca46665e7bc4d85f00adb51b90fe1fa9f34868660405161064d939291906124ec565b60405180910390a290505b9392505050565b34600003610699576040517f7671265e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001546040516000916001600160a01b03169034908381818185875af1925050503d80600081146106e6576040519150601f19603f3d011682016040523d82523d6000602084013e6106eb565b606091505b509091505080151560000361072c576040517f79cacff100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b836001600160a01b0316336001600160a01b03167f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a434600087876040516107769493929190612506565b60405180910390a350505050565b6001546001600160a01b031633146107c8576040517fddb5de5e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080846001600160a01b03163460405160006040518083038185875af1925050503d8060008114610816576040519150601f19603f3d011682016040523d82523d6000602084013e61081b565b606091505b509150915081610857576040517facfdb44400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040517f8fcaa0b50000000000000000000000000000000000000000000000000000000081526001600160a01b03861690638fcaa0b59061089e90879087906004016124d0565b600060405180830381600087803b1580156108b857600080fd5b505af11580156108cc573d6000803e3d6000fd5b50505050846001600160a01b03167fd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c34868660405161090d939291906124ec565b60405180910390a25050505050565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00805468010000000000000000810460ff16159067ffffffffffffffff166000811580156109675750825b905060008267ffffffffffffffff1660011480156109845750303b155b905081158015610992575080155b156109c9576040517ff92ee8a900000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b84547fffffffffffffffffffffffffffffffffffffffffffffffff00000000000000001660011785558315610a2a5784547fffffffffffffffffffffffffffffffffffffffffffffff00ffffffffffffffff16680100000000000000001785555b6001600160a01b0387161580610a4757506001600160a01b038616155b15610a7e576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610a87336114c7565b610a8f6114d8565b610a976114e0565b600180546001600160a01b03808a167fffffffffffffffffffffffff00000000000000000000000000000000000000009283161790925560038054928916929091169190911790558315610b405784547fffffffffffffffffffffffffffffffffffffffffffffff00ffffffffffffffff168555604051600181527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b50505050505050565b610b516114f0565b610b5a826115c0565b610b6482826115c8565b5050565b610b706116ec565b6000546001600160a01b03163314801590610b9657506002546001600160a01b03163314155b15610bcd576040517fddb5de5e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b82600003610c07576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610c11858561176d565b610c47576040517f8164f84200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b0385811660048301526024820185905286169063095ea7b3906044016020604051808303816000875af1158015610caf573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610cd3919061252f565b610d09576040517f8164f84200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000610d16858484611420565b9050610d22868661176d565b610d58576040517f8164f84200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040517f70a082310000000000000000000000000000000000000000000000000000000081523060048201526000906001600160a01b038816906370a0823190602401602060405180830381865afa158015610db8573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610ddc9190612551565b90508015610dee57610dee87826117fd565b856001600160a01b0316876001600160a01b03167f29c40793bffd84cb810179f15d1ceec72bc7f0785514c668ba36645cf99b7382878787604051610e35939291906124ec565b60405180910390a35050610e6860017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0055565b5050505050565b6000610e7961195f565b507f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc90565b610ea66119c1565b610eb06000611a35565b565b83600003610eec576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610ef7338486611abe565b846001600160a01b0316336001600160a01b03167f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a486868686604051610f409493929190612506565b60405180910390a35050505050565b6001546001600160a01b03163314610f93576040517fddb5de5e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000546001600160a01b031615610fd6576040517fb337f37800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001600160a01b038116611016576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055565b6110586116ec565b6000546001600160a01b0316331480159061107e57506002546001600160a01b03163314155b156110b5576040517fddb5de5e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b826000036110ef576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6111036001600160a01b0386168585611c09565b6040517f8fcaa0b50000000000000000000000000000000000000000000000000000000081526001600160a01b03851690638fcaa0b59061114a90859085906004016124d0565b600060405180830381600087803b15801561116457600080fd5b505af1158015611178573d6000803e3d6000fd5b50505050836001600160a01b0316856001600160a01b03167f723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda78585856040516111c3939291906124ec565b60405180910390a3610e6860017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0055565b6111fc6119c1565b6001600160a01b038116611244576040517f1e4fbdf7000000000000000000000000000000000000000000000000000000008152600060048201526024015b60405180910390fd5b61124d81611a35565b50565b3460000361128a576040517f7671265e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001546040516000916001600160a01b03169034908381818185875af1925050503d80600081146112d7576040519150601f19603f3d011682016040523d82523d6000602084013e6112dc565b606091505b509091505080151560000361131d576040517f79cacff100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60408051348152600060208201819052606082840181905282015290516001600160a01b0384169133917f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a49181900360800190a35050565b816000036113af576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6113ba338284611abe565b826001600160a01b0316336001600160a01b03167f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a484846040516105ad9291909182526001600160a01b0316602082015260606040820181905260009082015260800190565b6060600080856001600160a01b031634868660405161144092919061256a565b60006040518083038185875af1925050503d806000811461147d576040519150601f19603f3d011682016040523d82523d6000602084013e611482565b606091505b5091509150816114be576040517facfdb44400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b95945050505050565b6114cf611c7d565b61124d81611ce4565b610eb0611c7d565b6114e8611c7d565b610eb0611cec565b306001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016148061158957507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031661157d7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc546001600160a01b031690565b6001600160a01b031614155b15610eb0576040517fe07c8dba00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61124d6119c1565b816001600160a01b03166352d1902d6040518163ffffffff1660e01b8152600401602060405180830381865afa925050508015611640575060408051601f3d9081017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016820190925261163d91810190612551565b60015b611681576040517f4c9c8ce30000000000000000000000000000000000000000000000000000000081526001600160a01b038316600482015260240161123b565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc81146116dd576040517faa1d49a40000000000000000000000000000000000000000000000000000000081526004810182905260240161123b565b6116e78383611cf4565b505050565b7f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0080547ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01611767576040517f3ee5aeb500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60029055565b6040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b038281166004830152600060248301819052919084169063095ea7b3906044016020604051808303816000875af11580156117d9573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610658919061252f565b6003546001600160a01b039081169083160361191f576002546040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b039182166004820152602481018390529083169063095ea7b3906044016020604051808303816000875af115801561187f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906118a3919061252f565b506002546040517f743e0c9b000000000000000000000000000000000000000000000000000000008152600481018390526001600160a01b039091169063743e0c9b90602401600060405180830381600087803b15801561190357600080fd5b505af1158015611917573d6000803e3d6000fd5b505050505050565b600054610b64906001600160a01b03848116911683611c09565b60017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0055565b306001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610eb0576040517fe07c8dba00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336119f37f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c199300546001600160a01b031690565b6001600160a01b031614610eb0576040517f118cdaa700000000000000000000000000000000000000000000000000000000815233600482015260240161123b565b7f9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c19930080547fffffffffffffffffffffffff000000000000000000000000000000000000000081166001600160a01b03848116918217845560405192169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3505050565b6003546001600160a01b0390811690831603611bed57611ae96001600160a01b038316843084611d4a565b6002546040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b039182166004820152602481018390529083169063095ea7b3906044016020604051808303816000875af1158015611b55573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611b79919061252f565b506002546040517f743e0c9b000000000000000000000000000000000000000000000000000000008152600481018390526001600160a01b039091169063743e0c9b90602401600060405180830381600087803b158015611bd957600080fd5b505af1158015610b40573d6000803e3d6000fd5b6000546116e7906001600160a01b038481169186911684611d4a565b6040516001600160a01b038381166024830152604482018390526116e791859182169063a9059cbb906064015b604051602081830303815290604052915060e01b6020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050611d89565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a005468010000000000000000900460ff16610eb0576040517fd7e6bcf800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6111fc611c7d565b611939611c7d565b611cfd82611e05565b6040516001600160a01b038316907fbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b90600090a2805115611d42576116e78282611ead565b610b64611f1a565b6040516001600160a01b038481166024830152838116604483015260648201839052611d839186918216906323b872dd90608401611c36565b50505050565b6000611d9e6001600160a01b03841683611f52565b90508051600014158015611dc3575080806020019051810190611dc1919061252f565b155b156116e7576040517f5274afe70000000000000000000000000000000000000000000000000000000081526001600160a01b038416600482015260240161123b565b806001600160a01b03163b600003611e54576040517f4c9c8ce30000000000000000000000000000000000000000000000000000000081526001600160a01b038216600482015260240161123b565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc80547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055565b6060600080846001600160a01b031684604051611eca919061257a565b600060405180830381855af49150503d8060008114611f05576040519150601f19603f3d011682016040523d82523d6000602084013e611f0a565b606091505b50915091506114be858383611f60565b3415610eb0576040517fb398979f00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b606061065883836000611fd5565b606082611f7557611f708261208b565b610658565b8151158015611f8c57506001600160a01b0384163b155b15611fce576040517f9996b3150000000000000000000000000000000000000000000000000000000081526001600160a01b038516600482015260240161123b565b5080610658565b606081471015612013576040517fcd78605900000000000000000000000000000000000000000000000000000000815230600482015260240161123b565b600080856001600160a01b0316848660405161202f919061257a565b60006040518083038185875af1925050503d806000811461206c576040519150601f19603f3d011682016040523d82523d6000602084013e612071565b606091505b5091509150612081868383611f60565b9695505050505050565b80511561209b5780518082602001fd5b6040517f1425ea4200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b80356001600160a01b03811681146120e457600080fd5b919050565b6000602082840312156120fb57600080fd5b610658826120cd565b60008083601f84011261211657600080fd5b50813567ffffffffffffffff81111561212e57600080fd5b60208301915083602082850101111561214657600080fd5b9250929050565b60008060006040848603121561216257600080fd5b61216b846120cd565b9250602084013567ffffffffffffffff81111561218757600080fd5b61219386828701612104565b9497909650939450505050565b60005b838110156121bb5781810151838201526020016121a3565b50506000910152565b600081518084526121dc8160208601602086016121a0565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b60208152600061065860208301846121c4565b6000806040838503121561223457600080fd5b61223d836120cd565b915061224b602084016120cd565b90509250929050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6000806040838503121561229657600080fd5b61229f836120cd565b9150602083013567ffffffffffffffff8111156122bb57600080fd5b8301601f810185136122cc57600080fd5b803567ffffffffffffffff8111156122e6576122e6612254565b6040517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0603f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8501160116810181811067ffffffffffffffff8211171561235257612352612254565b60405281815282820160200187101561236a57600080fd5b816020840160208301376000602083830101528093505050509250929050565b6000806000806000608086880312156123a257600080fd5b6123ab866120cd565b94506123b9602087016120cd565b935060408601359250606086013567ffffffffffffffff8111156123dc57600080fd5b6123e888828901612104565b969995985093965092949392505050565b60008060008060006080868803121561241157600080fd5b61241a866120cd565b94506020860135935061242f604087016120cd565b9250606086013567ffffffffffffffff8111156123dc57600080fd5b60008060006060848603121561246057600080fd5b612469846120cd565b92506020840135915061247e604085016120cd565b90509250925092565b8183528181602085013750600060208284010152600060207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f840116840101905092915050565b6020815260006124e4602083018486612487565b949350505050565b8381526040602082015260006114be604083018486612487565b8481526001600160a01b0384166020820152606060408201526000612081606083018486612487565b60006020828403121561254157600080fd5b8151801515811461065857600080fd5b60006020828403121561256357600080fd5b5051919050565b8183823760009101908152919050565b6000825161258c8184602087016121a0565b919091019291505056fea2646970667358221220abbff2739a31446b484d2eb9c0ffb41515c9145c3574c0a292938cdb16afc8b464736f6c634300081a0033",
+	ABI: "[{\"type\":\"constructor\",\"inputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"ASSET_HANDLER_ROLE\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"DEFAULT_ADMIN_ROLE\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"PAUSER_ROLE\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"TSS_ROLE\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"UPGRADE_INTERFACE_VERSION\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"string\",\"internalType\":\"string\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"custody\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"getRoleAdmin\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"grantRole\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"hasRole\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"initialize\",\"inputs\":[{\"name\":\"_tssAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_zetaToken\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_admin\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"pause\",\"inputs\":[],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"paused\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"proxiableUUID\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"renounceRole\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"callerConfirmation\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revertWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revokeRole\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setConnector\",\"inputs\":[{\"name\":\"_zetaConnector\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setCustody\",\"inputs\":[{\"name\":\"_custody\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"supportsInterface\",\"inputs\":[{\"name\":\"interfaceId\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"tssAddress\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"unpause\",\"inputs\":[],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"upgradeToAndCall\",\"inputs\":[{\"name\":\"newImplementation\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"zetaConnector\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"zetaToken\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposit\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Initialized\",\"inputs\":[{\"name\":\"version\",\"type\":\"uint64\",\"indexed\":false,\"internalType\":\"uint64\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Paused\",\"inputs\":[{\"name\":\"account\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RevertedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RoleAdminChanged\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"indexed\":true,\"internalType\":\"bytes32\"},{\"name\":\"previousAdminRole\",\"type\":\"bytes32\",\"indexed\":true,\"internalType\":\"bytes32\"},{\"name\":\"newAdminRole\",\"type\":\"bytes32\",\"indexed\":true,\"internalType\":\"bytes32\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RoleGranted\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"indexed\":true,\"internalType\":\"bytes32\"},{\"name\":\"account\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RoleRevoked\",\"inputs\":[{\"name\":\"role\",\"type\":\"bytes32\",\"indexed\":true,\"internalType\":\"bytes32\"},{\"name\":\"account\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Unpaused\",\"inputs\":[{\"name\":\"account\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Upgraded\",\"inputs\":[{\"name\":\"implementation\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"AccessControlBadConfirmation\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"AccessControlUnauthorizedAccount\",\"inputs\":[{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"neededRole\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}]},{\"type\":\"error\",\"name\":\"AddressEmptyCode\",\"inputs\":[{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"AddressInsufficientBalance\",\"inputs\":[{\"name\":\"account\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ApprovalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"CustodyInitialized\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ERC1967InvalidImplementation\",\"inputs\":[{\"name\":\"implementation\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ERC1967NonPayable\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"EnforcedPause\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ExecutionFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ExpectedPause\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"FailedInnerCall\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientERC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientETHAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidInitialization\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"NotInitializing\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ReentrancyGuardReentrantCall\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"SafeERC20FailedOperation\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"UUPSUnauthorizedCallContext\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"UUPSUnsupportedProxiableUUID\",\"inputs\":[{\"name\":\"slot\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
+	Bin: "0x60a06040523060805234801561001457600080fd5b5061001d610022565b6100d4565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00805468010000000000000000900460ff16156100725760405163f92ee8a960e01b815260040160405180910390fd5b80546001600160401b03908116146100d15780546001600160401b0319166001600160401b0390811782556040519081527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b50565b608051612d9a6100fd60003960008181611b5701528181611b800152611fc90152612d9a6000f3fe6080604052600436106101e35760003560e01c80635c975abb11610102578063ae7a3a6f11610095578063dda79b7511610064578063dda79b751461062e578063e63ab1e91461064e578063f340fa0114610682578063f45346dc1461069557600080fd5b8063ae7a3a6f146105ae578063b8969bd4146105ce578063c0c53b8b146105ee578063d547741f1461060e57600080fd5b806391d14854116100d157806391d14854146104b7578063a217fddf1461051c578063a783c78914610531578063ad3cb1cc1461056557600080fd5b80635c975abb146104175780635d62c8601461044e5780638456cb59146104825780638c6f037f1461049757600080fd5b806335c018db1161017a5780635131ab59116101495780635131ab59146103a257806352d1902d146103c257806357bec62f146103d75780635b112591146103f757600080fd5b806335c018db1461034757806336568abe1461035a5780633f4ba83a1461037a5780634f1ef2861461038f57600080fd5b806321e093b1116101b657806321e093b11461027f578063248a9ca3146102b757806329c59b5d146103145780632f2ff15d1461032757600080fd5b806301ffc9a7146101e857806310188aef1461021d5780631b8b921d1461023f5780631cff79cd1461025f575b600080fd5b3480156101f457600080fd5b5061020861020336600461280d565b6106b5565b60405190151581526020015b60405180910390f35b34801561022957600080fd5b5061023d61023836600461286b565b61074e565b005b34801561024b57600080fd5b5061023d61025a3660046128cf565b610842565b61027261026d3660046128cf565b61089c565b6040516102149190612990565b34801561028b57600080fd5b5060035461029f906001600160a01b031681565b6040516001600160a01b039091168152602001610214565b3480156102c357600080fd5b506103066102d23660046129a3565b60009081527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b626800602052604090206001015490565b604051908152602001610214565b61023d6103223660046128cf565b61092d565b34801561033357600080fd5b5061023d6103423660046129bc565b610a5a565b61023d6103553660046128cf565b610aa4565b34801561036657600080fd5b5061023d6103753660046129bc565b610c2b565b34801561038657600080fd5b5061023d610c7c565b61023d61039d366004612a17565b610cb1565b3480156103ae57600080fd5b5061023d6103bd366004612b1e565b610cd0565b3480156103ce57600080fd5b50610306610fad565b3480156103e357600080fd5b5060025461029f906001600160a01b031681565b34801561040357600080fd5b5060015461029f906001600160a01b031681565b34801561042357600080fd5b507fcd5ed15c6e187e77e9aee88184c21f4f2182ab5827cb3b7e07fbedcd63f033005460ff16610208565b34801561045a57600080fd5b506103067f584a0b16e9f616d90ccec14a0b852c19aceccfd3d60699398a57dce2b0de01b981565b34801561048e57600080fd5b5061023d610fdc565b3480156104a357600080fd5b5061023d6104b2366004612b8d565b61100e565b3480156104c357600080fd5b506102086104d23660046129bc565b60009182527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b626800602090815260408084206001600160a01b0393909316845291905290205460ff1690565b34801561052857600080fd5b50610306600081565b34801561053d57600080fd5b506103067f0da06bffcb63442de88b7f8385468eaf51e47079d4fa96875938e2c27c451deb81565b34801561057157600080fd5b506102726040518060400160405280600581526020017f352e302e3000000000000000000000000000000000000000000000000000000081525081565b3480156105ba57600080fd5b5061023d6105c936600461286b565b6110b3565b3480156105da57600080fd5b5061023d6105e9366004612b1e565b6111a7565b3480156105fa57600080fd5b5061023d610609366004612bdf565b611321565b34801561061a57600080fd5b5061023d6106293660046129bc565b6115d6565b34801561063a57600080fd5b5060005461029f906001600160a01b031681565b34801561065a57600080fd5b506103067f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a81565b61023d61069036600461286b565b61161a565b3480156106a157600080fd5b5061023d6106b0366004612c22565b611747565b60007fffffffff0000000000000000000000000000000000000000000000000000000082167f7965db0b00000000000000000000000000000000000000000000000000000000148061074857507f01ffc9a7000000000000000000000000000000000000000000000000000000007fffffffff000000000000000000000000000000000000000000000000000000008316145b92915050565b6000610759816117fa565b6002546001600160a01b03161561079c576040517fb337f37800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001600160a01b0382166107dc576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6108067f584a0b16e9f616d90ccec14a0b852c19aceccfd3d60699398a57dce2b0de01b983611804565b5050600280547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055565b61084a6118f1565b826001600160a01b0316336001600160a01b03167f2a21062ee9199c2e205622999eeb7c3da73153674f36a0acd3f74fa6af67bde3848460405161088f929190612c9e565b60405180910390a3505050565b60607f0da06bffcb63442de88b7f8385468eaf51e47079d4fa96875938e2c27c451deb6108c8816117fa565b6108d06118f1565b60006108dd86868661194f565b9050856001600160a01b03167fcaf938de11c367272220bfd1d2baa99ca46665e7bc4d85f00adb51b90fe1fa9f34878760405161091c93929190612cba565b60405180910390a295945050505050565b6109356118f1565b3460000361096f576040517f7671265e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001546040516000916001600160a01b03169034908381818185875af1925050503d80600081146109bc576040519150601f19603f3d011682016040523d82523d6000602084013e6109c1565b606091505b5090915050801515600003610a02576040517f79cacff100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b836001600160a01b0316336001600160a01b03167f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a43460008787604051610a4c9493929190612cd4565b60405180910390a350505050565b60008281527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b6268006020526040902060010154610a94816117fa565b610a9e8383611804565b50505050565b7f0da06bffcb63442de88b7f8385468eaf51e47079d4fa96875938e2c27c451deb610ace816117fa565b610ad66118f1565b600080856001600160a01b03163460405160006040518083038185875af1925050503d8060008114610b24576040519150601f19603f3d011682016040523d82523d6000602084013e610b29565b606091505b509150915081610b65576040517facfdb44400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040517f8fcaa0b50000000000000000000000000000000000000000000000000000000081526001600160a01b03871690638fcaa0b590610bac9088908890600401612c9e565b600060405180830381600087803b158015610bc657600080fd5b505af1158015610bda573d6000803e3d6000fd5b50505050856001600160a01b03167fd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c348787604051610c1b93929190612cba565b60405180910390a2505050505050565b6001600160a01b0381163314610c6d576040517f6697b23200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610c7782826119f8565b505050565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a610ca6816117fa565b610cae611abc565b50565b610cb9611b4c565b610cc282611c1c565b610ccc8282611c27565b5050565b610cd8611d4b565b7f584a0b16e9f616d90ccec14a0b852c19aceccfd3d60699398a57dce2b0de01b9610d02816117fa565b610d0a6118f1565b83600003610d44576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610d4e8686611dcc565b610d84576040517f8164f84200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b0386811660048301526024820186905287169063095ea7b3906044016020604051808303816000875af1158015610dec573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e109190612cfd565b610e46576040517f8164f84200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000610e5386858561194f565b9050610e5f8787611dcc565b610e95576040517f8164f84200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040517f70a082310000000000000000000000000000000000000000000000000000000081523060048201526000906001600160a01b038916906370a0823190602401602060405180830381865afa158015610ef5573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610f199190612d1f565b90508015610f2b57610f2b8882611e5c565b866001600160a01b0316886001600160a01b03167f29c40793bffd84cb810179f15d1ceec72bc7f0785514c668ba36645cf99b7382888888604051610f7293929190612cba565b60405180910390a3505050610fa660017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0055565b5050505050565b6000610fb7611fbe565b507f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc90565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a611006816117fa565b610cae612020565b6110166118f1565b83600003611050576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61105b338486612099565b846001600160a01b0316336001600160a01b03167f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a4868686866040516110a49493929190612cd4565b60405180910390a35050505050565b60006110be816117fa565b6000546001600160a01b031615611101576040517fb337f37800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001600160a01b038216611141576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61116b7f584a0b16e9f616d90ccec14a0b852c19aceccfd3d60699398a57dce2b0de01b983611804565b5050600080547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055565b6111af611d4b565b7f584a0b16e9f616d90ccec14a0b852c19aceccfd3d60699398a57dce2b0de01b96111d9816117fa565b6111e16118f1565b8360000361121b576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61122f6001600160a01b03871686866121ed565b6040517f8fcaa0b50000000000000000000000000000000000000000000000000000000081526001600160a01b03861690638fcaa0b5906112769086908690600401612c9e565b600060405180830381600087803b15801561129057600080fd5b505af11580156112a4573d6000803e3d6000fd5b50505050846001600160a01b0316866001600160a01b03167f723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda78686866040516112ef93929190612cba565b60405180910390a350610fa660017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0055565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00805468010000000000000000810460ff16159067ffffffffffffffff1660008115801561136c5750825b905060008267ffffffffffffffff1660011480156113895750303b155b905081158015611397575080155b156113ce576040517ff92ee8a900000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b84547fffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000166001178555831561142f5784547fffffffffffffffffffffffffffffffffffffffffffffff00ffffffffffffffff16680100000000000000001785555b6001600160a01b038816158061144c57506001600160a01b038716155b15611483576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61148b612261565b611493612269565b61149b612261565b6114a3612279565b6114ae600087611804565b506114d97f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a87611804565b50600180547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b038a161790556115377f0da06bffcb63442de88b7f8385468eaf51e47079d4fa96875938e2c27c451deb89611804565b50600380547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b03891617905583156115cc5784547fffffffffffffffffffffffffffffffffffffffffffffff00ffffffffffffffff168555604051600181527fc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d29060200160405180910390a15b5050505050505050565b60008281527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b6268006020526040902060010154611610816117fa565b610a9e83836119f8565b6116226118f1565b3460000361165c576040517f7671265e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001546040516000916001600160a01b03169034908381818185875af1925050503d80600081146116a9576040519150601f19603f3d011682016040523d82523d6000602084013e6116ae565b606091505b50909150508015156000036116ef576040517f79cacff100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60408051348152600060208201819052606082840181905282015290516001600160a01b0384169133917f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a49181900360800190a35050565b61174f6118f1565b81600003611789576040517f951e19ed00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611794338284612099565b826001600160a01b0316336001600160a01b03167f2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a4848460405161088f9291909182526001600160a01b0316602082015260606040820181905260009082015260800190565b610cae8133612289565b60008281527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b626800602081815260408084206001600160a01b038616855290915282205460ff166118e7576000848152602082815260408083206001600160a01b0387168452909152902080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016600117905561189d3390565b6001600160a01b0316836001600160a01b0316857f2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d60405160405180910390a46001915050610748565b6000915050610748565b7fcd5ed15c6e187e77e9aee88184c21f4f2182ab5827cb3b7e07fbedcd63f033005460ff161561194d576040517fd93c066500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b6060600080856001600160a01b031634868660405161196f929190612d38565b60006040518083038185875af1925050503d80600081146119ac576040519150601f19603f3d011682016040523d82523d6000602084013e6119b1565b606091505b5091509150816119ed576040517facfdb44400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b9150505b9392505050565b60008281527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b626800602081815260408084206001600160a01b038616855290915282205460ff16156118e7576000848152602082815260408083206001600160a01b038716808552925280832080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016905551339287917ff6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b9190a46001915050610748565b611ac4612316565b7fcd5ed15c6e187e77e9aee88184c21f4f2182ab5827cb3b7e07fbedcd63f0330080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001681557f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa335b6040516001600160a01b03909116815260200160405180910390a150565b306001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000161480611be557507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316611bd97f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc546001600160a01b031690565b6001600160a01b031614155b1561194d576040517fe07c8dba00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000610ccc816117fa565b816001600160a01b03166352d1902d6040518163ffffffff1660e01b8152600401602060405180830381865afa925050508015611c9f575060408051601f3d9081017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0168201909252611c9c91810190612d1f565b60015b611ce5576040517f4c9c8ce30000000000000000000000000000000000000000000000000000000081526001600160a01b03831660048201526024015b60405180910390fd5b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc8114611d41576040517faa1d49a400000000000000000000000000000000000000000000000000000000815260048101829052602401611cdc565b610c778383612371565b7f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0080547ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01611dc6576040517f3ee5aeb500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60029055565b6040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b038281166004830152600060248301819052919084169063095ea7b3906044016020604051808303816000875af1158015611e38573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906119f19190612cfd565b6003546001600160a01b0390811690831603611f7e576002546040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b039182166004820152602481018390529083169063095ea7b3906044016020604051808303816000875af1158015611ede573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190611f029190612cfd565b506002546040517f743e0c9b000000000000000000000000000000000000000000000000000000008152600481018390526001600160a01b039091169063743e0c9b90602401600060405180830381600087803b158015611f6257600080fd5b505af1158015611f76573d6000803e3d6000fd5b505050505050565b600054610ccc906001600160a01b038481169116836121ed565b60017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f0055565b306001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000161461194d576040517fe07c8dba00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6120286118f1565b7fcd5ed15c6e187e77e9aee88184c21f4f2182ab5827cb3b7e07fbedcd63f0330080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001660011781557f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a25833611b2e565b6003546001600160a01b03908116908316036121d1576120c46001600160a01b0383168430846123c7565b6002546040517f095ea7b30000000000000000000000000000000000000000000000000000000081526001600160a01b039182166004820152602481018390529083169063095ea7b3906044016020604051808303816000875af1158015612130573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906121549190612cfd565b506002546040517f743e0c9b000000000000000000000000000000000000000000000000000000008152600481018390526001600160a01b039091169063743e0c9b90602401600060405180830381600087803b1580156121b457600080fd5b505af11580156121c8573d6000803e3d6000fd5b50505050505050565b600054610c77906001600160a01b0384811691869116846123c7565b6040516001600160a01b03838116602483015260448201839052610c7791859182169063a9059cbb906064015b604051602081830303815290604052915060e01b6020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050612400565b61194d61247c565b61227161247c565b61194d6124e3565b61228161247c565b61194d6124eb565b60008281527f02dd7bc7dec4dceedda775e58dd541e08a116c6c53815c0bd028192f7b626800602090815260408083206001600160a01b038516845290915290205460ff16610ccc576040517fe2517d3f0000000000000000000000000000000000000000000000000000000081526001600160a01b038216600482015260248101839052604401611cdc565b7fcd5ed15c6e187e77e9aee88184c21f4f2182ab5827cb3b7e07fbedcd63f033005460ff1661194d576040517f8dfc202b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61237a8261253c565b6040516001600160a01b038316907fbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b90600090a28051156123bf57610c7782826125e4565b610ccc61265a565b6040516001600160a01b038481166024830152838116604483015260648201839052610a9e9186918216906323b872dd9060840161221a565b60006124156001600160a01b03841683612692565b9050805160001415801561243a5750808060200190518101906124389190612cfd565b155b15610c77576040517f5274afe70000000000000000000000000000000000000000000000000000000081526001600160a01b0384166004820152602401611cdc565b7ff0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a005468010000000000000000900460ff1661194d576040517fd7e6bcf800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611f9861247c565b6124f361247c565b7fcd5ed15c6e187e77e9aee88184c21f4f2182ab5827cb3b7e07fbedcd63f0330080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00169055565b806001600160a01b03163b60000361258b576040517f4c9c8ce30000000000000000000000000000000000000000000000000000000081526001600160a01b0382166004820152602401611cdc565b7f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc80547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055565b6060600080846001600160a01b0316846040516126019190612d48565b600060405180830381855af49150503d806000811461263c576040519150601f19603f3d011682016040523d82523d6000602084013e612641565b606091505b50915091506126518583836126a0565b95945050505050565b341561194d576040517fb398979f00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60606119f183836000612715565b6060826126b5576126b0826127cb565b6119f1565b81511580156126cc57506001600160a01b0384163b155b1561270e576040517f9996b3150000000000000000000000000000000000000000000000000000000081526001600160a01b0385166004820152602401611cdc565b50806119f1565b606081471015612753576040517fcd786059000000000000000000000000000000000000000000000000000000008152306004820152602401611cdc565b600080856001600160a01b0316848660405161276f9190612d48565b60006040518083038185875af1925050503d80600081146127ac576040519150601f19603f3d011682016040523d82523d6000602084013e6127b1565b606091505b50915091506127c18683836126a0565b9695505050505050565b8051156127db5780518082602001fd5b6040517f1425ea4200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60006020828403121561281f57600080fd5b81357fffffffff00000000000000000000000000000000000000000000000000000000811681146119f157600080fd5b80356001600160a01b038116811461286657600080fd5b919050565b60006020828403121561287d57600080fd5b6119f18261284f565b60008083601f84011261289857600080fd5b50813567ffffffffffffffff8111156128b057600080fd5b6020830191508360208285010111156128c857600080fd5b9250929050565b6000806000604084860312156128e457600080fd5b6128ed8461284f565b9250602084013567ffffffffffffffff81111561290957600080fd5b61291586828701612886565b9497909650939450505050565b60005b8381101561293d578181015183820152602001612925565b50506000910152565b6000815180845261295e816020860160208601612922565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b6020815260006119f16020830184612946565b6000602082840312156129b557600080fd5b5035919050565b600080604083850312156129cf57600080fd5b823591506129df6020840161284f565b90509250929050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60008060408385031215612a2a57600080fd5b612a338361284f565b9150602083013567ffffffffffffffff811115612a4f57600080fd5b8301601f81018513612a6057600080fd5b803567ffffffffffffffff811115612a7a57612a7a6129e8565b6040517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0603f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8501160116810181811067ffffffffffffffff82111715612ae657612ae66129e8565b604052818152828201602001871015612afe57600080fd5b816020840160208301376000602083830101528093505050509250929050565b600080600080600060808688031215612b3657600080fd5b612b3f8661284f565b9450612b4d6020870161284f565b935060408601359250606086013567ffffffffffffffff811115612b7057600080fd5b612b7c88828901612886565b969995985093965092949392505050565b600080600080600060808688031215612ba557600080fd5b612bae8661284f565b945060208601359350612bc36040870161284f565b9250606086013567ffffffffffffffff811115612b7057600080fd5b600080600060608486031215612bf457600080fd5b612bfd8461284f565b9250612c0b6020850161284f565b9150612c196040850161284f565b90509250925092565b600080600060608486031215612c3757600080fd5b612c408461284f565b925060208401359150612c196040850161284f565b8183528181602085013750600060208284010152600060207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f840116840101905092915050565b602081526000612cb2602083018486612c55565b949350505050565b838152604060208201526000612651604083018486612c55565b8481526001600160a01b03841660208201526060604082015260006127c1606083018486612c55565b600060208284031215612d0f57600080fd5b815180151581146119f157600080fd5b600060208284031215612d3157600080fd5b5051919050565b8183823760009101908152919050565b60008251612d5a818460208701612922565b919091019291505056fea26469706673582212201821442f44389baeb888640e13de33662eed4aff4f3c0ea195d55f55d8f2920864736f6c634300081a0033",
 }
 
 // GatewayEVMABI is the input ABI used to generate the binding from.
@@ -202,6 +202,130 @@ func (_GatewayEVM *GatewayEVMTransactorRaw) Transact(opts *bind.TransactOpts, me
 	return _GatewayEVM.Contract.contract.Transact(opts, method, params...)
 }
 
+// ASSETHANDLERROLE is a free data retrieval call binding the contract method 0x5d62c860.
+//
+// Solidity: function ASSET_HANDLER_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCaller) ASSETHANDLERROLE(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "ASSET_HANDLER_ROLE")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// ASSETHANDLERROLE is a free data retrieval call binding the contract method 0x5d62c860.
+//
+// Solidity: function ASSET_HANDLER_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMSession) ASSETHANDLERROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.ASSETHANDLERROLE(&_GatewayEVM.CallOpts)
+}
+
+// ASSETHANDLERROLE is a free data retrieval call binding the contract method 0x5d62c860.
+//
+// Solidity: function ASSET_HANDLER_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCallerSession) ASSETHANDLERROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.ASSETHANDLERROLE(&_GatewayEVM.CallOpts)
+}
+
+// DEFAULTADMINROLE is a free data retrieval call binding the contract method 0xa217fddf.
+//
+// Solidity: function DEFAULT_ADMIN_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCaller) DEFAULTADMINROLE(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "DEFAULT_ADMIN_ROLE")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// DEFAULTADMINROLE is a free data retrieval call binding the contract method 0xa217fddf.
+//
+// Solidity: function DEFAULT_ADMIN_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMSession) DEFAULTADMINROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.DEFAULTADMINROLE(&_GatewayEVM.CallOpts)
+}
+
+// DEFAULTADMINROLE is a free data retrieval call binding the contract method 0xa217fddf.
+//
+// Solidity: function DEFAULT_ADMIN_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCallerSession) DEFAULTADMINROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.DEFAULTADMINROLE(&_GatewayEVM.CallOpts)
+}
+
+// PAUSERROLE is a free data retrieval call binding the contract method 0xe63ab1e9.
+//
+// Solidity: function PAUSER_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCaller) PAUSERROLE(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "PAUSER_ROLE")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// PAUSERROLE is a free data retrieval call binding the contract method 0xe63ab1e9.
+//
+// Solidity: function PAUSER_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMSession) PAUSERROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.PAUSERROLE(&_GatewayEVM.CallOpts)
+}
+
+// PAUSERROLE is a free data retrieval call binding the contract method 0xe63ab1e9.
+//
+// Solidity: function PAUSER_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCallerSession) PAUSERROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.PAUSERROLE(&_GatewayEVM.CallOpts)
+}
+
+// TSSROLE is a free data retrieval call binding the contract method 0xa783c789.
+//
+// Solidity: function TSS_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCaller) TSSROLE(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "TSS_ROLE")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// TSSROLE is a free data retrieval call binding the contract method 0xa783c789.
+//
+// Solidity: function TSS_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMSession) TSSROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.TSSROLE(&_GatewayEVM.CallOpts)
+}
+
+// TSSROLE is a free data retrieval call binding the contract method 0xa783c789.
+//
+// Solidity: function TSS_ROLE() view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCallerSession) TSSROLE() ([32]byte, error) {
+	return _GatewayEVM.Contract.TSSROLE(&_GatewayEVM.CallOpts)
+}
+
 // UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
 //
 // Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
@@ -264,35 +388,97 @@ func (_GatewayEVM *GatewayEVMCallerSession) Custody() (common.Address, error) {
 	return _GatewayEVM.Contract.Custody(&_GatewayEVM.CallOpts)
 }
 
-// Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
+// GetRoleAdmin is a free data retrieval call binding the contract method 0x248a9ca3.
 //
-// Solidity: function owner() view returns(address)
-func (_GatewayEVM *GatewayEVMCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
+// Solidity: function getRoleAdmin(bytes32 role) view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCaller) GetRoleAdmin(opts *bind.CallOpts, role [32]byte) ([32]byte, error) {
 	var out []interface{}
-	err := _GatewayEVM.contract.Call(opts, &out, "owner")
+	err := _GatewayEVM.contract.Call(opts, &out, "getRoleAdmin", role)
 
 	if err != nil {
-		return *new(common.Address), err
+		return *new([32]byte), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
 
 	return out0, err
 
 }
 
-// Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
+// GetRoleAdmin is a free data retrieval call binding the contract method 0x248a9ca3.
 //
-// Solidity: function owner() view returns(address)
-func (_GatewayEVM *GatewayEVMSession) Owner() (common.Address, error) {
-	return _GatewayEVM.Contract.Owner(&_GatewayEVM.CallOpts)
+// Solidity: function getRoleAdmin(bytes32 role) view returns(bytes32)
+func (_GatewayEVM *GatewayEVMSession) GetRoleAdmin(role [32]byte) ([32]byte, error) {
+	return _GatewayEVM.Contract.GetRoleAdmin(&_GatewayEVM.CallOpts, role)
 }
 
-// Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
+// GetRoleAdmin is a free data retrieval call binding the contract method 0x248a9ca3.
 //
-// Solidity: function owner() view returns(address)
-func (_GatewayEVM *GatewayEVMCallerSession) Owner() (common.Address, error) {
-	return _GatewayEVM.Contract.Owner(&_GatewayEVM.CallOpts)
+// Solidity: function getRoleAdmin(bytes32 role) view returns(bytes32)
+func (_GatewayEVM *GatewayEVMCallerSession) GetRoleAdmin(role [32]byte) ([32]byte, error) {
+	return _GatewayEVM.Contract.GetRoleAdmin(&_GatewayEVM.CallOpts, role)
+}
+
+// HasRole is a free data retrieval call binding the contract method 0x91d14854.
+//
+// Solidity: function hasRole(bytes32 role, address account) view returns(bool)
+func (_GatewayEVM *GatewayEVMCaller) HasRole(opts *bind.CallOpts, role [32]byte, account common.Address) (bool, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "hasRole", role, account)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// HasRole is a free data retrieval call binding the contract method 0x91d14854.
+//
+// Solidity: function hasRole(bytes32 role, address account) view returns(bool)
+func (_GatewayEVM *GatewayEVMSession) HasRole(role [32]byte, account common.Address) (bool, error) {
+	return _GatewayEVM.Contract.HasRole(&_GatewayEVM.CallOpts, role, account)
+}
+
+// HasRole is a free data retrieval call binding the contract method 0x91d14854.
+//
+// Solidity: function hasRole(bytes32 role, address account) view returns(bool)
+func (_GatewayEVM *GatewayEVMCallerSession) HasRole(role [32]byte, account common.Address) (bool, error) {
+	return _GatewayEVM.Contract.HasRole(&_GatewayEVM.CallOpts, role, account)
+}
+
+// Paused is a free data retrieval call binding the contract method 0x5c975abb.
+//
+// Solidity: function paused() view returns(bool)
+func (_GatewayEVM *GatewayEVMCaller) Paused(opts *bind.CallOpts) (bool, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "paused")
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// Paused is a free data retrieval call binding the contract method 0x5c975abb.
+//
+// Solidity: function paused() view returns(bool)
+func (_GatewayEVM *GatewayEVMSession) Paused() (bool, error) {
+	return _GatewayEVM.Contract.Paused(&_GatewayEVM.CallOpts)
+}
+
+// Paused is a free data retrieval call binding the contract method 0x5c975abb.
+//
+// Solidity: function paused() view returns(bool)
+func (_GatewayEVM *GatewayEVMCallerSession) Paused() (bool, error) {
+	return _GatewayEVM.Contract.Paused(&_GatewayEVM.CallOpts)
 }
 
 // ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
@@ -324,6 +510,37 @@ func (_GatewayEVM *GatewayEVMSession) ProxiableUUID() ([32]byte, error) {
 // Solidity: function proxiableUUID() view returns(bytes32)
 func (_GatewayEVM *GatewayEVMCallerSession) ProxiableUUID() ([32]byte, error) {
 	return _GatewayEVM.Contract.ProxiableUUID(&_GatewayEVM.CallOpts)
+}
+
+// SupportsInterface is a free data retrieval call binding the contract method 0x01ffc9a7.
+//
+// Solidity: function supportsInterface(bytes4 interfaceId) view returns(bool)
+func (_GatewayEVM *GatewayEVMCaller) SupportsInterface(opts *bind.CallOpts, interfaceId [4]byte) (bool, error) {
+	var out []interface{}
+	err := _GatewayEVM.contract.Call(opts, &out, "supportsInterface", interfaceId)
+
+	if err != nil {
+		return *new(bool), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
+
+	return out0, err
+
+}
+
+// SupportsInterface is a free data retrieval call binding the contract method 0x01ffc9a7.
+//
+// Solidity: function supportsInterface(bytes4 interfaceId) view returns(bool)
+func (_GatewayEVM *GatewayEVMSession) SupportsInterface(interfaceId [4]byte) (bool, error) {
+	return _GatewayEVM.Contract.SupportsInterface(&_GatewayEVM.CallOpts, interfaceId)
+}
+
+// SupportsInterface is a free data retrieval call binding the contract method 0x01ffc9a7.
+//
+// Solidity: function supportsInterface(bytes4 interfaceId) view returns(bool)
+func (_GatewayEVM *GatewayEVMCallerSession) SupportsInterface(interfaceId [4]byte) (bool, error) {
+	return _GatewayEVM.Contract.SupportsInterface(&_GatewayEVM.CallOpts, interfaceId)
 }
 
 // TssAddress is a free data retrieval call binding the contract method 0x5b112591.
@@ -587,46 +804,88 @@ func (_GatewayEVM *GatewayEVMTransactorSession) ExecuteWithERC20(token common.Ad
 	return _GatewayEVM.Contract.ExecuteWithERC20(&_GatewayEVM.TransactOpts, token, to, amount, data)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x485cc955.
+// GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaToken) returns()
-func (_GatewayEVM *GatewayEVMTransactor) Initialize(opts *bind.TransactOpts, _tssAddress common.Address, _zetaToken common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.contract.Transact(opts, "initialize", _tssAddress, _zetaToken)
+// Solidity: function grantRole(bytes32 role, address account) returns()
+func (_GatewayEVM *GatewayEVMTransactor) GrantRole(opts *bind.TransactOpts, role [32]byte, account common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "grantRole", role, account)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x485cc955.
+// GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaToken) returns()
-func (_GatewayEVM *GatewayEVMSession) Initialize(_tssAddress common.Address, _zetaToken common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zetaToken)
+// Solidity: function grantRole(bytes32 role, address account) returns()
+func (_GatewayEVM *GatewayEVMSession) GrantRole(role [32]byte, account common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.GrantRole(&_GatewayEVM.TransactOpts, role, account)
 }
 
-// Initialize is a paid mutator transaction binding the contract method 0x485cc955.
+// GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
 //
-// Solidity: function initialize(address _tssAddress, address _zetaToken) returns()
-func (_GatewayEVM *GatewayEVMTransactorSession) Initialize(_tssAddress common.Address, _zetaToken common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zetaToken)
+// Solidity: function grantRole(bytes32 role, address account) returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) GrantRole(role [32]byte, account common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.GrantRole(&_GatewayEVM.TransactOpts, role, account)
 }
 
-// RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
 //
-// Solidity: function renounceOwnership() returns()
-func (_GatewayEVM *GatewayEVMTransactor) RenounceOwnership(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _GatewayEVM.contract.Transact(opts, "renounceOwnership")
+// Solidity: function initialize(address _tssAddress, address _zetaToken, address _admin) returns()
+func (_GatewayEVM *GatewayEVMTransactor) Initialize(opts *bind.TransactOpts, _tssAddress common.Address, _zetaToken common.Address, _admin common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "initialize", _tssAddress, _zetaToken, _admin)
 }
 
-// RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
 //
-// Solidity: function renounceOwnership() returns()
-func (_GatewayEVM *GatewayEVMSession) RenounceOwnership() (*types.Transaction, error) {
-	return _GatewayEVM.Contract.RenounceOwnership(&_GatewayEVM.TransactOpts)
+// Solidity: function initialize(address _tssAddress, address _zetaToken, address _admin) returns()
+func (_GatewayEVM *GatewayEVMSession) Initialize(_tssAddress common.Address, _zetaToken common.Address, _admin common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zetaToken, _admin)
 }
 
-// RenounceOwnership is a paid mutator transaction binding the contract method 0x715018a6.
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
 //
-// Solidity: function renounceOwnership() returns()
-func (_GatewayEVM *GatewayEVMTransactorSession) RenounceOwnership() (*types.Transaction, error) {
-	return _GatewayEVM.Contract.RenounceOwnership(&_GatewayEVM.TransactOpts)
+// Solidity: function initialize(address _tssAddress, address _zetaToken, address _admin) returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) Initialize(_tssAddress common.Address, _zetaToken common.Address, _admin common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Initialize(&_GatewayEVM.TransactOpts, _tssAddress, _zetaToken, _admin)
+}
+
+// Pause is a paid mutator transaction binding the contract method 0x8456cb59.
+//
+// Solidity: function pause() returns()
+func (_GatewayEVM *GatewayEVMTransactor) Pause(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "pause")
+}
+
+// Pause is a paid mutator transaction binding the contract method 0x8456cb59.
+//
+// Solidity: function pause() returns()
+func (_GatewayEVM *GatewayEVMSession) Pause() (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Pause(&_GatewayEVM.TransactOpts)
+}
+
+// Pause is a paid mutator transaction binding the contract method 0x8456cb59.
+//
+// Solidity: function pause() returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) Pause() (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Pause(&_GatewayEVM.TransactOpts)
+}
+
+// RenounceRole is a paid mutator transaction binding the contract method 0x36568abe.
+//
+// Solidity: function renounceRole(bytes32 role, address callerConfirmation) returns()
+func (_GatewayEVM *GatewayEVMTransactor) RenounceRole(opts *bind.TransactOpts, role [32]byte, callerConfirmation common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "renounceRole", role, callerConfirmation)
+}
+
+// RenounceRole is a paid mutator transaction binding the contract method 0x36568abe.
+//
+// Solidity: function renounceRole(bytes32 role, address callerConfirmation) returns()
+func (_GatewayEVM *GatewayEVMSession) RenounceRole(role [32]byte, callerConfirmation common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.RenounceRole(&_GatewayEVM.TransactOpts, role, callerConfirmation)
+}
+
+// RenounceRole is a paid mutator transaction binding the contract method 0x36568abe.
+//
+// Solidity: function renounceRole(bytes32 role, address callerConfirmation) returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) RenounceRole(role [32]byte, callerConfirmation common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.RenounceRole(&_GatewayEVM.TransactOpts, role, callerConfirmation)
 }
 
 // RevertWithERC20 is a paid mutator transaction binding the contract method 0xb8969bd4.
@@ -648,6 +907,27 @@ func (_GatewayEVM *GatewayEVMSession) RevertWithERC20(token common.Address, to c
 // Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data) returns()
 func (_GatewayEVM *GatewayEVMTransactorSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
 	return _GatewayEVM.Contract.RevertWithERC20(&_GatewayEVM.TransactOpts, token, to, amount, data)
+}
+
+// RevokeRole is a paid mutator transaction binding the contract method 0xd547741f.
+//
+// Solidity: function revokeRole(bytes32 role, address account) returns()
+func (_GatewayEVM *GatewayEVMTransactor) RevokeRole(opts *bind.TransactOpts, role [32]byte, account common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "revokeRole", role, account)
+}
+
+// RevokeRole is a paid mutator transaction binding the contract method 0xd547741f.
+//
+// Solidity: function revokeRole(bytes32 role, address account) returns()
+func (_GatewayEVM *GatewayEVMSession) RevokeRole(role [32]byte, account common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.RevokeRole(&_GatewayEVM.TransactOpts, role, account)
+}
+
+// RevokeRole is a paid mutator transaction binding the contract method 0xd547741f.
+//
+// Solidity: function revokeRole(bytes32 role, address account) returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) RevokeRole(role [32]byte, account common.Address) (*types.Transaction, error) {
+	return _GatewayEVM.Contract.RevokeRole(&_GatewayEVM.TransactOpts, role, account)
 }
 
 // SetConnector is a paid mutator transaction binding the contract method 0x10188aef.
@@ -692,25 +972,25 @@ func (_GatewayEVM *GatewayEVMTransactorSession) SetCustody(_custody common.Addre
 	return _GatewayEVM.Contract.SetCustody(&_GatewayEVM.TransactOpts, _custody)
 }
 
-// TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
+// Unpause is a paid mutator transaction binding the contract method 0x3f4ba83a.
 //
-// Solidity: function transferOwnership(address newOwner) returns()
-func (_GatewayEVM *GatewayEVMTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.contract.Transact(opts, "transferOwnership", newOwner)
+// Solidity: function unpause() returns()
+func (_GatewayEVM *GatewayEVMTransactor) Unpause(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _GatewayEVM.contract.Transact(opts, "unpause")
 }
 
-// TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
+// Unpause is a paid mutator transaction binding the contract method 0x3f4ba83a.
 //
-// Solidity: function transferOwnership(address newOwner) returns()
-func (_GatewayEVM *GatewayEVMSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.Contract.TransferOwnership(&_GatewayEVM.TransactOpts, newOwner)
+// Solidity: function unpause() returns()
+func (_GatewayEVM *GatewayEVMSession) Unpause() (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Unpause(&_GatewayEVM.TransactOpts)
 }
 
-// TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
+// Unpause is a paid mutator transaction binding the contract method 0x3f4ba83a.
 //
-// Solidity: function transferOwnership(address newOwner) returns()
-func (_GatewayEVM *GatewayEVMTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
-	return _GatewayEVM.Contract.TransferOwnership(&_GatewayEVM.TransactOpts, newOwner)
+// Solidity: function unpause() returns()
+func (_GatewayEVM *GatewayEVMTransactorSession) Unpause() (*types.Transaction, error) {
+	return _GatewayEVM.Contract.Unpause(&_GatewayEVM.TransactOpts)
 }
 
 // UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
@@ -1479,9 +1759,9 @@ func (_GatewayEVM *GatewayEVMFilterer) ParseInitialized(log types.Log) (*Gateway
 	return event, nil
 }
 
-// GatewayEVMOwnershipTransferredIterator is returned from FilterOwnershipTransferred and is used to iterate over the raw logs and unpacked data for OwnershipTransferred events raised by the GatewayEVM contract.
-type GatewayEVMOwnershipTransferredIterator struct {
-	Event *GatewayEVMOwnershipTransferred // Event containing the contract specifics and raw log
+// GatewayEVMPausedIterator is returned from FilterPaused and is used to iterate over the raw logs and unpacked data for Paused events raised by the GatewayEVM contract.
+type GatewayEVMPausedIterator struct {
+	Event *GatewayEVMPaused // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1495,7 +1775,7 @@ type GatewayEVMOwnershipTransferredIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMOwnershipTransferredIterator) Next() bool {
+func (it *GatewayEVMPausedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1504,7 +1784,7 @@ func (it *GatewayEVMOwnershipTransferredIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMOwnershipTransferred)
+			it.Event = new(GatewayEVMPaused)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1519,7 +1799,7 @@ func (it *GatewayEVMOwnershipTransferredIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMOwnershipTransferred)
+		it.Event = new(GatewayEVMPaused)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1535,60 +1815,41 @@ func (it *GatewayEVMOwnershipTransferredIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMOwnershipTransferredIterator) Error() error {
+func (it *GatewayEVMPausedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMOwnershipTransferredIterator) Close() error {
+func (it *GatewayEVMPausedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// GatewayEVMOwnershipTransferred represents a OwnershipTransferred event raised by the GatewayEVM contract.
-type GatewayEVMOwnershipTransferred struct {
-	PreviousOwner common.Address
-	NewOwner      common.Address
-	Raw           types.Log // Blockchain specific contextual infos
+// GatewayEVMPaused represents a Paused event raised by the GatewayEVM contract.
+type GatewayEVMPaused struct {
+	Account common.Address
+	Raw     types.Log // Blockchain specific contextual infos
 }
 
-// FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
+// FilterPaused is a free log retrieval operation binding the contract event 0x62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_GatewayEVM *GatewayEVMFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*GatewayEVMOwnershipTransferredIterator, error) {
+// Solidity: event Paused(address account)
+func (_GatewayEVM *GatewayEVMFilterer) FilterPaused(opts *bind.FilterOpts) (*GatewayEVMPausedIterator, error) {
 
-	var previousOwnerRule []interface{}
-	for _, previousOwnerItem := range previousOwner {
-		previousOwnerRule = append(previousOwnerRule, previousOwnerItem)
-	}
-	var newOwnerRule []interface{}
-	for _, newOwnerItem := range newOwner {
-		newOwnerRule = append(newOwnerRule, newOwnerItem)
-	}
-
-	logs, sub, err := _GatewayEVM.contract.FilterLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	logs, sub, err := _GatewayEVM.contract.FilterLogs(opts, "Paused")
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMOwnershipTransferredIterator{contract: _GatewayEVM.contract, event: "OwnershipTransferred", logs: logs, sub: sub}, nil
+	return &GatewayEVMPausedIterator{contract: _GatewayEVM.contract, event: "Paused", logs: logs, sub: sub}, nil
 }
 
-// WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
+// WatchPaused is a free log subscription operation binding the contract event 0x62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_GatewayEVM *GatewayEVMFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *GatewayEVMOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
+// Solidity: event Paused(address account)
+func (_GatewayEVM *GatewayEVMFilterer) WatchPaused(opts *bind.WatchOpts, sink chan<- *GatewayEVMPaused) (event.Subscription, error) {
 
-	var previousOwnerRule []interface{}
-	for _, previousOwnerItem := range previousOwner {
-		previousOwnerRule = append(previousOwnerRule, previousOwnerItem)
-	}
-	var newOwnerRule []interface{}
-	for _, newOwnerItem := range newOwner {
-		newOwnerRule = append(newOwnerRule, newOwnerItem)
-	}
-
-	logs, sub, err := _GatewayEVM.contract.WatchLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	logs, sub, err := _GatewayEVM.contract.WatchLogs(opts, "Paused")
 	if err != nil {
 		return nil, err
 	}
@@ -1598,8 +1859,8 @@ func (_GatewayEVM *GatewayEVMFilterer) WatchOwnershipTransferred(opts *bind.Watc
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMOwnershipTransferred)
-				if err := _GatewayEVM.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+				event := new(GatewayEVMPaused)
+				if err := _GatewayEVM.contract.UnpackLog(event, "Paused", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1620,12 +1881,12 @@ func (_GatewayEVM *GatewayEVMFilterer) WatchOwnershipTransferred(opts *bind.Watc
 	}), nil
 }
 
-// ParseOwnershipTransferred is a log parse operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
+// ParsePaused is a log parse operation binding the contract event 0x62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258.
 //
-// Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_GatewayEVM *GatewayEVMFilterer) ParseOwnershipTransferred(log types.Log) (*GatewayEVMOwnershipTransferred, error) {
-	event := new(GatewayEVMOwnershipTransferred)
-	if err := _GatewayEVM.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+// Solidity: event Paused(address account)
+func (_GatewayEVM *GatewayEVMFilterer) ParsePaused(log types.Log) (*GatewayEVMPaused, error) {
+	event := new(GatewayEVMPaused)
+	if err := _GatewayEVM.contract.UnpackLog(event, "Paused", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -1927,6 +2188,626 @@ func (_GatewayEVM *GatewayEVMFilterer) WatchRevertedWithERC20(opts *bind.WatchOp
 func (_GatewayEVM *GatewayEVMFilterer) ParseRevertedWithERC20(log types.Log) (*GatewayEVMRevertedWithERC20, error) {
 	event := new(GatewayEVMRevertedWithERC20)
 	if err := _GatewayEVM.contract.UnpackLog(event, "RevertedWithERC20", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// GatewayEVMRoleAdminChangedIterator is returned from FilterRoleAdminChanged and is used to iterate over the raw logs and unpacked data for RoleAdminChanged events raised by the GatewayEVM contract.
+type GatewayEVMRoleAdminChangedIterator struct {
+	Event *GatewayEVMRoleAdminChanged // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *GatewayEVMRoleAdminChangedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(GatewayEVMRoleAdminChanged)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(GatewayEVMRoleAdminChanged)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *GatewayEVMRoleAdminChangedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *GatewayEVMRoleAdminChangedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// GatewayEVMRoleAdminChanged represents a RoleAdminChanged event raised by the GatewayEVM contract.
+type GatewayEVMRoleAdminChanged struct {
+	Role              [32]byte
+	PreviousAdminRole [32]byte
+	NewAdminRole      [32]byte
+	Raw               types.Log // Blockchain specific contextual infos
+}
+
+// FilterRoleAdminChanged is a free log retrieval operation binding the contract event 0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff.
+//
+// Solidity: event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)
+func (_GatewayEVM *GatewayEVMFilterer) FilterRoleAdminChanged(opts *bind.FilterOpts, role [][32]byte, previousAdminRole [][32]byte, newAdminRole [][32]byte) (*GatewayEVMRoleAdminChangedIterator, error) {
+
+	var roleRule []interface{}
+	for _, roleItem := range role {
+		roleRule = append(roleRule, roleItem)
+	}
+	var previousAdminRoleRule []interface{}
+	for _, previousAdminRoleItem := range previousAdminRole {
+		previousAdminRoleRule = append(previousAdminRoleRule, previousAdminRoleItem)
+	}
+	var newAdminRoleRule []interface{}
+	for _, newAdminRoleItem := range newAdminRole {
+		newAdminRoleRule = append(newAdminRoleRule, newAdminRoleItem)
+	}
+
+	logs, sub, err := _GatewayEVM.contract.FilterLogs(opts, "RoleAdminChanged", roleRule, previousAdminRoleRule, newAdminRoleRule)
+	if err != nil {
+		return nil, err
+	}
+	return &GatewayEVMRoleAdminChangedIterator{contract: _GatewayEVM.contract, event: "RoleAdminChanged", logs: logs, sub: sub}, nil
+}
+
+// WatchRoleAdminChanged is a free log subscription operation binding the contract event 0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff.
+//
+// Solidity: event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)
+func (_GatewayEVM *GatewayEVMFilterer) WatchRoleAdminChanged(opts *bind.WatchOpts, sink chan<- *GatewayEVMRoleAdminChanged, role [][32]byte, previousAdminRole [][32]byte, newAdminRole [][32]byte) (event.Subscription, error) {
+
+	var roleRule []interface{}
+	for _, roleItem := range role {
+		roleRule = append(roleRule, roleItem)
+	}
+	var previousAdminRoleRule []interface{}
+	for _, previousAdminRoleItem := range previousAdminRole {
+		previousAdminRoleRule = append(previousAdminRoleRule, previousAdminRoleItem)
+	}
+	var newAdminRoleRule []interface{}
+	for _, newAdminRoleItem := range newAdminRole {
+		newAdminRoleRule = append(newAdminRoleRule, newAdminRoleItem)
+	}
+
+	logs, sub, err := _GatewayEVM.contract.WatchLogs(opts, "RoleAdminChanged", roleRule, previousAdminRoleRule, newAdminRoleRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(GatewayEVMRoleAdminChanged)
+				if err := _GatewayEVM.contract.UnpackLog(event, "RoleAdminChanged", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseRoleAdminChanged is a log parse operation binding the contract event 0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff.
+//
+// Solidity: event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole)
+func (_GatewayEVM *GatewayEVMFilterer) ParseRoleAdminChanged(log types.Log) (*GatewayEVMRoleAdminChanged, error) {
+	event := new(GatewayEVMRoleAdminChanged)
+	if err := _GatewayEVM.contract.UnpackLog(event, "RoleAdminChanged", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// GatewayEVMRoleGrantedIterator is returned from FilterRoleGranted and is used to iterate over the raw logs and unpacked data for RoleGranted events raised by the GatewayEVM contract.
+type GatewayEVMRoleGrantedIterator struct {
+	Event *GatewayEVMRoleGranted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *GatewayEVMRoleGrantedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(GatewayEVMRoleGranted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(GatewayEVMRoleGranted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *GatewayEVMRoleGrantedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *GatewayEVMRoleGrantedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// GatewayEVMRoleGranted represents a RoleGranted event raised by the GatewayEVM contract.
+type GatewayEVMRoleGranted struct {
+	Role    [32]byte
+	Account common.Address
+	Sender  common.Address
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterRoleGranted is a free log retrieval operation binding the contract event 0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d.
+//
+// Solidity: event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)
+func (_GatewayEVM *GatewayEVMFilterer) FilterRoleGranted(opts *bind.FilterOpts, role [][32]byte, account []common.Address, sender []common.Address) (*GatewayEVMRoleGrantedIterator, error) {
+
+	var roleRule []interface{}
+	for _, roleItem := range role {
+		roleRule = append(roleRule, roleItem)
+	}
+	var accountRule []interface{}
+	for _, accountItem := range account {
+		accountRule = append(accountRule, accountItem)
+	}
+	var senderRule []interface{}
+	for _, senderItem := range sender {
+		senderRule = append(senderRule, senderItem)
+	}
+
+	logs, sub, err := _GatewayEVM.contract.FilterLogs(opts, "RoleGranted", roleRule, accountRule, senderRule)
+	if err != nil {
+		return nil, err
+	}
+	return &GatewayEVMRoleGrantedIterator{contract: _GatewayEVM.contract, event: "RoleGranted", logs: logs, sub: sub}, nil
+}
+
+// WatchRoleGranted is a free log subscription operation binding the contract event 0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d.
+//
+// Solidity: event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)
+func (_GatewayEVM *GatewayEVMFilterer) WatchRoleGranted(opts *bind.WatchOpts, sink chan<- *GatewayEVMRoleGranted, role [][32]byte, account []common.Address, sender []common.Address) (event.Subscription, error) {
+
+	var roleRule []interface{}
+	for _, roleItem := range role {
+		roleRule = append(roleRule, roleItem)
+	}
+	var accountRule []interface{}
+	for _, accountItem := range account {
+		accountRule = append(accountRule, accountItem)
+	}
+	var senderRule []interface{}
+	for _, senderItem := range sender {
+		senderRule = append(senderRule, senderItem)
+	}
+
+	logs, sub, err := _GatewayEVM.contract.WatchLogs(opts, "RoleGranted", roleRule, accountRule, senderRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(GatewayEVMRoleGranted)
+				if err := _GatewayEVM.contract.UnpackLog(event, "RoleGranted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseRoleGranted is a log parse operation binding the contract event 0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d.
+//
+// Solidity: event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender)
+func (_GatewayEVM *GatewayEVMFilterer) ParseRoleGranted(log types.Log) (*GatewayEVMRoleGranted, error) {
+	event := new(GatewayEVMRoleGranted)
+	if err := _GatewayEVM.contract.UnpackLog(event, "RoleGranted", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// GatewayEVMRoleRevokedIterator is returned from FilterRoleRevoked and is used to iterate over the raw logs and unpacked data for RoleRevoked events raised by the GatewayEVM contract.
+type GatewayEVMRoleRevokedIterator struct {
+	Event *GatewayEVMRoleRevoked // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *GatewayEVMRoleRevokedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(GatewayEVMRoleRevoked)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(GatewayEVMRoleRevoked)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *GatewayEVMRoleRevokedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *GatewayEVMRoleRevokedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// GatewayEVMRoleRevoked represents a RoleRevoked event raised by the GatewayEVM contract.
+type GatewayEVMRoleRevoked struct {
+	Role    [32]byte
+	Account common.Address
+	Sender  common.Address
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterRoleRevoked is a free log retrieval operation binding the contract event 0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b.
+//
+// Solidity: event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)
+func (_GatewayEVM *GatewayEVMFilterer) FilterRoleRevoked(opts *bind.FilterOpts, role [][32]byte, account []common.Address, sender []common.Address) (*GatewayEVMRoleRevokedIterator, error) {
+
+	var roleRule []interface{}
+	for _, roleItem := range role {
+		roleRule = append(roleRule, roleItem)
+	}
+	var accountRule []interface{}
+	for _, accountItem := range account {
+		accountRule = append(accountRule, accountItem)
+	}
+	var senderRule []interface{}
+	for _, senderItem := range sender {
+		senderRule = append(senderRule, senderItem)
+	}
+
+	logs, sub, err := _GatewayEVM.contract.FilterLogs(opts, "RoleRevoked", roleRule, accountRule, senderRule)
+	if err != nil {
+		return nil, err
+	}
+	return &GatewayEVMRoleRevokedIterator{contract: _GatewayEVM.contract, event: "RoleRevoked", logs: logs, sub: sub}, nil
+}
+
+// WatchRoleRevoked is a free log subscription operation binding the contract event 0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b.
+//
+// Solidity: event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)
+func (_GatewayEVM *GatewayEVMFilterer) WatchRoleRevoked(opts *bind.WatchOpts, sink chan<- *GatewayEVMRoleRevoked, role [][32]byte, account []common.Address, sender []common.Address) (event.Subscription, error) {
+
+	var roleRule []interface{}
+	for _, roleItem := range role {
+		roleRule = append(roleRule, roleItem)
+	}
+	var accountRule []interface{}
+	for _, accountItem := range account {
+		accountRule = append(accountRule, accountItem)
+	}
+	var senderRule []interface{}
+	for _, senderItem := range sender {
+		senderRule = append(senderRule, senderItem)
+	}
+
+	logs, sub, err := _GatewayEVM.contract.WatchLogs(opts, "RoleRevoked", roleRule, accountRule, senderRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(GatewayEVMRoleRevoked)
+				if err := _GatewayEVM.contract.UnpackLog(event, "RoleRevoked", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseRoleRevoked is a log parse operation binding the contract event 0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b.
+//
+// Solidity: event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender)
+func (_GatewayEVM *GatewayEVMFilterer) ParseRoleRevoked(log types.Log) (*GatewayEVMRoleRevoked, error) {
+	event := new(GatewayEVMRoleRevoked)
+	if err := _GatewayEVM.contract.UnpackLog(event, "RoleRevoked", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// GatewayEVMUnpausedIterator is returned from FilterUnpaused and is used to iterate over the raw logs and unpacked data for Unpaused events raised by the GatewayEVM contract.
+type GatewayEVMUnpausedIterator struct {
+	Event *GatewayEVMUnpaused // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *GatewayEVMUnpausedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(GatewayEVMUnpaused)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(GatewayEVMUnpaused)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *GatewayEVMUnpausedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *GatewayEVMUnpausedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// GatewayEVMUnpaused represents a Unpaused event raised by the GatewayEVM contract.
+type GatewayEVMUnpaused struct {
+	Account common.Address
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterUnpaused is a free log retrieval operation binding the contract event 0x5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa.
+//
+// Solidity: event Unpaused(address account)
+func (_GatewayEVM *GatewayEVMFilterer) FilterUnpaused(opts *bind.FilterOpts) (*GatewayEVMUnpausedIterator, error) {
+
+	logs, sub, err := _GatewayEVM.contract.FilterLogs(opts, "Unpaused")
+	if err != nil {
+		return nil, err
+	}
+	return &GatewayEVMUnpausedIterator{contract: _GatewayEVM.contract, event: "Unpaused", logs: logs, sub: sub}, nil
+}
+
+// WatchUnpaused is a free log subscription operation binding the contract event 0x5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa.
+//
+// Solidity: event Unpaused(address account)
+func (_GatewayEVM *GatewayEVMFilterer) WatchUnpaused(opts *bind.WatchOpts, sink chan<- *GatewayEVMUnpaused) (event.Subscription, error) {
+
+	logs, sub, err := _GatewayEVM.contract.WatchLogs(opts, "Unpaused")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(GatewayEVMUnpaused)
+				if err := _GatewayEVM.contract.UnpackLog(event, "Unpaused", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseUnpaused is a log parse operation binding the contract event 0x5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa.
+//
+// Solidity: event Unpaused(address account)
+func (_GatewayEVM *GatewayEVMFilterer) ParseUnpaused(log types.Log) (*GatewayEVMUnpaused, error) {
+	event := new(GatewayEVMUnpaused)
+	if err := _GatewayEVM.contract.UnpackLog(event, "Unpaused", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

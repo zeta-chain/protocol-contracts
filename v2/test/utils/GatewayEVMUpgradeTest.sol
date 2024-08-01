@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "src/evm/ZetaConnectorBase.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
+
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-
-import "src/evm/ZetaConnectorBase.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
 
 /// @title GatewayEVMUpgradeTest
 /// @notice Modified GatewayEVM contract for testing upgrades
@@ -17,11 +18,12 @@ import "src/evm/interfaces/IGatewayEVM.sol";
 /// @custom:oz-upgrades-from GatewayEVM
 contract GatewayEVMUpgradeTest is
     Initializable,
-    OwnableUpgradeable,
+    AccessControlUpgradeable,
     UUPSUpgradeable,
     IGatewayEVMErrors,
     IGatewayEVMEvents,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    PausableUpgradeable
 {
     using SafeERC20 for IERC20;
 
@@ -37,40 +39,40 @@ contract GatewayEVMUpgradeTest is
     /// @dev Modified event for testing upgrade.
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
 
-    /// @notice Only TSS address allowed modifier.
-    modifier onlyTSS() {
-        if (msg.sender != tssAddress) {
-            revert InvalidSender();
-        }
-        _;
+    /// @notice New role identifier for tss role.
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    /// @notice New role identifier for asset handler role.
+    bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
+    /// @notice New role identifier for pauser role.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
     }
 
-    /// @notice Only custody or connector address allowed modifier.
-    modifier onlyCustodyOrConnector() {
-        if (msg.sender != custody && msg.sender != zetaConnector) {
-            revert InvalidSender();
-        }
-        _;
-    }
-
-    constructor() { }
-
-    function initialize(address _tssAddress, address _zetaToken) public initializer {
+    /// @notice Initialize with tss address. address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
+    /// @dev Using admin to authorize upgrades and pause, and tss for tss role.
+    function initialize(address _tssAddress, address _zetaToken, address _admin) public initializer {
         if (_tssAddress == address(0) || _zetaToken == address(0)) {
             revert ZeroAddress();
         }
-
-        __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
+        __AccessControl_init();
+        __Pausable_init();
 
+        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
+        _grantRole(PAUSER_ROLE, _admin);
         tssAddress = _tssAddress;
+        _grantRole(TSS_ROLE, _tssAddress);
+
         zetaToken = _zetaToken;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Internal function to execute a call to a destination address.
     /// @param destination Address to call.
@@ -83,11 +85,21 @@ contract GatewayEVMUpgradeTest is
         return result;
     }
 
+    /// @notice Pause contract.
+    function pause() external onlyRole(PAUSER_ROLE) {
+        _pause();
+    }
+
+    /// @notice Unpause contract.
+    function unpause() external onlyRole(PAUSER_ROLE) {
+        _unpause();
+    }
+
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) public payable onlyTSS {
+    function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) {
         (bool success, bytes memory result) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
@@ -100,7 +112,15 @@ contract GatewayEVMUpgradeTest is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function execute(address destination, bytes calldata data) external payable onlyTSS returns (bytes memory) {
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        returns (bytes memory)
+    {
         bytes memory result = _execute(destination, data);
 
         emit ExecutedV2(destination, msg.value, data);
@@ -123,7 +143,7 @@ contract GatewayEVMUpgradeTest is
     )
         public
         nonReentrant
-        onlyCustodyOrConnector
+        onlyRole(ASSET_HANDLER_ROLE)
     {
         if (amount == 0) revert InsufficientERC20Amount();
         // Approve the target contract to spend the tokens
@@ -158,7 +178,7 @@ contract GatewayEVMUpgradeTest is
     )
         external
         nonReentrant
-        onlyCustodyOrConnector
+        onlyRole(ASSET_HANDLER_ROLE)
     {
         if (amount == 0) revert InsufficientERC20Amount();
 
@@ -225,19 +245,21 @@ contract GatewayEVMUpgradeTest is
 
     /// @notice Sets the custody contract address.
     /// @param _custody Address of the custody contract.
-    function setCustody(address _custody) external {
+    function setCustody(address _custody) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (custody != address(0)) revert CustodyInitialized();
         if (_custody == address(0)) revert ZeroAddress();
 
+        _grantRole(ASSET_HANDLER_ROLE, _custody);
         custody = _custody;
     }
 
     /// @notice Sets the connector contract address.
     /// @param _zetaConnector Address of the connector contract.
-    function setConnector(address _zetaConnector) external {
+    function setConnector(address _zetaConnector) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (zetaConnector != address(0)) revert CustodyInitialized();
         if (_zetaConnector == address(0)) revert ZeroAddress();
 
+        _grantRole(ASSET_HANDLER_ROLE, _zetaConnector);
         zetaConnector = _zetaConnector;
     }
 

@@ -23,6 +23,7 @@ contract ZevmCallScript is Script {
         string memory str = "Hello!";
         uint256 num = 42;
         bool flag = true;
+        uint256 chainId = 1;
 
         // Encode the function call data
         bytes memory message = abi.encodeWithSelector(
@@ -33,7 +34,7 @@ contract ZevmCallScript is Script {
         );
 
         // Call the function on GatewayZEVM
-        try gatewayZEVM.call(abi.encodePacked(address(receiverEVM)), message) {
+        try gatewayZEVM.call(abi.encodePacked(address(receiverEVM)), chainId, message) {
             console.log("ReceiverEVM called from ZEVM.");
         } catch (bytes memory err) {
             console.log("Error calling ReceiverEVM:");

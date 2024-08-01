@@ -26,25 +26,83 @@ import type {
 export interface ERC20CustodyEchidnaTestInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "DEFAULT_ADMIN_ROLE"
+      | "PAUSER_ROLE"
+      | "WITHDRAWER_ROLE"
       | "echidnaCaller"
       | "gateway"
+      | "getRoleAdmin"
+      | "grantRole"
+      | "hasRole"
+      | "pause"
+      | "paused"
+      | "renounceRole"
+      | "revokeRole"
+      | "supportsInterface"
       | "testERC20"
       | "testWithdrawAndCall"
       | "tssAddress"
+      | "unpause"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
   ): FunctionFragment;
 
   getEvent(
-    nameOrSignatureOrTopic: "Withdraw" | "WithdrawAndCall" | "WithdrawAndRevert"
+    nameOrSignatureOrTopic:
+      | "Paused"
+      | "RoleAdminChanged"
+      | "RoleGranted"
+      | "RoleRevoked"
+      | "Unpaused"
+      | "Withdraw"
+      | "WithdrawAndCall"
+      | "WithdrawAndRevert"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "WITHDRAWER_ROLE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "echidnaCaller",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getRoleAdmin",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "grantRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hasRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "renounceRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revokeRole",
+    values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "supportsInterface",
+    values: [BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "testERC20", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "testWithdrawAndCall",
@@ -54,6 +112,7 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     functionFragment: "tssAddress",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [AddressLike, AddressLike, BigNumberish]
@@ -68,16 +127,46 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "WITHDRAWER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "echidnaCaller",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getRoleAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceRole",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "testERC20", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "testWithdrawAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -87,6 +176,88 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
+}
+
+export namespace PausedEvent {
+  export type InputTuple = [account: AddressLike];
+  export type OutputTuple = [account: string];
+  export interface OutputObject {
+    account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RoleAdminChangedEvent {
+  export type InputTuple = [
+    role: BytesLike,
+    previousAdminRole: BytesLike,
+    newAdminRole: BytesLike
+  ];
+  export type OutputTuple = [
+    role: string,
+    previousAdminRole: string,
+    newAdminRole: string
+  ];
+  export interface OutputObject {
+    role: string;
+    previousAdminRole: string;
+    newAdminRole: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RoleGrantedEvent {
+  export type InputTuple = [
+    role: BytesLike,
+    account: AddressLike,
+    sender: AddressLike
+  ];
+  export type OutputTuple = [role: string, account: string, sender: string];
+  export interface OutputObject {
+    role: string;
+    account: string;
+    sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RoleRevokedEvent {
+  export type InputTuple = [
+    role: BytesLike,
+    account: AddressLike,
+    sender: AddressLike
+  ];
+  export type OutputTuple = [role: string, account: string, sender: string];
+  export interface OutputObject {
+    role: string;
+    account: string;
+    sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UnpausedEvent {
+  export type InputTuple = [account: AddressLike];
+  export type OutputTuple = [account: string];
+  export interface OutputObject {
+    account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace WithdrawEvent {
@@ -200,9 +371,51 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
+
+  PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
+
   echidnaCaller: TypedContractMethod<[], [string], "view">;
 
   gateway: TypedContractMethod<[], [string], "view">;
+
+  getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
+
+  grantRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  hasRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [boolean],
+    "view"
+  >;
+
+  pause: TypedContractMethod<[], [void], "nonpayable">;
+
+  paused: TypedContractMethod<[], [boolean], "view">;
+
+  renounceRole: TypedContractMethod<
+    [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  revokeRole: TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  supportsInterface: TypedContractMethod<
+    [interfaceId: BytesLike],
+    [boolean],
+    "view"
+  >;
 
   testERC20: TypedContractMethod<[], [string], "view">;
 
@@ -213,6 +426,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   >;
 
   tssAddress: TypedContractMethod<[], [string], "view">;
+
+  unpause: TypedContractMethod<[], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<
     [token: AddressLike, to: AddressLike, amount: BigNumberish],
@@ -247,11 +462,60 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "DEFAULT_ADMIN_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "WITHDRAWER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "echidnaCaller"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "gateway"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "getRoleAdmin"
+  ): TypedContractMethod<[role: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "grantRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "hasRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "pause"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "paused"
+  ): TypedContractMethod<[], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "renounceRole"
+  ): TypedContractMethod<
+    [role: BytesLike, callerConfirmation: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "revokeRole"
+  ): TypedContractMethod<
+    [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "supportsInterface"
+  ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
     nameOrSignature: "testERC20"
   ): TypedContractMethod<[], [string], "view">;
@@ -265,6 +529,9 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "tssAddress"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "unpause"
+  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
@@ -298,6 +565,41 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   >;
 
   getEvent(
+    key: "Paused"
+  ): TypedContractEvent<
+    PausedEvent.InputTuple,
+    PausedEvent.OutputTuple,
+    PausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleAdminChanged"
+  ): TypedContractEvent<
+    RoleAdminChangedEvent.InputTuple,
+    RoleAdminChangedEvent.OutputTuple,
+    RoleAdminChangedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleGranted"
+  ): TypedContractEvent<
+    RoleGrantedEvent.InputTuple,
+    RoleGrantedEvent.OutputTuple,
+    RoleGrantedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RoleRevoked"
+  ): TypedContractEvent<
+    RoleRevokedEvent.InputTuple,
+    RoleRevokedEvent.OutputTuple,
+    RoleRevokedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Unpaused"
+  ): TypedContractEvent<
+    UnpausedEvent.InputTuple,
+    UnpausedEvent.OutputTuple,
+    UnpausedEvent.OutputObject
+  >;
+  getEvent(
     key: "Withdraw"
   ): TypedContractEvent<
     WithdrawEvent.InputTuple,
@@ -320,6 +622,61 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   >;
 
   filters: {
+    "Paused(address)": TypedContractEvent<
+      PausedEvent.InputTuple,
+      PausedEvent.OutputTuple,
+      PausedEvent.OutputObject
+    >;
+    Paused: TypedContractEvent<
+      PausedEvent.InputTuple,
+      PausedEvent.OutputTuple,
+      PausedEvent.OutputObject
+    >;
+
+    "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
+      RoleAdminChangedEvent.InputTuple,
+      RoleAdminChangedEvent.OutputTuple,
+      RoleAdminChangedEvent.OutputObject
+    >;
+    RoleAdminChanged: TypedContractEvent<
+      RoleAdminChangedEvent.InputTuple,
+      RoleAdminChangedEvent.OutputTuple,
+      RoleAdminChangedEvent.OutputObject
+    >;
+
+    "RoleGranted(bytes32,address,address)": TypedContractEvent<
+      RoleGrantedEvent.InputTuple,
+      RoleGrantedEvent.OutputTuple,
+      RoleGrantedEvent.OutputObject
+    >;
+    RoleGranted: TypedContractEvent<
+      RoleGrantedEvent.InputTuple,
+      RoleGrantedEvent.OutputTuple,
+      RoleGrantedEvent.OutputObject
+    >;
+
+    "RoleRevoked(bytes32,address,address)": TypedContractEvent<
+      RoleRevokedEvent.InputTuple,
+      RoleRevokedEvent.OutputTuple,
+      RoleRevokedEvent.OutputObject
+    >;
+    RoleRevoked: TypedContractEvent<
+      RoleRevokedEvent.InputTuple,
+      RoleRevokedEvent.OutputTuple,
+      RoleRevokedEvent.OutputObject
+    >;
+
+    "Unpaused(address)": TypedContractEvent<
+      UnpausedEvent.InputTuple,
+      UnpausedEvent.OutputTuple,
+      UnpausedEvent.OutputObject
+    >;
+    Unpaused: TypedContractEvent<
+      UnpausedEvent.InputTuple,
+      UnpausedEvent.OutputTuple,
+      UnpausedEvent.OutputObject
+    >;
+
     "Withdraw(address,address,uint256)": TypedContractEvent<
       WithdrawEvent.InputTuple,
       WithdrawEvent.OutputTuple,

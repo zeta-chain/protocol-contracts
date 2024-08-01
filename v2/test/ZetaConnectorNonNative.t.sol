@@ -40,6 +40,10 @@ contract ZetaConnectorNonNativeTest is
     address destination;
     address tssAddress;
 
+    error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+
+    bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
+
     function setUp() public {
         owner = address(this);
         destination = address(0x1234);
@@ -48,12 +52,12 @@ contract ZetaConnectorNonNativeTest is
         zetaToken = new ZetaNonEth(tssAddress, tssAddress);
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken)))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken), owner))
         );
         gateway = GatewayEVM(proxy);
 
-        custody = new ERC20Custody(address(gateway), tssAddress);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress);
+        custody = new ERC20Custody(address(gateway), tssAddress, owner);
+        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress, owner);
 
         vm.prank(tssAddress);
         zetaToken.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
@@ -62,7 +66,7 @@ contract ZetaConnectorNonNativeTest is
 
         vm.deal(tssAddress, 1 ether);
 
-        vm.startPrank(tssAddress);
+        vm.startPrank(owner);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
@@ -85,12 +89,12 @@ contract ZetaConnectorNonNativeTest is
         assertEq(balanceAfter, amount);
     }
 
-    function testWithdrawFailsIfSenderIsNotTSS() public {
+    function testWithdrawFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdraw(destination, amount, internalSendHash);
     }
 
@@ -131,14 +135,14 @@ contract ZetaConnectorNonNativeTest is
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotTSS() public {
+    function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
     }
 
@@ -254,13 +258,13 @@ contract ZetaConnectorNonNativeTest is
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawAndRevertFailsIfSenderIsNotTSS() public {
+    function testWithdrawAndRevertFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
         bytes memory data = abi.encodePacked("hello");
 
         vm.prank(owner);
-        vm.expectRevert(InvalidSender.selector);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
     }
 }
