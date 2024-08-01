@@ -38,6 +38,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
 
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
@@ -217,13 +218,13 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceGateway, 0);
     }
 
-    function testForwardCallToReceiveERC20ThroughCustodyFailsIfSenderIsNotTSS() public {
+    function testForwardCallToReceiveERC20ThroughCustodyFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
     }
 
@@ -271,13 +272,13 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceGateway, 0);
     }
 
-    function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfSenderIsNotTSS() public {
+    function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes memory data =
             abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
     }
 
@@ -350,11 +351,11 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawThroughCustodyFailsIfSenderIsNotTSS() public {
+    function testWithdrawThroughCustodyFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         custody.withdraw(address(token), destination, amount);
     }
 
@@ -394,12 +395,12 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawAndRevertThroughCustodyFailsIfSenderIsNotTSS() public {
+    function testWithdrawAndRevertThroughCustodyFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes memory data = abi.encodePacked("hello");
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         custody.withdrawAndRevert(address(token), address(receiver), amount, data);
     }
 

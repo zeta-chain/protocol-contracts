@@ -30,7 +30,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @notice Set max supply for minting.
     /// @param _maxSupply New max supply.
     /// @dev This function can only be called by the TSS address.
-    function setMaxSupply(uint256 _maxSupply) external onlyRole(TSS_ROLE) whenNotPaused {
+    function setMaxSupply(uint256 _maxSupply) external onlyRole(WITHDRAWER_ROLE) whenNotPaused {
         maxSupply = _maxSupply;
         emit MaxSupplyUpdated(_maxSupply);
     }
@@ -48,7 +48,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
@@ -72,7 +72,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
@@ -101,7 +101,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();

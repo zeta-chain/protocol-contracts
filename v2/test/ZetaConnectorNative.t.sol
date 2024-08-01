@@ -42,7 +42,7 @@ contract ZetaConnectorNativeTest is
 
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
 
-    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -88,12 +88,12 @@ contract ZetaConnectorNativeTest is
         assertEq(balanceAfter, amount);
     }
 
-    function testWithdrawFailsIfSenderIsNotTSS() public {
+    function testWithdrawFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdraw(destination, amount, internalSendHash);
     }
 
@@ -132,14 +132,14 @@ contract ZetaConnectorNativeTest is
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotTSS() public {
+    function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
     }
 
@@ -250,13 +250,13 @@ contract ZetaConnectorNativeTest is
         assertEq(balanceGateway, 0);
     }
 
-    function testWithdrawAndRevertFailsIfSenderIsNotTSS() public {
+    function testWithdrawAndRevertFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
         bytes memory data = abi.encodePacked("hello");
 
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
     }
 }

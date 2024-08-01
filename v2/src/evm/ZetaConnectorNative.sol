@@ -33,7 +33,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         IERC20(zetaToken).safeTransfer(to, amount);
@@ -55,7 +55,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         // Transfer zetaToken to the Gateway contract
@@ -82,7 +82,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         external
         override
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         // Transfer zetaToken to the Gateway contract

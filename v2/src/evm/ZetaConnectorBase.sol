@@ -26,8 +26,8 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
     /// @notice The address of the TSS (Threshold Signature Scheme) contract.
     address public tssAddress;
 
-    /// @notice New role identifier for tss role.
-    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    /// @notice New role identifier for withdrawer role.
+    bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
@@ -42,7 +42,7 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
         tssAddress = _tssAddress;
 
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);
-        _grantRole(TSS_ROLE, _tssAddress);
+        _grantRole(WITHDRAWER_ROLE, _tssAddress);
         _grantRole(PAUSER_ROLE, _admin);
     }
 

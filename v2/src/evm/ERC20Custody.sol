@@ -21,10 +21,10 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     /// @notice TSS address.
     address public tssAddress;
 
-    /// @notice New role identifier for tss role.
-    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @notice New role identifier for withdrawer role.
+    bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
 
     /// @notice Constructor for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
@@ -36,7 +36,7 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
         tssAddress = _tssAddress;
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);
         _grantRole(PAUSER_ROLE, _admin);
-        _grantRole(TSS_ROLE, _tssAddress);
+        _grantRole(WITHDRAWER_ROLE, _tssAddress);
     }
 
     /// @notice Pause contract.
@@ -61,7 +61,7 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     )
         external
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         IERC20(token).safeTransfer(to, amount);
@@ -83,7 +83,7 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     )
         public
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         // Transfer the tokens to the Gateway contract
@@ -110,7 +110,7 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     )
         public
         nonReentrant
-        onlyRole(TSS_ROLE)
+        onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
         // Transfer the tokens to the Gateway contract
