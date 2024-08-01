@@ -29,22 +29,23 @@ export interface ZRC20Interface extends Interface {
       | "CHAIN_ID"
       | "COIN_TYPE"
       | "FUNGIBLE_MODULE_ADDRESS"
-      | "GAS_LIMIT"
-      | "GATEWAY_CONTRACT_ADDRESS"
-      | "PROTOCOL_FLAT_FEE"
-      | "SYSTEM_CONTRACT_ADDRESS"
       | "allowance"
       | "approve"
       | "balanceOf"
       | "burn"
       | "decimals"
       | "deposit"
+      | "gasLimit"
+      | "gatewayAddress"
       | "name"
+      | "protocolFlatFee"
       | "symbol"
+      | "systemContractAddress"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
       | "updateGasLimit"
+      | "updateGatewayAddress"
       | "updateProtocolFlatFee"
       | "updateSystemContractAddress"
       | "withdraw"
@@ -57,6 +58,7 @@ export interface ZRC20Interface extends Interface {
       | "Deposit"
       | "Transfer"
       | "UpdatedGasLimit"
+      | "UpdatedGateway"
       | "UpdatedProtocolFlatFee"
       | "UpdatedSystemContract"
       | "Withdrawal"
@@ -66,19 +68,6 @@ export interface ZRC20Interface extends Interface {
   encodeFunctionData(functionFragment: "COIN_TYPE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "FUNGIBLE_MODULE_ADDRESS",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "GAS_LIMIT", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "GATEWAY_CONTRACT_ADDRESS",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "PROTOCOL_FLAT_FEE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "SYSTEM_CONTRACT_ADDRESS",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -99,8 +88,21 @@ export interface ZRC20Interface extends Interface {
     functionFragment: "deposit",
     values: [AddressLike, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "gasLimit", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "gatewayAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "protocolFlatFee",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "systemContractAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -116,6 +118,10 @@ export interface ZRC20Interface extends Interface {
   encodeFunctionData(
     functionFragment: "updateGasLimit",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateGatewayAddress",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "updateProtocolFlatFee",
@@ -140,27 +146,27 @@ export interface ZRC20Interface extends Interface {
     functionFragment: "FUNGIBLE_MODULE_ADDRESS",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "GAS_LIMIT", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "GATEWAY_CONTRACT_ADDRESS",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "PROTOCOL_FLAT_FEE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "SYSTEM_CONTRACT_ADDRESS",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "gasLimit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "gatewayAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "protocolFlatFee",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "systemContractAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -172,6 +178,10 @@ export interface ZRC20Interface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "updateGasLimit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateGatewayAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -248,6 +258,18 @@ export namespace UpdatedGasLimitEvent {
   export type OutputTuple = [gasLimit: bigint];
   export interface OutputObject {
     gasLimit: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedGatewayEvent {
+  export type InputTuple = [gateway: AddressLike];
+  export type OutputTuple = [gateway: string];
+  export interface OutputObject {
+    gateway: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -356,14 +378,6 @@ export interface ZRC20 extends BaseContract {
 
   FUNGIBLE_MODULE_ADDRESS: TypedContractMethod<[], [string], "view">;
 
-  GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
-
-  GATEWAY_CONTRACT_ADDRESS: TypedContractMethod<[], [string], "view">;
-
-  PROTOCOL_FLAT_FEE: TypedContractMethod<[], [bigint], "view">;
-
-  SYSTEM_CONTRACT_ADDRESS: TypedContractMethod<[], [string], "view">;
-
   allowance: TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
     [bigint],
@@ -388,9 +402,17 @@ export interface ZRC20 extends BaseContract {
     "nonpayable"
   >;
 
+  gasLimit: TypedContractMethod<[], [bigint], "view">;
+
+  gatewayAddress: TypedContractMethod<[], [string], "view">;
+
   name: TypedContractMethod<[], [string], "view">;
 
+  protocolFlatFee: TypedContractMethod<[], [bigint], "view">;
+
   symbol: TypedContractMethod<[], [string], "view">;
+
+  systemContractAddress: TypedContractMethod<[], [string], "view">;
 
   totalSupply: TypedContractMethod<[], [bigint], "view">;
 
@@ -408,6 +430,12 @@ export interface ZRC20 extends BaseContract {
 
   updateGasLimit: TypedContractMethod<
     [gasLimit: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  updateGatewayAddress: TypedContractMethod<
+    [addr: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -446,18 +474,6 @@ export interface ZRC20 extends BaseContract {
     nameOrSignature: "FUNGIBLE_MODULE_ADDRESS"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "GAS_LIMIT"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "GATEWAY_CONTRACT_ADDRESS"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "PROTOCOL_FLAT_FEE"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "SYSTEM_CONTRACT_ADDRESS"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "allowance"
   ): TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
@@ -488,10 +504,22 @@ export interface ZRC20 extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "gasLimit"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "gatewayAddress"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "name"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "protocolFlatFee"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "symbol"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "systemContractAddress"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "totalSupply"
@@ -513,6 +541,9 @@ export interface ZRC20 extends BaseContract {
   getFunction(
     nameOrSignature: "updateGasLimit"
   ): TypedContractMethod<[gasLimit: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateGatewayAddress"
+  ): TypedContractMethod<[addr: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "updateProtocolFlatFee"
   ): TypedContractMethod<[protocolFlatFee: BigNumberish], [void], "nonpayable">;
@@ -557,6 +588,13 @@ export interface ZRC20 extends BaseContract {
     UpdatedGasLimitEvent.InputTuple,
     UpdatedGasLimitEvent.OutputTuple,
     UpdatedGasLimitEvent.OutputObject
+  >;
+  getEvent(
+    key: "UpdatedGateway"
+  ): TypedContractEvent<
+    UpdatedGatewayEvent.InputTuple,
+    UpdatedGatewayEvent.OutputTuple,
+    UpdatedGatewayEvent.OutputObject
   >;
   getEvent(
     key: "UpdatedProtocolFlatFee"
@@ -623,6 +661,17 @@ export interface ZRC20 extends BaseContract {
       UpdatedGasLimitEvent.InputTuple,
       UpdatedGasLimitEvent.OutputTuple,
       UpdatedGasLimitEvent.OutputObject
+    >;
+
+    "UpdatedGateway(address)": TypedContractEvent<
+      UpdatedGatewayEvent.InputTuple,
+      UpdatedGatewayEvent.OutputTuple,
+      UpdatedGatewayEvent.OutputObject
+    >;
+    UpdatedGateway: TypedContractEvent<
+      UpdatedGatewayEvent.InputTuple,
+      UpdatedGatewayEvent.OutputTuple,
+      UpdatedGatewayEvent.OutputObject
     >;
 
     "UpdatedProtocolFlatFee(uint256)": TypedContractEvent<

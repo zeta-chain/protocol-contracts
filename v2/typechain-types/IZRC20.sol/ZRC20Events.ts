@@ -28,6 +28,7 @@ export interface ZRC20EventsInterface extends Interface {
       | "Deposit"
       | "Transfer"
       | "UpdatedGasLimit"
+      | "UpdatedGateway"
       | "UpdatedProtocolFlatFee"
       | "UpdatedSystemContract"
       | "Withdrawal"
@@ -93,6 +94,18 @@ export namespace UpdatedGasLimitEvent {
   export type OutputTuple = [gasLimit: bigint];
   export interface OutputObject {
     gasLimit: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedGatewayEvent {
+  export type InputTuple = [gateway: AddressLike];
+  export type OutputTuple = [gateway: string];
+  export interface OutputObject {
+    gateway: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -228,6 +241,13 @@ export interface ZRC20Events extends BaseContract {
     UpdatedGasLimitEvent.OutputObject
   >;
   getEvent(
+    key: "UpdatedGateway"
+  ): TypedContractEvent<
+    UpdatedGatewayEvent.InputTuple,
+    UpdatedGatewayEvent.OutputTuple,
+    UpdatedGatewayEvent.OutputObject
+  >;
+  getEvent(
     key: "UpdatedProtocolFlatFee"
   ): TypedContractEvent<
     UpdatedProtocolFlatFeeEvent.InputTuple,
@@ -292,6 +312,17 @@ export interface ZRC20Events extends BaseContract {
       UpdatedGasLimitEvent.InputTuple,
       UpdatedGasLimitEvent.OutputTuple,
       UpdatedGasLimitEvent.OutputObject
+    >;
+
+    "UpdatedGateway(address)": TypedContractEvent<
+      UpdatedGatewayEvent.InputTuple,
+      UpdatedGatewayEvent.OutputTuple,
+      UpdatedGatewayEvent.OutputObject
+    >;
+    UpdatedGateway: TypedContractEvent<
+      UpdatedGatewayEvent.InputTuple,
+      UpdatedGatewayEvent.OutputTuple,
+      UpdatedGatewayEvent.OutputObject
     >;
 
     "UpdatedProtocolFlatFee(uint256)": TypedContractEvent<
