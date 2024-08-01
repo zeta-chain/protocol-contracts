@@ -24,7 +24,7 @@ interface IZRC20 {
 
     function withdrawGasFee() external view returns (address, uint256);
 
-    function PROTOCOL_FLAT_FEE() external view returns (uint256);
+    function protocolFlatFee() external view returns (uint256);
 }
 
 /// @title IZRC20Metadata
@@ -45,6 +45,7 @@ interface ZRC20Events {
     event Deposit(bytes from, address indexed to, uint256 value);
     event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasFee, uint256 protocolFlatFee);
     event UpdatedSystemContract(address systemContract);
+    event UpdatedGateway(address gateway);
     event UpdatedGasLimit(uint256 gasLimit);
     event UpdatedProtocolFlatFee(uint256 protocolFlatFee);
 }

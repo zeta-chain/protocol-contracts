@@ -29,13 +29,13 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     /// @notice Coin type, checkout Interfaces.sol.
     CoinType public immutable COIN_TYPE;
     /// @notice System contract address.
-    address public SYSTEM_CONTRACT_ADDRESS;
+    address public systemContractAddress;
     /// @notice Gateway contract address.
-    address public GATEWAY_CONTRACT_ADDRESS;
+    address public gatewayAddress;
     /// @notice Gas limit.
-    uint256 public GAS_LIMIT;
+    uint256 public gasLimit;
     /// @notice Protocol flat fee.
-    uint256 public override PROTOCOL_FLAT_FEE;
+    uint256 public override protocolFlatFee;
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
@@ -71,7 +71,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
         CoinType coinType_,
         uint256 gasLimit_,
         address systemContractAddress_,
-        address gatewayContractAddress_
+        address gatewayAddress_
     ) {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         _name = name_;
@@ -79,9 +79,9 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
         _decimals = decimals_;
         CHAIN_ID = chainid_;
         COIN_TYPE = coinType_;
-        GAS_LIMIT = gasLimit_;
-        SYSTEM_CONTRACT_ADDRESS = systemContractAddress_;
-        GATEWAY_CONTRACT_ADDRESS = gatewayContractAddress_;
+        gasLimit = gasLimit_;
+        systemContractAddress = systemContractAddress_;
+        gatewayAddress = gatewayAddress_;
     }
 
     /**
@@ -232,8 +232,8 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      */
     function deposit(address to, uint256 amount) external override returns (bool) {
         if (
-            msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS
-                && msg.sender != GATEWAY_CONTRACT_ADDRESS
+            msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != systemContractAddress
+                && msg.sender != gatewayAddress
         ) revert InvalidSender();
         _mint(to, amount);
         emit Deposit(abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), to, amount);
@@ -246,14 +246,14 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * withdraw()
      */
     function withdrawGasFee() public view override returns (address, uint256) {
-        address gasZRC20 = ISystem(SYSTEM_CONTRACT_ADDRESS).gasCoinZRC20ByChainId(CHAIN_ID);
+        address gasZRC20 = ISystem(systemContractAddress).gasCoinZRC20ByChainId(CHAIN_ID);
         if (gasZRC20 == address(0)) revert ZeroGasCoin();
 
-        uint256 gasPrice = ISystem(SYSTEM_CONTRACT_ADDRESS).gasPriceByChainId(CHAIN_ID);
+        uint256 gasPrice = ISystem(systemContractAddress).gasPriceByChainId(CHAIN_ID);
         if (gasPrice == 0) {
             revert ZeroGasPrice();
         }
-        uint256 gasFee = gasPrice * GAS_LIMIT + PROTOCOL_FLAT_FEE;
+        uint256 gasFee = gasPrice * gasLimit + protocolFlatFee;
         return (gasZRC20, gasFee);
     }
 
@@ -271,7 +271,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
             revert GasFeeTransferFailed();
         }
         _burn(msg.sender, amount);
-        emit Withdrawal(msg.sender, to, amount, gasFee, PROTOCOL_FLAT_FEE);
+        emit Withdrawal(msg.sender, to, amount, gasFee, protocolFlatFee);
         return true;
     }
 
@@ -280,8 +280,17 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @param addr, new system contract address.
      */
     function updateSystemContractAddress(address addr) external onlyFungible {
-        SYSTEM_CONTRACT_ADDRESS = addr;
+        systemContractAddress = addr;
         emit UpdatedSystemContract(addr);
+    }
+
+    /**
+     * @dev Updates gateway contract address. Can only be updated by the fungible module.
+     * @param addr, new gateway contract address.
+     */
+    function updateGatewayAddress(address addr) external onlyFungible {
+        gatewayAddress = addr;
+        emit UpdatedGateway(addr);
     }
 
     /**
@@ -289,7 +298,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @param gasLimit, new gas limit.
      */
     function updateGasLimit(uint256 gasLimit) external onlyFungible {
-        GAS_LIMIT = gasLimit;
+        gasLimit = gasLimit;
         emit UpdatedGasLimit(gasLimit);
     }
 
@@ -298,7 +307,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @param protocolFlatFee, new protocol flat fee.
      */
     function updateProtocolFlatFee(uint256 protocolFlatFee) external onlyFungible {
-        PROTOCOL_FLAT_FEE = protocolFlatFee;
+        protocolFlatFee = protocolFlatFee;
         emit UpdatedProtocolFlatFee(protocolFlatFee);
     }
 }

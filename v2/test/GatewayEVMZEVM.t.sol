@@ -14,7 +14,7 @@ import "src/evm/ZetaConnectorNonNative.sol";
 import "./utils/SenderZEVM.sol";
 
 import "./utils/SystemContractMock.sol";
-import "./utils/ZRC20.sol";
+import "src/zevm/ZRC20.sol";
 import "src/zevm/GatewayZEVM.sol";
 
 import "./utils/IReceiverEVM.sol";
@@ -172,7 +172,7 @@ contract GatewayEVMZEVMTest is
             address(zrc20),
             1_000_000,
             0,
-            zrc20.PROTOCOL_FLAT_FEE(),
+            zrc20.protocolFlatFee(),
             message
         );
         vm.prank(ownerZEVM);
