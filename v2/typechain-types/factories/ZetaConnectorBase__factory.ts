@@ -37,7 +37,7 @@ const _abi = [
   },
   {
     type: "function",
-    name: "TSS_ROLE",
+    name: "WITHDRAWER_ROLE",
     inputs: [],
     outputs: [
       {
