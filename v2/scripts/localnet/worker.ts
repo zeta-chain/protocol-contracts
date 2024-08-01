@@ -114,7 +114,7 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
     gasLimit: 6721975,
   };
   const testERC20Factory = new ethers.ContractFactory(TestERC20.abi, TestERC20.bytecode, deployer);
-  const testEVMZeta = await testERC20Factory.deploy("zeta", "ZETA", deployOpts);
+  await testERC20Factory.deploy("zeta", "ZETA", deployOpts);
 
   const token = await testERC20Factory.deploy("Test Token", "TTK", deployOpts);
 
