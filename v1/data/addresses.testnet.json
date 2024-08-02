@@ -380,5 +380,40 @@
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "zetaTokenConsumerUniV3"
+  },
+  {
+    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "category": "omnichain",
+    "chain_id": 84532,
+    "chain_name": "base_testnet",
+    "type": "tss"
+  },
+  {
+    "address": "0xdE3fb63723f0EEed8967ff9124e1c3bA89871b03",
+    "category": "omnichain",
+    "chain_id": 84532,
+    "chain_name": "base_testnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x7FB8E2aE4A5923BBd8e1513945914b5AB69cdA2a",
+    "category": "messaging",
+    "chain_id": 84532,
+    "chain_name": "base_testnet",
+    "type": "zetaToken"
+  },
+  {
+    "address": "0x44e8ED4a36670966C292a21EC15C9E43502d3CB3",
+    "category": "omnichain",
+    "chain_id": 84532,
+    "chain_name": "base_testnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x6A269Be3e414e4617f01231a2485FB692C53f748",
+    "category": "messaging",
+    "chain_id": 84532,
+    "chain_name": "base_testnet",
+    "type": "connector"
   }
 ]
