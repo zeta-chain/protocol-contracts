@@ -5,9 +5,9 @@ import { Signer, utils, Contract, ContractFactory, Overrides } from "ethers";
 import type { Provider, TransactionRequest } from "@ethersproject/providers";
 import type { PromiseOrValue } from "../../../../common";
 import type {
-  ZetaConnectorNewEth,
-  ZetaConnectorNewEthInterface,
-} from "../../../../contracts/prototypes/evm/ZetaConnectorNewEth";
+  ZetaConnectorNewBase,
+  ZetaConnectorNewBaseInterface,
+} from "../../../../contracts/prototypes/evm/ZetaConnectorNewBase";
 
 const _abi = [
   {
@@ -191,12 +191,12 @@ export class ZetaConnectorNewEth__factory extends ContractFactory {
     _gateway: PromiseOrValue<string>,
     _zetaToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ZetaConnectorNewEth> {
+  ): Promise<ZetaConnectorNewBase> {
     return super.deploy(
       _gateway,
       _zetaToken,
       overrides || {}
-    ) as Promise<ZetaConnectorNewEth>;
+    ) as Promise<ZetaConnectorNewBase>;
   }
   override getDeployTransaction(
     _gateway: PromiseOrValue<string>,
@@ -205,8 +205,8 @@ export class ZetaConnectorNewEth__factory extends ContractFactory {
   ): TransactionRequest {
     return super.getDeployTransaction(_gateway, _zetaToken, overrides || {});
   }
-  override attach(address: string): ZetaConnectorNewEth {
-    return super.attach(address) as ZetaConnectorNewEth;
+  override attach(address: string): ZetaConnectorNewBase {
+    return super.attach(address) as ZetaConnectorNewBase;
   }
   override connect(signer: Signer): ZetaConnectorNewEth__factory {
     return super.connect(signer) as ZetaConnectorNewEth__factory;
@@ -214,13 +214,13 @@ export class ZetaConnectorNewEth__factory extends ContractFactory {
 
   static readonly bytecode = _bytecode;
   static readonly abi = _abi;
-  static createInterface(): ZetaConnectorNewEthInterface {
-    return new utils.Interface(_abi) as ZetaConnectorNewEthInterface;
+  static createInterface(): ZetaConnectorNewBaseInterface {
+    return new utils.Interface(_abi) as ZetaConnectorNewBaseInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): ZetaConnectorNewEth {
-    return new Contract(address, _abi, signerOrProvider) as ZetaConnectorNewEth;
+  ): ZetaConnectorNewBase {
+    return new Contract(address, _abi, signerOrProvider) as ZetaConnectorNewBase;
   }
 }

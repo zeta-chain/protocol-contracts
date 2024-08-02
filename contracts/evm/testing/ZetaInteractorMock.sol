@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "../tools/ZetaInteractor.sol";

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity ^0.8.0;
 
 interface IWETH9 {
     event Approval(address indexed owner, address indexed spender, uint value);
