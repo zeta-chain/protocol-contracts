@@ -105,9 +105,6 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testTransferFromFailsIfRecipientIsZeroAddress() public {
-        uint256 balanceStart = zrc20.balanceOf(addr1);
-        assertEq(0, balanceStart);
-
         uint256 amount = 500_000;
         zrc20.approve(owner, amount);
         vm.expectRevert(ZeroAddress.selector);
