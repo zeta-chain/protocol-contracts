@@ -1,0 +1,36 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+remappings = [
+  "ds-test/=node_modules/ds-test/src",
+  "src/=src",
+  "test/=test",
+  "forge-std/=lib/forge-std/src/",
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/",
+  "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
+]
+
+no-match-contract = '.*EchidnaTest$'
+optimizer = true
+optimizer_runs = 10_000
+
+fs_permissions = [{ access = "read", path = "out"}]
+
+ffi = true
+ast = true
+build_info = true
+extra_output = ["storageLayout"]
+evm_version = "london"
+
+[fmt]
+bracket_spacing = true
+int_types = "long"
+line_length = 120
+multiline_func_header = "all"
+number_underscore = "thousands"
+quote_style = "double"
+tab_width = 4
+wrap_comments = true
+sort_imports=true
