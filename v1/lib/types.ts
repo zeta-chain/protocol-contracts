@@ -1,4 +1,41 @@
-export type ParamSymbol = "USDC.BSC" | "USDC.ETH" | "BTC.BTC" | "PEPE.ETH" | "BNB.BSC" | "SHIB.ETH" | "USDT.ETH" | "USDT.BSC" | "POL.POLYGON" | "DAI.ETH" | "ETH.ETH" | "sETH.SEPOLIA" | "USDC" | "gETH" | "tMATIC" | "tBTC" | "MATIC.AMOY" | "USDC.SEPOLIA" | "tBNB";
-export type ParamChainName = "eth_mainnet" | "bsc_mainnet" | "polygon_mainnet" | "zeta_mainnet" | "btc_mainnet" | "bsc_testnet" | "zeta_testnet" | "btc_testnet" | "amoy_testnet" | "sepolia_testnet";
-export type ParamType = "connector" | "erc20Custody" | "pauser" | "tss" | "tssUpdater" | "uniswapV2Factory" | "uniswapV2Router02" | "uniswapV3Factory" | "uniswapV3Router" | "weth9" | "zetaToken" | "fungibleModule" | "systemContract" | "zrc20" | "zetaTokenConsumerUniV3";
+import { ZetaProtocolNetwork } from "./address.tools";
 
+export type ParamSymbol =
+  | "BNB.BSC"
+  | "BTC.BTC"
+  | "DAI.ETH"
+  | "ETH.ETH"
+  | "gETH"
+  | "MATIC.AMOY"
+  | "PEPE.ETH"
+  | "POL.POLYGON"
+  | "sETH.SEPOLIA"
+  | "SHIB.ETH"
+  | "tBNB"
+  | "tBTC"
+  | "tMATIC"
+  | "USDC.BSC"
+  | "USDC.ETH"
+  | "USDC.SEPOLIA"
+  | "USDC"
+  | "USDT.BSC"
+  | "USDT.ETH";
+
+export type ParamChainName = ZetaProtocolNetwork;
+
+export type ParamType =
+  | "connector"
+  | "erc20Custody"
+  | "fungibleModule"
+  | "pauser"
+  | "systemContract"
+  | "tss"
+  | "tssUpdater"
+  | "uniswapV2Factory"
+  | "uniswapV2Router02"
+  | "uniswapV3Factory"
+  | "uniswapV3Router"
+  | "weth9"
+  | "zetaToken"
+  | "zetaTokenConsumerUniV3"
+  | "zrc20";
