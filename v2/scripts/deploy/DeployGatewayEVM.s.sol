@@ -5,10 +5,10 @@ import "forge-std/Script.sol";
 import "src/evm/GatewayEVM.sol";
 import "test/utils/TestERC20.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {console} from "forge-std/console.sol";
 
 contract DeployGatewayEVMCreate2 is Script {
     function run() external {
+        // TODO: should be passed as arg
         string memory mnemonic = "test test test test test test test test test test test junk";
         uint256 privateKey = vm.deriveKey(mnemonic, 0);
         address deployer = vm.rememberKey(privateKey);
@@ -47,15 +47,10 @@ contract DeployGatewayEVMCreate2 is Script {
             )
         );
 
-        console.log(expectedImplAddress);
-        console.log(expectedProxyAddress);
-
         ERC1967Proxy gatewayProxy = new ERC1967Proxy{salt: proxySalt}(
             address(gatewayImpl),
             abi.encodeWithSelector(GatewayEVM.initialize.selector, tss, address(zeta), admin)
         );
-
-        console.log(address(gatewayProxy));
 
         require(expectedProxyAddress == address(gatewayProxy), "proxy address doesn't match expected address");
 
