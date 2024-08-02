@@ -35,6 +35,7 @@ export declare type ZetaProtocolTestNetwork =
   | "bsc_testnet"
   | "btc_testnet"
   | "sepolia_testnet"
+  | "base_testnet"
   | "zeta_testnet";
 
 export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
@@ -42,6 +43,7 @@ export const zetaProtocolTestNetworks: ZetaProtocolTestNetwork[] = [
   "bsc_testnet",
   "btc_testnet",
   "sepolia_testnet",
+  "base_testnet",
   "zeta_testnet",
 ];
 
