@@ -57,7 +57,7 @@ jobs:
           node-version: "21.1.0"
           slither-config: "v2/slither.config.json"
           solc-version: "0.8.26"
-          fail-on: none
+          fail-on: medium
           target: "v2/"
 
       - name: Upload SARIF file
