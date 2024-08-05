@@ -38,7 +38,8 @@ const config: HardhatUserConfig = {
           apiURL: "https://api-amoy.polygonscan.com/api",
           browserURL: "https://amoy.polygonscan.com",
         },
-      },{
+      },
+      {
         chainId: 84532,
         network: "base_testnet",
         urls: {
