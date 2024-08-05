@@ -56,6 +56,7 @@ jobs:
           sarif: results.sarif
           node-version: "21.1.0"
           fail-on: none
+          target: "v2/"
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
