@@ -1,8 +1,11 @@
 name: Publish to NPM (V2)
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version to release, e.g., v10.0.0-rc2"
+        required: true
 
 defaults:
   run:
@@ -28,17 +31,14 @@ jobs:
       - name: Determine NPM Tag
         id: determine-npm-tag
         run: |
-          VERSION_TAG=${GITHUB_REF#refs/tags/v}
+          VERSION_TAG=${{ github.event.inputs.version }}
           if [[ $VERSION_TAG == *"-"* ]]; then
             echo ::set-output name=NPM_TAG::${VERSION_TAG#*-}
           else
             echo ::set-output name=NPM_TAG::latest
           fi
-        env:
-          GITHUB_REF: ${{ github.ref }}
 
       - name: Publish to NPM
-        run: yarn publish --new-version ${GITHUB_REF#refs/tags/v} --tag ${{ steps.determine-npm-tag.outputs.NPM_TAG }} --no-git-tag-version
+        run: yarn publish --new-version ${{ github.event.inputs.version }} --tag ${{ steps.determine-npm-tag.outputs.NPM_TAG }} --no-git-tag-version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_REF: ${{ github.ref }}
