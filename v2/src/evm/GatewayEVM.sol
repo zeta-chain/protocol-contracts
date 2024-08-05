@@ -96,7 +96,16 @@ contract GatewayEVM is
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) whenNotPaused nonReentrant {
+    function executeRevert(
+        address destination,
+        bytes calldata data
+    )
+        public
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        nonReentrant
+    {
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();

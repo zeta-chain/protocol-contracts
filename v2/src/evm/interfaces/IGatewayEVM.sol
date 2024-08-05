@@ -119,12 +119,7 @@ interface IGatewayEVM {
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(
-        address receiver,
-        uint256 amount,
-        address asset,
-        bytes calldata payload
-    ) external;
+    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external;
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.

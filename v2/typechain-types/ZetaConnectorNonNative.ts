@@ -41,7 +41,6 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
       | "revokeRole"
       | "setMaxSupply"
       | "supportsInterface"
-      | "tssAddress"
       | "unpause"
       | "withdraw"
       | "withdrawAndCall"
@@ -110,10 +109,6 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tssAddress",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
@@ -168,7 +163,6 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
@@ -415,7 +409,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
   >;
 
   setMaxSupply: TypedContractMethod<
-    [_maxSupply: BigNumberish],
+    [maxSupply_: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -425,8 +419,6 @@ export interface ZetaConnectorNonNative extends BaseContract {
     [boolean],
     "view"
   >;
-
-  tssAddress: TypedContractMethod<[], [string], "view">;
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
@@ -521,13 +513,10 @@ export interface ZetaConnectorNonNative extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "setMaxSupply"
-  ): TypedContractMethod<[_maxSupply: BigNumberish], [void], "nonpayable">;
+  ): TypedContractMethod<[maxSupply_: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "tssAddress"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;

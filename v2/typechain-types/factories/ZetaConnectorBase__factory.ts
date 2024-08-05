@@ -212,19 +212,6 @@ const _abi = [
   },
   {
     type: "function",
-    name: "tssAddress",
-    inputs: [],
-    outputs: [
-      {
-        name: "",
-        type: "address",
-        internalType: "address",
-      },
-    ],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
     name: "unpause",
     inputs: [],
     outputs: [],
