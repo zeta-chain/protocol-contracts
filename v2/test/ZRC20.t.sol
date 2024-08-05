@@ -180,6 +180,7 @@ contract ZRC20Test is Test, ZRC20Errors {
 
         vm.prank(fungibleModule);
         zrc20.updateProtocolFlatFee(protocolFlatFee);
+        
 
         uint256 balanceStart = zrc20.balanceOf(owner);
         assertEq(100_000, balanceStart);
