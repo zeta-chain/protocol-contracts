@@ -55,6 +55,7 @@ jobs:
         with:
           sarif: results.sarif
           node-version: "21.1.0"
+          slither-config: "v2/slither.config.json"
           fail-on: none
           target: "v2/"
 
