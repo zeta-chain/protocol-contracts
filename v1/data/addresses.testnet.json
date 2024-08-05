@@ -396,21 +396,21 @@
     "type": "tssUpdater"
   },
   {
-    "address": "0x7FB8E2aE4A5923BBd8e1513945914b5AB69cdA2a",
+    "address": "0xf4e63991E7475b659bd97Bba85f32a7259239D5d",
     "category": "messaging",
     "chain_id": 84532,
     "chain_name": "base_testnet",
     "type": "zetaToken"
   },
   {
-    "address": "0x44e8ED4a36670966C292a21EC15C9E43502d3CB3",
+    "address": "0x3A1f7b35EF57543B4e86c384eF6a368Ed811a36E",
     "category": "omnichain",
     "chain_id": 84532,
     "chain_name": "base_testnet",
     "type": "erc20Custody"
   },
   {
-    "address": "0x6A269Be3e414e4617f01231a2485FB692C53f748",
+    "address": "0xc0B74d761ef4EC9e9473f65687d36B9F13DB0dCc",
     "category": "messaging",
     "chain_id": 84532,
     "chain_name": "base_testnet",
