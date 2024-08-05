@@ -29,8 +29,7 @@ export const isEthNetworkName = (networkName: string) =>
   networkName === "eth-localnet" ||
   networkName === "goerli_testnet" ||
   networkName === "sepolia_testnet" ||
-  networkName === "eth_mainnet" ||
-  networkName === "base_testnet";
+  networkName === "eth_mainnet";
 
 export const deployZetaConnectorBase = async ({ args }: { args: Parameters<ZetaConnectorBaseFactory["deploy"]> }) => {
   const Factory = (await ethers.getContractFactory("ZetaConnectorBase")) as ZetaConnectorBaseFactory;
