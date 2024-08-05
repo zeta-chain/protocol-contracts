@@ -16,6 +16,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 /// @notice The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayZEVM is
+    IGatewayZEVM,
     IGatewayZEVMEvents,
     IGatewayZEVMErrors,
     Initializable,
@@ -182,7 +183,7 @@ contract GatewayZEVM is
     function deposit(address zrc20, uint256 amount, address target) external onlyFungible whenNotPaused {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        IZRC20(zrc20).deposit(target, amount);
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
     }
 
     /// @notice Execute a user-specified contract on ZEVM.
@@ -224,7 +225,7 @@ contract GatewayZEVM is
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        IZRC20(zrc20).deposit(target, amount);
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
@@ -288,7 +289,7 @@ contract GatewayZEVM is
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        IZRC20(zrc20).deposit(target, amount);
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
 }

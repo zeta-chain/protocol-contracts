@@ -23,8 +23,6 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
     IGatewayEVM public immutable gateway;
     /// @notice The address of the Zeta token.
     address public immutable zetaToken;
-    /// @notice The address of the TSS (Threshold Signature Scheme) contract.
-    address public tssAddress;
 
     /// @notice New role identifier for withdrawer role.
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
@@ -39,7 +37,6 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
         }
         gateway = IGatewayEVM(_gateway);
         zetaToken = _zetaToken;
-        tssAddress = _tssAddress;
 
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);
         _grantRole(WITHDRAWER_ROLE, _tssAddress);

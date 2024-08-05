@@ -17,10 +17,7 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     using SafeERC20 for IERC20;
 
     /// @notice Gateway contract.
-    IGatewayEVM public gateway;
-    /// @notice TSS address.
-    address public tssAddress;
-
+    IGatewayEVM public immutable gateway;
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice New role identifier for withdrawer role.
@@ -29,11 +26,10 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     /// @notice Constructor for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
     constructor(address _gateway, address _tssAddress, address _admin) {
-        if (_gateway == address(0) || _tssAddress == address(0)) {
+        if (_gateway == address(0) || _tssAddress == address(0) || _admin == address(0)) {
             revert ZeroAddress();
         }
         gateway = IGatewayEVM(_gateway);
-        tssAddress = _tssAddress;
         _grantRole(DEFAULT_ADMIN_ROLE, _admin);
         _grantRole(PAUSER_ROLE, _admin);
         _grantRole(WITHDRAWER_ROLE, _tssAddress);

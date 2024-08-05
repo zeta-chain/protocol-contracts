@@ -80,6 +80,12 @@ interface IGatewayEVM {
     /// @param data The calldata to pass to the contract call.
     function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
 
+    /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    function executeRevert(address destination, bytes calldata data) external payable;
+
     /// @notice Executes a call to a contract.
     /// @param destination The address of the contract to call.
     /// @param data The calldata to pass to the contract call.
@@ -92,6 +98,38 @@ interface IGatewayEVM {
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
     function revertWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
+
+    /// @notice Deposits ETH to the TSS address.
+    /// @param receiver Address of the receiver.
+    function deposit(address receiver) external payable;
+
+    /// @notice Deposits ERC20 tokens to the custody or connector contract.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of tokens to deposit.
+    /// @param asset Address of the ERC20 token.
+    function deposit(address receiver, uint256 amount, address asset) external;
+
+    /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
+    /// @param receiver Address of the receiver.
+    /// @param payload Calldata to pass to the call.
+    function depositAndCall(address receiver, bytes calldata payload) external payable;
+
+    /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of tokens to deposit.
+    /// @param asset Address of the ERC20 token.
+    /// @param payload Calldata to pass to the call.
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
+        address asset,
+        bytes calldata payload
+    ) external;
+
+    /// @notice Calls an omnichain smart contract without asset transfer.
+    /// @param receiver Address of the receiver.
+    /// @param payload Calldata to pass to the call.
+    function call(address receiver, bytes calldata payload) external;
 }
 
 /// @title Revertable

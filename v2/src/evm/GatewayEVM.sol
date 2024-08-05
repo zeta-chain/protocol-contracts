@@ -19,6 +19,7 @@ contract GatewayEVM is
     Initializable,
     AccessControlUpgradeable,
     UUPSUpgradeable,
+    IGatewayEVM,
     IGatewayEVMErrors,
     IGatewayEVMEvents,
     ReentrancyGuardUpgradeable,
@@ -96,7 +97,8 @@ contract GatewayEVM is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     function executeRevert(address destination, bytes calldata data) public payable onlyRole(TSS_ROLE) whenNotPaused {
-        (bool success, bytes memory result) = destination.call{ value: msg.value }("");
+        if (destination == address(0)) revert ZeroAddress();
+        (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(data);
 
@@ -193,7 +195,7 @@ contract GatewayEVM is
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
-        if (deposited == false) revert DepositFailed();
+        if (!deposited) revert DepositFailed();
 
         emit Deposit(msg.sender, receiver, msg.value, address(0), "");
     }
@@ -217,7 +219,7 @@ contract GatewayEVM is
         if (msg.value == 0) revert InsufficientETHAmount();
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
-        if (deposited == false) revert DepositFailed();
+        if (!deposited) revert DepositFailed();
 
         emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
     }
@@ -291,7 +293,7 @@ contract GatewayEVM is
             // transfer amount to gateway
             IERC20(token).safeTransferFrom(from, address(this), amount);
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
-            IERC20(token).approve(zetaConnector, amount);
+            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
             // send tokens to connector
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
@@ -309,7 +311,7 @@ contract GatewayEVM is
         if (token == zetaToken) {
             // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
-            IERC20(token).approve(zetaConnector, amount);
+            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
             // send tokens to connector
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
