@@ -24,12 +24,12 @@ import type {
 export interface IZRC20Interface extends Interface {
   getFunction(
     nameOrSignature:
-      | "PROTOCOL_FLAT_FEE"
       | "allowance"
       | "approve"
       | "balanceOf"
       | "burn"
       | "deposit"
+      | "protocolFlatFee"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
@@ -37,10 +37,6 @@ export interface IZRC20Interface extends Interface {
       | "withdrawGasFee"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "PROTOCOL_FLAT_FEE",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [AddressLike, AddressLike]
@@ -57,6 +53,10 @@ export interface IZRC20Interface extends Interface {
   encodeFunctionData(
     functionFragment: "deposit",
     values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "protocolFlatFee",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -79,15 +79,15 @@ export interface IZRC20Interface extends Interface {
     values?: undefined
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "PROTOCOL_FLAT_FEE",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "protocolFlatFee",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -147,8 +147,6 @@ export interface IZRC20 extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  PROTOCOL_FLAT_FEE: TypedContractMethod<[], [bigint], "view">;
-
   allowance: TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
     [bigint],
@@ -170,6 +168,8 @@ export interface IZRC20 extends BaseContract {
     [boolean],
     "nonpayable"
   >;
+
+  protocolFlatFee: TypedContractMethod<[], [bigint], "view">;
 
   totalSupply: TypedContractMethod<[], [bigint], "view">;
 
@@ -198,9 +198,6 @@ export interface IZRC20 extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "PROTOCOL_FLAT_FEE"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "allowance"
   ): TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
@@ -227,6 +224,9 @@ export interface IZRC20 extends BaseContract {
     [boolean],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "protocolFlatFee"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "totalSupply"
   ): TypedContractMethod<[], [bigint], "view">;
