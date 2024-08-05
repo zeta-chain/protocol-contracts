@@ -66,6 +66,12 @@ const SALT_NUMBERS = {
     zetaERC20Custody: "195084",
     zetaToken: "29265",
   },
+  base_testnet: {
+    zetaConnector: "0",
+    zetaConsumer: "0",
+    zetaERC20Custody: "0",
+    zetaToken: "0",
+  }
 };
 
 export const getSaltNumber = (contractName: string, networkName: string) => {
