@@ -142,6 +142,9 @@ contract ZRC20Test is Test, ZRC20Errors {
 
     function testWithdrawGasFee() public {
         vm.prank(fungibleModule);
+        uint256 gasLimit = 10;
+        uint256 protocolFlatFee = 10;
+
         zrc20.updateGasLimit(10);
 
         vm.prank(fungibleModule);
@@ -149,7 +152,7 @@ contract ZRC20Test is Test, ZRC20Errors {
 
         (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFee();
         assertEq(address(zrc20), gasZRC20);
-        assertEq(20, gasFee);
+        assertEq(gasLimit + protocolFlatFee, gasFee);
     }
 
     function testWithdrawGasFeeFailsIfGasCoinNotSetForChainId() public {
@@ -169,11 +172,14 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testWithdraw() public {
-        vm.prank(fungibleModule);
-        zrc20.updateGasLimit(10);
+        uint256 gasLimit = 10;
+        uint256 protocolFlatFee = 10;
 
         vm.prank(fungibleModule);
-        zrc20.updateProtocolFlatFee(10);
+        zrc20.updateGasLimit(gasLimit);
+
+        vm.prank(fungibleModule);
+        zrc20.updateProtocolFlatFee(protocolFlatFee);
 
         uint256 balanceStart = zrc20.balanceOf(owner);
         assertEq(100_000, balanceStart);
@@ -186,10 +192,10 @@ contract ZRC20Test is Test, ZRC20Errors {
         zrc20.withdraw(abi.encodePacked(addr1), 50_000);
 
         uint256 fungibleModuleBalanceAfter = zrc20.balanceOf(fungibleModule);
-        assertEq(fungibleModuleBalanceStart + 20, fungibleModuleBalanceAfter);
+        assertEq(fungibleModuleBalanceStart + gasLimit + protocolFlatFee, fungibleModuleBalanceAfter);
 
         uint256 balanceAfter = zrc20.balanceOf(owner);
-        assertEq(50_000 - 20, balanceAfter);
+        assertEq(50_000 - gasLimit - protocolFlatFee, balanceAfter);
         uint256 totalSupplyAfter = zrc20.totalSupply();
         assertEq(50_000, totalSupplyAfter);
     }
