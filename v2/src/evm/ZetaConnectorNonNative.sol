@@ -18,12 +18,12 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     error ExceedsMaxSupply();
 
     constructor(
-        address _gateway,
-        address _zetaToken,
-        address _tssAddress,
-        address _admin
+        address gateway_,
+        address zetaToken_,
+        address tssAddress_,
+        address admin_
     )
-        ZetaConnectorBase(_gateway, _zetaToken, _tssAddress, _admin)
+        ZetaConnectorBase(gateway_, zetaToken_, tssAddress_, admin_)
     { }
 
     /// @notice Set max supply for minting.
