@@ -28,9 +28,9 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
         return ZetaNonEthInterface(zetaToken).balanceOf(address(this));
     }
 
-    function setMaxSupply(uint256 _maxSupply) external onlyTssAddress {
-        maxSupply = _maxSupply;
-        emit MaxSupplyUpdated(msg.sender, _maxSupply);
+    function setMaxSupply(uint256 maxSupply_) external onlyTssAddress {
+        maxSupply = maxSupply_;
+        emit MaxSupplyUpdated(msg.sender, maxSupply_);
     }
 
     /**
