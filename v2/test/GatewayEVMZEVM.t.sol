@@ -14,8 +14,9 @@ import "src/evm/ZetaConnectorNonNative.sol";
 import "./utils/SenderZEVM.sol";
 
 import "./utils/SystemContractMock.sol";
-import "./utils/ZRC20.sol";
+
 import "src/zevm/GatewayZEVM.sol";
+import "src/zevm/ZRC20.sol";
 
 import "./utils/IReceiverEVM.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
@@ -166,14 +167,7 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Withdrawal(
-            ownerZEVM,
-            0,
-            abi.encodePacked(receiverEVM),
-            address(zrc20),
-            1_000_000,
-            0,
-            zrc20.PROTOCOL_FLAT_FEE(),
-            message
+            ownerZEVM, 0, abi.encodePacked(receiverEVM), address(zrc20), 1_000_000, 0, zrc20.protocolFlatFee(), message
         );
         vm.prank(ownerZEVM);
         gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), message);

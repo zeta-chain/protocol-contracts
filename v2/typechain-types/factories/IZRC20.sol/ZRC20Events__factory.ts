@@ -99,6 +99,19 @@ const _abi = [
   },
   {
     type: "event",
+    name: "UpdatedGateway",
+    inputs: [
+      {
+        name: "gateway",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "UpdatedProtocolFlatFee",
     inputs: [
       {
