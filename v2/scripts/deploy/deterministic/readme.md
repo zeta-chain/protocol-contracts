@@ -1,6 +1,7 @@
 ## Deterministic deployments
 
 Note: `.env` file should be set up and updated during deployments according to expected env variables in scripts, check `.env.sample` for example on how it should look like.
+Currently, `.env.sample` is set with test env variables that can be used to test scripts locally with `anvil` using first account private key.
 
 `DeployGatewayEVM` script uses create2 with Foundry (https://book.getfoundry.sh/tutorials/create2-tutorial) to perform deterministic deployment of `GatewayEVM` contracts.
 This ensures that on every EVM chain `GatewayEVM` contract will be on same address.
