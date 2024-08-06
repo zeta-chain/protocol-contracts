@@ -30,8 +30,6 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     CoinType public immutable COIN_TYPE;
     /// @notice System contract address.
     address public systemContractAddress;
-    /// @notice Gateway contract address.
-    address public gatewayAddress;
     /// @notice Gas limit.
     uint256 public gasLimit;
     /// @notice Protocol flat fee.
@@ -43,6 +41,10 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     string private _name;
     string private _symbol;
     uint8 private _decimals;
+
+    /// @notice Gateway contract address.
+    /// @dev This variable is added at last position to maintain storage layout with V1 ZRC20.
+    address public gatewayAddress;
 
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
