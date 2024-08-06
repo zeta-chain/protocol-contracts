@@ -71,6 +71,49 @@ interface IGatewayZEVM {
         bytes calldata message
     )
         external;
+
+    /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
+    /// @param context The context of the cross-chain call.
+    /// @param amount The amount of tokens to transfer.
+    /// @param target The target contract to call.
+    /// @param message The calldata to pass to the contract call.
+    function depositAndCall(
+        zContext calldata context,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    )
+        external;
+
+    /// @notice Revert a user-specified contract on ZEVM.
+    /// @param context The context of the revert call.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param amount The amount of tokens to revert.
+    /// @param target The target contract to call.
+    /// @param message The calldata to pass to the contract call.
+    function executeRevert(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    )
+        external;
+
+    /// @notice Deposit foreign coins into ZRC20 and revert a user-specified contract on ZEVM.
+    /// @param context The context of the revert call.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param amount The amount of tokens to revert.
+    /// @param target The target contract to call.
+    /// @param message The calldata to pass to the contract call.
+    function depositAndRevert(
+        revertContext calldata context,
+        address zrc20,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    )
+        external;
 }
 
 /// @title IGatewayZEVMEvents
@@ -118,6 +161,9 @@ interface IGatewayZEVMErrors {
 
     /// @notice Error indicating a failure to transfer ZRC20 tokens.
     error ZRC20TransferFailed();
+
+    /// @notice Error indicating a failure to deposit ZRC20 tokens.
+    error ZRC20DepositFailed();
 
     /// @notice Error indicating a failure to transfer gas fee.
     error GasFeeTransferFailed();

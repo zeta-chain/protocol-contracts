@@ -82,6 +82,101 @@ const _abi = [
         ],
       },
       {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "target",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "depositAndCall",
+    inputs: [
+      {
+        name: "context",
+        type: "tuple",
+        internalType: "struct zContext",
+        components: [
+          {
+            name: "origin",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "chainID",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+      {
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "target",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "depositAndRevert",
+    inputs: [
+      {
+        name: "context",
+        type: "tuple",
+        internalType: "struct revertContext",
+        components: [
+          {
+            name: "origin",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "chainID",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+      {
         name: "zrc20",
         type: "address",
         internalType: "address",
@@ -113,6 +208,56 @@ const _abi = [
         name: "context",
         type: "tuple",
         internalType: "struct zContext",
+        components: [
+          {
+            name: "origin",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "chainID",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+      {
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "target",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "executeRevert",
+    inputs: [
+      {
+        name: "context",
+        type: "tuple",
+        internalType: "struct revertContext",
         components: [
           {
             name: "origin",

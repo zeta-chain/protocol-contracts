@@ -665,7 +665,7 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   >;
 
   initialize: TypedContractMethod<
-    [_tssAddress: AddressLike, _zetaToken: AddressLike, _admin: AddressLike],
+    [tssAddress_: AddressLike, zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -700,13 +700,13 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   >;
 
   setConnector: TypedContractMethod<
-    [_zetaConnector: AddressLike],
+    [zetaConnector_: AddressLike],
     [void],
     "nonpayable"
   >;
 
   setCustody: TypedContractMethod<
-    [_custody: AddressLike],
+    [custody_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -846,7 +846,7 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
-    [_tssAddress: AddressLike, _zetaToken: AddressLike, _admin: AddressLike],
+    [tssAddress_: AddressLike, zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -887,10 +887,10 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "setConnector"
-  ): TypedContractMethod<[_zetaConnector: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<[zetaConnector_: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setCustody"
-  ): TypedContractMethod<[_custody: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<[custody_: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;

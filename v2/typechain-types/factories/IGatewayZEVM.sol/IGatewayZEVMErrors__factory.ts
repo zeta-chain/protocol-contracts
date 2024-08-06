@@ -51,6 +51,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "ZRC20DepositFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ZRC20TransferFailed",
     inputs: [],
   },

@@ -11,12 +11,13 @@
     "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"anvil --auto-impersonate\" \"wait-on tcp:8545 && npx ts-node scripts/localnet/worker.ts\"",
     "test": "forge clean && forge test -vvv",
-    "coverage": "forge clean && forge coverage --report lcov",
+    "coverage": "forge clean && forge coverage --no-match-coverage \"(script|test)\" --report lcov",
     "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir typechain-types",
     "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain"
   },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
+    "@openzeppelin/upgrades-core": "1.35.0",
     "@typechain/ethers-v6": "^0.5.1",
     "@types/eslint__js": "^8.42.3",
     "concurrently": "^8.2.2",
