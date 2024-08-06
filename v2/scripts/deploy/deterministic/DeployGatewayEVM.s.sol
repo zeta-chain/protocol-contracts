@@ -6,29 +6,21 @@ import "src/evm/GatewayEVM.sol";
 import "test/utils/TestERC20.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
-contract DeployGatewayEVMCreate2 is Script {
+contract DeployGatewayEVM is Script {
     function run() external {
-        // TODO (https://github.com/zeta-chain/protocol-contracts/issues/251): should be passed as arg
-        string memory mnemonic = "test test test test test test test test test test test junk";
-        uint256 privateKey = vm.deriveKey(mnemonic, 0);
-        address deployer = vm.rememberKey(privateKey);
-
-        // TODO (https://github.com/zeta-chain/protocol-contracts/issues/251): should be passed as arg
-        address payable tss = payable(vm.envOr("TSS_ADDRESS", address(0x123)));
-        address admin = vm.envOr("ADMIN_ADDRESS", deployer);
+        address payable tss = payable(vm.envAddress("TSS_ADDRESS"));
+        address admin = vm.envAddress("GATEWAY_ADMIN_ADDRESS_EVM");
+        address zeta = vm.envAddress("ZETA_ERC20_EVM");
 
         address expectedImplAddress;
         address expectedProxyAddress;
 
-        bytes32 implSalt = bytes32(uint256(10));
-        bytes32 proxySalt = bytes32(uint256(11));
+        bytes32 implSalt = keccak256("GatewayEVM");
+        bytes32 proxySalt = keccak256("GatewayEVMProxy");
 
-        vm.startBroadcast(deployer);
+        vm.startBroadcast();
 
-        // TODO (https://github.com/zeta-chain/protocol-contracts/issues/251): should be passed as arg
-        TestERC20 zeta = new TestERC20("zeta", "ZETA");
-
-        expectedImplAddress = computeCreate2Address(
+        expectedImplAddress = vm.computeCreate2Address(
             implSalt,
             hashInitCode(type(GatewayEVM).creationCode)
         );
