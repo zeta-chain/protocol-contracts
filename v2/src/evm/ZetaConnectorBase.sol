@@ -23,8 +23,6 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
     IGatewayEVM public immutable gateway;
     /// @notice The address of the Zeta token.
     address public immutable zetaToken;
-    /// @notice The address of the TSS (Threshold Signature Scheme) contract.
-    address public tssAddress;
 
     /// @notice New role identifier for withdrawer role.
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
@@ -33,17 +31,16 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
 
     /// @notice Constructor for ZetaConnectors.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
-    constructor(address _gateway, address _zetaToken, address _tssAddress, address _admin) {
-        if (_gateway == address(0) || _zetaToken == address(0) || _tssAddress == address(0)) {
+    constructor(address gateway_, address zetaToken_, address tssAddress_, address admin_) {
+        if (gateway_ == address(0) || zetaToken_ == address(0) || tssAddress_ == address(0) || admin_ == address(0)) {
             revert ZeroAddress();
         }
-        gateway = IGatewayEVM(_gateway);
-        zetaToken = _zetaToken;
-        tssAddress = _tssAddress;
+        gateway = IGatewayEVM(gateway_);
+        zetaToken = zetaToken_;
 
-        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
-        _grantRole(WITHDRAWER_ROLE, _tssAddress);
-        _grantRole(PAUSER_ROLE, _admin);
+        _grantRole(DEFAULT_ADMIN_ROLE, admin_);
+        _grantRole(WITHDRAWER_ROLE, tssAddress_);
+        _grantRole(PAUSER_ROLE, admin_);
     }
 
     /// @notice Pause contract.
