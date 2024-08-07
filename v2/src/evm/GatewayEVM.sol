@@ -266,8 +266,8 @@ contract GatewayEVM is
     /// @notice Sets the custody contract address.
     /// @param custody_ Address of the custody contract.
     function setCustody(address custody_) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (custody != address(0)) revert CustodyInitialized();
         if (custody_ == address(0)) revert ZeroAddress();
+        if (custody != address(0)) revert CustodyInitialized();
 
         _grantRole(ASSET_HANDLER_ROLE, custody_);
         custody = custody_;
@@ -276,8 +276,8 @@ contract GatewayEVM is
     /// @notice Sets the connector contract address.
     /// @param zetaConnector_ Address of the connector contract.
     function setConnector(address zetaConnector_) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (zetaConnector != address(0)) revert CustodyInitialized();
         if (zetaConnector_ == address(0)) revert ZeroAddress();
+        if (zetaConnector != address(0)) revert ConnectorInitialized();
 
         _grantRole(ASSET_HANDLER_ROLE, zetaConnector_);
         zetaConnector = zetaConnector_;

@@ -68,6 +68,9 @@ interface IGatewayEVMErrors {
 
     /// @notice Error for already initialized custody.
     error CustodyInitialized();
+
+    /// @notice Error for already initialized connector.
+    error ConnectorInitialized();
 }
 
 /// @title IGatewayEVM

@@ -41,6 +41,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
     function setUp() public {
         owner = address(this);
@@ -69,6 +70,42 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token.transfer(address(custody), 500_000);
 
         vm.deal(tssAddress, 1 ether);
+    }
+
+    function testSetCustodyFailsIfSenderIsNotAdmin() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE));
+        gateway.setCustody(address(custody));
+    }
+
+    function testSetCustodyFailsIfSet() public {
+        vm.startPrank(owner);
+        vm.expectRevert(CustodyInitialized.selector);
+        gateway.setCustody(address(custody));
+    }
+
+    function testSetCustodyFailsIfZero() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.setCustody(address(0));
+    }
+
+    function testSetConnectorFailsIfSenderIsNotAdmin() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE));
+        gateway.setConnector(address(zetaConnector));
+    }
+
+    function testSetConnectorFailsIfSet() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ConnectorInitialized.selector);
+        gateway.setConnector(address(zetaConnector));
+    }
+
+    function testSetConnectorFailsIfZero() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.setConnector(address(0));
     }
 
     function testForwardCallToReceiveNonPayable() public {
