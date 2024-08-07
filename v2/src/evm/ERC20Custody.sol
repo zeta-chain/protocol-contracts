@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 /// @title ERC20Custody
 /// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
 /// @dev This contract does not call smart contracts directly, it passes through the Gateway contract.
-contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGuard, AccessControl, Pausable {
+contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable {
     using SafeERC20 for IERC20;
 
     /// @notice Gateway contract.
