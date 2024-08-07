@@ -77,13 +77,17 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
     function testWhitelistFailsIfSenderIsNotWhitelister() public {
         vm.prank(address(0x123));
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, address(0x123), WHITELISTER_ROLE));
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, address(0x123), WHITELISTER_ROLE)
+        );
         custody.whitelist(address(zeta));
     }
 
     function testUnwhitelistFailsIfSenderIsNotWhitelister() public {
         vm.prank(address(0x123));
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, address(0x123), WHITELISTER_ROLE));
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, address(0x123), WHITELISTER_ROLE)
+        );
         custody.unwhitelist(address(zeta));
     }
 
@@ -348,7 +352,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.stopPrank();
     }
 
-     function testWithdrawAndRevertFailsIfTokenIsNotWhitelisted() public {
+    function testWithdrawAndRevertFailsIfTokenIsNotWhitelisted() public {
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", 1, address(token), destination);
         vm.startPrank(tssAddress);

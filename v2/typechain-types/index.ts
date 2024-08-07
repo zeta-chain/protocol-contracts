@@ -133,6 +133,8 @@ export { IAccessControl__factory } from "./factories/IAccessControl__factory";
 export { IBeacon__factory } from "./factories/IBeacon__factory";
 export { IERC165__factory } from "./factories/IERC165__factory";
 export { IERC1967__factory } from "./factories/IERC1967__factory";
+export type { IERC20Custody } from "./IERC20Custody.sol/IERC20Custody";
+export { IERC20Custody__factory } from "./factories/IERC20Custody.sol/IERC20Custody__factory";
 export type { IERC20CustodyErrors } from "./IERC20Custody.sol/IERC20CustodyErrors";
 export { IERC20CustodyErrors__factory } from "./factories/IERC20Custody.sol/IERC20CustodyErrors__factory";
 export type { IERC20CustodyEvents } from "./IERC20Custody.sol/IERC20CustodyEvents";

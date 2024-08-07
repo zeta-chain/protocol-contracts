@@ -51,11 +51,7 @@ interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {
     /// @param token Address of the ERC20 token.
     /// @param to Destination address for the tokens.
     /// @param amount Amount of tokens to withdraw.
-    function withdraw(
-        address token,
-        address to,
-        uint256 amount
-    ) external;
+    function withdraw(address token, address to, uint256 amount) external;
 
     /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.
     /// @dev This function can only be called by the TSS address.
@@ -63,12 +59,7 @@ interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
-    function withdrawAndCall(
-        address token,
-        address to,
-        uint256 amount,
-        bytes calldata data
-    ) external;
+    function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) external;
 
     /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through
     /// the Gateway.
@@ -77,10 +68,5 @@ interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
-    function withdrawAndRevert(
-        address token,
-        address to,
-        uint256 amount,
-        bytes calldata data
-    ) external;
+    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data) external;
 }

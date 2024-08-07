@@ -31,7 +31,7 @@ var (
 
 // IERC20CustodyEventsMetaData contains all meta data concerning the IERC20CustodyEvents contract.
 var IERC20CustodyEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Unwhitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
 }
 
 // IERC20CustodyEventsABI is the input ABI used to generate the binding from.
@@ -178,6 +178,294 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsTransactorRaw) Transfer(opts *bin
 // Transact invokes the (paid) contract method with params as input values.
 func (_IERC20CustodyEvents *IERC20CustodyEventsTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	return _IERC20CustodyEvents.Contract.contract.Transact(opts, method, params...)
+}
+
+// IERC20CustodyEventsUnwhitelistedIterator is returned from FilterUnwhitelisted and is used to iterate over the raw logs and unpacked data for Unwhitelisted events raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsUnwhitelistedIterator struct {
+	Event *IERC20CustodyEventsUnwhitelisted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IERC20CustodyEventsUnwhitelistedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IERC20CustodyEventsUnwhitelisted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IERC20CustodyEventsUnwhitelisted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IERC20CustodyEventsUnwhitelistedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IERC20CustodyEventsUnwhitelistedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IERC20CustodyEventsUnwhitelisted represents a Unwhitelisted event raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsUnwhitelisted struct {
+	Token common.Address
+	Raw   types.Log // Blockchain specific contextual infos
+}
+
+// FilterUnwhitelisted is a free log retrieval operation binding the contract event 0x51085ddf9ebdded84b76e829eb58c4078e4b5bdf97d9a94723f336039da46791.
+//
+// Solidity: event Unwhitelisted(address indexed token)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterUnwhitelisted(opts *bind.FilterOpts, token []common.Address) (*IERC20CustodyEventsUnwhitelistedIterator, error) {
+
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+
+	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "Unwhitelisted", tokenRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IERC20CustodyEventsUnwhitelistedIterator{contract: _IERC20CustodyEvents.contract, event: "Unwhitelisted", logs: logs, sub: sub}, nil
+}
+
+// WatchUnwhitelisted is a free log subscription operation binding the contract event 0x51085ddf9ebdded84b76e829eb58c4078e4b5bdf97d9a94723f336039da46791.
+//
+// Solidity: event Unwhitelisted(address indexed token)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchUnwhitelisted(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsUnwhitelisted, token []common.Address) (event.Subscription, error) {
+
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+
+	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "Unwhitelisted", tokenRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IERC20CustodyEventsUnwhitelisted)
+				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Unwhitelisted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseUnwhitelisted is a log parse operation binding the contract event 0x51085ddf9ebdded84b76e829eb58c4078e4b5bdf97d9a94723f336039da46791.
+//
+// Solidity: event Unwhitelisted(address indexed token)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseUnwhitelisted(log types.Log) (*IERC20CustodyEventsUnwhitelisted, error) {
+	event := new(IERC20CustodyEventsUnwhitelisted)
+	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Unwhitelisted", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IERC20CustodyEventsWhitelistedIterator is returned from FilterWhitelisted and is used to iterate over the raw logs and unpacked data for Whitelisted events raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWhitelistedIterator struct {
+	Event *IERC20CustodyEventsWhitelisted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IERC20CustodyEventsWhitelistedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IERC20CustodyEventsWhitelisted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IERC20CustodyEventsWhitelisted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IERC20CustodyEventsWhitelistedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IERC20CustodyEventsWhitelistedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IERC20CustodyEventsWhitelisted represents a Whitelisted event raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWhitelisted struct {
+	Token common.Address
+	Raw   types.Log // Blockchain specific contextual infos
+}
+
+// FilterWhitelisted is a free log retrieval operation binding the contract event 0xaab7954e9d246b167ef88aeddad35209ca2489d95a8aeb59e288d9b19fae5a54.
+//
+// Solidity: event Whitelisted(address indexed token)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWhitelisted(opts *bind.FilterOpts, token []common.Address) (*IERC20CustodyEventsWhitelistedIterator, error) {
+
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+
+	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "Whitelisted", tokenRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IERC20CustodyEventsWhitelistedIterator{contract: _IERC20CustodyEvents.contract, event: "Whitelisted", logs: logs, sub: sub}, nil
+}
+
+// WatchWhitelisted is a free log subscription operation binding the contract event 0xaab7954e9d246b167ef88aeddad35209ca2489d95a8aeb59e288d9b19fae5a54.
+//
+// Solidity: event Whitelisted(address indexed token)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWhitelisted(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWhitelisted, token []common.Address) (event.Subscription, error) {
+
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+
+	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "Whitelisted", tokenRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IERC20CustodyEventsWhitelisted)
+				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Whitelisted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseWhitelisted is a log parse operation binding the contract event 0xaab7954e9d246b167ef88aeddad35209ca2489d95a8aeb59e288d9b19fae5a54.
+//
+// Solidity: event Whitelisted(address indexed token)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWhitelisted(log types.Log) (*IERC20CustodyEventsWhitelisted, error) {
+	event := new(IERC20CustodyEventsWhitelisted)
+	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Whitelisted", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
 }
 
 // IERC20CustodyEventsWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the IERC20CustodyEvents contract.
