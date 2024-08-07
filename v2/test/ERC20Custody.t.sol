@@ -35,12 +35,14 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     address tssAddress;
 
     error EnforcedPause();
+    error NotWhitelisted();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
 
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -63,12 +65,52 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.startPrank(owner);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
+
+        custody.whitelist(address(token));
         vm.stopPrank();
 
         token.mint(owner, 1_000_000);
         token.transfer(address(custody), 500_000);
 
         vm.deal(tssAddress, 1 ether);
+    }
+
+    function testWhitelistFailsIfSenderIsNotWhitelister() public {
+        vm.prank(address(0x123));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, address(0x123), WHITELISTER_ROLE));
+        custody.whitelist(address(zeta));
+    }
+
+    function testUnwhitelistFailsIfSenderIsNotWhitelister() public {
+        vm.prank(address(0x123));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, address(0x123), WHITELISTER_ROLE));
+        custody.unwhitelist(address(zeta));
+    }
+
+    function testWhitelist() public {
+        bool whitelisted = custody.whitelisted(address(zeta));
+        assertEq(false, whitelisted);
+
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit Whitelisted(address(zeta));
+        vm.prank(owner);
+        custody.whitelist(address(zeta));
+
+        whitelisted = custody.whitelisted(address(zeta));
+        assertEq(true, whitelisted);
+    }
+
+    function testUnwhitelist() public {
+        bool whitelisted = custody.whitelisted(address(token));
+        assertEq(true, whitelisted);
+
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit Unwhitelisted(address(token));
+        vm.prank(owner);
+        custody.unwhitelist(address(token));
+
+        whitelisted = custody.whitelisted(address(token));
+        assertEq(false, whitelisted);
     }
 
     function testNewCustodyFailsIfAddressesAreZero() public {
@@ -286,6 +328,34 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         // Verify that gateway doesn't hold any tokens
         uint256 balanceGateway = token.balanceOf(address(gateway));
         assertEq(balanceGateway, 0);
+    }
+
+    function testWithdrawFailsIfTokenIsNotWhitelisted() public {
+        vm.startPrank(tssAddress);
+        custody.unwhitelist(address(token));
+        vm.expectRevert(NotWhitelisted.selector);
+        custody.withdraw(address(token), destination, 1);
+        vm.stopPrank();
+    }
+
+    function testWithdrawAndCallFailsIfTokenIsNotWhitelisted() public {
+        bytes memory data =
+            abi.encodeWithSignature("receiveERC20(uint256,address,address)", 1, address(token), destination);
+        vm.startPrank(tssAddress);
+        custody.unwhitelist(address(token));
+        vm.expectRevert(NotWhitelisted.selector);
+        custody.withdrawAndCall(address(token), address(receiver), 1, data);
+        vm.stopPrank();
+    }
+
+     function testWithdrawAndRevertFailsIfTokenIsNotWhitelisted() public {
+        bytes memory data =
+            abi.encodeWithSignature("receiveERC20(uint256,address,address)", 1, address(token), destination);
+        vm.startPrank(tssAddress);
+        custody.unwhitelist(address(token));
+        vm.expectRevert(NotWhitelisted.selector);
+        custody.withdrawAndRevert(address(token), address(receiver), 1, data);
+        vm.stopPrank();
     }
 
     function testWithdrawThroughCustody() public {

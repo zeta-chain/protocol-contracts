@@ -23,6 +23,14 @@ interface IERC20CustodyEvents {
     /// @param amount The amount of tokens withdrawn.
     /// @param data The calldata passed to the contract call.
     event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data);
+
+    /// @notice Emitted when ERC20 token is whitelisted
+    /// @param token address of ERC20 token.
+    event Whitelisted(address indexed token);
+
+    /// @notice Emitted when ERC20 token is unwhitelisted
+    /// @param token address of ERC20 token.
+    event Unwhitelisted(address indexed token);
 }
 
 /// @title IERC20CustodyErrors
@@ -30,4 +38,6 @@ interface IERC20CustodyEvents {
 interface IERC20CustodyErrors {
     /// @notice Error for zero address input.
     error ZeroAddress();
+    /// @notice Error for not whitelisted ERC20 token
+    error NotWhitelisted();
 }

@@ -18,10 +18,14 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
 
     /// @notice Gateway contract.
     IGatewayEVM public immutable gateway;
+    /// @notice Mapping of whitelisted tokens => true/false.
+    mapping(address => bool) public whitelisted;
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice New role identifier for withdrawer role.
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
+    /// @notice New role identifier for whitelister role.
+    bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 
     /// @notice Constructor for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
@@ -33,6 +37,8 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
+        _grantRole(WHITELISTER_ROLE, admin_);
+        _grantRole(WHITELISTER_ROLE, tssAddress_);
     }
 
     /// @notice Pause contract.
@@ -43,6 +49,20 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
     /// @notice Unpause contract.
     function unpause() external onlyRole(PAUSER_ROLE) {
         _unpause();
+    }
+
+    /// @notice Whitelist ERC20 token.
+    /// @param token address of ERC20 token
+    function whitelist(address token) external onlyRole(WHITELISTER_ROLE) {
+        whitelisted[token] = true;
+        emit Whitelisted(token);
+    }
+
+    /// @notice Unwhitelist ERC20 token.
+    /// @param token address of ERC20 token
+    function unwhitelist(address token) external onlyRole(WHITELISTER_ROLE) {
+        whitelisted[token] = false;
+        emit Unwhitelisted(token);
     }
 
     /// @notice Withdraw directly transfers the tokens to the destination address without contract call.
@@ -60,6 +80,8 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
+        if (!whitelisted[token]) revert NotWhitelisted();
+
         IERC20(token).safeTransfer(to, amount);
 
         emit Withdraw(token, to, amount);
@@ -82,6 +104,8 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
+        if (!whitelisted[token]) revert NotWhitelisted();
+
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
@@ -109,6 +133,8 @@ contract ERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors, ReentrancyGua
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
+        if (!whitelisted[token]) revert NotWhitelisted();
+
         // Transfer the tokens to the Gateway contract
         IERC20(token).safeTransfer(address(gateway), amount);
 
