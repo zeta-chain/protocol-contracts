@@ -317,6 +317,7 @@ contract GatewayEVM is
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
+            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransferFrom(from, custody, amount);
         }
     }
@@ -335,6 +336,7 @@ contract GatewayEVM is
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
+            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
         }
     }
