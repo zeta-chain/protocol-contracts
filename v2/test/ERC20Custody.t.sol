@@ -191,6 +191,16 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         custody.withdrawAndCall(address(token), address(receiver), amount, data);
     }
 
+    function testForwardCallToReceiveERC20ThroughCustodyFailsIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        bytes memory data =
+            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        custody.withdrawAndCall(address(token), address(0), amount, data);
+    }
+
     function testForwardCallToReceiveERC20PartialThroughCustody() public {
         uint256 amount = 100_000;
         bytes memory data =
@@ -364,5 +374,14 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.prank(tssAddress);
         vm.expectRevert(InsufficientERC20Amount.selector);
         custody.withdrawAndRevert(address(token), address(receiver), amount, data);
+    }
+
+    function testWithdrawAndRevertThroughCustodyFailsIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        custody.withdrawAndRevert(address(token), address(0), amount, data);
     }
 }

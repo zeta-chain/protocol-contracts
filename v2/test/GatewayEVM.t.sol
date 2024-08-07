@@ -171,6 +171,14 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
+    function testExecuteFailsIfDestinationIsZeroAddress() public {
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.execute(address(0), data);
+    }
+
     function testForwardCallToReceiveNoParamsTogglePause() public {
         vm.prank(tssAddress);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
@@ -317,6 +325,12 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.deposit(destination, amount, address(token));
     }
 
+    function testFailDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        vm.expectRevert("ZeroAddress");
+        gateway.deposit(address(0), amount, address(token));
+    }
+
     function testDepositEthToTss() public {
         uint256 amount = 100_000;
         uint256 tssBalanceBefore = tssAddress.balance;
@@ -334,6 +348,13 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("InsufficientETHAmount");
         gateway.deposit{ value: amount }(destination);
+    }
+
+    function testFailDepositEthToTssIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+
+        vm.expectRevert("ZeroAddress");
+        gateway.deposit{ value: amount }(address(0));
     }
 
     function testDepositERC20ToCustodyWithPayload() public {
@@ -365,6 +386,15 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.depositAndCall(destination, amount, address(token), payload);
     }
 
+    function testFailDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert("ZeroAddress");
+        gateway.depositAndCall(address(0), amount, address(token), payload);
+    }
+
     function testDepositEthToTssWithPayload() public {
         uint256 amount = 100_000;
         uint256 tssBalanceBefore = tssAddress.balance;
@@ -384,6 +414,14 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("InsufficientETHAmount");
         gateway.depositAndCall{ value: amount }(destination, payload);
+    }
+
+    function testFailDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert("ZeroAddress");
+        gateway.depositAndCall{ value: amount }(address(0), payload);
     }
 
     function testCallWithPayload() public {

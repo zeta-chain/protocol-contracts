@@ -130,6 +130,7 @@ contract GatewayEVM is
         nonReentrant
         returns (bytes memory)
     {
+        if (destination == address(0)) revert ZeroAddress();
         bytes memory result = _execute(destination, data);
 
         emit Executed(destination, msg.value, data);
@@ -156,6 +157,7 @@ contract GatewayEVM is
         nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
+        if (to == address(0)) revert ZeroAddress();
         // Approve the target contract to spend the tokens
         if (!resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
@@ -192,6 +194,7 @@ contract GatewayEVM is
         nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
+        if (to == address(0)) revert ZeroAddress();
 
         IERC20(token).safeTransfer(address(to), amount);
         Revertable(to).onRevert(data);
@@ -203,6 +206,8 @@ contract GatewayEVM is
     /// @param receiver Address of the receiver.
     function deposit(address receiver) external payable whenNotPaused nonReentrant {
         if (msg.value == 0) revert InsufficientETHAmount();
+        if (receiver == address(0)) revert ZeroAddress();
+        
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
         if (!deposited) revert DepositFailed();
@@ -216,6 +221,7 @@ contract GatewayEVM is
     /// @param asset Address of the ERC20 token.
     function deposit(address receiver, uint256 amount, address asset) external whenNotPaused nonReentrant {
         if (amount == 0) revert InsufficientERC20Amount();
+        if (receiver == address(0)) revert ZeroAddress();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -227,6 +233,8 @@ contract GatewayEVM is
     /// @param payload Calldata to pass to the call.
     function depositAndCall(address receiver, bytes calldata payload) external payable whenNotPaused nonReentrant {
         if (msg.value == 0) revert InsufficientETHAmount();
+        if (receiver == address(0)) revert ZeroAddress();
+
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
         if (!deposited) revert DepositFailed();
@@ -250,6 +258,7 @@ contract GatewayEVM is
         nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
+        if (receiver == address(0)) revert ZeroAddress();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
