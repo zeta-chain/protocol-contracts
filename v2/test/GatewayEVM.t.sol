@@ -256,6 +256,15 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         gateway.executeRevert{ value: value }(address(receiver), data);
     }
+
+    function testExecuteRevertFailsIfReceiverIsZeroAddress() public {
+        uint256 value = 1 ether;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.executeRevert{ value: value }(address(0), data);
+    }
 }
 
 contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
