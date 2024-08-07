@@ -164,7 +164,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
-    function testExecuteWithERC20FailsIfNotCustoryOrConnector() public {
+    function testExecuteWithERC20FailsIfNotCustodyOrConnector() public {
         uint256 amount = 100_000;
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
@@ -174,7 +174,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.executeWithERC20(address(token), destination, amount, data);
     }
 
-    function testRevertWithERC20FailsIfNotCustoryOrConnector() public {
+    function testRevertWithERC20FailsIfNotCustodyOrConnector() public {
         uint256 amount = 100_000;
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);

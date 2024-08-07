@@ -160,7 +160,7 @@ contract GatewayEVM is
         if (!resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        bytes memory result = _execute(to, data);
+        _execute(to, data);
 
         // Reset approval
         if (!resetApproval(token, to)) revert ApprovalFailed();
