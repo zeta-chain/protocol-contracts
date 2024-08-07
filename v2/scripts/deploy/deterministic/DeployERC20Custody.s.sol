@@ -15,6 +15,7 @@ contract DeployERC20Custody is Script {
         vm.startBroadcast();
 
         ERC20Custody custody = new ERC20Custody{salt: salt}(gateway, tss, admin);
+        require(address(custody) != address(0), "deployment failed");
 
         address expectedAddr = vm.computeCreate2Address(
             salt,

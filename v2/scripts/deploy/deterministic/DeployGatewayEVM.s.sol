@@ -26,6 +26,8 @@ contract DeployGatewayEVM is Script {
         );
 
         GatewayEVM gatewayImpl = new GatewayEVM{salt: implSalt}();
+        require(address(gatewayImpl) != address(0), "gatewayImpl deployment failed");
+
         require(expectedImplAddress == address(gatewayImpl), "impl address doesn't match expected address");
 
         expectedProxyAddress = vm.computeCreate2Address(
@@ -43,6 +45,8 @@ contract DeployGatewayEVM is Script {
             address(gatewayImpl),
             abi.encodeWithSelector(GatewayEVM.initialize.selector, tss, address(zeta), admin)
         );
+        require(address(gatewayProxy) != address(0), "gatewayProxy deployment failed");
+
 
         require(expectedProxyAddress == address(gatewayProxy), "proxy address doesn't match expected address");
 

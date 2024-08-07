@@ -16,6 +16,7 @@ contract DeployZetaConnectorNonNative is Script {
         vm.startBroadcast();
 
         ZetaConnectorNonNative connector = new ZetaConnectorNonNative{salt: salt}(gateway, zeta, tss, admin);
+        require(address(connector) != address(0), "deployment failed");
 
         address expectedAddr = vm.computeCreate2Address(
             salt,

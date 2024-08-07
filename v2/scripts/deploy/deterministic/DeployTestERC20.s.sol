@@ -12,6 +12,7 @@ contract DeployTestERC20 is Script {
         vm.startBroadcast();
 
         TestERC20 zeta = new TestERC20{salt: erc20Salt}("zeta", "ZETA");
+        require(address(zeta) != address(0), "deployment failed");
 
         address expectedAddr = vm.computeCreate2Address(
             erc20Salt,
