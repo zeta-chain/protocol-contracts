@@ -14,6 +14,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
+import "./utils/Zeta.non-eth.sol";
 import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
@@ -29,7 +30,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
-    TestERC20 zeta;
+    ZetaNonEth zeta;
     address owner;
     address destination;
     address tssAddress;
@@ -49,14 +50,16 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-        zeta = new TestERC20("zeta", "ZETA");
 
+        zeta = new ZetaNonEth(tssAddress, tssAddress);
         proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+        vm.prank(tssAddress);
+        zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         receiver = new ReceiverEVM();
 
         vm.deal(tssAddress, 1 ether);
@@ -275,7 +278,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
-    TestERC20 zeta;
+    ZetaNonEth zeta;
     address owner;
     address destination;
     address tssAddress;
@@ -288,15 +291,16 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-        zeta = new TestERC20("zeta", "ZETA");
 
+        zeta = new ZetaNonEth(tssAddress, tssAddress);
         proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
-
+        vm.prank(tssAddress);
+        zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         vm.deal(tssAddress, 1 ether);
 
         vm.startPrank(owner);
@@ -305,6 +309,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         vm.stopPrank();
 
         token.mint(owner, ownerAmount);
+        vm.prank(tssAddress);
+        zetaConnector.withdraw(owner, ownerAmount, "");
     }
 
     function testDepositERC20ToCustody() public {
@@ -322,6 +328,18 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         assertEq(amount, custodyBalanceAfter);
 
         uint256 ownerAmountAfter = token.balanceOf(owner);
+        assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
+    function testDepositZetaToConnector() public {
+        uint256 amount = 100_000;
+        zeta.approve(address(gateway), amount);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposit(owner, destination, amount, address(zeta), "");
+        gateway.deposit(destination, amount, address(zeta));
+
+        uint256 ownerAmountAfter = zeta.balanceOf(owner);
         assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
