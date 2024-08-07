@@ -3,7 +3,6 @@ pragma solidity 0.8.26;
 
 import "./ZetaConnectorBase.sol";
 import "./interfaces/IZetaNonEthNew.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 /// @title ZetaConnectorNonNative
 /// @notice Implementation of ZetaConnectorBase for non-native token handling.
@@ -19,20 +18,20 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     error ExceedsMaxSupply();
 
     constructor(
-        address _gateway,
-        address _zetaToken,
-        address _tssAddress,
-        address _admin
+        address gateway_,
+        address zetaToken_,
+        address tssAddress_,
+        address admin_
     )
-        ZetaConnectorBase(_gateway, _zetaToken, _tssAddress, _admin)
+        ZetaConnectorBase(gateway_, zetaToken_, tssAddress_, admin_)
     { }
 
     /// @notice Set max supply for minting.
-    /// @param _maxSupply New max supply.
+    /// @param maxSupply_ New max supply.
     /// @dev This function can only be called by the TSS address.
-    function setMaxSupply(uint256 _maxSupply) external onlyRole(WITHDRAWER_ROLE) whenNotPaused {
-        maxSupply = _maxSupply;
-        emit MaxSupplyUpdated(_maxSupply);
+    function setMaxSupply(uint256 maxSupply_) external onlyRole(WITHDRAWER_ROLE) whenNotPaused {
+        maxSupply = maxSupply_;
+        emit MaxSupplyUpdated(maxSupply_);
     }
 
     /// @notice Withdraw tokens to a specified address.

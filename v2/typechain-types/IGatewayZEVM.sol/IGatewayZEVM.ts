@@ -33,13 +33,28 @@ export type ZContextStructOutput = [
   chainID: bigint
 ] & { origin: string; sender: string; chainID: bigint };
 
+export type RevertContextStruct = {
+  origin: BytesLike;
+  sender: AddressLike;
+  chainID: BigNumberish;
+};
+
+export type RevertContextStructOutput = [
+  origin: string,
+  sender: string,
+  chainID: bigint
+] & { origin: string; sender: string; chainID: bigint };
+
 export interface IGatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "call"
       | "deposit"
-      | "depositAndCall"
+      | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
+      | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
+      | "depositAndRevert"
       | "execute"
+      | "executeRevert"
       | "withdraw(bytes,uint256,address)"
       | "withdraw(uint256,uint256)"
       | "withdrawAndCall(bytes,uint256,address,bytes)"
@@ -55,12 +70,36 @@ export interface IGatewayZEVMInterface extends Interface {
     values: [AddressLike, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall",
+    functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
+    values: [ZContextStruct, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
     values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndRevert",
+    values: [
+      RevertContextStruct,
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
     values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeRevert",
+    values: [
+      RevertContextStruct,
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw(bytes,uint256,address)",
@@ -82,10 +121,22 @@ export interface IGatewayZEVMInterface extends Interface {
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall",
+    functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndRevert",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeRevert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "withdraw(bytes,uint256,address)",
     data: BytesLike
@@ -159,9 +210,32 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  depositAndCall: TypedContractMethod<
+  "depositAndCall((bytes,address,uint256),uint256,address,bytes)": TypedContractMethod<
     [
       context: ZContextStruct,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)": TypedContractMethod<
+    [
+      context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  depositAndRevert: TypedContractMethod<
+    [
+      context: RevertContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -174,6 +248,18 @@ export interface IGatewayZEVM extends BaseContract {
   execute: TypedContractMethod<
     [
       context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  executeRevert: TypedContractMethod<
+    [
+      context: RevertContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -231,10 +317,35 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "depositAndCall"
+    nameOrSignature: "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
   ): TypedContractMethod<
     [
       context: ZContextStruct,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
+  ): TypedContractMethod<
+    [
+      context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndRevert"
+  ): TypedContractMethod<
+    [
+      context: RevertContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -248,6 +359,19 @@ export interface IGatewayZEVM extends BaseContract {
   ): TypedContractMethod<
     [
       context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "executeRevert"
+  ): TypedContractMethod<
+    [
+      context: RevertContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,

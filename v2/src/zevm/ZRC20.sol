@@ -42,14 +42,10 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     uint256 private _totalSupply;
     string private _name;
     string private _symbol;
-    uint8 private _decimals;
+    uint8 private immutable _decimals;
 
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
-    }
-
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
     }
 
     /**
@@ -74,6 +70,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
         address gatewayAddress_
     ) {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
+        if (systemContractAddress_ == address(0) || gatewayAddress_ == address(0)) revert ZeroAddress();
         _name = name_;
         _symbol = symbol_;
         _decimals = decimals_;
@@ -279,6 +276,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @param addr, new system contract address.
      */
     function updateSystemContractAddress(address addr) external onlyFungible {
+        if (addr == address(0)) revert ZeroAddress();
         systemContractAddress = addr;
         emit UpdatedSystemContract(addr);
     }
@@ -288,6 +286,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      * @param addr, new gateway contract address.
      */
     function updateGatewayAddress(address addr) external onlyFungible {
+        if (addr == address(0)) revert ZeroAddress();
         gatewayAddress = addr;
         emit UpdatedGateway(addr);
     }

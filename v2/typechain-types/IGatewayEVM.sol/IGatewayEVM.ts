@@ -23,11 +23,44 @@ import type {
 
 export interface IGatewayEVMInterface extends Interface {
   getFunction(
-    nameOrSignature: "execute" | "executeWithERC20" | "revertWithERC20"
+    nameOrSignature:
+      | "call"
+      | "deposit(address)"
+      | "deposit(address,uint256,address)"
+      | "depositAndCall(address,bytes)"
+      | "depositAndCall(address,uint256,address,bytes)"
+      | "execute"
+      | "executeRevert"
+      | "executeWithERC20"
+      | "revertWithERC20"
   ): FunctionFragment;
 
   encodeFunctionData(
+    functionFragment: "call",
+    values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address)",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address,uint256,address)",
+    values: [AddressLike, BigNumberish, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,bytes)",
+    values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    values: [AddressLike, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "execute",
+    values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeRevert",
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
@@ -39,7 +72,28 @@ export interface IGatewayEVMInterface extends Interface {
     values: [AddressLike, AddressLike, BigNumberish, BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address,uint256,address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeRevert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeWithERC20",
     data: BytesLike
@@ -93,9 +147,50 @@ export interface IGatewayEVM extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  call: TypedContractMethod<
+    [receiver: AddressLike, payload: BytesLike],
+    [void],
+    "nonpayable"
+  >;
+
+  "deposit(address)": TypedContractMethod<
+    [receiver: AddressLike],
+    [void],
+    "payable"
+  >;
+
+  "deposit(address,uint256,address)": TypedContractMethod<
+    [receiver: AddressLike, amount: BigNumberish, asset: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  "depositAndCall(address,bytes)": TypedContractMethod<
+    [receiver: AddressLike, payload: BytesLike],
+    [void],
+    "payable"
+  >;
+
+  "depositAndCall(address,uint256,address,bytes)": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      payload: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   execute: TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
     [string],
+    "payable"
+  >;
+
+  executeRevert: TypedContractMethod<
+    [destination: AddressLike, data: BytesLike],
+    [void],
     "payable"
   >;
 
@@ -126,10 +221,53 @@ export interface IGatewayEVM extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "call"
+  ): TypedContractMethod<
+    [receiver: AddressLike, payload: BytesLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "deposit(address)"
+  ): TypedContractMethod<[receiver: AddressLike], [void], "payable">;
+  getFunction(
+    nameOrSignature: "deposit(address,uint256,address)"
+  ): TypedContractMethod<
+    [receiver: AddressLike, amount: BigNumberish, asset: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,bytes)"
+  ): TypedContractMethod<
+    [receiver: AddressLike, payload: BytesLike],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,uint256,address,bytes)"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      payload: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "execute"
   ): TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
     [string],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "executeRevert"
+  ): TypedContractMethod<
+    [destination: AddressLike, data: BytesLike],
+    [void],
     "payable"
   >;
   getFunction(
