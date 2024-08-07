@@ -27,6 +27,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     address addr1;
     address fungibleModule;
     error ZeroAddress();
+    error LowBalance();
 
     function setUp() public {
         owner = address(this);
@@ -72,6 +73,27 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
         assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
+    }
+
+    function testWithdrawZRC20FailsIfNoBalanceForGasFee() public {
+        uint256 amount = 1;
+        uint256 ownerBalance = zrc20.balanceOf(owner);
+        zrc20.transfer(address(0x123), ownerBalance);
+
+        vm.prank(fungibleModule);
+        zrc20.updateGasLimit(10);
+
+        vm.expectRevert(LowBalance.selector);
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20));
+    }
+
+    function testWithdrawZRC20FailsIfNoBalanceForTransfer() public {
+        uint256 amount = 2;
+        uint256 ownerBalance = zrc20.balanceOf(owner);
+        zrc20.transfer(address(0x123), ownerBalance - 1);
+
+        vm.expectRevert(LowBalance.selector);
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20));
     }
 
     function testWithdrawZRC20FailsIsAmountIs0() public {
@@ -198,6 +220,16 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
         assertEq(fungibleModuleBalanceBefore, fungibleModule.balance);
+    }
+
+    function testWithdrawZETAFailsIfNoBalance() public {
+        uint256 amount = 1;
+        uint256 ownerBalance = zetaToken.balanceOf(owner);
+        zetaToken.transfer(address(0x123), ownerBalance);
+        uint256 chainId = 1;
+
+        vm.expectRevert();
+        gateway.withdraw(amount, chainId);
     }
 
     function testWithdrawZETAWithMessage() public {
