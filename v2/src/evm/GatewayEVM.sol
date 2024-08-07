@@ -207,7 +207,7 @@ contract GatewayEVM is
     function deposit(address receiver) external payable whenNotPaused nonReentrant {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        
+
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
         if (!deposited) revert DepositFailed();

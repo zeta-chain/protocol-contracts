@@ -16,6 +16,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "ConnectorInitialized",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "CustodyInitialized",
     inputs: [],
   },

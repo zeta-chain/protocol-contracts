@@ -26,6 +26,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     address owner;
     address addr1;
     address fungibleModule;
+
     error ZeroAddress();
     error LowBalance();
 
@@ -438,7 +439,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.expectRevert(InvalidTarget.selector);
         gateway.deposit(address(zrc20), amount, fungibleModule);
     }
-    
+
     function testExecuteFailsIfZrc20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         zContext memory context =
