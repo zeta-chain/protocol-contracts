@@ -41,8 +41,10 @@ contract ZetaConnectorNonNativeTest is
     address tssAddress;
 
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    error ExceedsMaxSupply();
 
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -266,5 +268,46 @@ contract ZetaConnectorNonNativeTest is
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+    }
+
+    function testWithdrawAndFailsIfMaxSupplyIsReached() public {
+        uint256 amount = 100_000;
+
+        vm.prank(tssAddress);
+        zetaConnector.setMaxSupply(amount);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ExceedsMaxSupply.selector);
+        zetaConnector.withdraw(address(receiver), amount + 1, "");
+    }
+
+    function testWithdrawAndCallFailsIfMaxSupplyIsReached() public {
+        uint256 amount = 100_000;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        zetaConnector.setMaxSupply(amount);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ExceedsMaxSupply.selector);
+        zetaConnector.withdrawAndCall(address(receiver), amount + 1, data, "");
+    }
+
+    function testWithdrawAndRevertFailsIfMaxSupplyIsReached() public {
+        uint256 amount = 100_000;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        zetaConnector.setMaxSupply(amount);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ExceedsMaxSupply.selector);
+        zetaConnector.withdrawAndRevert(address(receiver), amount + 1, data, "");
+    }
+
+    function testSexMaxSupplyFailsIfSenderIsNotTss() public {
+        vm.prank(owner);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        zetaConnector.setMaxSupply(10_000);
     }
 }
