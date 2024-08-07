@@ -208,7 +208,7 @@ contract ZRC20Test is Test, ZRC20Errors {
     function testUpdateSystemContractAddress() public {
         vm.prank(fungibleModule);
         zrc20.updateSystemContractAddress(address(0x3211));
-        assertEq(zrc20.systemContractAddress(), address(0x3211));
+        assertEq(zrc20.SYSTEM_CONTRACT_ADDRESS(), address(0x3211));
     }
 
     function testUpdateSystemContractAddressFailsIfSenderIsNotFungible() public {
@@ -230,7 +230,7 @@ contract ZRC20Test is Test, ZRC20Errors {
     function testUpdateGasLimit() public {
         vm.prank(fungibleModule);
         zrc20.updateGasLimit(10);
-        assertEq(10, zrc20.gasLimit());
+        assertEq(10, zrc20.GAS_LIMIT());
     }
 
     function testUpdateGasLimitFailsIfSenderIsNotFungible() public {
@@ -241,7 +241,7 @@ contract ZRC20Test is Test, ZRC20Errors {
     function testUpdateProtocolFlatFee() public {
         vm.prank(fungibleModule);
         zrc20.updateProtocolFlatFee(10);
-        assertEq(10, zrc20.protocolFlatFee());
+        assertEq(10, zrc20.PROTOCOL_FLAT_FEE());
     }
 
     function testUpdateProtocolFlatFeeFailsIfSenderIsNotFungible() public {
