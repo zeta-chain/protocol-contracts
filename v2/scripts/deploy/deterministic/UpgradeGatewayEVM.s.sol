@@ -10,13 +10,7 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract UpgradeGatewayEVM is Script {
     function run() external {
-        // TODO (https://github.com/zeta-chain/protocol-contracts/issues/251): should be passed as arg
-        string memory mnemonic = "test test test test test test test test test test test junk";
-        uint256 privateKey = vm.deriveKey(mnemonic, 0);
-        address deployer = vm.rememberKey(privateKey);
-
-        // TODO (https://github.com/zeta-chain/protocol-contracts/issues/251): should be passed as arg
-        address proxy = vm.envOr("PROXY_ADDRESS", address(0xA7806c719bd377F15bA6CaDf2F94Afb7FfA66256));
+        address proxy = vm.envAddress("GATEWAY_EVM_PROXY");
 
         GatewayEVM prevImpl = GatewayEVM(proxy);
 
