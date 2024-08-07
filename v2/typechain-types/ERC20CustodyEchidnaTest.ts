@@ -41,7 +41,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
       | "supportsInterface"
       | "testERC20"
       | "testWithdrawAndCall"
-      | "tssAddress"
       | "unpause"
       | "withdraw"
       | "withdrawAndCall"
@@ -108,10 +107,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     functionFragment: "testWithdrawAndCall",
     values: [AddressLike, BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tssAddress",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
@@ -165,7 +160,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     functionFragment: "testWithdrawAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
@@ -425,8 +419,6 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     "nonpayable"
   >;
 
-  tssAddress: TypedContractMethod<[], [string], "view">;
-
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<
@@ -526,9 +518,6 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     [void],
     "nonpayable"
   >;
-  getFunction(
-    nameOrSignature: "tssAddress"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;

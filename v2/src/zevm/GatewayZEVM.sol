@@ -16,6 +16,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 /// @notice The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayZEVM is
+    IGatewayZEVM,
     IGatewayZEVMEvents,
     IGatewayZEVMErrors,
     Initializable,
@@ -50,8 +51,8 @@ contract GatewayZEVM is
 
     /// @notice Initialize with address of zeta token and admin account set as DEFAULT_ADMIN_ROLE.
     /// @dev Using admin to authorize upgrades and pause.
-    function initialize(address _zetaToken, address _admin) public initializer {
-        if (_zetaToken == address(0)) {
+    function initialize(address zetaToken_, address admin_) public initializer {
+        if (zetaToken_ == address(0)) {
             revert ZeroAddress();
         }
         __UUPSUpgradeable_init();
@@ -59,9 +60,9 @@ contract GatewayZEVM is
         __Pausable_init();
         __ReentrancyGuard_init();
 
-        _grantRole(DEFAULT_ADMIN_ROLE, _admin);
-        _grantRole(PAUSER_ROLE, _admin);
-        zetaToken = _zetaToken;
+        _grantRole(DEFAULT_ADMIN_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, admin_);
+        zetaToken = zetaToken_;
     }
 
     /// @dev Authorizes the upgrade of the contract.
@@ -182,7 +183,7 @@ contract GatewayZEVM is
     function deposit(address zrc20, uint256 amount, address target) external onlyFungible whenNotPaused {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        IZRC20(zrc20).deposit(target, amount);
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
     }
 
     /// @notice Execute a user-specified contract on ZEVM.
@@ -224,7 +225,7 @@ contract GatewayZEVM is
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        IZRC20(zrc20).deposit(target, amount);
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
 
@@ -288,7 +289,7 @@ contract GatewayZEVM is
     {
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        IZRC20(zrc20).deposit(target, amount);
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onRevert(context, zrc20, amount, message);
     }
 }
