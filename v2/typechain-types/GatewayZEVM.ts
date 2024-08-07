@@ -592,7 +592,7 @@ export interface GatewayZEVM extends BaseContract {
   >;
 
   initialize: TypedContractMethod<
-    [_zetaToken: AddressLike, _admin: AddressLike],
+    [zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -774,7 +774,7 @@ export interface GatewayZEVM extends BaseContract {
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
-    [_zetaToken: AddressLike, _admin: AddressLike],
+    [zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;

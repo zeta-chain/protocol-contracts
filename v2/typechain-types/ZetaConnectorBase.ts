@@ -39,7 +39,6 @@ export interface ZetaConnectorBaseInterface extends Interface {
       | "renounceRole"
       | "revokeRole"
       | "supportsInterface"
-      | "tssAddress"
       | "unpause"
       | "withdraw"
       | "withdrawAndCall"
@@ -102,10 +101,6 @@ export interface ZetaConnectorBaseInterface extends Interface {
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tssAddress",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
@@ -155,7 +150,6 @@ export interface ZetaConnectorBaseInterface extends Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
@@ -393,8 +387,6 @@ export interface ZetaConnectorBase extends BaseContract {
     "view"
   >;
 
-  tssAddress: TypedContractMethod<[], [string], "view">;
-
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<
@@ -486,9 +478,6 @@ export interface ZetaConnectorBase extends BaseContract {
   getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "tssAddress"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;

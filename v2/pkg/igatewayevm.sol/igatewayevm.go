@@ -31,7 +31,7 @@ var (
 
 // IGatewayEVMMetaData contains all meta data concerning the IGatewayEVM contract.
 var IGatewayEVMMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revertWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revertWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
 }
 
 // IGatewayEVMABI is the input ABI used to generate the binding from.
@@ -180,6 +180,111 @@ func (_IGatewayEVM *IGatewayEVMTransactorRaw) Transact(opts *bind.TransactOpts, 
 	return _IGatewayEVM.Contract.contract.Transact(opts, method, params...)
 }
 
+// Call is a paid mutator transaction binding the contract method 0x1b8b921d.
+//
+// Solidity: function call(address receiver, bytes payload) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) Call(opts *bind.TransactOpts, receiver common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "call", receiver, payload)
+}
+
+// Call is a paid mutator transaction binding the contract method 0x1b8b921d.
+//
+// Solidity: function call(address receiver, bytes payload) returns()
+func (_IGatewayEVM *IGatewayEVMSession) Call(receiver common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Call(&_IGatewayEVM.TransactOpts, receiver, payload)
+}
+
+// Call is a paid mutator transaction binding the contract method 0x1b8b921d.
+//
+// Solidity: function call(address receiver, bytes payload) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Call(receiver common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Call(&_IGatewayEVM.TransactOpts, receiver, payload)
+}
+
+// Deposit is a paid mutator transaction binding the contract method 0xf340fa01.
+//
+// Solidity: function deposit(address receiver) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) Deposit(opts *bind.TransactOpts, receiver common.Address) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "deposit", receiver)
+}
+
+// Deposit is a paid mutator transaction binding the contract method 0xf340fa01.
+//
+// Solidity: function deposit(address receiver) payable returns()
+func (_IGatewayEVM *IGatewayEVMSession) Deposit(receiver common.Address) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit(&_IGatewayEVM.TransactOpts, receiver)
+}
+
+// Deposit is a paid mutator transaction binding the contract method 0xf340fa01.
+//
+// Solidity: function deposit(address receiver) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Deposit(receiver common.Address) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit(&_IGatewayEVM.TransactOpts, receiver)
+}
+
+// Deposit0 is a paid mutator transaction binding the contract method 0xf45346dc.
+//
+// Solidity: function deposit(address receiver, uint256 amount, address asset) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) Deposit0(opts *bind.TransactOpts, receiver common.Address, amount *big.Int, asset common.Address) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "deposit0", receiver, amount, asset)
+}
+
+// Deposit0 is a paid mutator transaction binding the contract method 0xf45346dc.
+//
+// Solidity: function deposit(address receiver, uint256 amount, address asset) returns()
+func (_IGatewayEVM *IGatewayEVMSession) Deposit0(receiver common.Address, amount *big.Int, asset common.Address) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit0(&_IGatewayEVM.TransactOpts, receiver, amount, asset)
+}
+
+// Deposit0 is a paid mutator transaction binding the contract method 0xf45346dc.
+//
+// Solidity: function deposit(address receiver, uint256 amount, address asset) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Deposit0(receiver common.Address, amount *big.Int, asset common.Address) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit0(&_IGatewayEVM.TransactOpts, receiver, amount, asset)
+}
+
+// DepositAndCall is a paid mutator transaction binding the contract method 0x29c59b5d.
+//
+// Solidity: function depositAndCall(address receiver, bytes payload) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) DepositAndCall(opts *bind.TransactOpts, receiver common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "depositAndCall", receiver, payload)
+}
+
+// DepositAndCall is a paid mutator transaction binding the contract method 0x29c59b5d.
+//
+// Solidity: function depositAndCall(address receiver, bytes payload) payable returns()
+func (_IGatewayEVM *IGatewayEVMSession) DepositAndCall(receiver common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall(&_IGatewayEVM.TransactOpts, receiver, payload)
+}
+
+// DepositAndCall is a paid mutator transaction binding the contract method 0x29c59b5d.
+//
+// Solidity: function depositAndCall(address receiver, bytes payload) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall(receiver common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall(&_IGatewayEVM.TransactOpts, receiver, payload)
+}
+
+// DepositAndCall0 is a paid mutator transaction binding the contract method 0x8c6f037f.
+//
+// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) DepositAndCall0(opts *bind.TransactOpts, receiver common.Address, amount *big.Int, asset common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "depositAndCall0", receiver, amount, asset, payload)
+}
+
+// DepositAndCall0 is a paid mutator transaction binding the contract method 0x8c6f037f.
+//
+// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload) returns()
+func (_IGatewayEVM *IGatewayEVMSession) DepositAndCall0(receiver common.Address, amount *big.Int, asset common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload)
+}
+
+// DepositAndCall0 is a paid mutator transaction binding the contract method 0x8c6f037f.
+//
+// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall0(receiver common.Address, amount *big.Int, asset common.Address, payload []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload)
+}
+
 // Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
 //
 // Solidity: function execute(address destination, bytes data) payable returns(bytes)
@@ -199,6 +304,27 @@ func (_IGatewayEVM *IGatewayEVMSession) Execute(destination common.Address, data
 // Solidity: function execute(address destination, bytes data) payable returns(bytes)
 func (_IGatewayEVM *IGatewayEVMTransactorSession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
 	return _IGatewayEVM.Contract.Execute(&_IGatewayEVM.TransactOpts, destination, data)
+}
+
+// ExecuteRevert is a paid mutator transaction binding the contract method 0x35c018db.
+//
+// Solidity: function executeRevert(address destination, bytes data) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) ExecuteRevert(opts *bind.TransactOpts, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "executeRevert", destination, data)
+}
+
+// ExecuteRevert is a paid mutator transaction binding the contract method 0x35c018db.
+//
+// Solidity: function executeRevert(address destination, bytes data) payable returns()
+func (_IGatewayEVM *IGatewayEVMSession) ExecuteRevert(destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data)
+}
+
+// ExecuteRevert is a paid mutator transaction binding the contract method 0x35c018db.
+//
+// Solidity: function executeRevert(address destination, bytes data) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteRevert(destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data)
 }
 
 // ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
