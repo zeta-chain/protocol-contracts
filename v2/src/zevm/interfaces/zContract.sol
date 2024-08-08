@@ -7,7 +7,6 @@ struct zContext {
     uint256 chainID;
 }
 
-
 interface zContract {
     function onCrossChainCall(
         zContext calldata context,

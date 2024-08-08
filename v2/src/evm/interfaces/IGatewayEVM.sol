@@ -1,6 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+/// @notice Struct containing revert options
+/// @param revertAddress Address to receive revert.
+/// @param callOnRevert Flag if onRevert hook should be called.
+/// @pararm abortAddress Address to receive funds if aborted.
+struct RevertOptions {
+    address revertAddress;
+    bool callOnRevert;
+    address abortAddress;
+}
+
 /// @title IGatewayEVMEvents
 /// @notice Interface for the events emitted by the GatewayEVM contract.
 interface IGatewayEVMEvents {
@@ -36,13 +46,15 @@ interface IGatewayEVMEvents {
     /// @param amount The amount of ETH or tokens deposited.
     /// @param asset The address of the ERC20 token (zero address if ETH).
     /// @param payload The calldata passed with the deposit.
-    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+    /// @param revertOptions Revert options.
+    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, RevertOptions revertOptions);
 
     /// @notice Emitted when an omnichain smart contract call is made without asset transfer.
     /// @param sender The address of the sender.
     /// @param receiver The address of the receiver.
     /// @param payload The calldata passed to the call.
-    event Call(address indexed sender, address indexed receiver, bytes payload);
+    /// @param revertOptions Revert options.
+    event Call(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
 }
 
 /// @title IGatewayEVMErrors
@@ -104,30 +116,48 @@ interface IGatewayEVM {
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
-    function deposit(address receiver) external payable;
+    /// @param revertOptions Revert options.
+    function deposit(address receiver, RevertOptions calldata revertOptions) external payable;
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
-    function deposit(address receiver, uint256 amount, address asset) external;
+    /// @param revertOptions Revert options.
+    function deposit(address receiver, uint256 amount, address asset, RevertOptions calldata revertOptions) external;
 
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, bytes calldata payload) external payable;
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable;
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external;
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
+        address asset,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function call(address receiver, bytes calldata payload) external;
+    /// @param revertOptions Revert options.
+    function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
 }
 
 /// @title Revertable
