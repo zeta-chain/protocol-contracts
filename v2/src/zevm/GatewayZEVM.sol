@@ -279,7 +279,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function executeRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -302,7 +302,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
