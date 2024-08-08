@@ -18,7 +18,7 @@ import "src/evm/ZetaConnectorNonNative.sol";
 
 import "./utils/IReceiverEVM.sol";
 import "./utils/Zeta.non-eth.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMErrors, IGatewayEVMEvents } from "src/evm/interfaces/IGatewayEVM.sol";
 import "src/evm/interfaces/IZetaConnector.sol";
 
 contract ZetaConnectorNonNativeTest is

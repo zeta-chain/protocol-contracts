@@ -117,12 +117,24 @@ contract GatewayZEVM is
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
-    function withdraw(bytes memory receiver, uint256 amount, address zrc20) external nonReentrant whenNotPaused {
+    /// @param revertOptions Revert options.
+    function withdraw(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
+        emit Withdrawal(
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", revertOptions
+        );
     }
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
@@ -130,11 +142,13 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
         uint256 amount,
         address zrc20,
-        bytes calldata message
+        bytes calldata message,
+        RevertOptions calldata revertOptions
     )
         external
         nonReentrant
@@ -144,28 +158,18 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
+        emit Withdrawal(
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, revertOptions
+        );
     }
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param amount The amount of tokens to withdraw.
-    function withdraw(uint256 amount, uint256 chainId) external nonReentrant whenNotPaused {
-        if (amount == 0) revert InsufficientZetaAmount();
-
-        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(
-            msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, ""
-        );
-    }
-
-    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
-    /// @param amount The amount of tokens to withdraw.
-    /// @param chainId Chain id of the external chain.
-    /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(
+    /// @param revertOptions Revert options.
+    function withdraw(
         uint256 amount,
         uint256 chainId,
-        bytes calldata message
+        RevertOptions calldata revertOptions
     )
         external
         nonReentrant
@@ -175,17 +179,66 @@ contract GatewayZEVM is
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawal(
-            msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, message
+            msg.sender,
+            chainId,
+            abi.encodePacked(FUNGIBLE_MODULE_ADDRESS),
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            "",
+            revertOptions
+        );
+    }
+
+    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param chainId Chain id of the external chain.
+    /// @param message The calldata to pass to the contract call.
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
+        if (amount == 0) revert InsufficientZetaAmount();
+
+        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
+        emit Withdrawal(
+            msg.sender,
+            chainId,
+            abi.encodePacked(FUNGIBLE_MODULE_ADDRESS),
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            message,
+            revertOptions
         );
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata to pass to the contract call.
-    function call(bytes memory receiver, uint256 chainId, bytes calldata message) external nonReentrant whenNotPaused {
+    /// @param revertOptions Revert options.
+    function call(
+        bytes memory receiver,
+        uint256 chainId,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
 
-        emit Call(msg.sender, chainId, receiver, message);
+        emit Call(msg.sender, chainId, receiver, message, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.

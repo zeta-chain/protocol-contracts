@@ -8,19 +8,24 @@ import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
 import "src/evm/ERC20Custody.sol";
-import "src/evm/GatewayEVM.sol";
+import { GatewayEVM } from "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
 
 import "./utils/SenderZEVM.sol";
 
 import "./utils/SystemContractMock.sol";
 
-import "src/zevm/GatewayZEVM.sol";
+import { GatewayZEVM } from "src/zevm/GatewayZEVM.sol";
+import { IGatewayZEVM } from "src/zevm/GatewayZEVM.sol";
+import { IGatewayZEVMErrors } from "src/zevm/GatewayZEVM.sol";
+import { IGatewayZEVMEvents } from "src/zevm/GatewayZEVM.sol";
+
+import { IGatewayEVMErrors } from "src/evm/GatewayEVM.sol";
+import { IGatewayEVMEvents } from "src/evm/GatewayEVM.sol";
+
 import "src/zevm/ZRC20.sol";
 
 import "./utils/IReceiverEVM.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
-import "src/zevm/interfaces/IGatewayZEVM.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -55,6 +60,8 @@ contract GatewayEVMZEVMTest is
     SystemContractMock systemContract;
     ZRC20 zrc20;
     address ownerZEVM;
+
+    RevertOptions revertOptions;
 
     function setUp() public {
         // evm
@@ -108,6 +115,9 @@ contract GatewayEVMZEVMTest is
         zrc20.approve(address(gatewayZEVM), 1_000_000);
 
         vm.deal(tssAddress, 1 ether);
+
+        revertOptions =
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
     }
 
     function testCallReceiverEVMFromZEVM() public {
@@ -121,8 +131,8 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Call(address(ownerZEVM), chainId, abi.encodePacked(receiverEVM), message);
-        gatewayZEVM.call(abi.encodePacked(receiverEVM), chainId, message);
+        emit Call(address(ownerZEVM), chainId, abi.encodePacked(receiverEVM), message, revertOptions);
+        gatewayZEVM.call(abi.encodePacked(receiverEVM), chainId, message, revertOptions);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
@@ -141,8 +151,13 @@ contract GatewayEVMZEVMTest is
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
-        bytes memory data =
-            abi.encodeWithSignature("call(bytes,uint256,bytes)", abi.encodePacked(receiverEVM), chainId, message);
+        bytes memory data = abi.encodeWithSignature(
+            "call(bytes,uint256,bytes,(address,bool,address))",
+            abi.encodePacked(receiverEVM),
+            chainId,
+            message,
+            revertOptions
+        );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
         senderZEVM.callReceiver(abi.encodePacked(receiverEVM), chainId, str, num, flag);
@@ -174,10 +189,11 @@ contract GatewayEVMZEVMTest is
             1_000_000,
             0,
             zrc20.PROTOCOL_FLAT_FEE(),
-            message
+            message,
+            revertOptions
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), message);
+        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 1_000_000, address(zrc20), message, revertOptions);
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
@@ -203,11 +219,12 @@ contract GatewayEVMZEVMTest is
         uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "withdrawAndCall(bytes,uint256,address,bytes)",
+            "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address))",
             abi.encodePacked(receiverEVM),
             1_000_000,
             address(zrc20),
-            message
+            message,
+            revertOptions
         );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);

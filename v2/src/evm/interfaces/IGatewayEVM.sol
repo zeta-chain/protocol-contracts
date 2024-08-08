@@ -47,7 +47,14 @@ interface IGatewayEVMEvents {
     /// @param asset The address of the ERC20 token (zero address if ETH).
     /// @param payload The calldata passed with the deposit.
     /// @param revertOptions Revert options.
-    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, RevertOptions revertOptions);
+    event Deposit(
+        address indexed sender,
+        address indexed receiver,
+        uint256 amount,
+        address asset,
+        bytes payload,
+        RevertOptions revertOptions
+    );
 
     /// @notice Emitted when an omnichain smart contract call is made without asset transfer.
     /// @param sender The address of the sender.
