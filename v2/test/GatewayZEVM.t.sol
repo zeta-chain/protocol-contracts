@@ -169,13 +169,19 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testWithdrawZETAFailsIfAmountIsZero() public {
         vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.withdraw(0, 1);
+        gateway.withdraw(abi.encodePacked(addr1), 0, 1);
     }
 
     function testWithdrawAndcallZETAFailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.withdrawAndCall(0, 1, message);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message);
+    }
+
+    function testWithdrawAndcallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message);
     }
 
     function testWithdrawZETA() public {
@@ -186,8 +192,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawal(owner, chainId, abi.encodePacked(fungibleModule), address(zetaToken), amount, 0, 0, "");
-        gateway.withdraw(amount, chainId);
+        emit Withdrawal(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "");
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId);
 
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
         assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
@@ -211,7 +217,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zetaToken.approve(address(gateway), 0);
 
         vm.expectRevert();
-        gateway.withdraw(amount, chainId);
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId);
 
         // Verify balances not changed
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
@@ -230,7 +236,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectRevert();
-        gateway.withdraw(amount, chainId);
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId);
     }
 
     function testWithdrawZETAWithMessage() public {
@@ -242,8 +248,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawal(owner, chainId, abi.encodePacked(fungibleModule), address(zetaToken), amount, 0, 0, message);
-        gateway.withdrawAndCall(amount, chainId, message);
+        emit Withdrawal(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message);
 
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
         assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
@@ -268,7 +274,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zetaToken.approve(address(gateway), 0);
 
         vm.expectRevert();
-        gateway.withdrawAndCall(amount, chainId, message);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message);
 
         // Verify balances not changed
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
