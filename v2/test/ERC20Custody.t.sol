@@ -75,6 +75,16 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.deal(tssAddress, 1 ether);
     }
 
+    function testWhitelistFailsIfZeroAddress() public {
+        vm.expectRevert(ZeroAddress.selector);
+        custody.whitelist(address(0));
+    }
+
+    function testUnwhitelistFailsIfZeroAddress() public {
+        vm.expectRevert(ZeroAddress.selector);
+        custody.unwhitelist(address(0));
+    }
+
     function testWhitelistFailsIfSenderIsNotWhitelister() public {
         vm.prank(address(0x123));
         vm.expectRevert(

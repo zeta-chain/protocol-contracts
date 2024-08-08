@@ -54,6 +54,7 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @notice Whitelist ERC20 token.
     /// @param token address of ERC20 token
     function whitelist(address token) external onlyRole(WHITELISTER_ROLE) {
+        if (token == address(0)) revert ZeroAddress();
         whitelisted[token] = true;
         emit Whitelisted(token);
     }
@@ -61,6 +62,7 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @notice Unwhitelist ERC20 token.
     /// @param token address of ERC20 token
     function unwhitelist(address token) external onlyRole(WHITELISTER_ROLE) {
+        if (token == address(0)) revert ZeroAddress();
         whitelisted[token] = false;
         emit Unwhitelisted(token);
     }
