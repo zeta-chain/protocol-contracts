@@ -53,7 +53,7 @@ contract TestZContract is UniversalContract {
     /// @param message The calldata passed to the contract call.
     /// @dev Decodes the message and emits a ContextDataRevert event.
     function onRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         bytes calldata message
