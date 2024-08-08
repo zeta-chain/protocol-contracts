@@ -422,15 +422,15 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
   withdraw: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
 
   withdrawAndCall: TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -440,8 +440,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
 
   withdrawAndRevert: TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -524,7 +524,7 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -532,8 +532,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -544,8 +544,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     nameOrSignature: "withdrawAndRevert"
   ): TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
