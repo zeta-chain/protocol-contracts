@@ -488,4 +488,11 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         emit Call(owner, destination, payload);
         gateway.call(destination, payload);
     }
+
+    function testCallWithPayloadFailsIfDestinationIsZeroAddress() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.call(address(0), payload);
+    }
 }
