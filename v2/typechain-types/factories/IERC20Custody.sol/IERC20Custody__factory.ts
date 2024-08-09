@@ -4,11 +4,109 @@
 
 import { Contract, Interface, type ContractRunner } from "ethers";
 import type {
-  IERC20CustodyEvents,
-  IERC20CustodyEventsInterface,
-} from "../../IERC20Custody.sol/IERC20CustodyEvents";
+  IERC20Custody,
+  IERC20CustodyInterface,
+} from "../../IERC20Custody.sol/IERC20Custody";
 
 const _abi = [
+  {
+    type: "function",
+    name: "whitelisted",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "withdraw",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "to",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "withdrawAndCall",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "to",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "data",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "withdrawAndRevert",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "to",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "data",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
   {
     type: "event",
     name: "Unwhitelisted",
@@ -122,21 +220,27 @@ const _abi = [
     ],
     anonymous: false,
   },
+  {
+    type: "error",
+    name: "NotWhitelisted",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "ZeroAddress",
+    inputs: [],
+  },
 ] as const;
 
-export class IERC20CustodyEvents__factory {
+export class IERC20Custody__factory {
   static readonly abi = _abi;
-  static createInterface(): IERC20CustodyEventsInterface {
-    return new Interface(_abi) as IERC20CustodyEventsInterface;
+  static createInterface(): IERC20CustodyInterface {
+    return new Interface(_abi) as IERC20CustodyInterface;
   }
   static connect(
     address: string,
     runner?: ContractRunner | null
-  ): IERC20CustodyEvents {
-    return new Contract(
-      address,
-      _abi,
-      runner
-    ) as unknown as IERC20CustodyEvents;
+  ): IERC20Custody {
+    return new Contract(address, _abi, runner) as unknown as IERC20Custody;
   }
 }

@@ -17,8 +17,6 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayZEVM is
     IGatewayZEVM,
-    IGatewayZEVMEvents,
-    IGatewayZEVMErrors,
     Initializable,
     AccessControlUpgradeable,
     UUPSUpgradeable,

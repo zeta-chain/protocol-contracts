@@ -310,6 +310,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         vm.startPrank(owner);
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
+
+        custody.whitelist(address(token));
         vm.stopPrank();
 
         token.mint(owner, ownerAmount);
@@ -333,6 +335,17 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         uint256 ownerAmountAfter = token.balanceOf(owner);
         assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
+    function testDepositERC20ToCustodyFailsIfTokenIsNotWhitelisted() public {
+        uint256 amount = 100_000;
+        token.approve(address(gateway), amount);
+
+        vm.prank(owner);
+        custody.unwhitelist(address(token));
+
+        vm.expectRevert(NotWhitelistedInCustody.selector);
+        gateway.deposit(destination, amount, address(token));
     }
 
     function testDepositZetaToConnector() public {
@@ -386,6 +399,19 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("ZeroAddress");
         gateway.deposit{ value: amount }(address(0));
+    }
+
+    function testDepositERC20ToCustodyWithPayloadFailsIfTokenIsNotWhitelisted() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount);
+
+        vm.prank(owner);
+        custody.unwhitelist(address(token));
+
+        vm.expectRevert(NotWhitelistedInCustody.selector);
+        gateway.depositAndCall(destination, amount, address(token), payload);
     }
 
     function testDepositERC20ToCustodyWithPayload() public {

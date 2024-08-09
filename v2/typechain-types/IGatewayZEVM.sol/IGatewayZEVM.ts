@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,6 +18,7 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "../common";
@@ -60,6 +62,8 @@ export interface IGatewayZEVMInterface extends Interface {
       | "withdrawAndCall(bytes,uint256,address,bytes)"
       | "withdrawAndCall(uint256,uint256,bytes)"
   ): FunctionFragment;
+
+  getEvent(nameOrSignatureOrTopic: "Call" | "Withdrawal"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "call",
@@ -153,6 +157,68 @@ export interface IGatewayZEVMInterface extends Interface {
     functionFragment: "withdrawAndCall(uint256,uint256,bytes)",
     data: BytesLike
   ): Result;
+}
+
+export namespace CallEvent {
+  export type InputTuple = [
+    sender: AddressLike,
+    chainId: BigNumberish,
+    receiver: BytesLike,
+    message: BytesLike
+  ];
+  export type OutputTuple = [
+    sender: string,
+    chainId: bigint,
+    receiver: string,
+    message: string
+  ];
+  export interface OutputObject {
+    sender: string;
+    chainId: bigint;
+    receiver: string;
+    message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawalEvent {
+  export type InputTuple = [
+    sender: AddressLike,
+    chainId: BigNumberish,
+    receiver: BytesLike,
+    zrc20: AddressLike,
+    value: BigNumberish,
+    gasfee: BigNumberish,
+    protocolFlatFee: BigNumberish,
+    message: BytesLike
+  ];
+  export type OutputTuple = [
+    sender: string,
+    chainId: bigint,
+    receiver: string,
+    zrc20: string,
+    value: bigint,
+    gasfee: bigint,
+    protocolFlatFee: bigint,
+    message: string
+  ];
+  export interface OutputObject {
+    sender: string;
+    chainId: bigint;
+    receiver: string;
+    zrc20: string;
+    value: bigint;
+    gasfee: bigint;
+    protocolFlatFee: bigint;
+    message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface IGatewayZEVM extends BaseContract {
@@ -414,5 +480,42 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  filters: {};
+  getEvent(
+    key: "Call"
+  ): TypedContractEvent<
+    CallEvent.InputTuple,
+    CallEvent.OutputTuple,
+    CallEvent.OutputObject
+  >;
+  getEvent(
+    key: "Withdrawal"
+  ): TypedContractEvent<
+    WithdrawalEvent.InputTuple,
+    WithdrawalEvent.OutputTuple,
+    WithdrawalEvent.OutputObject
+  >;
+
+  filters: {
+    "Call(address,uint256,bytes,bytes)": TypedContractEvent<
+      CallEvent.InputTuple,
+      CallEvent.OutputTuple,
+      CallEvent.OutputObject
+    >;
+    Call: TypedContractEvent<
+      CallEvent.InputTuple,
+      CallEvent.OutputTuple,
+      CallEvent.OutputObject
+    >;
+
+    "Withdrawal(address,uint256,bytes,address,uint256,uint256,uint256,bytes)": TypedContractEvent<
+      WithdrawalEvent.InputTuple,
+      WithdrawalEvent.OutputTuple,
+      WithdrawalEvent.OutputObject
+    >;
+    Withdrawal: TypedContractEvent<
+      WithdrawalEvent.InputTuple,
+      WithdrawalEvent.OutputTuple,
+      WithdrawalEvent.OutputObject
+    >;
+  };
 }
