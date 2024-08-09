@@ -196,7 +196,7 @@ contract GatewayEVMUpgradeTest is
 
         if (deposited == false) revert DepositFailed();
 
-        emit Deposit(msg.sender, receiver, msg.value, address(0), "");
+        emit Deposited(msg.sender, receiver, msg.value, address(0), "");
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
@@ -208,7 +208,7 @@ contract GatewayEVMUpgradeTest is
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposit(msg.sender, receiver, amount, asset, "");
+        emit Deposited(msg.sender, receiver, amount, asset, "");
     }
 
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
@@ -220,7 +220,7 @@ contract GatewayEVMUpgradeTest is
 
         if (deposited == false) revert DepositFailed();
 
-        emit Deposit(msg.sender, receiver, msg.value, address(0), payload);
+        emit Deposited(msg.sender, receiver, msg.value, address(0), payload);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -233,14 +233,14 @@ contract GatewayEVMUpgradeTest is
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposit(msg.sender, receiver, amount, asset, payload);
+        emit Deposited(msg.sender, receiver, amount, asset, payload);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
     function call(address receiver, bytes calldata payload) external {
-        emit Call(msg.sender, receiver, payload);
+        emit Called(msg.sender, receiver, payload);
     }
 
     /// @notice Sets the custody contract address.

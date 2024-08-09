@@ -36,13 +36,13 @@ interface IGatewayEVMEvents {
     /// @param amount The amount of ETH or tokens deposited.
     /// @param asset The address of the ERC20 token (zero address if ETH).
     /// @param payload The calldata passed with the deposit.
-    event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+    event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
 
     /// @notice Emitted when an omnichain smart contract call is made without asset transfer.
     /// @param sender The address of the sender.
     /// @param receiver The address of the receiver.
     /// @param payload The calldata passed to the call.
-    event Call(address indexed sender, address indexed receiver, bytes payload);
+    event Called(address indexed sender, address indexed receiver, bytes payload);
 }
 
 /// @title IGatewayEVMErrors

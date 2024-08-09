@@ -11,7 +11,7 @@ interface IGatewayZEVMEvents {
     /// @param chainId Chain id of external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
-    event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
+    event Called(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
 
     /// @notice Emitted when a withdrawal is made.
     /// @param sender The address from which the tokens are withdrawn.
@@ -22,7 +22,7 @@ interface IGatewayZEVMEvents {
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
-    event Withdrawal(
+    event Withdrawn(
         address indexed sender,
         uint256 indexed chainId,
         bytes receiver,

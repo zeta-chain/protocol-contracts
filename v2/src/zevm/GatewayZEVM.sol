@@ -120,7 +120,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
+        emit Withdrawn(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
     }
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
@@ -142,7 +142,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
+        emit Withdrawn(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
     }
 
     /// @notice Withdraw ZETA tokens to an external chain.
@@ -153,7 +153,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "");
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "");
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
@@ -175,7 +175,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message);
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
@@ -184,7 +184,7 @@ contract GatewayZEVM is
     function call(bytes memory receiver, uint256 chainId, bytes calldata message) external nonReentrant whenNotPaused {
         if (receiver.length == 0) revert ZeroAddress();
 
-        emit Call(msg.sender, chainId, receiver, message);
+        emit Called(msg.sender, chainId, receiver, message);
     }
 
     /// @notice Deposit foreign coins into ZRC20.

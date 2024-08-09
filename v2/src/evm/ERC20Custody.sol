@@ -69,12 +69,12 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
 
     /// @notice Withdraw directly transfers the tokens to the destination address without contract call.
     /// @dev This function can only be called by the TSS address.
-    /// @param token Address of the ERC20 token.
     /// @param to Destination address for the tokens.
+    /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to withdraw.
     function withdraw(
-        address token,
         address to,
+        address token,
         uint256 amount
     )
         external
@@ -86,18 +86,18 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
 
         IERC20(token).safeTransfer(to, amount);
 
-        emit Withdraw(token, to, amount);
+        emit Withdrawn(to, token, amount);
     }
 
     /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.
     /// @dev This function can only be called by the TSS address.
-    /// @param token Address of the ERC20 token.
     /// @param to Address of the contract to call.
+    /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
     function withdrawAndCall(
-        address token,
         address to,
+        address token,
         uint256 amount,
         bytes calldata data
     )
@@ -114,19 +114,19 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         // Forward the call to the Gateway contract
         gateway.executeWithERC20(token, to, amount, data);
 
-        emit WithdrawAndCall(token, to, amount, data);
+        emit WithdrawnAndCalled(to, token, amount, data);
     }
 
     /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through
     /// the Gateway.
     /// @dev This function can only be called by the TSS address.
-    /// @param token Address of the ERC20 token.
     /// @param to Address of the contract to call.
+    /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
     function withdrawAndRevert(
-        address token,
         address to,
+        address token,
         uint256 amount,
         bytes calldata data
     )
@@ -143,6 +143,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         // Forward the call to the Gateway contract
         gateway.revertWithERC20(token, to, amount, data);
 
-        emit WithdrawAndRevert(token, to, amount, data);
+        emit WithdrawnAndReverted(to, token, amount, data);
     }
 }

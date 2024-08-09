@@ -11,7 +11,7 @@ import type {
 const _abi = [
   {
     type: "event",
-    name: "Withdraw",
+    name: "Withdrawn",
     inputs: [
       {
         name: "to",
@@ -30,7 +30,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "WithdrawAndCall",
+    name: "WithdrawnAndCalled",
     inputs: [
       {
         name: "to",
@@ -55,7 +55,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "WithdrawAndRevert",
+    name: "WithdrawnAndReverted",
     inputs: [
       {
         name: "to",

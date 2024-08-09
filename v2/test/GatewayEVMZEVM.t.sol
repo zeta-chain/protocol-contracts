@@ -121,7 +121,7 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Call(address(ownerZEVM), chainId, abi.encodePacked(receiverEVM), message);
+        emit Called(address(ownerZEVM), chainId, abi.encodePacked(receiverEVM), message);
         gatewayZEVM.call(abi.encodePacked(receiverEVM), chainId, message);
 
         // Call execute on evm
@@ -166,7 +166,7 @@ contract GatewayEVMZEVMTest is
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Withdrawal(
+        emit Withdrawn(
             ownerZEVM,
             0,
             abi.encodePacked(receiverEVM),
