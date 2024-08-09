@@ -216,7 +216,7 @@ contract GatewayZEVM is
         emit Withdrawal(
             msg.sender,
             chainId,
-            abi.encodePacked(FUNGIBLE_MODULE_ADDRESS),
+            receiver,
             address(zetaToken),
             amount,
             0,
