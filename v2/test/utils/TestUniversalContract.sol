@@ -2,12 +2,12 @@
 pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "src/zevm/interfaces/zContract.sol";
+import "src/zevm/interfaces/UniversalContract.sol";
 
-/// @title TestZContract
+/// @title TestUniversalContract
 /// @notice This contract is used just for testing.
 /// @dev Implements the UniversalContract interface for handling cross-chain calls and reverts.
-contract TestZContract is UniversalContract {
+contract TestUniversalContract is UniversalContract {
     /// @notice Emitted when a cross-chain call is received.
     /// @param origin The origin address on the external chain.
     /// @param sender The sender address on the external chain.

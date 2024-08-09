@@ -123,7 +123,7 @@ Private Key: 0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a
 
 The example contracts demonstrate how the V2 interface can be leveraged to build Universal Apps.
 
-* [TestZContract](/test/utils/TestZContract.sol): ZetaChain contract (Universal App) that can be called from a connected chains
+* [TestUniversalContract](/test/utils/TestUniversalContract.sol): ZetaChain contract (Universal App) that can be called from a connected chains
 * [SenderZEVM](/test/utils/SenderZEVM.sol): ZetaChain contract calling a smart contract on a connected chains
 * [ReceiverEVM](/test/utils/evm/ReceiverEVM.sol): contract on connected chain that can be called from ZetaChain
 

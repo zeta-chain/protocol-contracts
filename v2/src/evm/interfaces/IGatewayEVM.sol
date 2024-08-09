@@ -90,11 +90,14 @@ interface IGatewayEVMErrors {
 
     /// @notice Error for already initialized connector.
     error ConnectorInitialized();
+
+    /// @notice Error when trying to transfer not whitelisted token to custody.
+    error NotWhitelistedInCustody();
 }
 
 /// @title IGatewayEVM
 /// @notice Interface for the GatewayEVM contract.
-interface IGatewayEVM {
+interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @notice Executes a call to a contract using ERC20 tokens.
     /// @param token The address of the ERC20 token.
     /// @param to The address of the contract to call.

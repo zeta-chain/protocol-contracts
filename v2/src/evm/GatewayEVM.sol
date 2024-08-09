@@ -2,6 +2,8 @@
 pragma solidity 0.8.26;
 
 import "./ZetaConnectorBase.sol";
+
+import "./interfaces/IERC20Custody.sol";
 import "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
@@ -20,8 +22,6 @@ contract GatewayEVM is
     AccessControlUpgradeable,
     UUPSUpgradeable,
     IGatewayEVM,
-    IGatewayEVMErrors,
-    IGatewayEVMEvents,
     ReentrancyGuardUpgradeable,
     PausableUpgradeable
 {
@@ -309,6 +309,7 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (receiver == address(0)) revert ZeroAddress();
         emit Call(msg.sender, receiver, payload, revertOptions);
     }
 
@@ -358,6 +359,7 @@ contract GatewayEVM is
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
+            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransferFrom(from, custody, amount);
         }
     }
@@ -376,6 +378,7 @@ contract GatewayEVM is
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
+            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
         }
     }

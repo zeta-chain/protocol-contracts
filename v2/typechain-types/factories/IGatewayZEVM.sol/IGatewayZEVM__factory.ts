@@ -328,6 +328,11 @@ const _abi = [
     name: "withdraw",
     inputs: [
       {
+        name: "receiver",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
         name: "amount",
         type: "uint256",
         internalType: "uint256",
@@ -374,6 +379,11 @@ const _abi = [
     name: "withdrawAndCall",
     inputs: [
       {
+        name: "receiver",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
         name: "amount",
         type: "uint256",
         internalType: "uint256",
@@ -391,6 +401,147 @@ const _abi = [
     ],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "event",
+    name: "Call",
+    inputs: [
+      {
+        name: "sender",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "receiver",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "Withdrawal",
+    inputs: [
+      {
+        name: "sender",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "receiver",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+      {
+        name: "zrc20",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "value",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "gasfee",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "protocolFlatFee",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "error",
+    name: "CallerIsNotFungibleModule",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "FailedZetaSent",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "GasFeeTransferFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InsufficientZRC20Amount",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InsufficientZetaAmount",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InvalidTarget",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "OnlyWZETAOrFungible",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "WithdrawalFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "ZRC20BurnFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "ZRC20DepositFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "ZRC20TransferFailed",
+    inputs: [],
   },
 ] as const;
 

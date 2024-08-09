@@ -7,6 +7,8 @@ struct zContext {
     uint256 chainID;
 }
 
+/// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
+/// UniversalContract should be used
 interface zContract {
     function onCrossChainCall(
         zContext calldata context,
