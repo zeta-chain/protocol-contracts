@@ -33,12 +33,16 @@ contract EvmDepositAndCallScript is Script {
         // Encode the payload
         bytes memory payload = abi.encode("hello");
 
+        RevertOptions memory revertOptions =
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+
         // Call the depositAndCall function on GatewayEVM
         try gatewayEVM.depositAndCall(
             universalContractAddress,
             amount,
             erc20Address,
-            payload
+            payload,
+            revertOptions
         ) {
             console.log("TestUniversalContract called from EVM.");
         } catch (bytes memory err) {

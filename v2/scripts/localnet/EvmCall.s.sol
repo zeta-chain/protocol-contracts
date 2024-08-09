@@ -23,8 +23,11 @@ contract EvmCallScript is Script {
         // Encode the message
         bytes memory message = abi.encode("hello");
 
+        RevertOptions memory revertOptions =
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+
         // Call the function on GatewayEVM
-        try gatewayEVM.call(universalContractAddress, message) {
+        try gatewayEVM.call(universalContractAddress, message, revertOptions) {
             console.log("TestUniversalContract called from EVM.");
         } catch (bytes memory err) {
             console.log("Error calling TestUniversalContract:");

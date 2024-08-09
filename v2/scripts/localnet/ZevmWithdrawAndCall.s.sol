@@ -36,11 +36,15 @@ contract ZevmWithdrawAndCallScript is Script {
             flag
         );
 
+        RevertOptions memory revertOptions =
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+
         try gatewayZEVM.withdrawAndCall(
             abi.encodePacked(receiverEVMAddress),
             amount,
             address(zrc20),
-            message
+            message,
+            revertOptions
         ) {
             console.log("ReceiverEVM called from ZEVM.");
         } catch (bytes memory err) {

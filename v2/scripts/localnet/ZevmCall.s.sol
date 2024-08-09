@@ -33,8 +33,11 @@ contract ZevmCallScript is Script {
             flag
         );
 
+        RevertOptions memory revertOptions =
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+
         // Call the function on GatewayZEVM
-        try gatewayZEVM.call(abi.encodePacked(address(receiverEVM)), chainId, message) {
+        try gatewayZEVM.call(abi.encodePacked(address(receiverEVM)), chainId, message, revertOptions) {
             console.log("ReceiverEVM called from ZEVM.");
         } catch (bytes memory err) {
             console.log("Error calling ReceiverEVM:");
