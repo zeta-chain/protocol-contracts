@@ -2,10 +2,15 @@
   "name": "@zetachain/protocol-contracts",
   "version": "1.0.0",
   "author": "zetachain",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
+  "exports": {
+    "./types": {
+      "types": "./typechain-types/index.ts"
+    }
   },
+  "files": [
+    "out",
+    "typechain-types"
+  ],
   "scripts": {
     "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
@@ -20,8 +25,11 @@
     "@openzeppelin/upgrades-core": "1.35.0",
     "@typechain/ethers-v6": "^0.5.1",
     "@types/eslint__js": "^8.42.3",
+    "@typescript-eslint/eslint-plugin": "^8.0.1",
+    "@typescript-eslint/parser": "^8.0.1",
     "concurrently": "^8.2.2",
-    "eslint": "^8.57.0",
+    "del-cli": "^5.1.0",
+    "eslint": "^9.8.0",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.5.4",
@@ -31,5 +39,6 @@
   "license": "MIT",
   "dependencies": {
     "ethers": "^6.13.1"
-  }
+  },
+  "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
 }
