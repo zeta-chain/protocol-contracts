@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./zContract.sol";
+import "./UniversalContract.sol";
 
 /// @title IGatewayZEVM
 /// @notice Interface for the GatewayZEVM contract.

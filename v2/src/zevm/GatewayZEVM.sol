@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import "./interfaces/IGatewayZEVM.sol";
 import "./interfaces/IWZETA.sol";
 import "./interfaces/IZRC20.sol";
-import "./interfaces/zContract.sol";
+import "./interfaces/UniversalContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
