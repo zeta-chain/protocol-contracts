@@ -5,7 +5,8 @@
   "exports": {
     "./types": {
       "types": "./typechain-types/index.ts"
-    }
+    },
+    "./abi/*": "./out/*"
   },
   "files": [
     "out",
