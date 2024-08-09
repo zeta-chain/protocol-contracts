@@ -153,7 +153,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(receiver), address(token), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
         custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
@@ -206,7 +206,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(receiver), address(token), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
         custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
@@ -270,7 +270,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount / 2, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(receiver), address(token), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
         custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
@@ -323,7 +323,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(receiver), address(token), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
         custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
@@ -381,7 +381,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(destination), amount);
         vm.expectCall(address(token), 0, transferData);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit Withdraw(destination, address(token), amount);
+        emit Withdrawn(destination, address(token), amount);
         vm.prank(tssAddress);
         custody.withdraw(destination, address(token), amount);
 
@@ -421,7 +421,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(gateway));
         emit RevertedWithERC20(address(token), address(receiver), amount, data);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndRevert(address(receiver), address(token), amount, data);
+        emit WithdrawnAndReverted(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
         custody.withdrawAndRevert(address(receiver), address(token), amount, data);
 

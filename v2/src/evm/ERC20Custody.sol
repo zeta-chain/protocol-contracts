@@ -86,7 +86,7 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
 
         IERC20(token).safeTransfer(to, amount);
 
-        emit Withdraw(to, token, amount);
+        emit Withdrawn(to, token, amount);
     }
 
     /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.
@@ -114,7 +114,7 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         // Forward the call to the Gateway contract
         gateway.executeWithERC20(token, to, amount, data);
 
-        emit WithdrawAndCall(to, token, amount, data);
+        emit WithdrawnAndCalled(to, token, amount, data);
     }
 
     /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through
@@ -143,6 +143,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         // Forward the call to the Gateway contract
         gateway.revertWithERC20(token, to, amount, data);
 
-        emit WithdrawAndRevert(to, token, amount, data);
+        emit WithdrawnAndReverted(to, token, amount, data);
     }
 }

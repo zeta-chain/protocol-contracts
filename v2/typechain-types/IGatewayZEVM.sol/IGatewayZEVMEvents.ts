@@ -22,10 +22,10 @@ import type {
 } from "../common";
 
 export interface IGatewayZEVMEventsInterface extends Interface {
-  getEvent(nameOrSignatureOrTopic: "Call" | "Withdrawal"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Called" | "Withdrawn"): EventFragment;
 }
 
-export namespace CallEvent {
+export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     chainId: BigNumberish,
@@ -50,7 +50,7 @@ export namespace CallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawalEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [
     sender: AddressLike,
     chainId: BigNumberish,
@@ -135,41 +135,41 @@ export interface IGatewayZEVMEvents extends BaseContract {
   ): T;
 
   getEvent(
-    key: "Call"
+    key: "Called"
   ): TypedContractEvent<
-    CallEvent.InputTuple,
-    CallEvent.OutputTuple,
-    CallEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
-    key: "Withdrawal"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawalEvent.InputTuple,
-    WithdrawalEvent.OutputTuple,
-    WithdrawalEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
 
   filters: {
-    "Call(address,uint256,bytes,bytes)": TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    "Called(address,uint256,bytes,bytes)": TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
-    Call: TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
-    "Withdrawal(address,uint256,bytes,address,uint256,uint256,uint256,bytes)": TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
-    Withdrawal: TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
   };
 }

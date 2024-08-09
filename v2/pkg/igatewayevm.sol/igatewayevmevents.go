@@ -31,7 +31,7 @@ var (
 
 // IGatewayEVMEventsMetaData contains all meta data concerning the IGatewayEVMEvents contract.
 var IGatewayEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposit\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RevertedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposited\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RevertedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
 }
 
 // IGatewayEVMEventsABI is the input ABI used to generate the binding from.
@@ -180,9 +180,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsTransactorRaw) Transact(opts *bind.Tr
 	return _IGatewayEVMEvents.Contract.contract.Transact(opts, method, params...)
 }
 
-// IGatewayEVMEventsCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsCallIterator struct {
-	Event *IGatewayEVMEventsCall // Event containing the contract specifics and raw log
+// IGatewayEVMEventsCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsCalledIterator struct {
+	Event *IGatewayEVMEventsCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -196,7 +196,7 @@ type IGatewayEVMEventsCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayEVMEventsCallIterator) Next() bool {
+func (it *IGatewayEVMEventsCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -205,7 +205,7 @@ func (it *IGatewayEVMEventsCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayEVMEventsCall)
+			it.Event = new(IGatewayEVMEventsCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -220,7 +220,7 @@ func (it *IGatewayEVMEventsCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayEVMEventsCall)
+		it.Event = new(IGatewayEVMEventsCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -236,29 +236,29 @@ func (it *IGatewayEVMEventsCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayEVMEventsCallIterator) Error() error {
+func (it *IGatewayEVMEventsCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayEVMEventsCallIterator) Close() error {
+func (it *IGatewayEVMEventsCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IGatewayEVMEventsCall represents a Call event raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsCall struct {
+// IGatewayEVMEventsCalled represents a Called event raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsCalled struct {
 	Sender   common.Address
 	Receiver common.Address
 	Payload  []byte
 	Raw      types.Log // Blockchain specific contextual infos
 }
 
-// FilterCall is a free log retrieval operation binding the contract event 0x2a21062ee9199c2e205622999eeb7c3da73153674f36a0acd3f74fa6af67bde3.
+// FilterCalled is a free log retrieval operation binding the contract event 0xf6b5ec9528dcb966bc8de8be7d0e0910938cabe45d0517e7e17cff672d665c32.
 //
-// Solidity: event Call(address indexed sender, address indexed receiver, bytes payload)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsCallIterator, error) {
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCalled(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsCalledIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -269,17 +269,17 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCall(opts *bind.Filte
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayEVMEventsCallIterator{contract: _IGatewayEVMEvents.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &IGatewayEVMEventsCalledIterator{contract: _IGatewayEVMEvents.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
-// WatchCall is a free log subscription operation binding the contract event 0x2a21062ee9199c2e205622999eeb7c3da73153674f36a0acd3f74fa6af67bde3.
+// WatchCalled is a free log subscription operation binding the contract event 0xf6b5ec9528dcb966bc8de8be7d0e0910938cabe45d0517e7e17cff672d665c32.
 //
-// Solidity: event Call(address indexed sender, address indexed receiver, bytes payload)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsCall, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCalled(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsCalled, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -290,7 +290,7 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchO
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -300,8 +300,8 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchO
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayEVMEventsCall)
-				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(IGatewayEVMEventsCalled)
+				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -322,21 +322,21 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchO
 	}), nil
 }
 
-// ParseCall is a log parse operation binding the contract event 0x2a21062ee9199c2e205622999eeb7c3da73153674f36a0acd3f74fa6af67bde3.
+// ParseCalled is a log parse operation binding the contract event 0xf6b5ec9528dcb966bc8de8be7d0e0910938cabe45d0517e7e17cff672d665c32.
 //
-// Solidity: event Call(address indexed sender, address indexed receiver, bytes payload)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseCall(log types.Log) (*IGatewayEVMEventsCall, error) {
-	event := new(IGatewayEVMEventsCall)
-	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Call", log); err != nil {
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseCalled(log types.Log) (*IGatewayEVMEventsCalled, error) {
+	event := new(IGatewayEVMEventsCalled)
+	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Called", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// IGatewayEVMEventsDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsDepositIterator struct {
-	Event *IGatewayEVMEventsDeposit // Event containing the contract specifics and raw log
+// IGatewayEVMEventsDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsDepositedIterator struct {
+	Event *IGatewayEVMEventsDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -350,7 +350,7 @@ type IGatewayEVMEventsDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayEVMEventsDepositIterator) Next() bool {
+func (it *IGatewayEVMEventsDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -359,7 +359,7 @@ func (it *IGatewayEVMEventsDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayEVMEventsDeposit)
+			it.Event = new(IGatewayEVMEventsDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -374,7 +374,7 @@ func (it *IGatewayEVMEventsDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayEVMEventsDeposit)
+		it.Event = new(IGatewayEVMEventsDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -390,19 +390,19 @@ func (it *IGatewayEVMEventsDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayEVMEventsDepositIterator) Error() error {
+func (it *IGatewayEVMEventsDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayEVMEventsDepositIterator) Close() error {
+func (it *IGatewayEVMEventsDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IGatewayEVMEventsDeposit represents a Deposit event raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsDeposit struct {
+// IGatewayEVMEventsDeposited represents a Deposited event raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsDeposited struct {
 	Sender   common.Address
 	Receiver common.Address
 	Amount   *big.Int
@@ -411,10 +411,10 @@ type IGatewayEVMEventsDeposit struct {
 	Raw      types.Log // Blockchain specific contextual infos
 }
 
-// FilterDeposit is a free log retrieval operation binding the contract event 0x2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a4.
+// FilterDeposited is a free log retrieval operation binding the contract event 0x9c70cd4e944d2143d1ce16231bf9e618ebd7c5c0fbded3a9958fe2f25a5ff936.
 //
-// Solidity: event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposit(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsDepositIterator, error) {
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposited(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsDepositedIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -425,17 +425,17 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposit(opts *bind.Fi
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayEVMEventsDepositIterator{contract: _IGatewayEVMEvents.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &IGatewayEVMEventsDepositedIterator{contract: _IGatewayEVMEvents.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
-// WatchDeposit is a free log subscription operation binding the contract event 0x2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a4.
+// WatchDeposited is a free log subscription operation binding the contract event 0x9c70cd4e944d2143d1ce16231bf9e618ebd7c5c0fbded3a9958fe2f25a5ff936.
 //
-// Solidity: event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsDeposit, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposited(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsDeposited, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -446,7 +446,7 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.Wat
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -456,8 +456,8 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.Wat
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayEVMEventsDeposit)
-				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(IGatewayEVMEventsDeposited)
+				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -478,12 +478,12 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.Wat
 	}), nil
 }
 
-// ParseDeposit is a log parse operation binding the contract event 0x2103daedac6c1eee9e5bfbd02064d751c9ec3c03fb9bc3e4f94ca41afa38c1a4.
+// ParseDeposited is a log parse operation binding the contract event 0x9c70cd4e944d2143d1ce16231bf9e618ebd7c5c0fbded3a9958fe2f25a5ff936.
 //
-// Solidity: event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseDeposit(log types.Log) (*IGatewayEVMEventsDeposit, error) {
-	event := new(IGatewayEVMEventsDeposit)
-	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposit", log); err != nil {
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseDeposited(log types.Log) (*IGatewayEVMEventsDeposited, error) {
+	event := new(IGatewayEVMEventsDeposited)
+	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposited", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

@@ -11,7 +11,7 @@ import type {
 const _abi = [
   {
     type: "event",
-    name: "Call",
+    name: "Called",
     inputs: [
       {
         name: "sender",
@@ -36,7 +36,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "Deposit",
+    name: "Deposited",
     inputs: [
       {
         name: "sender",

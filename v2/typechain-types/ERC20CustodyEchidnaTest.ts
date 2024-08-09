@@ -60,9 +60,9 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
       | "Unpaused"
       | "Unwhitelisted"
       | "Whitelisted"
-      | "Withdraw"
-      | "WithdrawAndCall"
-      | "WithdrawAndRevert"
+      | "Withdrawn"
+      | "WithdrawnAndCalled"
+      | "WithdrawnAndReverted"
   ): EventFragment;
 
   encodeFunctionData(
@@ -313,7 +313,7 @@ export namespace WhitelistedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -331,7 +331,7 @@ export namespace WithdrawEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndCallEvent {
+export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -356,7 +356,7 @@ export namespace WithdrawAndCallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndRevertEvent {
+export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -682,25 +682,25 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     WhitelistedEvent.OutputObject
   >;
   getEvent(
-    key: "Withdraw"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawEvent.InputTuple,
-    WithdrawEvent.OutputTuple,
-    WithdrawEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndCall"
+    key: "WithdrawnAndCalled"
   ): TypedContractEvent<
-    WithdrawAndCallEvent.InputTuple,
-    WithdrawAndCallEvent.OutputTuple,
-    WithdrawAndCallEvent.OutputObject
+    WithdrawnAndCalledEvent.InputTuple,
+    WithdrawnAndCalledEvent.OutputTuple,
+    WithdrawnAndCalledEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndRevert"
+    key: "WithdrawnAndReverted"
   ): TypedContractEvent<
-    WithdrawAndRevertEvent.InputTuple,
-    WithdrawAndRevertEvent.OutputTuple,
-    WithdrawAndRevertEvent.OutputObject
+    WithdrawnAndRevertedEvent.InputTuple,
+    WithdrawnAndRevertedEvent.OutputTuple,
+    WithdrawnAndRevertedEvent.OutputObject
   >;
 
   filters: {
@@ -781,37 +781,37 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
       WhitelistedEvent.OutputObject
     >;
 
-    "Withdraw(address,address,uint256)": TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
+    "Withdrawn(address,address,uint256)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
-    Withdraw: TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
-    >;
-
-    "WithdrawAndCall(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
-    >;
-    WithdrawAndCall: TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    "WithdrawnAndCalled(address,address,uint256,bytes)": TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
     >;
-    WithdrawAndRevert: TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    WithdrawnAndCalled: TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
+    >;
+
+    "WithdrawnAndReverted(address,address,uint256,bytes)": TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
+    >;
+    WithdrawnAndReverted: TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
   };
 }

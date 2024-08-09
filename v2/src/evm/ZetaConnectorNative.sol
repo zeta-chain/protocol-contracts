@@ -37,7 +37,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         whenNotPaused
     {
         IERC20(zetaToken).safeTransfer(to, amount);
-        emit Withdraw(to, amount);
+        emit Withdrawn(to, amount);
     }
 
     /// @notice Withdraw tokens and call a contract through Gateway.
@@ -64,7 +64,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         // Forward the call to the Gateway contract
         gateway.executeWithERC20(address(zetaToken), to, amount, data);
 
-        emit WithdrawAndCall(to, amount, data);
+        emit WithdrawnAndCalled(to, amount, data);
     }
 
     /// @notice Withdraw tokens and call a contract with a revert callback through Gateway.
@@ -91,7 +91,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         // Forward the call to the Gateway contract
         gateway.revertWithERC20(address(zetaToken), to, amount, data);
 
-        emit WithdrawAndRevert(to, amount, data);
+        emit WithdrawnAndReverted(to, amount, data);
     }
 
     /// @notice Handle received tokens.

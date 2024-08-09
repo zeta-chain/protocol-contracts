@@ -45,7 +45,7 @@ type ZContext struct {
 
 // IGatewayZEVMMetaData contains all meta data concerning the IGatewayZEVM contract.
 var IGatewayZEVMMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structrevertContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structrevertContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"CallerIsNotFungibleModule\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"FailedZetaSent\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"GasFeeTransferFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZRC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZetaAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidTarget\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"OnlyWZETAOrFungible\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"WithdrawalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20BurnFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20TransferFailed\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structrevertContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structrevertContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawn\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"CallerIsNotFungibleModule\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"FailedZetaSent\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"GasFeeTransferFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZRC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZetaAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidTarget\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"OnlyWZETAOrFungible\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"WithdrawalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20BurnFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20TransferFailed\",\"inputs\":[]}]",
 }
 
 // IGatewayZEVMABI is the input ABI used to generate the binding from.
@@ -425,9 +425,9 @@ func (_IGatewayZEVM *IGatewayZEVMTransactorSession) WithdrawAndCall0(receiver []
 	return _IGatewayZEVM.Contract.WithdrawAndCall0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, message)
 }
 
-// IGatewayZEVMCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the IGatewayZEVM contract.
-type IGatewayZEVMCallIterator struct {
-	Event *IGatewayZEVMCall // Event containing the contract specifics and raw log
+// IGatewayZEVMCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the IGatewayZEVM contract.
+type IGatewayZEVMCalledIterator struct {
+	Event *IGatewayZEVMCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -441,7 +441,7 @@ type IGatewayZEVMCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayZEVMCallIterator) Next() bool {
+func (it *IGatewayZEVMCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -450,7 +450,7 @@ func (it *IGatewayZEVMCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayZEVMCall)
+			it.Event = new(IGatewayZEVMCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -465,7 +465,7 @@ func (it *IGatewayZEVMCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayZEVMCall)
+		it.Event = new(IGatewayZEVMCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -481,19 +481,19 @@ func (it *IGatewayZEVMCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayZEVMCallIterator) Error() error {
+func (it *IGatewayZEVMCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayZEVMCallIterator) Close() error {
+func (it *IGatewayZEVMCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IGatewayZEVMCall represents a Call event raised by the IGatewayZEVM contract.
-type IGatewayZEVMCall struct {
+// IGatewayZEVMCalled represents a Called event raised by the IGatewayZEVM contract.
+type IGatewayZEVMCalled struct {
 	Sender   common.Address
 	ChainId  *big.Int
 	Receiver []byte
@@ -501,10 +501,10 @@ type IGatewayZEVMCall struct {
 	Raw      types.Log // Blockchain specific contextual infos
 }
 
-// FilterCall is a free log retrieval operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
+// FilterCalled is a free log retrieval operation binding the contract event 0x2a0040253268ea4d2005c5bcecde13eb7a765a19ec4b02b12dfeaabd20d74d7c.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
-func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMCallIterator, error) {
+// Solidity: event Called(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterCalled(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMCalledIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -515,17 +515,17 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterCall(opts *bind.FilterOpts, sen
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVM.contract.FilterLogs(opts, "Call", senderRule, chainIdRule)
+	logs, sub, err := _IGatewayZEVM.contract.FilterLogs(opts, "Called", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayZEVMCallIterator{contract: _IGatewayZEVM.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &IGatewayZEVMCalledIterator{contract: _IGatewayZEVM.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
-// WatchCall is a free log subscription operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
+// WatchCalled is a free log subscription operation binding the contract event 0x2a0040253268ea4d2005c5bcecde13eb7a765a19ec4b02b12dfeaabd20d74d7c.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
-func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMCall, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
+// Solidity: event Called(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCalled(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMCalled, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -536,7 +536,7 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink 
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVM.contract.WatchLogs(opts, "Call", senderRule, chainIdRule)
+	logs, sub, err := _IGatewayZEVM.contract.WatchLogs(opts, "Called", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -546,8 +546,8 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink 
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayZEVMCall)
-				if err := _IGatewayZEVM.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(IGatewayZEVMCalled)
+				if err := _IGatewayZEVM.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -568,21 +568,21 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink 
 	}), nil
 }
 
-// ParseCall is a log parse operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
+// ParseCalled is a log parse operation binding the contract event 0x2a0040253268ea4d2005c5bcecde13eb7a765a19ec4b02b12dfeaabd20d74d7c.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
-func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseCall(log types.Log) (*IGatewayZEVMCall, error) {
-	event := new(IGatewayZEVMCall)
-	if err := _IGatewayZEVM.contract.UnpackLog(event, "Call", log); err != nil {
+// Solidity: event Called(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseCalled(log types.Log) (*IGatewayZEVMCalled, error) {
+	event := new(IGatewayZEVMCalled)
+	if err := _IGatewayZEVM.contract.UnpackLog(event, "Called", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// IGatewayZEVMWithdrawalIterator is returned from FilterWithdrawal and is used to iterate over the raw logs and unpacked data for Withdrawal events raised by the IGatewayZEVM contract.
-type IGatewayZEVMWithdrawalIterator struct {
-	Event *IGatewayZEVMWithdrawal // Event containing the contract specifics and raw log
+// IGatewayZEVMWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the IGatewayZEVM contract.
+type IGatewayZEVMWithdrawnIterator struct {
+	Event *IGatewayZEVMWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -596,7 +596,7 @@ type IGatewayZEVMWithdrawalIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
+func (it *IGatewayZEVMWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -605,7 +605,7 @@ func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayZEVMWithdrawal)
+			it.Event = new(IGatewayZEVMWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -620,7 +620,7 @@ func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayZEVMWithdrawal)
+		it.Event = new(IGatewayZEVMWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -636,19 +636,19 @@ func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayZEVMWithdrawalIterator) Error() error {
+func (it *IGatewayZEVMWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayZEVMWithdrawalIterator) Close() error {
+func (it *IGatewayZEVMWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IGatewayZEVMWithdrawal represents a Withdrawal event raised by the IGatewayZEVM contract.
-type IGatewayZEVMWithdrawal struct {
+// IGatewayZEVMWithdrawn represents a Withdrawn event raised by the IGatewayZEVM contract.
+type IGatewayZEVMWithdrawn struct {
 	Sender          common.Address
 	ChainId         *big.Int
 	Receiver        []byte
@@ -660,10 +660,10 @@ type IGatewayZEVMWithdrawal struct {
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawal is a free log retrieval operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
+// FilterWithdrawn is a free log retrieval operation binding the contract event 0x2d8de91e8e152f300c9ea9a43b2503c08ba6ec6f5e5cb0a999a7328eb69f7cb9.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
-func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterWithdrawal(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMWithdrawalIterator, error) {
+// Solidity: event Withdrawn(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterWithdrawn(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMWithdrawnIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -674,17 +674,17 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterWithdrawal(opts *bind.FilterOpt
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVM.contract.FilterLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _IGatewayZEVM.contract.FilterLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayZEVMWithdrawalIterator{contract: _IGatewayZEVM.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
+	return &IGatewayZEVMWithdrawnIterator{contract: _IGatewayZEVM.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawal is a free log subscription operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
+// WatchWithdrawn is a free log subscription operation binding the contract event 0x2d8de91e8e152f300c9ea9a43b2503c08ba6ec6f5e5cb0a999a7328eb69f7cb9.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
-func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMWithdrawal, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
+// Solidity: event Withdrawn(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMWithdrawn, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -695,7 +695,7 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts,
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVM.contract.WatchLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _IGatewayZEVM.contract.WatchLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -705,8 +705,8 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts,
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayZEVMWithdrawal)
-				if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+				event := new(IGatewayZEVMWithdrawn)
+				if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -727,12 +727,12 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts,
 	}), nil
 }
 
-// ParseWithdrawal is a log parse operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
+// ParseWithdrawn is a log parse operation binding the contract event 0x2d8de91e8e152f300c9ea9a43b2503c08ba6ec6f5e5cb0a999a7328eb69f7cb9.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
-func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseWithdrawal(log types.Log) (*IGatewayZEVMWithdrawal, error) {
-	event := new(IGatewayZEVMWithdrawal)
-	if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+// Solidity: event Withdrawn(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseWithdrawn(log types.Log) (*IGatewayZEVMWithdrawn, error) {
+	event := new(IGatewayZEVMWithdrawn)
+	if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
