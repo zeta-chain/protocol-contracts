@@ -7,7 +7,7 @@ import * as ERC1967Proxy from "../../out/ERC1967Proxy.sol/ERC1967Proxy.json";
 import * as TestERC20 from "../../out/TestERC20.sol/TestERC20.json";
 import * as SystemContract from "../../out/SystemContractMock.sol/SystemContractMock.json";
 import * as GatewayZEVM from "../../out/GatewayZEVM.sol/GatewayZEVM.json";
-import * as TestZContract from "../../out/TestZContract.sol/TestZContract.json";
+import * as TestUniversalContract from "../../out/TestUniversalContract.sol/TestUniversalContract.json";
 import * as ZRC20 from "../../out/ZRC20.sol/ZRC20.json";
 import * as ZetaConnectorNonNative from "../../out/ZetaConnectorNonNative.sol/ZetaConnectorNonNative.json";
 import * as WETH9 from "../../out/WZETA.sol/WETH9.json";
@@ -127,9 +127,9 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
     .transfer(protocolContracts.custody.target, ethers.parseEther("500"), deployOpts);
 
   // Prepare ZEVM
-  // Deploy test contracts (test zContract, zrc20, sender) and mint funds to test accounts
-  const testZContractFactory = new ethers.ContractFactory(TestZContract.abi, TestZContract.bytecode, deployer);
-  const testZContract = await testZContractFactory.deploy(deployOpts);
+  // Deploy test contracts (test universalContract, zrc20, sender) and mint funds to test accounts
+  const testUniversalContractFactory = new ethers.ContractFactory(TestUniversalContract.abi, TestUniversalContract.bytecode, deployer);
+  const testUniversalContract = await testUniversalContractFactory.deploy(deployOpts);
 
   const zrc20Factory = new ethers.ContractFactory(ZRC20.abi, ZRC20.bytecode, deployer);
   const zrc20 = await zrc20Factory
@@ -166,7 +166,7 @@ const deployTestContracts = async (protocolContracts: any, deployer: Signer, fun
     zrc20,
     receiverEVM,
     senderZEVM,
-    testZContract,
+    testUniversalContract,
   };
 };
 
@@ -228,9 +228,9 @@ const startWorker = async () => {
   // event Call(address indexed sender, address indexed receiver, bytes payload);
   protocolContracts.gatewayEVM.on("Call", async (...args: Array<any>) => {
     console.log("Worker: Call event on GatewayEVM.");
-    console.log("Worker: Calling TestZContract through GatewayZEVM...");
+    console.log("Worker: Calling TestUniversalContract through GatewayZEVM...");
     try {
-      const zContract = args[1];
+      const universalContract = args[1];
       const payload = args[2];
       (deployer as NonceManager).reset();
       // Encode the parameters
@@ -247,7 +247,7 @@ const startWorker = async () => {
         },
         testContracts.zrc20.target,
         1,
-        zContract,
+        universalContract,
         payload,
         deployOpts
       );
@@ -260,7 +260,7 @@ const startWorker = async () => {
   // event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
   protocolContracts.gatewayEVM.on("Deposit", async (...args: Array<any>) => {
     console.log("Worker: Deposit event on GatewayEVM.");
-    console.log("Worker: Calling TestZContract through GatewayZEVM...");
+    console.log("Worker: Calling TestUniversalContract through GatewayZEVM...");
     try {
       const receiver = args[1];
       const asset = args[3];
@@ -283,8 +283,8 @@ const startWorker = async () => {
     }
   });
 
-  testContracts.testZContract.on("ContextData", async () => {
-    console.log("TestZContract: onCrosschainCall called!");
+  testContracts.testUniversalContract.on("ContextData", async () => {
+    console.log("TestUniversalContract: onCrosschainCall called!");
   });
 
   process.stdin.resume();

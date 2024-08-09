@@ -3,8 +3,8 @@ pragma solidity 0.8.26;
 
 import "forge-std/Script.sol";
 import "src/zevm/GatewayZEVM.sol";
-import "test/utils/ReceiverEVM.sol";
 import "src/zevm/ZRC20.sol";
+import "test/utils/ReceiverEVM.sol";
 
 // ZevmWithdrawAndCallScript executes withdrawAndCall method on GatewayZEVM and it should be used on localnet.
 // It uses anvil private key, and sets default contract addresses deployed on fresh localnet, that can be overriden with env vars.
