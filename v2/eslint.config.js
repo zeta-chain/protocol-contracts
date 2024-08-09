@@ -1,6 +1,6 @@
 module.exports = [
   {
-    ignores: [".yarn", "artifacts", "cache", "dist", "node_modules", "typechain-types", "docs", "lib"],
+    ignores: [".yarn", "artifacts", "cache", "dist", "node_modules", "typechain-types", "abi", "docs", "lib"],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: "module",
