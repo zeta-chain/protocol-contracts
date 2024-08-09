@@ -17,11 +17,11 @@ import "./utils/SystemContractMock.sol";
 
 import { GatewayZEVM } from "src/zevm/GatewayZEVM.sol";
 import { IGatewayZEVM } from "src/zevm/GatewayZEVM.sol";
-import { IGatewayZEVMErrors } from "src/zevm/GatewayZEVM.sol";
-import { IGatewayZEVMEvents } from "src/zevm/GatewayZEVM.sol";
+import { IGatewayZEVMErrors } from "src/zevm/interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVMEvents } from "src/zevm/interfaces/IGatewayZEVM.sol";
 
-import { IGatewayEVMErrors } from "src/evm/GatewayEVM.sol";
-import { IGatewayEVMEvents } from "src/evm/GatewayEVM.sol";
+import { IGatewayEVMErrors } from "src/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMEvents } from "src/evm/interfaces/IGatewayEVM.sol";
 
 import "src/zevm/ZRC20.sol";
 

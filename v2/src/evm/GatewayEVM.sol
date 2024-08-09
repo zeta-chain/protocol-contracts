@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorBase.sol";
-import "./interfaces/IERC20Custody.sol";
-import "./interfaces/IGatewayEVM.sol";
+import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
+import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
+import { IGatewayEVM, RevertOptions, Revertable } from "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";

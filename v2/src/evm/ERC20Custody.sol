@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./interfaces/IERC20Custody.sol";
+import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
