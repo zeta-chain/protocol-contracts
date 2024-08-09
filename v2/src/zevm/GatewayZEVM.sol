@@ -179,17 +179,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(
-            msg.sender,
-            chainId,
-            receiver,
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            "",
-            revertOptions
-        );
+        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", revertOptions);
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
@@ -213,17 +203,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(
-            msg.sender,
-            chainId,
-            receiver,
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            message,
-            revertOptions
-        );
+        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, revertOptions);
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.

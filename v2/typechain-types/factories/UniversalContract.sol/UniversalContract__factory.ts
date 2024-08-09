@@ -61,7 +61,7 @@ const _abi = [
       {
         name: "context",
         type: "tuple",
-        internalType: "struct revertContext",
+        internalType: "struct zContext",
         components: [
           {
             name: "origin",

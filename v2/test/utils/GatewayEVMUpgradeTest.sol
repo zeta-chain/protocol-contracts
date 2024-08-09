@@ -2,8 +2,9 @@
 pragma solidity 0.8.26;
 
 import "src/evm/ZetaConnectorBase.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
+
 import "src/evm/interfaces/IERC20Custody.sol";
+import "src/evm/interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";

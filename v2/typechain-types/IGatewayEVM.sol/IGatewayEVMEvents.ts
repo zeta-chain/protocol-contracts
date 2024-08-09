@@ -21,6 +21,18 @@ import type {
   TypedListener,
 } from "../common";
 
+export type RevertOptionsStruct = {
+  revertAddress: AddressLike;
+  callOnRevert: boolean;
+  abortAddress: AddressLike;
+};
+
+export type RevertOptionsStructOutput = [
+  revertAddress: string,
+  callOnRevert: boolean,
+  abortAddress: string
+] & { revertAddress: string; callOnRevert: boolean; abortAddress: string };
+
 export interface IGatewayEVMEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
@@ -37,13 +49,20 @@ export namespace CallEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
-    payload: BytesLike
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
-  export type OutputTuple = [sender: string, receiver: string, payload: string];
+  export type OutputTuple = [
+    sender: string,
+    receiver: string,
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
+  ];
   export interface OutputObject {
     sender: string;
     receiver: string;
     payload: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -57,14 +76,16 @@ export namespace DepositEvent {
     receiver: AddressLike,
     amount: BigNumberish,
     asset: AddressLike,
-    payload: BytesLike
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
     receiver: string,
     amount: bigint,
     asset: string,
-    payload: string
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
@@ -72,6 +93,7 @@ export namespace DepositEvent {
     amount: bigint;
     asset: string;
     payload: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -256,7 +278,7 @@ export interface IGatewayEVMEvents extends BaseContract {
   >;
 
   filters: {
-    "Call(address,address,bytes)": TypedContractEvent<
+    "Call(address,address,bytes,tuple)": TypedContractEvent<
       CallEvent.InputTuple,
       CallEvent.OutputTuple,
       CallEvent.OutputObject
@@ -267,7 +289,7 @@ export interface IGatewayEVMEvents extends BaseContract {
       CallEvent.OutputObject
     >;
 
-    "Deposit(address,address,uint256,address,bytes)": TypedContractEvent<
+    "Deposit(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
       DepositEvent.InputTuple,
       DepositEvent.OutputTuple,
       DepositEvent.OutputObject

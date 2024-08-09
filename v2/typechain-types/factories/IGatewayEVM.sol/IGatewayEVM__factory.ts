@@ -23,6 +23,28 @@ const _abi = [
         type: "bytes",
         internalType: "bytes",
       },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
     ],
     outputs: [],
     stateMutability: "nonpayable",
@@ -35,6 +57,28 @@ const _abi = [
         name: "receiver",
         type: "address",
         internalType: "address",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
       },
     ],
     outputs: [],
@@ -59,6 +103,28 @@ const _abi = [
         type: "address",
         internalType: "address",
       },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
     ],
     outputs: [],
     stateMutability: "nonpayable",
@@ -76,6 +142,28 @@ const _abi = [
         name: "payload",
         type: "bytes",
         internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
       },
     ],
     outputs: [],
@@ -104,6 +192,28 @@ const _abi = [
         name: "payload",
         type: "bytes",
         internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
       },
     ],
     outputs: [],
@@ -229,6 +339,29 @@ const _abi = [
         indexed: false,
         internalType: "bytes",
       },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        indexed: false,
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
     ],
     anonymous: false,
   },
@@ -265,6 +398,29 @@ const _abi = [
         type: "bytes",
         indexed: false,
         internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        indexed: false,
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+        ],
       },
     ],
     anonymous: false,

@@ -107,7 +107,13 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param revertOptions Revert options.
-    function withdraw(bytes memory receiver, uint256 amount, uint256 chainId, RevertOptions calldata revertOptions) external;
+    function withdraw(
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.

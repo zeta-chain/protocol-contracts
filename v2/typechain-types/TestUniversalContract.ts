@@ -35,18 +35,6 @@ export type ZContextStructOutput = [
   chainID: bigint
 ] & { origin: string; sender: string; chainID: bigint };
 
-export type RevertContextStruct = {
-  origin: BytesLike;
-  sender: AddressLike;
-  chainID: BigNumberish;
-};
-
-export type RevertContextStructOutput = [
-  origin: string,
-  sender: string,
-  chainID: bigint
-] & { origin: string; sender: string; chainID: bigint };
-
 export interface TestUniversalContractInterface extends Interface {
   getFunction(
     nameOrSignature: "onCrossChainCall" | "onRevert"
@@ -62,7 +50,7 @@ export interface TestUniversalContractInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "onRevert",
-    values: [RevertContextStruct, AddressLike, BigNumberish, BytesLike]
+    values: [ZContextStruct, AddressLike, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -184,7 +172,7 @@ export interface TestUniversalContract extends BaseContract {
 
   onRevert: TypedContractMethod<
     [
-      context: RevertContextStruct,
+      context: ZContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       message: BytesLike
@@ -213,7 +201,7 @@ export interface TestUniversalContract extends BaseContract {
     nameOrSignature: "onRevert"
   ): TypedContractMethod<
     [
-      context: RevertContextStruct,
+      context: ZContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       message: BytesLike

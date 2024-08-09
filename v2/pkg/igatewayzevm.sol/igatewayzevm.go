@@ -29,11 +29,11 @@ var (
 	_ = abi.ConvertType
 )
 
-// RevertContext is an auto generated low-level Go binding around an user-defined struct.
-type RevertContext struct {
-	Origin  []byte
-	Sender  common.Address
-	ChainID *big.Int
+// RevertOptions is an auto generated low-level Go binding around an user-defined struct.
+type RevertOptions struct {
+	RevertAddress common.Address
+	CallOnRevert  bool
+	AbortAddress  common.Address
 }
 
 // ZContext is an auto generated low-level Go binding around an user-defined struct.
@@ -45,7 +45,7 @@ type ZContext struct {
 
 // IGatewayZEVMMetaData contains all meta data concerning the IGatewayZEVM contract.
 var IGatewayZEVMMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structrevertContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structrevertContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"CallerIsNotFungibleModule\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"FailedZetaSent\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"GasFeeTransferFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZRC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZetaAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidTarget\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"OnlyWZETAOrFungible\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"WithdrawalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20BurnFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20TransferFailed\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"target\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"CallerIsNotFungibleModule\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"FailedZetaSent\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"GasFeeTransferFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZRC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientZetaAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InvalidTarget\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"OnlyWZETAOrFungible\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"WithdrawalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20BurnFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20TransferFailed\",\"inputs\":[]}]",
 }
 
 // IGatewayZEVMABI is the input ABI used to generate the binding from.
@@ -194,25 +194,25 @@ func (_IGatewayZEVM *IGatewayZEVMTransactorRaw) Transact(opts *bind.TransactOpts
 	return _IGatewayZEVM.Contract.contract.Transact(opts, method, params...)
 }
 
-// Call is a paid mutator transaction binding the contract method 0x5d40e178.
+// Call is a paid mutator transaction binding the contract method 0x396a1533.
 //
-// Solidity: function call(bytes receiver, uint256 chainId, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) Call(opts *bind.TransactOpts, receiver []byte, chainId *big.Int, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.contract.Transact(opts, "call", receiver, chainId, message)
+// Solidity: function call(bytes receiver, uint256 chainId, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) Call(opts *bind.TransactOpts, receiver []byte, chainId *big.Int, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "call", receiver, chainId, message, revertOptions)
 }
 
-// Call is a paid mutator transaction binding the contract method 0x5d40e178.
+// Call is a paid mutator transaction binding the contract method 0x396a1533.
 //
-// Solidity: function call(bytes receiver, uint256 chainId, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) Call(receiver []byte, chainId *big.Int, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.Call(&_IGatewayZEVM.TransactOpts, receiver, chainId, message)
+// Solidity: function call(bytes receiver, uint256 chainId, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) Call(receiver []byte, chainId *big.Int, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Call(&_IGatewayZEVM.TransactOpts, receiver, chainId, message, revertOptions)
 }
 
-// Call is a paid mutator transaction binding the contract method 0x5d40e178.
+// Call is a paid mutator transaction binding the contract method 0x396a1533.
 //
-// Solidity: function call(bytes receiver, uint256 chainId, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Call(receiver []byte, chainId *big.Int, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.Call(&_IGatewayZEVM.TransactOpts, receiver, chainId, message)
+// Solidity: function call(bytes receiver, uint256 chainId, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Call(receiver []byte, chainId *big.Int, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Call(&_IGatewayZEVM.TransactOpts, receiver, chainId, message, revertOptions)
 }
 
 // Deposit is a paid mutator transaction binding the contract method 0xf45346dc.
@@ -281,21 +281,21 @@ func (_IGatewayZEVM *IGatewayZEVMTransactorSession) DepositAndCall0(context ZCon
 // DepositAndRevert is a paid mutator transaction binding the contract method 0x5af65967.
 //
 // Solidity: function depositAndRevert((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) DepositAndRevert(opts *bind.TransactOpts, context RevertContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_IGatewayZEVM *IGatewayZEVMTransactor) DepositAndRevert(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.contract.Transact(opts, "depositAndRevert", context, zrc20, amount, target, message)
 }
 
 // DepositAndRevert is a paid mutator transaction binding the contract method 0x5af65967.
 //
 // Solidity: function depositAndRevert((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) DepositAndRevert(context RevertContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_IGatewayZEVM *IGatewayZEVMSession) DepositAndRevert(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.Contract.DepositAndRevert(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
 // DepositAndRevert is a paid mutator transaction binding the contract method 0x5af65967.
 //
 // Solidity: function depositAndRevert((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) DepositAndRevert(context RevertContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) DepositAndRevert(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.Contract.DepositAndRevert(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
@@ -323,106 +323,106 @@ func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Execute(context ZContext, zr
 // ExecuteRevert is a paid mutator transaction binding the contract method 0x309f5004.
 //
 // Solidity: function executeRevert((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) ExecuteRevert(opts *bind.TransactOpts, context RevertContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_IGatewayZEVM *IGatewayZEVMTransactor) ExecuteRevert(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.contract.Transact(opts, "executeRevert", context, zrc20, amount, target, message)
 }
 
 // ExecuteRevert is a paid mutator transaction binding the contract method 0x309f5004.
 //
 // Solidity: function executeRevert((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) ExecuteRevert(context RevertContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_IGatewayZEVM *IGatewayZEVMSession) ExecuteRevert(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.Contract.ExecuteRevert(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
 // ExecuteRevert is a paid mutator transaction binding the contract method 0x309f5004.
 //
 // Solidity: function executeRevert((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) ExecuteRevert(context RevertContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) ExecuteRevert(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _IGatewayZEVM.Contract.ExecuteRevert(&_IGatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
-// Withdraw is a paid mutator transaction binding the contract method 0x135390f9.
+// Withdraw is a paid mutator transaction binding the contract method 0x808fbf98.
 //
-// Solidity: function withdraw(bytes receiver, uint256 amount, address zrc20) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) Withdraw(opts *bind.TransactOpts, receiver []byte, amount *big.Int, zrc20 common.Address) (*types.Transaction, error) {
-	return _IGatewayZEVM.contract.Transact(opts, "withdraw", receiver, amount, zrc20)
+// Solidity: function withdraw(bytes receiver, uint256 amount, uint256 chainId, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) Withdraw(opts *bind.TransactOpts, receiver []byte, amount *big.Int, chainId *big.Int, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "withdraw", receiver, amount, chainId, revertOptions)
 }
 
-// Withdraw is a paid mutator transaction binding the contract method 0x135390f9.
+// Withdraw is a paid mutator transaction binding the contract method 0x808fbf98.
 //
-// Solidity: function withdraw(bytes receiver, uint256 amount, address zrc20) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) Withdraw(receiver []byte, amount *big.Int, zrc20 common.Address) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.Withdraw(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20)
+// Solidity: function withdraw(bytes receiver, uint256 amount, uint256 chainId, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) Withdraw(receiver []byte, amount *big.Int, chainId *big.Int, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Withdraw(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, revertOptions)
 }
 
-// Withdraw is a paid mutator transaction binding the contract method 0x135390f9.
+// Withdraw is a paid mutator transaction binding the contract method 0x808fbf98.
 //
-// Solidity: function withdraw(bytes receiver, uint256 amount, address zrc20) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Withdraw(receiver []byte, amount *big.Int, zrc20 common.Address) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.Withdraw(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20)
+// Solidity: function withdraw(bytes receiver, uint256 amount, uint256 chainId, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Withdraw(receiver []byte, amount *big.Int, chainId *big.Int, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Withdraw(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, revertOptions)
 }
 
-// Withdraw0 is a paid mutator transaction binding the contract method 0x737a9ed6.
+// Withdraw0 is a paid mutator transaction binding the contract method 0x8d7167ed.
 //
-// Solidity: function withdraw(bytes receiver, uint256 amount, uint256 chainId) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) Withdraw0(opts *bind.TransactOpts, receiver []byte, amount *big.Int, chainId *big.Int) (*types.Transaction, error) {
-	return _IGatewayZEVM.contract.Transact(opts, "withdraw0", receiver, amount, chainId)
+// Solidity: function withdraw(bytes receiver, uint256 amount, address zrc20, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) Withdraw0(opts *bind.TransactOpts, receiver []byte, amount *big.Int, zrc20 common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "withdraw0", receiver, amount, zrc20, revertOptions)
 }
 
-// Withdraw0 is a paid mutator transaction binding the contract method 0x737a9ed6.
+// Withdraw0 is a paid mutator transaction binding the contract method 0x8d7167ed.
 //
-// Solidity: function withdraw(bytes receiver, uint256 amount, uint256 chainId) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) Withdraw0(receiver []byte, amount *big.Int, chainId *big.Int) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.Withdraw0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId)
+// Solidity: function withdraw(bytes receiver, uint256 amount, address zrc20, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) Withdraw0(receiver []byte, amount *big.Int, zrc20 common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Withdraw0(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, revertOptions)
 }
 
-// Withdraw0 is a paid mutator transaction binding the contract method 0x737a9ed6.
+// Withdraw0 is a paid mutator transaction binding the contract method 0x8d7167ed.
 //
-// Solidity: function withdraw(bytes receiver, uint256 amount, uint256 chainId) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Withdraw0(receiver []byte, amount *big.Int, chainId *big.Int) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.Withdraw0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId)
+// Solidity: function withdraw(bytes receiver, uint256 amount, address zrc20, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) Withdraw0(receiver []byte, amount *big.Int, zrc20 common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.Withdraw0(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, revertOptions)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x7993c1e0.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0x76d355d5.
 //
-// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, address zrc20, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) WithdrawAndCall(opts *bind.TransactOpts, receiver []byte, amount *big.Int, zrc20 common.Address, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.contract.Transact(opts, "withdrawAndCall", receiver, amount, zrc20, message)
+// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, address zrc20, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) WithdrawAndCall(opts *bind.TransactOpts, receiver []byte, amount *big.Int, zrc20 common.Address, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "withdrawAndCall", receiver, amount, zrc20, message, revertOptions)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x7993c1e0.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0x76d355d5.
 //
-// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, address zrc20, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) WithdrawAndCall(receiver []byte, amount *big.Int, zrc20 common.Address, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.WithdrawAndCall(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, message)
+// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, address zrc20, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) WithdrawAndCall(receiver []byte, amount *big.Int, zrc20 common.Address, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.WithdrawAndCall(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, message, revertOptions)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x7993c1e0.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0x76d355d5.
 //
-// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, address zrc20, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) WithdrawAndCall(receiver []byte, amount *big.Int, zrc20 common.Address, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.WithdrawAndCall(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, message)
+// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, address zrc20, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) WithdrawAndCall(receiver []byte, amount *big.Int, zrc20 common.Address, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.WithdrawAndCall(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, message, revertOptions)
 }
 
-// WithdrawAndCall0 is a paid mutator transaction binding the contract method 0xf41d7749.
+// WithdrawAndCall0 is a paid mutator transaction binding the contract method 0x961ef02b.
 //
-// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, uint256 chainId, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactor) WithdrawAndCall0(opts *bind.TransactOpts, receiver []byte, amount *big.Int, chainId *big.Int, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.contract.Transact(opts, "withdrawAndCall0", receiver, amount, chainId, message)
+// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, uint256 chainId, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactor) WithdrawAndCall0(opts *bind.TransactOpts, receiver []byte, amount *big.Int, chainId *big.Int, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.contract.Transact(opts, "withdrawAndCall0", receiver, amount, chainId, message, revertOptions)
 }
 
-// WithdrawAndCall0 is a paid mutator transaction binding the contract method 0xf41d7749.
+// WithdrawAndCall0 is a paid mutator transaction binding the contract method 0x961ef02b.
 //
-// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, uint256 chainId, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMSession) WithdrawAndCall0(receiver []byte, amount *big.Int, chainId *big.Int, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.WithdrawAndCall0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, message)
+// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, uint256 chainId, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMSession) WithdrawAndCall0(receiver []byte, amount *big.Int, chainId *big.Int, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.WithdrawAndCall0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, message, revertOptions)
 }
 
-// WithdrawAndCall0 is a paid mutator transaction binding the contract method 0xf41d7749.
+// WithdrawAndCall0 is a paid mutator transaction binding the contract method 0x961ef02b.
 //
-// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, uint256 chainId, bytes message) returns()
-func (_IGatewayZEVM *IGatewayZEVMTransactorSession) WithdrawAndCall0(receiver []byte, amount *big.Int, chainId *big.Int, message []byte) (*types.Transaction, error) {
-	return _IGatewayZEVM.Contract.WithdrawAndCall0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, message)
+// Solidity: function withdrawAndCall(bytes receiver, uint256 amount, uint256 chainId, bytes message, (address,bool,address) revertOptions) returns()
+func (_IGatewayZEVM *IGatewayZEVMTransactorSession) WithdrawAndCall0(receiver []byte, amount *big.Int, chainId *big.Int, message []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayZEVM.Contract.WithdrawAndCall0(&_IGatewayZEVM.TransactOpts, receiver, amount, chainId, message, revertOptions)
 }
 
 // IGatewayZEVMCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the IGatewayZEVM contract.
@@ -494,16 +494,17 @@ func (it *IGatewayZEVMCallIterator) Close() error {
 
 // IGatewayZEVMCall represents a Call event raised by the IGatewayZEVM contract.
 type IGatewayZEVMCall struct {
-	Sender   common.Address
-	ChainId  *big.Int
-	Receiver []byte
-	Message  []byte
-	Raw      types.Log // Blockchain specific contextual infos
+	Sender        common.Address
+	ChainId       *big.Int
+	Receiver      []byte
+	Message       []byte
+	RevertOptions RevertOptions
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterCall is a free log retrieval operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
+// FilterCall is a free log retrieval operation binding the contract event 0x3c98f9847344f21261e2534375abef9065c4386914cfdaf39cba9707ee4721d8.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address) revertOptions)
 func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMCallIterator, error) {
 
 	var senderRule []interface{}
@@ -522,9 +523,9 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterCall(opts *bind.FilterOpts, sen
 	return &IGatewayZEVMCallIterator{contract: _IGatewayZEVM.contract, event: "Call", logs: logs, sub: sub}, nil
 }
 
-// WatchCall is a free log subscription operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
+// WatchCall is a free log subscription operation binding the contract event 0x3c98f9847344f21261e2534375abef9065c4386914cfdaf39cba9707ee4721d8.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address) revertOptions)
 func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMCall, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
@@ -568,9 +569,9 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink 
 	}), nil
 }
 
-// ParseCall is a log parse operation binding the contract event 0x5322ffbbf9261ff1f8138247942d2b03b28717141ef0a0dd080fc4be9c4e78d3.
+// ParseCall is a log parse operation binding the contract event 0x3c98f9847344f21261e2534375abef9065c4386914cfdaf39cba9707ee4721d8.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address) revertOptions)
 func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseCall(log types.Log) (*IGatewayZEVMCall, error) {
 	event := new(IGatewayZEVMCall)
 	if err := _IGatewayZEVM.contract.UnpackLog(event, "Call", log); err != nil {
@@ -657,12 +658,13 @@ type IGatewayZEVMWithdrawal struct {
 	Gasfee          *big.Int
 	ProtocolFlatFee *big.Int
 	Message         []byte
+	RevertOptions   RevertOptions
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawal is a free log retrieval operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
+// FilterWithdrawal is a free log retrieval operation binding the contract event 0x7ca3be4d7db50c438cce3d665ee946ee5404e238d50c349a8129ea9e03738843.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address) revertOptions)
 func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterWithdrawal(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMWithdrawalIterator, error) {
 
 	var senderRule []interface{}
@@ -681,9 +683,9 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterWithdrawal(opts *bind.FilterOpt
 	return &IGatewayZEVMWithdrawalIterator{contract: _IGatewayZEVM.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawal is a free log subscription operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
+// WatchWithdrawal is a free log subscription operation binding the contract event 0x7ca3be4d7db50c438cce3d665ee946ee5404e238d50c349a8129ea9e03738843.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address) revertOptions)
 func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMWithdrawal, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
@@ -727,9 +729,9 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts,
 	}), nil
 }
 
-// ParseWithdrawal is a log parse operation binding the contract event 0xde19dbe881cc0aeeb6e73ce19ac7b5ca695e6be8a076e3eb42292005a7fec1b5.
+// ParseWithdrawal is a log parse operation binding the contract event 0x7ca3be4d7db50c438cce3d665ee946ee5404e238d50c349a8129ea9e03738843.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address) revertOptions)
 func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseWithdrawal(log types.Log) (*IGatewayZEVMWithdrawal, error) {
 	event := new(IGatewayZEVMWithdrawal)
 	if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawal", log); err != nil {
