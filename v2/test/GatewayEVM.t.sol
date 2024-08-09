@@ -350,7 +350,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         custody.unwhitelist(address(token));
 
         vm.expectRevert(NotWhitelistedInCustody.selector);
-        gateway.deposit(destination, amount, address(token));
+        gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
     function testDepositZetaToConnector() public {
@@ -380,12 +380,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.deposit(address(0), amount, address(token), revertOptions);
     }
 
-    function testFailDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
-        uint256 amount = 1;
-        vm.expectRevert("ZeroAddress");
-        gateway.deposit(address(0), amount, address(token));
-    }
-
     function testDepositEthToTss() public {
         uint256 amount = 100_000;
         uint256 tssBalanceBefore = tssAddress.balance;
@@ -412,13 +406,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.deposit{ value: amount }(address(0), revertOptions);
     }
 
-    function testFailDepositEthToTssIfReceiverIsZeroAddress() public {
-        uint256 amount = 1;
-
-        vm.expectRevert("ZeroAddress");
-        gateway.deposit{ value: amount }(address(0));
-    }
-
     function testDepositERC20ToCustodyWithPayloadFailsIfTokenIsNotWhitelisted() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -429,7 +416,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         custody.unwhitelist(address(token));
 
         vm.expectRevert(NotWhitelistedInCustody.selector);
-        gateway.depositAndCall(destination, amount, address(token), payload);
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
     function testDepositERC20ToCustodyWithPayload() public {
@@ -470,15 +457,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.depositAndCall(address(0), amount, address(token), payload, revertOptions);
     }
 
-    function testFailDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
-        uint256 amount = 1;
-
-        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
-
-        vm.expectRevert("ZeroAddress");
-        gateway.depositAndCall(address(0), amount, address(token), payload);
-    }
-
     function testDepositEthToTssWithPayload() public {
         uint256 amount = 100_000;
         uint256 tssBalanceBefore = tssAddress.balance;
@@ -508,14 +486,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.depositAndCall{ value: amount }(address(0), payload, revertOptions);
     }
 
-    function testFailDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
-        uint256 amount = 1;
-        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
-
-        vm.expectRevert("ZeroAddress");
-        gateway.depositAndCall{ value: amount }(address(0), payload);
-    }
-
     function testCallWithPayload() public {
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -528,6 +498,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
         vm.expectRevert(ZeroAddress.selector);
-        gateway.call(address(0), payload);
+        gateway.call(address(0), payload, revertOptions);
     }
 }

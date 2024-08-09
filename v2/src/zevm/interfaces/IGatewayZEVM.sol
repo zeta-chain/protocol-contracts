@@ -3,6 +3,16 @@ pragma solidity 0.8.26;
 
 import "./UniversalContract.sol";
 
+/// @notice Struct containing revert options
+/// @param revertAddress Address to receive revert.
+/// @param callOnRevert Flag if onRevert hook should be called.
+/// @pararm abortAddress Address to receive funds if aborted.
+struct RevertOptions {
+    address revertAddress;
+    bool callOnRevert;
+    address abortAddress;
+}
+
 /// @title IGatewayZEVMEvents
 /// @notice Interface for the events emitted by the GatewayZEVM contract.
 interface IGatewayZEVMEvents {
@@ -74,16 +84,6 @@ interface IGatewayZEVMErrors {
 
     /// @notice Error indicating that only WZETA or the Fungible module can call the function.
     error OnlyWZETAOrFungible();
-}
-
-/// @notice Struct containing revert options
-/// @param revertAddress Address to receive revert.
-/// @param callOnRevert Flag if onRevert hook should be called.
-/// @pararm abortAddress Address to receive funds if aborted.
-struct RevertOptions {
-    address revertAddress;
-    bool callOnRevert;
-    address abortAddress;
 }
 
 /// @title IGatewayZEVM
