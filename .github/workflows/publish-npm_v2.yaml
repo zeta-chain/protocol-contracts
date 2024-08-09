@@ -34,9 +34,6 @@ jobs:
       - name: Generate Files
         run: yarn generate
 
-      - name: Install Dependencies
-        run: yarn install
-
       - name: Determine NPM Tag
         id: determine-npm-tag
         run: |
