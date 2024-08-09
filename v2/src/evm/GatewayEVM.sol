@@ -269,6 +269,7 @@ contract GatewayEVM is
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
     function call(address receiver, bytes calldata payload) external whenNotPaused nonReentrant {
+        if (receiver == address(0)) revert ZeroAddress();
         emit Call(msg.sender, receiver, payload);
     }
 

@@ -246,7 +246,7 @@ const startWorker = async () => {
           chainID,
         },
         testContracts.zrc20.target,
-        0,
+        1,
         universalContract,
         payload,
         deployOpts
@@ -271,7 +271,7 @@ const startWorker = async () => {
           .execute(
             [protocolContracts.gatewayZEVM.target, await fungibleModuleSigner.getAddress(), 1],
             asset,
-            0,
+            1,
             receiver,
             payload,
             deployOpts

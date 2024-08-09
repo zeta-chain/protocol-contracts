@@ -328,6 +328,11 @@ const _abi = [
     name: "withdraw",
     inputs: [
       {
+        name: "receiver",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
         name: "amount",
         type: "uint256",
         internalType: "uint256",
@@ -373,6 +378,11 @@ const _abi = [
     type: "function",
     name: "withdrawAndCall",
     inputs: [
+      {
+        name: "receiver",
+        type: "bytes",
+        internalType: "bytes",
+      },
       {
         name: "amount",
         type: "uint256",

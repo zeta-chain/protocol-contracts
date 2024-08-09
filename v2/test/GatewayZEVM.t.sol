@@ -169,13 +169,24 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testWithdrawZETAFailsIfAmountIsZero() public {
         vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.withdraw(0, 1);
+        gateway.withdraw(abi.encodePacked(addr1), 0, 1);
+    }
+
+    function testWithdrawZETAFailsIfReceiverIsZeroAddress() public {
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.withdraw(abi.encodePacked(""), 0, 1);
     }
 
     function testWithdrawAndCallZETAFailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.withdrawAndCall(0, 1, message);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message);
+    }
+
+    function testWithdrawAndCallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message);
     }
 
     function testWithdrawZETA() public {
@@ -186,8 +197,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawal(owner, chainId, abi.encodePacked(fungibleModule), address(zetaToken), amount, 0, 0, "");
-        gateway.withdraw(amount, chainId);
+        emit Withdrawal(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "");
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId);
 
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
         assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
@@ -211,7 +222,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zetaToken.approve(address(gateway), 0);
 
         vm.expectRevert();
-        gateway.withdraw(amount, chainId);
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId);
 
         // Verify balances not changed
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
@@ -230,7 +241,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectRevert();
-        gateway.withdraw(amount, chainId);
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId);
     }
 
     function testWithdrawZETAWithMessage() public {
@@ -242,8 +253,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawal(owner, chainId, abi.encodePacked(fungibleModule), address(zetaToken), amount, 0, 0, message);
-        gateway.withdrawAndCall(amount, chainId, message);
+        emit Withdrawal(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message);
 
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
         assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
@@ -268,7 +279,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zetaToken.approve(address(gateway), 0);
 
         vm.expectRevert();
-        gateway.withdrawAndCall(amount, chainId, message);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message);
 
         // Verify balances not changed
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
@@ -511,6 +522,16 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.executeRevert(context, address(0), 1, address(testUniversalContract), message);
     }
 
+    function testExecuteRevertUniversalContractFailsIfTargetIsZeroAddress() public {
+        bytes memory message = abi.encode("hello");
+        revertContext memory context =
+            revertContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+
+        vm.prank(fungibleModule);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.executeRevert(context, address(zrc20), 1, address(0), message);
+    }
+
     function testExecuteRevertUniversalContractFailsIfAmountIsZero() public {
         bytes memory message = abi.encode("hello");
         revertContext memory context =
@@ -521,7 +542,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.executeRevert(context, address(zrc20), 0, address(testUniversalContract), message);
     }
 
-    function testExecuteRevertUniversalContractFailsIfZRC20IsZeroAddress() public {
+    function testExecuteRevertUniversalContractFailsIfZeroAddress() public {
         bytes memory message = abi.encode("hello");
         revertContext memory context =
             revertContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
@@ -531,14 +552,14 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.executeRevert(context, address(0), 1, address(testUniversalContract), message);
     }
 
-    function testExecuteRevertUniversalContractFailsIfTargetIsZeroAddress() public {
+    function testExecuteRevertUniversalContractFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         revertContext memory context =
             revertContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
         vm.prank(fungibleModule);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.executeRevert(context, address(zrc20), 1, address(0), message);
+        gateway.executeRevert(context, address(0), 1, address(testUniversalContract), message);
     }
 
     function testExecuteRevertUniversalContract() public {
@@ -734,6 +755,20 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.prank(fungibleModule);
         vm.expectRevert(InsufficientZetaAmount.selector);
         gateway.depositAndCall(context, 0, address(zrc20), message);
+    }
+
+    function testDepositZETAAndCallUniversalContractFailsIfZeroAddress() public {
+        uint256 amount = 1;
+        uint256 fungibleBalanceBefore = zetaToken.balanceOf(fungibleModule);
+        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 destinationBalanceBefore = address(testUniversalContract).balance;
+        bytes memory message = abi.encode("hello");
+        zContext memory context =
+            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+
+        vm.prank(fungibleModule);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.depositAndCall(context, 1, address(0), message);
     }
 
     function testDepositZETAAndCallUniversal() public {
