@@ -41,8 +41,12 @@ contract ZetaConnectorNonNativeTest is
     address tssAddress;
 
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    error ExceedsMaxSupply();
+    error EnforcedPause();
 
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -77,6 +81,42 @@ contract ZetaConnectorNonNativeTest is
         uint256 balanceBefore = zetaToken.balanceOf(destination);
         assertEq(balanceBefore, 0);
         bytes32 internalSendHash = "";
+
+        bytes memory data =
+            abi.encodeWithSignature("mint(address,uint256,bytes32)", destination, amount, internalSendHash);
+        vm.expectCall(address(zetaToken), 0, data);
+        vm.expectEmit(true, true, true, true, address(zetaConnector));
+        emit Withdraw(destination, amount);
+        vm.prank(tssAddress);
+        zetaConnector.withdraw(destination, amount, internalSendHash);
+        uint256 balanceAfter = zetaToken.balanceOf(destination);
+        assertEq(balanceAfter, amount);
+    }
+
+    function testWithdrawTogglePause() public {
+        uint256 amount = 100_000;
+        bytes32 internalSendHash = "";
+
+        vm.prank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        zetaConnector.pause();
+
+        vm.prank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        zetaConnector.unpause();
+
+        vm.prank(owner);
+        zetaConnector.pause();
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(tssAddress);
+        zetaConnector.withdraw(destination, amount, internalSendHash);
+
+        vm.prank(owner);
+        zetaConnector.unpause();
+
+        uint256 balanceBefore = zetaToken.balanceOf(destination);
+        assertEq(balanceBefore, 0);
 
         bytes memory data =
             abi.encodeWithSignature("mint(address,uint256,bytes32)", destination, amount, internalSendHash);
@@ -266,5 +306,46 @@ contract ZetaConnectorNonNativeTest is
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+    }
+
+    function testWithdrawAndFailsIfMaxSupplyIsReached() public {
+        uint256 amount = 100_000;
+
+        vm.prank(tssAddress);
+        zetaConnector.setMaxSupply(amount);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ExceedsMaxSupply.selector);
+        zetaConnector.withdraw(address(receiver), amount + 1, "");
+    }
+
+    function testWithdrawAndCallFailsIfMaxSupplyIsReached() public {
+        uint256 amount = 100_000;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        zetaConnector.setMaxSupply(amount);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ExceedsMaxSupply.selector);
+        zetaConnector.withdrawAndCall(address(receiver), amount + 1, data, "");
+    }
+
+    function testWithdrawAndRevertFailsIfMaxSupplyIsReached() public {
+        uint256 amount = 100_000;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        zetaConnector.setMaxSupply(amount);
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ExceedsMaxSupply.selector);
+        zetaConnector.withdrawAndRevert(address(receiver), amount + 1, data, "");
+    }
+
+    function testSexMaxSupplyFailsIfSenderIsNotTss() public {
+        vm.prank(owner);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        zetaConnector.setMaxSupply(10_000);
     }
 }

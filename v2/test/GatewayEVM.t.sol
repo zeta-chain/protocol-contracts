@@ -14,6 +14,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
+import "./utils/Zeta.non-eth.sol";
 import "src/evm/ERC20Custody.sol";
 import "src/evm/GatewayEVM.sol";
 import "src/evm/ZetaConnectorNonNative.sol";
@@ -29,7 +30,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
-    TestERC20 zeta;
+    ZetaNonEth zeta;
     address owner;
     address destination;
     address tssAddress;
@@ -41,6 +42,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
     function setUp() public {
         owner = address(this);
@@ -48,14 +50,16 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-        zeta = new TestERC20("zeta", "ZETA");
 
+        zeta = new ZetaNonEth(tssAddress, tssAddress);
         proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+        vm.prank(tssAddress);
+        zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         receiver = new ReceiverEVM();
 
         vm.deal(tssAddress, 1 ether);
@@ -69,6 +73,46 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token.transfer(address(custody), 500_000);
 
         vm.deal(tssAddress, 1 ether);
+    }
+
+    function testSetCustodyFailsIfSenderIsNotAdmin() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE)
+        );
+        gateway.setCustody(address(custody));
+    }
+
+    function testSetCustodyFailsIfSet() public {
+        vm.startPrank(owner);
+        vm.expectRevert(CustodyInitialized.selector);
+        gateway.setCustody(address(custody));
+    }
+
+    function testSetCustodyFailsIfZero() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.setCustody(address(0));
+    }
+
+    function testSetConnectorFailsIfSenderIsNotAdmin() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE)
+        );
+        gateway.setConnector(address(zetaConnector));
+    }
+
+    function testSetConnectorFailsIfSet() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ConnectorInitialized.selector);
+        gateway.setConnector(address(zetaConnector));
+    }
+
+    function testSetConnectorFailsIfZero() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.setConnector(address(0));
     }
 
     function testForwardCallToReceiveNonPayable() public {
@@ -134,6 +178,14 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
+    function testExecuteFailsIfDestinationIsZeroAddress() public {
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.execute(address(0), data);
+    }
+
     function testForwardCallToReceiveNoParamsTogglePause() public {
         vm.prank(tssAddress);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
@@ -164,7 +216,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
-    function testExecuteWithERC20FailsIfNotCustoryOrConnector() public {
+    function testExecuteWithERC20FailsIfNotCustodyOrConnector() public {
         uint256 amount = 100_000;
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
@@ -174,7 +226,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.executeWithERC20(address(token), destination, amount, data);
     }
 
-    function testRevertWithERC20FailsIfNotCustoryOrConnector() public {
+    function testRevertWithERC20FailsIfNotCustodyOrConnector() public {
         uint256 amount = 100_000;
         bytes memory data =
             abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
@@ -182,235 +234,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, ASSET_HANDLER_ROLE));
         gateway.revertWithERC20(address(token), destination, amount, data);
-    }
-
-    function testForwardCallToReceiveERC20ThroughCustody() public {
-        uint256 amount = 100_000;
-        bytes memory data =
-            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
-        uint256 balanceBefore = token.balanceOf(destination);
-        assertEq(balanceBefore, 0);
-        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
-
-        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
-        vm.expectCall(address(token), 0, transferData);
-        vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedERC20(address(gateway), amount, address(token), destination);
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
-        vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-
-        // Verify that the tokens were transferred to the destination address
-        uint256 balanceAfter = token.balanceOf(destination);
-        assertEq(balanceAfter, amount);
-
-        // Verify that the remaining tokens were refunded to the Custody contract
-        uint256 balanceAfterCustody = token.balanceOf(address(custody));
-        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
-
-        // Verify that the approval was reset
-        uint256 allowance = token.allowance(address(gateway), address(receiver));
-        assertEq(allowance, 0);
-
-        // Verify that gateway doesn't hold any tokens
-        uint256 balanceGateway = token.balanceOf(address(gateway));
-        assertEq(balanceGateway, 0);
-    }
-
-    function testForwardCallToReceiveERC20ThroughCustodyFailsIfSenderIsNotWithdrawer() public {
-        uint256 amount = 100_000;
-        bytes memory data =
-            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
-
-        vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-    }
-
-    function testForwardCallToReceiveERC20ThroughCustodyFailsIfAmountIs0() public {
-        uint256 amount = 0;
-        bytes memory data =
-            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
-
-        vm.prank(tssAddress);
-        vm.expectRevert(InsufficientERC20Amount.selector);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-    }
-
-    function testForwardCallToReceiveERC20PartialThroughCustody() public {
-        uint256 amount = 100_000;
-        bytes memory data =
-            abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
-        uint256 balanceBefore = token.balanceOf(destination);
-        assertEq(balanceBefore, 0);
-        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
-
-        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
-        vm.expectCall(address(token), 0, transferData);
-        vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedERC20(address(gateway), amount / 2, address(token), destination);
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
-        vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-
-        // Verify that the tokens were transferred to the destination address
-        uint256 balanceAfter = token.balanceOf(destination);
-        assertEq(balanceAfter, amount / 2);
-
-        // Verify that the remaining tokens were refunded to the Custody contract
-        uint256 balanceAfterCustody = token.balanceOf(address(custody));
-        assertEq(balanceAfterCustody, balanceBeforeCustody - amount / 2);
-
-        // Verify that the approval was reset
-        uint256 allowance = token.allowance(address(gateway), address(receiver));
-        assertEq(allowance, 0);
-
-        // Verify that gateway doesn't hold any tokens
-        uint256 balanceGateway = token.balanceOf(address(gateway));
-        assertEq(balanceGateway, 0);
-    }
-
-    function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfSenderIsNotWithdrawer() public {
-        uint256 amount = 100_000;
-        bytes memory data =
-            abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
-
-        vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-    }
-
-    function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfAmountIs0() public {
-        uint256 amount = 0;
-        bytes memory data =
-            abi.encodeWithSignature("receiveERC20Partial(uint256,address,address)", amount, address(token), destination);
-
-        vm.prank(tssAddress);
-        vm.expectRevert(InsufficientERC20Amount.selector);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-    }
-
-    function testForwardCallToReceiveNoParamsThroughCustody() public {
-        uint256 amount = 100_000;
-        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
-        uint256 balanceBefore = token.balanceOf(destination);
-        assertEq(balanceBefore, 0);
-        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
-
-        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
-        vm.expectCall(address(token), 0, transferData);
-        vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedNoParams(address(gateway));
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
-        vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
-
-        // Verify that the tokens were not transferred to the destination address
-        uint256 balanceAfter = token.balanceOf(destination);
-        assertEq(balanceAfter, 0);
-
-        // Verify that the remaining tokens were refunded to the Custody contract
-        uint256 balanceAfterCustody = token.balanceOf(address(custody));
-        assertEq(balanceAfterCustody, balanceBeforeCustody);
-
-        // Verify that the approval was reset
-        uint256 allowance = token.allowance(address(gateway), address(receiver));
-        assertEq(allowance, 0);
-
-        // Verify that gateway doesn't hold any tokens
-        uint256 balanceGateway = token.balanceOf(address(gateway));
-        assertEq(balanceGateway, 0);
-    }
-
-    function testWithdrawThroughCustody() public {
-        uint256 amount = 100_000;
-        uint256 balanceBefore = token.balanceOf(destination);
-        assertEq(balanceBefore, 0);
-        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
-
-        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(destination), amount);
-        vm.expectCall(address(token), 0, transferData);
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit Withdraw(address(token), destination, amount);
-        vm.prank(tssAddress);
-        custody.withdraw(address(token), destination, amount);
-
-        // Verify that the tokens were transferred to the destination address
-        uint256 balanceAfter = token.balanceOf(destination);
-        assertEq(balanceAfter, amount);
-
-        // Verify that the tokens were substracted from custody
-        uint256 balanceAfterCustody = token.balanceOf(address(custody));
-        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
-
-        // Verify that gateway doesn't hold any tokens
-        uint256 balanceGateway = token.balanceOf(address(gateway));
-        assertEq(balanceGateway, 0);
-    }
-
-    function testWithdrawThroughCustodyFailsIfSenderIsNotWithdrawer() public {
-        uint256 amount = 100_000;
-
-        vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdraw(address(token), destination, amount);
-    }
-
-    function testWithdrawAndRevertThroughCustody() public {
-        uint256 amount = 100_000;
-        bytes memory data = abi.encodePacked("hello");
-        uint256 balanceBefore = token.balanceOf(address(receiver));
-        assertEq(balanceBefore, 0);
-        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
-
-        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(gateway), amount);
-        vm.expectCall(address(token), 0, transferData);
-        // Verify that onRevert callback was called
-        vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedRevert(address(gateway), data);
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit RevertedWithERC20(address(token), address(receiver), amount, data);
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndRevert(address(token), address(receiver), amount, data);
-        vm.prank(tssAddress);
-        custody.withdrawAndRevert(address(token), address(receiver), amount, data);
-
-        // Verify that the tokens were transferred to the receiver address
-        uint256 balanceAfter = token.balanceOf(address(receiver));
-        assertEq(balanceAfter, amount);
-
-        // Verify that zeta connector doesn't get more tokens
-        uint256 balanceAfterCustody = token.balanceOf(address(custody));
-        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
-
-        // Verify that the approval was reset
-        uint256 allowance = token.allowance(address(gateway), address(receiver));
-        assertEq(allowance, 0);
-
-        // Verify that gateway doesn't hold any tokens
-        uint256 balanceGateway = token.balanceOf(address(gateway));
-        assertEq(balanceGateway, 0);
-    }
-
-    function testWithdrawAndRevertThroughCustodyFailsIfSenderIsNotWithdrawer() public {
-        uint256 amount = 100_000;
-        bytes memory data = abi.encodePacked("hello");
-
-        vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdrawAndRevert(address(token), address(receiver), amount, data);
-    }
-
-    function testWithdrawAndRevertThroughCustodyFailsIfAmountIs0() public {
-        uint256 amount = 0;
-        bytes memory data = abi.encodePacked("hello");
-
-        vm.prank(tssAddress);
-        vm.expectRevert(InsufficientERC20Amount.selector);
-        custody.withdrawAndRevert(address(token), address(receiver), amount, data);
     }
 
     function testExecuteRevert() public {
@@ -440,6 +263,15 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         gateway.executeRevert{ value: value }(address(receiver), data);
     }
+
+    function testExecuteRevertFailsIfReceiverIsZeroAddress() public {
+        uint256 value = 1 ether;
+        bytes memory data = abi.encodePacked("hello");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.executeRevert{ value: value }(address(0), data);
+    }
 }
 
 contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
@@ -450,7 +282,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
     TestERC20 token;
-    TestERC20 zeta;
+    ZetaNonEth zeta;
     address owner;
     address destination;
     address tssAddress;
@@ -463,15 +295,16 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         tssAddress = address(0x5678);
 
         token = new TestERC20("test", "TTK");
-        zeta = new TestERC20("zeta", "ZETA");
 
+        zeta = new ZetaNonEth(tssAddress, tssAddress);
         proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
-
+        vm.prank(tssAddress);
+        zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         vm.deal(tssAddress, 1 ether);
 
         vm.startPrank(owner);
@@ -480,6 +313,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         vm.stopPrank();
 
         token.mint(owner, ownerAmount);
+        vm.prank(tssAddress);
+        zetaConnector.withdraw(owner, ownerAmount, "");
     }
 
     function testDepositERC20ToCustody() public {
@@ -500,6 +335,18 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
+    function testDepositZetaToConnector() public {
+        uint256 amount = 100_000;
+        zeta.approve(address(gateway), amount);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposit(owner, destination, amount, address(zeta), "");
+        gateway.deposit(destination, amount, address(zeta));
+
+        uint256 ownerAmountAfter = zeta.balanceOf(owner);
+        assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
     function testFailDepositERC20ToCustodyIfAmountIs0() public {
         uint256 amount = 0;
 
@@ -507,6 +354,12 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("InsufficientERC20Amount");
         gateway.deposit(destination, amount, address(token));
+    }
+
+    function testFailDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        vm.expectRevert("ZeroAddress");
+        gateway.deposit(address(0), amount, address(token));
     }
 
     function testDepositEthToTss() public {
@@ -526,6 +379,13 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("InsufficientETHAmount");
         gateway.deposit{ value: amount }(destination);
+    }
+
+    function testFailDepositEthToTssIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+
+        vm.expectRevert("ZeroAddress");
+        gateway.deposit{ value: amount }(address(0));
     }
 
     function testDepositERC20ToCustodyWithPayload() public {
@@ -557,6 +417,15 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.depositAndCall(destination, amount, address(token), payload);
     }
 
+    function testFailDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert("ZeroAddress");
+        gateway.depositAndCall(address(0), amount, address(token), payload);
+    }
+
     function testDepositEthToTssWithPayload() public {
         uint256 amount = 100_000;
         uint256 tssBalanceBefore = tssAddress.balance;
@@ -576,6 +445,14 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("InsufficientETHAmount");
         gateway.depositAndCall{ value: amount }(destination, payload);
+    }
+
+    function testFailDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert("ZeroAddress");
+        gateway.depositAndCall{ value: amount }(address(0), payload);
     }
 
     function testCallWithPayload() public {

@@ -29,7 +29,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @notice Set max supply for minting.
     /// @param maxSupply_ New max supply.
     /// @dev This function can only be called by the TSS address.
-    function setMaxSupply(uint256 maxSupply_) external onlyRole(WITHDRAWER_ROLE) whenNotPaused {
+    function setMaxSupply(uint256 maxSupply_) external onlyRole(TSS_ROLE) whenNotPaused {
         maxSupply = maxSupply_;
         emit MaxSupplyUpdated(maxSupply_);
     }
@@ -50,9 +50,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
-        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
-
-        IZetaNonEthNew(zetaToken).mint(to, amount, internalSendHash);
+        _mintTo(to, amount, internalSendHash);
         emit Withdraw(to, amount);
     }
 
@@ -74,10 +72,8 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
-        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
-
         // Mint zetaToken to the Gateway contract
-        IZetaNonEthNew(zetaToken).mint(address(gateway), amount, internalSendHash);
+        _mintTo(address(gateway), amount, internalSendHash);
 
         // Forward the call to the Gateway contract
         gateway.executeWithERC20(address(zetaToken), to, amount, data);
@@ -103,10 +99,8 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
-        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
-
         // Mint zetaToken to the Gateway contract
-        IZetaNonEthNew(zetaToken).mint(address(gateway), amount, internalSendHash);
+        _mintTo(address(gateway), amount, internalSendHash);
 
         // Forward the call to the Gateway contract
         gateway.revertWithERC20(address(zetaToken), to, amount, data);
@@ -118,5 +112,11 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @param amount The amount of tokens received.
     function receiveTokens(uint256 amount) external override whenNotPaused {
         IZetaNonEthNew(zetaToken).burnFrom(msg.sender, amount);
+    }
+
+    /// @dev mints to provided account and checks if totalSupply will be exceeded
+    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) internal {
+        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
+        IZetaNonEthNew(zetaToken).mint(address(to), amount, internalSendHash);
     }
 }

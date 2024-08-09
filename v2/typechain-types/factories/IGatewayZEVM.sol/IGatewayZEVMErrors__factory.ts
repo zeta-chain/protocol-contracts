@@ -31,6 +31,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "InsufficientZetaAmount",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "InvalidTarget",
     inputs: [],
   },

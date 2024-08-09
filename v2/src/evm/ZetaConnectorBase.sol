@@ -28,6 +28,8 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @notice New role identifier for tss role.
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
     /// @notice Constructor for ZetaConnectors.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
@@ -40,6 +42,7 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
+        _grantRole(TSS_ROLE, tssAddress_);
         _grantRole(PAUSER_ROLE, admin_);
     }
 

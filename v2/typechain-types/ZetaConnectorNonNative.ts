@@ -28,6 +28,7 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "TSS_ROLE"
       | "WITHDRAWER_ROLE"
       | "gateway"
       | "getRoleAdmin"
@@ -69,6 +70,7 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "WITHDRAWER_ROLE",
     values?: undefined
@@ -132,6 +134,7 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "WITHDRAWER_ROLE",
     data: BytesLike
@@ -366,6 +369,8 @@ export interface ZetaConnectorNonNative extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  TSS_ROLE: TypedContractMethod<[], [string], "view">;
+
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
 
   gateway: TypedContractMethod<[], [string], "view">;
@@ -461,6 +466,9 @@ export interface ZetaConnectorNonNative extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "TSS_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WITHDRAWER_ROLE"

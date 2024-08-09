@@ -37,6 +37,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "TSS_ROLE",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "WITHDRAWER_ROLE",
     inputs: [],
     outputs: [

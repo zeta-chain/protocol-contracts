@@ -40,9 +40,11 @@ contract ZetaConnectorNativeTest is
     address destination;
     address tssAddress;
 
+    error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
 
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -75,6 +77,41 @@ contract ZetaConnectorNativeTest is
     function testWithdraw() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
+        uint256 balanceBefore = zetaToken.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+
+        bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", destination, amount);
+        vm.expectCall(address(zetaToken), 0, data);
+        vm.expectEmit(true, true, true, true, address(zetaConnector));
+        emit Withdraw(destination, amount);
+        vm.prank(tssAddress);
+        zetaConnector.withdraw(destination, amount, internalSendHash);
+        uint256 balanceAfter = zetaToken.balanceOf(destination);
+        assertEq(balanceAfter, amount);
+    }
+
+    function testWithdrawTogglePause() public {
+        uint256 amount = 100_000;
+        bytes32 internalSendHash = "";
+
+        vm.prank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        zetaConnector.pause();
+
+        vm.prank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        zetaConnector.unpause();
+
+        vm.prank(owner);
+        zetaConnector.pause();
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(tssAddress);
+        zetaConnector.withdraw(destination, amount, internalSendHash);
+
+        vm.prank(owner);
+        zetaConnector.unpause();
+
         uint256 balanceBefore = zetaToken.balanceOf(destination);
         assertEq(balanceBefore, 0);
 

@@ -63,6 +63,34 @@ contract ZRC20Test is Test, ZRC20Errors {
         assertEq(100_000, totalSupply);
     }
 
+    function testTransfer() public {
+        uint256 balanceStart = zrc20.balanceOf(addr1);
+        assertEq(0, balanceStart);
+
+        uint256 amount = 50_000;
+        zrc20.transfer(addr1, amount);
+
+        uint256 balanceAfter = zrc20.balanceOf(addr1);
+        assertEq(amount, balanceAfter);
+    }
+
+    function testTransferFailsIfNoBalance() public {
+        uint256 balanceStart = zrc20.balanceOf(addr1);
+        assertEq(0, balanceStart);
+
+        uint256 amount = 500_000;
+        zrc20.approve(owner, amount);
+        vm.expectRevert(LowBalance.selector);
+        zrc20.transfer(addr1, amount);
+    }
+
+    function testTransferFailsIfRecipientIsZeroAddress() public {
+        uint256 amount = 500_000;
+        zrc20.approve(owner, amount);
+        vm.expectRevert(ZeroAddress.selector);
+        zrc20.transfer(address(0), amount);
+    }
+
     function testTransferFrom() public {
         uint256 balanceStart = zrc20.balanceOf(addr1);
         assertEq(0, balanceStart);
@@ -78,6 +106,9 @@ contract ZRC20Test is Test, ZRC20Errors {
     function testTransferFromFailsIfNoAllowance() public {
         uint256 balanceStart = zrc20.balanceOf(addr1);
         assertEq(0, balanceStart);
+
+        uint256 allowance = zrc20.allowance(owner, owner);
+        assertEq(0, allowance);
 
         uint256 amount = 50_000;
         vm.expectRevert(LowAllowance.selector);
@@ -124,6 +155,11 @@ contract ZRC20Test is Test, ZRC20Errors {
         assertEq(50_000, totalSupplyAfter);
     }
 
+    function testApproveFailsIfRecipientIsZeroAddress() public {
+        vm.expectRevert(ZeroAddress.selector);
+        zrc20.approve(address(0), 10);
+    }
+
     function testBurnFailsIfNoBalance() public {
         vm.expectRevert(LowBalance.selector);
         zrc20.burn(150_000);
@@ -138,6 +174,12 @@ contract ZRC20Test is Test, ZRC20Errors {
 
         uint256 totalSupplyEnd = zrc20.totalSupply();
         assertEq(200_000, totalSupplyEnd);
+    }
+
+    function testDepositFailsIfRecipientIsZeroAddress() public {
+        vm.prank(proxy);
+        vm.expectRevert(ZeroAddress.selector);
+        zrc20.deposit(address(0), 100_000);
     }
 
     function testWithdrawGasFee() public {
@@ -200,6 +242,38 @@ contract ZRC20Test is Test, ZRC20Errors {
         assertEq(50_000, totalSupplyAfter);
     }
 
+    function testWithdrawFailsIfNoBalance() public {
+        uint256 gasLimit = 10;
+        uint256 protocolFlatFee = 100_000_000;
+
+        vm.prank(fungibleModule);
+        zrc20.updateGasLimit(gasLimit);
+
+        vm.prank(fungibleModule);
+        zrc20.updateProtocolFlatFee(protocolFlatFee);
+
+        zrc20.approve(address(zrc20), 200_000_000);
+
+        vm.expectRevert(LowBalance.selector);
+        zrc20.withdraw(abi.encodePacked(addr1), 100);
+    }
+
+    function testWithdrawFailsIfNoAllowance() public {
+        uint256 gasLimit = 10;
+        uint256 protocolFlatFee = 10;
+
+        vm.prank(fungibleModule);
+        zrc20.updateGasLimit(gasLimit);
+
+        vm.prank(fungibleModule);
+        zrc20.updateProtocolFlatFee(protocolFlatFee);
+
+        zrc20.approve(address(zrc20), 0);
+
+        vm.expectRevert();
+        zrc20.withdraw(abi.encodePacked(addr1), 1);
+    }
+
     function testDepositFailsIfSenderIsNotGateway() public {
         vm.expectRevert(InvalidSender.selector);
         zrc20.deposit(owner, 100_000);
@@ -211,6 +285,12 @@ contract ZRC20Test is Test, ZRC20Errors {
         assertEq(zrc20.SYSTEM_CONTRACT_ADDRESS(), address(0x3211));
     }
 
+    function testUpdateSystemContractAddressFailsIfZeroAddress() public {
+        vm.prank(fungibleModule);
+        vm.expectRevert(ZeroAddress.selector);
+        zrc20.updateSystemContractAddress(address(0));
+    }
+
     function testUpdateSystemContractAddressFailsIfSenderIsNotFungible() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.updateSystemContractAddress(address(0x3211));
@@ -220,6 +300,12 @@ contract ZRC20Test is Test, ZRC20Errors {
         vm.prank(fungibleModule);
         zrc20.updateGatewayAddress(address(0x3211));
         assertEq(zrc20.gatewayAddress(), address(0x3211));
+    }
+
+    function testUpdateGatewayAddressFailsIfZeroAddress() public {
+        vm.prank(fungibleModule);
+        vm.expectRevert(ZeroAddress.selector);
+        zrc20.updateGatewayAddress(address(0));
     }
 
     function testUpdateGatewayAddressFailsIfSenderIsNotFungible() public {

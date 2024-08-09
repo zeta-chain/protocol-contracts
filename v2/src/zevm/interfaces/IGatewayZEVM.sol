@@ -156,6 +156,9 @@ interface IGatewayZEVMErrors {
     /// @notice Error indicating an insufficient ZRC20 token amount.
     error InsufficientZRC20Amount();
 
+    /// @notice Error indicating an insufficient zeta amount.
+    error InsufficientZetaAmount();
+
     /// @notice Error indicating a failure to burn ZRC20 tokens.
     error ZRC20BurnFailed();
 
