@@ -172,7 +172,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(0, 1);
     }
 
-    function testWithdrawAndcallZETAFailsIfAmountIsZero() public {
+    function testWithdrawAndCallZETAFailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZetaAmount.selector);
         gateway.withdrawAndCall(0, 1, message);
@@ -351,7 +351,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.stopPrank();
     }
 
-    function testDepositFailsIfZrc20IsZeroAddress() public {
+    function testDepositFailsIfZRC20IsZeroAddress() public {
         vm.prank(fungibleModule);
         vm.expectRevert(ZeroAddress.selector);
         gateway.deposit(address(0), 1, addr1);
@@ -440,7 +440,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.deposit(address(zrc20), amount, fungibleModule);
     }
 
-    function testExecuteFailsIfZrc20IsZeroAddress() public {
+    function testExecuteFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         zContext memory context =
             zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
@@ -491,7 +491,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.execute(context, address(zrc20), 1, address(testUniversalContract), message);
     }
 
-    function testExecuteRevertUniversalContractFailsIfZrc20IsZeroAddress() public {
+    function testExecuteRevertUniversalContractFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         revertContext memory context =
             revertContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
@@ -542,7 +542,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.executeRevert(context, address(zrc20), 1, address(testUniversalContract), message);
     }
 
-    function testDepositZRC20AndCallUniversalContractFailsIfZrc20IsZeroAddress() public {
+    function testDepositZRC20AndCallUniversalContractFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         zContext memory context =
             zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
@@ -619,7 +619,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.depositAndCall(context, address(zrc20), 1, address(gateway), message);
     }
 
-    function testDepositAndRevertZRC20AndCallUniversalContractFailsIfZrc20IsZeroAddress() public {
+    function testDepositAndRevertZRC20AndCallUniversalContractFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         revertContext memory context =
             revertContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
