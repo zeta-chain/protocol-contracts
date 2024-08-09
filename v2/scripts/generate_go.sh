@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the input and output directories
-ARTIFACTS_DIR="./out"
+ARTIFACTS_DIR="./abi"
 OUTPUT_DIR="./pkg"
 
 rm -rf $OUTPUT_DIR
