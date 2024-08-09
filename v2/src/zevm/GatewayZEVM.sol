@@ -149,6 +149,7 @@ contract GatewayZEVM is
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     function withdraw(bytes memory receiver, uint256 amount, uint256 chainId) external nonReentrant whenNotPaused {
+        if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);

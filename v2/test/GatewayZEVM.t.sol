@@ -172,13 +172,18 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(abi.encodePacked(addr1), 0, 1);
     }
 
-    function testWithdrawAndcallZETAFailsIfAmountIsZero() public {
+    function testWithdrawZETAFailsIfReceiverIsZeroAddress() public {
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.withdraw(abi.encodePacked(""), 0, 1);
+    }
+
+    function testWithdrawAndCallZETAFailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZetaAmount.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message);
     }
 
-    function testWithdrawAndcallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
+    function testWithdrawAndCallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
         gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message);
@@ -446,7 +451,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.deposit(address(zrc20), amount, fungibleModule);
     }
 
-    function testExecuteFailsIfZrc20IsZeroAddress() public {
+    function testExecuteFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         zContext memory context =
             zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
