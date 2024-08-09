@@ -6,6 +6,7 @@ import type {
   BigNumberish,
   BytesLike,
   FunctionFragment,
+  Result,
   Interface,
   EventFragment,
   AddressLike,
@@ -19,9 +20,18 @@ import type {
   TypedEventLog,
   TypedLogDescription,
   TypedListener,
+  TypedContractMethod,
 } from "../common";
 
-export interface IERC20CustodyEventsInterface extends Interface {
+export interface IERC20CustodyInterface extends Interface {
+  getFunction(
+    nameOrSignature:
+      | "whitelisted"
+      | "withdraw"
+      | "withdrawAndCall"
+      | "withdrawAndRevert"
+  ): FunctionFragment;
+
   getEvent(
     nameOrSignatureOrTopic:
       | "Unwhitelisted"
@@ -30,6 +40,37 @@ export interface IERC20CustodyEventsInterface extends Interface {
       | "WithdrawAndCall"
       | "WithdrawAndRevert"
   ): EventFragment;
+
+  encodeFunctionData(
+    functionFragment: "whitelisted",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [AddressLike, AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall",
+    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndRevert",
+    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+  ): string;
+
+  decodeFunctionResult(
+    functionFragment: "whitelisted",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndCall",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndRevert",
+    data: BytesLike
+  ): Result;
 }
 
 export namespace UnwhitelistedEvent {
@@ -124,11 +165,11 @@ export namespace WithdrawAndRevertEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface IERC20CustodyEvents extends BaseContract {
-  connect(runner?: ContractRunner | null): IERC20CustodyEvents;
+export interface IERC20Custody extends BaseContract {
+  connect(runner?: ContractRunner | null): IERC20Custody;
   waitForDeployment(): Promise<this>;
 
-  interface: IERC20CustodyEventsInterface;
+  interface: IERC20CustodyInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -167,9 +208,74 @@ export interface IERC20CustodyEvents extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  whitelisted: TypedContractMethod<[token: AddressLike], [boolean], "view">;
+
+  withdraw: TypedContractMethod<
+    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  withdrawAndCall: TypedContractMethod<
+    [
+      token: AddressLike,
+      to: AddressLike,
+      amount: BigNumberish,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  withdrawAndRevert: TypedContractMethod<
+    [
+      token: AddressLike,
+      to: AddressLike,
+      amount: BigNumberish,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
+
+  getFunction(
+    nameOrSignature: "whitelisted"
+  ): TypedContractMethod<[token: AddressLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "withdraw"
+  ): TypedContractMethod<
+    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall"
+  ): TypedContractMethod<
+    [
+      token: AddressLike,
+      to: AddressLike,
+      amount: BigNumberish,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndRevert"
+  ): TypedContractMethod<
+    [
+      token: AddressLike,
+      to: AddressLike,
+      amount: BigNumberish,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
 
   getEvent(
     key: "Unwhitelisted"

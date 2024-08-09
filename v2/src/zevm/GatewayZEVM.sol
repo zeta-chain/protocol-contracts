@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import "./interfaces/IGatewayZEVM.sol";
 import "./interfaces/IWZETA.sol";
 import "./interfaces/IZRC20.sol";
-import "./interfaces/zContract.sol";
+import "./interfaces/UniversalContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -17,8 +17,6 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract GatewayZEVM is
     IGatewayZEVM,
-    IGatewayZEVMEvents,
-    IGatewayZEVMErrors,
     Initializable,
     AccessControlUpgradeable,
     UUPSUpgradeable,
@@ -148,21 +146,23 @@ contract GatewayZEVM is
     }
 
     /// @notice Withdraw ZETA tokens to an external chain.
+    /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
-    function withdraw(uint256 amount, uint256 chainId) external nonReentrant whenNotPaused {
+    function withdraw(bytes memory receiver, uint256 amount, uint256 chainId) external nonReentrant whenNotPaused {
+        if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(
-            msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, ""
-        );
+        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "");
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param chainId Chain id of the external chain.
     /// @param message The calldata to pass to the contract call.
     function withdrawAndCall(
+        bytes memory receiver,
         uint256 amount,
         uint256 chainId,
         bytes calldata message
@@ -171,12 +171,11 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(
-            msg.sender, chainId, abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), address(zetaToken), amount, 0, 0, message
-        );
+        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message);
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.

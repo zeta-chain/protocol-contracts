@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "src/zevm/interfaces/IZRC20.sol";
-import "src/zevm/interfaces/zContract.sol";
+import "src/zevm/interfaces/UniversalContract.sol";
 
 /**
  * @dev Custom errors for SystemContract

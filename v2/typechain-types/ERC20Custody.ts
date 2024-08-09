@@ -28,6 +28,7 @@ export interface ERC20CustodyInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
       | "gateway"
       | "getRoleAdmin"
@@ -39,6 +40,9 @@ export interface ERC20CustodyInterface extends Interface {
       | "revokeRole"
       | "supportsInterface"
       | "unpause"
+      | "unwhitelist"
+      | "whitelist"
+      | "whitelisted"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
@@ -51,6 +55,8 @@ export interface ERC20CustodyInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
+      | "Unwhitelisted"
+      | "Whitelisted"
       | "Withdraw"
       | "WithdrawAndCall"
       | "WithdrawAndRevert"
@@ -62,6 +68,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "WHITELISTER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -97,6 +107,18 @@ export interface ERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "unwhitelist",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelist",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelisted",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
     values: [AddressLike, AddressLike, BigNumberish]
   ): string;
@@ -115,6 +137,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "WHITELISTER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -140,6 +166,15 @@ export interface ERC20CustodyInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unwhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelisted",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -226,6 +261,30 @@ export namespace UnpausedEvent {
   export type OutputTuple = [account: string];
   export interface OutputObject {
     account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UnwhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -348,6 +407,8 @@ export interface ERC20Custody extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
+
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
 
   gateway: TypedContractMethod<[], [string], "view">;
@@ -390,6 +451,12 @@ export interface ERC20Custody extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  unwhitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+
+  whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+
+  whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+
   withdraw: TypedContractMethod<
     [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
@@ -427,6 +494,9 @@ export interface ERC20Custody extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "WHITELISTER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WITHDRAWER_ROLE"
@@ -477,6 +547,15 @@ export interface ERC20Custody extends BaseContract {
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "unwhitelist"
+  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "whitelist"
+  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "whitelisted"
+  ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
@@ -543,6 +622,20 @@ export interface ERC20Custody extends BaseContract {
     UnpausedEvent.InputTuple,
     UnpausedEvent.OutputTuple,
     UnpausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Unwhitelisted"
+  ): TypedContractEvent<
+    UnwhitelistedEvent.InputTuple,
+    UnwhitelistedEvent.OutputTuple,
+    UnwhitelistedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Whitelisted"
+  ): TypedContractEvent<
+    WhitelistedEvent.InputTuple,
+    WhitelistedEvent.OutputTuple,
+    WhitelistedEvent.OutputObject
   >;
   getEvent(
     key: "Withdraw"
@@ -620,6 +713,28 @@ export interface ERC20Custody extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "Unwhitelisted(address)": TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
+    >;
+    Unwhitelisted: TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
+    >;
+
+    "Whitelisted(address)": TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
+    >;
+    Whitelisted: TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
     >;
 
     "Withdraw(address,address,uint256)": TypedContractEvent<

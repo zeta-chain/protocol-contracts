@@ -1005,6 +1005,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "NotWhitelistedInCustody",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ReentrancyGuardReentrantCall",
     inputs: [],
   },

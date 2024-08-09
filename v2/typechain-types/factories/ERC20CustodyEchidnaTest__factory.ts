@@ -48,6 +48,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "WHITELISTER_ROLE",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "WITHDRAWER_ROLE",
     inputs: [],
     outputs: [
@@ -266,6 +279,51 @@ const _abi = [
   },
   {
     type: "function",
+    name: "unwhitelist",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "whitelist",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "whitelisted",
+    inputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "withdraw",
     inputs: [
       {
@@ -446,6 +504,32 @@ const _abi = [
   },
   {
     type: "event",
+    name: "Unwhitelisted",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "Whitelisted",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Withdraw",
     inputs: [
       {
@@ -587,6 +671,11 @@ const _abi = [
   {
     type: "error",
     name: "FailedInnerCall",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotWhitelisted",
     inputs: [],
   },
   {
