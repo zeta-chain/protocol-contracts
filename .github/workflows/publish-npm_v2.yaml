@@ -25,6 +25,9 @@ jobs:
           node-version: "21"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Install Dependencies
+        run: yarn
+
       - name: Generate Files
         run: yarn generate
 
