@@ -13,7 +13,7 @@
     "test": "forge clean && forge test -vvv",
     "coverage": "forge clean && forge coverage --no-match-coverage \"(script|test)\" --report lcov",
     "typechain": "npx typechain --target ethers-v6 \"abi/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types",
-    "generate": "rimraf abi && forge clean && forge build --out abi && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain"
+    "generate": "del-cli abi && forge clean && forge build --out abi && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain"
   },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
@@ -23,8 +23,8 @@
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "concurrently": "^8.2.2",
+    "del-cli": "^5.1.0",
     "eslint": "^9.8.0",
-    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.5.4",
