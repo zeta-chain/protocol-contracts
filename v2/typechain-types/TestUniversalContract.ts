@@ -47,7 +47,7 @@ export type RevertContextStructOutput = [
   chainID: bigint
 ] & { origin: string; sender: string; chainID: bigint };
 
-export interface TestZContractInterface extends Interface {
+export interface TestUniversalContractInterface extends Interface {
   getFunction(
     nameOrSignature: "onCrossChainCall" | "onRevert"
   ): FunctionFragment;
@@ -128,11 +128,11 @@ export namespace ContextDataRevertEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface TestZContract extends BaseContract {
-  connect(runner?: ContractRunner | null): TestZContract;
+export interface TestUniversalContract extends BaseContract {
+  connect(runner?: ContractRunner | null): TestUniversalContract;
   waitForDeployment(): Promise<this>;
 
-  interface: TestZContractInterface;
+  interface: TestUniversalContractInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
