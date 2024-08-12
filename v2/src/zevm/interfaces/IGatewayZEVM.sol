@@ -204,12 +204,14 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function executeRevert(
         zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external;
 
@@ -219,12 +221,14 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function depositAndRevert(
         zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external;
 }

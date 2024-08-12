@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { IGatewayZEVM, RevertOptions } from "./interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
+import { RevertOptions, RevertContext } from "src/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
@@ -315,12 +316,14 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function executeRevert(
         zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external
         onlyFungible
@@ -329,7 +332,7 @@ contract GatewayZEVM is
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
-        UniversalContract(target).onRevert(context, zrc20, amount, message);
+        UniversalContract(target).onRevert(revertContext);
     }
 
     /// @notice Deposit foreign coins into ZRC20 and revert a user-specified contract on ZEVM.
@@ -338,12 +341,14 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function depositAndRevert(
         zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external
         onlyFungible
@@ -354,6 +359,6 @@ contract GatewayZEVM is
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
-        UniversalContract(target).onRevert(context, zrc20, amount, message);
+        UniversalContract(target).onRevert(revertContext);
     }
 }
