@@ -50,6 +50,7 @@ export interface ZRC20Interface extends Interface {
       | "updateSystemContractAddress"
       | "withdraw"
       | "withdrawGasFee"
+      | "withdrawGasFeeWithGasLimit"
   ): FunctionFragment;
 
   getEvent(
@@ -139,6 +140,10 @@ export interface ZRC20Interface extends Interface {
     functionFragment: "withdrawGasFee",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawGasFeeWithGasLimit",
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(functionFragment: "CHAIN_ID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "COIN_TYPE", data: BytesLike): Result;
@@ -195,6 +200,10 @@ export interface ZRC20Interface extends Interface {
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawGasFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawGasFeeWithGasLimit",
     data: BytesLike
   ): Result;
 }
@@ -460,6 +469,12 @@ export interface ZRC20 extends BaseContract {
 
   withdrawGasFee: TypedContractMethod<[], [[string, bigint]], "view">;
 
+  withdrawGasFeeWithGasLimit: TypedContractMethod<
+    [gasLimit: BigNumberish],
+    [[string, bigint]],
+    "view"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -564,6 +579,9 @@ export interface ZRC20 extends BaseContract {
   getFunction(
     nameOrSignature: "withdrawGasFee"
   ): TypedContractMethod<[], [[string, bigint]], "view">;
+  getFunction(
+    nameOrSignature: "withdrawGasFeeWithGasLimit"
+  ): TypedContractMethod<[gasLimit: BigNumberish], [[string, bigint]], "view">;
 
   getEvent(
     key: "Approval"

@@ -47,21 +47,21 @@ export interface IGatewayZEVMEventsInterface extends Interface {
 export namespace CallEvent {
   export type InputTuple = [
     sender: AddressLike,
-    chainId: BigNumberish,
+    zrc20: AddressLike,
     receiver: BytesLike,
     message: BytesLike,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
-    chainId: bigint,
+    zrc20: string,
     receiver: string,
     message: string,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
-    chainId: bigint;
+    zrc20: string;
     receiver: string;
     message: string;
     revertOptions: RevertOptionsStructOutput;
@@ -175,7 +175,7 @@ export interface IGatewayZEVMEvents extends BaseContract {
   >;
 
   filters: {
-    "Call(address,uint256,bytes,bytes,tuple)": TypedContractEvent<
+    "Call(address,address,bytes,bytes,tuple)": TypedContractEvent<
       CallEvent.InputTuple,
       CallEvent.OutputTuple,
       CallEvent.OutputObject

@@ -38,6 +38,7 @@ export interface IZRC20MetadataInterface extends Interface {
       | "transferFrom"
       | "withdraw"
       | "withdrawGasFee"
+      | "withdrawGasFeeWithGasLimit"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -84,6 +85,10 @@ export interface IZRC20MetadataInterface extends Interface {
     functionFragment: "withdrawGasFee",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawGasFeeWithGasLimit",
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "PROTOCOL_FLAT_FEE",
@@ -109,6 +114,10 @@ export interface IZRC20MetadataInterface extends Interface {
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawGasFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawGasFeeWithGasLimit",
     data: BytesLike
   ): Result;
 }
@@ -208,6 +217,12 @@ export interface IZRC20Metadata extends BaseContract {
 
   withdrawGasFee: TypedContractMethod<[], [[string, bigint]], "view">;
 
+  withdrawGasFeeWithGasLimit: TypedContractMethod<
+    [gasLimit: BigNumberish],
+    [[string, bigint]],
+    "view"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -278,6 +293,9 @@ export interface IZRC20Metadata extends BaseContract {
   getFunction(
     nameOrSignature: "withdrawGasFee"
   ): TypedContractMethod<[], [[string, bigint]], "view">;
+  getFunction(
+    nameOrSignature: "withdrawGasFeeWithGasLimit"
+  ): TypedContractMethod<[gasLimit: BigNumberish], [[string, bigint]], "view">;
 
   filters: {};
 }

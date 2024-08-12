@@ -95,7 +95,7 @@ export interface GatewayZEVMInterface extends Interface {
       | "withdraw(bytes,uint256,address,(address,bool,address,bytes))"
       | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes))"
       | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes))"
-      | "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes),uint256)"
       | "zetaToken"
   ): FunctionFragment;
 
@@ -130,7 +130,13 @@ export interface GatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "call",
-    values: [BytesLike, BigNumberish, BytesLike, RevertOptionsStruct]
+    values: [
+      BytesLike,
+      AddressLike,
+      BytesLike,
+      RevertOptionsStruct,
+      BigNumberish
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "deposit",
@@ -228,13 +234,14 @@ export interface GatewayZEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes),uint256)",
     values: [
       BytesLike,
       BigNumberish,
       AddressLike,
       BytesLike,
-      RevertOptionsStruct
+      RevertOptionsStruct,
+      BigNumberish
     ]
   ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
@@ -314,7 +321,7 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes),uint256)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
@@ -323,21 +330,21 @@ export interface GatewayZEVMInterface extends Interface {
 export namespace CallEvent {
   export type InputTuple = [
     sender: AddressLike,
-    chainId: BigNumberish,
+    zrc20: AddressLike,
     receiver: BytesLike,
     message: BytesLike,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
-    chainId: bigint,
+    zrc20: string,
     receiver: string,
     message: string,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
-    chainId: bigint;
+    zrc20: string;
     receiver: string;
     message: string;
     revertOptions: RevertOptionsStructOutput;
@@ -548,9 +555,10 @@ export interface GatewayZEVM extends BaseContract {
   call: TypedContractMethod<
     [
       receiver: BytesLike,
-      chainId: BigNumberish,
+      zrc20: AddressLike,
       message: BytesLike,
-      revertOptions: RevertOptionsStruct
+      revertOptions: RevertOptionsStruct,
+      gasLimit: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -709,13 +717,14 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes))": TypedContractMethod<
+  "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes),uint256)": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
       zrc20: AddressLike,
       message: BytesLike,
-      revertOptions: RevertOptionsStruct
+      revertOptions: RevertOptionsStruct,
+      gasLimit: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -744,9 +753,10 @@ export interface GatewayZEVM extends BaseContract {
   ): TypedContractMethod<
     [
       receiver: BytesLike,
-      chainId: BigNumberish,
+      zrc20: AddressLike,
       message: BytesLike,
-      revertOptions: RevertOptionsStruct
+      revertOptions: RevertOptionsStruct,
+      gasLimit: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -922,14 +932,15 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes))"
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes),uint256)"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
       zrc20: AddressLike,
       message: BytesLike,
-      revertOptions: RevertOptionsStruct
+      revertOptions: RevertOptionsStruct,
+      gasLimit: BigNumberish
     ],
     [void],
     "nonpayable"
@@ -1003,7 +1014,7 @@ export interface GatewayZEVM extends BaseContract {
   >;
 
   filters: {
-    "Call(address,uint256,bytes,bytes,tuple)": TypedContractEvent<
+    "Call(address,address,bytes,bytes,tuple)": TypedContractEvent<
       CallEvent.InputTuple,
       CallEvent.OutputTuple,
       CallEvent.OutputObject

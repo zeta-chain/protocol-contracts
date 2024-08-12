@@ -20,10 +20,10 @@ const _abi = [
         internalType: "address",
       },
       {
-        name: "chainId",
-        type: "uint256",
+        name: "zrc20",
+        type: "address",
         indexed: true,
-        internalType: "uint256",
+        internalType: "address",
       },
       {
         name: "receiver",

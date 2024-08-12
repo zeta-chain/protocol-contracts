@@ -276,7 +276,6 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
         return (gasZRC20, gasFee);
     }
 
-
     /**
      * @dev Withraws ZRC20 tokens to external chains, this function causes cctx module to send out outbound tx to the
      * outbound chain

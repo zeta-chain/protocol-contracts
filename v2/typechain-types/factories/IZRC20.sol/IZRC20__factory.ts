@@ -237,6 +237,30 @@ const _abi = [
     ],
     stateMutability: "view",
   },
+  {
+    type: "function",
+    name: "withdrawGasFeeWithGasLimit",
+    inputs: [
+      {
+        name: "gasLimit",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
 ] as const;
 
 export class IZRC20__factory {

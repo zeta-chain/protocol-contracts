@@ -19,9 +19,9 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
       },
       {
         name: "message",
@@ -54,6 +54,11 @@ const _abi = [
             internalType: "bytes",
           },
         ],
+      },
+      {
+        name: "gasLimit",
+        type: "uint256",
+        internalType: "uint256",
       },
     ],
     outputs: [],
@@ -577,6 +582,11 @@ const _abi = [
           },
         ],
       },
+      {
+        name: "gasLimit",
+        type: "uint256",
+        internalType: "uint256",
+      },
     ],
     outputs: [],
     stateMutability: "nonpayable",
@@ -592,10 +602,10 @@ const _abi = [
         internalType: "address",
       },
       {
-        name: "chainId",
-        type: "uint256",
+        name: "zrc20",
+        type: "address",
         indexed: true,
-        internalType: "uint256",
+        internalType: "address",
       },
       {
         name: "receiver",
