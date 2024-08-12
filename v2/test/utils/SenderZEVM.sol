@@ -76,13 +76,6 @@ contract SenderZEVM {
             revertMessage: ""
         });
 
-        RevertOptions memory revertOptions = RevertOptions({
-            revertAddress: address(0x321),
-            callOnRevert: true,
-            abortAddress: address(0x321),
-            revertMessage: ""
-        });
-
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, 1, revertOptions);
     }
