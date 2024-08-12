@@ -183,6 +183,7 @@ contract GatewayZEVM is
     /// @param message The calldata to pass to the contract call.
     function call(bytes memory receiver, uint256 chainId, bytes calldata message) external nonReentrant whenNotPaused {
         if (receiver.length == 0) revert ZeroAddress();
+        if (message.length == 0) revert EmptyMessage();
 
         emit Call(msg.sender, chainId, receiver, message);
     }

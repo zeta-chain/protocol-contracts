@@ -16,6 +16,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "EmptyMessage",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "FailedZetaSent",
     inputs: [],
   },

@@ -69,6 +69,9 @@ interface IGatewayZEVMErrors {
 
     /// @notice Error indicating that only WZETA or the Fungible module can call the function.
     error OnlyWZETAOrFungible();
+
+    /// @notice Error indicating call method received empty message as argument.
+    error EmptyMessage();
 }
 
 /// @title IGatewayZEVM
