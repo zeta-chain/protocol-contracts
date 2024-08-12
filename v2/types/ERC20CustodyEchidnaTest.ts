@@ -23,11 +23,24 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface ERC20CustodyEchidnaTestInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
       | "echidnaCaller"
       | "gateway"
@@ -42,6 +55,9 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
       | "testERC20"
       | "testWithdrawAndCall"
       | "unpause"
+      | "unwhitelist"
+      | "whitelist"
+      | "whitelisted"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
@@ -54,9 +70,11 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
-      | "Withdraw"
-      | "WithdrawAndCall"
-      | "WithdrawAndRevert"
+      | "Unwhitelisted"
+      | "Whitelisted"
+      | "Withdrawn"
+      | "WithdrawnAndCalled"
+      | "WithdrawnAndReverted"
   ): EventFragment;
 
   encodeFunctionData(
@@ -65,6 +83,10 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "WHITELISTER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -109,6 +131,18 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "unwhitelist",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelist",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelisted",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
     values: [AddressLike, AddressLike, BigNumberish]
   ): string;
@@ -118,7 +152,13 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -127,6 +167,10 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "WHITELISTER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -161,6 +205,15 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unwhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelisted",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -254,7 +307,31 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawEvent {
+export namespace UnwhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawnEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -272,7 +349,7 @@ export namespace WithdrawEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndCallEvent {
+export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -297,24 +374,27 @@ export namespace WithdrawAndCallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndRevertEvent {
+export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
     token: string,
     to: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
     token: string;
     to: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -369,6 +449,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
+
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
 
   echidnaCaller: TypedContractMethod<[], [string], "view">;
@@ -421,16 +503,22 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  unwhitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+
+  whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+
+  whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+
   withdraw: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
 
   withdrawAndCall: TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -440,10 +528,11 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
 
   withdrawAndRevert: TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -458,6 +547,9 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "WHITELISTER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WITHDRAWER_ROLE"
@@ -522,9 +614,18 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "unwhitelist"
+  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "whitelist"
+  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "whitelisted"
+  ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+  getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -532,8 +633,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -544,10 +645,11 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     nameOrSignature: "withdrawAndRevert"
   ): TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -589,25 +691,39 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     UnpausedEvent.OutputObject
   >;
   getEvent(
-    key: "Withdraw"
+    key: "Unwhitelisted"
   ): TypedContractEvent<
-    WithdrawEvent.InputTuple,
-    WithdrawEvent.OutputTuple,
-    WithdrawEvent.OutputObject
+    UnwhitelistedEvent.InputTuple,
+    UnwhitelistedEvent.OutputTuple,
+    UnwhitelistedEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndCall"
+    key: "Whitelisted"
   ): TypedContractEvent<
-    WithdrawAndCallEvent.InputTuple,
-    WithdrawAndCallEvent.OutputTuple,
-    WithdrawAndCallEvent.OutputObject
+    WhitelistedEvent.InputTuple,
+    WhitelistedEvent.OutputTuple,
+    WhitelistedEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndRevert"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawAndRevertEvent.InputTuple,
-    WithdrawAndRevertEvent.OutputTuple,
-    WithdrawAndRevertEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawnAndCalled"
+  ): TypedContractEvent<
+    WithdrawnAndCalledEvent.InputTuple,
+    WithdrawnAndCalledEvent.OutputTuple,
+    WithdrawnAndCalledEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawnAndReverted"
+  ): TypedContractEvent<
+    WithdrawnAndRevertedEvent.InputTuple,
+    WithdrawnAndRevertedEvent.OutputTuple,
+    WithdrawnAndRevertedEvent.OutputObject
   >;
 
   filters: {
@@ -666,37 +782,59 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "Withdraw(address,address,uint256)": TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
+    "Unwhitelisted(address)": TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
     >;
-    Withdraw: TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
-    >;
-
-    "WithdrawAndCall(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
-    >;
-    WithdrawAndCall: TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
+    Unwhitelisted: TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    "Whitelisted(address)": TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
     >;
-    WithdrawAndRevert: TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    Whitelisted: TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
+    >;
+
+    "Withdrawn(address,address,uint256)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
+    >;
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
+    >;
+
+    "WithdrawnAndCalled(address,address,uint256,bytes)": TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
+    >;
+    WithdrawnAndCalled: TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
+    >;
+
+    "WithdrawnAndReverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
+    >;
+    WithdrawnAndReverted: TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
   };
 }

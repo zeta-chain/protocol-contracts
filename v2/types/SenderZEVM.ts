@@ -28,7 +28,7 @@ export interface SenderZEVMInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "callReceiver",
-    values: [BytesLike, BigNumberish, string, BigNumberish, boolean]
+    values: [BytesLike, AddressLike, string, BigNumberish, boolean]
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
@@ -100,7 +100,7 @@ export interface SenderZEVM extends BaseContract {
   callReceiver: TypedContractMethod<
     [
       receiver: BytesLike,
-      chainId: BigNumberish,
+      zrc20: AddressLike,
       str: string,
       num: BigNumberish,
       flag: boolean
@@ -133,7 +133,7 @@ export interface SenderZEVM extends BaseContract {
   ): TypedContractMethod<
     [
       receiver: BytesLike,
-      chainId: BigNumberish,
+      zrc20: AddressLike,
       str: string,
       num: BigNumberish,
       flag: boolean

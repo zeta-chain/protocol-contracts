@@ -11,6 +11,11 @@ import type {
 const _abi = [
   {
     type: "error",
+    name: "NotWhitelisted",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ZeroAddress",
     inputs: [],
   },

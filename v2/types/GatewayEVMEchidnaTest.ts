@@ -23,6 +23,37 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type RevertOptionsStruct = {
+  revertAddress: AddressLike;
+  callOnRevert: boolean;
+  abortAddress: AddressLike;
+  revertMessage: BytesLike;
+};
+
+export type RevertOptionsStructOutput = [
+  revertAddress: string,
+  callOnRevert: boolean,
+  abortAddress: string,
+  revertMessage: string
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+};
+
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface GatewayEVMEchidnaTestInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -33,10 +64,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
-      | "deposit(address)"
-      | "deposit(address,uint256,address)"
-      | "depositAndCall(address,bytes)"
-      | "depositAndCall(address,uint256,address,bytes)"
+      | "deposit(address,uint256,address,(address,bool,address,bytes))"
+      | "deposit(address,(address,bool,address,bytes))"
+      | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
+      | "depositAndCall(address,bytes,(address,bool,address,bytes))"
       | "echidnaCaller"
       | "execute"
       | "executeRevert"
@@ -65,14 +96,13 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
-      | "Call"
-      | "Deposit"
+      | "Called"
+      | "Deposited"
       | "Executed"
       | "ExecutedWithERC20"
       | "Initialized"
       | "Paused"
       | "Reverted"
-      | "RevertedWithERC20"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
@@ -99,24 +129,30 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "call",
-    values: [AddressLike, BytesLike]
+    values: [AddressLike, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(functionFragment: "custody", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "deposit(address)",
-    values: [AddressLike]
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
+    values: [AddressLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit(address,uint256,address)",
-    values: [AddressLike, BigNumberish, AddressLike]
+    functionFragment: "deposit(address,(address,bool,address,bytes))",
+    values: [AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,bytes)",
-    values: [AddressLike, BytesLike]
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
+    values: [
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      RevertOptionsStruct
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,uint256,address,bytes)",
-    values: [AddressLike, BigNumberish, AddressLike, BytesLike]
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
+    values: [AddressLike, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "echidnaCaller",
@@ -128,7 +164,7 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
-    values: [AddressLike, BytesLike]
+    values: [AddressLike, BytesLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "executeWithERC20",
@@ -162,7 +198,13 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "revertWithERC20",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -220,19 +262,19 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address)",
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,uint256,address)",
+    functionFragment: "deposit(address,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,bytes)",
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -297,17 +339,24 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 }
 
-export namespace CallEvent {
+export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
-    payload: BytesLike
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
-  export type OutputTuple = [sender: string, receiver: string, payload: string];
+  export type OutputTuple = [
+    sender: string,
+    receiver: string,
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
+  ];
   export interface OutputObject {
     sender: string;
     receiver: string;
     payload: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -315,20 +364,22 @@ export namespace CallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace DepositEvent {
+export namespace DepositedEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
     amount: BigNumberish,
     asset: AddressLike,
-    payload: BytesLike
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
     receiver: string,
     amount: bigint,
     asset: string,
-    payload: string
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
@@ -336,6 +387,7 @@ export namespace DepositEvent {
     amount: bigint;
     asset: string;
     payload: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -412,40 +464,25 @@ export namespace PausedEvent {
 
 export namespace RevertedEvent {
   export type InputTuple = [
-    destination: AddressLike,
-    value: BigNumberish,
-    data: BytesLike
-  ];
-  export type OutputTuple = [destination: string, value: bigint, data: string];
-  export interface OutputObject {
-    destination: string;
-    value: bigint;
-    data: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace RevertedWithERC20Event {
-  export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -589,40 +626,54 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
     [void],
     "nonpayable"
   >;
 
   custody: TypedContractMethod<[], [string], "view">;
 
-  "deposit(address)": TypedContractMethod<
-    [receiver: AddressLike],
-    [void],
-    "payable"
-  >;
-
-  "deposit(address,uint256,address)": TypedContractMethod<
-    [receiver: AddressLike, amount: BigNumberish, asset: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  "depositAndCall(address,bytes)": TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
-    [void],
-    "payable"
-  >;
-
-  "depositAndCall(address,uint256,address,bytes)": TypedContractMethod<
+  "deposit(address,uint256,address,(address,bool,address,bytes))": TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
       asset: AddressLike,
-      payload: BytesLike
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
+  >;
+
+  "deposit(address,(address,bool,address,bytes))": TypedContractMethod<
+    [receiver: AddressLike, revertOptions: RevertOptionsStruct],
+    [void],
+    "payable"
+  >;
+
+  "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "depositAndCall(address,bytes,(address,bool,address,bytes))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
   >;
 
   echidnaCaller: TypedContractMethod<[], [string], "view">;
@@ -634,7 +685,11 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   >;
 
   executeRevert: TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
+    [
+      destination: AddressLike,
+      data: BytesLike,
+      revertContext: RevertContextStruct
+    ],
     [void],
     "payable"
   >;
@@ -687,7 +742,8 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -761,7 +817,11 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "call"
   ): TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
     [void],
     "nonpayable"
   >;
@@ -769,33 +829,47 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
     nameOrSignature: "custody"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "deposit(address)"
-  ): TypedContractMethod<[receiver: AddressLike], [void], "payable">;
-  getFunction(
-    nameOrSignature: "deposit(address,uint256,address)"
-  ): TypedContractMethod<
-    [receiver: AddressLike, amount: BigNumberish, asset: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "depositAndCall(address,bytes)"
-  ): TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
-    [void],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "depositAndCall(address,uint256,address,bytes)"
+    nameOrSignature: "deposit(address,uint256,address,(address,bool,address,bytes))"
   ): TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
       asset: AddressLike,
-      payload: BytesLike
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "deposit(address,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [receiver: AddressLike, revertOptions: RevertOptionsStruct],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,bytes,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
   >;
   getFunction(
     nameOrSignature: "echidnaCaller"
@@ -810,7 +884,11 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "executeRevert"
   ): TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
+    [
+      destination: AddressLike,
+      data: BytesLike,
+      revertContext: RevertContextStruct
+    ],
     [void],
     "payable"
   >;
@@ -873,7 +951,8 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -925,18 +1004,18 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
-    key: "Call"
+    key: "Called"
   ): TypedContractEvent<
-    CallEvent.InputTuple,
-    CallEvent.OutputTuple,
-    CallEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
-    key: "Deposit"
+    key: "Deposited"
   ): TypedContractEvent<
-    DepositEvent.InputTuple,
-    DepositEvent.OutputTuple,
-    DepositEvent.OutputObject
+    DepositedEvent.InputTuple,
+    DepositedEvent.OutputTuple,
+    DepositedEvent.OutputObject
   >;
   getEvent(
     key: "Executed"
@@ -972,13 +1051,6 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
     RevertedEvent.InputTuple,
     RevertedEvent.OutputTuple,
     RevertedEvent.OutputObject
-  >;
-  getEvent(
-    key: "RevertedWithERC20"
-  ): TypedContractEvent<
-    RevertedWithERC20Event.InputTuple,
-    RevertedWithERC20Event.OutputTuple,
-    RevertedWithERC20Event.OutputObject
   >;
   getEvent(
     key: "RoleAdminChanged"
@@ -1017,26 +1089,26 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   >;
 
   filters: {
-    "Call(address,address,bytes)": TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    "Called(address,address,bytes,tuple)": TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
-    Call: TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
-    "Deposit(address,address,uint256,address,bytes)": TypedContractEvent<
-      DepositEvent.InputTuple,
-      DepositEvent.OutputTuple,
-      DepositEvent.OutputObject
+    "Deposited(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
     >;
-    Deposit: TypedContractEvent<
-      DepositEvent.InputTuple,
-      DepositEvent.OutputTuple,
-      DepositEvent.OutputObject
+    Deposited: TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
     >;
 
     "Executed(address,uint256,bytes)": TypedContractEvent<
@@ -1083,7 +1155,7 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
       PausedEvent.OutputObject
     >;
 
-    "Reverted(address,uint256,bytes)": TypedContractEvent<
+    "Reverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
@@ -1092,17 +1164,6 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
-    >;
-
-    "RevertedWithERC20(address,address,uint256,bytes)": TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
-    >;
-    RevertedWithERC20: TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
     >;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
