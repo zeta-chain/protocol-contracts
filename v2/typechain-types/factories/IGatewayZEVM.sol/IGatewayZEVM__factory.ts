@@ -29,6 +29,11 @@ const _abi = [
         internalType: "bytes",
       },
       {
+        name: "gasLimit",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
         name: "revertOptions",
         type: "tuple",
         internalType: "struct RevertOptions",
@@ -54,11 +59,6 @@ const _abi = [
             internalType: "bytes",
           },
         ],
-      },
-      {
-        name: "gasLimit",
-        type: "uint256",
-        internalType: "uint256",
       },
     ],
     outputs: [],
@@ -556,6 +556,11 @@ const _abi = [
         internalType: "bytes",
       },
       {
+        name: "gasLimit",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
         name: "revertOptions",
         type: "tuple",
         internalType: "struct RevertOptions",
@@ -581,11 +586,6 @@ const _abi = [
             internalType: "bytes",
           },
         ],
-      },
-      {
-        name: "gasLimit",
-        type: "uint256",
-        internalType: "uint256",
       },
     ],
     outputs: [],

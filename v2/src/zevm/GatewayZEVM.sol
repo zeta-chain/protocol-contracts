@@ -89,18 +89,8 @@ contract GatewayZEVM is
     /// @param zrc20 The address of the ZRC20 token.
     /// @return The gas fee for the withdrawal.
     function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256) {
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFee();
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed();
-        }
-
-        if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
-            revert ZRC20TransferFailed();
-        }
-
-        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
-
-        return gasFee;
+        // Use gas limit from zrc20
+        return _withdrawZRC20WithGasLimit(amount, zrc20, IZRC20(zrc20).GAS_LIMIT());
     }
 
     /// @dev Internal function to withdraw ZRC20 tokens with gas limit.

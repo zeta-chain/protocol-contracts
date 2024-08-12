@@ -24,6 +24,7 @@ import type {
 export interface IZRC20MetadataInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "GAS_LIMIT"
       | "PROTOCOL_FLAT_FEE"
       | "allowance"
       | "approve"
@@ -41,6 +42,7 @@ export interface IZRC20MetadataInterface extends Interface {
       | "withdrawGasFeeWithGasLimit"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "GAS_LIMIT", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "PROTOCOL_FLAT_FEE",
     values?: undefined
@@ -90,6 +92,7 @@ export interface IZRC20MetadataInterface extends Interface {
     values: [BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "GAS_LIMIT", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "PROTOCOL_FLAT_FEE",
     data: BytesLike
@@ -165,6 +168,8 @@ export interface IZRC20Metadata extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
+
   PROTOCOL_FLAT_FEE: TypedContractMethod<[], [bigint], "view">;
 
   allowance: TypedContractMethod<
@@ -227,6 +232,9 @@ export interface IZRC20Metadata extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "GAS_LIMIT"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PROTOCOL_FLAT_FEE"
   ): TypedContractMethod<[], [bigint], "view">;
