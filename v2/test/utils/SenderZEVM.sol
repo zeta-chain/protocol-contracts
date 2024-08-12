@@ -16,18 +16,18 @@ contract SenderZEVM {
     /// @notice Error indicating that the approval of tokens failed.
     error ApprovalFailed();
 
-    constructor(address _gateway) {
-        gateway = _gateway;
+    constructor(address gateway_) {
+        gateway = gateway_;
     }
 
     /// @notice Call a receiver on EVM.
     /// @param receiver The address of the receiver on the external chain.
-    /// @param chainId Chain id of the external chain.
+    /// @param zrc20 Address of zrc20 to pay fees.
     /// @param str A string parameter to pass to the receiver's function.
     /// @param num A numeric parameter to pass to the receiver's function.
     /// @param flag A boolean parameter to pass to the receiver's function.
     /// @dev Encodes the function call and passes it to the gateway.
-    function callReceiver(bytes memory receiver, uint256 chainId, string memory str, uint256 num, bool flag) external {
+    function callReceiver(bytes memory receiver, address zrc20, string memory str, uint256 num, bool flag) external {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
@@ -38,8 +38,11 @@ contract SenderZEVM {
             revertMessage: ""
         });
 
+        uint256 gasLimit = 1;
+        IZRC20(zrc20).approve(gateway, gasLimit);
+
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).call(receiver, chainId, message, revertOptions);
+        IGatewayZEVM(gateway).call(receiver, zrc20, message, revertOptions, gasLimit);
     }
 
     /// @notice Withdraw and call a receiver on EVM.
@@ -64,7 +67,7 @@ contract SenderZEVM {
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
         // Approve gateway to withdraw
-        if (!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
+        if (!IZRC20(zrc20).approve(gateway, amount + 2)) revert ApprovalFailed();
 
         RevertOptions memory revertOptions = RevertOptions({
             revertAddress: address(0x321),
@@ -74,6 +77,6 @@ contract SenderZEVM {
         });
 
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, revertOptions);
+        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, revertOptions, 1);
     }
 }
