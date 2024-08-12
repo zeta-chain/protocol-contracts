@@ -24,7 +24,7 @@ contract EvmCallScript is Script {
         bytes memory message = abi.encode("hello");
 
         RevertOptions memory revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321), revertMessage: "" });
 
         // Call the function on GatewayEVM
         try gatewayEVM.call(universalContractAddress, message, revertOptions) {

@@ -320,8 +320,12 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         vm.prank(tssAddress);
         zetaConnector.withdraw(owner, ownerAmount, "");
 
-        revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+        revertOptions = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: ""
+        });
     }
 
     function testDepositERC20ToCustody() public {

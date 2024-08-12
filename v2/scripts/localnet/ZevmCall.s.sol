@@ -34,7 +34,7 @@ contract ZevmCallScript is Script {
         );
 
         RevertOptions memory revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321), revertMessage: "" });
 
         // Call the function on GatewayZEVM
         try gatewayZEVM.call(abi.encodePacked(address(receiverEVM)), chainId, message, revertOptions) {

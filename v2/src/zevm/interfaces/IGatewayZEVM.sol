@@ -2,16 +2,7 @@
 pragma solidity 0.8.26;
 
 import "./UniversalContract.sol";
-
-/// @notice Struct containing revert options
-/// @param revertAddress Address to receive revert.
-/// @param callOnRevert Flag if onRevert hook should be called.
-/// @pararm abortAddress Address to receive funds if aborted.
-struct RevertOptions {
-    address revertAddress;
-    bool callOnRevert;
-    address abortAddress;
-}
+import "src/RevertOptions.sol";
 
 /// @title IGatewayZEVMEvents
 /// @notice Interface for the events emitted by the GatewayZEVM contract.

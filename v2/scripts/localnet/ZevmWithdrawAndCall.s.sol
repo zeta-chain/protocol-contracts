@@ -37,7 +37,7 @@ contract ZevmWithdrawAndCallScript is Script {
         );
 
         RevertOptions memory revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321), revertMessage: "" });
 
         try gatewayZEVM.withdrawAndCall(
             abi.encodePacked(receiverEVMAddress),

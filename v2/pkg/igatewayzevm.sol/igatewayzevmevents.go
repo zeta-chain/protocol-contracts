@@ -34,11 +34,12 @@ type RevertOptions struct {
 	RevertAddress common.Address
 	CallOnRevert  bool
 	AbortAddress  common.Address
+	RevertMessage []byte
 }
 
 // IGatewayZEVMEventsMetaData contains all meta data concerning the IGatewayZEVMEvents contract.
 var IGatewayZEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"}]}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawal\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"receiver\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"gasfee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"protocolFlatFee\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IGatewayZEVMEventsABI is the input ABI used to generate the binding from.
@@ -264,9 +265,9 @@ type IGatewayZEVMEventsCall struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterCall is a free log retrieval operation binding the contract event 0x3c98f9847344f21261e2534375abef9065c4386914cfdaf39cba9707ee4721d8.
+// FilterCall is a free log retrieval operation binding the contract event 0x665c728aeefdf13a596da9c18c4c5fb4caeb05ae033e390915a04a9bfae634b9.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address) revertOptions)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address,bytes) revertOptions)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMEventsCallIterator, error) {
 
 	var senderRule []interface{}
@@ -285,9 +286,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterCall(opts *bind.Fil
 	return &IGatewayZEVMEventsCallIterator{contract: _IGatewayZEVMEvents.contract, event: "Call", logs: logs, sub: sub}, nil
 }
 
-// WatchCall is a free log subscription operation binding the contract event 0x3c98f9847344f21261e2534375abef9065c4386914cfdaf39cba9707ee4721d8.
+// WatchCall is a free log subscription operation binding the contract event 0x665c728aeefdf13a596da9c18c4c5fb4caeb05ae033e390915a04a9bfae634b9.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address) revertOptions)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address,bytes) revertOptions)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsCall, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
@@ -331,9 +332,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchCall(opts *bind.Watc
 	}), nil
 }
 
-// ParseCall is a log parse operation binding the contract event 0x3c98f9847344f21261e2534375abef9065c4386914cfdaf39cba9707ee4721d8.
+// ParseCall is a log parse operation binding the contract event 0x665c728aeefdf13a596da9c18c4c5fb4caeb05ae033e390915a04a9bfae634b9.
 //
-// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address) revertOptions)
+// Solidity: event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, (address,bool,address,bytes) revertOptions)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) ParseCall(log types.Log) (*IGatewayZEVMEventsCall, error) {
 	event := new(IGatewayZEVMEventsCall)
 	if err := _IGatewayZEVMEvents.contract.UnpackLog(event, "Call", log); err != nil {
@@ -424,9 +425,9 @@ type IGatewayZEVMEventsWithdrawal struct {
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawal is a free log retrieval operation binding the contract event 0x7ca3be4d7db50c438cce3d665ee946ee5404e238d50c349a8129ea9e03738843.
+// FilterWithdrawal is a free log retrieval operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address) revertOptions)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address,bytes) revertOptions)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterWithdrawal(opts *bind.FilterOpts, sender []common.Address, chainId []*big.Int) (*IGatewayZEVMEventsWithdrawalIterator, error) {
 
 	var senderRule []interface{}
@@ -445,9 +446,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) FilterWithdrawal(opts *bi
 	return &IGatewayZEVMEventsWithdrawalIterator{contract: _IGatewayZEVMEvents.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawal is a free log subscription operation binding the contract event 0x7ca3be4d7db50c438cce3d665ee946ee5404e238d50c349a8129ea9e03738843.
+// WatchWithdrawal is a free log subscription operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address) revertOptions)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address,bytes) revertOptions)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bind.WatchOpts, sink chan<- *IGatewayZEVMEventsWithdrawal, sender []common.Address, chainId []*big.Int) (event.Subscription, error) {
 
 	var senderRule []interface{}
@@ -491,9 +492,9 @@ func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) WatchWithdrawal(opts *bin
 	}), nil
 }
 
-// ParseWithdrawal is a log parse operation binding the contract event 0x7ca3be4d7db50c438cce3d665ee946ee5404e238d50c349a8129ea9e03738843.
+// ParseWithdrawal is a log parse operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
 //
-// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address) revertOptions)
+// Solidity: event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message, (address,bool,address,bytes) revertOptions)
 func (_IGatewayZEVMEvents *IGatewayZEVMEventsFilterer) ParseWithdrawal(log types.Log) (*IGatewayZEVMEventsWithdrawal, error) {
 	event := new(IGatewayZEVMEventsWithdrawal)
 	if err := _IGatewayZEVMEvents.contract.UnpackLog(event, "Withdrawal", log); err != nil {

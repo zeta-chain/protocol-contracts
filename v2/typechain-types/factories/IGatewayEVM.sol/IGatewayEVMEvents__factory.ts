@@ -52,6 +52,11 @@ const _abi = [
             type: "address",
             internalType: "address",
           },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
         ],
       },
     ],
@@ -111,6 +116,11 @@ const _abi = [
             name: "abortAddress",
             type: "address",
             internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
           },
         ],
       },

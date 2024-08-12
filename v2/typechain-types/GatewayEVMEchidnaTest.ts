@@ -27,13 +27,20 @@ export type RevertOptionsStruct = {
   revertAddress: AddressLike;
   callOnRevert: boolean;
   abortAddress: AddressLike;
+  revertMessage: BytesLike;
 };
 
 export type RevertOptionsStructOutput = [
   revertAddress: string,
   callOnRevert: boolean,
-  abortAddress: string
-] & { revertAddress: string; callOnRevert: boolean; abortAddress: string };
+  abortAddress: string,
+  revertMessage: string
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+};
 
 export interface GatewayEVMEchidnaTestInterface extends Interface {
   getFunction(
@@ -45,10 +52,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
-      | "deposit(address,(address,bool,address))"
-      | "deposit(address,uint256,address,(address,bool,address))"
-      | "depositAndCall(address,bytes,(address,bool,address))"
-      | "depositAndCall(address,uint256,address,bytes,(address,bool,address))"
+      | "deposit(address,uint256,address,(address,bool,address,bytes))"
+      | "deposit(address,(address,bool,address,bytes))"
+      | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
+      | "depositAndCall(address,bytes,(address,bool,address,bytes))"
       | "echidnaCaller"
       | "execute"
       | "executeRevert"
@@ -115,19 +122,15 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "custody", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "deposit(address,(address,bool,address))",
-    values: [AddressLike, RevertOptionsStruct]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "deposit(address,uint256,address,(address,bool,address))",
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
     values: [AddressLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,bytes,(address,bool,address))",
-    values: [AddressLike, BytesLike, RevertOptionsStruct]
+    functionFragment: "deposit(address,(address,bool,address,bytes))",
+    values: [AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address))",
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
     values: [
       AddressLike,
       BigNumberish,
@@ -135,6 +138,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
       BytesLike,
       RevertOptionsStruct
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
+    values: [AddressLike, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "echidnaCaller",
@@ -238,19 +245,19 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,(address,bool,address))",
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,uint256,address,(address,bool,address))",
+    functionFragment: "deposit(address,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,bytes,(address,bool,address))",
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address))",
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -628,24 +635,36 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
 
   custody: TypedContractMethod<[], [string], "view">;
 
-  "deposit(address,(address,bool,address))": TypedContractMethod<
+  "deposit(address,uint256,address,(address,bool,address,bytes))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "deposit(address,(address,bool,address,bytes))": TypedContractMethod<
     [receiver: AddressLike, revertOptions: RevertOptionsStruct],
     [void],
     "payable"
   >;
 
-  "deposit(address,uint256,address,(address,bool,address))": TypedContractMethod<
+  "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))": TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
       asset: AddressLike,
+      payload: BytesLike,
       revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
   >;
 
-  "depositAndCall(address,bytes,(address,bool,address))": TypedContractMethod<
+  "depositAndCall(address,bytes,(address,bool,address,bytes))": TypedContractMethod<
     [
       receiver: AddressLike,
       payload: BytesLike,
@@ -653,18 +672,6 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
     ],
     [void],
     "payable"
-  >;
-
-  "depositAndCall(address,uint256,address,bytes,(address,bool,address))": TypedContractMethod<
-    [
-      receiver: AddressLike,
-      amount: BigNumberish,
-      asset: AddressLike,
-      payload: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
   >;
 
   echidnaCaller: TypedContractMethod<[], [string], "view">;
@@ -815,26 +822,39 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
     nameOrSignature: "custody"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "deposit(address,(address,bool,address))"
+    nameOrSignature: "deposit(address,uint256,address,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "deposit(address,(address,bool,address,bytes))"
   ): TypedContractMethod<
     [receiver: AddressLike, revertOptions: RevertOptionsStruct],
     [void],
     "payable"
   >;
   getFunction(
-    nameOrSignature: "deposit(address,uint256,address,(address,bool,address))"
+    nameOrSignature: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
   ): TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
       asset: AddressLike,
+      payload: BytesLike,
       revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "depositAndCall(address,bytes,(address,bool,address))"
+    nameOrSignature: "depositAndCall(address,bytes,(address,bool,address,bytes))"
   ): TypedContractMethod<
     [
       receiver: AddressLike,
@@ -843,19 +863,6 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
     ],
     [void],
     "payable"
-  >;
-  getFunction(
-    nameOrSignature: "depositAndCall(address,uint256,address,bytes,(address,bool,address))"
-  ): TypedContractMethod<
-    [
-      receiver: AddressLike,
-      amount: BigNumberish,
-      asset: AddressLike,
-      payload: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "echidnaCaller"

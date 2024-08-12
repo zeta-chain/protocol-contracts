@@ -43,46 +43,16 @@ const _abi = [
             type: "address",
             internalType: "address",
           },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
         ],
       },
     ],
     outputs: [],
     stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "deposit",
-    inputs: [
-      {
-        name: "receiver",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "revertOptions",
-        type: "tuple",
-        internalType: "struct RevertOptions",
-        components: [
-          {
-            name: "revertAddress",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "callOnRevert",
-            type: "bool",
-            internalType: "bool",
-          },
-          {
-            name: "abortAddress",
-            type: "address",
-            internalType: "address",
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: "payable",
   },
   {
     type: "function",
@@ -123,6 +93,11 @@ const _abi = [
             type: "address",
             internalType: "address",
           },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
         ],
       },
     ],
@@ -131,17 +106,12 @@ const _abi = [
   },
   {
     type: "function",
-    name: "depositAndCall",
+    name: "deposit",
     inputs: [
       {
         name: "receiver",
         type: "address",
         internalType: "address",
-      },
-      {
-        name: "payload",
-        type: "bytes",
-        internalType: "bytes",
       },
       {
         name: "revertOptions",
@@ -162,6 +132,11 @@ const _abi = [
             name: "abortAddress",
             type: "address",
             internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
           },
         ],
       },
@@ -213,11 +188,61 @@ const _abi = [
             type: "address",
             internalType: "address",
           },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
         ],
       },
     ],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "depositAndCall",
+    inputs: [
+      {
+        name: "receiver",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "payload",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
   },
   {
     type: "function",
@@ -360,6 +385,11 @@ const _abi = [
             type: "address",
             internalType: "address",
           },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
         ],
       },
     ],
@@ -419,6 +449,11 @@ const _abi = [
             name: "abortAddress",
             type: "address",
             internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
           },
         ],
       },

@@ -25,13 +25,20 @@ export type RevertOptionsStruct = {
   revertAddress: AddressLike;
   callOnRevert: boolean;
   abortAddress: AddressLike;
+  revertMessage: BytesLike;
 };
 
 export type RevertOptionsStructOutput = [
   revertAddress: string,
   callOnRevert: boolean,
-  abortAddress: string
-] & { revertAddress: string; callOnRevert: boolean; abortAddress: string };
+  abortAddress: string,
+  revertMessage: string
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+};
 
 export interface IGatewayZEVMEventsInterface extends Interface {
   getEvent(nameOrSignatureOrTopic: "Call" | "Withdrawal"): EventFragment;

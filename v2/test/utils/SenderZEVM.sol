@@ -31,8 +31,12 @@ contract SenderZEVM {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
-        RevertOptions memory revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+        RevertOptions memory revertOptions = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: ""
+        });
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).call(receiver, chainId, message, revertOptions);
@@ -62,8 +66,12 @@ contract SenderZEVM {
         // Approve gateway to withdraw
         if (!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
 
-        RevertOptions memory revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+        RevertOptions memory revertOptions = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: ""
+        });
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, revertOptions);

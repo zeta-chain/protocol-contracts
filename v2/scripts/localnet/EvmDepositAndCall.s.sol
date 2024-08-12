@@ -34,7 +34,7 @@ contract EvmDepositAndCallScript is Script {
         bytes memory payload = abi.encode("hello");
 
         RevertOptions memory revertOptions =
-            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321) });
+            RevertOptions({ revertAddress: address(0x321), callOnRevert: true, abortAddress: address(0x321), revertMessage: "" });
 
         // Call the depositAndCall function on GatewayEVM
         try gatewayEVM.depositAndCall(
