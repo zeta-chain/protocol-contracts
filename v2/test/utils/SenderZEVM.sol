@@ -42,7 +42,7 @@ contract SenderZEVM {
         IZRC20(zrc20).approve(gateway, gasLimit);
 
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).call(receiver, zrc20, message, revertOptions, gasLimit);
+        IGatewayZEVM(gateway).call(receiver, zrc20, message, gasLimit, revertOptions);
     }
 
     /// @notice Withdraw and call a receiver on EVM.
@@ -77,6 +77,6 @@ contract SenderZEVM {
         });
 
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, revertOptions, 1);
+        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, 1, revertOptions);
     }
 }

@@ -129,14 +129,13 @@ contract GatewayEVMZEVMTest is
         uint256 num = 42;
         bool flag = true;
         uint256 value = 1 ether;
-        uint256 chainId = 1;
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit Call(address(ownerZEVM), address(zrc20), abi.encodePacked(receiverEVM), message, revertOptions);
-        gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, revertOptions, 1);
+        gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, 1, revertOptions);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
@@ -155,12 +154,12 @@ contract GatewayEVMZEVMTest is
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "call(bytes,address,bytes,(address,bool,address,bytes),uint256)",
+            "call(bytes,address,bytes,uint256,(address,bool,address,bytes))",
             abi.encodePacked(receiverEVM),
             address(zrc20),
             message,
-            revertOptions,
-            1
+            1,
+            revertOptions
         );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
@@ -198,7 +197,7 @@ contract GatewayEVMZEVMTest is
             revertOptions
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 500_000, address(zrc20), message, revertOptions, 1);
+        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 500_000, address(zrc20), message, 1, revertOptions);
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
@@ -224,13 +223,13 @@ contract GatewayEVMZEVMTest is
         uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes),uint256)",
+            "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))",
             abi.encodePacked(receiverEVM),
             500_000,
             address(zrc20),
             message,
-            revertOptions,
-            1
+            1,
+            revertOptions
         );
         vm.expectCall(address(gatewayZEVM), 0, data);
         vm.prank(ownerZEVM);
