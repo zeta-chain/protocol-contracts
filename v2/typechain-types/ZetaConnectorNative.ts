@@ -686,10 +686,10 @@ export interface ZetaConnectorNative extends BaseContract {
       WithdrawnAndCalledEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,uint256,bytes,tuple)": TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    "WithdrawnAndReverted(address,uint256,bytes,tuple)": TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
     WithdrawnAndReverted: TypedContractEvent<
       WithdrawnAndRevertedEvent.InputTuple,

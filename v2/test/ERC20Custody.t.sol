@@ -424,7 +424,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Reverted(address(receiver), address(token), amount, data, revertContext);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawnAndReverted(address(receiver), address(token),  amount, data, revertContext);
+        emit WithdrawnAndReverted(address(receiver), address(token), amount, data, revertContext);
         vm.prank(tssAddress);
         custody.withdrawAndRevert(address(receiver), address(token), amount, data, revertContext);
 

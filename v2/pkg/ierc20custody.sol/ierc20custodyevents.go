@@ -38,7 +38,7 @@ type RevertContext struct {
 
 // IERC20CustodyEventsMetaData contains all meta data concerning the IERC20CustodyEvents contract.
 var IERC20CustodyEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Unwhitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Unwhitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawn\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawnAndCalled\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawnAndReverted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IERC20CustodyEventsABI is the input ABI used to generate the binding from.
@@ -851,8 +851,8 @@ func (it *IERC20CustodyEventsWithdrawnAndRevertedIterator) Close() error {
 	return nil
 }
 
-// IERC20CustodyEventsWithdrawAndRevert represents a WithdrawAndRevert event raised by the IERC20CustodyEvents contract.
-type IERC20CustodyEventsWithdrawAndRevert struct {
+// IERC20CustodyEventsWithdrawnAndReverted represents a WithdrawnAndReverted event raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWithdrawnAndReverted struct {
 	Token         common.Address
 	To            common.Address
 	Amount        *big.Int
@@ -861,10 +861,10 @@ type IERC20CustodyEventsWithdrawAndRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndRevert is a free log retrieval operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
+// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x2032883a139c935aa5ecfcba7233f50f723279d7418d69424daa39a5af76d13b.
 //
-// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawAndRevert(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyEventsWithdrawAndRevertIterator, error) {
+// Solidity: event WithdrawnAndReverted(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawnAndReverted(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyEventsWithdrawnAndRevertedIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -882,10 +882,10 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawAndRevert
 	return &IERC20CustodyEventsWithdrawnAndRevertedIterator{contract: _IERC20CustodyEvents.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
+// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x2032883a139c935aa5ecfcba7233f50f723279d7418d69424daa39a5af76d13b.
 //
-// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndRevert(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWithdrawAndRevert, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event WithdrawnAndReverted(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawnAndReverted(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWithdrawnAndReverted, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -928,12 +928,12 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndRevert(
 	}), nil
 }
 
-// ParseWithdrawAndRevert is a log parse operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
+// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x2032883a139c935aa5ecfcba7233f50f723279d7418d69424daa39a5af76d13b.
 //
-// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWithdrawAndRevert(log types.Log) (*IERC20CustodyEventsWithdrawAndRevert, error) {
-	event := new(IERC20CustodyEventsWithdrawAndRevert)
-	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+// Solidity: event WithdrawnAndReverted(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWithdrawnAndReverted(log types.Log) (*IERC20CustodyEventsWithdrawnAndReverted, error) {
+	event := new(IERC20CustodyEventsWithdrawnAndReverted)
+	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

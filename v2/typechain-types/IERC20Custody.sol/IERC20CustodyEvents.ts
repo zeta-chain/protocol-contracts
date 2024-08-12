@@ -267,10 +267,10 @@ export interface IERC20CustodyEvents extends BaseContract {
       WithdrawnAndCalledEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,address,uint256,bytes,tuple)": TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    "WithdrawnAndReverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
     WithdrawnAndReverted: TypedContractEvent<
       WithdrawnAndRevertedEvent.InputTuple,
