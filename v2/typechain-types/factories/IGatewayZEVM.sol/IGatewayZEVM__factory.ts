@@ -404,7 +404,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "Call",
+    name: "Called",
     inputs: [
       {
         name: "sender",
@@ -435,7 +435,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "Withdrawal",
+    name: "Withdrawn",
     inputs: [
       {
         name: "sender",
