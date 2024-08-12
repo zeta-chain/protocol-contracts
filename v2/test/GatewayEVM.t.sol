@@ -339,7 +339,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         token.approve(address(gateway), amount);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposiedt(owner, destination, amount, address(token), "", revertOptions);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
         gateway.deposit(destination, amount, address(token), revertOptions);
 
         uint256 custodyBalanceAfter = token.balanceOf(address(custody));

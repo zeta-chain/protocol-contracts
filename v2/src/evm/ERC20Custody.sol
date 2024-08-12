@@ -147,6 +147,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         // Forward the call to the Gateway contract
         gateway.revertWithERC20(token, to, amount, data, revertContext);
 
-        emit WithdrawnAndRevert(to, token, amount, data, revertContext);
+        emit WithdrawnAndReverted(to, token, amount, data, revertContext);
     }
 }

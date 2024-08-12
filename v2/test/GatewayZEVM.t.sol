@@ -319,7 +319,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testCallFailsIfMessageIsEmpty() public {
         vm.expectRevert(EmptyMessage.selector);
-        gateway.call(abi.encodePacked(addr1), 1, "");
+        gateway.call(abi.encodePacked(addr1), 1, "", revertOptions);
     }
 
     function testCall() public {
