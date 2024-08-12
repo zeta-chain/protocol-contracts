@@ -103,6 +103,26 @@ contract GatewayZEVM is
         return gasFee;
     }
 
+    /// @dev Internal function to withdraw ZRC20 tokens with gas limit.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param gasLimit Gas limit.
+    /// @return The gas fee for the withdrawal.
+    function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256) {
+        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
+            revert GasFeeTransferFailed();
+        }
+
+        if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
+            revert ZRC20TransferFailed();
+        }
+
+        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
+
+        return gasFee;
+    }
+
     /// @dev Internal function to transfer ZETA tokens.
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
@@ -148,7 +168,8 @@ contract GatewayZEVM is
         uint256 amount,
         address zrc20,
         bytes calldata message,
-        RevertOptions calldata revertOptions
+        RevertOptions calldata revertOptions,
+        uint256 gasLimit
     )
         external
         nonReentrant
@@ -157,7 +178,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
-        uint256 gasFee = _withdrawZRC20(amount, zrc20);
+        uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawal(
             msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, revertOptions
         );
@@ -210,13 +231,16 @@ contract GatewayZEVM is
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
+    /// @param zrc20 Address of zrc20 to pay fees.
     /// @param message The calldata to pass to the contract call.
     /// @param revertOptions Revert options.
+    /// @param gasLimit Gas limit.
     function call(
         bytes memory receiver,
-        uint256 chainId,
+        address zrc20,
         bytes calldata message,
-        RevertOptions calldata revertOptions
+        RevertOptions calldata revertOptions,
+        uint256 gasLimit
     )
         external
         nonReentrant
@@ -224,7 +248,12 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
 
-        emit Call(msg.sender, chainId, receiver, message, revertOptions);
+        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
+            revert GasFeeTransferFailed();
+        }
+
+        emit Call(msg.sender, zrc20, receiver, message, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.

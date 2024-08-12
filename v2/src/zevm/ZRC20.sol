@@ -260,6 +260,24 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     }
 
     /**
+     * @dev Withdraws gas fees with specified gasLimit
+     * @return returns the ZRC20 address for gas on the same chain of this ZRC20, and calculates the gas fee for
+     * withdraw()
+     */
+    function withdrawGasFeeWithGasLimit(uint256 gasLimit) public view override returns (address, uint256) {
+        address gasZRC20 = ISystem(SYSTEM_CONTRACT_ADDRESS).gasCoinZRC20ByChainId(CHAIN_ID);
+        if (gasZRC20 == address(0)) revert ZeroGasCoin();
+
+        uint256 gasPrice = ISystem(SYSTEM_CONTRACT_ADDRESS).gasPriceByChainId(CHAIN_ID);
+        if (gasPrice == 0) {
+            revert ZeroGasPrice();
+        }
+        uint256 gasFee = gasPrice * gasLimit + PROTOCOL_FLAT_FEE;
+        return (gasZRC20, gasFee);
+    }
+
+
+    /**
      * @dev Withraws ZRC20 tokens to external chains, this function causes cctx module to send out outbound tx to the
      * outbound chain
      * this contract should be given enough allowance of the gas ZRC20 to pay for outbound tx gas fee.
