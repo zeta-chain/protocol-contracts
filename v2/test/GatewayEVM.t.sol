@@ -339,7 +339,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         token.approve(address(gateway), amount);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposit(owner, destination, amount, address(token), "", revertOptions);
+        emit Deposiedt(owner, destination, amount, address(token), "", revertOptions);
         gateway.deposit(destination, amount, address(token), revertOptions);
 
         uint256 custodyBalanceAfter = token.balanceOf(address(custody));
@@ -365,7 +365,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         zeta.approve(address(gateway), amount);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposit(owner, destination, amount, address(zeta), "", revertOptions);
+        emit Deposited(owner, destination, amount, address(zeta), "", revertOptions);
         gateway.deposit(destination, amount, address(zeta), revertOptions);
 
         uint256 ownerAmountAfter = zeta.balanceOf(owner);
@@ -392,7 +392,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         uint256 tssBalanceBefore = tssAddress.balance;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposit(owner, destination, amount, address(0), "", revertOptions);
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
         gateway.deposit{ value: amount }(destination, revertOptions);
 
         uint256 tssBalanceAfter = tssAddress.balance;
@@ -436,7 +436,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         token.approve(address(gateway), amount);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposit(owner, destination, amount, address(token), payload, revertOptions);
+        emit Deposited(owner, destination, amount, address(token), payload, revertOptions);
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
 
         uint256 custodyBalanceAfter = token.balanceOf(address(custody));
@@ -470,7 +470,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposit(owner, destination, amount, address(0), payload, revertOptions);
+        emit Deposited(owner, destination, amount, address(0), payload, revertOptions);
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
 
         uint256 tssBalanceAfter = tssAddress.balance;
@@ -497,7 +497,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Call(owner, destination, payload, revertOptions);
+        emit Called(owner, destination, payload, revertOptions);
         gateway.call(destination, payload, revertOptions);
     }
 

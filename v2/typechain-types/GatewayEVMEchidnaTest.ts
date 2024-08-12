@@ -96,8 +96,8 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
-      | "Call"
-      | "Deposit"
+      | "Called"
+      | "Deposited"
       | "Executed"
       | "ExecutedWithERC20"
       | "Initialized"
@@ -339,7 +339,7 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 }
 
-export namespace CallEvent {
+export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
@@ -364,7 +364,7 @@ export namespace CallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace DepositEvent {
+export namespace DepositedEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
@@ -1004,18 +1004,18 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
-    key: "Call"
+    key: "Called"
   ): TypedContractEvent<
-    CallEvent.InputTuple,
-    CallEvent.OutputTuple,
-    CallEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
-    key: "Deposit"
+    key: "Deposited"
   ): TypedContractEvent<
-    DepositEvent.InputTuple,
-    DepositEvent.OutputTuple,
-    DepositEvent.OutputObject
+    DepositedEvent.InputTuple,
+    DepositedEvent.OutputTuple,
+    DepositedEvent.OutputObject
   >;
   getEvent(
     key: "Executed"
@@ -1094,10 +1094,10 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
       CallEvent.OutputTuple,
       CallEvent.OutputObject
     >;
-    Call: TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
     "Deposit(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
@@ -1105,10 +1105,10 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
       DepositEvent.OutputTuple,
       DepositEvent.OutputObject
     >;
-    Deposit: TypedContractEvent<
-      DepositEvent.InputTuple,
-      DepositEvent.OutputTuple,
-      DepositEvent.OutputObject
+    Deposited: TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
     >;
 
     "Executed(address,uint256,bytes)": TypedContractEvent<

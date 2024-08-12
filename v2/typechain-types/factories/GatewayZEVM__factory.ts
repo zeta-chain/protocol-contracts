@@ -852,7 +852,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "Call",
+    name: "Called",
     inputs: [
       {
         name: "sender",
@@ -1038,7 +1038,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "Withdrawal",
+    name: "Withdrawn",
     inputs: [
       {
         name: "sender",
@@ -1170,6 +1170,11 @@ const _abi = [
   {
     type: "error",
     name: "ERC1967NonPayable",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "EmptyMessage",
     inputs: [],
   },
   {

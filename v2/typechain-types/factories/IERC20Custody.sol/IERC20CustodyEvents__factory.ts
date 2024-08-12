@@ -37,7 +37,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "Withdraw",
+    name: "Withdrawn",
     inputs: [
       {
         name: "token",
@@ -62,7 +62,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "WithdrawAndCall",
+    name: "WithdrawnAndCalled",
     inputs: [
       {
         name: "token",
@@ -93,7 +93,7 @@ const _abi = [
   },
   {
     type: "event",
-    name: "WithdrawAndRevert",
+    name: "WithdrawnAndReverted",
     inputs: [
       {
         name: "token",

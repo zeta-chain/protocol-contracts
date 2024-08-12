@@ -69,9 +69,9 @@ export interface ERC20CustodyInterface extends Interface {
       | "Unpaused"
       | "Unwhitelisted"
       | "Whitelisted"
-      | "Withdraw"
-      | "WithdrawAndCall"
-      | "WithdrawAndRevert"
+      | "Withdrawn"
+      | "WithdrawnAndCalled"
+      | "WithdrawnAndReverted"
   ): EventFragment;
 
   encodeFunctionData(
@@ -310,7 +310,7 @@ export namespace WhitelistedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -328,7 +328,7 @@ export namespace WithdrawEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndCallEvent {
+export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -353,7 +353,7 @@ export namespace WithdrawAndCallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndRevertEvent {
+export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
     token: AddressLike,
     to: AddressLike,
@@ -479,15 +479,15 @@ export interface ERC20Custody extends BaseContract {
   whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
 
   withdraw: TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
 
   withdrawAndCall: TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -497,8 +497,8 @@ export interface ERC20Custody extends BaseContract {
 
   withdrawAndRevert: TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
       revertContext: RevertContextStruct
@@ -581,7 +581,7 @@ export interface ERC20Custody extends BaseContract {
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
-    [token: AddressLike, to: AddressLike, amount: BigNumberish],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -589,8 +589,8 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike
     ],
@@ -601,8 +601,8 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "withdrawAndRevert"
   ): TypedContractMethod<
     [
-      token: AddressLike,
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
       revertContext: RevertContextStruct
@@ -661,25 +661,25 @@ export interface ERC20Custody extends BaseContract {
     WhitelistedEvent.OutputObject
   >;
   getEvent(
-    key: "Withdraw"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawEvent.InputTuple,
-    WithdrawEvent.OutputTuple,
-    WithdrawEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndCall"
+    key: "WithdrawnAndCalled"
   ): TypedContractEvent<
-    WithdrawAndCallEvent.InputTuple,
-    WithdrawAndCallEvent.OutputTuple,
-    WithdrawAndCallEvent.OutputObject
+    WithdrawnAndCalledEvent.InputTuple,
+    WithdrawnAndCalledEvent.OutputTuple,
+    WithdrawnAndCalledEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndRevert"
+    key: "WithdrawnAndReverted"
   ): TypedContractEvent<
-    WithdrawAndRevertEvent.InputTuple,
-    WithdrawAndRevertEvent.OutputTuple,
-    WithdrawAndRevertEvent.OutputObject
+    WithdrawnAndRevertedEvent.InputTuple,
+    WithdrawnAndRevertedEvent.OutputTuple,
+    WithdrawnAndRevertedEvent.OutputObject
   >;
 
   filters: {
@@ -760,26 +760,26 @@ export interface ERC20Custody extends BaseContract {
       WhitelistedEvent.OutputObject
     >;
 
-    "Withdraw(address,address,uint256)": TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
+    "Withdrawn(address,address,uint256)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
-    Withdraw: TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
 
-    "WithdrawAndCall(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
+    "WithdrawnAndCalled(address,address,uint256,bytes)": TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
     >;
-    WithdrawAndCall: TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
+    WithdrawnAndCalled: TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
     >;
 
     "WithdrawAndRevert(address,address,uint256,bytes,tuple)": TypedContractEvent<
@@ -787,10 +787,10 @@ export interface ERC20Custody extends BaseContract {
       WithdrawAndRevertEvent.OutputTuple,
       WithdrawAndRevertEvent.OutputObject
     >;
-    WithdrawAndRevert: TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    WithdrawnAndReverted: TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
   };
 }

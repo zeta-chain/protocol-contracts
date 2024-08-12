@@ -82,7 +82,7 @@ export interface IGatewayZEVMInterface extends Interface {
       | "withdrawAndCall(bytes,uint256,address,bytes,(address,bool,address,bytes))"
   ): FunctionFragment;
 
-  getEvent(nameOrSignatureOrTopic: "Call" | "Withdrawal"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Called" | "Withdrawn"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "call",
@@ -192,7 +192,7 @@ export interface IGatewayZEVMInterface extends Interface {
   ): Result;
 }
 
-export namespace CallEvent {
+export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     chainId: BigNumberish,
@@ -220,7 +220,7 @@ export namespace CallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawalEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [
     sender: AddressLike,
     chainId: BigNumberish,
@@ -568,18 +568,18 @@ export interface IGatewayZEVM extends BaseContract {
   >;
 
   getEvent(
-    key: "Call"
+    key: "Called"
   ): TypedContractEvent<
-    CallEvent.InputTuple,
-    CallEvent.OutputTuple,
-    CallEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
-    key: "Withdrawal"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawalEvent.InputTuple,
-    WithdrawalEvent.OutputTuple,
-    WithdrawalEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
 
   filters: {
@@ -588,10 +588,10 @@ export interface IGatewayZEVM extends BaseContract {
       CallEvent.OutputTuple,
       CallEvent.OutputObject
     >;
-    Call: TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
     "Withdrawal(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple)": TypedContractEvent<
@@ -599,10 +599,10 @@ export interface IGatewayZEVM extends BaseContract {
       WithdrawalEvent.OutputTuple,
       WithdrawalEvent.OutputObject
     >;
-    Withdrawal: TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
   };
 }

@@ -156,9 +156,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
         // Verify that the tokens were transferred to the destination address
         uint256 balanceAfter = token.balanceOf(destination);
@@ -195,7 +195,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.expectRevert(EnforcedPause.selector);
         vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
         vm.prank(owner);
         custody.unpause();
@@ -209,9 +209,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
         // Verify that the tokens were transferred to the destination address
         uint256 balanceAfter = token.balanceOf(destination);
@@ -237,7 +237,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
     }
 
     function testForwardCallToReceiveERC20ThroughCustodyFailsIfAmountIs0() public {
@@ -247,7 +247,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(tssAddress);
         vm.expectRevert(InsufficientERC20Amount.selector);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
     }
 
     function testForwardCallToReceiveERC20ThroughCustodyFailsIfReceiverIsZeroAddress() public {
@@ -257,7 +257,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(tssAddress);
         vm.expectRevert(ZeroAddress.selector);
-        custody.withdrawAndCall(address(token), address(0), amount, data);
+        custody.withdrawAndCall(address(0), address(token), amount, data);
     }
 
     function testForwardCallToReceiveERC20PartialThroughCustody() public {
@@ -273,9 +273,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount / 2, address(token), destination);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
         // Verify that the tokens were transferred to the destination address
         uint256 balanceAfter = token.balanceOf(destination);
@@ -301,7 +301,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
     }
 
     function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfAmountIs0() public {
@@ -311,7 +311,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(tssAddress);
         vm.expectRevert(InsufficientERC20Amount.selector);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
     }
 
     function testForwardCallToReceiveNoParamsThroughCustody() public {
@@ -326,9 +326,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndCall(address(token), address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, data);
         vm.prank(tssAddress);
-        custody.withdrawAndCall(address(token), address(receiver), amount, data);
+        custody.withdrawAndCall(address(receiver), address(token), amount, data);
 
         // Verify that the tokens were not transferred to the destination address
         uint256 balanceAfter = token.balanceOf(destination);
@@ -351,7 +351,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.startPrank(tssAddress);
         custody.unwhitelist(address(token));
         vm.expectRevert(NotWhitelisted.selector);
-        custody.withdraw(address(token), destination, 1);
+        custody.withdraw(destination, address(token), 1);
         vm.stopPrank();
     }
 
@@ -361,7 +361,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.startPrank(tssAddress);
         custody.unwhitelist(address(token));
         vm.expectRevert(NotWhitelisted.selector);
-        custody.withdrawAndCall(address(token), address(receiver), 1, data);
+        custody.withdrawAndCall(address(receiver), address(token), 1, data);
         vm.stopPrank();
     }
 
@@ -371,7 +371,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.startPrank(tssAddress);
         custody.unwhitelist(address(token));
         vm.expectRevert(NotWhitelisted.selector);
-        custody.withdrawAndRevert(address(token), address(receiver), 1, data, revertContext);
+        custody.withdrawAndRevert(address(receiver), address(token), 1, data, revertContext);
         vm.stopPrank();
     }
 
@@ -384,9 +384,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(destination), amount);
         vm.expectCall(address(token), 0, transferData);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit Withdraw(address(token), destination, amount);
+        emit Withdrawn(destination, address(token), amount);
         vm.prank(tssAddress);
-        custody.withdraw(address(token), destination, amount);
+        custody.withdraw(destination, address(token), amount);
 
         // Verify that the tokens were transferred to the destination address
         uint256 balanceAfter = token.balanceOf(destination);
@@ -406,7 +406,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdraw(address(token), destination, amount);
+        custody.withdraw(destination, address(token), amount);
     }
 
     function testWithdrawAndRevertThroughCustody() public {
@@ -424,9 +424,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Reverted(address(receiver), address(token), amount, data, revertContext);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit WithdrawAndRevert(address(token), address(receiver), amount, data, revertContext);
+        emit WithdrawnAndReverted(address(receiver), address(token),  amount, data, revertContext);
         vm.prank(tssAddress);
-        custody.withdrawAndRevert(address(token), address(receiver), amount, data, revertContext);
+        custody.withdrawAndRevert(address(receiver), address(token), amount, data, revertContext);
 
         // Verify that the tokens were transferred to the receiver address
         uint256 balanceAfter = token.balanceOf(address(receiver));
@@ -451,7 +451,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        custody.withdrawAndRevert(address(token), address(receiver), amount, data, revertContext);
+        custody.withdrawAndRevert(address(receiver), address(token), amount, data, revertContext);
     }
 
     function testWithdrawAndRevertThroughCustodyFailsIfAmountIs0() public {
@@ -460,7 +460,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(tssAddress);
         vm.expectRevert(InsufficientERC20Amount.selector);
-        custody.withdrawAndRevert(address(token), address(receiver), amount, data, revertContext);
+        custody.withdrawAndRevert(address(receiver), address(token), amount, data, revertContext);
     }
 
     function testWithdrawAndRevertThroughCustodyFailsIfReceiverIsZeroAddress() public {
@@ -469,6 +469,6 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.prank(tssAddress);
         vm.expectRevert(ZeroAddress.selector);
-        custody.withdrawAndRevert(address(token), address(0), amount, data, revertContext);
+        custody.withdrawAndRevert(address(0), address(token), amount, data, revertContext);
     }
 }

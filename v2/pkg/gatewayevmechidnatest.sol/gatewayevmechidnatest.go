@@ -1112,9 +1112,9 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestTransactorSession) UpgradeToA
 	return _GatewayEVMEchidnaTest.Contract.UpgradeToAndCall(&_GatewayEVMEchidnaTest.TransactOpts, newImplementation, data)
 }
 
-// GatewayEVMEchidnaTestCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the GatewayEVMEchidnaTest contract.
-type GatewayEVMEchidnaTestCallIterator struct {
-	Event *GatewayEVMEchidnaTestCall // Event containing the contract specifics and raw log
+// GatewayEVMEchidnaTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayEVMEchidnaTest contract.
+type GatewayEVMEchidnaTestCalledIterator struct {
+	Event *GatewayEVMEchidnaTestCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1128,7 +1128,7 @@ type GatewayEVMEchidnaTestCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMEchidnaTestCallIterator) Next() bool {
+func (it *GatewayEVMEchidnaTestCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1137,7 +1137,7 @@ func (it *GatewayEVMEchidnaTestCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMEchidnaTestCall)
+			it.Event = new(GatewayEVMEchidnaTestCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1152,7 +1152,7 @@ func (it *GatewayEVMEchidnaTestCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMEchidnaTestCall)
+		it.Event = new(GatewayEVMEchidnaTestCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1168,13 +1168,13 @@ func (it *GatewayEVMEchidnaTestCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMEchidnaTestCallIterator) Error() error {
+func (it *GatewayEVMEchidnaTestCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMEchidnaTestCallIterator) Close() error {
+func (it *GatewayEVMEchidnaTestCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1202,11 +1202,11 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) FilterCall(opts *bi
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMEchidnaTest.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMEchidnaTest.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMEchidnaTestCallIterator{contract: _GatewayEVMEchidnaTest.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &GatewayEVMEchidnaTestCalledIterator{contract: _GatewayEVMEchidnaTest.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
@@ -1223,7 +1223,7 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) WatchCall(opts *bin
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMEchidnaTest.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMEchidnaTest.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1233,8 +1233,8 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) WatchCall(opts *bin
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMEchidnaTestCall)
-				if err := _GatewayEVMEchidnaTest.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(GatewayEVMEchidnaTestCalled)
+				if err := _GatewayEVMEchidnaTest.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1267,9 +1267,9 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) ParseCall(log types
 	return event, nil
 }
 
-// GatewayEVMEchidnaTestDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the GatewayEVMEchidnaTest contract.
-type GatewayEVMEchidnaTestDepositIterator struct {
-	Event *GatewayEVMEchidnaTestDeposit // Event containing the contract specifics and raw log
+// GatewayEVMEchidnaTestDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the GatewayEVMEchidnaTest contract.
+type GatewayEVMEchidnaTestDepositedIterator struct {
+	Event *GatewayEVMEchidnaTestDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1283,7 +1283,7 @@ type GatewayEVMEchidnaTestDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMEchidnaTestDepositIterator) Next() bool {
+func (it *GatewayEVMEchidnaTestDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1292,7 +1292,7 @@ func (it *GatewayEVMEchidnaTestDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMEchidnaTestDeposit)
+			it.Event = new(GatewayEVMEchidnaTestDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1307,7 +1307,7 @@ func (it *GatewayEVMEchidnaTestDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMEchidnaTestDeposit)
+		it.Event = new(GatewayEVMEchidnaTestDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1323,13 +1323,13 @@ func (it *GatewayEVMEchidnaTestDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMEchidnaTestDepositIterator) Error() error {
+func (it *GatewayEVMEchidnaTestDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMEchidnaTestDepositIterator) Close() error {
+func (it *GatewayEVMEchidnaTestDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1359,11 +1359,11 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) FilterDeposit(opts 
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMEchidnaTest.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMEchidnaTest.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMEchidnaTestDepositIterator{contract: _GatewayEVMEchidnaTest.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &GatewayEVMEchidnaTestDepositedIterator{contract: _GatewayEVMEchidnaTest.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
 // WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
@@ -1380,7 +1380,7 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) WatchDeposit(opts *
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMEchidnaTest.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMEchidnaTest.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1390,8 +1390,8 @@ func (_GatewayEVMEchidnaTest *GatewayEVMEchidnaTestFilterer) WatchDeposit(opts *
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMEchidnaTestDeposit)
-				if err := _GatewayEVMEchidnaTest.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(GatewayEVMEchidnaTestDeposited)
+				if err := _GatewayEVMEchidnaTest.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log

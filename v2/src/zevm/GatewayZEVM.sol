@@ -132,7 +132,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(
+        emit Withdrawn(
             msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", revertOptions
         );
     }
@@ -158,7 +158,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawal(
+        emit Withdrawn(
             msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, revertOptions
         );
     }
@@ -181,7 +181,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", revertOptions);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", revertOptions);
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
@@ -205,7 +205,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawal(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, revertOptions);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, revertOptions);
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
@@ -223,8 +223,9 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
+        if (message.length == 0) revert EmptyMessage();
 
-        emit Call(msg.sender, chainId, receiver, message, revertOptions);
+        emit Called(msg.sender, chainId, receiver, message, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.

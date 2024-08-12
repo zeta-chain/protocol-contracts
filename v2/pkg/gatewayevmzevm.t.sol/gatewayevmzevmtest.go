@@ -712,9 +712,9 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestTransactorSession) TestWithdrawAndC
 	return _GatewayEVMZEVMTest.Contract.TestWithdrawAndCallReceiverEVMFromZEVM(&_GatewayEVMZEVMTest.TransactOpts)
 }
 
-// GatewayEVMZEVMTestCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the GatewayEVMZEVMTest contract.
-type GatewayEVMZEVMTestCallIterator struct {
-	Event *GatewayEVMZEVMTestCall // Event containing the contract specifics and raw log
+// GatewayEVMZEVMTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayEVMZEVMTest contract.
+type GatewayEVMZEVMTestCalledIterator struct {
+	Event *GatewayEVMZEVMTestCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -728,7 +728,7 @@ type GatewayEVMZEVMTestCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMZEVMTestCallIterator) Next() bool {
+func (it *GatewayEVMZEVMTestCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -737,7 +737,7 @@ func (it *GatewayEVMZEVMTestCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMZEVMTestCall)
+			it.Event = new(GatewayEVMZEVMTestCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -752,7 +752,7 @@ func (it *GatewayEVMZEVMTestCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMZEVMTestCall)
+		it.Event = new(GatewayEVMZEVMTestCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -768,13 +768,13 @@ func (it *GatewayEVMZEVMTestCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMZEVMTestCallIterator) Error() error {
+func (it *GatewayEVMZEVMTestCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMZEVMTestCallIterator) Close() error {
+func (it *GatewayEVMZEVMTestCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -802,11 +802,11 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) FilterCall(opts *bind.Fil
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMZEVMTestCallIterator{contract: _GatewayEVMZEVMTest.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &GatewayEVMZEVMTestCalledIterator{contract: _GatewayEVMZEVMTest.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
@@ -823,7 +823,7 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchCall(opts *bind.Watc
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -833,8 +833,8 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchCall(opts *bind.Watc
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMZEVMTestCall)
-				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(GatewayEVMZEVMTestCalled)
+				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -867,9 +867,9 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) ParseCall(log types.Log) 
 	return event, nil
 }
 
-// GatewayEVMZEVMTestCall0Iterator is returned from FilterCall0 and is used to iterate over the raw logs and unpacked data for Call0 events raised by the GatewayEVMZEVMTest contract.
-type GatewayEVMZEVMTestCall0Iterator struct {
-	Event *GatewayEVMZEVMTestCall0 // Event containing the contract specifics and raw log
+// GatewayEVMZEVMTestCalled0Iterator is returned from FilterCalled0 and is used to iterate over the raw logs and unpacked data for Called0 events raised by the GatewayEVMZEVMTest contract.
+type GatewayEVMZEVMTestCalled0Iterator struct {
+	Event *GatewayEVMZEVMTestCalled0 // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -883,7 +883,7 @@ type GatewayEVMZEVMTestCall0Iterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMZEVMTestCall0Iterator) Next() bool {
+func (it *GatewayEVMZEVMTestCalled0Iterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -892,7 +892,7 @@ func (it *GatewayEVMZEVMTestCall0Iterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMZEVMTestCall0)
+			it.Event = new(GatewayEVMZEVMTestCalled0)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -907,7 +907,7 @@ func (it *GatewayEVMZEVMTestCall0Iterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMZEVMTestCall0)
+		it.Event = new(GatewayEVMZEVMTestCalled0)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -923,13 +923,13 @@ func (it *GatewayEVMZEVMTestCall0Iterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMZEVMTestCall0Iterator) Error() error {
+func (it *GatewayEVMZEVMTestCalled0Iterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMZEVMTestCall0Iterator) Close() error {
+func (it *GatewayEVMZEVMTestCalled0Iterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -958,11 +958,11 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) FilterCall0(opts *bind.Fi
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Call0", senderRule, chainIdRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Called0", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMZEVMTestCall0Iterator{contract: _GatewayEVMZEVMTest.contract, event: "Call0", logs: logs, sub: sub}, nil
+	return &GatewayEVMZEVMTestCalled0Iterator{contract: _GatewayEVMZEVMTest.contract, event: "Called0", logs: logs, sub: sub}, nil
 }
 
 // WatchCall0 is a free log subscription operation binding the contract event 0x665c728aeefdf13a596da9c18c4c5fb4caeb05ae033e390915a04a9bfae634b9.
@@ -979,7 +979,7 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchCall0(opts *bind.Wat
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Call0", senderRule, chainIdRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Called0", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -989,8 +989,8 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchCall0(opts *bind.Wat
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMZEVMTestCall0)
-				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Call0", log); err != nil {
+				event := new(GatewayEVMZEVMTestCalled0)
+				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Called0", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1023,9 +1023,9 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) ParseCall0(log types.Log)
 	return event, nil
 }
 
-// GatewayEVMZEVMTestDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the GatewayEVMZEVMTest contract.
-type GatewayEVMZEVMTestDepositIterator struct {
-	Event *GatewayEVMZEVMTestDeposit // Event containing the contract specifics and raw log
+// GatewayEVMZEVMTestDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the GatewayEVMZEVMTest contract.
+type GatewayEVMZEVMTestDepositedIterator struct {
+	Event *GatewayEVMZEVMTestDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1039,7 +1039,7 @@ type GatewayEVMZEVMTestDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMZEVMTestDepositIterator) Next() bool {
+func (it *GatewayEVMZEVMTestDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1048,7 +1048,7 @@ func (it *GatewayEVMZEVMTestDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMZEVMTestDeposit)
+			it.Event = new(GatewayEVMZEVMTestDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1063,7 +1063,7 @@ func (it *GatewayEVMZEVMTestDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMZEVMTestDeposit)
+		it.Event = new(GatewayEVMZEVMTestDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1079,13 +1079,13 @@ func (it *GatewayEVMZEVMTestDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMZEVMTestDepositIterator) Error() error {
+func (it *GatewayEVMZEVMTestDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMZEVMTestDepositIterator) Close() error {
+func (it *GatewayEVMZEVMTestDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1115,11 +1115,11 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) FilterDeposit(opts *bind.
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMZEVMTestDepositIterator{contract: _GatewayEVMZEVMTest.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &GatewayEVMZEVMTestDepositedIterator{contract: _GatewayEVMZEVMTest.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
 // WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
@@ -1136,7 +1136,7 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchDeposit(opts *bind.W
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1146,8 +1146,8 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchDeposit(opts *bind.W
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMZEVMTestDeposit)
-				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(GatewayEVMZEVMTestDeposited)
+				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -2334,7 +2334,7 @@ type GatewayEVMZEVMTestWithdrawalIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMZEVMTestWithdrawalIterator) Next() bool {
+func (it *GatewayEVMZEVMTestWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -2343,7 +2343,7 @@ func (it *GatewayEVMZEVMTestWithdrawalIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMZEVMTestWithdrawal)
+			it.Event = new(GatewayEVMZEVMTestWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -2358,7 +2358,7 @@ func (it *GatewayEVMZEVMTestWithdrawalIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMZEVMTestWithdrawal)
+		it.Event = new(GatewayEVMZEVMTestWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -2374,19 +2374,19 @@ func (it *GatewayEVMZEVMTestWithdrawalIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMZEVMTestWithdrawalIterator) Error() error {
+func (it *GatewayEVMZEVMTestWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMZEVMTestWithdrawalIterator) Close() error {
+func (it *GatewayEVMZEVMTestWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// GatewayEVMZEVMTestWithdrawal represents a Withdrawal event raised by the GatewayEVMZEVMTest contract.
-type GatewayEVMZEVMTestWithdrawal struct {
+// GatewayEVMZEVMTestWithdrawn represents a Withdrawn event raised by the GatewayEVMZEVMTest contract.
+type GatewayEVMZEVMTestWithdrawn struct {
 	Sender          common.Address
 	ChainId         *big.Int
 	Receiver        []byte
@@ -2413,11 +2413,11 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) FilterWithdrawal(opts *bi
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.FilterLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMZEVMTestWithdrawalIterator{contract: _GatewayEVMZEVMTest.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
+	return &GatewayEVMZEVMTestWithdrawnIterator{contract: _GatewayEVMZEVMTest.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawal is a free log subscription operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
@@ -2434,7 +2434,7 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchWithdrawal(opts *bin
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _GatewayEVMZEVMTest.contract.WatchLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -2444,8 +2444,8 @@ func (_GatewayEVMZEVMTest *GatewayEVMZEVMTestFilterer) WatchWithdrawal(opts *bin
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMZEVMTestWithdrawal)
-				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+				event := new(GatewayEVMZEVMTestWithdrawn)
+				if err := _GatewayEVMZEVMTest.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log

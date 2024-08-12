@@ -475,9 +475,9 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWhitelisted(log ty
 	return event, nil
 }
 
-// IERC20CustodyEventsWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the IERC20CustodyEvents contract.
-type IERC20CustodyEventsWithdrawIterator struct {
-	Event *IERC20CustodyEventsWithdraw // Event containing the contract specifics and raw log
+// IERC20CustodyEventsWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWithdrawnIterator struct {
+	Event *IERC20CustodyEventsWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -491,7 +491,7 @@ type IERC20CustodyEventsWithdrawIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IERC20CustodyEventsWithdrawIterator) Next() bool {
+func (it *IERC20CustodyEventsWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -500,7 +500,7 @@ func (it *IERC20CustodyEventsWithdrawIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IERC20CustodyEventsWithdraw)
+			it.Event = new(IERC20CustodyEventsWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -515,7 +515,7 @@ func (it *IERC20CustodyEventsWithdrawIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IERC20CustodyEventsWithdraw)
+		it.Event = new(IERC20CustodyEventsWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -531,29 +531,29 @@ func (it *IERC20CustodyEventsWithdrawIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IERC20CustodyEventsWithdrawIterator) Error() error {
+func (it *IERC20CustodyEventsWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IERC20CustodyEventsWithdrawIterator) Close() error {
+func (it *IERC20CustodyEventsWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IERC20CustodyEventsWithdraw represents a Withdraw event raised by the IERC20CustodyEvents contract.
-type IERC20CustodyEventsWithdraw struct {
+// IERC20CustodyEventsWithdrawn represents a Withdrawn event raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWithdrawn struct {
 	Token  common.Address
 	To     common.Address
 	Amount *big.Int
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdraw is a free log retrieval operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// FilterWithdrawn is a free log retrieval operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdraw(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyEventsWithdrawIterator, error) {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawn(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyEventsWithdrawnIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -564,17 +564,17 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdraw(opts *bi
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "Withdraw", tokenRule, toRule)
+	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "Withdrawn", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IERC20CustodyEventsWithdrawIterator{contract: _IERC20CustodyEvents.contract, event: "Withdraw", logs: logs, sub: sub}, nil
+	return &IERC20CustodyEventsWithdrawnIterator{contract: _IERC20CustodyEvents.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdraw is a free log subscription operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// WatchWithdrawn is a free log subscription operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdraw(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWithdraw, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWithdrawn, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -585,7 +585,7 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdraw(opts *bin
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "Withdraw", tokenRule, toRule)
+	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "Withdrawn", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -595,8 +595,8 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdraw(opts *bin
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IERC20CustodyEventsWithdraw)
-				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Withdraw", log); err != nil {
+				event := new(IERC20CustodyEventsWithdrawn)
+				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -617,21 +617,21 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdraw(opts *bin
 	}), nil
 }
 
-// ParseWithdraw is a log parse operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// ParseWithdrawn is a log parse operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWithdraw(log types.Log) (*IERC20CustodyEventsWithdraw, error) {
-	event := new(IERC20CustodyEventsWithdraw)
-	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Withdraw", log); err != nil {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWithdrawn(log types.Log) (*IERC20CustodyEventsWithdrawn, error) {
+	event := new(IERC20CustodyEventsWithdrawn)
+	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// IERC20CustodyEventsWithdrawAndCallIterator is returned from FilterWithdrawAndCall and is used to iterate over the raw logs and unpacked data for WithdrawAndCall events raised by the IERC20CustodyEvents contract.
-type IERC20CustodyEventsWithdrawAndCallIterator struct {
-	Event *IERC20CustodyEventsWithdrawAndCall // Event containing the contract specifics and raw log
+// IERC20CustodyEventsWithdrawnAndCalledIterator is returned from FilterWithdrawnAndCalled and is used to iterate over the raw logs and unpacked data for WithdrawnAndCalled events raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWithdrawnAndCalledIterator struct {
+	Event *IERC20CustodyEventsWithdrawnAndCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -645,7 +645,7 @@ type IERC20CustodyEventsWithdrawAndCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IERC20CustodyEventsWithdrawAndCallIterator) Next() bool {
+func (it *IERC20CustodyEventsWithdrawnAndCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -654,7 +654,7 @@ func (it *IERC20CustodyEventsWithdrawAndCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IERC20CustodyEventsWithdrawAndCall)
+			it.Event = new(IERC20CustodyEventsWithdrawnAndCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -669,7 +669,7 @@ func (it *IERC20CustodyEventsWithdrawAndCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IERC20CustodyEventsWithdrawAndCall)
+		it.Event = new(IERC20CustodyEventsWithdrawnAndCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -685,19 +685,19 @@ func (it *IERC20CustodyEventsWithdrawAndCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IERC20CustodyEventsWithdrawAndCallIterator) Error() error {
+func (it *IERC20CustodyEventsWithdrawnAndCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IERC20CustodyEventsWithdrawAndCallIterator) Close() error {
+func (it *IERC20CustodyEventsWithdrawnAndCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IERC20CustodyEventsWithdrawAndCall represents a WithdrawAndCall event raised by the IERC20CustodyEvents contract.
-type IERC20CustodyEventsWithdrawAndCall struct {
+// IERC20CustodyEventsWithdrawnAndCalled represents a WithdrawnAndCalled event raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWithdrawnAndCalled struct {
 	Token  common.Address
 	To     common.Address
 	Amount *big.Int
@@ -705,10 +705,10 @@ type IERC20CustodyEventsWithdrawAndCall struct {
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndCall is a free log retrieval operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// FilterWithdrawnAndCalled is a free log retrieval operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawAndCall(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyEventsWithdrawAndCallIterator, error) {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawnAndCalled(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyEventsWithdrawnAndCalledIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -719,17 +719,17 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawAndCall(o
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "WithdrawAndCall", tokenRule, toRule)
+	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "WithdrawnAndCalled", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IERC20CustodyEventsWithdrawAndCallIterator{contract: _IERC20CustodyEvents.contract, event: "WithdrawAndCall", logs: logs, sub: sub}, nil
+	return &IERC20CustodyEventsWithdrawnAndCalledIterator{contract: _IERC20CustodyEvents.contract, event: "WithdrawnAndCalled", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndCall is a free log subscription operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// WatchWithdrawnAndCalled is a free log subscription operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndCall(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWithdrawAndCall, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawnAndCalled(opts *bind.WatchOpts, sink chan<- *IERC20CustodyEventsWithdrawnAndCalled, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -740,7 +740,7 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndCall(op
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "WithdrawAndCall", tokenRule, toRule)
+	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "WithdrawnAndCalled", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -750,8 +750,8 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndCall(op
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IERC20CustodyEventsWithdrawAndCall)
-				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+				event := new(IERC20CustodyEventsWithdrawnAndCalled)
+				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -772,21 +772,21 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndCall(op
 	}), nil
 }
 
-// ParseWithdrawAndCall is a log parse operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// ParseWithdrawnAndCalled is a log parse operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWithdrawAndCall(log types.Log) (*IERC20CustodyEventsWithdrawAndCall, error) {
-	event := new(IERC20CustodyEventsWithdrawAndCall)
-	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) ParseWithdrawnAndCalled(log types.Log) (*IERC20CustodyEventsWithdrawnAndCalled, error) {
+	event := new(IERC20CustodyEventsWithdrawnAndCalled)
+	if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// IERC20CustodyEventsWithdrawAndRevertIterator is returned from FilterWithdrawAndRevert and is used to iterate over the raw logs and unpacked data for WithdrawAndRevert events raised by the IERC20CustodyEvents contract.
-type IERC20CustodyEventsWithdrawAndRevertIterator struct {
-	Event *IERC20CustodyEventsWithdrawAndRevert // Event containing the contract specifics and raw log
+// IERC20CustodyEventsWithdrawnAndRevertedIterator is returned from FilterWithdrawnAndReverted and is used to iterate over the raw logs and unpacked data for WithdrawnAndReverted events raised by the IERC20CustodyEvents contract.
+type IERC20CustodyEventsWithdrawnAndRevertedIterator struct {
+	Event *IERC20CustodyEventsWithdrawnAndReverted // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -800,7 +800,7 @@ type IERC20CustodyEventsWithdrawAndRevertIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IERC20CustodyEventsWithdrawAndRevertIterator) Next() bool {
+func (it *IERC20CustodyEventsWithdrawnAndRevertedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -809,7 +809,7 @@ func (it *IERC20CustodyEventsWithdrawAndRevertIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IERC20CustodyEventsWithdrawAndRevert)
+			it.Event = new(IERC20CustodyEventsWithdrawnAndReverted)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -824,7 +824,7 @@ func (it *IERC20CustodyEventsWithdrawAndRevertIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IERC20CustodyEventsWithdrawAndRevert)
+		it.Event = new(IERC20CustodyEventsWithdrawnAndReverted)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -840,13 +840,13 @@ func (it *IERC20CustodyEventsWithdrawAndRevertIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IERC20CustodyEventsWithdrawAndRevertIterator) Error() error {
+func (it *IERC20CustodyEventsWithdrawnAndRevertedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IERC20CustodyEventsWithdrawAndRevertIterator) Close() error {
+func (it *IERC20CustodyEventsWithdrawnAndRevertedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -875,11 +875,11 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) FilterWithdrawAndRevert
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	logs, sub, err := _IERC20CustodyEvents.contract.FilterLogs(opts, "WithdrawnAndReverted", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IERC20CustodyEventsWithdrawAndRevertIterator{contract: _IERC20CustodyEvents.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
+	return &IERC20CustodyEventsWithdrawnAndRevertedIterator{contract: _IERC20CustodyEvents.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
@@ -896,7 +896,7 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndRevert(
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	logs, sub, err := _IERC20CustodyEvents.contract.WatchLogs(opts, "WithdrawnAndReverted", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -906,8 +906,8 @@ func (_IERC20CustodyEvents *IERC20CustodyEventsFilterer) WatchWithdrawAndRevert(
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IERC20CustodyEventsWithdrawAndRevert)
-				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+				event := new(IERC20CustodyEventsWithdrawnAndReverted)
+				if err := _IERC20CustodyEvents.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
 					return err
 				}
 				event.Raw = log

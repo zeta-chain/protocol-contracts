@@ -85,7 +85,7 @@ contract ZetaConnectorNativeTest is
         bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", destination, amount);
         vm.expectCall(address(zetaToken), 0, data);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit Withdraw(destination, amount);
+        emit Withdrawn(destination, amount);
         vm.prank(tssAddress);
         zetaConnector.withdraw(destination, amount, internalSendHash);
         uint256 balanceAfter = zetaToken.balanceOf(destination);
@@ -120,7 +120,7 @@ contract ZetaConnectorNativeTest is
         bytes memory data = abi.encodeWithSignature("transfer(address,uint256)", destination, amount);
         vm.expectCall(address(zetaToken), 0, data);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit Withdraw(destination, amount);
+        emit Withdrawn(destination, amount);
         vm.prank(tssAddress);
         zetaConnector.withdraw(destination, amount, internalSendHash);
         uint256 balanceAfter = zetaToken.balanceOf(destination);
@@ -150,7 +150,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount, address(zetaToken), destination);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit WithdrawAndCall(address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), amount, data);
         vm.prank(tssAddress);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
 
@@ -195,7 +195,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedNoParams(address(gateway));
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit WithdrawAndCall(address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), amount, data);
         vm.prank(tssAddress);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
 
@@ -231,7 +231,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedERC20(address(gateway), amount / 2, address(zetaToken), destination);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit WithdrawAndCall(address(receiver), amount, data);
+        emit WithdrawnAndCalled(address(receiver), amount, data);
         vm.prank(tssAddress);
         zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
 
@@ -268,7 +268,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Reverted(address(receiver), address(zetaToken), amount, data, revertContext);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit WithdrawAndRevert(address(receiver), amount, data, revertContext);
+        emit WithdrawnAndReverted(address(receiver), amount, data, revertContext);
         vm.prank(tssAddress);
         zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash, revertContext);
 
