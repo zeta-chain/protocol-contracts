@@ -187,9 +187,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsTransactorRaw) Transact(opts *b
 	return _IZetaConnectorEvents.Contract.contract.Transact(opts, method, params...)
 }
 
-// IZetaConnectorEventsWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the IZetaConnectorEvents contract.
-type IZetaConnectorEventsWithdrawIterator struct {
-	Event *IZetaConnectorEventsWithdraw // Event containing the contract specifics and raw log
+// IZetaConnectorEventsWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the IZetaConnectorEvents contract.
+type IZetaConnectorEventsWithdrawnIterator struct {
+	Event *IZetaConnectorEventsWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -203,7 +203,7 @@ type IZetaConnectorEventsWithdrawIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IZetaConnectorEventsWithdrawIterator) Next() bool {
+func (it *IZetaConnectorEventsWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -212,7 +212,7 @@ func (it *IZetaConnectorEventsWithdrawIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IZetaConnectorEventsWithdraw)
+			it.Event = new(IZetaConnectorEventsWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -227,7 +227,7 @@ func (it *IZetaConnectorEventsWithdrawIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IZetaConnectorEventsWithdraw)
+		it.Event = new(IZetaConnectorEventsWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -243,52 +243,52 @@ func (it *IZetaConnectorEventsWithdrawIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IZetaConnectorEventsWithdrawIterator) Error() error {
+func (it *IZetaConnectorEventsWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IZetaConnectorEventsWithdrawIterator) Close() error {
+func (it *IZetaConnectorEventsWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IZetaConnectorEventsWithdraw represents a Withdraw event raised by the IZetaConnectorEvents contract.
-type IZetaConnectorEventsWithdraw struct {
+// IZetaConnectorEventsWithdrawn represents a Withdrawn event raised by the IZetaConnectorEvents contract.
+type IZetaConnectorEventsWithdrawn struct {
 	To     common.Address
 	Amount *big.Int
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdraw is a free log retrieval operation binding the contract event 0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364.
+// FilterWithdrawn is a free log retrieval operation binding the contract event 0x7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d5.
 //
-// Solidity: event Withdraw(address indexed to, uint256 amount)
-func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdraw(opts *bind.FilterOpts, to []common.Address) (*IZetaConnectorEventsWithdrawIterator, error) {
+// Solidity: event Withdrawn(address indexed to, uint256 amount)
+func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawn(opts *bind.FilterOpts, to []common.Address) (*IZetaConnectorEventsWithdrawnIterator, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "Withdraw", toRule)
+	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "Withdrawn", toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IZetaConnectorEventsWithdrawIterator{contract: _IZetaConnectorEvents.contract, event: "Withdraw", logs: logs, sub: sub}, nil
+	return &IZetaConnectorEventsWithdrawnIterator{contract: _IZetaConnectorEvents.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdraw is a free log subscription operation binding the contract event 0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364.
+// WatchWithdrawn is a free log subscription operation binding the contract event 0x7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d5.
 //
-// Solidity: event Withdraw(address indexed to, uint256 amount)
-func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdraw(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsWithdraw, to []common.Address) (event.Subscription, error) {
+// Solidity: event Withdrawn(address indexed to, uint256 amount)
+func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsWithdrawn, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "Withdraw", toRule)
+	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "Withdrawn", toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -298,8 +298,8 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdraw(opts *b
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IZetaConnectorEventsWithdraw)
-				if err := _IZetaConnectorEvents.contract.UnpackLog(event, "Withdraw", log); err != nil {
+				event := new(IZetaConnectorEventsWithdrawn)
+				if err := _IZetaConnectorEvents.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -320,21 +320,21 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdraw(opts *b
 	}), nil
 }
 
-// ParseWithdraw is a log parse operation binding the contract event 0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364.
+// ParseWithdrawn is a log parse operation binding the contract event 0x7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d5.
 //
-// Solidity: event Withdraw(address indexed to, uint256 amount)
-func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseWithdraw(log types.Log) (*IZetaConnectorEventsWithdraw, error) {
-	event := new(IZetaConnectorEventsWithdraw)
-	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "Withdraw", log); err != nil {
+// Solidity: event Withdrawn(address indexed to, uint256 amount)
+func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseWithdrawn(log types.Log) (*IZetaConnectorEventsWithdrawn, error) {
+	event := new(IZetaConnectorEventsWithdrawn)
+	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// IZetaConnectorEventsWithdrawAndCallIterator is returned from FilterWithdrawAndCall and is used to iterate over the raw logs and unpacked data for WithdrawAndCall events raised by the IZetaConnectorEvents contract.
-type IZetaConnectorEventsWithdrawAndCallIterator struct {
-	Event *IZetaConnectorEventsWithdrawAndCall // Event containing the contract specifics and raw log
+// IZetaConnectorEventsWithdrawnAndCalledIterator is returned from FilterWithdrawnAndCalled and is used to iterate over the raw logs and unpacked data for WithdrawnAndCalled events raised by the IZetaConnectorEvents contract.
+type IZetaConnectorEventsWithdrawnAndCalledIterator struct {
+	Event *IZetaConnectorEventsWithdrawnAndCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -348,7 +348,7 @@ type IZetaConnectorEventsWithdrawAndCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IZetaConnectorEventsWithdrawAndCallIterator) Next() bool {
+func (it *IZetaConnectorEventsWithdrawnAndCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -357,7 +357,7 @@ func (it *IZetaConnectorEventsWithdrawAndCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IZetaConnectorEventsWithdrawAndCall)
+			it.Event = new(IZetaConnectorEventsWithdrawnAndCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -372,7 +372,7 @@ func (it *IZetaConnectorEventsWithdrawAndCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IZetaConnectorEventsWithdrawAndCall)
+		it.Event = new(IZetaConnectorEventsWithdrawnAndCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -388,53 +388,53 @@ func (it *IZetaConnectorEventsWithdrawAndCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IZetaConnectorEventsWithdrawAndCallIterator) Error() error {
+func (it *IZetaConnectorEventsWithdrawnAndCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IZetaConnectorEventsWithdrawAndCallIterator) Close() error {
+func (it *IZetaConnectorEventsWithdrawnAndCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IZetaConnectorEventsWithdrawAndCall represents a WithdrawAndCall event raised by the IZetaConnectorEvents contract.
-type IZetaConnectorEventsWithdrawAndCall struct {
+// IZetaConnectorEventsWithdrawnAndCalled represents a WithdrawnAndCalled event raised by the IZetaConnectorEvents contract.
+type IZetaConnectorEventsWithdrawnAndCalled struct {
 	To     common.Address
 	Amount *big.Int
 	Data   []byte
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndCall is a free log retrieval operation binding the contract event 0x7772f56296d3a5202974a45c61c9188d844ab4d6eeb18c851e4b8d5384ca6ced.
+// FilterWithdrawnAndCalled is a free log retrieval operation binding the contract event 0x23b9573b29ff81f01c7aa1968188e1cb7d5858b08582e111fdaf386d9ef9bd8d.
 //
-// Solidity: event WithdrawAndCall(address indexed to, uint256 amount, bytes data)
-func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawAndCall(opts *bind.FilterOpts, to []common.Address) (*IZetaConnectorEventsWithdrawAndCallIterator, error) {
+// Solidity: event WithdrawnAndCalled(address indexed to, uint256 amount, bytes data)
+func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawnAndCalled(opts *bind.FilterOpts, to []common.Address) (*IZetaConnectorEventsWithdrawnAndCalledIterator, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "WithdrawAndCall", toRule)
+	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "WithdrawnAndCalled", toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IZetaConnectorEventsWithdrawAndCallIterator{contract: _IZetaConnectorEvents.contract, event: "WithdrawAndCall", logs: logs, sub: sub}, nil
+	return &IZetaConnectorEventsWithdrawnAndCalledIterator{contract: _IZetaConnectorEvents.contract, event: "WithdrawnAndCalled", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndCall is a free log subscription operation binding the contract event 0x7772f56296d3a5202974a45c61c9188d844ab4d6eeb18c851e4b8d5384ca6ced.
+// WatchWithdrawnAndCalled is a free log subscription operation binding the contract event 0x23b9573b29ff81f01c7aa1968188e1cb7d5858b08582e111fdaf386d9ef9bd8d.
 //
-// Solidity: event WithdrawAndCall(address indexed to, uint256 amount, bytes data)
-func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndCall(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsWithdrawAndCall, to []common.Address) (event.Subscription, error) {
+// Solidity: event WithdrawnAndCalled(address indexed to, uint256 amount, bytes data)
+func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawnAndCalled(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsWithdrawnAndCalled, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "WithdrawAndCall", toRule)
+	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "WithdrawnAndCalled", toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -444,8 +444,8 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndCall(
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IZetaConnectorEventsWithdrawAndCall)
-				if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+				event := new(IZetaConnectorEventsWithdrawnAndCalled)
+				if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -466,21 +466,21 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndCall(
 	}), nil
 }
 
-// ParseWithdrawAndCall is a log parse operation binding the contract event 0x7772f56296d3a5202974a45c61c9188d844ab4d6eeb18c851e4b8d5384ca6ced.
+// ParseWithdrawnAndCalled is a log parse operation binding the contract event 0x23b9573b29ff81f01c7aa1968188e1cb7d5858b08582e111fdaf386d9ef9bd8d.
 //
-// Solidity: event WithdrawAndCall(address indexed to, uint256 amount, bytes data)
-func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseWithdrawAndCall(log types.Log) (*IZetaConnectorEventsWithdrawAndCall, error) {
-	event := new(IZetaConnectorEventsWithdrawAndCall)
-	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+// Solidity: event WithdrawnAndCalled(address indexed to, uint256 amount, bytes data)
+func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseWithdrawnAndCalled(log types.Log) (*IZetaConnectorEventsWithdrawnAndCalled, error) {
+	event := new(IZetaConnectorEventsWithdrawnAndCalled)
+	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// IZetaConnectorEventsWithdrawAndRevertIterator is returned from FilterWithdrawAndRevert and is used to iterate over the raw logs and unpacked data for WithdrawAndRevert events raised by the IZetaConnectorEvents contract.
-type IZetaConnectorEventsWithdrawAndRevertIterator struct {
-	Event *IZetaConnectorEventsWithdrawAndRevert // Event containing the contract specifics and raw log
+// IZetaConnectorEventsWithdrawnAndRevertedIterator is returned from FilterWithdrawnAndReverted and is used to iterate over the raw logs and unpacked data for WithdrawnAndReverted events raised by the IZetaConnectorEvents contract.
+type IZetaConnectorEventsWithdrawnAndRevertedIterator struct {
+	Event *IZetaConnectorEventsWithdrawnAndReverted // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -494,7 +494,7 @@ type IZetaConnectorEventsWithdrawAndRevertIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Next() bool {
+func (it *IZetaConnectorEventsWithdrawnAndRevertedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -503,7 +503,7 @@ func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IZetaConnectorEventsWithdrawAndRevert)
+			it.Event = new(IZetaConnectorEventsWithdrawnAndReverted)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -518,7 +518,7 @@ func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IZetaConnectorEventsWithdrawAndRevert)
+		it.Event = new(IZetaConnectorEventsWithdrawnAndReverted)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -534,13 +534,13 @@ func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Error() error {
+func (it *IZetaConnectorEventsWithdrawnAndRevertedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Close() error {
+func (it *IZetaConnectorEventsWithdrawnAndRevertedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -564,11 +564,11 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawAndReve
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "WithdrawAndRevert", toRule)
+	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "WithdrawnAndReverted", toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IZetaConnectorEventsWithdrawAndRevertIterator{contract: _IZetaConnectorEvents.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
+	return &IZetaConnectorEventsWithdrawnAndRevertedIterator{contract: _IZetaConnectorEvents.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x0174321305ae11b234429ef4c65941379de1edb97632dbe0a4e48ddeaefe1328.
@@ -581,7 +581,7 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndRever
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "WithdrawAndRevert", toRule)
+	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "WithdrawnAndReverted", toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -591,8 +591,8 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndRever
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IZetaConnectorEventsWithdrawAndRevert)
-				if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+				event := new(IZetaConnectorEventsWithdrawnAndReverted)
+				if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
 					return err
 				}
 				event.Raw = log

@@ -13,7 +13,7 @@ interface IGatewayZEVMEvents {
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
     /// @param revertOptions Revert options.
-    event Call(
+    event Called(
         address indexed sender, address indexed zrc20, bytes receiver, bytes message, RevertOptions revertOptions
     );
 
@@ -27,7 +27,7 @@ interface IGatewayZEVMEvents {
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
     /// @param revertOptions Revert options.
-    event Withdrawal(
+    event Withdrawn(
         address indexed sender,
         uint256 indexed chainId,
         bytes receiver,
@@ -75,6 +75,9 @@ interface IGatewayZEVMErrors {
 
     /// @notice Error indicating that only WZETA or the Fungible module can call the function.
     error OnlyWZETAOrFungible();
+
+    /// @notice Error indicating call method received empty message as argument.
+    error EmptyMessage();
 }
 
 /// @title IGatewayZEVM

@@ -34,7 +34,7 @@ interface IGatewayEVMEvents {
     /// @param asset The address of the ERC20 token (zero address if ETH).
     /// @param payload The calldata passed with the deposit.
     /// @param revertOptions Revert options.
-    event Deposit(
+    event Deposited(
         address indexed sender,
         address indexed receiver,
         uint256 amount,
@@ -48,7 +48,7 @@ interface IGatewayEVMEvents {
     /// @param receiver The address of the receiver.
     /// @param payload The calldata passed to the call.
     /// @param revertOptions Revert options.
-    event Call(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
+    event Called(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
 }
 
 /// @title IGatewayEVMErrors

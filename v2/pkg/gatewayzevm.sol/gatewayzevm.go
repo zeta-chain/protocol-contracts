@@ -933,9 +933,9 @@ func (_GatewayZEVM *GatewayZEVMTransactorSession) Receive() (*types.Transaction,
 	return _GatewayZEVM.Contract.Receive(&_GatewayZEVM.TransactOpts)
 }
 
-// GatewayZEVMCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the GatewayZEVM contract.
-type GatewayZEVMCallIterator struct {
-	Event *GatewayZEVMCall // Event containing the contract specifics and raw log
+// GatewayZEVMCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayZEVM contract.
+type GatewayZEVMCalledIterator struct {
+	Event *GatewayZEVMCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -949,7 +949,7 @@ type GatewayZEVMCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayZEVMCallIterator) Next() bool {
+func (it *GatewayZEVMCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -958,7 +958,7 @@ func (it *GatewayZEVMCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayZEVMCall)
+			it.Event = new(GatewayZEVMCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -973,7 +973,7 @@ func (it *GatewayZEVMCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayZEVMCall)
+		it.Event = new(GatewayZEVMCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -989,13 +989,13 @@ func (it *GatewayZEVMCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayZEVMCallIterator) Error() error {
+func (it *GatewayZEVMCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayZEVMCallIterator) Close() error {
+func (it *GatewayZEVMCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1028,7 +1028,7 @@ func (_GatewayZEVM *GatewayZEVMFilterer) FilterCall(opts *bind.FilterOpts, sende
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayZEVMCallIterator{contract: _GatewayZEVM.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &GatewayZEVMCalledIterator{contract: _GatewayZEVM.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x00f591fbf375f41aa42e0570842d2ffe8d576fbd09b191b11effd8f58c7a4aad.
@@ -1055,8 +1055,8 @@ func (_GatewayZEVM *GatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink ch
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayZEVMCall)
-				if err := _GatewayZEVM.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(GatewayZEVMCalled)
+				if err := _GatewayZEVM.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -2121,9 +2121,9 @@ func (_GatewayZEVM *GatewayZEVMFilterer) ParseUpgraded(log types.Log) (*GatewayZ
 	return event, nil
 }
 
-// GatewayZEVMWithdrawalIterator is returned from FilterWithdrawal and is used to iterate over the raw logs and unpacked data for Withdrawal events raised by the GatewayZEVM contract.
-type GatewayZEVMWithdrawalIterator struct {
-	Event *GatewayZEVMWithdrawal // Event containing the contract specifics and raw log
+// GatewayZEVMWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the GatewayZEVM contract.
+type GatewayZEVMWithdrawnIterator struct {
+	Event *GatewayZEVMWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -2137,7 +2137,7 @@ type GatewayZEVMWithdrawalIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayZEVMWithdrawalIterator) Next() bool {
+func (it *GatewayZEVMWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -2146,7 +2146,7 @@ func (it *GatewayZEVMWithdrawalIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayZEVMWithdrawal)
+			it.Event = new(GatewayZEVMWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -2161,7 +2161,7 @@ func (it *GatewayZEVMWithdrawalIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayZEVMWithdrawal)
+		it.Event = new(GatewayZEVMWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -2177,19 +2177,19 @@ func (it *GatewayZEVMWithdrawalIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayZEVMWithdrawalIterator) Error() error {
+func (it *GatewayZEVMWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayZEVMWithdrawalIterator) Close() error {
+func (it *GatewayZEVMWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// GatewayZEVMWithdrawal represents a Withdrawal event raised by the GatewayZEVM contract.
-type GatewayZEVMWithdrawal struct {
+// GatewayZEVMWithdrawn represents a Withdrawn event raised by the GatewayZEVM contract.
+type GatewayZEVMWithdrawn struct {
 	Sender          common.Address
 	ChainId         *big.Int
 	Receiver        []byte
@@ -2216,11 +2216,11 @@ func (_GatewayZEVM *GatewayZEVMFilterer) FilterWithdrawal(opts *bind.FilterOpts,
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayZEVM.contract.FilterLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _GatewayZEVM.contract.FilterLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayZEVMWithdrawalIterator{contract: _GatewayZEVM.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
+	return &GatewayZEVMWithdrawnIterator{contract: _GatewayZEVM.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawal is a free log subscription operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
@@ -2237,7 +2237,7 @@ func (_GatewayZEVM *GatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts, s
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayZEVM.contract.WatchLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _GatewayZEVM.contract.WatchLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -2247,8 +2247,8 @@ func (_GatewayZEVM *GatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts, s
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayZEVMWithdrawal)
-				if err := _GatewayZEVM.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+				event := new(GatewayZEVMWithdrawn)
+				if err := _GatewayZEVM.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log

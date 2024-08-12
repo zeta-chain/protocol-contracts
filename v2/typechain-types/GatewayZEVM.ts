@@ -101,7 +101,7 @@ export interface GatewayZEVMInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
-      | "Call"
+      | "Called"
       | "Initialized"
       | "Paused"
       | "RoleAdminChanged"
@@ -109,7 +109,7 @@ export interface GatewayZEVMInterface extends Interface {
       | "RoleRevoked"
       | "Unpaused"
       | "Upgraded"
-      | "Withdrawal"
+      | "Withdrawn"
   ): EventFragment;
 
   encodeFunctionData(
@@ -327,7 +327,7 @@ export interface GatewayZEVMInterface extends Interface {
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 }
 
-export namespace CallEvent {
+export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     zrc20: AddressLike,
@@ -461,7 +461,7 @@ export namespace UpgradedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawalEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [
     sender: AddressLike,
     chainId: BigNumberish,
@@ -950,11 +950,11 @@ export interface GatewayZEVM extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
-    key: "Call"
+    key: "Called"
   ): TypedContractEvent<
-    CallEvent.InputTuple,
-    CallEvent.OutputTuple,
-    CallEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
     key: "Initialized"
@@ -1006,11 +1006,11 @@ export interface GatewayZEVM extends BaseContract {
     UpgradedEvent.OutputObject
   >;
   getEvent(
-    key: "Withdrawal"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawalEvent.InputTuple,
-    WithdrawalEvent.OutputTuple,
-    WithdrawalEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
 
   filters: {
@@ -1019,10 +1019,10 @@ export interface GatewayZEVM extends BaseContract {
       CallEvent.OutputTuple,
       CallEvent.OutputObject
     >;
-    Call: TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
     "Initialized(uint64)": TypedContractEvent<
@@ -1107,10 +1107,10 @@ export interface GatewayZEVM extends BaseContract {
       WithdrawalEvent.OutputTuple,
       WithdrawalEvent.OutputObject
     >;
-    Withdrawal: TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
   };
 }

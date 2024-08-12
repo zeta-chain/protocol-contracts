@@ -433,9 +433,9 @@ func (_IGatewayZEVM *IGatewayZEVMTransactorSession) WithdrawAndCall0(receiver []
 	return _IGatewayZEVM.Contract.WithdrawAndCall0(&_IGatewayZEVM.TransactOpts, receiver, amount, zrc20, message, gasLimit, revertOptions)
 }
 
-// IGatewayZEVMCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the IGatewayZEVM contract.
-type IGatewayZEVMCallIterator struct {
-	Event *IGatewayZEVMCall // Event containing the contract specifics and raw log
+// IGatewayZEVMCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the IGatewayZEVM contract.
+type IGatewayZEVMCalledIterator struct {
+	Event *IGatewayZEVMCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -449,7 +449,7 @@ type IGatewayZEVMCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayZEVMCallIterator) Next() bool {
+func (it *IGatewayZEVMCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -458,7 +458,7 @@ func (it *IGatewayZEVMCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayZEVMCall)
+			it.Event = new(IGatewayZEVMCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -473,7 +473,7 @@ func (it *IGatewayZEVMCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayZEVMCall)
+		it.Event = new(IGatewayZEVMCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -489,13 +489,13 @@ func (it *IGatewayZEVMCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayZEVMCallIterator) Error() error {
+func (it *IGatewayZEVMCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayZEVMCallIterator) Close() error {
+func (it *IGatewayZEVMCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -528,7 +528,7 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterCall(opts *bind.FilterOpts, sen
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayZEVMCallIterator{contract: _IGatewayZEVM.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &IGatewayZEVMCalledIterator{contract: _IGatewayZEVM.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x00f591fbf375f41aa42e0570842d2ffe8d576fbd09b191b11effd8f58c7a4aad.
@@ -555,8 +555,8 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchCall(opts *bind.WatchOpts, sink 
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayZEVMCall)
-				if err := _IGatewayZEVM.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(IGatewayZEVMCalled)
+				if err := _IGatewayZEVM.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -589,9 +589,9 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) ParseCall(log types.Log) (*IGatewayZE
 	return event, nil
 }
 
-// IGatewayZEVMWithdrawalIterator is returned from FilterWithdrawal and is used to iterate over the raw logs and unpacked data for Withdrawal events raised by the IGatewayZEVM contract.
-type IGatewayZEVMWithdrawalIterator struct {
-	Event *IGatewayZEVMWithdrawal // Event containing the contract specifics and raw log
+// IGatewayZEVMWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the IGatewayZEVM contract.
+type IGatewayZEVMWithdrawnIterator struct {
+	Event *IGatewayZEVMWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -605,7 +605,7 @@ type IGatewayZEVMWithdrawalIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
+func (it *IGatewayZEVMWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -614,7 +614,7 @@ func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayZEVMWithdrawal)
+			it.Event = new(IGatewayZEVMWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -629,7 +629,7 @@ func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayZEVMWithdrawal)
+		it.Event = new(IGatewayZEVMWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -645,19 +645,19 @@ func (it *IGatewayZEVMWithdrawalIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayZEVMWithdrawalIterator) Error() error {
+func (it *IGatewayZEVMWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayZEVMWithdrawalIterator) Close() error {
+func (it *IGatewayZEVMWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// IGatewayZEVMWithdrawal represents a Withdrawal event raised by the IGatewayZEVM contract.
-type IGatewayZEVMWithdrawal struct {
+// IGatewayZEVMWithdrawn represents a Withdrawn event raised by the IGatewayZEVM contract.
+type IGatewayZEVMWithdrawn struct {
 	Sender          common.Address
 	ChainId         *big.Int
 	Receiver        []byte
@@ -684,11 +684,11 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) FilterWithdrawal(opts *bind.FilterOpt
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVM.contract.FilterLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _IGatewayZEVM.contract.FilterLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayZEVMWithdrawalIterator{contract: _IGatewayZEVM.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
+	return &IGatewayZEVMWithdrawnIterator{contract: _IGatewayZEVM.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawal is a free log subscription operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
@@ -705,7 +705,7 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts,
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _IGatewayZEVM.contract.WatchLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _IGatewayZEVM.contract.WatchLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -715,8 +715,8 @@ func (_IGatewayZEVM *IGatewayZEVMFilterer) WatchWithdrawal(opts *bind.WatchOpts,
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayZEVMWithdrawal)
-				if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+				event := new(IGatewayZEVMWithdrawn)
+				if err := _IGatewayZEVM.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log

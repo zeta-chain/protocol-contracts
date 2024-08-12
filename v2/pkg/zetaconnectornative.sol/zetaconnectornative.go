@@ -1462,9 +1462,9 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) ParseUnpaused(log types
 	return event, nil
 }
 
-// ZetaConnectorNativeWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the ZetaConnectorNative contract.
-type ZetaConnectorNativeWithdrawIterator struct {
-	Event *ZetaConnectorNativeWithdraw // Event containing the contract specifics and raw log
+// ZetaConnectorNativeWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the ZetaConnectorNative contract.
+type ZetaConnectorNativeWithdrawnIterator struct {
+	Event *ZetaConnectorNativeWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1478,7 +1478,7 @@ type ZetaConnectorNativeWithdrawIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ZetaConnectorNativeWithdrawIterator) Next() bool {
+func (it *ZetaConnectorNativeWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1487,7 +1487,7 @@ func (it *ZetaConnectorNativeWithdrawIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ZetaConnectorNativeWithdraw)
+			it.Event = new(ZetaConnectorNativeWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1502,7 +1502,7 @@ func (it *ZetaConnectorNativeWithdrawIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ZetaConnectorNativeWithdraw)
+		it.Event = new(ZetaConnectorNativeWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1518,52 +1518,52 @@ func (it *ZetaConnectorNativeWithdrawIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ZetaConnectorNativeWithdrawIterator) Error() error {
+func (it *ZetaConnectorNativeWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ZetaConnectorNativeWithdrawIterator) Close() error {
+func (it *ZetaConnectorNativeWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// ZetaConnectorNativeWithdraw represents a Withdraw event raised by the ZetaConnectorNative contract.
-type ZetaConnectorNativeWithdraw struct {
+// ZetaConnectorNativeWithdrawn represents a Withdrawn event raised by the ZetaConnectorNative contract.
+type ZetaConnectorNativeWithdrawn struct {
 	To     common.Address
 	Amount *big.Int
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdraw is a free log retrieval operation binding the contract event 0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364.
+// FilterWithdrawn is a free log retrieval operation binding the contract event 0x7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d5.
 //
-// Solidity: event Withdraw(address indexed to, uint256 amount)
-func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdraw(opts *bind.FilterOpts, to []common.Address) (*ZetaConnectorNativeWithdrawIterator, error) {
+// Solidity: event Withdrawn(address indexed to, uint256 amount)
+func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdrawn(opts *bind.FilterOpts, to []common.Address) (*ZetaConnectorNativeWithdrawnIterator, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ZetaConnectorNative.contract.FilterLogs(opts, "Withdraw", toRule)
+	logs, sub, err := _ZetaConnectorNative.contract.FilterLogs(opts, "Withdrawn", toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ZetaConnectorNativeWithdrawIterator{contract: _ZetaConnectorNative.contract, event: "Withdraw", logs: logs, sub: sub}, nil
+	return &ZetaConnectorNativeWithdrawnIterator{contract: _ZetaConnectorNative.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdraw is a free log subscription operation binding the contract event 0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364.
+// WatchWithdrawn is a free log subscription operation binding the contract event 0x7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d5.
 //
-// Solidity: event Withdraw(address indexed to, uint256 amount)
-func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdraw(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNativeWithdraw, to []common.Address) (event.Subscription, error) {
+// Solidity: event Withdrawn(address indexed to, uint256 amount)
+func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNativeWithdrawn, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ZetaConnectorNative.contract.WatchLogs(opts, "Withdraw", toRule)
+	logs, sub, err := _ZetaConnectorNative.contract.WatchLogs(opts, "Withdrawn", toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1573,8 +1573,8 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdraw(opts *bin
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ZetaConnectorNativeWithdraw)
-				if err := _ZetaConnectorNative.contract.UnpackLog(event, "Withdraw", log); err != nil {
+				event := new(ZetaConnectorNativeWithdrawn)
+				if err := _ZetaConnectorNative.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1595,21 +1595,21 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdraw(opts *bin
 	}), nil
 }
 
-// ParseWithdraw is a log parse operation binding the contract event 0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364.
+// ParseWithdrawn is a log parse operation binding the contract event 0x7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d5.
 //
-// Solidity: event Withdraw(address indexed to, uint256 amount)
-func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) ParseWithdraw(log types.Log) (*ZetaConnectorNativeWithdraw, error) {
-	event := new(ZetaConnectorNativeWithdraw)
-	if err := _ZetaConnectorNative.contract.UnpackLog(event, "Withdraw", log); err != nil {
+// Solidity: event Withdrawn(address indexed to, uint256 amount)
+func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) ParseWithdrawn(log types.Log) (*ZetaConnectorNativeWithdrawn, error) {
+	event := new(ZetaConnectorNativeWithdrawn)
+	if err := _ZetaConnectorNative.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// ZetaConnectorNativeWithdrawAndCallIterator is returned from FilterWithdrawAndCall and is used to iterate over the raw logs and unpacked data for WithdrawAndCall events raised by the ZetaConnectorNative contract.
-type ZetaConnectorNativeWithdrawAndCallIterator struct {
-	Event *ZetaConnectorNativeWithdrawAndCall // Event containing the contract specifics and raw log
+// ZetaConnectorNativeWithdrawnAndCalledIterator is returned from FilterWithdrawnAndCalled and is used to iterate over the raw logs and unpacked data for WithdrawnAndCalled events raised by the ZetaConnectorNative contract.
+type ZetaConnectorNativeWithdrawnAndCalledIterator struct {
+	Event *ZetaConnectorNativeWithdrawnAndCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1623,7 +1623,7 @@ type ZetaConnectorNativeWithdrawAndCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ZetaConnectorNativeWithdrawAndCallIterator) Next() bool {
+func (it *ZetaConnectorNativeWithdrawnAndCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1632,7 +1632,7 @@ func (it *ZetaConnectorNativeWithdrawAndCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ZetaConnectorNativeWithdrawAndCall)
+			it.Event = new(ZetaConnectorNativeWithdrawnAndCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1647,7 +1647,7 @@ func (it *ZetaConnectorNativeWithdrawAndCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ZetaConnectorNativeWithdrawAndCall)
+		it.Event = new(ZetaConnectorNativeWithdrawnAndCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1663,53 +1663,53 @@ func (it *ZetaConnectorNativeWithdrawAndCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ZetaConnectorNativeWithdrawAndCallIterator) Error() error {
+func (it *ZetaConnectorNativeWithdrawnAndCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ZetaConnectorNativeWithdrawAndCallIterator) Close() error {
+func (it *ZetaConnectorNativeWithdrawnAndCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// ZetaConnectorNativeWithdrawAndCall represents a WithdrawAndCall event raised by the ZetaConnectorNative contract.
-type ZetaConnectorNativeWithdrawAndCall struct {
+// ZetaConnectorNativeWithdrawnAndCalled represents a WithdrawnAndCalled event raised by the ZetaConnectorNative contract.
+type ZetaConnectorNativeWithdrawnAndCalled struct {
 	To     common.Address
 	Amount *big.Int
 	Data   []byte
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndCall is a free log retrieval operation binding the contract event 0x7772f56296d3a5202974a45c61c9188d844ab4d6eeb18c851e4b8d5384ca6ced.
+// FilterWithdrawnAndCalled is a free log retrieval operation binding the contract event 0x23b9573b29ff81f01c7aa1968188e1cb7d5858b08582e111fdaf386d9ef9bd8d.
 //
-// Solidity: event WithdrawAndCall(address indexed to, uint256 amount, bytes data)
-func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdrawAndCall(opts *bind.FilterOpts, to []common.Address) (*ZetaConnectorNativeWithdrawAndCallIterator, error) {
+// Solidity: event WithdrawnAndCalled(address indexed to, uint256 amount, bytes data)
+func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdrawnAndCalled(opts *bind.FilterOpts, to []common.Address) (*ZetaConnectorNativeWithdrawnAndCalledIterator, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ZetaConnectorNative.contract.FilterLogs(opts, "WithdrawAndCall", toRule)
+	logs, sub, err := _ZetaConnectorNative.contract.FilterLogs(opts, "WithdrawnAndCalled", toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ZetaConnectorNativeWithdrawAndCallIterator{contract: _ZetaConnectorNative.contract, event: "WithdrawAndCall", logs: logs, sub: sub}, nil
+	return &ZetaConnectorNativeWithdrawnAndCalledIterator{contract: _ZetaConnectorNative.contract, event: "WithdrawnAndCalled", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndCall is a free log subscription operation binding the contract event 0x7772f56296d3a5202974a45c61c9188d844ab4d6eeb18c851e4b8d5384ca6ced.
+// WatchWithdrawnAndCalled is a free log subscription operation binding the contract event 0x23b9573b29ff81f01c7aa1968188e1cb7d5858b08582e111fdaf386d9ef9bd8d.
 //
-// Solidity: event WithdrawAndCall(address indexed to, uint256 amount, bytes data)
-func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawAndCall(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNativeWithdrawAndCall, to []common.Address) (event.Subscription, error) {
+// Solidity: event WithdrawnAndCalled(address indexed to, uint256 amount, bytes data)
+func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawnAndCalled(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNativeWithdrawnAndCalled, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
 	for _, toItem := range to {
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ZetaConnectorNative.contract.WatchLogs(opts, "WithdrawAndCall", toRule)
+	logs, sub, err := _ZetaConnectorNative.contract.WatchLogs(opts, "WithdrawnAndCalled", toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1719,8 +1719,8 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawAndCall(op
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ZetaConnectorNativeWithdrawAndCall)
-				if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+				event := new(ZetaConnectorNativeWithdrawnAndCalled)
+				if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1741,21 +1741,21 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawAndCall(op
 	}), nil
 }
 
-// ParseWithdrawAndCall is a log parse operation binding the contract event 0x7772f56296d3a5202974a45c61c9188d844ab4d6eeb18c851e4b8d5384ca6ced.
+// ParseWithdrawnAndCalled is a log parse operation binding the contract event 0x23b9573b29ff81f01c7aa1968188e1cb7d5858b08582e111fdaf386d9ef9bd8d.
 //
-// Solidity: event WithdrawAndCall(address indexed to, uint256 amount, bytes data)
-func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) ParseWithdrawAndCall(log types.Log) (*ZetaConnectorNativeWithdrawAndCall, error) {
-	event := new(ZetaConnectorNativeWithdrawAndCall)
-	if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+// Solidity: event WithdrawnAndCalled(address indexed to, uint256 amount, bytes data)
+func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) ParseWithdrawnAndCalled(log types.Log) (*ZetaConnectorNativeWithdrawnAndCalled, error) {
+	event := new(ZetaConnectorNativeWithdrawnAndCalled)
+	if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// ZetaConnectorNativeWithdrawAndRevertIterator is returned from FilterWithdrawAndRevert and is used to iterate over the raw logs and unpacked data for WithdrawAndRevert events raised by the ZetaConnectorNative contract.
-type ZetaConnectorNativeWithdrawAndRevertIterator struct {
-	Event *ZetaConnectorNativeWithdrawAndRevert // Event containing the contract specifics and raw log
+// ZetaConnectorNativeWithdrawnAndRevertedIterator is returned from FilterWithdrawnAndReverted and is used to iterate over the raw logs and unpacked data for WithdrawnAndReverted events raised by the ZetaConnectorNative contract.
+type ZetaConnectorNativeWithdrawnAndRevertedIterator struct {
+	Event *ZetaConnectorNativeWithdrawnAndReverted // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1769,7 +1769,7 @@ type ZetaConnectorNativeWithdrawAndRevertIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ZetaConnectorNativeWithdrawAndRevertIterator) Next() bool {
+func (it *ZetaConnectorNativeWithdrawnAndRevertedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1778,7 +1778,7 @@ func (it *ZetaConnectorNativeWithdrawAndRevertIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ZetaConnectorNativeWithdrawAndRevert)
+			it.Event = new(ZetaConnectorNativeWithdrawnAndReverted)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1793,7 +1793,7 @@ func (it *ZetaConnectorNativeWithdrawAndRevertIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ZetaConnectorNativeWithdrawAndRevert)
+		it.Event = new(ZetaConnectorNativeWithdrawnAndReverted)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1809,13 +1809,13 @@ func (it *ZetaConnectorNativeWithdrawAndRevertIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ZetaConnectorNativeWithdrawAndRevertIterator) Error() error {
+func (it *ZetaConnectorNativeWithdrawnAndRevertedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ZetaConnectorNativeWithdrawAndRevertIterator) Close() error {
+func (it *ZetaConnectorNativeWithdrawnAndRevertedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1839,11 +1839,11 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdrawAndRevert
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ZetaConnectorNative.contract.FilterLogs(opts, "WithdrawAndRevert", toRule)
+	logs, sub, err := _ZetaConnectorNative.contract.FilterLogs(opts, "WithdrawnAndReverted", toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ZetaConnectorNativeWithdrawAndRevertIterator{contract: _ZetaConnectorNative.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
+	return &ZetaConnectorNativeWithdrawnAndRevertedIterator{contract: _ZetaConnectorNative.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x0174321305ae11b234429ef4c65941379de1edb97632dbe0a4e48ddeaefe1328.
@@ -1856,7 +1856,7 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawAndRevert(
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ZetaConnectorNative.contract.WatchLogs(opts, "WithdrawAndRevert", toRule)
+	logs, sub, err := _ZetaConnectorNative.contract.WatchLogs(opts, "WithdrawnAndReverted", toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1866,8 +1866,8 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawAndRevert(
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ZetaConnectorNativeWithdrawAndRevert)
-				if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+				event := new(ZetaConnectorNativeWithdrawnAndReverted)
+				if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
 					return err
 				}
 				event.Raw = log

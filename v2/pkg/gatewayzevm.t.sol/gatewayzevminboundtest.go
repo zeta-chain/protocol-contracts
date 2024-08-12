@@ -642,6 +642,27 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestTransactorSession) TestCall
 	return _GatewayZEVMInboundTest.Contract.TestCall(&_GatewayZEVMInboundTest.TransactOpts)
 }
 
+// TestCallFailsIfMessageIsEmpty is a paid mutator transaction binding the contract method 0x7b622dbf.
+//
+// Solidity: function testCallFailsIfMessageIsEmpty() returns()
+func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestTransactor) TestCallFailsIfMessageIsEmpty(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _GatewayZEVMInboundTest.contract.Transact(opts, "testCallFailsIfMessageIsEmpty")
+}
+
+// TestCallFailsIfMessageIsEmpty is a paid mutator transaction binding the contract method 0x7b622dbf.
+//
+// Solidity: function testCallFailsIfMessageIsEmpty() returns()
+func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestSession) TestCallFailsIfMessageIsEmpty() (*types.Transaction, error) {
+	return _GatewayZEVMInboundTest.Contract.TestCallFailsIfMessageIsEmpty(&_GatewayZEVMInboundTest.TransactOpts)
+}
+
+// TestCallFailsIfMessageIsEmpty is a paid mutator transaction binding the contract method 0x7b622dbf.
+//
+// Solidity: function testCallFailsIfMessageIsEmpty() returns()
+func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestTransactorSession) TestCallFailsIfMessageIsEmpty() (*types.Transaction, error) {
+	return _GatewayZEVMInboundTest.Contract.TestCallFailsIfMessageIsEmpty(&_GatewayZEVMInboundTest.TransactOpts)
+}
+
 // TestCallFailsIfReceiverIsZeroAddress is a paid mutator transaction binding the contract method 0x39cbb457.
 //
 // Solidity: function testCallFailsIfReceiverIsZeroAddress() returns()
@@ -1062,9 +1083,9 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestTransactorSession) TestWith
 	return _GatewayZEVMInboundTest.Contract.TestWithdrawZRC20WithMessageFailsIfNoAllowance(&_GatewayZEVMInboundTest.TransactOpts)
 }
 
-// GatewayZEVMInboundTestCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the GatewayZEVMInboundTest contract.
-type GatewayZEVMInboundTestCallIterator struct {
-	Event *GatewayZEVMInboundTestCall // Event containing the contract specifics and raw log
+// GatewayZEVMInboundTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayZEVMInboundTest contract.
+type GatewayZEVMInboundTestCalledIterator struct {
+	Event *GatewayZEVMInboundTestCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1078,7 +1099,7 @@ type GatewayZEVMInboundTestCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayZEVMInboundTestCallIterator) Next() bool {
+func (it *GatewayZEVMInboundTestCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1087,7 +1108,7 @@ func (it *GatewayZEVMInboundTestCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayZEVMInboundTestCall)
+			it.Event = new(GatewayZEVMInboundTestCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1102,7 +1123,7 @@ func (it *GatewayZEVMInboundTestCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayZEVMInboundTestCall)
+		it.Event = new(GatewayZEVMInboundTestCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1118,13 +1139,13 @@ func (it *GatewayZEVMInboundTestCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayZEVMInboundTestCallIterator) Error() error {
+func (it *GatewayZEVMInboundTestCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayZEVMInboundTestCallIterator) Close() error {
+func (it *GatewayZEVMInboundTestCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1157,7 +1178,7 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestFilterer) FilterCall(opts *
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayZEVMInboundTestCallIterator{contract: _GatewayZEVMInboundTest.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &GatewayZEVMInboundTestCalledIterator{contract: _GatewayZEVMInboundTest.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x00f591fbf375f41aa42e0570842d2ffe8d576fbd09b191b11effd8f58c7a4aad.
@@ -1184,8 +1205,8 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestFilterer) WatchCall(opts *b
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayZEVMInboundTestCall)
-				if err := _GatewayZEVMInboundTest.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(GatewayZEVMInboundTestCalled)
+				if err := _GatewayZEVMInboundTest.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1218,9 +1239,9 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestFilterer) ParseCall(log typ
 	return event, nil
 }
 
-// GatewayZEVMInboundTestWithdrawalIterator is returned from FilterWithdrawal and is used to iterate over the raw logs and unpacked data for Withdrawal events raised by the GatewayZEVMInboundTest contract.
-type GatewayZEVMInboundTestWithdrawalIterator struct {
-	Event *GatewayZEVMInboundTestWithdrawal // Event containing the contract specifics and raw log
+// GatewayZEVMInboundTestWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the GatewayZEVMInboundTest contract.
+type GatewayZEVMInboundTestWithdrawnIterator struct {
+	Event *GatewayZEVMInboundTestWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1234,7 +1255,7 @@ type GatewayZEVMInboundTestWithdrawalIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayZEVMInboundTestWithdrawalIterator) Next() bool {
+func (it *GatewayZEVMInboundTestWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1243,7 +1264,7 @@ func (it *GatewayZEVMInboundTestWithdrawalIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayZEVMInboundTestWithdrawal)
+			it.Event = new(GatewayZEVMInboundTestWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1258,7 +1279,7 @@ func (it *GatewayZEVMInboundTestWithdrawalIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayZEVMInboundTestWithdrawal)
+		it.Event = new(GatewayZEVMInboundTestWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1274,19 +1295,19 @@ func (it *GatewayZEVMInboundTestWithdrawalIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayZEVMInboundTestWithdrawalIterator) Error() error {
+func (it *GatewayZEVMInboundTestWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayZEVMInboundTestWithdrawalIterator) Close() error {
+func (it *GatewayZEVMInboundTestWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// GatewayZEVMInboundTestWithdrawal represents a Withdrawal event raised by the GatewayZEVMInboundTest contract.
-type GatewayZEVMInboundTestWithdrawal struct {
+// GatewayZEVMInboundTestWithdrawn represents a Withdrawn event raised by the GatewayZEVMInboundTest contract.
+type GatewayZEVMInboundTestWithdrawn struct {
 	Sender          common.Address
 	ChainId         *big.Int
 	Receiver        []byte
@@ -1313,11 +1334,11 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestFilterer) FilterWithdrawal(
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayZEVMInboundTest.contract.FilterLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _GatewayZEVMInboundTest.contract.FilterLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayZEVMInboundTestWithdrawalIterator{contract: _GatewayZEVMInboundTest.contract, event: "Withdrawal", logs: logs, sub: sub}, nil
+	return &GatewayZEVMInboundTestWithdrawnIterator{contract: _GatewayZEVMInboundTest.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawal is a free log subscription operation binding the contract event 0x64dceb6f53e438def301bbc224b2d20ca86b2d453ac04dece1ff6cc90e10def0.
@@ -1334,7 +1355,7 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestFilterer) WatchWithdrawal(o
 		chainIdRule = append(chainIdRule, chainIdItem)
 	}
 
-	logs, sub, err := _GatewayZEVMInboundTest.contract.WatchLogs(opts, "Withdrawal", senderRule, chainIdRule)
+	logs, sub, err := _GatewayZEVMInboundTest.contract.WatchLogs(opts, "Withdrawn", senderRule, chainIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1344,8 +1365,8 @@ func (_GatewayZEVMInboundTest *GatewayZEVMInboundTestFilterer) WatchWithdrawal(o
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayZEVMInboundTestWithdrawal)
-				if err := _GatewayZEVMInboundTest.contract.UnpackLog(event, "Withdrawal", log); err != nil {
+				event := new(GatewayZEVMInboundTestWithdrawn)
+				if err := _GatewayZEVMInboundTest.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log

@@ -195,9 +195,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsTransactorRaw) Transact(opts *bind.Tr
 	return _IGatewayEVMEvents.Contract.contract.Transact(opts, method, params...)
 }
 
-// IGatewayEVMEventsCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsCallIterator struct {
-	Event *IGatewayEVMEventsCall // Event containing the contract specifics and raw log
+// IGatewayEVMEventsCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsCalledIterator struct {
+	Event *IGatewayEVMEventsCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -211,7 +211,7 @@ type IGatewayEVMEventsCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayEVMEventsCallIterator) Next() bool {
+func (it *IGatewayEVMEventsCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -220,7 +220,7 @@ func (it *IGatewayEVMEventsCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayEVMEventsCall)
+			it.Event = new(IGatewayEVMEventsCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -235,7 +235,7 @@ func (it *IGatewayEVMEventsCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayEVMEventsCall)
+		it.Event = new(IGatewayEVMEventsCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -251,13 +251,13 @@ func (it *IGatewayEVMEventsCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayEVMEventsCallIterator) Error() error {
+func (it *IGatewayEVMEventsCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayEVMEventsCallIterator) Close() error {
+func (it *IGatewayEVMEventsCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -285,11 +285,11 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCall(opts *bind.Filte
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayEVMEventsCallIterator{contract: _IGatewayEVMEvents.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &IGatewayEVMEventsCalledIterator{contract: _IGatewayEVMEvents.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
@@ -306,7 +306,7 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchO
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -316,8 +316,8 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchO
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayEVMEventsCall)
-				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(IGatewayEVMEventsCalled)
+				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -350,9 +350,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseCall(log types.Log) (*
 	return event, nil
 }
 
-// IGatewayEVMEventsDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsDepositIterator struct {
-	Event *IGatewayEVMEventsDeposit // Event containing the contract specifics and raw log
+// IGatewayEVMEventsDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsDepositedIterator struct {
+	Event *IGatewayEVMEventsDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -366,7 +366,7 @@ type IGatewayEVMEventsDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *IGatewayEVMEventsDepositIterator) Next() bool {
+func (it *IGatewayEVMEventsDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -375,7 +375,7 @@ func (it *IGatewayEVMEventsDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(IGatewayEVMEventsDeposit)
+			it.Event = new(IGatewayEVMEventsDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -390,7 +390,7 @@ func (it *IGatewayEVMEventsDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(IGatewayEVMEventsDeposit)
+		it.Event = new(IGatewayEVMEventsDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -406,13 +406,13 @@ func (it *IGatewayEVMEventsDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayEVMEventsDepositIterator) Error() error {
+func (it *IGatewayEVMEventsDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *IGatewayEVMEventsDepositIterator) Close() error {
+func (it *IGatewayEVMEventsDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -442,11 +442,11 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposit(opts *bind.Fi
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &IGatewayEVMEventsDepositIterator{contract: _IGatewayEVMEvents.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &IGatewayEVMEventsDepositedIterator{contract: _IGatewayEVMEvents.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
 // WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
@@ -463,7 +463,7 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.Wat
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -473,8 +473,8 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.Wat
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayEVMEventsDeposit)
-				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(IGatewayEVMEventsDeposited)
+				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log

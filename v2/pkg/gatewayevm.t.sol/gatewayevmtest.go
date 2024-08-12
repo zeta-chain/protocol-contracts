@@ -1140,9 +1140,9 @@ func (_GatewayEVMTest *GatewayEVMTestTransactorSession) TestSetCustodyFailsIfZer
 	return _GatewayEVMTest.Contract.TestSetCustodyFailsIfZero(&_GatewayEVMTest.TransactOpts)
 }
 
-// GatewayEVMTestCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the GatewayEVMTest contract.
-type GatewayEVMTestCallIterator struct {
-	Event *GatewayEVMTestCall // Event containing the contract specifics and raw log
+// GatewayEVMTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayEVMTest contract.
+type GatewayEVMTestCalledIterator struct {
+	Event *GatewayEVMTestCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1156,7 +1156,7 @@ type GatewayEVMTestCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMTestCallIterator) Next() bool {
+func (it *GatewayEVMTestCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1165,7 +1165,7 @@ func (it *GatewayEVMTestCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMTestCall)
+			it.Event = new(GatewayEVMTestCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1180,7 +1180,7 @@ func (it *GatewayEVMTestCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMTestCall)
+		it.Event = new(GatewayEVMTestCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1196,13 +1196,13 @@ func (it *GatewayEVMTestCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMTestCallIterator) Error() error {
+func (it *GatewayEVMTestCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMTestCallIterator) Close() error {
+func (it *GatewayEVMTestCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1230,11 +1230,11 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterCall(opts *bind.FilterOpts,
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMTestCallIterator{contract: _GatewayEVMTest.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &GatewayEVMTestCalledIterator{contract: _GatewayEVMTest.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
@@ -1251,7 +1251,7 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchCall(opts *bind.WatchOpts, s
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1261,8 +1261,8 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchCall(opts *bind.WatchOpts, s
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMTestCall)
-				if err := _GatewayEVMTest.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(GatewayEVMTestCalled)
+				if err := _GatewayEVMTest.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1295,9 +1295,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseCall(log types.Log) (*Gatewa
 	return event, nil
 }
 
-// GatewayEVMTestDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the GatewayEVMTest contract.
-type GatewayEVMTestDepositIterator struct {
-	Event *GatewayEVMTestDeposit // Event containing the contract specifics and raw log
+// GatewayEVMTestDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the GatewayEVMTest contract.
+type GatewayEVMTestDepositedIterator struct {
+	Event *GatewayEVMTestDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1311,7 +1311,7 @@ type GatewayEVMTestDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMTestDepositIterator) Next() bool {
+func (it *GatewayEVMTestDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1320,7 +1320,7 @@ func (it *GatewayEVMTestDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMTestDeposit)
+			it.Event = new(GatewayEVMTestDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1335,7 +1335,7 @@ func (it *GatewayEVMTestDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMTestDeposit)
+		it.Event = new(GatewayEVMTestDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1351,13 +1351,13 @@ func (it *GatewayEVMTestDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMTestDepositIterator) Error() error {
+func (it *GatewayEVMTestDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMTestDepositIterator) Close() error {
+func (it *GatewayEVMTestDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1387,11 +1387,11 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterDeposit(opts *bind.FilterOp
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMTestDepositIterator{contract: _GatewayEVMTest.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &GatewayEVMTestDepositedIterator{contract: _GatewayEVMTest.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
 // WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
@@ -1408,7 +1408,7 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchDeposit(opts *bind.WatchOpts
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1418,8 +1418,8 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchDeposit(opts *bind.WatchOpts
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMTestDeposit)
-				if err := _GatewayEVMTest.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(GatewayEVMTestDeposited)
+				if err := _GatewayEVMTest.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -2878,9 +2878,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseWhitelisted(log types.Log) (
 	return event, nil
 }
 
-// GatewayEVMTestWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the GatewayEVMTest contract.
-type GatewayEVMTestWithdrawIterator struct {
-	Event *GatewayEVMTestWithdraw // Event containing the contract specifics and raw log
+// GatewayEVMTestWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the GatewayEVMTest contract.
+type GatewayEVMTestWithdrawnIterator struct {
+	Event *GatewayEVMTestWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -2894,7 +2894,7 @@ type GatewayEVMTestWithdrawIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMTestWithdrawIterator) Next() bool {
+func (it *GatewayEVMTestWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -2903,7 +2903,7 @@ func (it *GatewayEVMTestWithdrawIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMTestWithdraw)
+			it.Event = new(GatewayEVMTestWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -2918,7 +2918,7 @@ func (it *GatewayEVMTestWithdrawIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMTestWithdraw)
+		it.Event = new(GatewayEVMTestWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -2934,29 +2934,29 @@ func (it *GatewayEVMTestWithdrawIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMTestWithdrawIterator) Error() error {
+func (it *GatewayEVMTestWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMTestWithdrawIterator) Close() error {
+func (it *GatewayEVMTestWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// GatewayEVMTestWithdraw represents a Withdraw event raised by the GatewayEVMTest contract.
-type GatewayEVMTestWithdraw struct {
+// GatewayEVMTestWithdrawn represents a Withdrawn event raised by the GatewayEVMTest contract.
+type GatewayEVMTestWithdrawn struct {
 	Token  common.Address
 	To     common.Address
 	Amount *big.Int
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdraw is a free log retrieval operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// FilterWithdrawn is a free log retrieval operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdraw(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*GatewayEVMTestWithdrawIterator, error) {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawn(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*GatewayEVMTestWithdrawnIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -2967,17 +2967,17 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdraw(opts *bind.FilterO
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "Withdraw", tokenRule, toRule)
+	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "Withdrawn", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMTestWithdrawIterator{contract: _GatewayEVMTest.contract, event: "Withdraw", logs: logs, sub: sub}, nil
+	return &GatewayEVMTestWithdrawnIterator{contract: _GatewayEVMTest.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdraw is a free log subscription operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// WatchWithdrawn is a free log subscription operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdraw(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestWithdraw, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestWithdrawn, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -2988,7 +2988,7 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdraw(opts *bind.WatchOpt
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "Withdraw", tokenRule, toRule)
+	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "Withdrawn", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -2998,8 +2998,8 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdraw(opts *bind.WatchOpt
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMTestWithdraw)
-				if err := _GatewayEVMTest.contract.UnpackLog(event, "Withdraw", log); err != nil {
+				event := new(GatewayEVMTestWithdrawn)
+				if err := _GatewayEVMTest.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -3020,21 +3020,21 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdraw(opts *bind.WatchOpt
 	}), nil
 }
 
-// ParseWithdraw is a log parse operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// ParseWithdrawn is a log parse operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseWithdraw(log types.Log) (*GatewayEVMTestWithdraw, error) {
-	event := new(GatewayEVMTestWithdraw)
-	if err := _GatewayEVMTest.contract.UnpackLog(event, "Withdraw", log); err != nil {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseWithdrawn(log types.Log) (*GatewayEVMTestWithdrawn, error) {
+	event := new(GatewayEVMTestWithdrawn)
+	if err := _GatewayEVMTest.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// GatewayEVMTestWithdrawAndCallIterator is returned from FilterWithdrawAndCall and is used to iterate over the raw logs and unpacked data for WithdrawAndCall events raised by the GatewayEVMTest contract.
-type GatewayEVMTestWithdrawAndCallIterator struct {
-	Event *GatewayEVMTestWithdrawAndCall // Event containing the contract specifics and raw log
+// GatewayEVMTestWithdrawnAndCalledIterator is returned from FilterWithdrawnAndCalled and is used to iterate over the raw logs and unpacked data for WithdrawnAndCalled events raised by the GatewayEVMTest contract.
+type GatewayEVMTestWithdrawnAndCalledIterator struct {
+	Event *GatewayEVMTestWithdrawnAndCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -3048,7 +3048,7 @@ type GatewayEVMTestWithdrawAndCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMTestWithdrawAndCallIterator) Next() bool {
+func (it *GatewayEVMTestWithdrawnAndCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -3057,7 +3057,7 @@ func (it *GatewayEVMTestWithdrawAndCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMTestWithdrawAndCall)
+			it.Event = new(GatewayEVMTestWithdrawnAndCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -3072,7 +3072,7 @@ func (it *GatewayEVMTestWithdrawAndCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMTestWithdrawAndCall)
+		it.Event = new(GatewayEVMTestWithdrawnAndCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -3088,19 +3088,19 @@ func (it *GatewayEVMTestWithdrawAndCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMTestWithdrawAndCallIterator) Error() error {
+func (it *GatewayEVMTestWithdrawnAndCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMTestWithdrawAndCallIterator) Close() error {
+func (it *GatewayEVMTestWithdrawnAndCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// GatewayEVMTestWithdrawAndCall represents a WithdrawAndCall event raised by the GatewayEVMTest contract.
-type GatewayEVMTestWithdrawAndCall struct {
+// GatewayEVMTestWithdrawnAndCalled represents a WithdrawnAndCalled event raised by the GatewayEVMTest contract.
+type GatewayEVMTestWithdrawnAndCalled struct {
 	Token  common.Address
 	To     common.Address
 	Amount *big.Int
@@ -3108,10 +3108,10 @@ type GatewayEVMTestWithdrawAndCall struct {
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndCall is a free log retrieval operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// FilterWithdrawnAndCalled is a free log retrieval operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawAndCall(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*GatewayEVMTestWithdrawAndCallIterator, error) {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawnAndCalled(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*GatewayEVMTestWithdrawnAndCalledIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -3122,17 +3122,17 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawAndCall(opts *bind.
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "WithdrawAndCall", tokenRule, toRule)
+	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "WithdrawnAndCalled", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMTestWithdrawAndCallIterator{contract: _GatewayEVMTest.contract, event: "WithdrawAndCall", logs: logs, sub: sub}, nil
+	return &GatewayEVMTestWithdrawnAndCalledIterator{contract: _GatewayEVMTest.contract, event: "WithdrawnAndCalled", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndCall is a free log subscription operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// WatchWithdrawnAndCalled is a free log subscription operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawAndCall(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestWithdrawAndCall, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawnAndCalled(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestWithdrawnAndCalled, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -3143,7 +3143,7 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawAndCall(opts *bind.W
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "WithdrawAndCall", tokenRule, toRule)
+	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "WithdrawnAndCalled", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -3153,8 +3153,8 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawAndCall(opts *bind.W
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMTestWithdrawAndCall)
-				if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+				event := new(GatewayEVMTestWithdrawnAndCalled)
+				if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -3175,21 +3175,21 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawAndCall(opts *bind.W
 	}), nil
 }
 
-// ParseWithdrawAndCall is a log parse operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// ParseWithdrawnAndCalled is a log parse operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseWithdrawAndCall(log types.Log) (*GatewayEVMTestWithdrawAndCall, error) {
-	event := new(GatewayEVMTestWithdrawAndCall)
-	if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseWithdrawnAndCalled(log types.Log) (*GatewayEVMTestWithdrawnAndCalled, error) {
+	event := new(GatewayEVMTestWithdrawnAndCalled)
+	if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// GatewayEVMTestWithdrawAndRevertIterator is returned from FilterWithdrawAndRevert and is used to iterate over the raw logs and unpacked data for WithdrawAndRevert events raised by the GatewayEVMTest contract.
-type GatewayEVMTestWithdrawAndRevertIterator struct {
-	Event *GatewayEVMTestWithdrawAndRevert // Event containing the contract specifics and raw log
+// GatewayEVMTestWithdrawnAndRevertedIterator is returned from FilterWithdrawnAndReverted and is used to iterate over the raw logs and unpacked data for WithdrawnAndReverted events raised by the GatewayEVMTest contract.
+type GatewayEVMTestWithdrawnAndRevertedIterator struct {
+	Event *GatewayEVMTestWithdrawnAndReverted // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -3203,7 +3203,7 @@ type GatewayEVMTestWithdrawAndRevertIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMTestWithdrawAndRevertIterator) Next() bool {
+func (it *GatewayEVMTestWithdrawnAndRevertedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -3212,7 +3212,7 @@ func (it *GatewayEVMTestWithdrawAndRevertIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMTestWithdrawAndRevert)
+			it.Event = new(GatewayEVMTestWithdrawnAndReverted)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -3227,7 +3227,7 @@ func (it *GatewayEVMTestWithdrawAndRevertIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMTestWithdrawAndRevert)
+		it.Event = new(GatewayEVMTestWithdrawnAndReverted)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -3243,13 +3243,13 @@ func (it *GatewayEVMTestWithdrawAndRevertIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMTestWithdrawAndRevertIterator) Error() error {
+func (it *GatewayEVMTestWithdrawnAndRevertedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMTestWithdrawAndRevertIterator) Close() error {
+func (it *GatewayEVMTestWithdrawnAndRevertedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -3278,11 +3278,11 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawAndRevert(opts *bin
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "WithdrawnAndReverted", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMTestWithdrawAndRevertIterator{contract: _GatewayEVMTest.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
+	return &GatewayEVMTestWithdrawnAndRevertedIterator{contract: _GatewayEVMTest.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
@@ -3299,7 +3299,7 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawAndRevert(opts *bind
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "WithdrawnAndReverted", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -3309,8 +3309,8 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawAndRevert(opts *bind
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMTestWithdrawAndRevert)
-				if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+				event := new(GatewayEVMTestWithdrawnAndReverted)
+				if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
 					return err
 				}
 				event.Raw = log

@@ -1308,9 +1308,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestWithdrawThroughC
 	return _ERC20CustodyTest.Contract.TestWithdrawThroughCustodyFailsIfSenderIsNotWithdrawer(&_ERC20CustodyTest.TransactOpts)
 }
 
-// ERC20CustodyTestCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestCallIterator struct {
-	Event *ERC20CustodyTestCall // Event containing the contract specifics and raw log
+// ERC20CustodyTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestCalledIterator struct {
+	Event *ERC20CustodyTestCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1324,7 +1324,7 @@ type ERC20CustodyTestCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ERC20CustodyTestCallIterator) Next() bool {
+func (it *ERC20CustodyTestCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1333,7 +1333,7 @@ func (it *ERC20CustodyTestCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ERC20CustodyTestCall)
+			it.Event = new(ERC20CustodyTestCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1348,7 +1348,7 @@ func (it *ERC20CustodyTestCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ERC20CustodyTestCall)
+		it.Event = new(ERC20CustodyTestCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1364,13 +1364,13 @@ func (it *ERC20CustodyTestCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ERC20CustodyTestCallIterator) Error() error {
+func (it *ERC20CustodyTestCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ERC20CustodyTestCallIterator) Close() error {
+func (it *ERC20CustodyTestCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1398,11 +1398,11 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterCall(opts *bind.FilterO
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ERC20CustodyTestCallIterator{contract: _ERC20CustodyTest.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &ERC20CustodyTestCalledIterator{contract: _ERC20CustodyTest.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
@@ -1419,7 +1419,7 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchCall(opts *bind.WatchOpt
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1429,8 +1429,8 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchCall(opts *bind.WatchOpt
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ERC20CustodyTestCall)
-				if err := _ERC20CustodyTest.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(ERC20CustodyTestCalled)
+				if err := _ERC20CustodyTest.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1463,9 +1463,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseCall(log types.Log) (*ER
 	return event, nil
 }
 
-// ERC20CustodyTestDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestDepositIterator struct {
-	Event *ERC20CustodyTestDeposit // Event containing the contract specifics and raw log
+// ERC20CustodyTestDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestDepositedIterator struct {
+	Event *ERC20CustodyTestDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1479,7 +1479,7 @@ type ERC20CustodyTestDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ERC20CustodyTestDepositIterator) Next() bool {
+func (it *ERC20CustodyTestDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1488,7 +1488,7 @@ func (it *ERC20CustodyTestDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ERC20CustodyTestDeposit)
+			it.Event = new(ERC20CustodyTestDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1503,7 +1503,7 @@ func (it *ERC20CustodyTestDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ERC20CustodyTestDeposit)
+		it.Event = new(ERC20CustodyTestDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1519,13 +1519,13 @@ func (it *ERC20CustodyTestDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ERC20CustodyTestDepositIterator) Error() error {
+func (it *ERC20CustodyTestDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ERC20CustodyTestDepositIterator) Close() error {
+func (it *ERC20CustodyTestDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1555,11 +1555,11 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterDeposit(opts *bind.Filt
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ERC20CustodyTestDepositIterator{contract: _ERC20CustodyTest.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &ERC20CustodyTestDepositedIterator{contract: _ERC20CustodyTest.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
 // WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
@@ -1576,7 +1576,7 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchDeposit(opts *bind.Watch
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1586,8 +1586,8 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchDeposit(opts *bind.Watch
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ERC20CustodyTestDeposit)
-				if err := _ERC20CustodyTest.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(ERC20CustodyTestDeposited)
+				if err := _ERC20CustodyTest.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -3046,9 +3046,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWhitelisted(log types.Lo
 	return event, nil
 }
 
-// ERC20CustodyTestWithdrawIterator is returned from FilterWithdraw and is used to iterate over the raw logs and unpacked data for Withdraw events raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestWithdrawIterator struct {
-	Event *ERC20CustodyTestWithdraw // Event containing the contract specifics and raw log
+// ERC20CustodyTestWithdrawnIterator is returned from FilterWithdrawn and is used to iterate over the raw logs and unpacked data for Withdrawn events raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawnIterator struct {
+	Event *ERC20CustodyTestWithdrawn // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -3062,7 +3062,7 @@ type ERC20CustodyTestWithdrawIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ERC20CustodyTestWithdrawIterator) Next() bool {
+func (it *ERC20CustodyTestWithdrawnIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -3071,7 +3071,7 @@ func (it *ERC20CustodyTestWithdrawIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ERC20CustodyTestWithdraw)
+			it.Event = new(ERC20CustodyTestWithdrawn)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -3086,7 +3086,7 @@ func (it *ERC20CustodyTestWithdrawIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ERC20CustodyTestWithdraw)
+		it.Event = new(ERC20CustodyTestWithdrawn)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -3102,29 +3102,29 @@ func (it *ERC20CustodyTestWithdrawIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ERC20CustodyTestWithdrawIterator) Error() error {
+func (it *ERC20CustodyTestWithdrawnIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ERC20CustodyTestWithdrawIterator) Close() error {
+func (it *ERC20CustodyTestWithdrawnIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// ERC20CustodyTestWithdraw represents a Withdraw event raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestWithdraw struct {
+// ERC20CustodyTestWithdrawn represents a Withdrawn event raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawn struct {
 	Token  common.Address
 	To     common.Address
 	Amount *big.Int
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdraw is a free log retrieval operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// FilterWithdrawn is a free log retrieval operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdraw(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*ERC20CustodyTestWithdrawIterator, error) {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawn(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*ERC20CustodyTestWithdrawnIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -3135,17 +3135,17 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdraw(opts *bind.Fil
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "Withdraw", tokenRule, toRule)
+	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "Withdrawn", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ERC20CustodyTestWithdrawIterator{contract: _ERC20CustodyTest.contract, event: "Withdraw", logs: logs, sub: sub}, nil
+	return &ERC20CustodyTestWithdrawnIterator{contract: _ERC20CustodyTest.contract, event: "Withdrawn", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdraw is a free log subscription operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// WatchWithdrawn is a free log subscription operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdraw(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestWithdraw, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestWithdrawn, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -3156,7 +3156,7 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdraw(opts *bind.Watc
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "Withdraw", tokenRule, toRule)
+	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "Withdrawn", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -3166,8 +3166,8 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdraw(opts *bind.Watc
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ERC20CustodyTestWithdraw)
-				if err := _ERC20CustodyTest.contract.UnpackLog(event, "Withdraw", log); err != nil {
+				event := new(ERC20CustodyTestWithdrawn)
+				if err := _ERC20CustodyTest.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -3188,21 +3188,21 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdraw(opts *bind.Watc
 	}), nil
 }
 
-// ParseWithdraw is a log parse operation binding the contract event 0x9b1bfa7fa9ee420a16e124f794c35ac9f90472acc99140eb2f6447c714cad8eb.
+// ParseWithdrawn is a log parse operation binding the contract event 0xd1c19fbcd4551a5edfb66d43d2e337c04837afda3482b42bdf569a8fccdae5fb.
 //
-// Solidity: event Withdraw(address indexed token, address indexed to, uint256 amount)
-func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdraw(log types.Log) (*ERC20CustodyTestWithdraw, error) {
-	event := new(ERC20CustodyTestWithdraw)
-	if err := _ERC20CustodyTest.contract.UnpackLog(event, "Withdraw", log); err != nil {
+// Solidity: event Withdrawn(address indexed token, address indexed to, uint256 amount)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdrawn(log types.Log) (*ERC20CustodyTestWithdrawn, error) {
+	event := new(ERC20CustodyTestWithdrawn)
+	if err := _ERC20CustodyTest.contract.UnpackLog(event, "Withdrawn", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// ERC20CustodyTestWithdrawAndCallIterator is returned from FilterWithdrawAndCall and is used to iterate over the raw logs and unpacked data for WithdrawAndCall events raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestWithdrawAndCallIterator struct {
-	Event *ERC20CustodyTestWithdrawAndCall // Event containing the contract specifics and raw log
+// ERC20CustodyTestWithdrawnAndCalledIterator is returned from FilterWithdrawnAndCalled and is used to iterate over the raw logs and unpacked data for WithdrawnAndCalled events raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawnAndCalledIterator struct {
+	Event *ERC20CustodyTestWithdrawnAndCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -3216,7 +3216,7 @@ type ERC20CustodyTestWithdrawAndCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ERC20CustodyTestWithdrawAndCallIterator) Next() bool {
+func (it *ERC20CustodyTestWithdrawnAndCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -3225,7 +3225,7 @@ func (it *ERC20CustodyTestWithdrawAndCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ERC20CustodyTestWithdrawAndCall)
+			it.Event = new(ERC20CustodyTestWithdrawnAndCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -3240,7 +3240,7 @@ func (it *ERC20CustodyTestWithdrawAndCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ERC20CustodyTestWithdrawAndCall)
+		it.Event = new(ERC20CustodyTestWithdrawnAndCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -3256,19 +3256,19 @@ func (it *ERC20CustodyTestWithdrawAndCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ERC20CustodyTestWithdrawAndCallIterator) Error() error {
+func (it *ERC20CustodyTestWithdrawnAndCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ERC20CustodyTestWithdrawAndCallIterator) Close() error {
+func (it *ERC20CustodyTestWithdrawnAndCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// ERC20CustodyTestWithdrawAndCall represents a WithdrawAndCall event raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestWithdrawAndCall struct {
+// ERC20CustodyTestWithdrawnAndCalled represents a WithdrawnAndCalled event raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawnAndCalled struct {
 	Token  common.Address
 	To     common.Address
 	Amount *big.Int
@@ -3276,10 +3276,10 @@ type ERC20CustodyTestWithdrawAndCall struct {
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndCall is a free log retrieval operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// FilterWithdrawnAndCalled is a free log retrieval operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawAndCall(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*ERC20CustodyTestWithdrawAndCallIterator, error) {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawnAndCalled(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*ERC20CustodyTestWithdrawnAndCalledIterator, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -3290,17 +3290,17 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawAndCall(opts *b
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "WithdrawAndCall", tokenRule, toRule)
+	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "WithdrawnAndCalled", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ERC20CustodyTestWithdrawAndCallIterator{contract: _ERC20CustodyTest.contract, event: "WithdrawAndCall", logs: logs, sub: sub}, nil
+	return &ERC20CustodyTestWithdrawnAndCalledIterator{contract: _ERC20CustodyTest.contract, event: "WithdrawnAndCalled", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndCall is a free log subscription operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// WatchWithdrawnAndCalled is a free log subscription operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawAndCall(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestWithdrawAndCall, token []common.Address, to []common.Address) (event.Subscription, error) {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawnAndCalled(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestWithdrawnAndCalled, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
 	for _, tokenItem := range token {
@@ -3311,7 +3311,7 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawAndCall(opts *bi
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "WithdrawAndCall", tokenRule, toRule)
+	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "WithdrawnAndCalled", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -3321,8 +3321,8 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawAndCall(opts *bi
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ERC20CustodyTestWithdrawAndCall)
-				if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+				event := new(ERC20CustodyTestWithdrawnAndCalled)
+				if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -3343,21 +3343,21 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawAndCall(opts *bi
 	}), nil
 }
 
-// ParseWithdrawAndCall is a log parse operation binding the contract event 0x85b5be9cf454e05e0bddf49315178102227c312078eefa3c00294fb4d912ae4e.
+// ParseWithdrawnAndCalled is a log parse operation binding the contract event 0x6478cbb6e28c0823c691dfd74c01c985634faddd4c401b990fe4ec26277ea8d5.
 //
-// Solidity: event WithdrawAndCall(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdrawAndCall(log types.Log) (*ERC20CustodyTestWithdrawAndCall, error) {
-	event := new(ERC20CustodyTestWithdrawAndCall)
-	if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawAndCall", log); err != nil {
+// Solidity: event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdrawnAndCalled(log types.Log) (*ERC20CustodyTestWithdrawnAndCalled, error) {
+	event := new(ERC20CustodyTestWithdrawnAndCalled)
+	if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnAndCalled", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// ERC20CustodyTestWithdrawAndRevertIterator is returned from FilterWithdrawAndRevert and is used to iterate over the raw logs and unpacked data for WithdrawAndRevert events raised by the ERC20CustodyTest contract.
-type ERC20CustodyTestWithdrawAndRevertIterator struct {
-	Event *ERC20CustodyTestWithdrawAndRevert // Event containing the contract specifics and raw log
+// ERC20CustodyTestWithdrawnAndRevertedIterator is returned from FilterWithdrawnAndReverted and is used to iterate over the raw logs and unpacked data for WithdrawnAndReverted events raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawnAndRevertedIterator struct {
+	Event *ERC20CustodyTestWithdrawnAndReverted // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -3371,7 +3371,7 @@ type ERC20CustodyTestWithdrawAndRevertIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *ERC20CustodyTestWithdrawAndRevertIterator) Next() bool {
+func (it *ERC20CustodyTestWithdrawnAndRevertedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -3380,7 +3380,7 @@ func (it *ERC20CustodyTestWithdrawAndRevertIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(ERC20CustodyTestWithdrawAndRevert)
+			it.Event = new(ERC20CustodyTestWithdrawnAndReverted)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -3395,7 +3395,7 @@ func (it *ERC20CustodyTestWithdrawAndRevertIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(ERC20CustodyTestWithdrawAndRevert)
+		it.Event = new(ERC20CustodyTestWithdrawnAndReverted)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -3411,13 +3411,13 @@ func (it *ERC20CustodyTestWithdrawAndRevertIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *ERC20CustodyTestWithdrawAndRevertIterator) Error() error {
+func (it *ERC20CustodyTestWithdrawnAndRevertedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *ERC20CustodyTestWithdrawAndRevertIterator) Close() error {
+func (it *ERC20CustodyTestWithdrawnAndRevertedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -3446,11 +3446,11 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawAndRevert(opts 
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "WithdrawnAndReverted", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
-	return &ERC20CustodyTestWithdrawAndRevertIterator{contract: _ERC20CustodyTest.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
+	return &ERC20CustodyTestWithdrawnAndRevertedIterator{contract: _ERC20CustodyTest.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
 // WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
@@ -3467,7 +3467,7 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawAndRevert(opts *
 		toRule = append(toRule, toItem)
 	}
 
-	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "WithdrawAndRevert", tokenRule, toRule)
+	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "WithdrawnAndReverted", tokenRule, toRule)
 	if err != nil {
 		return nil, err
 	}
@@ -3477,8 +3477,8 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawAndRevert(opts *
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(ERC20CustodyTestWithdrawAndRevert)
-				if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {
+				event := new(ERC20CustodyTestWithdrawnAndReverted)
+				if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
 					return err
 				}
 				event.Raw = log

@@ -186,9 +186,9 @@ const startWorker = async () => {
   testContracts = await deployTestContracts(protocolContracts, deployer, fungibleModuleSigner);
 
   // Listen to contracts events
-  // event Call(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
-  protocolContracts.gatewayZEVM.on("Call", async (...args: Array<any>) => {
-    console.log("Worker: Call event on GatewayZEVM.");
+  // event Called(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
+  protocolContracts.gatewayZEVM.on("Called", async (...args: Array<any>) => {
+    console.log("Worker: Called event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     try {
       (deployer as NonceManager).reset();
@@ -203,9 +203,9 @@ const startWorker = async () => {
     }
   });
 
-  // event Withdrawal(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
-  protocolContracts.gatewayZEVM.on("Withdrawal", async (...args: Array<any>) => {
-    console.log("Worker: Withdrawal event on GatewayZEVM.");
+  // event Withdrawn(address indexed sender, uint256 indexed chainId, bytes receiver, address zrc20, uint256 value, uint256 gasfee, uint256 protocolFlatFee, bytes message);
+  protocolContracts.gatewayZEVM.on("Withdrawn", async (...args: Array<any>) => {
+    console.log("Worker: Withdrawn event on GatewayZEVM.");
     console.log("Worker: Calling ReceiverEVM through GatewayEVM...");
     try {
       const receiver = args[2];
@@ -225,9 +225,9 @@ const startWorker = async () => {
     console.log("ReceiverEVM: receivePayable called!");
   });
 
-  // event Call(address indexed sender, address indexed receiver, bytes payload);
-  protocolContracts.gatewayEVM.on("Call", async (...args: Array<any>) => {
-    console.log("Worker: Call event on GatewayEVM.");
+  // event Called(address indexed sender, address indexed receiver, bytes payload);
+  protocolContracts.gatewayEVM.on("Called", async (...args: Array<any>) => {
+    console.log("Worker: Called event on GatewayEVM.");
     console.log("Worker: Calling TestUniversalContract through GatewayZEVM...");
     try {
       const universalContract = args[1];
@@ -257,9 +257,9 @@ const startWorker = async () => {
     }
   });
 
-  // event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
-  protocolContracts.gatewayEVM.on("Deposit", async (...args: Array<any>) => {
-    console.log("Worker: Deposit event on GatewayEVM.");
+  // event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+  protocolContracts.gatewayEVM.on("Deposited", async (...args: Array<any>) => {
+    console.log("Worker: Deposited event on GatewayEVM.");
     console.log("Worker: Calling TestUniversalContract through GatewayZEVM...");
     try {
       const receiver = args[1];

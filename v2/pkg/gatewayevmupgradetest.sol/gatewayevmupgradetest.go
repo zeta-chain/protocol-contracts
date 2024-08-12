@@ -1029,9 +1029,9 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) UpgradeToA
 	return _GatewayEVMUpgradeTest.Contract.UpgradeToAndCall(&_GatewayEVMUpgradeTest.TransactOpts, newImplementation, data)
 }
 
-// GatewayEVMUpgradeTestCallIterator is returned from FilterCall and is used to iterate over the raw logs and unpacked data for Call events raised by the GatewayEVMUpgradeTest contract.
-type GatewayEVMUpgradeTestCallIterator struct {
-	Event *GatewayEVMUpgradeTestCall // Event containing the contract specifics and raw log
+// GatewayEVMUpgradeTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayEVMUpgradeTest contract.
+type GatewayEVMUpgradeTestCalledIterator struct {
+	Event *GatewayEVMUpgradeTestCalled // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1045,7 +1045,7 @@ type GatewayEVMUpgradeTestCallIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMUpgradeTestCallIterator) Next() bool {
+func (it *GatewayEVMUpgradeTestCalledIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1054,7 +1054,7 @@ func (it *GatewayEVMUpgradeTestCallIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMUpgradeTestCall)
+			it.Event = new(GatewayEVMUpgradeTestCalled)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1069,7 +1069,7 @@ func (it *GatewayEVMUpgradeTestCallIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMUpgradeTestCall)
+		it.Event = new(GatewayEVMUpgradeTestCalled)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1085,13 +1085,13 @@ func (it *GatewayEVMUpgradeTestCallIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMUpgradeTestCallIterator) Error() error {
+func (it *GatewayEVMUpgradeTestCalledIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMUpgradeTestCallIterator) Close() error {
+func (it *GatewayEVMUpgradeTestCalledIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1119,11 +1119,11 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) FilterCall(opts *bi
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMUpgradeTest.contract.FilterLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMUpgradeTest.contract.FilterLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMUpgradeTestCallIterator{contract: _GatewayEVMUpgradeTest.contract, event: "Call", logs: logs, sub: sub}, nil
+	return &GatewayEVMUpgradeTestCalledIterator{contract: _GatewayEVMUpgradeTest.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
 // WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
@@ -1140,7 +1140,7 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) WatchCall(opts *bin
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMUpgradeTest.contract.WatchLogs(opts, "Call", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMUpgradeTest.contract.WatchLogs(opts, "Called", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1150,8 +1150,8 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) WatchCall(opts *bin
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMUpgradeTestCall)
-				if err := _GatewayEVMUpgradeTest.contract.UnpackLog(event, "Call", log); err != nil {
+				event := new(GatewayEVMUpgradeTestCalled)
+				if err := _GatewayEVMUpgradeTest.contract.UnpackLog(event, "Called", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1184,9 +1184,9 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) ParseCall(log types
 	return event, nil
 }
 
-// GatewayEVMUpgradeTestDepositIterator is returned from FilterDeposit and is used to iterate over the raw logs and unpacked data for Deposit events raised by the GatewayEVMUpgradeTest contract.
-type GatewayEVMUpgradeTestDepositIterator struct {
-	Event *GatewayEVMUpgradeTestDeposit // Event containing the contract specifics and raw log
+// GatewayEVMUpgradeTestDepositedIterator is returned from FilterDeposited and is used to iterate over the raw logs and unpacked data for Deposited events raised by the GatewayEVMUpgradeTest contract.
+type GatewayEVMUpgradeTestDepositedIterator struct {
+	Event *GatewayEVMUpgradeTestDeposited // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1200,7 +1200,7 @@ type GatewayEVMUpgradeTestDepositIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *GatewayEVMUpgradeTestDepositIterator) Next() bool {
+func (it *GatewayEVMUpgradeTestDepositedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1209,7 +1209,7 @@ func (it *GatewayEVMUpgradeTestDepositIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(GatewayEVMUpgradeTestDeposit)
+			it.Event = new(GatewayEVMUpgradeTestDeposited)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1224,7 +1224,7 @@ func (it *GatewayEVMUpgradeTestDepositIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(GatewayEVMUpgradeTestDeposit)
+		it.Event = new(GatewayEVMUpgradeTestDeposited)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1240,13 +1240,13 @@ func (it *GatewayEVMUpgradeTestDepositIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *GatewayEVMUpgradeTestDepositIterator) Error() error {
+func (it *GatewayEVMUpgradeTestDepositedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *GatewayEVMUpgradeTestDepositIterator) Close() error {
+func (it *GatewayEVMUpgradeTestDepositedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
@@ -1276,11 +1276,11 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) FilterDeposit(opts 
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMUpgradeTest.contract.FilterLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMUpgradeTest.contract.FilterLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
-	return &GatewayEVMUpgradeTestDepositIterator{contract: _GatewayEVMUpgradeTest.contract, event: "Deposit", logs: logs, sub: sub}, nil
+	return &GatewayEVMUpgradeTestDepositedIterator{contract: _GatewayEVMUpgradeTest.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
 // WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
@@ -1297,7 +1297,7 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) WatchDeposit(opts *
 		receiverRule = append(receiverRule, receiverItem)
 	}
 
-	logs, sub, err := _GatewayEVMUpgradeTest.contract.WatchLogs(opts, "Deposit", senderRule, receiverRule)
+	logs, sub, err := _GatewayEVMUpgradeTest.contract.WatchLogs(opts, "Deposited", senderRule, receiverRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1307,8 +1307,8 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) WatchDeposit(opts *
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(GatewayEVMUpgradeTestDeposit)
-				if err := _GatewayEVMUpgradeTest.contract.UnpackLog(event, "Deposit", log); err != nil {
+				event := new(GatewayEVMUpgradeTestDeposited)
+				if err := _GatewayEVMUpgradeTest.contract.UnpackLog(event, "Deposited", log); err != nil {
 					return err
 				}
 				event.Raw = log

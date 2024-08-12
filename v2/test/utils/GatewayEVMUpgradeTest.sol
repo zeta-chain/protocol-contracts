@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "src/Revert.sol";
 import "src/evm/ZetaConnectorBase.sol";
 import "src/evm/interfaces/IERC20Custody.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
+import { RevertContext, RevertOptions, Revertable } from "src/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -228,7 +228,7 @@ contract GatewayEVMUpgradeTest is
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposit(msg.sender, receiver, msg.value, address(0), "", revertOptions);
+        emit Deposited(msg.sender, receiver, msg.value, address(0), "", revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
@@ -251,7 +251,7 @@ contract GatewayEVMUpgradeTest is
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposit(msg.sender, receiver, amount, asset, "", revertOptions);
+        emit Deposited(msg.sender, receiver, amount, asset, "", revertOptions);
     }
 
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
@@ -275,7 +275,7 @@ contract GatewayEVMUpgradeTest is
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposit(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+        emit Deposited(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -300,7 +300,7 @@ contract GatewayEVMUpgradeTest is
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposit(msg.sender, receiver, amount, asset, payload, revertOptions);
+        emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
@@ -317,7 +317,7 @@ contract GatewayEVMUpgradeTest is
         nonReentrant
     {
         if (receiver == address(0)) revert ZeroAddress();
-        emit Call(msg.sender, receiver, payload, revertOptions);
+        emit Called(msg.sender, receiver, payload, revertOptions);
     }
 
     /// @notice Sets the custody contract address.
