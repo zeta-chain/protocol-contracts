@@ -10,6 +10,7 @@ export * as iReceiverEvmSol from "./IReceiverEVM.sol";
 export * as iwzetaSol from "./IWZETA.sol";
 export * as izrc20Sol from "./IZRC20.sol";
 export * as iZetaConnectorSol from "./IZetaConnector.sol";
+export * as revertSol from "./Revert.sol";
 export * as stdErrorSol from "./StdError.sol";
 export * as stdStorageSol from "./StdStorage.sol";
 export * as systemContractSol from "./SystemContract.sol";

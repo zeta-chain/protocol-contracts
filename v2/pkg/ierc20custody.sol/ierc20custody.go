@@ -29,9 +29,16 @@ var (
 	_ = abi.ConvertType
 )
 
+// RevertContext is an auto generated low-level Go binding around an user-defined struct.
+type RevertContext struct {
+	Asset         common.Address
+	Amount        uint64
+	RevertMessage []byte
+}
+
 // IERC20CustodyMetaData contains all meta data concerning the IERC20Custody contract.
 var IERC20CustodyMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Unwhitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"NotWhitelisted\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"withdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Unwhitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Whitelisted\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"NotWhitelisted\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
 }
 
 // IERC20CustodyABI is the input ABI used to generate the binding from.
@@ -253,25 +260,25 @@ func (_IERC20Custody *IERC20CustodyTransactorSession) WithdrawAndCall(token comm
 	return _IERC20Custody.Contract.WithdrawAndCall(&_IERC20Custody.TransactOpts, token, to, amount, data)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc8a02362.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc709ab6e.
 //
-// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data) returns()
-func (_IERC20Custody *IERC20CustodyTransactor) WithdrawAndRevert(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IERC20Custody.contract.Transact(opts, "withdrawAndRevert", token, to, amount, data)
+// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data, (address,uint64,bytes) revertContext) returns()
+func (_IERC20Custody *IERC20CustodyTransactor) WithdrawAndRevert(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IERC20Custody.contract.Transact(opts, "withdrawAndRevert", token, to, amount, data, revertContext)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc8a02362.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc709ab6e.
 //
-// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data) returns()
-func (_IERC20Custody *IERC20CustodySession) WithdrawAndRevert(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IERC20Custody.Contract.WithdrawAndRevert(&_IERC20Custody.TransactOpts, token, to, amount, data)
+// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data, (address,uint64,bytes) revertContext) returns()
+func (_IERC20Custody *IERC20CustodySession) WithdrawAndRevert(token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IERC20Custody.Contract.WithdrawAndRevert(&_IERC20Custody.TransactOpts, token, to, amount, data, revertContext)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc8a02362.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0xc709ab6e.
 //
-// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data) returns()
-func (_IERC20Custody *IERC20CustodyTransactorSession) WithdrawAndRevert(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IERC20Custody.Contract.WithdrawAndRevert(&_IERC20Custody.TransactOpts, token, to, amount, data)
+// Solidity: function withdrawAndRevert(address token, address to, uint256 amount, bytes data, (address,uint64,bytes) revertContext) returns()
+func (_IERC20Custody *IERC20CustodyTransactorSession) WithdrawAndRevert(token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IERC20Custody.Contract.WithdrawAndRevert(&_IERC20Custody.TransactOpts, token, to, amount, data, revertContext)
 }
 
 // IERC20CustodyUnwhitelistedIterator is returned from FilterUnwhitelisted and is used to iterate over the raw logs and unpacked data for Unwhitelisted events raised by the IERC20Custody contract.
@@ -940,16 +947,17 @@ func (it *IERC20CustodyWithdrawAndRevertIterator) Close() error {
 
 // IERC20CustodyWithdrawAndRevert represents a WithdrawAndRevert event raised by the IERC20Custody contract.
 type IERC20CustodyWithdrawAndRevert struct {
-	Token  common.Address
-	To     common.Address
-	Amount *big.Int
-	Data   []byte
-	Raw    types.Log // Blockchain specific contextual infos
+	Token         common.Address
+	To            common.Address
+	Amount        *big.Int
+	Data          []byte
+	RevertContext RevertContext
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndRevert is a free log retrieval operation binding the contract event 0xb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c8.
+// FilterWithdrawAndRevert is a free log retrieval operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
 //
-// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data)
+// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IERC20Custody *IERC20CustodyFilterer) FilterWithdrawAndRevert(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IERC20CustodyWithdrawAndRevertIterator, error) {
 
 	var tokenRule []interface{}
@@ -968,9 +976,9 @@ func (_IERC20Custody *IERC20CustodyFilterer) FilterWithdrawAndRevert(opts *bind.
 	return &IERC20CustodyWithdrawAndRevertIterator{contract: _IERC20Custody.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0xb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c8.
+// WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
 //
-// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data)
+// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IERC20Custody *IERC20CustodyFilterer) WatchWithdrawAndRevert(opts *bind.WatchOpts, sink chan<- *IERC20CustodyWithdrawAndRevert, token []common.Address, to []common.Address) (event.Subscription, error) {
 
 	var tokenRule []interface{}
@@ -1014,9 +1022,9 @@ func (_IERC20Custody *IERC20CustodyFilterer) WatchWithdrawAndRevert(opts *bind.W
 	}), nil
 }
 
-// ParseWithdrawAndRevert is a log parse operation binding the contract event 0xb9d4efa96044e5f5e03e696fa9ae2ff66911cc27e8a637c3627c75bc5b2241c8.
+// ParseWithdrawAndRevert is a log parse operation binding the contract event 0x51859b81503209d878b8b84be6dd2984f9f8b0e6dedb6c80757443c14683d255.
 //
-// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data)
+// Solidity: event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IERC20Custody *IERC20CustodyFilterer) ParseWithdrawAndRevert(log types.Log) (*IERC20CustodyWithdrawAndRevert, error) {
 	event := new(IERC20CustodyWithdrawAndRevert)
 	if err := _IERC20Custody.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {

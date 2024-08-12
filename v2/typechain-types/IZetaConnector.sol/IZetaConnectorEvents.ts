@@ -21,6 +21,18 @@ import type {
   TypedListener,
 } from "../common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface IZetaConnectorEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic: "Withdraw" | "WithdrawAndCall" | "WithdrawAndRevert"
@@ -62,13 +74,20 @@ export namespace WithdrawAndRevertEvent {
   export type InputTuple = [
     to: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
-  export type OutputTuple = [to: string, amount: bigint, data: string];
+  export type OutputTuple = [
+    to: string,
+    amount: bigint,
+    data: string,
+    revertContext: RevertContextStructOutput
+  ];
   export interface OutputObject {
     to: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -168,7 +187,7 @@ export interface IZetaConnectorEvents extends BaseContract {
       WithdrawAndCallEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,uint256,bytes)": TypedContractEvent<
+    "WithdrawAndRevert(address,uint256,bytes,tuple)": TypedContractEvent<
       WithdrawAndRevertEvent.InputTuple,
       WithdrawAndRevertEvent.OutputTuple,
       WithdrawAndRevertEvent.OutputObject

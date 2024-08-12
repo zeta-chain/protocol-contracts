@@ -132,10 +132,27 @@ const _abi = [
         internalType: "address",
       },
       {
-        name: "data",
-        type: "bytes",
+        name: "revertContext",
+        type: "tuple",
         indexed: false,
-        internalType: "bytes",
+        internalType: "struct RevertContext",
+        components: [
+          {
+            name: "asset",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "amount",
+            type: "uint64",
+            internalType: "uint64",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
       },
     ],
     anonymous: false,

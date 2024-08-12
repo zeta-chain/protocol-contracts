@@ -383,11 +383,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         zetaToken.approve(address(gateway), 10);
         vm.stopPrank();
 
-        revertContext = RevertContext({
-            asset: address(0),
-            amount: 1,
-            revertMessage: ""
-        });
+        revertContext = RevertContext({ asset: address(0), amount: 1, revertMessage: "" });
     }
 
     function testDepositFailsIfZRC20IsZeroAddress() public {

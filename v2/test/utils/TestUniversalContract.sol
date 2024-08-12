@@ -2,8 +2,9 @@
 pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "src/zevm/interfaces/UniversalContract.sol";
+
 import { RevertContext } from "src/Revert.sol";
+import "src/zevm/interfaces/UniversalContract.sol";
 
 /// @title TestUniversalContract
 /// @notice This contract is used just for testing.
@@ -45,12 +46,7 @@ contract TestUniversalContract is UniversalContract {
 
     /// @notice Handles a cross-chain call revert.
     /// @param revertContext Revert context.
-    function onRevert(
-       RevertContext calldata revertContext
-    )
-        external
-        override
-    {
+    function onRevert(RevertContext calldata revertContext) external override {
         emit ContextDataRevert(revertContext);
     }
 

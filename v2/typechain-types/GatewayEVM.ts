@@ -42,6 +42,18 @@ export type RevertOptionsStructOutput = [
   revertMessage: string;
 };
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface GatewayEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -88,7 +100,6 @@ export interface GatewayEVMInterface extends Interface {
       | "Initialized"
       | "Paused"
       | "Reverted"
-      | "RevertedWithERC20"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
@@ -146,7 +157,7 @@ export interface GatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
-    values: [AddressLike, BytesLike]
+    values: [AddressLike, BytesLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "executeWithERC20",
@@ -180,7 +191,13 @@ export interface GatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "revertWithERC20",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -426,40 +443,25 @@ export namespace PausedEvent {
 
 export namespace RevertedEvent {
   export type InputTuple = [
-    destination: AddressLike,
-    value: BigNumberish,
-    data: BytesLike
-  ];
-  export type OutputTuple = [destination: string, value: bigint, data: string];
-  export interface OutputObject {
-    destination: string;
-    value: bigint;
-    data: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace RevertedWithERC20Event {
-  export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -660,7 +662,11 @@ export interface GatewayEVM extends BaseContract {
   >;
 
   executeRevert: TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
+    [
+      destination: AddressLike,
+      data: BytesLike,
+      revertContext: RevertContextStruct
+    ],
     [void],
     "payable"
   >;
@@ -713,7 +719,8 @@ export interface GatewayEVM extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -843,7 +850,11 @@ export interface GatewayEVM extends BaseContract {
   getFunction(
     nameOrSignature: "executeRevert"
   ): TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
+    [
+      destination: AddressLike,
+      data: BytesLike,
+      revertContext: RevertContextStruct
+    ],
     [void],
     "payable"
   >;
@@ -906,7 +917,8 @@ export interface GatewayEVM extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -995,13 +1007,6 @@ export interface GatewayEVM extends BaseContract {
     RevertedEvent.InputTuple,
     RevertedEvent.OutputTuple,
     RevertedEvent.OutputObject
-  >;
-  getEvent(
-    key: "RevertedWithERC20"
-  ): TypedContractEvent<
-    RevertedWithERC20Event.InputTuple,
-    RevertedWithERC20Event.OutputTuple,
-    RevertedWithERC20Event.OutputObject
   >;
   getEvent(
     key: "RoleAdminChanged"
@@ -1106,7 +1111,7 @@ export interface GatewayEVM extends BaseContract {
       PausedEvent.OutputObject
     >;
 
-    "Reverted(address,uint256,bytes)": TypedContractEvent<
+    "Reverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
@@ -1115,17 +1120,6 @@ export interface GatewayEVM extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
-    >;
-
-    "RevertedWithERC20(address,address,uint256,bytes)": TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
-    >;
-    RevertedWithERC20: TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
     >;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<

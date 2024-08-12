@@ -25,7 +25,9 @@ interface IERC20CustodyEvents {
     /// @param amount The amount of tokens withdrawn.
     /// @param data The calldata passed to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
-    event WithdrawAndRevert(address indexed token, address indexed to, uint256 amount, bytes data, RevertContext revertContext);
+    event WithdrawAndRevert(
+        address indexed token, address indexed to, uint256 amount, bytes data, RevertContext revertContext
+    );
 
     /// @notice Emitted when ERC20 token is whitelisted
     /// @param token address of ERC20 token.
@@ -72,5 +74,12 @@ interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
-    function withdrawAndRevert(address token, address to, uint256 amount, bytes calldata data, RevertContext calldata revertContext) external;
+    function withdrawAndRevert(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        RevertContext calldata revertContext
+    )
+        external;
 }

@@ -23,6 +23,18 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface ERC20CustodyEchidnaTestInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -140,7 +152,13 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -361,19 +379,22 @@ export namespace WithdrawAndRevertEvent {
     token: AddressLike,
     to: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
     token: string,
     to: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
     token: string;
     to: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -510,7 +531,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -626,7 +648,8 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -803,7 +826,7 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
       WithdrawAndCallEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,address,uint256,bytes)": TypedContractEvent<
+    "WithdrawAndRevert(address,address,uint256,bytes,tuple)": TypedContractEvent<
       WithdrawAndRevertEvent.InputTuple,
       WithdrawAndRevertEvent.OutputTuple,
       WithdrawAndRevertEvent.OutputObject

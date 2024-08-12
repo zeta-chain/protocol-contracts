@@ -35,6 +35,18 @@ export type ZContextStructOutput = [
   chainID: bigint
 ] & { origin: string; sender: string; chainID: bigint };
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface TestUniversalContractInterface extends Interface {
   getFunction(
     nameOrSignature: "onCrossChainCall" | "onRevert"
@@ -50,7 +62,7 @@ export interface TestUniversalContractInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "onRevert",
-    values: [ZContextStruct, AddressLike, BigNumberish, BytesLike]
+    values: [RevertContextStruct]
   ): string;
 
   decodeFunctionResult(
@@ -89,26 +101,10 @@ export namespace ContextDataEvent {
 }
 
 export namespace ContextDataRevertEvent {
-  export type InputTuple = [
-    origin: BytesLike,
-    sender: AddressLike,
-    chainID: BigNumberish,
-    msgSender: AddressLike,
-    message: string
-  ];
-  export type OutputTuple = [
-    origin: string,
-    sender: string,
-    chainID: bigint,
-    msgSender: string,
-    message: string
-  ];
+  export type InputTuple = [revertContext: RevertContextStruct];
+  export type OutputTuple = [revertContext: RevertContextStructOutput];
   export interface OutputObject {
-    origin: string;
-    sender: string;
-    chainID: bigint;
-    msgSender: string;
-    message: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -171,12 +167,7 @@ export interface TestUniversalContract extends BaseContract {
   >;
 
   onRevert: TypedContractMethod<
-    [
-      context: ZContextStruct,
-      zrc20: AddressLike,
-      amount: BigNumberish,
-      message: BytesLike
-    ],
+    [revertContext: RevertContextStruct],
     [void],
     "nonpayable"
   >;
@@ -200,12 +191,7 @@ export interface TestUniversalContract extends BaseContract {
   getFunction(
     nameOrSignature: "onRevert"
   ): TypedContractMethod<
-    [
-      context: ZContextStruct,
-      zrc20: AddressLike,
-      amount: BigNumberish,
-      message: BytesLike
-    ],
+    [revertContext: RevertContextStruct],
     [void],
     "nonpayable"
   >;
@@ -237,7 +223,7 @@ export interface TestUniversalContract extends BaseContract {
       ContextDataEvent.OutputObject
     >;
 
-    "ContextDataRevert(bytes,address,uint256,address,string)": TypedContractEvent<
+    "ContextDataRevert(tuple)": TypedContractEvent<
       ContextDataRevertEvent.InputTuple,
       ContextDataRevertEvent.OutputTuple,
       ContextDataRevertEvent.OutputObject

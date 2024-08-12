@@ -23,6 +23,18 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface ZetaConnectorNonNativeInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -122,7 +134,13 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
-    values: [AddressLike, BigNumberish, BytesLike, BytesLike]
+    values: [
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
@@ -308,13 +326,20 @@ export namespace WithdrawAndRevertEvent {
   export type InputTuple = [
     to: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
-  export type OutputTuple = [to: string, amount: bigint, data: string];
+  export type OutputTuple = [
+    to: string,
+    amount: bigint,
+    data: string,
+    revertContext: RevertContextStructOutput
+  ];
   export interface OutputObject {
     to: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -449,7 +474,8 @@ export interface ZetaConnectorNonNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      internalSendHash: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -554,7 +580,8 @@ export interface ZetaConnectorNonNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      internalSendHash: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -716,7 +743,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
       WithdrawAndCallEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,uint256,bytes)": TypedContractEvent<
+    "WithdrawAndRevert(address,uint256,bytes,tuple)": TypedContractEvent<
       WithdrawAndRevertEvent.InputTuple,
       WithdrawAndRevertEvent.OutputTuple,
       WithdrawAndRevertEvent.OutputObject

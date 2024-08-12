@@ -76,11 +76,7 @@ contract ZetaConnectorNonNativeTest is
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
 
-        revertContext = RevertContext({
-            asset: address(zetaToken),
-            amount: 1,
-            revertMessage: ""
-        });
+        revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
     }
 
     function testWithdraw() public {
@@ -282,7 +278,7 @@ contract ZetaConnectorNonNativeTest is
         vm.expectEmit(true, true, true, true, address(receiver));
         emit ReceivedRevert(address(gateway), revertContext);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Reverted( address(receiver), address(zetaToken), amount, data, revertContext);
+        emit Reverted(address(receiver), address(zetaToken), amount, data, revertContext);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawAndRevert(address(receiver), amount, data, revertContext);
         vm.prank(tssAddress);

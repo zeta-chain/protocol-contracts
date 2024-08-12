@@ -54,6 +54,18 @@ export type ZContextStructOutput = [
   chainID: bigint
 ] & { origin: string; sender: string; chainID: bigint };
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface IGatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -90,7 +102,14 @@ export interface IGatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndRevert",
-    values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+    values: [
+      ZContextStruct,
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
@@ -98,7 +117,14 @@ export interface IGatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
-    values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+    values: [
+      ZContextStruct,
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes))",
@@ -323,7 +349,8 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
-      message: BytesLike
+      message: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -347,7 +374,8 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
-      message: BytesLike
+      message: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -455,7 +483,8 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
-      message: BytesLike
+      message: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -481,7 +510,8 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
-      message: BytesLike
+      message: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"

@@ -97,7 +97,13 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @param revertContext Revert context to pass to onRevert.
-    function executeRevert(address destination, bytes calldata data, RevertContext calldata revertContext) external payable;
+    function executeRevert(
+        address destination,
+        bytes calldata data,
+        RevertContext calldata revertContext
+    )
+        external
+        payable;
 
     /// @notice Executes a call to a contract.
     /// @param destination The address of the contract to call.
@@ -111,7 +117,14 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
-    function revertWithERC20(address token, address to, uint256 amount, bytes calldata data, RevertContext calldata revertContext) external;
+    function revertWithERC20(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        RevertContext calldata revertContext
+    )
+        external;
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
@@ -158,4 +171,3 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param revertOptions Revert options.
     function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
 }
-

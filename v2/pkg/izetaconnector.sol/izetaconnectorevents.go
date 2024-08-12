@@ -29,9 +29,16 @@ var (
 	_ = abi.ConvertType
 )
 
+// RevertContext is an auto generated low-level Go binding around an user-defined struct.
+type RevertContext struct {
+	Asset         common.Address
+	Amount        uint64
+	RevertMessage []byte
+}
+
 // IZetaConnectorEventsMetaData contains all meta data concerning the IZetaConnectorEvents contract.
 var IZetaConnectorEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Withdraw\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndCall\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawAndRevert\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IZetaConnectorEventsABI is the input ABI used to generate the binding from.
@@ -540,15 +547,16 @@ func (it *IZetaConnectorEventsWithdrawAndRevertIterator) Close() error {
 
 // IZetaConnectorEventsWithdrawAndRevert represents a WithdrawAndRevert event raised by the IZetaConnectorEvents contract.
 type IZetaConnectorEventsWithdrawAndRevert struct {
-	To     common.Address
-	Amount *big.Int
-	Data   []byte
-	Raw    types.Log // Blockchain specific contextual infos
+	To            common.Address
+	Amount        *big.Int
+	Data          []byte
+	RevertContext RevertContext
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawAndRevert is a free log retrieval operation binding the contract event 0xba96f26bdda53eb8c8ba39045dfb4ff39753fbc7a6edcf250a88e75e78d102fe.
+// FilterWithdrawAndRevert is a free log retrieval operation binding the contract event 0x0174321305ae11b234429ef4c65941379de1edb97632dbe0a4e48ddeaefe1328.
 //
-// Solidity: event WithdrawAndRevert(address indexed to, uint256 amount, bytes data)
+// Solidity: event WithdrawAndRevert(address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawAndRevert(opts *bind.FilterOpts, to []common.Address) (*IZetaConnectorEventsWithdrawAndRevertIterator, error) {
 
 	var toRule []interface{}
@@ -563,9 +571,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawAndReve
 	return &IZetaConnectorEventsWithdrawAndRevertIterator{contract: _IZetaConnectorEvents.contract, event: "WithdrawAndRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0xba96f26bdda53eb8c8ba39045dfb4ff39753fbc7a6edcf250a88e75e78d102fe.
+// WatchWithdrawAndRevert is a free log subscription operation binding the contract event 0x0174321305ae11b234429ef4c65941379de1edb97632dbe0a4e48ddeaefe1328.
 //
-// Solidity: event WithdrawAndRevert(address indexed to, uint256 amount, bytes data)
+// Solidity: event WithdrawAndRevert(address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndRevert(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsWithdrawAndRevert, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -605,9 +613,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawAndRever
 	}), nil
 }
 
-// ParseWithdrawAndRevert is a log parse operation binding the contract event 0xba96f26bdda53eb8c8ba39045dfb4ff39753fbc7a6edcf250a88e75e78d102fe.
+// ParseWithdrawAndRevert is a log parse operation binding the contract event 0x0174321305ae11b234429ef4c65941379de1edb97632dbe0a4e48ddeaefe1328.
 //
-// Solidity: event WithdrawAndRevert(address indexed to, uint256 amount, bytes data)
+// Solidity: event WithdrawAndRevert(address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseWithdrawAndRevert(log types.Log) (*IZetaConnectorEventsWithdrawAndRevert, error) {
 	event := new(IZetaConnectorEventsWithdrawAndRevert)
 	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawAndRevert", log); err != nil {

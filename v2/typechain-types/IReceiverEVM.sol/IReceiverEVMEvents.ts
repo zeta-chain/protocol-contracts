@@ -21,6 +21,18 @@ import type {
   TypedListener,
 } from "../common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface IReceiverEVMEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
@@ -123,11 +135,17 @@ export namespace ReceivedPayableEvent {
 }
 
 export namespace ReceivedRevertEvent {
-  export type InputTuple = [sender: AddressLike, data: BytesLike];
-  export type OutputTuple = [sender: string, data: string];
+  export type InputTuple = [
+    sender: AddressLike,
+    revertContext: RevertContextStruct
+  ];
+  export type OutputTuple = [
+    sender: string,
+    revertContext: RevertContextStructOutput
+  ];
   export interface OutputObject {
     sender: string;
-    data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -263,7 +281,7 @@ export interface IReceiverEVMEvents extends BaseContract {
       ReceivedPayableEvent.OutputObject
     >;
 
-    "ReceivedRevert(address,bytes)": TypedContractEvent<
+    "ReceivedRevert(address,tuple)": TypedContractEvent<
       ReceivedRevertEvent.InputTuple,
       ReceivedRevertEvent.OutputTuple,
       ReceivedRevertEvent.OutputObject

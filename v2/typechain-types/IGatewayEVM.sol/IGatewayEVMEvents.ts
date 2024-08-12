@@ -40,6 +40,18 @@ export type RevertOptionsStructOutput = [
   revertMessage: string;
 };
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface IGatewayEVMEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
@@ -48,7 +60,6 @@ export interface IGatewayEVMEventsInterface extends Interface {
       | "Executed"
       | "ExecutedWithERC20"
       | "Reverted"
-      | "RevertedWithERC20"
   ): EventFragment;
 }
 
@@ -153,40 +164,25 @@ export namespace ExecutedWithERC20Event {
 
 export namespace RevertedEvent {
   export type InputTuple = [
-    destination: AddressLike,
-    value: BigNumberish,
-    data: BytesLike
-  ];
-  export type OutputTuple = [destination: string, value: bigint, data: string];
-  export interface OutputObject {
-    destination: string;
-    value: bigint;
-    data: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace RevertedWithERC20Event {
-  export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -276,13 +272,6 @@ export interface IGatewayEVMEvents extends BaseContract {
     RevertedEvent.OutputTuple,
     RevertedEvent.OutputObject
   >;
-  getEvent(
-    key: "RevertedWithERC20"
-  ): TypedContractEvent<
-    RevertedWithERC20Event.InputTuple,
-    RevertedWithERC20Event.OutputTuple,
-    RevertedWithERC20Event.OutputObject
-  >;
 
   filters: {
     "Call(address,address,bytes,tuple)": TypedContractEvent<
@@ -329,7 +318,7 @@ export interface IGatewayEVMEvents extends BaseContract {
       ExecutedWithERC20Event.OutputObject
     >;
 
-    "Reverted(address,uint256,bytes)": TypedContractEvent<
+    "Reverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
@@ -338,17 +327,6 @@ export interface IGatewayEVMEvents extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
-    >;
-
-    "RevertedWithERC20(address,address,uint256,bytes)": TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
-    >;
-    RevertedWithERC20: TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
     >;
   };
 }

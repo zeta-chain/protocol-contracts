@@ -29,6 +29,13 @@ var (
 	_ = abi.ConvertType
 )
 
+// RevertContext is an auto generated low-level Go binding around an user-defined struct.
+type RevertContext struct {
+	Asset         common.Address
+	Amount        uint64
+	RevertMessage []byte
+}
+
 // RevertOptions is an auto generated low-level Go binding around an user-defined struct.
 type RevertOptions struct {
 	RevertAddress common.Address
@@ -39,7 +46,7 @@ type RevertOptions struct {
 
 // IGatewayEVMEventsMetaData contains all meta data concerning the IGatewayEVMEvents contract.
 var IGatewayEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposit\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RevertedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposit\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IGatewayEVMEventsABI is the input ABI used to generate the binding from.
@@ -870,40 +877,50 @@ func (it *IGatewayEVMEventsRevertedIterator) Close() error {
 
 // IGatewayEVMEventsReverted represents a Reverted event raised by the IGatewayEVMEvents contract.
 type IGatewayEVMEventsReverted struct {
-	Destination common.Address
-	Value       *big.Int
-	Data        []byte
-	Raw         types.Log // Blockchain specific contextual infos
+	To            common.Address
+	Token         common.Address
+	Amount        *big.Int
+	Data          []byte
+	RevertContext RevertContext
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c.
+// FilterReverted is a free log retrieval operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed destination, uint256 value, bytes data)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterReverted(opts *bind.FilterOpts, destination []common.Address) (*IGatewayEVMEventsRevertedIterator, error) {
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*IGatewayEVMEventsRevertedIterator, error) {
 
-	var destinationRule []interface{}
-	for _, destinationItem := range destination {
-		destinationRule = append(destinationRule, destinationItem)
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Reverted", destinationRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "Reverted", toRule, tokenRule)
 	if err != nil {
 		return nil, err
 	}
 	return &IGatewayEVMEventsRevertedIterator{contract: _IGatewayEVMEvents.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c.
+// WatchReverted is a free log subscription operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed destination, uint256 value, bytes data)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsReverted, destination []common.Address) (event.Subscription, error) {
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
-	var destinationRule []interface{}
-	for _, destinationItem := range destination {
-		destinationRule = append(destinationRule, destinationItem)
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
 	}
 
-	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Reverted", destinationRule)
+	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "Reverted", toRule, tokenRule)
 	if err != nil {
 		return nil, err
 	}
@@ -935,167 +952,12 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchReverted(opts *bind.Wa
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c.
+// ParseReverted is a log parse operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed destination, uint256 value, bytes data)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseReverted(log types.Log) (*IGatewayEVMEventsReverted, error) {
 	event := new(IGatewayEVMEventsReverted)
 	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Reverted", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// IGatewayEVMEventsRevertedWithERC20Iterator is returned from FilterRevertedWithERC20 and is used to iterate over the raw logs and unpacked data for RevertedWithERC20 events raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsRevertedWithERC20Iterator struct {
-	Event *IGatewayEVMEventsRevertedWithERC20 // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *IGatewayEVMEventsRevertedWithERC20Iterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IGatewayEVMEventsRevertedWithERC20)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IGatewayEVMEventsRevertedWithERC20)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayEVMEventsRevertedWithERC20Iterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IGatewayEVMEventsRevertedWithERC20Iterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// IGatewayEVMEventsRevertedWithERC20 represents a RevertedWithERC20 event raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsRevertedWithERC20 struct {
-	Token  common.Address
-	To     common.Address
-	Amount *big.Int
-	Data   []byte
-	Raw    types.Log // Blockchain specific contextual infos
-}
-
-// FilterRevertedWithERC20 is a free log retrieval operation binding the contract event 0x723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda7.
-//
-// Solidity: event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterRevertedWithERC20(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IGatewayEVMEventsRevertedWithERC20Iterator, error) {
-
-	var tokenRule []interface{}
-	for _, tokenItem := range token {
-		tokenRule = append(tokenRule, tokenItem)
-	}
-	var toRule []interface{}
-	for _, toItem := range to {
-		toRule = append(toRule, toItem)
-	}
-
-	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "RevertedWithERC20", tokenRule, toRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IGatewayEVMEventsRevertedWithERC20Iterator{contract: _IGatewayEVMEvents.contract, event: "RevertedWithERC20", logs: logs, sub: sub}, nil
-}
-
-// WatchRevertedWithERC20 is a free log subscription operation binding the contract event 0x723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda7.
-//
-// Solidity: event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchRevertedWithERC20(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsRevertedWithERC20, token []common.Address, to []common.Address) (event.Subscription, error) {
-
-	var tokenRule []interface{}
-	for _, tokenItem := range token {
-		tokenRule = append(tokenRule, tokenItem)
-	}
-	var toRule []interface{}
-	for _, toItem := range to {
-		toRule = append(toRule, toItem)
-	}
-
-	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "RevertedWithERC20", tokenRule, toRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayEVMEventsRevertedWithERC20)
-				if err := _IGatewayEVMEvents.contract.UnpackLog(event, "RevertedWithERC20", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseRevertedWithERC20 is a log parse operation binding the contract event 0x723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda7.
-//
-// Solidity: event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseRevertedWithERC20(log types.Log) (*IGatewayEVMEventsRevertedWithERC20, error) {
-	event := new(IGatewayEVMEventsRevertedWithERC20)
-	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "RevertedWithERC20", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

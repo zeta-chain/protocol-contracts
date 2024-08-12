@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
-import { RevertOptions, RevertContext, Revertable } from "src/Revert.sol";
+import { RevertContext, RevertOptions, Revertable } from "src/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";

@@ -282,6 +282,28 @@ const _abi = [
         type: "bytes",
         internalType: "bytes",
       },
+      {
+        name: "revertContext",
+        type: "tuple",
+        internalType: "struct RevertContext",
+        components: [
+          {
+            name: "asset",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "amount",
+            type: "uint64",
+            internalType: "uint64",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
+      },
     ],
     outputs: [],
     stateMutability: "payable",
@@ -337,6 +359,28 @@ const _abi = [
         name: "data",
         type: "bytes",
         internalType: "bytes",
+      },
+      {
+        name: "revertContext",
+        type: "tuple",
+        internalType: "struct RevertContext",
+        components: [
+          {
+            name: "asset",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "amount",
+            type: "uint64",
+            internalType: "uint64",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
       },
     ],
     outputs: [],
@@ -521,38 +565,13 @@ const _abi = [
     name: "Reverted",
     inputs: [
       {
-        name: "destination",
+        name: "to",
         type: "address",
         indexed: true,
         internalType: "address",
       },
-      {
-        name: "value",
-        type: "uint256",
-        indexed: false,
-        internalType: "uint256",
-      },
-      {
-        name: "data",
-        type: "bytes",
-        indexed: false,
-        internalType: "bytes",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
-    name: "RevertedWithERC20",
-    inputs: [
       {
         name: "token",
-        type: "address",
-        indexed: true,
-        internalType: "address",
-      },
-      {
-        name: "to",
         type: "address",
         indexed: true,
         internalType: "address",
@@ -568,6 +587,29 @@ const _abi = [
         type: "bytes",
         indexed: false,
         internalType: "bytes",
+      },
+      {
+        name: "revertContext",
+        type: "tuple",
+        indexed: false,
+        internalType: "struct RevertContext",
+        components: [
+          {
+            name: "asset",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "amount",
+            type: "uint64",
+            internalType: "uint64",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
       },
     ],
     anonymous: false,
