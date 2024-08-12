@@ -29,9 +29,24 @@ var (
 	_ = abi.ConvertType
 )
 
+// RevertContext is an auto generated low-level Go binding around an user-defined struct.
+type RevertContext struct {
+	Asset         common.Address
+	Amount        uint64
+	RevertMessage []byte
+}
+
+// RevertOptions is an auto generated low-level Go binding around an user-defined struct.
+type RevertOptions struct {
+	RevertAddress common.Address
+	CallOnRevert  bool
+	AbortAddress  common.Address
+	RevertMessage []byte
+}
+
 // IGatewayEVMMetaData contains all meta data concerning the IGatewayEVM contract.
 var IGatewayEVMMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revertWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposited\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"RevertedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ApprovalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ConnectorInitialized\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"CustodyInitialized\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ExecutionFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientERC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientETHAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"NotWhitelistedInCustody\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"call\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"deposit\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"depositAndCall\",\"inputs\":[{\"name\":\"receiver\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"execute\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeRevert\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"executeWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"revertWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposited\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ApprovalFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ConnectorInitialized\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"CustodyInitialized\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"DepositFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ExecutionFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientERC20Amount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"InsufficientETHAmount\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"NotWhitelistedInCustody\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
 }
 
 // IGatewayEVMABI is the input ABI used to generate the binding from.
@@ -180,109 +195,109 @@ func (_IGatewayEVM *IGatewayEVMTransactorRaw) Transact(opts *bind.TransactOpts, 
 	return _IGatewayEVM.Contract.contract.Transact(opts, method, params...)
 }
 
-// Call is a paid mutator transaction binding the contract method 0x1b8b921d.
+// Call is a paid mutator transaction binding the contract method 0x45ac7a8d.
 //
-// Solidity: function call(address receiver, bytes payload) returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) Call(opts *bind.TransactOpts, receiver common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "call", receiver, payload)
+// Solidity: function call(address receiver, bytes payload, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) Call(opts *bind.TransactOpts, receiver common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "call", receiver, payload, revertOptions)
 }
 
-// Call is a paid mutator transaction binding the contract method 0x1b8b921d.
+// Call is a paid mutator transaction binding the contract method 0x45ac7a8d.
 //
-// Solidity: function call(address receiver, bytes payload) returns()
-func (_IGatewayEVM *IGatewayEVMSession) Call(receiver common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Call(&_IGatewayEVM.TransactOpts, receiver, payload)
+// Solidity: function call(address receiver, bytes payload, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMSession) Call(receiver common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Call(&_IGatewayEVM.TransactOpts, receiver, payload, revertOptions)
 }
 
-// Call is a paid mutator transaction binding the contract method 0x1b8b921d.
+// Call is a paid mutator transaction binding the contract method 0x45ac7a8d.
 //
-// Solidity: function call(address receiver, bytes payload) returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) Call(receiver common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Call(&_IGatewayEVM.TransactOpts, receiver, payload)
+// Solidity: function call(address receiver, bytes payload, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Call(receiver common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Call(&_IGatewayEVM.TransactOpts, receiver, payload, revertOptions)
 }
 
-// Deposit is a paid mutator transaction binding the contract method 0xf340fa01.
+// Deposit is a paid mutator transaction binding the contract method 0x616e877a.
 //
-// Solidity: function deposit(address receiver) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) Deposit(opts *bind.TransactOpts, receiver common.Address) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "deposit", receiver)
+// Solidity: function deposit(address receiver, uint256 amount, address asset, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) Deposit(opts *bind.TransactOpts, receiver common.Address, amount *big.Int, asset common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "deposit", receiver, amount, asset, revertOptions)
 }
 
-// Deposit is a paid mutator transaction binding the contract method 0xf340fa01.
+// Deposit is a paid mutator transaction binding the contract method 0x616e877a.
 //
-// Solidity: function deposit(address receiver) payable returns()
-func (_IGatewayEVM *IGatewayEVMSession) Deposit(receiver common.Address) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Deposit(&_IGatewayEVM.TransactOpts, receiver)
+// Solidity: function deposit(address receiver, uint256 amount, address asset, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMSession) Deposit(receiver common.Address, amount *big.Int, asset common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit(&_IGatewayEVM.TransactOpts, receiver, amount, asset, revertOptions)
 }
 
-// Deposit is a paid mutator transaction binding the contract method 0xf340fa01.
+// Deposit is a paid mutator transaction binding the contract method 0x616e877a.
 //
-// Solidity: function deposit(address receiver) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) Deposit(receiver common.Address) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Deposit(&_IGatewayEVM.TransactOpts, receiver)
+// Solidity: function deposit(address receiver, uint256 amount, address asset, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Deposit(receiver common.Address, amount *big.Int, asset common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit(&_IGatewayEVM.TransactOpts, receiver, amount, asset, revertOptions)
 }
 
-// Deposit0 is a paid mutator transaction binding the contract method 0xf45346dc.
+// Deposit0 is a paid mutator transaction binding the contract method 0x70f23f88.
 //
-// Solidity: function deposit(address receiver, uint256 amount, address asset) returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) Deposit0(opts *bind.TransactOpts, receiver common.Address, amount *big.Int, asset common.Address) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "deposit0", receiver, amount, asset)
+// Solidity: function deposit(address receiver, (address,bool,address,bytes) revertOptions) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) Deposit0(opts *bind.TransactOpts, receiver common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "deposit0", receiver, revertOptions)
 }
 
-// Deposit0 is a paid mutator transaction binding the contract method 0xf45346dc.
+// Deposit0 is a paid mutator transaction binding the contract method 0x70f23f88.
 //
-// Solidity: function deposit(address receiver, uint256 amount, address asset) returns()
-func (_IGatewayEVM *IGatewayEVMSession) Deposit0(receiver common.Address, amount *big.Int, asset common.Address) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Deposit0(&_IGatewayEVM.TransactOpts, receiver, amount, asset)
+// Solidity: function deposit(address receiver, (address,bool,address,bytes) revertOptions) payable returns()
+func (_IGatewayEVM *IGatewayEVMSession) Deposit0(receiver common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit0(&_IGatewayEVM.TransactOpts, receiver, revertOptions)
 }
 
-// Deposit0 is a paid mutator transaction binding the contract method 0xf45346dc.
+// Deposit0 is a paid mutator transaction binding the contract method 0x70f23f88.
 //
-// Solidity: function deposit(address receiver, uint256 amount, address asset) returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) Deposit0(receiver common.Address, amount *big.Int, asset common.Address) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Deposit0(&_IGatewayEVM.TransactOpts, receiver, amount, asset)
+// Solidity: function deposit(address receiver, (address,bool,address,bytes) revertOptions) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Deposit0(receiver common.Address, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Deposit0(&_IGatewayEVM.TransactOpts, receiver, revertOptions)
 }
 
-// DepositAndCall is a paid mutator transaction binding the contract method 0x29c59b5d.
+// DepositAndCall is a paid mutator transaction binding the contract method 0x870de27a.
 //
-// Solidity: function depositAndCall(address receiver, bytes payload) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) DepositAndCall(opts *bind.TransactOpts, receiver common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "depositAndCall", receiver, payload)
+// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) DepositAndCall(opts *bind.TransactOpts, receiver common.Address, amount *big.Int, asset common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "depositAndCall", receiver, amount, asset, payload, revertOptions)
 }
 
-// DepositAndCall is a paid mutator transaction binding the contract method 0x29c59b5d.
+// DepositAndCall is a paid mutator transaction binding the contract method 0x870de27a.
 //
-// Solidity: function depositAndCall(address receiver, bytes payload) payable returns()
-func (_IGatewayEVM *IGatewayEVMSession) DepositAndCall(receiver common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.DepositAndCall(&_IGatewayEVM.TransactOpts, receiver, payload)
+// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMSession) DepositAndCall(receiver common.Address, amount *big.Int, asset common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload, revertOptions)
 }
 
-// DepositAndCall is a paid mutator transaction binding the contract method 0x29c59b5d.
+// DepositAndCall is a paid mutator transaction binding the contract method 0x870de27a.
 //
-// Solidity: function depositAndCall(address receiver, bytes payload) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall(receiver common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.DepositAndCall(&_IGatewayEVM.TransactOpts, receiver, payload)
+// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall(receiver common.Address, amount *big.Int, asset common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload, revertOptions)
 }
 
-// DepositAndCall0 is a paid mutator transaction binding the contract method 0x8c6f037f.
+// DepositAndCall0 is a paid mutator transaction binding the contract method 0xfc93baef.
 //
-// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload) returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) DepositAndCall0(opts *bind.TransactOpts, receiver common.Address, amount *big.Int, asset common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "depositAndCall0", receiver, amount, asset, payload)
+// Solidity: function depositAndCall(address receiver, bytes payload, (address,bool,address,bytes) revertOptions) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) DepositAndCall0(opts *bind.TransactOpts, receiver common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "depositAndCall0", receiver, payload, revertOptions)
 }
 
-// DepositAndCall0 is a paid mutator transaction binding the contract method 0x8c6f037f.
+// DepositAndCall0 is a paid mutator transaction binding the contract method 0xfc93baef.
 //
-// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload) returns()
-func (_IGatewayEVM *IGatewayEVMSession) DepositAndCall0(receiver common.Address, amount *big.Int, asset common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload)
+// Solidity: function depositAndCall(address receiver, bytes payload, (address,bool,address,bytes) revertOptions) payable returns()
+func (_IGatewayEVM *IGatewayEVMSession) DepositAndCall0(receiver common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, payload, revertOptions)
 }
 
-// DepositAndCall0 is a paid mutator transaction binding the contract method 0x8c6f037f.
+// DepositAndCall0 is a paid mutator transaction binding the contract method 0xfc93baef.
 //
-// Solidity: function depositAndCall(address receiver, uint256 amount, address asset, bytes payload) returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall0(receiver common.Address, amount *big.Int, asset common.Address, payload []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload)
+// Solidity: function depositAndCall(address receiver, bytes payload, (address,bool,address,bytes) revertOptions) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall0(receiver common.Address, payload []byte, revertOptions RevertOptions) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, payload, revertOptions)
 }
 
 // Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
@@ -306,25 +321,25 @@ func (_IGatewayEVM *IGatewayEVMTransactorSession) Execute(destination common.Add
 	return _IGatewayEVM.Contract.Execute(&_IGatewayEVM.TransactOpts, destination, data)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0x35c018db.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0xf7ad60db.
 //
-// Solidity: function executeRevert(address destination, bytes data) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) ExecuteRevert(opts *bind.TransactOpts, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "executeRevert", destination, data)
+// Solidity: function executeRevert(address destination, bytes data, (address,uint64,bytes) revertContext) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) ExecuteRevert(opts *bind.TransactOpts, destination common.Address, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "executeRevert", destination, data, revertContext)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0x35c018db.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0xf7ad60db.
 //
-// Solidity: function executeRevert(address destination, bytes data) payable returns()
-func (_IGatewayEVM *IGatewayEVMSession) ExecuteRevert(destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data)
+// Solidity: function executeRevert(address destination, bytes data, (address,uint64,bytes) revertContext) payable returns()
+func (_IGatewayEVM *IGatewayEVMSession) ExecuteRevert(destination common.Address, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data, revertContext)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0x35c018db.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0xf7ad60db.
 //
-// Solidity: function executeRevert(address destination, bytes data) payable returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteRevert(destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data)
+// Solidity: function executeRevert(address destination, bytes data, (address,uint64,bytes) revertContext) payable returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteRevert(destination common.Address, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data, revertContext)
 }
 
 // ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
@@ -348,25 +363,25 @@ func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteWithERC20(token common.
 	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
 }
 
-// RevertWithERC20 is a paid mutator transaction binding the contract method 0xb8969bd4.
+// RevertWithERC20 is a paid mutator transaction binding the contract method 0xd0b492c3.
 //
-// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) RevertWithERC20(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "revertWithERC20", token, to, amount, data)
+// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,uint64,bytes) revertContext) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) RevertWithERC20(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "revertWithERC20", token, to, amount, data, revertContext)
 }
 
-// RevertWithERC20 is a paid mutator transaction binding the contract method 0xb8969bd4.
+// RevertWithERC20 is a paid mutator transaction binding the contract method 0xd0b492c3.
 //
-// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_IGatewayEVM *IGatewayEVMSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.RevertWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
+// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,uint64,bytes) revertContext) returns()
+func (_IGatewayEVM *IGatewayEVMSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.RevertWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data, revertContext)
 }
 
-// RevertWithERC20 is a paid mutator transaction binding the contract method 0xb8969bd4.
+// RevertWithERC20 is a paid mutator transaction binding the contract method 0xd0b492c3.
 //
-// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.RevertWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
+// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,uint64,bytes) revertContext) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.RevertWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data, revertContext)
 }
 
 // IGatewayEVMCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the IGatewayEVM contract.
@@ -438,15 +453,16 @@ func (it *IGatewayEVMCalledIterator) Close() error {
 
 // IGatewayEVMCalled represents a Called event raised by the IGatewayEVM contract.
 type IGatewayEVMCalled struct {
-	Sender   common.Address
-	Receiver common.Address
-	Payload  []byte
-	Raw      types.Log // Blockchain specific contextual infos
+	Sender        common.Address
+	Receiver      common.Address
+	Payload       []byte
+	RevertOptions RevertOptions
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterCalled is a free log retrieval operation binding the contract event 0xf6b5ec9528dcb966bc8de8be7d0e0910938cabe45d0517e7e17cff672d665c32.
+// FilterCalled is a free log retrieval operation binding the contract event 0x6bbdf224569c498ef04873202299f2d405bf840a265c83e83880a614ba2ae113.
 //
-// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload)
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
 func (_IGatewayEVM *IGatewayEVMFilterer) FilterCalled(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMCalledIterator, error) {
 
 	var senderRule []interface{}
@@ -465,9 +481,9 @@ func (_IGatewayEVM *IGatewayEVMFilterer) FilterCalled(opts *bind.FilterOpts, sen
 	return &IGatewayEVMCalledIterator{contract: _IGatewayEVM.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
-// WatchCalled is a free log subscription operation binding the contract event 0xf6b5ec9528dcb966bc8de8be7d0e0910938cabe45d0517e7e17cff672d665c32.
+// WatchCalled is a free log subscription operation binding the contract event 0x6bbdf224569c498ef04873202299f2d405bf840a265c83e83880a614ba2ae113.
 //
-// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload)
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
 func (_IGatewayEVM *IGatewayEVMFilterer) WatchCalled(opts *bind.WatchOpts, sink chan<- *IGatewayEVMCalled, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
 
 	var senderRule []interface{}
@@ -511,9 +527,9 @@ func (_IGatewayEVM *IGatewayEVMFilterer) WatchCalled(opts *bind.WatchOpts, sink 
 	}), nil
 }
 
-// ParseCalled is a log parse operation binding the contract event 0xf6b5ec9528dcb966bc8de8be7d0e0910938cabe45d0517e7e17cff672d665c32.
+// ParseCalled is a log parse operation binding the contract event 0x6bbdf224569c498ef04873202299f2d405bf840a265c83e83880a614ba2ae113.
 //
-// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload)
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
 func (_IGatewayEVM *IGatewayEVMFilterer) ParseCalled(log types.Log) (*IGatewayEVMCalled, error) {
 	event := new(IGatewayEVMCalled)
 	if err := _IGatewayEVM.contract.UnpackLog(event, "Called", log); err != nil {
@@ -592,17 +608,18 @@ func (it *IGatewayEVMDepositedIterator) Close() error {
 
 // IGatewayEVMDeposited represents a Deposited event raised by the IGatewayEVM contract.
 type IGatewayEVMDeposited struct {
-	Sender   common.Address
-	Receiver common.Address
-	Amount   *big.Int
-	Asset    common.Address
-	Payload  []byte
-	Raw      types.Log // Blockchain specific contextual infos
+	Sender        common.Address
+	Receiver      common.Address
+	Amount        *big.Int
+	Asset         common.Address
+	Payload       []byte
+	RevertOptions RevertOptions
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterDeposited is a free log retrieval operation binding the contract event 0x9c70cd4e944d2143d1ce16231bf9e618ebd7c5c0fbded3a9958fe2f25a5ff936.
+// FilterDeposited is a free log retrieval operation binding the contract event 0x752904df36dfc0b907cefa45c2d12c3f9dc7aced58ce8d1182a9a4bb33cefedd.
 //
-// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
 func (_IGatewayEVM *IGatewayEVMFilterer) FilterDeposited(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMDepositedIterator, error) {
 
 	var senderRule []interface{}
@@ -621,9 +638,9 @@ func (_IGatewayEVM *IGatewayEVMFilterer) FilterDeposited(opts *bind.FilterOpts, 
 	return &IGatewayEVMDepositedIterator{contract: _IGatewayEVM.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
-// WatchDeposited is a free log subscription operation binding the contract event 0x9c70cd4e944d2143d1ce16231bf9e618ebd7c5c0fbded3a9958fe2f25a5ff936.
+// WatchDeposited is a free log subscription operation binding the contract event 0x752904df36dfc0b907cefa45c2d12c3f9dc7aced58ce8d1182a9a4bb33cefedd.
 //
-// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
 func (_IGatewayEVM *IGatewayEVMFilterer) WatchDeposited(opts *bind.WatchOpts, sink chan<- *IGatewayEVMDeposited, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
 
 	var senderRule []interface{}
@@ -667,9 +684,9 @@ func (_IGatewayEVM *IGatewayEVMFilterer) WatchDeposited(opts *bind.WatchOpts, si
 	}), nil
 }
 
-// ParseDeposited is a log parse operation binding the contract event 0x9c70cd4e944d2143d1ce16231bf9e618ebd7c5c0fbded3a9958fe2f25a5ff936.
+// ParseDeposited is a log parse operation binding the contract event 0x752904df36dfc0b907cefa45c2d12c3f9dc7aced58ce8d1182a9a4bb33cefedd.
 //
-// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload)
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
 func (_IGatewayEVM *IGatewayEVMFilterer) ParseDeposited(log types.Log) (*IGatewayEVMDeposited, error) {
 	event := new(IGatewayEVMDeposited)
 	if err := _IGatewayEVM.contract.UnpackLog(event, "Deposited", log); err != nil {
@@ -1049,40 +1066,50 @@ func (it *IGatewayEVMRevertedIterator) Close() error {
 
 // IGatewayEVMReverted represents a Reverted event raised by the IGatewayEVM contract.
 type IGatewayEVMReverted struct {
-	Destination common.Address
-	Value       *big.Int
-	Data        []byte
-	Raw         types.Log // Blockchain specific contextual infos
+	To            common.Address
+	Token         common.Address
+	Amount        *big.Int
+	Data          []byte
+	RevertContext RevertContext
+	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c.
+// FilterReverted is a free log retrieval operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed destination, uint256 value, bytes data)
-func (_IGatewayEVM *IGatewayEVMFilterer) FilterReverted(opts *bind.FilterOpts, destination []common.Address) (*IGatewayEVMRevertedIterator, error) {
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IGatewayEVM *IGatewayEVMFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*IGatewayEVMRevertedIterator, error) {
 
-	var destinationRule []interface{}
-	for _, destinationItem := range destination {
-		destinationRule = append(destinationRule, destinationItem)
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
 	}
 
-	logs, sub, err := _IGatewayEVM.contract.FilterLogs(opts, "Reverted", destinationRule)
+	logs, sub, err := _IGatewayEVM.contract.FilterLogs(opts, "Reverted", toRule, tokenRule)
 	if err != nil {
 		return nil, err
 	}
 	return &IGatewayEVMRevertedIterator{contract: _IGatewayEVM.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c.
+// WatchReverted is a free log subscription operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed destination, uint256 value, bytes data)
-func (_IGatewayEVM *IGatewayEVMFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *IGatewayEVMReverted, destination []common.Address) (event.Subscription, error) {
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
+func (_IGatewayEVM *IGatewayEVMFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *IGatewayEVMReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
-	var destinationRule []interface{}
-	for _, destinationItem := range destination {
-		destinationRule = append(destinationRule, destinationItem)
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
 	}
 
-	logs, sub, err := _IGatewayEVM.contract.WatchLogs(opts, "Reverted", destinationRule)
+	logs, sub, err := _IGatewayEVM.contract.WatchLogs(opts, "Reverted", toRule, tokenRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1114,167 +1141,12 @@ func (_IGatewayEVM *IGatewayEVMFilterer) WatchReverted(opts *bind.WatchOpts, sin
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xd5d7616b1678354a0dea9d7e57e6a090bff5babe9f8d6381fdbad16e89ba311c.
+// ParseReverted is a log parse operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed destination, uint256 value, bytes data)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IGatewayEVM *IGatewayEVMFilterer) ParseReverted(log types.Log) (*IGatewayEVMReverted, error) {
 	event := new(IGatewayEVMReverted)
 	if err := _IGatewayEVM.contract.UnpackLog(event, "Reverted", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// IGatewayEVMRevertedWithERC20Iterator is returned from FilterRevertedWithERC20 and is used to iterate over the raw logs and unpacked data for RevertedWithERC20 events raised by the IGatewayEVM contract.
-type IGatewayEVMRevertedWithERC20Iterator struct {
-	Event *IGatewayEVMRevertedWithERC20 // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *IGatewayEVMRevertedWithERC20Iterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IGatewayEVMRevertedWithERC20)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IGatewayEVMRevertedWithERC20)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *IGatewayEVMRevertedWithERC20Iterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IGatewayEVMRevertedWithERC20Iterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// IGatewayEVMRevertedWithERC20 represents a RevertedWithERC20 event raised by the IGatewayEVM contract.
-type IGatewayEVMRevertedWithERC20 struct {
-	Token  common.Address
-	To     common.Address
-	Amount *big.Int
-	Data   []byte
-	Raw    types.Log // Blockchain specific contextual infos
-}
-
-// FilterRevertedWithERC20 is a free log retrieval operation binding the contract event 0x723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda7.
-//
-// Solidity: event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IGatewayEVM *IGatewayEVMFilterer) FilterRevertedWithERC20(opts *bind.FilterOpts, token []common.Address, to []common.Address) (*IGatewayEVMRevertedWithERC20Iterator, error) {
-
-	var tokenRule []interface{}
-	for _, tokenItem := range token {
-		tokenRule = append(tokenRule, tokenItem)
-	}
-	var toRule []interface{}
-	for _, toItem := range to {
-		toRule = append(toRule, toItem)
-	}
-
-	logs, sub, err := _IGatewayEVM.contract.FilterLogs(opts, "RevertedWithERC20", tokenRule, toRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IGatewayEVMRevertedWithERC20Iterator{contract: _IGatewayEVM.contract, event: "RevertedWithERC20", logs: logs, sub: sub}, nil
-}
-
-// WatchRevertedWithERC20 is a free log subscription operation binding the contract event 0x723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda7.
-//
-// Solidity: event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IGatewayEVM *IGatewayEVMFilterer) WatchRevertedWithERC20(opts *bind.WatchOpts, sink chan<- *IGatewayEVMRevertedWithERC20, token []common.Address, to []common.Address) (event.Subscription, error) {
-
-	var tokenRule []interface{}
-	for _, tokenItem := range token {
-		tokenRule = append(tokenRule, tokenItem)
-	}
-	var toRule []interface{}
-	for _, toItem := range to {
-		toRule = append(toRule, toItem)
-	}
-
-	logs, sub, err := _IGatewayEVM.contract.WatchLogs(opts, "RevertedWithERC20", tokenRule, toRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IGatewayEVMRevertedWithERC20)
-				if err := _IGatewayEVM.contract.UnpackLog(event, "RevertedWithERC20", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseRevertedWithERC20 is a log parse operation binding the contract event 0x723fc7be2448075379e4fdf1e6bf5fead954d2668d2da05dcb44ccfec4beeda7.
-//
-// Solidity: event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data)
-func (_IGatewayEVM *IGatewayEVMFilterer) ParseRevertedWithERC20(log types.Log) (*IGatewayEVMRevertedWithERC20, error) {
-	event := new(IGatewayEVMRevertedWithERC20)
-	if err := _IGatewayEVM.contract.UnpackLog(event, "RevertedWithERC20", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

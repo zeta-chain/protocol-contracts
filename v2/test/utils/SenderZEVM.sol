@@ -2,7 +2,8 @@
 pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "src/zevm/interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVM } from "src/zevm/interfaces/IGatewayZEVM.sol";
+import { RevertOptions } from "src/zevm/interfaces/IGatewayZEVM.sol";
 import "src/zevm/interfaces/IZRC20.sol";
 
 /// @title SenderZEVM
@@ -30,8 +31,15 @@ contract SenderZEVM {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
+        RevertOptions memory revertOptions = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: ""
+        });
+
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).call(receiver, chainId, message);
+        IGatewayZEVM(gateway).call(receiver, chainId, message, revertOptions);
     }
 
     /// @notice Withdraw and call a receiver on EVM.
@@ -58,7 +66,14 @@ contract SenderZEVM {
         // Approve gateway to withdraw
         if (!IZRC20(zrc20).approve(gateway, amount)) revert ApprovalFailed();
 
+        RevertOptions memory revertOptions = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: ""
+        });
+
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message);
+        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, revertOptions);
     }
 }

@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
+
 import "./interfaces/IWZETA.sol";
-import "./interfaces/IZRC20.sol";
-import "./interfaces/UniversalContract.sol";
+import { IZRC20 } from "./interfaces/IZRC20.sol";
+import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import { RevertContext, RevertOptions } from "src/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
@@ -115,12 +117,24 @@ contract GatewayZEVM is
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
-    function withdraw(bytes memory receiver, uint256 amount, address zrc20) external nonReentrant whenNotPaused {
+    /// @param revertOptions Revert options.
+    function withdraw(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawn(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "");
+        emit Withdrawn(
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", revertOptions
+        );
     }
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
@@ -128,11 +142,13 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
         uint256 amount,
         address zrc20,
-        bytes calldata message
+        bytes calldata message,
+        RevertOptions calldata revertOptions
     )
         external
         nonReentrant
@@ -142,30 +158,20 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawn(msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message);
+        emit Withdrawn(
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, revertOptions
+        );
     }
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
-    function withdraw(bytes memory receiver, uint256 amount, uint256 chainId) external nonReentrant whenNotPaused {
-        if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
-
-        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "");
-    }
-
-    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
-    /// @param receiver The receiver address on the external chain.
-    /// @param amount The amount of tokens to withdraw.
-    /// @param chainId Chain id of the external chain.
-    /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(
+    /// @param revertOptions Revert options.
+    function withdraw(
         bytes memory receiver,
         uint256 amount,
         uint256 chainId,
-        bytes calldata message
+        RevertOptions calldata revertOptions
     )
         external
         nonReentrant
@@ -175,17 +181,51 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", revertOptions);
+    }
+
+    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param chainId Chain id of the external chain.
+    /// @param message The calldata to pass to the contract call.
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
+        if (receiver.length == 0) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+
+        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, revertOptions);
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata to pass to the contract call.
-    function call(bytes memory receiver, uint256 chainId, bytes calldata message) external nonReentrant whenNotPaused {
+    /// @param revertOptions Revert options.
+    function call(
+        bytes memory receiver,
+        uint256 chainId,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (message.length == 0) revert EmptyMessage();
 
-        emit Called(msg.sender, chainId, receiver, message);
+        emit Called(msg.sender, chainId, receiver, message, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.
@@ -278,12 +318,14 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function executeRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external
         onlyFungible
@@ -292,7 +334,7 @@ contract GatewayZEVM is
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
-        UniversalContract(target).onRevert(context, zrc20, amount, message);
+        UniversalContract(target).onRevert(revertContext);
     }
 
     /// @notice Deposit foreign coins into ZRC20 and revert a user-specified contract on ZEVM.
@@ -301,12 +343,14 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function depositAndRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external
         onlyFungible
@@ -317,6 +361,6 @@ contract GatewayZEVM is
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
-        UniversalContract(target).onRevert(context, zrc20, amount, message);
+        UniversalContract(target).onRevert(revertContext);
     }
 }

@@ -21,18 +21,6 @@ import type {
   TypedContractMethod,
 } from "../common";
 
-export type ZContextStruct = {
-  origin: BytesLike;
-  sender: AddressLike;
-  chainID: BigNumberish;
-};
-
-export type ZContextStructOutput = [
-  origin: string,
-  sender: string,
-  chainID: bigint
-] & { origin: string; sender: string; chainID: bigint };
-
 export type RevertContextStruct = {
   asset: AddressLike;
   amount: BigNumberish;
@@ -45,32 +33,22 @@ export type RevertContextStructOutput = [
   revertMessage: string
 ] & { asset: string; amount: bigint; revertMessage: string };
 
-export interface UniversalContractInterface extends Interface {
-  getFunction(
-    nameOrSignature: "onCrossChainCall" | "onRevert"
-  ): FunctionFragment;
+export interface RevertableInterface extends Interface {
+  getFunction(nameOrSignature: "onRevert"): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "onCrossChainCall",
-    values: [ZContextStruct, AddressLike, BigNumberish, BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "onRevert",
     values: [RevertContextStruct]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "onCrossChainCall",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
 }
 
-export interface UniversalContract extends BaseContract {
-  connect(runner?: ContractRunner | null): UniversalContract;
+export interface Revertable extends BaseContract {
+  connect(runner?: ContractRunner | null): Revertable;
   waitForDeployment(): Promise<this>;
 
-  interface: UniversalContractInterface;
+  interface: RevertableInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -109,17 +87,6 @@ export interface UniversalContract extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  onCrossChainCall: TypedContractMethod<
-    [
-      context: ZContextStruct,
-      zrc20: AddressLike,
-      amount: BigNumberish,
-      message: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-
   onRevert: TypedContractMethod<
     [revertContext: RevertContextStruct],
     [void],
@@ -130,18 +97,6 @@ export interface UniversalContract extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
-  getFunction(
-    nameOrSignature: "onCrossChainCall"
-  ): TypedContractMethod<
-    [
-      context: ZContextStruct,
-      zrc20: AddressLike,
-      amount: BigNumberish,
-      message: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
   getFunction(
     nameOrSignature: "onRevert"
   ): TypedContractMethod<

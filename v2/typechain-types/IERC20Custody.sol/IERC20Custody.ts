@@ -23,6 +23,18 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface IERC20CustodyInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -55,7 +67,13 @@ export interface IERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -145,19 +163,22 @@ export namespace WithdrawnAndRevertedEvent {
     token: AddressLike,
     to: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
     token: string,
     to: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
     token: string;
     to: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -232,7 +253,8 @@ export interface IERC20Custody extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -271,7 +293,8 @@ export interface IERC20Custody extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -358,7 +381,7 @@ export interface IERC20Custody extends BaseContract {
       WithdrawnAndCalledEvent.OutputObject
     >;
 
-    "WithdrawnAndReverted(address,address,uint256,bytes)": TypedContractEvent<
+    "WithdrawnAndReverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
       WithdrawnAndRevertedEvent.InputTuple,
       WithdrawnAndRevertedEvent.OutputTuple,
       WithdrawnAndRevertedEvent.OutputObject

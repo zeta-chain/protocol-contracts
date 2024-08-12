@@ -2,6 +2,7 @@
 pragma solidity 0.8.26;
 
 import "./UniversalContract.sol";
+import "src/Revert.sol";
 
 /// @title IGatewayZEVMEvents
 /// @notice Interface for the events emitted by the GatewayZEVM contract.
@@ -11,7 +12,10 @@ interface IGatewayZEVMEvents {
     /// @param chainId Chain id of external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
-    event Called(address indexed sender, uint256 indexed chainId, bytes receiver, bytes message);
+    /// @param revertOptions Revert options.
+    event Called(
+        address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, RevertOptions revertOptions
+    );
 
     /// @notice Emitted when a withdrawal is made.
     /// @param sender The address from which the tokens are withdrawn.
@@ -22,6 +26,7 @@ interface IGatewayZEVMEvents {
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
+    /// @param revertOptions Revert options.
     event Withdrawn(
         address indexed sender,
         uint256 indexed chainId,
@@ -30,7 +35,8 @@ interface IGatewayZEVMEvents {
         uint256 value,
         uint256 gasfee,
         uint256 protocolFlatFee,
-        bytes message
+        bytes message,
+        RevertOptions revertOptions
     );
 }
 
@@ -82,32 +88,69 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
-    function withdraw(bytes memory receiver, uint256 amount, address zrc20) external;
+    /// @param revertOptions Revert options.
+    function withdraw(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
-    function withdraw(bytes memory receiver, uint256 amount, uint256 chainId) external;
+    /// @param revertOptions Revert options.
+    function withdraw(
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(bytes memory receiver, uint256 amount, address zrc20, bytes calldata message) external;
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
     /// @param chainId Chain id of the external chain.
     /// @param message The calldata to pass to the contract call.
-    function withdrawAndCall(bytes memory receiver, uint256 amount, uint256 chainId, bytes calldata message) external;
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
     /// @param chainId Chain id of the external chain.
     /// @param message The calldata to pass to the contract call.
-    function call(bytes memory receiver, uint256 chainId, bytes calldata message) external;
+    /// @param revertOptions Revert options.
+    function call(
+        bytes memory receiver,
+        uint256 chainId,
+        bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Deposit foreign coins into ZRC20.
     /// @param zrc20 The address of the ZRC20 token.
@@ -164,12 +207,14 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function executeRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external;
 
@@ -179,12 +224,14 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function depositAndRevert(
-        revertContext calldata context,
+        zContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message
+        bytes calldata message,
+        RevertContext calldata revertContext
     )
         external;
 }

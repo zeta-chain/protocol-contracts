@@ -23,6 +23,37 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type RevertOptionsStruct = {
+  revertAddress: AddressLike;
+  callOnRevert: boolean;
+  abortAddress: AddressLike;
+  revertMessage: BytesLike;
+};
+
+export type RevertOptionsStructOutput = [
+  revertAddress: string,
+  callOnRevert: boolean,
+  abortAddress: string,
+  revertMessage: string
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+};
+
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface GatewayEVMUpgradeTestInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -33,10 +64,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
-      | "deposit(address)"
-      | "deposit(address,uint256,address)"
-      | "depositAndCall(address,bytes)"
-      | "depositAndCall(address,uint256,address,bytes)"
+      | "deposit(address,uint256,address,(address,bool,address,bytes))"
+      | "deposit(address,(address,bool,address,bytes))"
+      | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
+      | "depositAndCall(address,bytes,(address,bool,address,bytes))"
       | "execute"
       | "executeRevert"
       | "executeWithERC20"
@@ -70,7 +101,6 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "Initialized"
       | "Paused"
       | "Reverted"
-      | "RevertedWithERC20"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
@@ -97,24 +127,30 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "call",
-    values: [AddressLike, BytesLike]
+    values: [AddressLike, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(functionFragment: "custody", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "deposit(address)",
-    values: [AddressLike]
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
+    values: [AddressLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit(address,uint256,address)",
-    values: [AddressLike, BigNumberish, AddressLike]
+    functionFragment: "deposit(address,(address,bool,address,bytes))",
+    values: [AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,bytes)",
-    values: [AddressLike, BytesLike]
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
+    values: [
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      RevertOptionsStruct
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,uint256,address,bytes)",
-    values: [AddressLike, BigNumberish, AddressLike, BytesLike]
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
+    values: [AddressLike, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
@@ -122,7 +158,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
-    values: [AddressLike, BytesLike]
+    values: [AddressLike, BytesLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "executeWithERC20",
@@ -156,7 +192,13 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "revertWithERC20",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
@@ -209,19 +251,19 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address)",
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,uint256,address)",
+    functionFragment: "deposit(address,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,bytes)",
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,uint256,address,bytes)",
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
@@ -281,13 +323,20 @@ export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
-    payload: BytesLike
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
-  export type OutputTuple = [sender: string, receiver: string, payload: string];
+  export type OutputTuple = [
+    sender: string,
+    receiver: string,
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
+  ];
   export interface OutputObject {
     sender: string;
     receiver: string;
     payload: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -301,14 +350,16 @@ export namespace DepositedEvent {
     receiver: AddressLike,
     amount: BigNumberish,
     asset: AddressLike,
-    payload: BytesLike
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
     receiver: string,
     amount: bigint,
     asset: string,
-    payload: string
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
@@ -316,6 +367,7 @@ export namespace DepositedEvent {
     amount: bigint;
     asset: string;
     payload: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -410,40 +462,25 @@ export namespace PausedEvent {
 
 export namespace RevertedEvent {
   export type InputTuple = [
-    destination: AddressLike,
-    value: BigNumberish,
-    data: BytesLike
-  ];
-  export type OutputTuple = [destination: string, value: bigint, data: string];
-  export interface OutputObject {
-    destination: string;
-    value: bigint;
-    data: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace RevertedWithERC20Event {
-  export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -587,40 +624,54 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
     [void],
     "nonpayable"
   >;
 
   custody: TypedContractMethod<[], [string], "view">;
 
-  "deposit(address)": TypedContractMethod<
-    [receiver: AddressLike],
-    [void],
-    "payable"
-  >;
-
-  "deposit(address,uint256,address)": TypedContractMethod<
-    [receiver: AddressLike, amount: BigNumberish, asset: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  "depositAndCall(address,bytes)": TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
-    [void],
-    "payable"
-  >;
-
-  "depositAndCall(address,uint256,address,bytes)": TypedContractMethod<
+  "deposit(address,uint256,address,(address,bool,address,bytes))": TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
       asset: AddressLike,
-      payload: BytesLike
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
+  >;
+
+  "deposit(address,(address,bool,address,bytes))": TypedContractMethod<
+    [receiver: AddressLike, revertOptions: RevertOptionsStruct],
+    [void],
+    "payable"
+  >;
+
+  "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "depositAndCall(address,bytes,(address,bool,address,bytes))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
   >;
 
   execute: TypedContractMethod<
@@ -630,7 +681,11 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   >;
 
   executeRevert: TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
+    [
+      destination: AddressLike,
+      data: BytesLike,
+      revertContext: RevertContextStruct
+    ],
     [void],
     "payable"
   >;
@@ -661,7 +716,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   >;
 
   initialize: TypedContractMethod<
-    [_tssAddress: AddressLike, _zetaToken: AddressLike, _admin: AddressLike],
+    [tssAddress_: AddressLike, zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -683,7 +738,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -696,13 +752,13 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   >;
 
   setConnector: TypedContractMethod<
-    [_zetaConnector: AddressLike],
+    [zetaConnector_: AddressLike],
     [void],
     "nonpayable"
   >;
 
   setCustody: TypedContractMethod<
-    [_custody: AddressLike],
+    [custody_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -749,7 +805,11 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "call"
   ): TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
     [void],
     "nonpayable"
   >;
@@ -757,33 +817,47 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     nameOrSignature: "custody"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "deposit(address)"
-  ): TypedContractMethod<[receiver: AddressLike], [void], "payable">;
-  getFunction(
-    nameOrSignature: "deposit(address,uint256,address)"
-  ): TypedContractMethod<
-    [receiver: AddressLike, amount: BigNumberish, asset: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "depositAndCall(address,bytes)"
-  ): TypedContractMethod<
-    [receiver: AddressLike, payload: BytesLike],
-    [void],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "depositAndCall(address,uint256,address,bytes)"
+    nameOrSignature: "deposit(address,uint256,address,(address,bool,address,bytes))"
   ): TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
       asset: AddressLike,
-      payload: BytesLike
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "deposit(address,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [receiver: AddressLike, revertOptions: RevertOptionsStruct],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      asset: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,bytes,(address,bool,address,bytes))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
   >;
   getFunction(
     nameOrSignature: "execute"
@@ -795,7 +869,11 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "executeRevert"
   ): TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
+    [
+      destination: AddressLike,
+      data: BytesLike,
+      revertContext: RevertContextStruct
+    ],
     [void],
     "payable"
   >;
@@ -831,7 +909,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
-    [_tssAddress: AddressLike, _zetaToken: AddressLike, _admin: AddressLike],
+    [tssAddress_: AddressLike, zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -858,7 +936,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
-      data: BytesLike
+      data: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -872,10 +951,10 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "setConnector"
-  ): TypedContractMethod<[_zetaConnector: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<[zetaConnector_: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setCustody"
-  ): TypedContractMethod<[_custody: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<[custody_: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
@@ -956,13 +1035,6 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     RevertedEvent.OutputObject
   >;
   getEvent(
-    key: "RevertedWithERC20"
-  ): TypedContractEvent<
-    RevertedWithERC20Event.InputTuple,
-    RevertedWithERC20Event.OutputTuple,
-    RevertedWithERC20Event.OutputObject
-  >;
-  getEvent(
     key: "RoleAdminChanged"
   ): TypedContractEvent<
     RoleAdminChangedEvent.InputTuple,
@@ -999,7 +1071,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   >;
 
   filters: {
-    "Called(address,address,bytes)": TypedContractEvent<
+    "Called(address,address,bytes,tuple)": TypedContractEvent<
       CalledEvent.InputTuple,
       CalledEvent.OutputTuple,
       CalledEvent.OutputObject
@@ -1010,7 +1082,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       CalledEvent.OutputObject
     >;
 
-    "Deposited(address,address,uint256,address,bytes)": TypedContractEvent<
+    "Deposited(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
@@ -1076,7 +1148,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       PausedEvent.OutputObject
     >;
 
-    "Reverted(address,uint256,bytes)": TypedContractEvent<
+    "Reverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
@@ -1085,17 +1157,6 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
-    >;
-
-    "RevertedWithERC20(address,address,uint256,bytes)": TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
-    >;
-    RevertedWithERC20: TypedContractEvent<
-      RevertedWithERC20Event.InputTuple,
-      RevertedWithERC20Event.OutputTuple,
-      RevertedWithERC20Event.OutputObject
     >;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<

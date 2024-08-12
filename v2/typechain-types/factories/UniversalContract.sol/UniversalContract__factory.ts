@@ -59,41 +59,26 @@ const _abi = [
     name: "onRevert",
     inputs: [
       {
-        name: "context",
+        name: "revertContext",
         type: "tuple",
-        internalType: "struct revertContext",
+        internalType: "struct RevertContext",
         components: [
           {
-            name: "origin",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "sender",
+            name: "asset",
             type: "address",
             internalType: "address",
           },
           {
-            name: "chainID",
-            type: "uint256",
-            internalType: "uint256",
+            name: "amount",
+            type: "uint64",
+            internalType: "uint64",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
           },
         ],
-      },
-      {
-        name: "zrc20",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "amount",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "message",
-        type: "bytes",
-        internalType: "bytes",
       },
     ],
     outputs: [],

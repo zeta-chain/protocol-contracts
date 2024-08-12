@@ -1,14 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-struct zContext {
-    bytes origin;
-    address sender;
-    uint256 chainID;
-}
+import { RevertContext } from "src/Revert.sol";
 
-// TODO: define revertContext
-struct revertContext {
+struct zContext {
     bytes origin;
     address sender;
     uint256 chainID;
@@ -35,6 +30,5 @@ interface UniversalContract {
     )
         external;
 
-    // TODO: define onRevert
-    function onRevert(revertContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
+    function onRevert(RevertContext calldata revertContext) external;
 }

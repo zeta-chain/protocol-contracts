@@ -18,7 +18,7 @@ import "src/evm/ZetaConnectorNonNative.sol";
 
 import "./utils/IReceiverEVM.sol";
 import "./utils/Zeta.non-eth.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMErrors, IGatewayEVMEvents } from "src/evm/interfaces/IGatewayEVM.sol";
 import "src/evm/interfaces/IZetaConnector.sol";
 
 contract ZetaConnectorNonNativeTest is
@@ -39,6 +39,7 @@ contract ZetaConnectorNonNativeTest is
     address owner;
     address destination;
     address tssAddress;
+    RevertContext revertContext;
 
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
     error ExceedsMaxSupply();
@@ -74,6 +75,8 @@ contract ZetaConnectorNonNativeTest is
         gateway.setCustody(address(custody));
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
+
+        revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
     }
 
     function testWithdraw() public {
@@ -273,13 +276,13 @@ contract ZetaConnectorNonNativeTest is
         vm.expectCall(address(zetaToken), 0, mintData);
         // Verify that onRevert callback was called
         vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedRevert(address(gateway), data);
+        emit ReceivedRevert(address(gateway), revertContext);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit RevertedWithERC20(address(zetaToken), address(receiver), amount, data);
+        emit Reverted(address(receiver), address(zetaToken), amount, data, revertContext);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit WithdrawnAndReverted(address(receiver), amount, data);
+        emit WithdrawnAndReverted(address(receiver), amount, data, revertContext);
         vm.prank(tssAddress);
-        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash, revertContext);
 
         // Verify that the tokens were transferred to the receiver address
         uint256 balanceAfter = zetaToken.balanceOf(address(receiver));
@@ -305,7 +308,7 @@ contract ZetaConnectorNonNativeTest is
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash, revertContext);
     }
 
     function testWithdrawAndFailsIfMaxSupplyIsReached() public {
@@ -340,7 +343,7 @@ contract ZetaConnectorNonNativeTest is
 
         vm.prank(tssAddress);
         vm.expectRevert(ExceedsMaxSupply.selector);
-        zetaConnector.withdrawAndRevert(address(receiver), amount + 1, data, "");
+        zetaConnector.withdrawAndRevert(address(receiver), amount + 1, data, "", revertContext);
     }
 
     function testSexMaxSupplyFailsIfSenderIsNotTss() public {

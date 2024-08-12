@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import "src/Revert.sol";
+
 /// @title IGatewayEVMEvents
 /// @notice Interface for the events emitted by the GatewayEVM contract.
 interface IGatewayEVMEvents {
@@ -11,10 +13,12 @@ interface IGatewayEVMEvents {
     event Executed(address indexed destination, uint256 value, bytes data);
 
     /// @notice Emitted when a contract call is reverted.
-    /// @param destination The address of the contract called.
-    /// @param value The amount of ETH sent with the call.
+    /// @param to The address of the contract called.
+    /// @param token The address of the ERC20 token, empty if gas token
+    /// @param amount The amount of ETH sent with the call.
     /// @param data The calldata passed to the contract call.
-    event Reverted(address indexed destination, uint256 value, bytes data);
+    /// @param revertContext Revert context to pass to onRevert.
+    event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, RevertContext revertContext);
 
     /// @notice Emitted when a contract call with ERC20 tokens is executed.
     /// @param token The address of the ERC20 token.
@@ -23,26 +27,28 @@ interface IGatewayEVMEvents {
     /// @param data The calldata passed to the contract call.
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
 
-    /// @notice Emitted when a contract call with ERC20 tokens is reverted.
-    /// @param token The address of the ERC20 token.
-    /// @param to The address of the contract called.
-    /// @param amount The amount of tokens transferred.
-    /// @param data The calldata passed to the contract call.
-    event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-
     /// @notice Emitted when a deposit is made.
     /// @param sender The address of the sender.
     /// @param receiver The address of the receiver.
     /// @param amount The amount of ETH or tokens deposited.
     /// @param asset The address of the ERC20 token (zero address if ETH).
     /// @param payload The calldata passed with the deposit.
-    event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload);
+    /// @param revertOptions Revert options.
+    event Deposited(
+        address indexed sender,
+        address indexed receiver,
+        uint256 amount,
+        address asset,
+        bytes payload,
+        RevertOptions revertOptions
+    );
 
     /// @notice Emitted when an omnichain smart contract call is made without asset transfer.
     /// @param sender The address of the sender.
     /// @param receiver The address of the receiver.
     /// @param payload The calldata passed to the call.
-    event Called(address indexed sender, address indexed receiver, bytes payload);
+    /// @param revertOptions Revert options.
+    event Called(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
 }
 
 /// @title IGatewayEVMErrors
@@ -90,7 +96,14 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) external payable;
+    /// @param revertContext Revert context to pass to onRevert.
+    function executeRevert(
+        address destination,
+        bytes calldata data,
+        RevertContext calldata revertContext
+    )
+        external
+        payable;
 
     /// @notice Executes a call to a contract.
     /// @param destination The address of the contract to call.
@@ -103,40 +116,58 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function revertWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
+    /// @param revertContext Revert context to pass to onRevert.
+    function revertWithERC20(
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data,
+        RevertContext calldata revertContext
+    )
+        external;
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
-    function deposit(address receiver) external payable;
+    /// @param revertOptions Revert options.
+    function deposit(address receiver, RevertOptions calldata revertOptions) external payable;
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
-    function deposit(address receiver, uint256 amount, address asset) external;
+    /// @param revertOptions Revert options.
+    function deposit(address receiver, uint256 amount, address asset, RevertOptions calldata revertOptions) external;
 
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, bytes calldata payload) external payable;
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable;
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, uint256 amount, address asset, bytes calldata payload) external;
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
+        address asset,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external;
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function call(address receiver, bytes calldata payload) external;
-}
-
-/// @title Revertable
-/// @notice Interface for contracts that support revertable calls.
-interface Revertable {
-    /// @notice Called when a revertable call is made.
-    /// @param data The calldata to pass to the revertable call.
-    function onRevert(bytes calldata data) external;
+    /// @param revertOptions Revert options.
+    function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
 }

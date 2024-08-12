@@ -21,6 +21,25 @@ import type {
   TypedListener,
 } from "../common";
 
+export type RevertOptionsStruct = {
+  revertAddress: AddressLike;
+  callOnRevert: boolean;
+  abortAddress: AddressLike;
+  revertMessage: BytesLike;
+};
+
+export type RevertOptionsStructOutput = [
+  revertAddress: string,
+  callOnRevert: boolean,
+  abortAddress: string,
+  revertMessage: string
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+};
+
 export interface IGatewayZEVMEventsInterface extends Interface {
   getEvent(nameOrSignatureOrTopic: "Called" | "Withdrawn"): EventFragment;
 }
@@ -30,19 +49,22 @@ export namespace CalledEvent {
     sender: AddressLike,
     chainId: BigNumberish,
     receiver: BytesLike,
-    message: BytesLike
+    message: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
     chainId: bigint,
     receiver: string,
-    message: string
+    message: string,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
     chainId: bigint;
     receiver: string;
     message: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -59,7 +81,8 @@ export namespace WithdrawnEvent {
     value: BigNumberish,
     gasfee: BigNumberish,
     protocolFlatFee: BigNumberish,
-    message: BytesLike
+    message: BytesLike,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
@@ -69,7 +92,8 @@ export namespace WithdrawnEvent {
     value: bigint,
     gasfee: bigint,
     protocolFlatFee: bigint,
-    message: string
+    message: string,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
@@ -80,6 +104,7 @@ export namespace WithdrawnEvent {
     gasfee: bigint;
     protocolFlatFee: bigint;
     message: string;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -150,7 +175,7 @@ export interface IGatewayZEVMEvents extends BaseContract {
   >;
 
   filters: {
-    "Called(address,uint256,bytes,bytes)": TypedContractEvent<
+    "Called(address,uint256,bytes,bytes,tuple)": TypedContractEvent<
       CalledEvent.InputTuple,
       CalledEvent.OutputTuple,
       CalledEvent.OutputObject
@@ -161,7 +186,7 @@ export interface IGatewayZEVMEvents extends BaseContract {
       CalledEvent.OutputObject
     >;
 
-    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes)": TypedContractEvent<
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple)": TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,
       WithdrawnEvent.OutputObject

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorBase.sol";
-
-import "./interfaces/IERC20Custody.sol";
-import "./interfaces/IGatewayEVM.sol";
+import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
+import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
+import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
+import { RevertContext, RevertOptions, Revertable } from "src/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -98,7 +98,8 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     function executeRevert(
         address destination,
-        bytes calldata data
+        bytes calldata data,
+        RevertContext calldata revertContext
     )
         public
         payable
@@ -109,9 +110,9 @@ contract GatewayEVM is
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
-        Revertable(destination).onRevert(data);
+        Revertable(destination).onRevert(revertContext);
 
-        emit Reverted(destination, msg.value, data);
+        emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
@@ -182,11 +183,13 @@ contract GatewayEVM is
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to transfer.
     /// @param data Calldata to pass to the call.
+    /// @param revertContext Revert context to pass to onRevert.
     function revertWithERC20(
         address token,
         address to,
         uint256 amount,
-        bytes calldata data
+        bytes calldata data,
+        RevertContext calldata revertContext
     )
         external
         onlyRole(ASSET_HANDLER_ROLE)
@@ -197,14 +200,23 @@ contract GatewayEVM is
         if (to == address(0)) revert ZeroAddress();
 
         IERC20(token).safeTransfer(address(to), amount);
-        Revertable(to).onRevert(data);
+        Revertable(to).onRevert(revertContext);
 
-        emit RevertedWithERC20(token, to, amount, data);
+        emit Reverted(to, token, amount, data, revertContext);
     }
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
-    function deposit(address receiver) external payable whenNotPaused nonReentrant {
+    /// @param revertOptions Revert options.
+    function deposit(
+        address receiver,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable
+        whenNotPaused
+        nonReentrant
+    {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
 
@@ -212,46 +224,19 @@ contract GatewayEVM is
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposited(msg.sender, receiver, msg.value, address(0), "");
+        emit Deposited(msg.sender, receiver, msg.value, address(0), "", revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
-    function deposit(address receiver, uint256 amount, address asset) external whenNotPaused nonReentrant {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (receiver == address(0)) revert ZeroAddress();
-
-        transferFromToAssetHandler(msg.sender, asset, amount);
-
-        emit Deposited(msg.sender, receiver, amount, asset, "");
-    }
-
-    /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
-    /// @param receiver Address of the receiver.
-    /// @param payload Calldata to pass to the call.
-    function depositAndCall(address receiver, bytes calldata payload) external payable whenNotPaused nonReentrant {
-        if (msg.value == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-
-        (bool deposited,) = tssAddress.call{ value: msg.value }("");
-
-        if (!deposited) revert DepositFailed();
-
-        emit Deposited(msg.sender, receiver, msg.value, address(0), payload);
-    }
-
-    /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
-    /// @param receiver Address of the receiver.
-    /// @param amount Amount of tokens to deposit.
-    /// @param asset Address of the ERC20 token.
-    /// @param payload Calldata to pass to the call.
-    function depositAndCall(
+    /// @param revertOptions Revert options.
+    function deposit(
         address receiver,
         uint256 amount,
         address asset,
-        bytes calldata payload
+        RevertOptions calldata revertOptions
     )
         external
         whenNotPaused
@@ -262,15 +247,73 @@ contract GatewayEVM is
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposited(msg.sender, receiver, amount, asset, payload);
+        emit Deposited(msg.sender, receiver, amount, asset, "", revertOptions);
+    }
+
+    /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
+    /// @param receiver Address of the receiver.
+    /// @param payload Calldata to pass to the call.
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable
+        whenNotPaused
+        nonReentrant
+    {
+        if (msg.value == 0) revert InsufficientETHAmount();
+        if (receiver == address(0)) revert ZeroAddress();
+
+        (bool deposited,) = tssAddress.call{ value: msg.value }("");
+
+        if (!deposited) revert DepositFailed();
+
+        emit Deposited(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+    }
+
+    /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of tokens to deposit.
+    /// @param asset Address of the ERC20 token.
+    /// @param payload Calldata to pass to the call.
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
+        address asset,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        whenNotPaused
+        nonReentrant
+    {
+        if (amount == 0) revert InsufficientERC20Amount();
+        if (receiver == address(0)) revert ZeroAddress();
+
+        transferFromToAssetHandler(msg.sender, asset, amount);
+
+        emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
-    function call(address receiver, bytes calldata payload) external whenNotPaused nonReentrant {
+    /// @param revertOptions Revert options.
+    function call(
+        address receiver,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        whenNotPaused
+        nonReentrant
+    {
         if (receiver == address(0)) revert ZeroAddress();
-        emit Called(msg.sender, receiver, payload);
+        emit Called(msg.sender, receiver, payload, revertOptions);
     }
 
     /// @notice Sets the custody contract address.

@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./interfaces//IGatewayEVM.sol";
-import "./interfaces/IERC20Custody.sol";
+import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
+import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
+
+import { RevertContext } from "src/Revert.sol";
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -124,11 +126,13 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address to,
         address token,
         uint256 amount,
-        bytes calldata data
+        bytes calldata data,
+        RevertContext calldata revertContext
     )
         public
         nonReentrant
@@ -141,8 +145,8 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         IERC20(token).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
-        gateway.revertWithERC20(token, to, amount, data);
+        gateway.revertWithERC20(token, to, amount, data, revertContext);
 
-        emit WithdrawnAndReverted(to, token, amount, data);
+        emit WithdrawnAndReverted(to, token, amount, data, revertContext);
     }
 }

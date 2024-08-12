@@ -39,6 +39,7 @@ contract ZetaConnectorNativeTest is
     address owner;
     address destination;
     address tssAddress;
+    RevertContext revertContext;
 
     error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
@@ -72,6 +73,7 @@ contract ZetaConnectorNativeTest is
         zetaToken.mint(address(zetaConnector), 5_000_000);
 
         vm.deal(tssAddress, 1 ether);
+        revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
     }
 
     function testWithdraw() public {
@@ -262,13 +264,13 @@ contract ZetaConnectorNativeTest is
         vm.expectCall(address(zetaToken), 0, transferData);
         // Verify that onRevert callback was called
         vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedRevert(address(gateway), data);
+        emit ReceivedRevert(address(gateway), revertContext);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit RevertedWithERC20(address(zetaToken), address(receiver), amount, data);
+        emit Reverted(address(receiver), address(zetaToken), amount, data, revertContext);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit WithdrawnAndReverted(address(receiver), amount, data);
+        emit WithdrawnAndReverted(address(receiver), amount, data, revertContext);
         vm.prank(tssAddress);
-        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash, revertContext);
 
         // Verify that the tokens were transferred to the receiver address
         uint256 balanceAfter = zetaToken.balanceOf(address(receiver));
@@ -294,6 +296,6 @@ contract ZetaConnectorNativeTest is
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndRevert(address(receiver), amount, data, internalSendHash, revertContext);
     }
 }

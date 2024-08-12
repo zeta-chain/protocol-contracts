@@ -1,7 +1,7 @@
 // Code generated - DO NOT EDIT.
 // This file is a generated binding and any manual changes will be lost.
 
-package igatewayevm
+package revert
 
 import (
 	"errors"
@@ -29,9 +29,16 @@ var (
 	_ = abi.ConvertType
 )
 
+// RevertContext is an auto generated low-level Go binding around an user-defined struct.
+type RevertContext struct {
+	Asset         common.Address
+	Amount        uint64
+	RevertMessage []byte
+}
+
 // RevertableMetaData contains all meta data concerning the Revertable contract.
 var RevertableMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
 }
 
 // RevertableABI is the input ABI used to generate the binding from.
@@ -180,23 +187,23 @@ func (_Revertable *RevertableTransactorRaw) Transact(opts *bind.TransactOpts, me
 	return _Revertable.Contract.contract.Transact(opts, method, params...)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x8fcaa0b5.
+// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
 //
-// Solidity: function onRevert(bytes data) returns()
-func (_Revertable *RevertableTransactor) OnRevert(opts *bind.TransactOpts, data []byte) (*types.Transaction, error) {
-	return _Revertable.contract.Transact(opts, "onRevert", data)
+// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
+func (_Revertable *RevertableTransactor) OnRevert(opts *bind.TransactOpts, revertContext RevertContext) (*types.Transaction, error) {
+	return _Revertable.contract.Transact(opts, "onRevert", revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x8fcaa0b5.
+// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
 //
-// Solidity: function onRevert(bytes data) returns()
-func (_Revertable *RevertableSession) OnRevert(data []byte) (*types.Transaction, error) {
-	return _Revertable.Contract.OnRevert(&_Revertable.TransactOpts, data)
+// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
+func (_Revertable *RevertableSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
+	return _Revertable.Contract.OnRevert(&_Revertable.TransactOpts, revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x8fcaa0b5.
+// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
 //
-// Solidity: function onRevert(bytes data) returns()
-func (_Revertable *RevertableTransactorSession) OnRevert(data []byte) (*types.Transaction, error) {
-	return _Revertable.Contract.OnRevert(&_Revertable.TransactOpts, data)
+// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
+func (_Revertable *RevertableTransactorSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
+	return _Revertable.Contract.OnRevert(&_Revertable.TransactOpts, revertContext)
 }
