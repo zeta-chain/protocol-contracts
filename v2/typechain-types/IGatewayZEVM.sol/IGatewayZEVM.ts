@@ -594,10 +594,10 @@ export interface IGatewayZEVM extends BaseContract {
   >;
 
   filters: {
-    "Call(address,address,bytes,bytes,tuple)": TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    "Called(address,address,bytes,bytes,tuple)": TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
     Called: TypedContractEvent<
       CalledEvent.InputTuple,
@@ -605,10 +605,10 @@ export interface IGatewayZEVM extends BaseContract {
       CalledEvent.OutputObject
     >;
 
-    "Withdrawal(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple)": TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
     Withdrawn: TypedContractEvent<
       WithdrawnEvent.InputTuple,

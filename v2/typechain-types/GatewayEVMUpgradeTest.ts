@@ -1071,10 +1071,10 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   >;
 
   filters: {
-    "Call(address,address,bytes,tuple)": TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    "Called(address,address,bytes,tuple)": TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
     Called: TypedContractEvent<
       CalledEvent.InputTuple,
@@ -1082,10 +1082,10 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       CalledEvent.OutputObject
     >;
 
-    "Deposit(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
-      DepositEvent.InputTuple,
-      DepositEvent.OutputTuple,
-      DepositEvent.OutputObject
+    "Deposited(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
     >;
     Deposited: TypedContractEvent<
       DepositedEvent.InputTuple,

@@ -46,7 +46,7 @@ type RevertOptions struct {
 
 // IGatewayEVMEventsMetaData contains all meta data concerning the IGatewayEVMEvents contract.
 var IGatewayEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Call\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposit\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposited\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IGatewayEVMEventsABI is the input ABI used to generate the binding from.
@@ -262,8 +262,8 @@ func (it *IGatewayEVMEventsCalledIterator) Close() error {
 	return nil
 }
 
-// IGatewayEVMEventsCall represents a Call event raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsCall struct {
+// IGatewayEVMEventsCalled represents a Called event raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsCalled struct {
 	Sender        common.Address
 	Receiver      common.Address
 	Payload       []byte
@@ -271,10 +271,10 @@ type IGatewayEVMEventsCall struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterCall is a free log retrieval operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
+// FilterCalled is a free log retrieval operation binding the contract event 0x6bbdf224569c498ef04873202299f2d405bf840a265c83e83880a614ba2ae113.
 //
-// Solidity: event Call(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCall(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsCallIterator, error) {
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCalled(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsCalledIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -292,10 +292,10 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterCall(opts *bind.Filte
 	return &IGatewayEVMEventsCalledIterator{contract: _IGatewayEVMEvents.contract, event: "Called", logs: logs, sub: sub}, nil
 }
 
-// WatchCall is a free log subscription operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
+// WatchCalled is a free log subscription operation binding the contract event 0x6bbdf224569c498ef04873202299f2d405bf840a265c83e83880a614ba2ae113.
 //
-// Solidity: event Call(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsCall, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCalled(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsCalled, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -338,12 +338,12 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchCall(opts *bind.WatchO
 	}), nil
 }
 
-// ParseCall is a log parse operation binding the contract event 0x3c5d47da23bad72f15349287ad71c8d89d3eff57b29d28578e1b712c114f5756.
+// ParseCalled is a log parse operation binding the contract event 0x6bbdf224569c498ef04873202299f2d405bf840a265c83e83880a614ba2ae113.
 //
-// Solidity: event Call(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseCall(log types.Log) (*IGatewayEVMEventsCall, error) {
-	event := new(IGatewayEVMEventsCall)
-	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Call", log); err != nil {
+// Solidity: event Called(address indexed sender, address indexed receiver, bytes payload, (address,bool,address,bytes) revertOptions)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseCalled(log types.Log) (*IGatewayEVMEventsCalled, error) {
+	event := new(IGatewayEVMEventsCalled)
+	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Called", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -417,8 +417,8 @@ func (it *IGatewayEVMEventsDepositedIterator) Close() error {
 	return nil
 }
 
-// IGatewayEVMEventsDeposit represents a Deposit event raised by the IGatewayEVMEvents contract.
-type IGatewayEVMEventsDeposit struct {
+// IGatewayEVMEventsDeposited represents a Deposited event raised by the IGatewayEVMEvents contract.
+type IGatewayEVMEventsDeposited struct {
 	Sender        common.Address
 	Receiver      common.Address
 	Amount        *big.Int
@@ -428,10 +428,10 @@ type IGatewayEVMEventsDeposit struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterDeposit is a free log retrieval operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
+// FilterDeposited is a free log retrieval operation binding the contract event 0x752904df36dfc0b907cefa45c2d12c3f9dc7aced58ce8d1182a9a4bb33cefedd.
 //
-// Solidity: event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposit(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsDepositIterator, error) {
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposited(opts *bind.FilterOpts, sender []common.Address, receiver []common.Address) (*IGatewayEVMEventsDepositedIterator, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -449,10 +449,10 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterDeposit(opts *bind.Fi
 	return &IGatewayEVMEventsDepositedIterator{contract: _IGatewayEVMEvents.contract, event: "Deposited", logs: logs, sub: sub}, nil
 }
 
-// WatchDeposit is a free log subscription operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
+// WatchDeposited is a free log subscription operation binding the contract event 0x752904df36dfc0b907cefa45c2d12c3f9dc7aced58ce8d1182a9a4bb33cefedd.
 //
-// Solidity: event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsDeposit, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposited(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsDeposited, sender []common.Address, receiver []common.Address) (event.Subscription, error) {
 
 	var senderRule []interface{}
 	for _, senderItem := range sender {
@@ -495,12 +495,12 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchDeposit(opts *bind.Wat
 	}), nil
 }
 
-// ParseDeposit is a log parse operation binding the contract event 0xe1dc11c9cf5f4ccbf894484e45e36bfbb3e30d690a0d2cdcb58344569dc5953b.
+// ParseDeposited is a log parse operation binding the contract event 0x752904df36dfc0b907cefa45c2d12c3f9dc7aced58ce8d1182a9a4bb33cefedd.
 //
-// Solidity: event Deposit(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
-func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseDeposit(log types.Log) (*IGatewayEVMEventsDeposit, error) {
-	event := new(IGatewayEVMEventsDeposit)
-	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposit", log); err != nil {
+// Solidity: event Deposited(address indexed sender, address indexed receiver, uint256 amount, address asset, bytes payload, (address,bool,address,bytes) revertOptions)
+func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseDeposited(log types.Log) (*IGatewayEVMEventsDeposited, error) {
+	event := new(IGatewayEVMEventsDeposited)
+	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Deposited", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
