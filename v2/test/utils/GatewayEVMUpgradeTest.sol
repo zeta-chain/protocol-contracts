@@ -2,9 +2,9 @@
 pragma solidity 0.8.26;
 
 import "src/evm/ZetaConnectorBase.sol";
-
 import "src/evm/interfaces/IERC20Custody.sol";
 import "src/evm/interfaces/IGatewayEVM.sol";
+import { RevertOptions, RevertContext, Revertable } from "src/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -102,7 +102,8 @@ contract GatewayEVMUpgradeTest is
     /// @param data Calldata to pass to the call.
     function executeRevert(
         address destination,
-        bytes calldata data
+        bytes calldata data,
+        RevertContext calldata revertContext
     )
         public
         payable
@@ -113,9 +114,9 @@ contract GatewayEVMUpgradeTest is
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
-        Revertable(destination).onRevert(data);
+        Revertable(destination).onRevert(revertContext);
 
-        emit Reverted(destination, msg.value, data);
+        emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
@@ -186,11 +187,13 @@ contract GatewayEVMUpgradeTest is
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to transfer.
     /// @param data Calldata to pass to the call.
+    /// @param revertContext Revert context to pass to onRevert.
     function revertWithERC20(
         address token,
         address to,
         uint256 amount,
-        bytes calldata data
+        bytes calldata data,
+        RevertContext calldata revertContext
     )
         external
         onlyRole(ASSET_HANDLER_ROLE)
@@ -201,9 +204,9 @@ contract GatewayEVMUpgradeTest is
         if (to == address(0)) revert ZeroAddress();
 
         IERC20(token).safeTransfer(address(to), amount);
-        Revertable(to).onRevert(data);
+        Revertable(to).onRevert(revertContext);
 
-        emit RevertedWithERC20(token, to, amount, data);
+        emit Reverted(to, token, amount, data, revertContext);
     }
 
     /// @notice Deposits ETH to the TSS address.

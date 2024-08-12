@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import { RevertContext } from "src/Revert.sol";
+
 /// @title IReceiverEVMEvents
 /// @notice Interface for the events emitted by the ReceiverEVM contract.
 interface IReceiverEVMEvents {
@@ -32,6 +34,6 @@ interface IReceiverEVMEvents {
 
     /// @notice Emitted when a revert callback function is called.
     /// @param sender The address of the sender.
-    /// @param data The calldata passed during the revert.
-    event ReceivedRevert(address sender, bytes data);
+    /// @param revertContext Revert Context.
+    event ReceivedRevert(address sender, RevertContext revertContext);
 }

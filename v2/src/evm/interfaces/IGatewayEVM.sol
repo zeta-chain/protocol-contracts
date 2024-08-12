@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "src/RevertOptions.sol";
+import "src/Revert.sol";
 
 /// @title IGatewayEVMEvents
 /// @notice Interface for the events emitted by the GatewayEVM contract.
@@ -13,10 +13,12 @@ interface IGatewayEVMEvents {
     event Executed(address indexed destination, uint256 value, bytes data);
 
     /// @notice Emitted when a contract call is reverted.
-    /// @param destination The address of the contract called.
-    /// @param value The amount of ETH sent with the call.
+    /// @param to The address of the contract called.
+    /// @param token The address of the ERC20 token, empty if gas token
+    /// @param amount The amount of ETH sent with the call.
     /// @param data The calldata passed to the contract call.
-    event Reverted(address indexed destination, uint256 value, bytes data);
+    /// @param revertContext Revert context to pass to onRevert.
+    event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, RevertContext revertContext);
 
     /// @notice Emitted when a contract call with ERC20 tokens is executed.
     /// @param token The address of the ERC20 token.
@@ -24,13 +26,6 @@ interface IGatewayEVMEvents {
     /// @param amount The amount of tokens transferred.
     /// @param data The calldata passed to the contract call.
     event ExecutedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
-
-    /// @notice Emitted when a contract call with ERC20 tokens is reverted.
-    /// @param token The address of the ERC20 token.
-    /// @param to The address of the contract called.
-    /// @param amount The amount of tokens transferred.
-    /// @param data The calldata passed to the contract call.
-    event RevertedWithERC20(address indexed token, address indexed to, uint256 amount, bytes data);
 
     /// @notice Emitted when a deposit is made.
     /// @param sender The address of the sender.
@@ -101,7 +96,8 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
-    function executeRevert(address destination, bytes calldata data) external payable;
+    /// @param revertContext Revert context to pass to onRevert.
+    function executeRevert(address destination, bytes calldata data, RevertContext calldata revertContext) external payable;
 
     /// @notice Executes a call to a contract.
     /// @param destination The address of the contract to call.
@@ -114,7 +110,8 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function revertWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
+    /// @param revertContext Revert context to pass to onRevert.
+    function revertWithERC20(address token, address to, uint256 amount, bytes calldata data, RevertContext calldata revertContext) external;
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
@@ -162,10 +159,3 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
 }
 
-/// @title Revertable
-/// @notice Interface for contracts that support revertable calls.
-interface Revertable {
-    /// @notice Called when a revertable call is made.
-    /// @param data The calldata to pass to the revertable call.
-    function onRevert(bytes calldata data) external;
-}

@@ -35,6 +35,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     address destination;
     address tssAddress;
     RevertOptions revertOptions;
+    RevertContext revertContext;
 
     error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
@@ -74,6 +75,12 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token.transfer(address(custody), 500_000);
 
         vm.deal(tssAddress, 1 ether);
+
+        revertContext = RevertContext({
+            asset: address(token),
+            amount: 1,
+            revertMessage: ""
+        });
     }
 
     function testSetCustodyFailsIfSenderIsNotAdmin() public {
@@ -234,7 +241,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, ASSET_HANDLER_ROLE));
-        gateway.revertWithERC20(address(token), destination, amount, data);
+        gateway.revertWithERC20(address(token), destination, amount, data, revertContext);
     }
 
     function testExecuteRevert() public {
@@ -245,11 +252,11 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         // Verify that onRevert callback was called
         vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedRevert(address(gateway), data);
+        emit ReceivedRevert(address(gateway), revertContext);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Reverted(address(receiver), 1 ether, data);
+        emit Reverted(address(receiver), address(0), 1 ether, data, revertContext);
         vm.prank(tssAddress);
-        gateway.executeRevert{ value: value }(address(receiver), data);
+        gateway.executeRevert{ value: value }(address(receiver), data, revertContext);
 
         // Verify that the tokens were transferred to the receiver address
         uint256 balanceAfter = address(receiver).balance;
@@ -262,7 +269,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
-        gateway.executeRevert{ value: value }(address(receiver), data);
+        gateway.executeRevert{ value: value }(address(receiver), data, revertContext);
     }
 
     function testExecuteRevertFailsIfReceiverIsZeroAddress() public {
@@ -271,7 +278,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.prank(tssAddress);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.executeRevert{ value: value }(address(0), data);
+        gateway.executeRevert{ value: value }(address(0), data, revertContext);
     }
 }
 

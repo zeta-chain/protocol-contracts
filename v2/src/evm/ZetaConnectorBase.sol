@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 import { IGatewayEVM, IGatewayEVMErrors, IGatewayEVMEvents } from "src/evm/interfaces/IGatewayEVM.sol";
 import "src/evm/interfaces/IZetaConnector.sol";
+import { RevertContext } from "src/Revert.sol";
 
 /// @title ZetaConnectorBase
 /// @notice Abstract base contract for ZetaConnector.
@@ -81,11 +82,13 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
+    /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address to,
         uint256 amount,
         bytes calldata data,
-        bytes32 internalSendHash
+        bytes32 internalSendHash,
+        RevertContext calldata revertContext
     )
         external
         virtual;

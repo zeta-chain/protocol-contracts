@@ -87,11 +87,13 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
+    /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address to,
         uint256 amount,
         bytes calldata data,
-        bytes32 internalSendHash
+        bytes32 internalSendHash,
+        RevertContext calldata revertContext
     )
         external
         override
@@ -103,9 +105,9 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         _mintTo(address(gateway), amount, internalSendHash);
 
         // Forward the call to the Gateway contract
-        gateway.revertWithERC20(address(zetaToken), to, amount, data);
+        gateway.revertWithERC20(address(zetaToken), to, amount, data, revertContext);
 
-        emit WithdrawAndRevert(to, amount, data);
+        emit WithdrawAndRevert(to, amount, data, revertContext);
     }
 
     /// @notice Handle received tokens and burn them.

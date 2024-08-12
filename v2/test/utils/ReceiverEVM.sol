@@ -5,6 +5,7 @@ import "./IReceiverEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import { RevertContext } from "src/Revert.sol";
 
 /// @title ReceiverEVM
 /// @notice This contract is used just for testing purposes.
@@ -65,10 +66,10 @@ contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
     }
 
     /// @notice Called when a revert occurs.
-    /// @param data The calldata passed during the revert.
+    /// @param revertContext Revert context.
     /// @dev Emits the ReceivedRevert event.
-    function onRevert(bytes calldata data) external {
-        emit ReceivedRevert(msg.sender, data);
+    function onRevert(RevertContext calldata revertContext) external {
+        emit ReceivedRevert(msg.sender, revertContext);
     }
 
     /// @notice Receives ETH.

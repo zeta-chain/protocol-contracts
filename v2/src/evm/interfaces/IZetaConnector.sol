@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import { RevertContext } from "src/Revert.sol";
+
 /// @title IZetaConnectorEvents
 /// @notice Interface for the events emitted by the ZetaConnector contracts.
 interface IZetaConnectorEvents {
@@ -19,5 +21,6 @@ interface IZetaConnectorEvents {
     /// @param to The address to which the tokens are withdrawn.
     /// @param amount The amount of tokens withdrawn.
     /// @param data The calldata passed to the contract call.
-    event WithdrawAndRevert(address indexed to, uint256 amount, bytes data);
+    /// @param revertContext Revert context to pass to onRevert.
+    event WithdrawAndRevert(address indexed to, uint256 amount, bytes data, RevertContext revertContext);
 }

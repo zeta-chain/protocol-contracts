@@ -4,6 +4,8 @@ pragma solidity 0.8.26;
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
 
+import { RevertContext } from "src/Revert.sol";
+
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -124,11 +126,13 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
+    /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address token,
         address to,
         uint256 amount,
-        bytes calldata data
+        bytes calldata data,
+        RevertContext calldata revertContext
     )
         public
         nonReentrant
@@ -141,8 +145,8 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         IERC20(token).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
-        gateway.revertWithERC20(token, to, amount, data);
+        gateway.revertWithERC20(token, to, amount, data, revertContext);
 
-        emit WithdrawAndRevert(token, to, amount, data);
+        emit WithdrawAndRevert(token, to, amount, data, revertContext);
     }
 }
