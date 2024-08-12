@@ -9,12 +9,12 @@ import "src/Revert.sol";
 interface IGatewayZEVMEvents {
     /// @notice Emitted when a cross-chain call is made.
     /// @param sender The address of the sender.
-    /// @param chainId Chain id of external chain.
+    /// @param zrc20 Address of zrc20 to pay fees.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
     /// @param revertOptions Revert options.
     event Called(
-        address indexed sender, uint256 indexed chainId, bytes receiver, bytes message, RevertOptions revertOptions
+        address indexed sender, address indexed zrc20, bytes receiver, bytes message, RevertOptions revertOptions
     );
 
     /// @notice Emitted when a withdrawal is made.
@@ -114,12 +114,14 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
+    /// @param gasLimit Gas limit.
     /// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
         uint256 amount,
         address zrc20,
         bytes calldata message,
+        uint256 gasLimit,
         RevertOptions calldata revertOptions
     )
         external;
@@ -141,13 +143,15 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
-    /// @param chainId Chain id of the external chain.
+    /// @param zrc20 Address of zrc20 to pay fees.
     /// @param message The calldata to pass to the contract call.
+    /// @param gasLimit Gas limit.
     /// @param revertOptions Revert options.
     function call(
         bytes memory receiver,
-        uint256 chainId,
+        address zrc20,
         bytes calldata message,
+        uint256 gasLimit,
         RevertOptions calldata revertOptions
     )
         external;

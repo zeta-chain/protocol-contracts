@@ -24,8 +24,13 @@ interface IZRC20 {
 
     function withdrawGasFee() external view returns (address, uint256);
 
+    function withdrawGasFeeWithGasLimit(uint256 gasLimit) external view returns (address, uint256);
+
     /// @dev Name is in upper case to maintain compatibility with ZRC20.sol v1
     function PROTOCOL_FLAT_FEE() external view returns (uint256);
+
+    /// @dev Name is in upper case to maintain compatibility with ZRC20.sol v1
+    function GAS_LIMIT() external view returns (uint256);
 }
 
 /// @title IZRC20Metadata

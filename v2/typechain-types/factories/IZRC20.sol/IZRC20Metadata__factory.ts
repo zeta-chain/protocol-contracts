@@ -11,6 +11,19 @@ import type {
 const _abi = [
   {
     type: "function",
+    name: "GAS_LIMIT",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "PROTOCOL_FLAT_FEE",
     inputs: [],
     outputs: [
@@ -265,6 +278,30 @@ const _abi = [
     type: "function",
     name: "withdrawGasFee",
     inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "withdrawGasFeeWithGasLimit",
+    inputs: [
+      {
+        name: "gasLimit",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
     outputs: [
       {
         name: "",
