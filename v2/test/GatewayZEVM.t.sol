@@ -295,6 +295,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.call(abi.encodePacked(""), 1, message);
     }
 
+    function testCallFailsIfMessageIsEmpty() public {
+        vm.expectRevert(EmptyMessage.selector);
+        gateway.call(abi.encodePacked(addr1), 1, "");
+    }
+
     function testCall() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectEmit(true, true, true, true, address(gateway));
