@@ -4,7 +4,8 @@
   "author": "zetachain",
   "files": [
     "abi",
-    "types"
+    "types",
+    "contracts"
   ],
   "scripts": {
     "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern abi --ignore-pattern cache_forge/",
