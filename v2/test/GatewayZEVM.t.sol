@@ -78,7 +78,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Withdrawn(
-            owner, 0, abi.encodePacked(addr1), address(zrc20), amount, 0, zrc20.PROTOCOL_FLAT_FEE(), "", revertOptions
+            owner, 0, abi.encodePacked(addr1), address(zrc20), amount, 0, zrc20.PROTOCOL_FLAT_FEE(), "", 0, revertOptions
         );
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
 
@@ -179,6 +179,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             expectedGasFee,
             zrc20.PROTOCOL_FLAT_FEE(),
             message,
+            gasLimit,
             revertOptions
         );
         gateway.withdrawAndCall(abi.encodePacked(addr1), amount, address(zrc20), message, gasLimit, revertOptions);
@@ -217,7 +218,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "", revertOptions);
+        emit Withdrawn(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "", 0, revertOptions);
         gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
 
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
@@ -274,7 +275,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Withdrawn(
-            owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message, revertOptions
+            owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message, 0, revertOptions
         );
         gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, revertOptions);
 
@@ -323,7 +324,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectEmit(true, true, true, true, address(gateway));
 
-        emit Called(owner, address(zrc20), abi.encodePacked(addr1), message, revertOptions);
+        emit Called(owner, address(zrc20), abi.encodePacked(addr1), message, 1, revertOptions);
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, 1, revertOptions);
     }
 }

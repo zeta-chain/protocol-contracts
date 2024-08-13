@@ -143,7 +143,7 @@ contract GatewayZEVM is
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
-            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", revertOptions
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", IZRC20(zrc20).GAS_LIMIT(), revertOptions
         );
     }
 
@@ -171,7 +171,7 @@ contract GatewayZEVM is
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
-            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, revertOptions
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, gasLimit, revertOptions
         );
     }
 
@@ -193,7 +193,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", revertOptions);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", 0, revertOptions);
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
@@ -217,7 +217,7 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, revertOptions);
+        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, 0, revertOptions);
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
@@ -245,7 +245,7 @@ contract GatewayZEVM is
             revert GasFeeTransferFailed();
         }
 
-        emit Called(msg.sender, zrc20, receiver, message, revertOptions);
+        emit Called(msg.sender, zrc20, receiver, message, gasLimit, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.

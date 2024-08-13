@@ -12,9 +12,10 @@ interface IGatewayZEVMEvents {
     /// @param zrc20 Address of zrc20 to pay fees.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
+    /// @param gasLimit Gas limit.
     /// @param revertOptions Revert options.
     event Called(
-        address indexed sender, address indexed zrc20, bytes receiver, bytes message, RevertOptions revertOptions
+        address indexed sender, address indexed zrc20, bytes receiver, bytes message, uint256 gasLimit, RevertOptions revertOptions
     );
 
     /// @notice Emitted when a withdrawal is made.
@@ -26,6 +27,7 @@ interface IGatewayZEVMEvents {
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
+    /// @param gasLimit Gas limit.
     /// @param revertOptions Revert options.
     event Withdrawn(
         address indexed sender,
@@ -36,6 +38,7 @@ interface IGatewayZEVMEvents {
         uint256 gasfee,
         uint256 protocolFlatFee,
         bytes message,
+        uint256 gasLimit,
         RevertOptions revertOptions
     );
 }
