@@ -11,7 +11,7 @@ import type {
 const _abi = [
   {
     type: "event",
-    name: "Call",
+    name: "Called",
     inputs: [
       {
         name: "sender",
@@ -20,10 +20,10 @@ const _abi = [
         internalType: "address",
       },
       {
-        name: "chainId",
-        type: "uint256",
+        name: "zrc20",
+        type: "address",
         indexed: true,
-        internalType: "uint256",
+        internalType: "address",
       },
       {
         name: "receiver",
@@ -37,12 +37,40 @@ const _abi = [
         indexed: false,
         internalType: "bytes",
       },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        indexed: false,
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
+      },
     ],
     anonymous: false,
   },
   {
     type: "event",
-    name: "Withdrawal",
+    name: "Withdrawn",
     inputs: [
       {
         name: "sender",
@@ -91,6 +119,34 @@ const _abi = [
         type: "bytes",
         indexed: false,
         internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        indexed: false,
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
       },
     ],
     anonymous: false,

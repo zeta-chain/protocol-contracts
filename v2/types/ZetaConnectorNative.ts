@@ -23,11 +23,24 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface ZetaConnectorNativeInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "TSS_ROLE"
       | "WITHDRAWER_ROLE"
       | "gateway"
       | "getRoleAdmin"
@@ -53,9 +66,9 @@ export interface ZetaConnectorNativeInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
-      | "Withdraw"
-      | "WithdrawAndCall"
-      | "WithdrawAndRevert"
+      | "Withdrawn"
+      | "WithdrawnAndCalled"
+      | "WithdrawnAndReverted"
   ): EventFragment;
 
   encodeFunctionData(
@@ -66,6 +79,7 @@ export interface ZetaConnectorNativeInterface extends Interface {
     functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "WITHDRAWER_ROLE",
     values?: undefined
@@ -112,7 +126,13 @@ export interface ZetaConnectorNativeInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
-    values: [AddressLike, BigNumberish, BytesLike, BytesLike]
+    values: [
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      BytesLike,
+      RevertContextStruct
+    ]
   ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
@@ -124,6 +144,7 @@ export interface ZetaConnectorNativeInterface extends Interface {
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "WITHDRAWER_ROLE",
     data: BytesLike
@@ -245,7 +266,7 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [to: AddressLike, amount: BigNumberish];
   export type OutputTuple = [to: string, amount: bigint];
   export interface OutputObject {
@@ -258,7 +279,7 @@ export namespace WithdrawEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndCallEvent {
+export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
     to: AddressLike,
     amount: BigNumberish,
@@ -276,17 +297,24 @@ export namespace WithdrawAndCallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndRevertEvent {
+export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
     to: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
-  export type OutputTuple = [to: string, amount: bigint, data: string];
+  export type OutputTuple = [
+    to: string,
+    amount: bigint,
+    data: string,
+    revertContext: RevertContextStructOutput
+  ];
   export interface OutputObject {
     to: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -340,6 +368,8 @@ export interface ZetaConnectorNative extends BaseContract {
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  TSS_ROLE: TypedContractMethod<[], [string], "view">;
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
 
@@ -411,7 +441,8 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      internalSendHash: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -428,6 +459,9 @@ export interface ZetaConnectorNative extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "TSS_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WITHDRAWER_ROLE"
@@ -507,7 +541,8 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      internalSendHash: BytesLike,
+      revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
@@ -552,25 +587,25 @@ export interface ZetaConnectorNative extends BaseContract {
     UnpausedEvent.OutputObject
   >;
   getEvent(
-    key: "Withdraw"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawEvent.InputTuple,
-    WithdrawEvent.OutputTuple,
-    WithdrawEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndCall"
+    key: "WithdrawnAndCalled"
   ): TypedContractEvent<
-    WithdrawAndCallEvent.InputTuple,
-    WithdrawAndCallEvent.OutputTuple,
-    WithdrawAndCallEvent.OutputObject
+    WithdrawnAndCalledEvent.InputTuple,
+    WithdrawnAndCalledEvent.OutputTuple,
+    WithdrawnAndCalledEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndRevert"
+    key: "WithdrawnAndReverted"
   ): TypedContractEvent<
-    WithdrawAndRevertEvent.InputTuple,
-    WithdrawAndRevertEvent.OutputTuple,
-    WithdrawAndRevertEvent.OutputObject
+    WithdrawnAndRevertedEvent.InputTuple,
+    WithdrawnAndRevertedEvent.OutputTuple,
+    WithdrawnAndRevertedEvent.OutputObject
   >;
 
   filters: {
@@ -629,37 +664,37 @@ export interface ZetaConnectorNative extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "Withdraw(address,uint256)": TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
+    "Withdrawn(address,uint256)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
-    Withdraw: TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
-    >;
-
-    "WithdrawAndCall(address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
-    >;
-    WithdrawAndCall: TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    "WithdrawnAndCalled(address,uint256,bytes)": TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
     >;
-    WithdrawAndRevert: TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    WithdrawnAndCalled: TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
+    >;
+
+    "WithdrawnAndReverted(address,uint256,bytes,tuple)": TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
+    >;
+    WithdrawnAndReverted: TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
   };
 }

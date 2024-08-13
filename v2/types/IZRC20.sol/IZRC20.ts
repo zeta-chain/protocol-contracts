@@ -24,6 +24,7 @@ import type {
 export interface IZRC20Interface extends Interface {
   getFunction(
     nameOrSignature:
+      | "GAS_LIMIT"
       | "PROTOCOL_FLAT_FEE"
       | "allowance"
       | "approve"
@@ -35,8 +36,10 @@ export interface IZRC20Interface extends Interface {
       | "transferFrom"
       | "withdraw"
       | "withdrawGasFee"
+      | "withdrawGasFeeWithGasLimit"
   ): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "GAS_LIMIT", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "PROTOCOL_FLAT_FEE",
     values?: undefined
@@ -78,7 +81,12 @@ export interface IZRC20Interface extends Interface {
     functionFragment: "withdrawGasFee",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawGasFeeWithGasLimit",
+    values: [BigNumberish]
+  ): string;
 
+  decodeFunctionResult(functionFragment: "GAS_LIMIT", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "PROTOCOL_FLAT_FEE",
     data: BytesLike
@@ -100,6 +108,10 @@ export interface IZRC20Interface extends Interface {
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawGasFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawGasFeeWithGasLimit",
     data: BytesLike
   ): Result;
 }
@@ -147,6 +159,8 @@ export interface IZRC20 extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
+
   PROTOCOL_FLAT_FEE: TypedContractMethod<[], [bigint], "view">;
 
   allowance: TypedContractMethod<
@@ -193,10 +207,19 @@ export interface IZRC20 extends BaseContract {
 
   withdrawGasFee: TypedContractMethod<[], [[string, bigint]], "view">;
 
+  withdrawGasFeeWithGasLimit: TypedContractMethod<
+    [gasLimit: BigNumberish],
+    [[string, bigint]],
+    "view"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "GAS_LIMIT"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PROTOCOL_FLAT_FEE"
   ): TypedContractMethod<[], [bigint], "view">;
@@ -254,6 +277,9 @@ export interface IZRC20 extends BaseContract {
   getFunction(
     nameOrSignature: "withdrawGasFee"
   ): TypedContractMethod<[], [[string, bigint]], "view">;
+  getFunction(
+    nameOrSignature: "withdrawGasFeeWithGasLimit"
+  ): TypedContractMethod<[gasLimit: BigNumberish], [[string, bigint]], "view">;
 
   filters: {};
 }
