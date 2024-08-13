@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./UniversalContract.sol";
 import "../../../contracts/Revert.sol";
+import "./UniversalContract.sol";
 
 /// @title IGatewayZEVMEvents
 /// @notice Interface for the events emitted by the GatewayZEVM contract.
@@ -14,11 +14,7 @@ interface IGatewayZEVMEvents {
     /// @param message The calldata passed to the contract call.
     /// @param revertOptions Revert options.
     event Called(
-        address indexed sender,
-        address indexed zrc20,
-        bytes receiver,
-        bytes message,
-        RevertOptions revertOptions
+        address indexed sender, address indexed zrc20, bytes receiver, bytes message, RevertOptions revertOptions
     );
 
     /// @notice Emitted when a withdrawal is made.
@@ -98,7 +94,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         uint256 amount,
         address zrc20,
         RevertOptions calldata revertOptions
-    ) external;
+    )
+        external;
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
@@ -109,7 +106,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         uint256 amount,
         uint256 chainId,
         RevertOptions calldata revertOptions
-    ) external;
+    )
+        external;
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
@@ -125,7 +123,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         bytes calldata message,
         uint256 gasLimit,
         RevertOptions calldata revertOptions
-    ) external;
+    )
+        external;
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
@@ -139,7 +138,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         uint256 chainId,
         bytes calldata message,
         RevertOptions calldata revertOptions
-    ) external;
+    )
+        external;
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
@@ -153,7 +153,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         bytes calldata message,
         uint256 gasLimit,
         RevertOptions calldata revertOptions
-    ) external;
+    )
+        external;
 
     /// @notice Deposit foreign coins into ZRC20.
     /// @param zrc20 The address of the ZRC20 token.
@@ -173,7 +174,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         uint256 amount,
         address target,
         bytes calldata message
-    ) external;
+    )
+        external;
 
     /// @notice Deposit foreign coins into ZRC20 and call a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
@@ -187,14 +189,21 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         uint256 amount,
         address target,
         bytes calldata message
-    ) external;
+    )
+        external;
 
     /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
     /// @param amount The amount of tokens to transfer.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
-    function depositAndCall(zContext calldata context, uint256 amount, address target, bytes calldata message) external;
+    function depositAndCall(
+        zContext calldata context,
+        uint256 amount,
+        address target,
+        bytes calldata message
+    )
+        external;
 
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param context The context of the revert call.
@@ -210,7 +219,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         address target,
         bytes calldata message,
         RevertContext calldata revertContext
-    ) external;
+    )
+        external;
 
     /// @notice Deposit foreign coins into ZRC20 and revert a user-specified contract on ZEVM.
     /// @param context The context of the revert call.
@@ -226,5 +236,6 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         address target,
         bytes calldata message,
         RevertContext calldata revertContext
-    ) external;
+    )
+        external;
 }

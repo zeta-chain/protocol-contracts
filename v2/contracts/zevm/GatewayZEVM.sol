@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {IGatewayZEVM} from "./interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
+import { RevertContext, RevertOptions } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
-import {IZRC20} from "./interfaces/IZRC20.sol";
-import {UniversalContract, zContext} from "./interfaces/UniversalContract.sol";
+import { IZRC20 } from "./interfaces/IZRC20.sol";
+import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {RevertContext, RevertOptions} from "../../contracts/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
@@ -67,7 +67,7 @@ contract GatewayZEVM is
 
     /// @dev Authorizes the upgrade of the contract.
     /// @param newImplementation The address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable whenNotPaused {
@@ -119,7 +119,7 @@ contract GatewayZEVM is
     function _transferZETA(uint256 amount, address to) internal {
         if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
         IWETH9(zetaToken).withdraw(amount);
-        (bool sent, ) = to.call{value: amount}("");
+        (bool sent,) = to.call{ value: amount }("");
         if (!sent) revert FailedZetaSent();
     }
 
@@ -133,21 +133,17 @@ contract GatewayZEVM is
         uint256 amount,
         address zrc20,
         RevertOptions calldata revertOptions
-    ) external nonReentrant whenNotPaused {
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
-            msg.sender,
-            0,
-            receiver,
-            zrc20,
-            amount,
-            gasFee,
-            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
-            "",
-            revertOptions
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", revertOptions
         );
     }
 
@@ -165,21 +161,17 @@ contract GatewayZEVM is
         bytes calldata message,
         uint256 gasLimit,
         RevertOptions calldata revertOptions
-    ) external nonReentrant whenNotPaused {
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
-            msg.sender,
-            0,
-            receiver,
-            zrc20,
-            amount,
-            gasFee,
-            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
-            message,
-            revertOptions
+            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, revertOptions
         );
     }
 
@@ -192,7 +184,11 @@ contract GatewayZEVM is
         uint256 amount,
         uint256 chainId,
         RevertOptions calldata revertOptions
-    ) external nonReentrant whenNotPaused {
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
@@ -212,7 +208,11 @@ contract GatewayZEVM is
         uint256 chainId,
         bytes calldata message,
         RevertOptions calldata revertOptions
-    ) external nonReentrant whenNotPaused {
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
@@ -232,7 +232,11 @@ contract GatewayZEVM is
         bytes calldata message,
         uint256 gasLimit,
         RevertOptions calldata revertOptions
-    ) external nonReentrant whenNotPaused {
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (message.length == 0) revert EmptyMessage();
 
@@ -269,7 +273,11 @@ contract GatewayZEVM is
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible whenNotPaused {
+    )
+        external
+        onlyFungible
+        whenNotPaused
+    {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
@@ -288,7 +296,11 @@ contract GatewayZEVM is
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible whenNotPaused {
+    )
+        external
+        onlyFungible
+        whenNotPaused
+    {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
@@ -307,7 +319,11 @@ contract GatewayZEVM is
         uint256 amount,
         address target,
         bytes calldata message
-    ) external onlyFungible whenNotPaused {
+    )
+        external
+        onlyFungible
+        whenNotPaused
+    {
         if (target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
@@ -330,7 +346,11 @@ contract GatewayZEVM is
         address target,
         bytes calldata message,
         RevertContext calldata revertContext
-    ) external onlyFungible whenNotPaused {
+    )
+        external
+        onlyFungible
+        whenNotPaused
+    {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
@@ -351,7 +371,11 @@ contract GatewayZEVM is
         address target,
         bytes calldata message,
         RevertContext calldata revertContext
-    ) external onlyFungible whenNotPaused {
+    )
+        external
+        onlyFungible
+        whenNotPaused
+    {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();

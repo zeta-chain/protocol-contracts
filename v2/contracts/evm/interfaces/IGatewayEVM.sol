@@ -101,7 +101,9 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
         address destination,
         bytes calldata data,
         RevertContext calldata revertContext
-    ) external payable;
+    )
+        external
+        payable;
 
     /// @notice Executes a call to a contract.
     /// @param destination The address of the contract to call.
@@ -121,7 +123,8 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
         uint256 amount,
         bytes calldata data,
         RevertContext calldata revertContext
-    ) external;
+    )
+        external;
 
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
@@ -143,7 +146,9 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
         address receiver,
         bytes calldata payload,
         RevertOptions calldata revertOptions
-    ) external payable;
+    )
+        external
+        payable;
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
@@ -157,7 +162,8 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
         address asset,
         bytes calldata payload,
         RevertOptions calldata revertOptions
-    ) external;
+    )
+        external;
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
