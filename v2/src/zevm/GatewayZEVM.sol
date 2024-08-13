@@ -143,7 +143,16 @@ contract GatewayZEVM is
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
-            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), "", IZRC20(zrc20).GAS_LIMIT(), revertOptions
+            msg.sender,
+            0,
+            receiver,
+            zrc20,
+            amount,
+            gasFee,
+            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
+            "",
+            IZRC20(zrc20).GAS_LIMIT(),
+            revertOptions
         );
     }
 
@@ -171,7 +180,16 @@ contract GatewayZEVM is
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
-            msg.sender, 0, receiver, zrc20, amount, gasFee, IZRC20(zrc20).PROTOCOL_FLAT_FEE(), message, gasLimit, revertOptions
+            msg.sender,
+            0,
+            receiver,
+            zrc20,
+            amount,
+            gasFee,
+            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
+            message,
+            gasLimit,
+            revertOptions
         );
     }
 

@@ -15,7 +15,12 @@ interface IGatewayZEVMEvents {
     /// @param gasLimit Gas limit.
     /// @param revertOptions Revert options.
     event Called(
-        address indexed sender, address indexed zrc20, bytes receiver, bytes message, uint256 gasLimit, RevertOptions revertOptions
+        address indexed sender,
+        address indexed zrc20,
+        bytes receiver,
+        bytes message,
+        uint256 gasLimit,
+        RevertOptions revertOptions
     );
 
     /// @notice Emitted when a withdrawal is made.

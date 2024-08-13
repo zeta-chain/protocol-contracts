@@ -203,6 +203,7 @@ export namespace CalledEvent {
     zrc20: AddressLike,
     receiver: BytesLike,
     message: BytesLike,
+    gasLimit: BigNumberish,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
@@ -210,6 +211,7 @@ export namespace CalledEvent {
     zrc20: string,
     receiver: string,
     message: string,
+    gasLimit: bigint,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
@@ -217,6 +219,7 @@ export namespace CalledEvent {
     zrc20: string;
     receiver: string;
     message: string;
+    gasLimit: bigint;
     revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -235,6 +238,7 @@ export namespace WithdrawnEvent {
     gasfee: BigNumberish,
     protocolFlatFee: BigNumberish,
     message: BytesLike,
+    gasLimit: BigNumberish,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
@@ -246,6 +250,7 @@ export namespace WithdrawnEvent {
     gasfee: bigint,
     protocolFlatFee: bigint,
     message: string,
+    gasLimit: bigint,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
@@ -257,6 +262,7 @@ export namespace WithdrawnEvent {
     gasfee: bigint;
     protocolFlatFee: bigint;
     message: string;
+    gasLimit: bigint;
     revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -588,7 +594,7 @@ export interface IGatewayZEVM extends BaseContract {
   >;
 
   filters: {
-    "Called(address,address,bytes,bytes,tuple)": TypedContractEvent<
+    "Called(address,address,bytes,bytes,uint256,tuple)": TypedContractEvent<
       CalledEvent.InputTuple,
       CalledEvent.OutputTuple,
       CalledEvent.OutputObject
@@ -599,7 +605,7 @@ export interface IGatewayZEVM extends BaseContract {
       CalledEvent.OutputObject
     >;
 
-    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple)": TypedContractEvent<
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,uint256,tuple)": TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,
       WithdrawnEvent.OutputObject
