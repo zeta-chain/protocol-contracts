@@ -543,7 +543,6 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.executeRevert(address(0), revertContext);
     }
 
-
     function testExecuteRevertUniversalContract() public {
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);

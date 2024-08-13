@@ -108,13 +108,7 @@ export interface IGatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndRevert",
-    values: [
-      AddressLike,
-      BigNumberish,
-      AddressLike,
-      BytesLike,
-      RevertContextStruct
-    ]
+    values: [AddressLike, BigNumberish, AddressLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
@@ -122,13 +116,7 @@ export interface IGatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
-    values: [
-      AddressLike,
-      BigNumberish,
-      AddressLike,
-      BytesLike,
-      RevertContextStruct
-    ]
+    values: [AddressLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes))",
@@ -360,7 +348,6 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
-      message: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],
@@ -380,13 +367,7 @@ export interface IGatewayZEVM extends BaseContract {
   >;
 
   executeRevert: TypedContractMethod<
-    [
-      zrc20: AddressLike,
-      amount: BigNumberish,
-      target: AddressLike,
-      message: BytesLike,
-      revertContext: RevertContextStruct
-    ],
+    [target: AddressLike, revertContext: RevertContextStruct],
     [void],
     "nonpayable"
   >;
@@ -494,7 +475,6 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
-      message: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],
@@ -516,13 +496,7 @@ export interface IGatewayZEVM extends BaseContract {
   getFunction(
     nameOrSignature: "executeRevert"
   ): TypedContractMethod<
-    [
-      zrc20: AddressLike,
-      amount: BigNumberish,
-      target: AddressLike,
-      message: BytesLike,
-      revertContext: RevertContextStruct
-    ],
+    [target: AddressLike, revertContext: RevertContextStruct],
     [void],
     "nonpayable"
   >;

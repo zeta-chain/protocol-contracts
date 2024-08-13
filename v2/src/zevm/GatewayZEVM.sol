@@ -352,14 +352,7 @@ contract GatewayZEVM is
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
     /// @param revertContext Revert context to pass to onRevert.
-    function executeRevert(
-        address target,
-        RevertContext calldata revertContext
-    )
-        external
-        onlyFungible
-        whenNotPaused
-    {
+    function executeRevert(address target, RevertContext calldata revertContext) external onlyFungible whenNotPaused {
         if (target == address(0)) revert ZeroAddress();
 
         UniversalContract(target).onRevert(revertContext);

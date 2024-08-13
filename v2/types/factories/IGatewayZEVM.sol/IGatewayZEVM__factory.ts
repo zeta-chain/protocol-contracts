@@ -202,11 +202,6 @@ const _abi = [
         internalType: "address",
       },
       {
-        name: "message",
-        type: "bytes",
-        internalType: "bytes",
-      },
-      {
         name: "revertContext",
         type: "tuple",
         internalType: "struct RevertContext",
@@ -287,24 +282,9 @@ const _abi = [
     name: "executeRevert",
     inputs: [
       {
-        name: "zrc20",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "amount",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
         name: "target",
         type: "address",
         internalType: "address",
-      },
-      {
-        name: "message",
-        type: "bytes",
-        internalType: "bytes",
       },
       {
         name: "revertContext",

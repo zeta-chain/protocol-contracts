@@ -216,11 +216,7 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
     /// @param revertContext Revert context to pass to onRevert.
-    function executeRevert(
-        address target,
-        RevertContext calldata revertContext
-    )
-        external;
+    function executeRevert(address target, RevertContext calldata revertContext) external;
 
     /// @notice Deposit foreign coins into ZRC20 and revert a user-specified contract on ZEVM.
     /// @param zrc20 The address of the ZRC20 token.
