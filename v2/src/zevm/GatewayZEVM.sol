@@ -350,23 +350,17 @@ contract GatewayZEVM is
     }
 
     /// @notice Revert a user-specified contract on ZEVM.
-    /// @param zrc20 The address of the ZRC20 token.
-    /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
-    /// @param message The calldata to pass to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
     function executeRevert(
-        address zrc20,
-        uint256 amount,
         address target,
-        bytes calldata message,
         RevertContext calldata revertContext
     )
         external
         onlyFungible
         whenNotPaused
     {
-        if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
+        if (target == address(0)) revert ZeroAddress();
 
         UniversalContract(target).onRevert(revertContext);
     }
@@ -375,13 +369,11 @@ contract GatewayZEVM is
     /// @param zrc20 The address of the ZRC20 token.
     /// @param amount The amount of tokens to revert.
     /// @param target The target contract to call.
-    /// @param message The calldata to pass to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
     function depositAndRevert(
         address zrc20,
         uint256 amount,
         address target,
-        bytes calldata message,
         RevertContext calldata revertContext
     )
         external

@@ -537,53 +537,24 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.execute(context, address(zrc20), 1, address(testUniversalContract), message);
     }
 
-    function testExecuteRevertUniversalContractFailsIfZrc20IsZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-
-        vm.prank(fungibleModule);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.executeRevert(address(0), 1, address(testUniversalContract), message, revertContext);
-    }
-
     function testExecuteRevertUniversalContractFailsIfTargetIsZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-
         vm.prank(fungibleModule);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.executeRevert(address(zrc20), 1, address(0), message, revertContext);
+        gateway.executeRevert(address(0), revertContext);
     }
 
-    function testExecuteRevertUniversalContractFailsIfZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-
-        vm.prank(fungibleModule);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.executeRevert(address(0), 1, address(testUniversalContract), message, revertContext);
-    }
-
-    function testExecuteRevertUniversalContractFailsIfZRC20IsZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-
-        vm.prank(fungibleModule);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.executeRevert(address(0), 1, address(testUniversalContract), message, revertContext);
-    }
 
     function testExecuteRevertUniversalContract() public {
-        bytes memory message = abi.encode("hello");
-
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
         vm.prank(fungibleModule);
-        gateway.executeRevert(address(zrc20), 1, address(testUniversalContract), message, revertContext);
+        gateway.executeRevert(address(testUniversalContract), revertContext);
     }
 
     function testExecuteRevertUniversalContractIfSenderIsNotFungibleModule() public {
-        bytes memory message = abi.encode("hello");
-
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         vm.prank(owner);
-        gateway.executeRevert(address(zrc20), 1, address(testUniversalContract), message, revertContext);
+        gateway.executeRevert(address(testUniversalContract), revertContext);
     }
 
     function testDepositZRC20AndCallUniversalContractFailsIfZRC20IsZeroAddress() public {
@@ -664,66 +635,52 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContractFailsIfZRC20IsZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-
         vm.prank(fungibleModule);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.depositAndRevert(address(0), 1, address(testUniversalContract), message, revertContext);
+        gateway.depositAndRevert(address(0), 1, address(testUniversalContract), revertContext);
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContractFailsIfTargetIsZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-
         vm.prank(fungibleModule);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.depositAndRevert(address(zrc20), 1, address(0), message, revertContext);
+        gateway.depositAndRevert(address(zrc20), 1, address(0), revertContext);
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContractFailsIfAmountIsZero() public {
-        bytes memory message = abi.encode("hello");
-
         vm.prank(fungibleModule);
         vm.expectRevert(InsufficientZRC20Amount.selector);
-        gateway.depositAndRevert(address(zrc20), 0, address(testUniversalContract), message, revertContext);
+        gateway.depositAndRevert(address(zrc20), 0, address(testUniversalContract), revertContext);
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContract() public {
         uint256 balanceBefore = zrc20.balanceOf(address(testUniversalContract));
         assertEq(0, balanceBefore);
 
-        bytes memory message = abi.encode("hello");
-
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
         vm.prank(fungibleModule);
-        gateway.depositAndRevert(address(zrc20), 1, address(testUniversalContract), message, revertContext);
+        gateway.depositAndRevert(address(zrc20), 1, address(testUniversalContract), revertContext);
 
         uint256 balanceAfter = zrc20.balanceOf(address(testUniversalContract));
         assertEq(1, balanceAfter);
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContractFailsIfSenderIsNotFungibleModule() public {
-        bytes memory message = abi.encode("hello");
-
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         vm.prank(owner);
-        gateway.depositAndRevert(address(zrc20), 1, address(testUniversalContract), message, revertContext);
+        gateway.depositAndRevert(address(zrc20), 1, address(testUniversalContract), revertContext);
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContractFailsITargetIsFungibleModule() public {
-        bytes memory message = abi.encode("hello");
-
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(fungibleModule);
-        gateway.depositAndRevert(address(zrc20), 1, fungibleModule, message, revertContext);
+        gateway.depositAndRevert(address(zrc20), 1, fungibleModule, revertContext);
     }
 
     function testDepositAndRevertZRC20AndCallUniversalContractFailsITargetIsGateway() public {
-        bytes memory message = abi.encode("hello");
-
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(fungibleModule);
-        gateway.depositAndRevert(address(zrc20), 1, address(gateway), message, revertContext);
+        gateway.depositAndRevert(address(zrc20), 1, address(gateway), revertContext);
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsZeroAddress() public {
