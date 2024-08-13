@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "./UniversalContract.sol";
-import "src/Revert.sol";
+import "contracts/Revert.sol";
 
 /// @title IGatewayZEVMEvents
 /// @notice Interface for the events emitted by the GatewayZEVM contract.

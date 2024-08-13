@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "src/zevm/interfaces/ISystem.sol";
-import "src/zevm/interfaces/IZRC20.sol";
+import "contracts/zevm/interfaces/ISystem.sol";
+import "contracts/zevm/interfaces/IZRC20.sol";
 
 /**
  * @dev Custom errors for ZRC20
@@ -234,8 +234,9 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
      */
     function deposit(address to, uint256 amount) external override returns (bool) {
         if (
-            msg.sender != FUNGIBLE_MODULE_ADDRESS && msg.sender != SYSTEM_CONTRACT_ADDRESS
-                && msg.sender != gatewayAddress
+            msg.sender != FUNGIBLE_MODULE_ADDRESS &&
+            msg.sender != SYSTEM_CONTRACT_ADDRESS &&
+            msg.sender != gatewayAddress
         ) revert InvalidSender();
         _mint(to, amount);
         emit Deposit(abi.encodePacked(FUNGIBLE_MODULE_ADDRESS), to, amount);
