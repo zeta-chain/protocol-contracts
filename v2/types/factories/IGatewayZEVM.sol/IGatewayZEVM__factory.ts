@@ -187,28 +187,6 @@ const _abi = [
     name: "depositAndRevert",
     inputs: [
       {
-        name: "context",
-        type: "tuple",
-        internalType: "struct zContext",
-        components: [
-          {
-            name: "origin",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "sender",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "chainID",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
-      {
         name: "zrc20",
         type: "address",
         internalType: "address",
@@ -308,28 +286,6 @@ const _abi = [
     type: "function",
     name: "executeRevert",
     inputs: [
-      {
-        name: "context",
-        type: "tuple",
-        internalType: "struct zContext",
-        components: [
-          {
-            name: "origin",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "sender",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "chainID",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
       {
         name: "zrc20",
         type: "address",

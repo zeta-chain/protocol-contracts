@@ -109,7 +109,6 @@ export interface IGatewayZEVMInterface extends Interface {
   encodeFunctionData(
     functionFragment: "depositAndRevert",
     values: [
-      ZContextStruct,
       AddressLike,
       BigNumberish,
       AddressLike,
@@ -124,7 +123,6 @@ export interface IGatewayZEVMInterface extends Interface {
   encodeFunctionData(
     functionFragment: "executeRevert",
     values: [
-      ZContextStruct,
       AddressLike,
       BigNumberish,
       AddressLike,
@@ -353,7 +351,6 @@ export interface IGatewayZEVM extends BaseContract {
 
   depositAndRevert: TypedContractMethod<
     [
-      context: ZContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -378,7 +375,6 @@ export interface IGatewayZEVM extends BaseContract {
 
   executeRevert: TypedContractMethod<
     [
-      context: ZContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -489,7 +485,6 @@ export interface IGatewayZEVM extends BaseContract {
     nameOrSignature: "depositAndRevert"
   ): TypedContractMethod<
     [
-      context: ZContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -516,7 +511,6 @@ export interface IGatewayZEVM extends BaseContract {
     nameOrSignature: "executeRevert"
   ): TypedContractMethod<
     [
-      context: ZContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
