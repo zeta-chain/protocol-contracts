@@ -279,7 +279,6 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
 
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
     }
@@ -352,7 +351,6 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
 
         UniversalContract(target).onRevert(revertContext);
     }
