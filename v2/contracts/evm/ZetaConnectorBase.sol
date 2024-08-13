@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-import { RevertContext } from "contracts/Revert.sol";
-import { IGatewayEVM, IGatewayEVMErrors, IGatewayEVMEvents } from "contracts/evm/interfaces/IGatewayEVM.sol";
-import "contracts/evm/interfaces/IZetaConnector.sol";
+import {RevertContext} from "../../contracts/Revert.sol";
+import {IGatewayEVM, IGatewayEVMErrors, IGatewayEVMEvents} from "../../contracts/evm/interfaces/IGatewayEVM.sol";
+import "../../contracts/evm/interfaces/IZetaConnector.sol";
 
 /// @title ZetaConnectorBase
 /// @notice Abstract base contract for ZetaConnector.
@@ -73,9 +73,7 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
         uint256 amount,
         bytes calldata data,
         bytes32 internalSendHash
-    )
-        external
-        virtual;
+    ) external virtual;
 
     /// @notice Withdraw tokens and call a contract with a revert callback through Gateway.
     /// @param to The address to withdraw tokens to.
@@ -89,9 +87,7 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
         bytes calldata data,
         bytes32 internalSendHash,
         RevertContext calldata revertContext
-    )
-        external
-        virtual;
+    ) external virtual;
 
     /// @notice Handle received tokens.
     /// @param amount The amount of tokens received.
