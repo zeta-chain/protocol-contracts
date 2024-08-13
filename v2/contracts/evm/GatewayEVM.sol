@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {ZetaConnectorBase} from "./ZetaConnectorBase.sol";
-import {IERC20Custody} from "./interfaces/IERC20Custody.sol";
-import {IGatewayEVM} from "./interfaces/IGatewayEVM.sol";
-import {RevertContext, RevertOptions, Revertable} from "contracts/Revert.sol";
+import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
+import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
+import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
+import { RevertContext, RevertOptions, Revertable } from "contracts/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -69,14 +69,14 @@ contract GatewayEVM is
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
-    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) {}
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @dev Internal function to execute a call to a destination address.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
-        (bool success, bytes memory result) = destination.call{value: msg.value}(data);
+        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
         return result;
@@ -100,9 +100,15 @@ contract GatewayEVM is
         address destination,
         bytes calldata data,
         RevertContext calldata revertContext
-    ) public payable onlyRole(TSS_ROLE) whenNotPaused nonReentrant {
+    )
+        public
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        nonReentrant
+    {
         if (destination == address(0)) revert ZeroAddress();
-        (bool success, ) = destination.call{value: msg.value}("");
+        (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(revertContext);
 
@@ -117,7 +123,14 @@ contract GatewayEVM is
     function execute(
         address destination,
         bytes calldata data
-    ) external payable onlyRole(TSS_ROLE) whenNotPaused nonReentrant returns (bytes memory) {
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        nonReentrant
+        returns (bytes memory)
+    {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result = _execute(destination, data);
 
@@ -138,7 +151,12 @@ contract GatewayEVM is
         address to,
         uint256 amount,
         bytes calldata data
-    ) public onlyRole(ASSET_HANDLER_ROLE) whenNotPaused nonReentrant {
+    )
+        public
+        onlyRole(ASSET_HANDLER_ROLE)
+        whenNotPaused
+        nonReentrant
+    {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
         // Approve the target contract to spend the tokens
@@ -172,7 +190,12 @@ contract GatewayEVM is
         uint256 amount,
         bytes calldata data,
         RevertContext calldata revertContext
-    ) external onlyRole(ASSET_HANDLER_ROLE) whenNotPaused nonReentrant {
+    )
+        external
+        onlyRole(ASSET_HANDLER_ROLE)
+        whenNotPaused
+        nonReentrant
+    {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
 
@@ -188,11 +211,16 @@ contract GatewayEVM is
     function deposit(
         address receiver,
         RevertOptions calldata revertOptions
-    ) external payable whenNotPaused nonReentrant {
+    )
+        external
+        payable
+        whenNotPaused
+        nonReentrant
+    {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
 
-        (bool deposited, ) = tssAddress.call{value: msg.value}("");
+        (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
         if (!deposited) revert DepositFailed();
 
@@ -209,7 +237,11 @@ contract GatewayEVM is
         uint256 amount,
         address asset,
         RevertOptions calldata revertOptions
-    ) external whenNotPaused nonReentrant {
+    )
+        external
+        whenNotPaused
+        nonReentrant
+    {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
 
@@ -226,11 +258,16 @@ contract GatewayEVM is
         address receiver,
         bytes calldata payload,
         RevertOptions calldata revertOptions
-    ) external payable whenNotPaused nonReentrant {
+    )
+        external
+        payable
+        whenNotPaused
+        nonReentrant
+    {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
 
-        (bool deposited, ) = tssAddress.call{value: msg.value}("");
+        (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
         if (!deposited) revert DepositFailed();
 
@@ -249,7 +286,11 @@ contract GatewayEVM is
         address asset,
         bytes calldata payload,
         RevertOptions calldata revertOptions
-    ) external whenNotPaused nonReentrant {
+    )
+        external
+        whenNotPaused
+        nonReentrant
+    {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
 
@@ -266,7 +307,11 @@ contract GatewayEVM is
         address receiver,
         bytes calldata payload,
         RevertOptions calldata revertOptions
-    ) external whenNotPaused nonReentrant {
+    )
+        external
+        whenNotPaused
+        nonReentrant
+    {
         if (receiver == address(0)) revert ZeroAddress();
         emit Called(msg.sender, receiver, payload, revertOptions);
     }

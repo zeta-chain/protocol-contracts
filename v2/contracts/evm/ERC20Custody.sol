@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {IERC20Custody} from "./interfaces/IERC20Custody.sol";
-import {IGatewayEVM} from "./interfaces/IGatewayEVM.sol";
+import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
+import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
 
-import {RevertContext} from "contracts/Revert.sol";
+import { RevertContext } from "contracts/Revert.sol";
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -78,7 +78,12 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         address to,
         address token,
         uint256 amount
-    ) external nonReentrant onlyRole(WITHDRAWER_ROLE) whenNotPaused {
+    )
+        external
+        nonReentrant
+        onlyRole(WITHDRAWER_ROLE)
+        whenNotPaused
+    {
         if (!whitelisted[token]) revert NotWhitelisted();
 
         IERC20(token).safeTransfer(to, amount);
@@ -97,7 +102,12 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         address token,
         uint256 amount,
         bytes calldata data
-    ) public nonReentrant onlyRole(WITHDRAWER_ROLE) whenNotPaused {
+    )
+        public
+        nonReentrant
+        onlyRole(WITHDRAWER_ROLE)
+        whenNotPaused
+    {
         if (!whitelisted[token]) revert NotWhitelisted();
 
         // Transfer the tokens to the Gateway contract
@@ -123,7 +133,12 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         uint256 amount,
         bytes calldata data,
         RevertContext calldata revertContext
-    ) public nonReentrant onlyRole(WITHDRAWER_ROLE) whenNotPaused {
+    )
+        public
+        nonReentrant
+        onlyRole(WITHDRAWER_ROLE)
+        whenNotPaused
+    {
         if (!whitelisted[token]) revert NotWhitelisted();
 
         // Transfer the tokens to the Gateway contract
