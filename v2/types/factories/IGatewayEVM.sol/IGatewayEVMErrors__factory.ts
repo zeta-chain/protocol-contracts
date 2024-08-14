@@ -16,6 +16,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "ConnectorInitialized",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "CustodyInitialized",
     inputs: [],
   },
@@ -37,6 +42,11 @@ const _abi = [
   {
     type: "error",
     name: "InsufficientETHAmount",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotWhitelistedInCustody",
     inputs: [],
   },
   {

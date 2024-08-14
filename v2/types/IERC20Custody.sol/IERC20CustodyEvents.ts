@@ -21,22 +21,63 @@ import type {
   TypedListener,
 } from "../common";
 
+export type RevertContextStruct = {
+  asset: AddressLike;
+  amount: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type RevertContextStructOutput = [
+  asset: string,
+  amount: bigint,
+  revertMessage: string
+] & { asset: string; amount: bigint; revertMessage: string };
+
 export interface IERC20CustodyEventsInterface extends Interface {
   getEvent(
-    nameOrSignatureOrTopic: "Withdraw" | "WithdrawAndCall" | "WithdrawAndRevert"
+    nameOrSignatureOrTopic:
+      | "Unwhitelisted"
+      | "Whitelisted"
+      | "Withdrawn"
+      | "WithdrawnAndCalled"
+      | "WithdrawnAndReverted"
   ): EventFragment;
 }
 
-export namespace WithdrawEvent {
+export namespace UnwhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawnEvent {
   export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish
   ];
-  export type OutputTuple = [token: string, to: string, amount: bigint];
+  export type OutputTuple = [to: string, token: string, amount: bigint];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -45,22 +86,22 @@ export namespace WithdrawEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndCallEvent {
+export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
     data: BytesLike
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
     data: string
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
   }
@@ -70,24 +111,27 @@ export namespace WithdrawAndCallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawAndRevertEvent {
+export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
-    data: BytesLike
+    data: BytesLike,
+    revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
-    data: string
+    data: string,
+    revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
+    revertContext: RevertContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -143,59 +187,95 @@ export interface IERC20CustodyEvents extends BaseContract {
   ): T;
 
   getEvent(
-    key: "Withdraw"
+    key: "Unwhitelisted"
   ): TypedContractEvent<
-    WithdrawEvent.InputTuple,
-    WithdrawEvent.OutputTuple,
-    WithdrawEvent.OutputObject
+    UnwhitelistedEvent.InputTuple,
+    UnwhitelistedEvent.OutputTuple,
+    UnwhitelistedEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndCall"
+    key: "Whitelisted"
   ): TypedContractEvent<
-    WithdrawAndCallEvent.InputTuple,
-    WithdrawAndCallEvent.OutputTuple,
-    WithdrawAndCallEvent.OutputObject
+    WhitelistedEvent.InputTuple,
+    WhitelistedEvent.OutputTuple,
+    WhitelistedEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawAndRevert"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawAndRevertEvent.InputTuple,
-    WithdrawAndRevertEvent.OutputTuple,
-    WithdrawAndRevertEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawnAndCalled"
+  ): TypedContractEvent<
+    WithdrawnAndCalledEvent.InputTuple,
+    WithdrawnAndCalledEvent.OutputTuple,
+    WithdrawnAndCalledEvent.OutputObject
+  >;
+  getEvent(
+    key: "WithdrawnAndReverted"
+  ): TypedContractEvent<
+    WithdrawnAndRevertedEvent.InputTuple,
+    WithdrawnAndRevertedEvent.OutputTuple,
+    WithdrawnAndRevertedEvent.OutputObject
   >;
 
   filters: {
-    "Withdraw(address,address,uint256)": TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
+    "Unwhitelisted(address)": TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
     >;
-    Withdraw: TypedContractEvent<
-      WithdrawEvent.InputTuple,
-      WithdrawEvent.OutputTuple,
-      WithdrawEvent.OutputObject
-    >;
-
-    "WithdrawAndCall(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
-    >;
-    WithdrawAndCall: TypedContractEvent<
-      WithdrawAndCallEvent.InputTuple,
-      WithdrawAndCallEvent.OutputTuple,
-      WithdrawAndCallEvent.OutputObject
+    Unwhitelisted: TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
     >;
 
-    "WithdrawAndRevert(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    "Whitelisted(address)": TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
     >;
-    WithdrawAndRevert: TypedContractEvent<
-      WithdrawAndRevertEvent.InputTuple,
-      WithdrawAndRevertEvent.OutputTuple,
-      WithdrawAndRevertEvent.OutputObject
+    Whitelisted: TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
+    >;
+
+    "Withdrawn(address,address,uint256)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
+    >;
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
+    >;
+
+    "WithdrawnAndCalled(address,address,uint256,bytes)": TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
+    >;
+    WithdrawnAndCalled: TypedContractEvent<
+      WithdrawnAndCalledEvent.InputTuple,
+      WithdrawnAndCalledEvent.OutputTuple,
+      WithdrawnAndCalledEvent.OutputObject
+    >;
+
+    "WithdrawnAndReverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
+    >;
+    WithdrawnAndReverted: TypedContractEvent<
+      WithdrawnAndRevertedEvent.InputTuple,
+      WithdrawnAndRevertedEvent.OutputTuple,
+      WithdrawnAndRevertedEvent.OutputObject
     >;
   };
 }

@@ -21,28 +21,53 @@ import type {
   TypedListener,
 } from "../common";
 
+export type RevertOptionsStruct = {
+  revertAddress: AddressLike;
+  callOnRevert: boolean;
+  abortAddress: AddressLike;
+  revertMessage: BytesLike;
+};
+
+export type RevertOptionsStructOutput = [
+  revertAddress: string,
+  callOnRevert: boolean,
+  abortAddress: string,
+  revertMessage: string
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+};
+
 export interface IGatewayZEVMEventsInterface extends Interface {
-  getEvent(nameOrSignatureOrTopic: "Call" | "Withdrawal"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Called" | "Withdrawn"): EventFragment;
 }
 
-export namespace CallEvent {
+export namespace CalledEvent {
   export type InputTuple = [
     sender: AddressLike,
-    chainId: BigNumberish,
+    zrc20: AddressLike,
     receiver: BytesLike,
-    message: BytesLike
+    message: BytesLike,
+    gasLimit: BigNumberish,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
-    chainId: bigint,
+    zrc20: string,
     receiver: string,
-    message: string
+    message: string,
+    gasLimit: bigint,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
-    chainId: bigint;
+    zrc20: string;
     receiver: string;
     message: string;
+    gasLimit: bigint;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -50,7 +75,7 @@ export namespace CallEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawalEvent {
+export namespace WithdrawnEvent {
   export type InputTuple = [
     sender: AddressLike,
     chainId: BigNumberish,
@@ -59,7 +84,9 @@ export namespace WithdrawalEvent {
     value: BigNumberish,
     gasfee: BigNumberish,
     protocolFlatFee: BigNumberish,
-    message: BytesLike
+    message: BytesLike,
+    gasLimit: BigNumberish,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
     sender: string,
@@ -69,7 +96,9 @@ export namespace WithdrawalEvent {
     value: bigint,
     gasfee: bigint,
     protocolFlatFee: bigint,
-    message: string
+    message: string,
+    gasLimit: bigint,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
     sender: string;
@@ -80,6 +109,8 @@ export namespace WithdrawalEvent {
     gasfee: bigint;
     protocolFlatFee: bigint;
     message: string;
+    gasLimit: bigint;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -135,41 +166,41 @@ export interface IGatewayZEVMEvents extends BaseContract {
   ): T;
 
   getEvent(
-    key: "Call"
+    key: "Called"
   ): TypedContractEvent<
-    CallEvent.InputTuple,
-    CallEvent.OutputTuple,
-    CallEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
-    key: "Withdrawal"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    WithdrawalEvent.InputTuple,
-    WithdrawalEvent.OutputTuple,
-    WithdrawalEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
 
   filters: {
-    "Call(address,uint256,bytes,bytes)": TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    "Called(address,address,bytes,bytes,uint256,tuple)": TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
-    Call: TypedContractEvent<
-      CallEvent.InputTuple,
-      CallEvent.OutputTuple,
-      CallEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
-    "Withdrawal(address,uint256,bytes,address,uint256,uint256,uint256,bytes)": TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,uint256,tuple)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
-    Withdrawal: TypedContractEvent<
-      WithdrawalEvent.InputTuple,
-      WithdrawalEvent.OutputTuple,
-      WithdrawalEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
   };
 }
