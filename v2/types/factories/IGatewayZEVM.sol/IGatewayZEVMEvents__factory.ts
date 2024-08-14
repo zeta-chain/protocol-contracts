@@ -69,6 +69,11 @@ const _abi = [
             type: "bytes",
             internalType: "bytes",
           },
+          {
+            name: "onRevertGasLimit",
+            type: "uint256",
+            internalType: "uint256",
+          },
         ],
       },
     ],
@@ -157,6 +162,11 @@ const _abi = [
             name: "revertMessage",
             type: "bytes",
             internalType: "bytes",
+          },
+          {
+            name: "onRevertGasLimit",
+            type: "uint256",
+            internalType: "uint256",
           },
         ],
       },

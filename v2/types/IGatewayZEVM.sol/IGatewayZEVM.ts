@@ -28,18 +28,21 @@ export type RevertOptionsStruct = {
   callOnRevert: boolean;
   abortAddress: AddressLike;
   revertMessage: BytesLike;
+  onRevertGasLimit: BigNumberish;
 };
 
 export type RevertOptionsStructOutput = [
   revertAddress: string,
   callOnRevert: boolean,
   abortAddress: string,
-  revertMessage: string
+  revertMessage: string,
+  onRevertGasLimit: bigint
 ] & {
   revertAddress: string;
   callOnRevert: boolean;
   abortAddress: string;
   revertMessage: string;
+  onRevertGasLimit: bigint;
 };
 
 export type ZContextStruct = {
@@ -76,10 +79,10 @@ export interface IGatewayZEVMInterface extends Interface {
       | "depositAndRevert"
       | "execute"
       | "executeRevert"
-      | "withdraw(bytes,uint256,address,(address,bool,address,bytes))"
-      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes))"
-      | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes))"
-      | "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))"
+      | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
+      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "Called" | "Withdrawn"): EventFragment;
@@ -119,31 +122,31 @@ export interface IGatewayZEVMInterface extends Interface {
     values: [AddressLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes))",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     values: [BytesLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes))",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     values: [BytesLike, BigNumberish, BigNumberish, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes))",
-    values: [
-      BytesLike,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      RevertOptionsStruct
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       BigNumberish,
       AddressLike,
       BytesLike,
       BigNumberish,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
       RevertOptionsStruct
     ]
   ): string;
@@ -168,19 +171,19 @@ export interface IGatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes))",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes))",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
 }
@@ -372,7 +375,7 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdraw(bytes,uint256,address,(address,bool,address,bytes))": TypedContractMethod<
+  "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
@@ -383,7 +386,7 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes))": TypedContractMethod<
+  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
@@ -394,25 +397,25 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes))": TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      chainId: BigNumberish,
-      message: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))": TypedContractMethod<
+  "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
       zrc20: AddressLike,
       message: BytesLike,
       gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
       revertOptions: RevertOptionsStruct
     ],
     [void],
@@ -501,7 +504,7 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes))"
+    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -513,7 +516,7 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes))"
+    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -525,20 +528,7 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes))"
-  ): TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      chainId: BigNumberish,
-      message: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))"
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -546,6 +536,19 @@ export interface IGatewayZEVM extends BaseContract {
       zrc20: AddressLike,
       message: BytesLike,
       gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
       revertOptions: RevertOptionsStruct
     ],
     [void],
