@@ -1,6 +1,6 @@
 [profile.default]
 src = "contracts"
-out = "abi"
+out = "out"
 libs = ["lib"]
 
 remappings = [
@@ -16,7 +16,7 @@ no-match-contract = '.*EchidnaTest$'
 optimizer = true
 optimizer_runs = 10_000
 
-fs_permissions = [{ access = "read", path = "abi"}]
+fs_permissions = [{ access = "read", path = "out"}]
 
 ffi = true
 ast = true
