@@ -22,6 +22,5 @@ reviews:
   auto_review:
     base_branches:
       - main
-reviews:
   poem: true
   collapse_walkthrough: true
