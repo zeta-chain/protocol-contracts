@@ -6,11 +6,13 @@ pragma solidity 0.8.26;
 /// @param callOnRevert Flag if onRevert hook should be called.
 /// @param abortAddress Address to receive funds if aborted.
 /// @param revertMessage Arbitrary data sent back in onRevert.
+/// @param onRevertGasLimit Gas limit for revert tx, unused at the moment.
 struct RevertOptions {
     address revertAddress;
     bool callOnRevert;
     address abortAddress;
     bytes revertMessage;
+    uint256 onRevertGasLimit;
 }
 
 /// @notice Struct containing revert context passed to onRevert.
