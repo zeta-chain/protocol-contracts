@@ -4,6 +4,8 @@ reviews:
     - "!typechain-types/**"
     - "!docs/**"
     - "!data/**"
+    - "!v2/types/**"
+    - "!v2/pkg/**"
   path_instructions:
     - path: 'contracts/**'
       instructions: >-
@@ -20,3 +22,6 @@ reviews:
   auto_review:
     base_branches:
       - main
+reviews:
+  poem: true
+  collapse_walkthrough: true
