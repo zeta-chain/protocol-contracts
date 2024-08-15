@@ -8,10 +8,10 @@ import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
 
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
 
@@ -55,8 +55,7 @@ contract ZetaConnectorNativeTest is
         zetaToken = new TestERC20("zeta", "ZETA");
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol",
-            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken), owner))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken), owner))
         );
         gateway = GatewayEVM(proxy);
         custody = new ERC20Custody(address(gateway), tssAddress, owner);
@@ -74,7 +73,7 @@ contract ZetaConnectorNativeTest is
         zetaToken.mint(address(zetaConnector), 5_000_000);
 
         vm.deal(tssAddress, 1 ether);
-        revertContext = RevertContext({asset: address(zetaToken), amount: 1, revertMessage: ""});
+        revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
     }
 
     function testWithdraw() public {
@@ -140,12 +139,8 @@ contract ZetaConnectorNativeTest is
     function testWithdrawAndCallReceiveERC20() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
-        bytes memory data = abi.encodeWithSignature(
-            "receiveERC20(uint256,address,address)",
-            amount,
-            address(zetaToken),
-            destination
-        );
+        bytes memory data =
+            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
         uint256 balanceBefore = zetaToken.balanceOf(destination);
         assertEq(balanceBefore, 0);
         uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
@@ -179,12 +174,8 @@ contract ZetaConnectorNativeTest is
     function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
-        bytes memory data = abi.encodeWithSignature(
-            "receiveERC20(uint256,address,address)",
-            amount,
-            address(zetaToken),
-            destination
-        );
+        bytes memory data =
+            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(zetaToken), destination);
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
@@ -229,10 +220,7 @@ contract ZetaConnectorNativeTest is
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
         bytes memory data = abi.encodeWithSignature(
-            "receiveERC20Partial(uint256,address,address)",
-            amount,
-            address(zetaToken),
-            destination
+            "receiveERC20Partial(uint256,address,address)", amount, address(zetaToken), destination
         );
         uint256 balanceBefore = zetaToken.balanceOf(destination);
         assertEq(balanceBefore, 0);

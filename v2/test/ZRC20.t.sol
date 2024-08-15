@@ -7,11 +7,11 @@ import "forge-std/Vm.sol";
 import "./utils/SystemContract.sol";
 import "./utils/WZETA.sol";
 
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 import "../contracts/zevm/GatewayZEVM.sol";
 import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 import "../contracts/zevm/interfaces/IZRC20.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract ZRC20Test is Test, ZRC20Errors {
     ZRC20 zrc20;
@@ -32,8 +32,7 @@ contract ZRC20Test is Test, ZRC20Errors {
 
         proxy = payable(
             Upgrades.deployUUPSProxy(
-                "GatewayZEVM.sol",
-                abi.encodeCall(GatewayZEVM.initialize, (address(zetaToken), owner))
+                "GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zetaToken), owner))
             )
         );
         gateway = GatewayZEVM(proxy);

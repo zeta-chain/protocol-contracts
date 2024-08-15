@@ -71,7 +71,9 @@ contract SystemContract is SystemContractErrors {
         uint256 amount,
         address target,
         bytes calldata message
-    ) external {
+    )
+        external
+    {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 

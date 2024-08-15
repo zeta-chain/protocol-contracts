@@ -6,22 +6,22 @@ import "forge-std/Vm.sol";
 
 import "./utils/ReceiverEVM.sol";
 
-import "./utils/TestERC20.sol";
 import "../contracts/evm/ERC20Custody.sol";
-import {GatewayEVM} from "../contracts/evm/GatewayEVM.sol";
+import { GatewayEVM } from "../contracts/evm/GatewayEVM.sol";
 import "../contracts/evm/ZetaConnectorNonNative.sol";
+import "./utils/TestERC20.sol";
 
 import "./utils/SenderZEVM.sol";
 
 import "./utils/SystemContractMock.sol";
 
-import {GatewayZEVM} from "../contracts/zevm/GatewayZEVM.sol";
-import {IGatewayZEVM} from "../contracts/zevm/GatewayZEVM.sol";
-import {IGatewayZEVMErrors} from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import {IGatewayZEVMEvents} from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { GatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
+import { IGatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
+import { IGatewayZEVMErrors } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVMEvents } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 
-import {IGatewayEVMErrors} from "../contracts/evm/interfaces/IGatewayEVM.sol";
-import {IGatewayEVMEvents} from "../contracts/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMErrors } from "../contracts/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMEvents } from "../contracts/evm/interfaces/IGatewayEVM.sol";
 
 import "../contracts/zevm/ZRC20.sol";
 
@@ -29,7 +29,7 @@ import "./utils/IReceiverEVM.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract GatewayEVMZEVMTest is
     Test,
@@ -74,8 +74,7 @@ contract GatewayEVMZEVMTest is
         zeta = new TestERC20("zeta", "ZETA");
 
         proxyEVM = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol",
-            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), ownerEVM))
+            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), ownerEVM))
         );
         gatewayEVM = GatewayEVM(proxyEVM);
         custody = new ERC20Custody(address(gatewayEVM), tssAddress, ownerEVM);
@@ -96,8 +95,7 @@ contract GatewayEVMZEVMTest is
         // zevm
         proxyZEVM = payable(
             Upgrades.deployUUPSProxy(
-                "GatewayZEVM.sol",
-                abi.encodeCall(GatewayZEVM.initialize, (address(zeta), ownerZEVM))
+                "GatewayZEVM.sol", abi.encodeCall(GatewayZEVM.initialize, (address(zeta), ownerZEVM))
             )
         );
         gatewayZEVM = GatewayZEVM(proxyZEVM);
@@ -144,7 +142,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testCallReceiverEVMFromSenderZEVM() public {
@@ -174,7 +172,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromZEVM() public {
@@ -212,7 +210,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromSenderZEVM() public {
@@ -244,7 +242,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{value: value}(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
 
         // Check the balance after withdrawal
         uint256 senderBalanceAfterWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
