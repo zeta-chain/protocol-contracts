@@ -120,7 +120,7 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
           chain_id,
           chain_name: network,
           coin_type: token.coin_type.toLowerCase(),
-          decimals: 18,
+          decimals: token.decimals,
           description: token.name,
           foreign_chain_id: token.foreign_chain_id,
           symbol: token.symbol,
