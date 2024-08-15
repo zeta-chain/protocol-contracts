@@ -11,6 +11,37 @@ import type {
 const _abi = [
   {
     type: "event",
+    name: "Deposited",
+    inputs: [
+      {
+        name: "recipient",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+      {
+        name: "asset",
+        type: "address",
+        indexed: true,
+        internalType: "contract IERC20",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Unwhitelisted",
     inputs: [
       {

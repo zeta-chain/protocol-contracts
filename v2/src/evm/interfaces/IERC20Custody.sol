@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { RevertContext } from "src/Revert.sol";
 
 /// @title IERC20CustodyEvents
@@ -36,6 +37,9 @@ interface IERC20CustodyEvents {
     /// @notice Emitted when ERC20 token is unwhitelisted
     /// @param token address of ERC20 token.
     event Unwhitelisted(address indexed token);
+
+    /// @notice Emitted in legacy deposit method.
+    event Deposited(bytes recipient, IERC20 indexed asset, uint256 amount, bytes message);
 }
 
 /// @title IERC20CustodyErrors
@@ -45,6 +49,8 @@ interface IERC20CustodyErrors {
     error ZeroAddress();
     /// @notice Error for not whitelisted ERC20 token
     error NotWhitelisted();
+    /// @notice Error for calling not supported legacy methods.
+    error LegacyMethodsNotSupported();
 }
 
 interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {

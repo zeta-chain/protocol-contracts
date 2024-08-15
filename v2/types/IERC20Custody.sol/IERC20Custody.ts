@@ -46,6 +46,7 @@ export interface IERC20CustodyInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "Deposited"
       | "Unwhitelisted"
       | "Whitelisted"
       | "Withdrawn"
@@ -89,6 +90,31 @@ export interface IERC20CustodyInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
+}
+
+export namespace DepositedEvent {
+  export type InputTuple = [
+    recipient: BytesLike,
+    asset: AddressLike,
+    amount: BigNumberish,
+    message: BytesLike
+  ];
+  export type OutputTuple = [
+    recipient: string,
+    asset: string,
+    amount: bigint,
+    message: string
+  ];
+  export interface OutputObject {
+    recipient: string;
+    asset: string;
+    amount: bigint;
+    message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace UnwhitelistedEvent {
@@ -301,6 +327,13 @@ export interface IERC20Custody extends BaseContract {
   >;
 
   getEvent(
+    key: "Deposited"
+  ): TypedContractEvent<
+    DepositedEvent.InputTuple,
+    DepositedEvent.OutputTuple,
+    DepositedEvent.OutputObject
+  >;
+  getEvent(
     key: "Unwhitelisted"
   ): TypedContractEvent<
     UnwhitelistedEvent.InputTuple,
@@ -337,6 +370,17 @@ export interface IERC20Custody extends BaseContract {
   >;
 
   filters: {
+    "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
+    >;
+    Deposited: TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
+    >;
+
     "Unwhitelisted(address)": TypedContractEvent<
       UnwhitelistedEvent.InputTuple,
       UnwhitelistedEvent.OutputTuple,
