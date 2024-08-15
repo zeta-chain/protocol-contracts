@@ -172,6 +172,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x236b0DE675cC8F46AE186897fCCeFe3370C9eDeD",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Base Sepolia ETH-base_sepolia",
+    "foreign_chain_id": "84532",
+    "symbol": "ETH.BASESEPOLIA",
+    "type": "zrc20"
+  },
+  {
     "address": "0x48f80608B672DC30DC7e3dbBd0343c5F02C738Eb",
     "asset": "",
     "category": "omnichain",
@@ -312,6 +325,48 @@
     "type": "zetaToken"
   },
   {
+    "address": "0xc0B74d761ef4EC9e9473f65687d36B9F13DB0dCc",
+    "category": "messaging",
+    "chain_id": 84532,
+    "chain_name": "base_sepolia",
+    "type": "connector"
+  },
+  {
+    "address": "0x3A1f7b35EF57543B4e86c384eF6a368Ed811a36E",
+    "category": "omnichain",
+    "chain_id": 84532,
+    "chain_name": "base_sepolia",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0xdE3fb63723f0EEed8967ff9124e1c3bA89871b03",
+    "category": "messaging",
+    "chain_id": 84532,
+    "chain_name": "base_sepolia",
+    "type": "pauser"
+  },
+  {
+    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "category": "omnichain",
+    "chain_id": 84532,
+    "chain_name": "base_sepolia",
+    "type": "tss"
+  },
+  {
+    "address": "0xdE3fb63723f0EEed8967ff9124e1c3bA89871b03",
+    "category": "omnichain",
+    "chain_id": 84532,
+    "chain_name": "base_sepolia",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0xf4e63991E7475b659bd97Bba85f32a7259239D5d",
+    "category": "messaging",
+    "chain_id": 84532,
+    "chain_name": "base_sepolia",
+    "type": "zetaToken"
+  },
+  {
     "address": "0x3963341dad121c9CD33046089395D66eBF20Fb03",
     "category": "messaging",
     "chain_id": 11155111,
@@ -380,40 +435,5 @@
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "zetaTokenConsumerUniV3"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_testnet",
-    "type": "tss"
-  },
-  {
-    "address": "0xdE3fb63723f0EEed8967ff9124e1c3bA89871b03",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_testnet",
-    "type": "tssUpdater"
-  },
-  {
-    "address": "0xf4e63991E7475b659bd97Bba85f32a7259239D5d",
-    "category": "messaging",
-    "chain_id": 84532,
-    "chain_name": "base_testnet",
-    "type": "zetaToken"
-  },
-  {
-    "address": "0x3A1f7b35EF57543B4e86c384eF6a368Ed811a36E",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_testnet",
-    "type": "erc20Custody"
-  },
-  {
-    "address": "0xc0B74d761ef4EC9e9473f65687d36B9F13DB0dCc",
-    "category": "messaging",
-    "chain_id": 84532,
-    "chain_name": "base_testnet",
-    "type": "connector"
   }
 ]

@@ -346,6 +346,32 @@
     "type": "zrc20"
   },
   {
+    "address": "0xdbfF6471a79E5374d771922F2194eccc42210B9F",
+    "asset": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 USDT on POL",
+    "foreign_chain_id": "137",
+    "symbol": "USDT.POL",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xfC9201f4116aE6b054722E10b98D904829b469c3",
+    "asset": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 USDC on POL",
+    "foreign_chain_id": "137",
+    "symbol": "USDC.POL",
+    "type": "zrc20"
+  },
+  {
     "address": "bc1qm24wp577nk8aacckv8np465z3dvmu7ry45el6y",
     "category": "omnichain",
     "chain_id": 8332,
