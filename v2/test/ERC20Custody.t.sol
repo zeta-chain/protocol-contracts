@@ -475,10 +475,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     }
 
     function testDepositLegacy() public {
-        uint256 zetaFee = 50;
         uint256 amount = 1000;
-        custody.setZeta(zeta);
-        custody.setZetaFee(zetaFee);
         custody.setSupportsLegacy(true);
         token.approve(address(custody), 1_000_000);
         zeta.approve(address(custody), 1_000_000);
@@ -493,55 +490,9 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         custody.deposit(abi.encodePacked(destination), token, amount, message);
 
         assertEq(custodyTokenBalanceBefore + amount, token.balanceOf(address(custody)));
-        assertEq(tssZetaBalanceBefore + zetaFee, zeta.balanceOf(tssAddress));
-    }
-
-    function testDepositLegacyIfZetaFeeIs0() public {
-        uint256 zetaFee = 0;
-        uint256 amount = 1000;
-        custody.setZeta(zeta);
-        custody.setZetaFee(zetaFee);
-        custody.setSupportsLegacy(true);
-        token.approve(address(custody), 1_000_000);
-        zeta.approve(address(custody), 1_000_000);
-
-        uint256 custodyTokenBalanceBefore = token.balanceOf(address(custody));
-        uint256 tssZetaBalanceBefore = zeta.balanceOf(tssAddress);
-
-        bytes memory message = abi.encodePacked("hello");
-
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit Deposited(abi.encodePacked(destination), token, amount, message);
-        custody.deposit(abi.encodePacked(destination), token, amount, message);
-
-        assertEq(custodyTokenBalanceBefore + amount, token.balanceOf(address(custody)));
-        assertEq(tssZetaBalanceBefore, zeta.balanceOf(tssAddress));
-    }
-
-    function testDepositLegacyIfZetaIsZeroAddress() public {
-        uint256 zetaFee = 50;
-        uint256 amount = 1000;
-        custody.setZetaFee(zetaFee);
-        custody.setSupportsLegacy(true);
-        token.approve(address(custody), 1_000_000);
-        zeta.approve(address(custody), 1_000_000);
-
-        uint256 custodyTokenBalanceBefore = token.balanceOf(address(custody));
-        uint256 tssZetaBalanceBefore = zeta.balanceOf(tssAddress);
-
-        bytes memory message = abi.encodePacked("hello");
-
-        vm.expectEmit(true, true, true, true, address(custody));
-        emit Deposited(abi.encodePacked(destination), token, amount, message);
-        custody.deposit(abi.encodePacked(destination), token, amount, message);
-
-        assertEq(custodyTokenBalanceBefore + amount, token.balanceOf(address(custody)));
-        assertEq(tssZetaBalanceBefore, zeta.balanceOf(tssAddress));
     }
 
     function testDepositLegacyFailsIfNotSupported() public {
-        custody.setZeta(zeta);
-        custody.setZetaFee(1);
         custody.setSupportsLegacy(false);
         token.approve(address(custody), 1_000_000);
         zeta.approve(address(custody), 1_000_000);
@@ -553,8 +504,6 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     }
 
     function testDepositLegacyFailsIfTokenNotWhitelisted() public {
-        custody.setZeta(zeta);
-        custody.setZetaFee(1);
         custody.setSupportsLegacy(true);
         custody.unwhitelist(address(token));
         token.approve(address(custody), 1_000_000);

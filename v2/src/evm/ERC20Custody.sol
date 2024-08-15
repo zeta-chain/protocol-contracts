@@ -33,13 +33,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @notice New role identifier for whitelister role.
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 
-    /// @notice Zeta token.
-    /// @custom:deprecated This field is deprecated.
-    IERC20 private zeta;
-    /// @notice Zeta fee.
-    /// @custom:deprecated This field is deprecated.
-    uint256 private zetaFee;
-
     /// @notice Constructor for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
     constructor(address gateway_, address tssAddress_, address admin_) {
@@ -68,18 +61,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @notice Unpause contract.
     function setSupportsLegacy(bool _supportsLegacy) external onlyRole(DEFAULT_ADMIN_ROLE) {
         supportsLegacy = _supportsLegacy;
-    }
-
-    /// @notice Setter for deprecated field zeta.
-    /// @custom:deprecated This method is deprecated.
-    function setZeta(IERC20 _zeta) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        zeta = _zeta;
-    }
-
-    /// @notice Setter for deprecated field zetaFee.
-    /// @custom:deprecated This method is deprecated.
-    function setZetaFee(uint256 _zetaFee) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        zetaFee = _zetaFee;
     }
 
     /// @notice Whitelist ERC20 token.
@@ -193,9 +174,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     {
         if (!supportsLegacy) revert LegacyMethodsNotSupported();
         if (!whitelisted[address(asset)]) revert NotWhitelisted();
-        if (zetaFee != 0 && address(zeta) != address(0)) {
-            zeta.safeTransferFrom(msg.sender, tssAddress, zetaFee);
-        }
         uint256 oldBalance = asset.balanceOf(address(this));
         asset.safeTransferFrom(msg.sender, address(this), amount);
         // In case if there is a fee on a token transfer, we might not receive a full expected amount
