@@ -144,6 +144,32 @@ const _abi = [
   },
   {
     type: "function",
+    name: "setName",
+    inputs: [
+      {
+        name: "newName",
+        type: "string",
+        internalType: "string",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "setSymbol",
+    inputs: [
+      {
+        name: "newSymbol",
+        type: "string",
+        internalType: "string",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "totalSupply",
     inputs: [],
     outputs: [

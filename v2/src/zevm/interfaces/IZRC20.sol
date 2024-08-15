@@ -33,7 +33,7 @@ interface IZRC20 {
     function GAS_LIMIT() external view returns (uint256);
 
     function setName(string memory newName) external;
-    
+
     function setSymbol(string memory newSymbol) external;
 }
 

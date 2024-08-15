@@ -97,14 +97,14 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     /**
      * @dev Name can be updated by fungible module account.
      */
-    function setName(string memory newName) external override onlyFungible() {
+    function setName(string memory newName) external override onlyFungible {
         _name = newName;
     }
 
     /**
      * @dev Symbol can be updated by fungible module account.
      */
-    function setSymbol(string memory newSymbol) external override onlyFungible() {
+    function setSymbol(string memory newSymbol) external override onlyFungible {
         _symbol = newSymbol;
     }
 
