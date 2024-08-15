@@ -42,6 +42,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "PAUSER_ROLE"
       | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
+      | "deposit"
       | "gateway"
       | "getRoleAdmin"
       | "grantRole"
@@ -50,7 +51,12 @@ export interface ERC20CustodyInterface extends Interface {
       | "paused"
       | "renounceRole"
       | "revokeRole"
+      | "setSupportsLegacy"
+      | "setZeta"
+      | "setZetaFee"
       | "supportsInterface"
+      | "supportsLegacy"
+      | "tssAddress"
       | "unpause"
       | "unwhitelist"
       | "whitelist"
@@ -62,6 +68,7 @@ export interface ERC20CustodyInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "Deposited"
       | "Paused"
       | "RoleAdminChanged"
       | "RoleGranted"
@@ -90,6 +97,10 @@ export interface ERC20CustodyInterface extends Interface {
     functionFragment: "WITHDRAWER_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [BytesLike, AddressLike, BigNumberish, BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -114,8 +125,28 @@ export interface ERC20CustodyInterface extends Interface {
     values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "setSupportsLegacy",
+    values: [boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setZeta",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setZetaFee",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "supportsLegacy",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tssAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
@@ -165,6 +196,7 @@ export interface ERC20CustodyInterface extends Interface {
     functionFragment: "WITHDRAWER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
@@ -180,9 +212,20 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setSupportsLegacy",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setZeta", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setZetaFee", data: BytesLike): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "supportsLegacy",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "unwhitelist",
@@ -202,6 +245,31 @@ export interface ERC20CustodyInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
+}
+
+export namespace DepositedEvent {
+  export type InputTuple = [
+    recipient: BytesLike,
+    asset: AddressLike,
+    amount: BigNumberish,
+    message: BytesLike
+  ];
+  export type OutputTuple = [
+    recipient: string,
+    asset: string,
+    amount: bigint,
+    message: string
+  ];
+  export interface OutputObject {
+    recipient: string;
+    asset: string;
+    amount: bigint;
+    message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace PausedEvent {
@@ -432,6 +500,17 @@ export interface ERC20Custody extends BaseContract {
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  deposit: TypedContractMethod<
+    [
+      recipient: BytesLike,
+      asset: AddressLike,
+      amount: BigNumberish,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   gateway: TypedContractMethod<[], [string], "view">;
 
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
@@ -464,11 +543,29 @@ export interface ERC20Custody extends BaseContract {
     "nonpayable"
   >;
 
+  setSupportsLegacy: TypedContractMethod<
+    [_supportsLegacy: boolean],
+    [void],
+    "nonpayable"
+  >;
+
+  setZeta: TypedContractMethod<[_zeta: AddressLike], [void], "nonpayable">;
+
+  setZetaFee: TypedContractMethod<
+    [_zetaFee: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
     "view"
   >;
+
+  supportsLegacy: TypedContractMethod<[], [boolean], "view">;
+
+  tssAddress: TypedContractMethod<[], [string], "view">;
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
@@ -524,6 +621,18 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "WITHDRAWER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "deposit"
+  ): TypedContractMethod<
+    [
+      recipient: BytesLike,
+      asset: AddressLike,
+      amount: BigNumberish,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "gateway"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -564,8 +673,23 @@ export interface ERC20Custody extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setSupportsLegacy"
+  ): TypedContractMethod<[_supportsLegacy: boolean], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setZeta"
+  ): TypedContractMethod<[_zeta: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setZetaFee"
+  ): TypedContractMethod<[_zetaFee: BigNumberish], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "supportsLegacy"
+  ): TypedContractMethod<[], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "tssAddress"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
@@ -611,6 +735,13 @@ export interface ERC20Custody extends BaseContract {
     "nonpayable"
   >;
 
+  getEvent(
+    key: "Deposited"
+  ): TypedContractEvent<
+    DepositedEvent.InputTuple,
+    DepositedEvent.OutputTuple,
+    DepositedEvent.OutputObject
+  >;
   getEvent(
     key: "Paused"
   ): TypedContractEvent<
@@ -683,6 +814,17 @@ export interface ERC20Custody extends BaseContract {
   >;
 
   filters: {
+    "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
+    >;
+    Deposited: TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
+    >;
+
     "Paused(address)": TypedContractEvent<
       PausedEvent.InputTuple,
       PausedEvent.OutputTuple,
