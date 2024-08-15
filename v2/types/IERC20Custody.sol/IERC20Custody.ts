@@ -117,14 +117,14 @@ export namespace WhitelistedEvent {
 
 export namespace WithdrawnEvent {
   export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish
   ];
-  export type OutputTuple = [token: string, to: string, amount: bigint];
+  export type OutputTuple = [to: string, token: string, amount: bigint];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -135,20 +135,20 @@ export namespace WithdrawnEvent {
 
 export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
     data: BytesLike
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
     data: string
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
   }
@@ -160,22 +160,22 @@ export namespace WithdrawnAndCalledEvent {
 
 export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
-    token: AddressLike,
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
     data: BytesLike,
     revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
-    token: string,
     to: string,
+    token: string,
     amount: bigint,
     data: string,
     revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
-    token: string;
     to: string;
+    token: string;
     amount: bigint;
     data: string;
     revertContext: RevertContextStructOutput;

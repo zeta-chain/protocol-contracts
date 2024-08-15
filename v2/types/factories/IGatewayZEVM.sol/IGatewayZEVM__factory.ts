@@ -187,28 +187,6 @@ const _abi = [
     name: "depositAndRevert",
     inputs: [
       {
-        name: "context",
-        type: "tuple",
-        internalType: "struct zContext",
-        components: [
-          {
-            name: "origin",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "sender",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "chainID",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
-      {
         name: "zrc20",
         type: "address",
         internalType: "address",
@@ -222,11 +200,6 @@ const _abi = [
         name: "target",
         type: "address",
         internalType: "address",
-      },
-      {
-        name: "message",
-        type: "bytes",
-        internalType: "bytes",
       },
       {
         name: "revertContext",
@@ -309,46 +282,9 @@ const _abi = [
     name: "executeRevert",
     inputs: [
       {
-        name: "context",
-        type: "tuple",
-        internalType: "struct zContext",
-        components: [
-          {
-            name: "origin",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "sender",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "chainID",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
-      {
-        name: "zrc20",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "amount",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
         name: "target",
         type: "address",
         internalType: "address",
-      },
-      {
-        name: "message",
-        type: "bytes",
-        internalType: "bytes",
       },
       {
         name: "revertContext",
@@ -620,6 +556,12 @@ const _abi = [
         internalType: "bytes",
       },
       {
+        name: "gasLimit",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
         name: "revertOptions",
         type: "tuple",
         indexed: false,
@@ -701,6 +643,12 @@ const _abi = [
         type: "bytes",
         indexed: false,
         internalType: "bytes",
+      },
+      {
+        name: "gasLimit",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
       },
       {
         name: "revertOptions",

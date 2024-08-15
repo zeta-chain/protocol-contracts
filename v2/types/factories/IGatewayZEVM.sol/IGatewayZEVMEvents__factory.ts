@@ -38,6 +38,12 @@ const _abi = [
         internalType: "bytes",
       },
       {
+        name: "gasLimit",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
         name: "revertOptions",
         type: "tuple",
         indexed: false,
@@ -119,6 +125,12 @@ const _abi = [
         type: "bytes",
         indexed: false,
         internalType: "bytes",
+      },
+      {
+        name: "gasLimit",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
       },
       {
         name: "revertOptions",
