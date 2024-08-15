@@ -31,6 +31,8 @@ export interface IZRC20Interface extends Interface {
       | "balanceOf"
       | "burn"
       | "deposit"
+      | "setName"
+      | "setSymbol"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
@@ -61,6 +63,8 @@ export interface IZRC20Interface extends Interface {
     functionFragment: "deposit",
     values: [AddressLike, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "setName", values: [string]): string;
+  encodeFunctionData(functionFragment: "setSymbol", values: [string]): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
@@ -96,6 +100,8 @@ export interface IZRC20Interface extends Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setSymbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -185,6 +191,10 @@ export interface IZRC20 extends BaseContract {
     "nonpayable"
   >;
 
+  setName: TypedContractMethod<[newName: string], [void], "nonpayable">;
+
+  setSymbol: TypedContractMethod<[newSymbol: string], [void], "nonpayable">;
+
   totalSupply: TypedContractMethod<[], [bigint], "view">;
 
   transfer: TypedContractMethod<
@@ -250,6 +260,12 @@ export interface IZRC20 extends BaseContract {
     [boolean],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "setName"
+  ): TypedContractMethod<[newName: string], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setSymbol"
+  ): TypedContractMethod<[newSymbol: string], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "totalSupply"
   ): TypedContractMethod<[], [bigint], "view">;

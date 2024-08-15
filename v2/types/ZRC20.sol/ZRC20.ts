@@ -40,6 +40,8 @@ export interface ZRC20Interface extends Interface {
       | "deposit"
       | "gatewayAddress"
       | "name"
+      | "setName"
+      | "setSymbol"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -103,6 +105,8 @@ export interface ZRC20Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "setName", values: [string]): string;
+  encodeFunctionData(functionFragment: "setSymbol", values: [string]): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -171,6 +175,8 @@ export interface ZRC20Interface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setSymbol", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -421,6 +427,10 @@ export interface ZRC20 extends BaseContract {
 
   name: TypedContractMethod<[], [string], "view">;
 
+  setName: TypedContractMethod<[newName: string], [void], "nonpayable">;
+
+  setSymbol: TypedContractMethod<[newSymbol: string], [void], "nonpayable">;
+
   symbol: TypedContractMethod<[], [string], "view">;
 
   totalSupply: TypedContractMethod<[], [bigint], "view">;
@@ -533,6 +543,12 @@ export interface ZRC20 extends BaseContract {
   getFunction(
     nameOrSignature: "name"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "setName"
+  ): TypedContractMethod<[newName: string], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setSymbol"
+  ): TypedContractMethod<[newSymbol: string], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "symbol"
   ): TypedContractMethod<[], [string], "view">;
