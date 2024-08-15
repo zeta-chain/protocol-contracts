@@ -38,6 +38,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     error EnforcedPause();
     error NotWhitelisted();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
+    error LegacyMethodsNotSupported();
 
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
@@ -71,6 +72,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.stopPrank();
 
         token.mint(owner, 1_000_000);
+        zeta.mint(owner, 1_000_000);
         token.transfer(address(custody), 500_000);
 
         vm.deal(tssAddress, 1 ether);
@@ -470,5 +472,46 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.prank(tssAddress);
         vm.expectRevert(ZeroAddress.selector);
         custody.withdrawAndRevert(address(0), address(token), amount, data, revertContext);
+    }
+
+    function testDepositLegacy() public {
+        uint256 amount = 1000;
+        custody.setSupportsLegacy(true);
+        token.approve(address(custody), 1_000_000);
+        zeta.approve(address(custody), 1_000_000);
+
+        uint256 custodyTokenBalanceBefore = token.balanceOf(address(custody));
+        uint256 tssZetaBalanceBefore = zeta.balanceOf(tssAddress);
+
+        bytes memory message = abi.encodePacked("hello");
+
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit Deposited(abi.encodePacked(destination), token, amount, message);
+        custody.deposit(abi.encodePacked(destination), token, amount, message);
+
+        assertEq(custodyTokenBalanceBefore + amount, token.balanceOf(address(custody)));
+    }
+
+    function testDepositLegacyFailsIfNotSupported() public {
+        custody.setSupportsLegacy(false);
+        token.approve(address(custody), 1_000_000);
+        zeta.approve(address(custody), 1_000_000);
+
+        bytes memory message = abi.encodePacked("hello");
+
+        vm.expectRevert(LegacyMethodsNotSupported.selector);
+        custody.deposit(abi.encodePacked(destination), token, 1000, message);
+    }
+
+    function testDepositLegacyFailsIfTokenNotWhitelisted() public {
+        custody.setSupportsLegacy(true);
+        custody.unwhitelist(address(token));
+        token.approve(address(custody), 1_000_000);
+        zeta.approve(address(custody), 1_000_000);
+
+        bytes memory message = abi.encodePacked("hello");
+
+        vm.expectRevert(NotWhitelisted.selector);
+        custody.deposit(abi.encodePacked(destination), token, 1000, message);
     }
 }

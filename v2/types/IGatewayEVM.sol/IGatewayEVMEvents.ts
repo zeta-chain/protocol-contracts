@@ -26,18 +26,21 @@ export type RevertOptionsStruct = {
   callOnRevert: boolean;
   abortAddress: AddressLike;
   revertMessage: BytesLike;
+  onRevertGasLimit: BigNumberish;
 };
 
 export type RevertOptionsStructOutput = [
   revertAddress: string,
   callOnRevert: boolean,
   abortAddress: string,
-  revertMessage: string
+  revertMessage: string,
+  onRevertGasLimit: bigint
 ] & {
   revertAddress: string;
   callOnRevert: boolean;
   abortAddress: string;
   revertMessage: string;
+  onRevertGasLimit: bigint;
 };
 
 export type RevertContextStruct = {

@@ -28,18 +28,21 @@ export type RevertOptionsStruct = {
   callOnRevert: boolean;
   abortAddress: AddressLike;
   revertMessage: BytesLike;
+  onRevertGasLimit: BigNumberish;
 };
 
 export type RevertOptionsStructOutput = [
   revertAddress: string,
   callOnRevert: boolean,
   abortAddress: string,
-  revertMessage: string
+  revertMessage: string,
+  onRevertGasLimit: bigint
 ] & {
   revertAddress: string;
   callOnRevert: boolean;
   abortAddress: string;
   revertMessage: string;
+  onRevertGasLimit: bigint;
 };
 
 export type RevertContextStruct = {
@@ -64,10 +67,10 @@ export interface GatewayEVMInterface extends Interface {
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
-      | "deposit(address,uint256,address,(address,bool,address,bytes))"
-      | "deposit(address,(address,bool,address,bytes))"
-      | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
-      | "depositAndCall(address,bytes,(address,bool,address,bytes))"
+      | "deposit(address,uint256,address,(address,bool,address,bytes,uint256))"
+      | "deposit(address,(address,bool,address,bytes,uint256))"
+      | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
+      | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
       | "execute"
       | "executeRevert"
       | "executeWithERC20"
@@ -130,15 +133,19 @@ export interface GatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "custody", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes,uint256))",
     values: [AddressLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit(address,(address,bool,address,bytes))",
+    functionFragment: "deposit(address,(address,bool,address,bytes,uint256))",
     values: [AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))",
+    values: [AddressLike, BytesLike, RevertOptionsStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     values: [
       AddressLike,
       BigNumberish,
@@ -146,10 +153,6 @@ export interface GatewayEVMInterface extends Interface {
       BytesLike,
       RevertOptionsStruct
     ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
-    values: [AddressLike, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
@@ -250,19 +253,19 @@ export interface GatewayEVMInterface extends Interface {
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "custody", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes))",
+    functionFragment: "deposit(address,uint256,address,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,(address,bool,address,bytes))",
+    functionFragment: "deposit(address,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))",
+    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes))",
+    functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
@@ -616,7 +619,7 @@ export interface GatewayEVM extends BaseContract {
 
   custody: TypedContractMethod<[], [string], "view">;
 
-  "deposit(address,uint256,address,(address,bool,address,bytes))": TypedContractMethod<
+  "deposit(address,uint256,address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
@@ -627,13 +630,23 @@ export interface GatewayEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "deposit(address,(address,bool,address,bytes))": TypedContractMethod<
+  "deposit(address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [receiver: AddressLike, revertOptions: RevertOptionsStruct],
     [void],
     "payable"
   >;
 
-  "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))": TypedContractMethod<
+  "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
+  >;
+
+  "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: AddressLike,
       amount: BigNumberish,
@@ -643,16 +656,6 @@ export interface GatewayEVM extends BaseContract {
     ],
     [void],
     "nonpayable"
-  >;
-
-  "depositAndCall(address,bytes,(address,bool,address,bytes))": TypedContractMethod<
-    [
-      receiver: AddressLike,
-      payload: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "payable"
   >;
 
   execute: TypedContractMethod<
@@ -798,7 +801,7 @@ export interface GatewayEVM extends BaseContract {
     nameOrSignature: "custody"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "deposit(address,uint256,address,(address,bool,address,bytes))"
+    nameOrSignature: "deposit(address,uint256,address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: AddressLike,
@@ -810,14 +813,25 @@ export interface GatewayEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deposit(address,(address,bool,address,bytes))"
+    nameOrSignature: "deposit(address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [receiver: AddressLike, revertOptions: RevertOptionsStruct],
     [void],
     "payable"
   >;
   getFunction(
-    nameOrSignature: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes))"
+    nameOrSignature: "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: AddressLike,
@@ -828,17 +842,6 @@ export interface GatewayEVM extends BaseContract {
     ],
     [void],
     "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "depositAndCall(address,bytes,(address,bool,address,bytes))"
-  ): TypedContractMethod<
-    [
-      receiver: AddressLike,
-      payload: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "payable"
   >;
   getFunction(
     nameOrSignature: "execute"

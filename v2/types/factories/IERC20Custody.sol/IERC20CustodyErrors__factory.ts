@@ -11,6 +11,11 @@ import type {
 const _abi = [
   {
     type: "error",
+    name: "LegacyMethodsNotSupported",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "NotWhitelisted",
     inputs: [],
   },
