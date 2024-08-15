@@ -24,3 +24,16 @@ To execute deployment script, following format is needed:
 ```
 forge script scripts/deploy/deterministic/<Script>.s.sol --rpc-url <RPC_URL> --private-key <PRIVATE_KEY> --broadcast 
 ```
+
+To automatically verify contracts deployed with above scripts, verifier options are needed. Example for `GatewayEVM` which will deploy and verify both implementation and proxy contracts (it is the same for other scripts):
+
+- etherscan
+```
+forge script scripts/deploy/deterministic/DeployGatewayEVM.s.sol --private-key <PRIVATE_KEY> --rpc-url <RPC_URL> --verify --etherscan-api-key <ETHERSCAN_API_KEY> --chain-id <CHAIN_ID> --broadcast 
+```
+
+- blockscout
+```
+
+forge script scripts/deploy/deterministic/DeployGatewayEVM.s.sol --private-key <PRIVATE_KEY> --rpc-url <RPC_URL> --verify --verifier blockscout --verifier-url <VERIFIER_URL> --chain-id <CHAIN_ID> --broadcast
+```
