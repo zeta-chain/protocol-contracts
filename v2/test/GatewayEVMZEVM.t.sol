@@ -120,7 +120,8 @@ contract GatewayEVMZEVMTest is
             revertAddress: address(0x321),
             callOnRevert: true,
             abortAddress: address(0x321),
-            revertMessage: ""
+            revertMessage: "",
+            onRevertGasLimit: 0
         });
     }
 
@@ -154,7 +155,7 @@ contract GatewayEVMZEVMTest is
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "call(bytes,address,bytes,uint256,(address,bool,address,bytes))",
+            "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
             abi.encodePacked(receiverEVM),
             address(zrc20),
             message,
@@ -224,7 +225,7 @@ contract GatewayEVMZEVMTest is
         uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes))",
+            "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
             abi.encodePacked(receiverEVM),
             500_000,
             address(zrc20),

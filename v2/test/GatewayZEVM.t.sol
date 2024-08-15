@@ -68,7 +68,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             revertAddress: address(0x321),
             callOnRevert: true,
             abortAddress: address(0x321),
-            revertMessage: ""
+            revertMessage: "",
+            onRevertGasLimit: 0
         });
     }
 
