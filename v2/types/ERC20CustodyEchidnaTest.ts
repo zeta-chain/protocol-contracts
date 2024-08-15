@@ -53,8 +53,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
       | "renounceRole"
       | "revokeRole"
       | "setSupportsLegacy"
-      | "setZeta"
-      | "setZetaFee"
       | "supportsInterface"
       | "supportsLegacy"
       | "testERC20"
@@ -134,14 +132,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   encodeFunctionData(
     functionFragment: "setSupportsLegacy",
     values: [boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setZeta",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setZetaFee",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -231,8 +221,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     functionFragment: "setSupportsLegacy",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setZeta", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setZetaFee", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -572,14 +560,6 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
     "nonpayable"
   >;
 
-  setZeta: TypedContractMethod<[_zeta: AddressLike], [void], "nonpayable">;
-
-  setZetaFee: TypedContractMethod<
-    [_zetaFee: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
@@ -709,12 +689,6 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "setSupportsLegacy"
   ): TypedContractMethod<[_supportsLegacy: boolean], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setZeta"
-  ): TypedContractMethod<[_zeta: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setZetaFee"
-  ): TypedContractMethod<[_zetaFee: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
