@@ -9,19 +9,19 @@ import "./utils/GatewayEVMUpgradeTest.sol";
 import "./utils/IReceiverEVM.sol";
 import "./utils/ReceiverEVM.sol";
 import "./utils/TestERC20.sol";
-import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
-import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
 
-import "src/evm/ERC20Custody.sol";
-import "src/evm/GatewayEVM.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
+import "../contracts/evm/ERC20Custody.sol";
+import "../contracts/evm/GatewayEVM.sol";
+import "../contracts/evm/ZetaConnectorNonNative.sol";
+import "../contracts/evm/interfaces/IGatewayEVM.sol";
 
 contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
@@ -48,7 +48,8 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         zeta = new TestERC20("zeta", "ZETA");
 
         proxy = Upgrades.deployUUPSProxy(
-            "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
+            "GatewayEVM.sol",
+            abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
 
@@ -89,7 +90,7 @@ contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents
         vm.expectEmit(true, true, true, true, address(gateway));
         emit ExecutedV2(address(receiver), value, data);
         vm.prank(tssAddress);
-        gatewayUpgradeTest.execute{ value: value }(address(receiver), data);
+        gatewayUpgradeTest.execute{value: value}(address(receiver), data);
 
         assertEq(custodyBeforeUpgrade, gateway.custody());
         assertEq(tssBeforeUpgrade, gateway.tssAddress());

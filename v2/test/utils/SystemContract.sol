@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "src/zevm/interfaces/IZRC20.sol";
-import "src/zevm/interfaces/UniversalContract.sol";
+import "../../contracts/zevm/interfaces/IZRC20.sol";
+import "../../contracts/zevm/interfaces/UniversalContract.sol";
 
 /**
  * @dev Custom errors for SystemContract
@@ -71,9 +71,7 @@ contract SystemContract is SystemContractErrors {
         uint256 amount,
         address target,
         bytes calldata message
-    )
-        external
-    {
+    ) external {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 

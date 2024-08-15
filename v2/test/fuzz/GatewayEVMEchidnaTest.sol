@@ -3,8 +3,8 @@ pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "src/evm/ERC20Custody.sol";
-import "src/evm/GatewayEVM.sol";
+import "../../contracts/evm/ERC20Custody.sol";
+import "../../contracts/evm/GatewayEVM.sol";
 import "test/utils/TestERC20.sol";
 
 contract GatewayEVMEchidnaTest is GatewayEVM {

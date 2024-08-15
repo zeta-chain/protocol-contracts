@@ -2,9 +2,9 @@
 pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import { IGatewayZEVM } from "src/zevm/interfaces/IGatewayZEVM.sol";
-import { RevertOptions } from "src/zevm/interfaces/IGatewayZEVM.sol";
-import "src/zevm/interfaces/IZRC20.sol";
+import {IGatewayZEVM} from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import {RevertOptions} from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import "../../contracts/zevm/interfaces/IZRC20.sol";
 
 /// @title SenderZEVM
 /// @notice This contract is used just for testing.
@@ -60,9 +60,7 @@ contract SenderZEVM {
         string memory str,
         uint256 num,
         bool flag
-    )
-        external
-    {
+    ) external {
         // Encode the function call to the receiver's receivePayable method
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 

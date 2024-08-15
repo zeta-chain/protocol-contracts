@@ -3,8 +3,8 @@ pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import { RevertContext } from "src/Revert.sol";
-import "src/zevm/interfaces/UniversalContract.sol";
+import {RevertContext} from "../../contracts/Revert.sol";
+import "../../contracts/zevm/interfaces/UniversalContract.sol";
 
 /// @title TestUniversalContract
 /// @notice This contract is used just for testing.
@@ -33,10 +33,7 @@ contract TestUniversalContract is UniversalContract {
         address zrc20,
         uint256 amount,
         bytes calldata message
-    )
-        external
-        override
-    {
+    ) external override {
         string memory decodedMessage;
         if (message.length > 0) {
             decodedMessage = abi.decode(message, (string));
@@ -51,8 +48,8 @@ contract TestUniversalContract is UniversalContract {
     }
 
     /// @notice Allows the contract to receive ETH.
-    receive() external payable { }
+    receive() external payable {}
 
     /// @notice Fallback function to receive ETH.
-    fallback() external payable { }
+    fallback() external payable {}
 }

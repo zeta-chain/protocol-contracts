@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext } from "src/Revert.sol";
+import {RevertContext} from "../../contracts/Revert.sol";
 
 /// @title IReceiverEVMEvents
 /// @notice Interface for the events emitted by the ReceiverEVM contract.
