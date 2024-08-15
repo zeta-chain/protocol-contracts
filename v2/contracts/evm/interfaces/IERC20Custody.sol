@@ -10,23 +10,23 @@ interface IERC20CustodyEvents {
     /// @param token The address of the ERC20 token.
     /// @param to The address receiving the tokens.
     /// @param amount The amount of tokens withdrawn.
-    event Withdrawn(address indexed token, address indexed to, uint256 amount);
+    event Withdrawn(address indexed to, address indexed token, uint256 amount);
 
     /// @notice Emitted when tokens are withdrawn and a contract call is made.
-    /// @param token The address of the ERC20 token.
     /// @param to The address receiving the tokens.
+    /// @param token The address of the ERC20 token.
     /// @param amount The amount of tokens withdrawn.
     /// @param data The calldata passed to the contract call.
-    event WithdrawnAndCalled(address indexed token, address indexed to, uint256 amount, bytes data);
+    event WithdrawnAndCalled(address indexed to, address indexed token, uint256 amount, bytes data);
 
     /// @notice Emitted when tokens are withdrawn and a revertable contract call is made.
-    /// @param token The address of the ERC20 token.
     /// @param to The address receiving the tokens.
+    /// @param token The address of the ERC20 token.
     /// @param amount The amount of tokens withdrawn.
     /// @param data The calldata passed to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
     event WithdrawnAndReverted(
-        address indexed token, address indexed to, uint256 amount, bytes data, RevertContext revertContext
+        address indexed to, address indexed token, uint256 amount, bytes data, RevertContext revertContext
     );
 
     /// @notice Emitted when ERC20 token is whitelisted

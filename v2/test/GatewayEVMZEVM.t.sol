@@ -134,7 +134,7 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Called(address(ownerZEVM), address(zrc20), abi.encodePacked(receiverEVM), message, revertOptions);
+        emit Called(address(ownerZEVM), address(zrc20), abi.encodePacked(receiverEVM), message, 1, revertOptions);
         gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, 1, revertOptions);
 
         // Call execute on evm
@@ -194,6 +194,7 @@ contract GatewayEVMZEVMTest is
             expectedGasFee,
             zrc20.PROTOCOL_FLAT_FEE(),
             message,
+            1,
             revertOptions
         );
         vm.prank(ownerZEVM);
