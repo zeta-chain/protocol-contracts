@@ -186,18 +186,21 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         IERC20 asset,
         uint256 amount,
         bytes calldata message
-    ) external nonReentrant whenNotPaused() {
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
         if (!supportsLegacy) revert LegacyMethodsNotSupported();
-        if (!whitelisted[address(asset)]) {
-            revert NotWhitelisted();
-        }
+        if (!whitelisted[address(asset)]) revert NotWhitelisted();
         if (zetaFee != 0 && address(zeta) != address(0)) {
             zeta.safeTransferFrom(msg.sender, tssAddress, zetaFee);
         }
         uint256 oldBalance = asset.balanceOf(address(this));
         asset.safeTransferFrom(msg.sender, address(this), amount);
         // In case if there is a fee on a token transfer, we might not receive a full expected amount
-        // and we need to correctly process that, o we subtract an old balance from a new balance, which should be an actual received amount.
+        // and we need to correctly process that, we subtract an old balance from a new balance, which should be an
+        // actual received amount.
         emit Deposited(recipient, asset, asset.balanceOf(address(this)) - oldBalance, message);
     }
 }

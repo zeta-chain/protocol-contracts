@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext } from "src/Revert.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { RevertContext } from "src/Revert.sol";
 
 /// @title IERC20CustodyEvents
 /// @notice Interface for the events emitted by the ERC20 custody contract.
