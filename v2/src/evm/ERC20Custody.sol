@@ -22,12 +22,23 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     IGatewayEVM public immutable gateway;
     /// @notice Mapping of whitelisted tokens => true/false.
     mapping(address => bool) public whitelisted;
+    /// @notice The address of the TSS (Threshold Signature Scheme) contract.
+    address public tssAddress;
+    /// @notice Used to flag if contract supports legacy methods (eg. deposit).
+    bool public supportsLegacy;
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice New role identifier for withdrawer role.
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     /// @notice New role identifier for whitelister role.
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
+
+    /// @notice Zeta token.
+    /// @custom:deprecated This field is deprecated.
+    IERC20 private zeta;
+    /// @notice Zeta fee.
+    /// @custom:deprecated This field is deprecated.
+    uint256 private zetaFee;
 
     /// @notice Constructor for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
@@ -36,6 +47,7 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
             revert ZeroAddress();
         }
         gateway = IGatewayEVM(gateway_);
+        tssAddress = tssAddress_;
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
@@ -51,6 +63,23 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @notice Unpause contract.
     function unpause() external onlyRole(PAUSER_ROLE) {
         _unpause();
+    }
+
+    /// @notice Unpause contract.
+    function setSupportsLegacy(bool _supportsLegacy) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        supportsLegacy = _supportsLegacy;
+    }
+
+    /// @notice Setter for deprecated field zeta.
+    /// @custom:deprecated This method is deprecated.
+    function setZeta(IERC20 _zeta) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        zeta = _zeta;
+    }
+
+    /// @notice Setter for deprecated field zetaFee.
+    /// @custom:deprecated This method is deprecated.
+    function setZetaFee(uint256 _zetaFee) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        zetaFee = _zetaFee;
     }
 
     /// @notice Whitelist ERC20 token.
@@ -148,5 +177,27 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         gateway.revertWithERC20(token, to, amount, data, revertContext);
 
         emit WithdrawnAndReverted(to, token, amount, data, revertContext);
+    }
+
+    /// @notice Deposits asset to custody and pay fee in zeta erc20.
+    /// @custom:deprecated This method is deprecated.
+    function deposit(
+        bytes calldata recipient,
+        IERC20 asset,
+        uint256 amount,
+        bytes calldata message
+    ) external nonReentrant whenNotPaused() {
+        if (!supportsLegacy) revert LegacyMethodsNotSupported();
+        if (!whitelisted[address(asset)]) {
+            revert NotWhitelisted();
+        }
+        if (zetaFee != 0 && address(zeta) != address(0)) {
+            zeta.safeTransferFrom(msg.sender, tssAddress, zetaFee);
+        }
+        uint256 oldBalance = asset.balanceOf(address(this));
+        asset.safeTransferFrom(msg.sender, address(this), amount);
+        // In case if there is a fee on a token transfer, we might not receive a full expected amount
+        // and we need to correctly process that, o we subtract an old balance from a new balance, which should be an actual received amount.
+        emit Deposited(recipient, asset, asset.balanceOf(address(this)) - oldBalance, message);
     }
 }
