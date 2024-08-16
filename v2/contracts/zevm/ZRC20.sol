@@ -36,7 +36,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     uint256 public GAS_LIMIT;
     /// @notice Protocol flat fee.
     /// @dev Name is in upper case to maintain compatibility with ZRC20.sol v1
-    uint256 public override PROTOCOL_FLAT_FEE;
+    uint256 public PROTOCOL_FLAT_FEE;
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
