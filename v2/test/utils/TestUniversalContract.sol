@@ -3,8 +3,8 @@ pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import { RevertContext } from "src/Revert.sol";
-import "src/zevm/interfaces/UniversalContract.sol";
+import { RevertContext } from "../../contracts/Revert.sol";
+import "../../contracts/zevm/interfaces/UniversalContract.sol";
 
 /// @title TestUniversalContract
 /// @notice This contract is used just for testing.

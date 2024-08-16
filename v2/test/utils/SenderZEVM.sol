@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import { IGatewayZEVM } from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { RevertOptions } from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import "../../contracts/zevm/interfaces/IZRC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import { IGatewayZEVM } from "src/zevm/interfaces/IGatewayZEVM.sol";
-import { RevertOptions } from "src/zevm/interfaces/IGatewayZEVM.sol";
-import "src/zevm/interfaces/IZRC20.sol";
 
 /// @title SenderZEVM
 /// @notice This contract is used just for testing.

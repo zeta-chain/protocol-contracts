@@ -18,10 +18,10 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
 
-import "src/evm/ERC20Custody.sol";
-import "src/evm/GatewayEVM.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
+import "../contracts/evm/ERC20Custody.sol";
+import "../contracts/evm/GatewayEVM.sol";
+import "../contracts/evm/ZetaConnectorNonNative.sol";
+import "../contracts/evm/interfaces/IGatewayEVM.sol";
 
 contract GatewayEVMUUPSUpgradeTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;

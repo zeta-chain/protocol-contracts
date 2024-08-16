@@ -15,11 +15,11 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "./utils/IReceiverEVM.sol";
 
-import "src/evm/ERC20Custody.sol";
-import "src/evm/GatewayEVM.sol";
-import "src/evm/ZetaConnectorNative.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
-import "src/evm/interfaces/IZetaConnector.sol";
+import "../contracts/evm/ERC20Custody.sol";
+import "../contracts/evm/GatewayEVM.sol";
+import "../contracts/evm/ZetaConnectorNative.sol";
+import "../contracts/evm/interfaces/IGatewayEVM.sol";
+import "../contracts/evm/interfaces/IZetaConnector.sol";
 
 contract ZetaConnectorNativeTest is
     Test,

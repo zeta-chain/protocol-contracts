@@ -1,11 +1,10 @@
 [profile.default]
-src = "src"
+src = "contracts"
 out = "out"
 libs = ["lib"]
 
 remappings = [
   "ds-test/=node_modules/ds-test/src",
-  "src/=src",
   "test/=test",
   "forge-std/=lib/forge-std/src/",
   "@openzeppelin/contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/",

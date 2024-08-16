@@ -13,12 +13,12 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
+import "../contracts/evm/ERC20Custody.sol";
+import "../contracts/evm/GatewayEVM.sol";
+import "../contracts/evm/ZetaConnectorNonNative.sol";
+import "../contracts/evm/interfaces/IERC20Custody.sol";
+import "../contracts/evm/interfaces/IGatewayEVM.sol";
 import "./utils/IReceiverEVM.sol";
-import "src/evm/ERC20Custody.sol";
-import "src/evm/GatewayEVM.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
-import "src/evm/interfaces/IERC20Custody.sol";
-import "src/evm/interfaces/IGatewayEVM.sol";
 
 contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyEvents {
     using SafeERC20 for IERC20;

@@ -4,16 +4,18 @@
   "author": "zetachain",
   "files": [
     "abi",
-    "types"
+    "types",
+    "contracts"
   ],
   "scripts": {
-    "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern abi --ignore-pattern cache_forge/",
-    "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern abi --ignore-pattern cache_forge/",
+    "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
+    "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "localnet": "concurrently --names \"NODE,WORKER\" --prefix-colors \"blue.bold,green.bold\" \"anvil --auto-impersonate\" \"wait-on tcp:8545 && npx ts-node scripts/localnet/worker.ts\"",
     "test": "forge clean && forge test -vvv",
     "coverage": "forge clean && forge coverage --no-match-coverage \"(script|test)\" --report lcov",
-    "typechain": "npx typechain --target ethers-v6 \"abi/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types",
-    "generate": "del-cli abi && forge clean && forge build --out abi && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain"
+    "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types",
+    "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain",
+    "prepublishOnly": "copyfiles -u 1 'out/**/*' 'abi'"
   },
   "devDependencies": {
     "@eslint/js": "^9.7.0",
@@ -23,6 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "concurrently": "^8.2.2",
+    "copyfiles": "^2.4.1",
     "del-cli": "^5.1.0",
     "eslint": "^9.8.0",
     "ts-node": "^10.9.2",
@@ -33,6 +36,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "ethers": "^6.13.1"
   },
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"

@@ -10,11 +10,11 @@ import "./utils/TestUniversalContract.sol";
 
 import "./utils/WZETA.sol";
 
+import "../contracts/zevm/GatewayZEVM.sol";
+import "../contracts/zevm/ZRC20.sol";
+import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import "../contracts/zevm/interfaces/IZRC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
-import "src/zevm/GatewayZEVM.sol";
-import "src/zevm/ZRC20.sol";
-import "src/zevm/interfaces/IGatewayZEVM.sol";
-import "src/zevm/interfaces/IZRC20.sol";
 
 contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
     address payable proxy;

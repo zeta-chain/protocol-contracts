@@ -6,24 +6,24 @@ import "forge-std/Vm.sol";
 
 import "./utils/ReceiverEVM.sol";
 
+import "../contracts/evm/ERC20Custody.sol";
+import { GatewayEVM } from "../contracts/evm/GatewayEVM.sol";
+import "../contracts/evm/ZetaConnectorNonNative.sol";
 import "./utils/TestERC20.sol";
-import "src/evm/ERC20Custody.sol";
-import { GatewayEVM } from "src/evm/GatewayEVM.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
 
 import "./utils/SenderZEVM.sol";
 
 import "./utils/SystemContractMock.sol";
 
-import { GatewayZEVM } from "src/zevm/GatewayZEVM.sol";
-import { IGatewayZEVM } from "src/zevm/GatewayZEVM.sol";
-import { IGatewayZEVMErrors } from "src/zevm/interfaces/IGatewayZEVM.sol";
-import { IGatewayZEVMEvents } from "src/zevm/interfaces/IGatewayZEVM.sol";
+import { GatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
+import { IGatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
+import { IGatewayZEVMErrors } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVMEvents } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 
-import { IGatewayEVMErrors } from "src/evm/interfaces/IGatewayEVM.sol";
-import { IGatewayEVMEvents } from "src/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMErrors } from "../contracts/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVMEvents } from "../contracts/evm/interfaces/IGatewayEVM.sol";
 
-import "src/zevm/ZRC20.sol";
+import "../contracts/zevm/ZRC20.sol";
 
 import "./utils/IReceiverEVM.sol";
 
