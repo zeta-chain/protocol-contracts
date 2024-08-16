@@ -327,7 +327,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
             revertAddress: address(0x321),
             callOnRevert: true,
             abortAddress: address(0x321),
-            revertMessage: ""
+            revertMessage: "",
+            onRevertGasLimit: 0
         });
     }
 

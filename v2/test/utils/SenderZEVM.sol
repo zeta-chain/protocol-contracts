@@ -35,7 +35,8 @@ contract SenderZEVM {
             revertAddress: address(0x321),
             callOnRevert: true,
             abortAddress: address(0x321),
-            revertMessage: ""
+            revertMessage: "",
+            onRevertGasLimit: 0
         });
 
         uint256 gasLimit = 1;
@@ -73,7 +74,8 @@ contract SenderZEVM {
             revertAddress: address(0x321),
             callOnRevert: true,
             abortAddress: address(0x321),
-            revertMessage: ""
+            revertMessage: "",
+            onRevertGasLimit: 0
         });
 
         // Pass encoded call to gateway

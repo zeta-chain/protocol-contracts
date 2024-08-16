@@ -63,6 +63,27 @@ contract ZRC20Test is Test, ZRC20Errors {
         assertEq(100_000, totalSupply);
     }
 
+    function testUpdateNameAndSymbol() public {
+        assertEq("TOKEN", zrc20.name());
+        assertEq("TKN", zrc20.symbol());
+
+        vm.prank(fungibleModule);
+        zrc20.setName("TOKEN2");
+        vm.prank(fungibleModule);
+        zrc20.setSymbol("TKN2");
+
+        assertEq("TOKEN2", zrc20.name());
+        assertEq("TKN2", zrc20.symbol());
+    }
+
+    function testUpdateNameAndSymbolFailsIfSenderIsNotFungibleModule() public {
+        vm.expectRevert(CallerIsNotFungibleModule.selector);
+        zrc20.setName("TOKEN2");
+
+        vm.expectRevert(CallerIsNotFungibleModule.selector);
+        zrc20.setSymbol("TKN2");
+    }
+
     function testTransfer() public {
         uint256 balanceStart = zrc20.balanceOf(addr1);
         assertEq(0, balanceStart);
