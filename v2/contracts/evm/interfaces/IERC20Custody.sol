@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import { RevertContext } from "../../../contracts/Revert.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {RevertContext} from "../../../contracts/Revert.sol";
 
 /// @title IERC20CustodyEvents
 /// @notice Interface for the events emitted by the ERC20 custody contract.
@@ -27,11 +27,7 @@ interface IERC20CustodyEvents {
     /// @param data The calldata passed to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
     event WithdrawnAndReverted(
-        address indexed to,
-        address indexed token,
-        uint256 amount,
-        bytes data,
-        RevertContext revertContext
+        address indexed to, address indexed token, uint256 amount, bytes data, RevertContext revertContext
     );
 
     /// @notice Emitted when ERC20 token is whitelisted
@@ -90,5 +86,6 @@ interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {
         uint256 amount,
         bytes calldata data,
         RevertContext calldata revertContext
-    ) external;
+    )
+        external;
 }
