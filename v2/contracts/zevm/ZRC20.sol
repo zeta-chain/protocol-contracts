@@ -43,7 +43,7 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     uint256 private _totalSupply;
     string private _name;
     string private _symbol;
-    uint8 private immutable _decimals;
+    uint8 private _decimals;
 
     /// @notice Gateway contract address.
     /// @dev This variable is added at last position to maintain storage layout with ZRC20.sol v1
