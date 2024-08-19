@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'v2/**'
+      - "v2/**"
   pull_request:
     branches:
       - "*"
     paths:
-      - 'v2/**'
+      - "v2/**"
     types:
       - synchronize
       - opened
@@ -57,7 +57,7 @@ jobs:
 
       - name: Check for changes
         run: |
-          if git diff --exit-code --ignore-space-change --ignore-all-space --ignore-cr-at-eol -- pkg typechain-types; then
+          if git diff --exit-code --ignore-space-change --ignore-all-space --ignore-cr-at-eol -- pkg types docs; then
             echo "Generated Go files are up-to-date."
           else
             echo "::error::Generated files are not up-to-date. Please run 'yarn generate' locally and commit any changes."
