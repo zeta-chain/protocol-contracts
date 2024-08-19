@@ -1,3 +1,7 @@
+---
+title: "Protocol contracts"
+---
+
 ### ⚠️ Important Notice: V2 in Development
 
 We are currently developing Version 2 (V2) of our smart contract architecture. This new version will significantly enhance the developer experience for building Universal Apps.
