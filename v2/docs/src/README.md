@@ -2,14 +2,7 @@
 
 We are currently developing Version 2 (V2) of our smart contract architecture. This new version will significantly enhance the developer experience for building Universal Apps.
 
-Developers can already begin testing the new interface by referring to [the V2 Localnet guide](https://github.com/zeta-chain/localnet?tab=readme-ov-file#experimenting-with-the-new-architecture).
-
-### Dependencies install
-
-```shell
-$ yarn
-$ forge soldeer update
-```
+Developers can already begin testing the new interface by referring to [the V2 Localnet guide](./scripts/localnet//v2_localnet.md).
 
 ### Build
 
