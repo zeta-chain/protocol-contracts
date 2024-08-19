@@ -4,6 +4,13 @@ We are currently developing Version 2 (V2) of our smart contract architecture. T
 
 Developers can already begin testing the new interface by referring to [the V2 Localnet guide](./scripts/localnet//v2_localnet.md).
 
+### Dependencies install
+
+```shell
+$ yarn
+$ forge soldeer update
+```
+
 ### Build
 
 ```shell

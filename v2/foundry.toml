@@ -6,9 +6,11 @@ libs = ["lib"]
 remappings = [
   "ds-test/=node_modules/ds-test/src",
   "test/=test",
-  "forge-std/=lib/forge-std/src/",
-  "@openzeppelin/contracts/=lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/",
-  "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/"
+  "forge-std/=dependencies/forge-std-1.9.2/src/",
+  "openzeppelin-foundry-upgrades/=dependencies/openzeppelin-foundry-upgrades-0.3.2/src/",
+  "solidity-stringutils/=dependencies/openzeppelin-foundry-upgrades-0.3.2/lib/solidity-stringutils/",
+  "@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/",
+  "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/"
 ]
 
 no-match-contract = '.*EchidnaTest$'
@@ -33,3 +35,7 @@ quote_style = "double"
 tab_width = 4
 wrap_comments = true
 sort_imports=true
+
+[dependencies]
+forge-std = "1.9.2"
+openzeppelin-foundry-upgrades = "0.3.2"
