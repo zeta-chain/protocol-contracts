@@ -25,11 +25,13 @@ jobs:
           node-version: "21"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Install Dependencies
-        run: yarn
-
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
+      
+      - name: Install Dependencies
+        run: |
+          yarn install
+          forge soldeer update
 
       - name: Generate Files
         run: yarn generate

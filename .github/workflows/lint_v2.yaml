@@ -28,8 +28,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -41,7 +39,9 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Install Dependencies
-        run: yarn install
+        run: |
+          yarn install
+          forge soldeer update
 
       - name: Lint JavaScript/TypeScript
         run: yarn lint
