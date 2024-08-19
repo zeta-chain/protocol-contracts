@@ -14,7 +14,7 @@
     "test": "forge clean && forge test -vvv",
     "coverage": "forge clean && forge coverage --no-match-coverage \"(script|test)\" --report lcov",
     "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types",
-    "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain",
+    "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain && yarn docs",
     "prepublishOnly": "copyfiles -u 1 'out/**/*' 'abi'",
     "docs": "./scripts/generate_docs.sh"
   },
