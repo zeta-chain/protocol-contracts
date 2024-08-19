@@ -4,7 +4,7 @@ We are currently developing Version 2 (V2) of our smart contract architecture. T
 
 Developers can already begin testing the new interface by referring to [the V2 Localnet guide](https://github.com/zeta-chain/localnet?tab=readme-ov-file#experimenting-with-the-new-architecture).
 
-### Dependencies install
+### Install dependencies
 
 ```shell
 $ yarn
