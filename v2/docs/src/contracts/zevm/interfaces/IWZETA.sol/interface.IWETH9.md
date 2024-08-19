@@ -1,5 +1,5 @@
 # IWETH9
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/c157025a39efca61d83e5991d093a94548f342fb/contracts/zevm/interfaces/IWZETA.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/b9a2f8db0b39fa25781ead3dfecdaf63731b3d08/contracts/zevm/interfaces/IWZETA.sol)
 
 Interface for the Weth9 contract.
 
