@@ -120,7 +120,7 @@ const fetchForeignCoinsData = async (chains: any, addresses: any, network: Netwo
           chain_id,
           chain_name: network,
           coin_type: token.coin_type.toLowerCase(),
-          decimals: 18,
+          decimals: token.decimals,
           description: token.name,
           foreign_chain_id: token.foreign_chain_id,
           symbol: token.symbol,
@@ -207,7 +207,8 @@ const fetchTSSUpdater = async (chains: any, addresses: any) => {
       })?.address;
       if (erc20Custody) {
         if (["18332", "8332"].includes(chain.chain_id)) return;
-        const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
+        const chainName = chain.chain_name === "base_sepolia" ? "base_testnet" : chain.chain_name;
+        const rpc = getEndpoints("evm", chainName)[0]?.url;
         const provider = new ethers.providers.JsonRpcProvider(rpc);
         const custody = ERC20Custody__factory.connect(erc20Custody, provider);
         return custody.TSSAddressUpdater().then((address: string) => {
@@ -232,7 +233,8 @@ const fetchPauser = async (chains: any, addresses: any) => {
       })?.address;
       if (erc20Custody) {
         if (["18332", "8332", "7001", "7000"].includes(chain.chain_id)) return;
-        const rpc = getEndpoints("evm", chain.chain_name)[0]?.url;
+        const chainName = chain.chain_name === "base_sepolia" ? "base_testnet" : chain.chain_name;
+        const rpc = getEndpoints("evm", chainName)[0]?.url;
         const provider = new ethers.providers.JsonRpcProvider(rpc);
         const connector = ZetaConnectorBase__factory.connect(erc20Custody, provider);
         return connector.pauserAddress().then((address: string) => {
