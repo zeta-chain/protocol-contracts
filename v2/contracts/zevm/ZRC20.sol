@@ -74,7 +74,6 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
         address systemContractAddress_,
         address gatewayAddress_
     ) {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) revert CallerIsNotFungibleModule();
         if (systemContractAddress_ == address(0) || gatewayAddress_ == address(0)) revert ZeroAddress();
         _name = name_;
         _symbol = symbol_;
