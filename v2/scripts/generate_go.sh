@@ -38,6 +38,7 @@ process_file() {
   cat "$contract" | jq .abi > "$output_subdir_lowercase/$contract_name.abi"
   cat "$contract" | jq .bytecode.object | tr -d '\"' > "$output_subdir_lowercase/$contract_name.bin"
   abigen --abi "$output_subdir_lowercase/$contract_name.abi" --bin "$output_subdir_lowercase/$contract_name.bin" --pkg "$package_name" --type "$contract_name" --out "$output_subdir_lowercase/$contract_name_lowercase.go" > /dev/null 2>&1
+  abigen --version
   # Check if there were errors during the compilation
   if [ $? -ne 0 ]; then
     echo "Error: Failed to compile $contract_name"
