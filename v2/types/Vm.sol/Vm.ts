@@ -388,6 +388,7 @@ export interface VmInterface extends Interface {
       | "broadcast()"
       | "broadcast(address)"
       | "broadcast(uint256)"
+      | "broadcastRawTransaction"
       | "chainId"
       | "clearMockedCalls"
       | "closeFile"
@@ -480,6 +481,7 @@ export interface VmInterface extends Interface {
       | "getBlockTimestamp"
       | "getCode"
       | "getDeployedCode"
+      | "getFoundryVersion"
       | "getLabel"
       | "getMappingKeyAndParentOf"
       | "getMappingLength"
@@ -621,6 +623,10 @@ export interface VmInterface extends Interface {
       | "sign(address,bytes32)"
       | "sign((address,uint256,uint256,uint256),bytes32)"
       | "sign(uint256,bytes32)"
+      | "signCompact((address,uint256,uint256,uint256),bytes32)"
+      | "signCompact(address,bytes32)"
+      | "signCompact(bytes32)"
+      | "signCompact(uint256,bytes32)"
       | "signP256"
       | "skip"
       | "sleep"
@@ -1174,6 +1180,10 @@ export interface VmInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "broadcastRawTransaction",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "chainId",
     values: [BigNumberish]
   ): string;
@@ -1513,6 +1523,10 @@ export interface VmInterface extends Interface {
   encodeFunctionData(
     functionFragment: "getDeployedCode",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getFoundryVersion",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getLabel",
@@ -2025,6 +2039,22 @@ export interface VmInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "sign(uint256,bytes32)",
+    values: [BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "signCompact((address,uint256,uint256,uint256),bytes32)",
+    values: [VmSafe.WalletStruct, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "signCompact(address,bytes32)",
+    values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "signCompact(bytes32)",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "signCompact(uint256,bytes32)",
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
@@ -2671,6 +2701,10 @@ export interface VmInterface extends Interface {
     functionFragment: "broadcast(uint256)",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "broadcastRawTransaction",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "chainId", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "clearMockedCalls",
@@ -2992,6 +3026,10 @@ export interface VmInterface extends Interface {
   decodeFunctionResult(functionFragment: "getCode", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getDeployedCode",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getFoundryVersion",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getLabel", data: BytesLike): Result;
@@ -3463,6 +3501,22 @@ export interface VmInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "sign(uint256,bytes32)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "signCompact((address,uint256,uint256,uint256),bytes32)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "signCompact(address,bytes32)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "signCompact(bytes32)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "signCompact(uint256,bytes32)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "signP256", data: BytesLike): Result;
@@ -4512,6 +4566,12 @@ export interface Vm extends BaseContract {
     "nonpayable"
   >;
 
+  broadcastRawTransaction: TypedContractMethod<
+    [data: BytesLike],
+    [void],
+    "nonpayable"
+  >;
+
   chainId: TypedContractMethod<
     [newChainId: BigNumberish],
     [void],
@@ -5032,6 +5092,8 @@ export interface Vm extends BaseContract {
     [string],
     "view"
   >;
+
+  getFoundryVersion: TypedContractMethod<[], [string], "view">;
 
   getLabel: TypedContractMethod<[account: AddressLike], [string], "view">;
 
@@ -5771,6 +5833,30 @@ export interface Vm extends BaseContract {
   "sign(uint256,bytes32)": TypedContractMethod<
     [privateKey: BigNumberish, digest: BytesLike],
     [[bigint, string, string] & { v: bigint; r: string; s: string }],
+    "view"
+  >;
+
+  "signCompact((address,uint256,uint256,uint256),bytes32)": TypedContractMethod<
+    [wallet: VmSafe.WalletStruct, digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
+    "nonpayable"
+  >;
+
+  "signCompact(address,bytes32)": TypedContractMethod<
+    [signer: AddressLike, digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
+    "view"
+  >;
+
+  "signCompact(bytes32)": TypedContractMethod<
+    [digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
+    "view"
+  >;
+
+  "signCompact(uint256,bytes32)": TypedContractMethod<
+    [privateKey: BigNumberish, digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
     "view"
   >;
 
@@ -6875,6 +6961,9 @@ export interface Vm extends BaseContract {
     nameOrSignature: "broadcast(uint256)"
   ): TypedContractMethod<[privateKey: BigNumberish], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "broadcastRawTransaction"
+  ): TypedContractMethod<[data: BytesLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "chainId"
   ): TypedContractMethod<[newChainId: BigNumberish], [void], "nonpayable">;
   getFunction(
@@ -7403,6 +7492,9 @@ export interface Vm extends BaseContract {
   getFunction(
     nameOrSignature: "getDeployedCode"
   ): TypedContractMethod<[artifactPath: string], [string], "view">;
+  getFunction(
+    nameOrSignature: "getFoundryVersion"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getLabel"
   ): TypedContractMethod<[account: AddressLike], [string], "view">;
@@ -8055,6 +8147,34 @@ export interface Vm extends BaseContract {
   ): TypedContractMethod<
     [privateKey: BigNumberish, digest: BytesLike],
     [[bigint, string, string] & { v: bigint; r: string; s: string }],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "signCompact((address,uint256,uint256,uint256),bytes32)"
+  ): TypedContractMethod<
+    [wallet: VmSafe.WalletStruct, digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "signCompact(address,bytes32)"
+  ): TypedContractMethod<
+    [signer: AddressLike, digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "signCompact(bytes32)"
+  ): TypedContractMethod<
+    [digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "signCompact(uint256,bytes32)"
+  ): TypedContractMethod<
+    [privateKey: BigNumberish, digest: BytesLike],
+    [[string, string] & { r: string; vs: string }],
     "view"
   >;
   getFunction(
