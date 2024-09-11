@@ -2778,6 +2778,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "broadcastRawTransaction",
+    inputs: [
+      {
+        name: "data",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "chainId",
     inputs: [
       {
@@ -4889,6 +4902,19 @@ const _abi = [
         name: "runtimeBytecode",
         type: "bytes",
         internalType: "bytes",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getFoundryVersion",
+    inputs: [],
+    outputs: [
+      {
+        name: "version",
+        type: "string",
+        internalType: "string",
       },
     ],
     stateMutability: "view",
@@ -8112,6 +8138,139 @@ const _abi = [
       },
       {
         name: "s",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "pure",
+  },
+  {
+    type: "function",
+    name: "signCompact",
+    inputs: [
+      {
+        name: "wallet",
+        type: "tuple",
+        internalType: "struct VmSafe.Wallet",
+        components: [
+          {
+            name: "addr",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "publicKeyX",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "publicKeyY",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "privateKey",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+      {
+        name: "digest",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "r",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
+        name: "vs",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "signCompact",
+    inputs: [
+      {
+        name: "signer",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "digest",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "r",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
+        name: "vs",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "pure",
+  },
+  {
+    type: "function",
+    name: "signCompact",
+    inputs: [
+      {
+        name: "digest",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "r",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
+        name: "vs",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "pure",
+  },
+  {
+    type: "function",
+    name: "signCompact",
+    inputs: [
+      {
+        name: "privateKey",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "digest",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    outputs: [
+      {
+        name: "r",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+      {
+        name: "vs",
         type: "bytes32",
         internalType: "bytes32",
       },
