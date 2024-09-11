@@ -32,7 +32,7 @@ var (
 // SafeERC20MetaData contains all meta data concerning the SafeERC20 contract.
 var SafeERC20MetaData = &bind.MetaData{
 	ABI: "[{\"type\":\"error\",\"name\":\"SafeERC20FailedDecreaseAllowance\",\"inputs\":[{\"name\":\"spender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"currentAllowance\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"requestedDecrease\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"SafeERC20FailedOperation\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"internalType\":\"address\"}]}]",
-	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212200a0c21a5ca68379a6f36101aa6a27e78e6638de03f25ace5ef31e844e234d84664736f6c634300081a0033",
+	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220d1e8ca78c7d9a8f7956969bf9e18a306c7fbad4315793a417432f76f34b799d864736f6c634300081a0033",
 }
 
 // SafeERC20ABI is the input ABI used to generate the binding from.
