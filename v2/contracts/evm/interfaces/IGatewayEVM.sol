@@ -80,6 +80,8 @@ interface IGatewayEVMErrors {
 
     /// @notice Error when trying to transfer not whitelisted token to custody.
     error NotWhitelistedInCustody();
+
+    error NotAllowedToCallOnCall();
 }
 
 /// @title IGatewayEVM

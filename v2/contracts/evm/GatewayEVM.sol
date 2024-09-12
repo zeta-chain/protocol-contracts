@@ -76,6 +76,16 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Callable.onCall.selector) {
+                revert NotAllowedToCallOnCall();
+            }
+        }
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 

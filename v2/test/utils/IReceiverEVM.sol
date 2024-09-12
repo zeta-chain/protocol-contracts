@@ -36,4 +36,6 @@ interface IReceiverEVMEvents {
     /// @param sender The address of the sender.
     /// @param revertContext Revert Context.
     event ReceivedRevert(address sender, RevertContext revertContext);
+
+    event ReceivedOnCall();
 }

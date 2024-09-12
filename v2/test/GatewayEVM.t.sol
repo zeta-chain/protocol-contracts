@@ -182,6 +182,14 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
+    function testForwardCallToReceiveOnCallFails() public {
+        bytes memory data = abi.encodeWithSignature("onCall(address,bytes)", address(123), bytes(""));
+
+        vm.prank(tssAddress);
+        vm.expectRevert(NotAllowedToCallOnCall.selector);
+        gateway.execute(address(receiver), data);
+    }
+
     function testExecuteFailsIfDestinationIsZeroAddress() public {
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");
 
