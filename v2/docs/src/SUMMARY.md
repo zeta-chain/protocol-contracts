@@ -29,6 +29,7 @@
       - [CoinType](contracts/zevm/interfaces/IZRC20.sol/enum.CoinType.md)
       - [zContext](contracts/zevm/interfaces/UniversalContract.sol/struct.zContext.md)
       - [zContract](contracts/zevm/interfaces/UniversalContract.sol/interface.zContract.md)
+      - [MessageContext](contracts/zevm/interfaces/UniversalContract.sol/struct.MessageContext.md)
       - [UniversalContract](contracts/zevm/interfaces/UniversalContract.sol/interface.UniversalContract.md)
     - [GatewayZEVM](contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md)
     - [ZRC20Errors](contracts/zevm/ZRC20.sol/interface.ZRC20Errors.md)
