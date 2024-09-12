@@ -87,7 +87,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             0,
             zrc20.PROTOCOL_FLAT_FEE(),
             "",
-            0,
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
             revertOptions
         );
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
@@ -189,7 +189,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             expectedGasFee,
             zrc20.PROTOCOL_FLAT_FEE(),
             message,
-            gasLimit,
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
         gateway.withdrawAndCall(abi.encodePacked(addr1), amount, address(zrc20), message, gasLimit, revertOptions);
@@ -228,7 +228,18 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 chainId = 1;
 
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "", 0, revertOptions);
+        emit Withdrawn(
+            owner,
+            chainId,
+            abi.encodePacked(addr1),
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
         gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
 
         uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
@@ -285,7 +296,16 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Withdrawn(
-            owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message, 0, revertOptions
+            owner,
+            chainId,
+            abi.encodePacked(addr1),
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            message,
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
         );
         gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, revertOptions);
 

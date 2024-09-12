@@ -201,11 +201,18 @@ contract GatewayEVMZEVMTest is
             expectedGasFee,
             zrc20.PROTOCOL_FLAT_FEE(),
             message,
-            1,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
             revertOptions
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 500_000, address(zrc20), message, 1, revertOptions);
+        gatewayZEVM.withdrawAndCall(
+            abi.encodePacked(receiverEVM),
+            500_000,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            revertOptions
+        );
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);
