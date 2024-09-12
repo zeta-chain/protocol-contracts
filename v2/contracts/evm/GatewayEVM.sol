@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
-import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
+import { IGatewayEVM, Callable, MessageContext } from "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -75,11 +75,15 @@ contract GatewayEVM is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
+    function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
         return result;
+    }
+
+    function _executeAuthenticatedCall(MessageContext calldata messageContext, address destination, bytes calldata data) internal returns (bytes memory) {
+        return Callable(destination).onCall(messageContext, data);
     }
 
     /// @notice Pause contract.
@@ -121,6 +125,7 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function execute(
+        MessageContext calldata messageContext,
         address destination,
         bytes calldata data
     )
@@ -132,7 +137,12 @@ contract GatewayEVM is
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
-        bytes memory result = _execute(destination, data);
+        bytes memory result;
+        if (messageContext.isArbitraryCall) {
+            result = _executeArbitraryCall(destination, data);
+        } else {
+            result = _executeAuthenticatedCall(messageContext, destination, data);
+        }
 
         emit Executed(destination, msg.value, data);
 
@@ -163,7 +173,7 @@ contract GatewayEVM is
         if (!resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        _execute(to, data);
+        _executeArbitraryCall(to, data);
 
         // Reset approval
         if (!resetApproval(token, to)) revert ApprovalFailed();

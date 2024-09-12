@@ -12,14 +12,14 @@ interface IGatewayZEVMEvents {
     /// @param zrc20 Address of zrc20 to pay fees.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
-    /// @param gasLimit Gas limit.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     event Called(
         address indexed sender,
         address indexed zrc20,
         bytes receiver,
         bytes message,
-        uint256 gasLimit,
+        CallOptions callOptions,
         RevertOptions revertOptions
     );
 
@@ -230,4 +230,9 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         RevertContext calldata revertContext
     )
         external;
+}
+
+struct CallOptions {
+    uint256 gasLimit;
+    bool isArbitraryCall;
 }

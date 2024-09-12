@@ -171,3 +171,15 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param revertOptions Revert options.
     function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
 }
+
+struct MessageContext {
+    address sender;
+    bool isArbitraryCall;
+}
+
+interface Callable {
+    function onCall(
+        MessageContext calldata messageContext,
+        bytes calldata message
+    ) external returns (bytes memory);
+}
