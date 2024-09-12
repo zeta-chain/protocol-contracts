@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/1ebf02353d4ffe1e3d159fe4887220a0672a2035/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -330,7 +330,7 @@ Execute a user-specified contract on ZEVM.
 
 ```solidity
 function execute(
-    zContext calldata context,
+    MessageContext calldata context,
     address zrc20,
     uint256 amount,
     address target,
@@ -344,7 +344,7 @@ function execute(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
@@ -358,7 +358,7 @@ Deposit foreign coins into ZRC20 and call a user-specified contract on ZEVM.
 
 ```solidity
 function depositAndCall(
-    zContext calldata context,
+    MessageContext calldata context,
     address zrc20,
     uint256 amount,
     address target,
@@ -372,7 +372,7 @@ function depositAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
@@ -386,7 +386,7 @@ Deposit ZETA and call a user-specified contract on ZEVM.
 
 ```solidity
 function depositAndCall(
-    zContext calldata context,
+    MessageContext calldata context,
     uint256 amount,
     address target,
     bytes calldata message
@@ -399,7 +399,7 @@ function depositAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
 |`message`|`bytes`|The calldata to pass to the contract call.|

@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { RevertContext } from "../../../contracts/Revert.sol";
 
 /// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
-/// UniversalContract should be used
+/// MessageContext should be used
 struct zContext {
     bytes origin;
     address sender;

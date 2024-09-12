@@ -1,5 +1,5 @@
 # IZetaConnectorEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/interfaces/IZetaConnector.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/1ebf02353d4ffe1e3d159fe4887220a0672a2035/contracts/evm/interfaces/IZetaConnector.sol)
 
 Interface for the events emitted by the ZetaConnector contracts.
 
