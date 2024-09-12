@@ -255,15 +255,7 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
-        if (receiver.length == 0) revert ZeroAddress();
-        if (message.length == 0) revert EmptyMessage();
-
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed();
-        }
-
-        emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
+        _call(receiver, zrc20, message, callOptions, revertOptions);
     }
 
     function call(
@@ -277,22 +269,27 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        _call(receiver, zrc20, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
+    }
+
+    function _call(
+        bytes memory receiver,
+        address zrc20,
+        bytes calldata message,
+        CallOptions memory callOptions,
+        RevertOptions memory revertOptions
+    )
+        internal
+    {
         if (receiver.length == 0) revert ZeroAddress();
         if (message.length == 0) revert EmptyMessage();
 
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
+        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
 
-        emit Called(
-            msg.sender,
-            zrc20,
-            receiver,
-            message,
-            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
-            revertOptions
-        );
+        emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.
