@@ -83,7 +83,7 @@ contract GatewayEVM is
     }
 
     function _executeAuthenticatedCall(MessageContext calldata messageContext, address destination, bytes calldata data) internal returns (bytes memory) {
-        return Callable(destination).onCall(messageContext, data);
+        return Callable(destination).onCall(messageContext.sender, data);
     }
 
     /// @notice Pause contract.
