@@ -151,7 +151,7 @@ contract GatewayZEVM is
             gasFee,
             IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
             "",
-            IZRC20(zrc20).GAS_LIMIT(),
+            CallOptions({ gasLimit: IZRC20(zrc20).GAS_LIMIT(), isArbitraryCall: true }),
             revertOptions
         );
     }
@@ -188,7 +188,37 @@ contract GatewayZEVM is
             gasFee,
             IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
             message,
-            gasLimit,
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
+            revertOptions
+        );
+    }
+
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        bytes calldata message,
+        CallOptions calldata callOptions,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
+        if (receiver.length == 0) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZRC20Amount();
+
+        uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
+        emit Withdrawn(
+            msg.sender,
+            0,
+            receiver,
+            zrc20,
+            amount,
+            gasFee,
+            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
+            message,
+            callOptions,
             revertOptions
         );
     }
@@ -211,7 +241,18 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", 0, revertOptions);
+        emit Withdrawn(
+            msg.sender,
+            chainId,
+            receiver,
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
@@ -235,7 +276,39 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
-        emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, 0, revertOptions);
+        emit Withdrawn(
+            msg.sender,
+            chainId,
+            receiver,
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            message,
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
+    }
+
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message,
+        CallOptions calldata callOptions,
+        RevertOptions calldata revertOptions
+    )
+        external
+        nonReentrant
+        whenNotPaused
+    {
+        if (receiver.length == 0) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+
+        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
+        emit Withdrawn(
+            msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, callOptions, revertOptions
+        );
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
