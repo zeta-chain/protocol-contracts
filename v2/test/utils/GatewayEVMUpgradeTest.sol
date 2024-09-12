@@ -79,11 +79,22 @@ contract GatewayEVMUpgradeTest is
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
-    function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
+    function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
         return result;
+    }
+
+    function _executeAuthenticatedCall(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        internal
+        returns (bytes memory)
+    {
+        return Callable(destination).onCall(messageContext.sender, data);
     }
 
     /// @notice Pause contract.
@@ -125,6 +136,7 @@ contract GatewayEVMUpgradeTest is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function execute(
+        MessageContext calldata messageContext,
         address destination,
         bytes calldata data
     )
@@ -136,7 +148,30 @@ contract GatewayEVMUpgradeTest is
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
-        bytes memory result = _execute(destination, data);
+        bytes memory result;
+        if (messageContext.isArbitraryCall) {
+            result = _executeArbitraryCall(destination, data);
+        } else {
+            result = _executeAuthenticatedCall(messageContext, destination, data);
+        }
+
+        emit Executed(destination, msg.value, data);
+
+        return result;
+    }
+
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        returns (bytes memory)
+    {
+        if (destination == address(0)) revert ZeroAddress();
+        bytes memory result = _executeArbitraryCall(destination, data);
 
         emit ExecutedV2(destination, msg.value, data);
 
@@ -167,7 +202,7 @@ contract GatewayEVMUpgradeTest is
         if (!resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        _execute(to, data);
+        _executeArbitraryCall(to, data);
 
         // Reset approval
         if (!resetApproval(token, to)) revert ApprovalFailed();

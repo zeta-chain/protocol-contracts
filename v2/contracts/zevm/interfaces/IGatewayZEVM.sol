@@ -153,8 +153,17 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param receiver The receiver address on the external chain.
     /// @param zrc20 Address of zrc20 to pay fees.
     /// @param message The calldata to pass to the contract call.
-    /// @param gasLimit Gas limit.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
+    function call(
+        bytes memory receiver,
+        address zrc20,
+        bytes calldata message,
+        CallOptions calldata callOptions,
+        RevertOptions calldata revertOptions
+    )
+        external;
+
     function call(
         bytes memory receiver,
         address zrc20,
