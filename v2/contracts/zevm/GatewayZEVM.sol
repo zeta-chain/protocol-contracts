@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
+import { IGatewayZEVM, CallOptions } from "./interfaces/IGatewayZEVM.sol";
 
 import { RevertContext, RevertOptions } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
@@ -242,13 +242,13 @@ contract GatewayZEVM is
     /// @param receiver The receiver address on the external chain.
     /// @param zrc20 Address of zrc20 to pay fees.
     /// @param message The calldata to pass to the contract call.
-    /// @param gasLimit Gas limit.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     function call(
         bytes memory receiver,
         address zrc20,
         bytes calldata message,
-        uint256 gasLimit,
+        CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
         external
@@ -258,12 +258,12 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (message.length == 0) revert EmptyMessage();
 
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
+        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
 
-        emit Called(msg.sender, zrc20, receiver, message, gasLimit, revertOptions);
+        emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
     }
 
     /// @notice Deposit foreign coins into ZRC20.
