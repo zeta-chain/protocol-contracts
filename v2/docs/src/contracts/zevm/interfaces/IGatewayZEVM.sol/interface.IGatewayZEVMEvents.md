@@ -1,5 +1,5 @@
 # IGatewayZEVMEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/1ebf02353d4ffe1e3d159fe4887220a0672a2035/contracts/zevm/interfaces/IGatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/zevm/interfaces/IGatewayZEVM.sol)
 
 Interface for the events emitted by the GatewayZEVM contract.
 
