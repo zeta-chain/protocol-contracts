@@ -109,7 +109,16 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param destination The address of the contract to call.
     /// @param data The calldata to pass to the contract call.
     /// @return The result of the contract call.
-    function execute(MessageContext calldata messageContext, address destination, bytes calldata data) external payable returns (bytes memory);
+    function execute(address destination, bytes calldata data) external payable returns (bytes memory);
+
+    function execute(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        returns (bytes memory);
 
     /// @notice Executes a revertable call to a contract using ERC20 tokens.
     /// @param token The address of the ERC20 token.
@@ -178,8 +187,5 @@ struct MessageContext {
 }
 
 interface Callable {
-    function onCall(
-        address sender,
-        bytes calldata message
-    ) external returns (bytes memory);
+    function onCall(address sender, bytes calldata message) external returns (bytes memory);
 }
