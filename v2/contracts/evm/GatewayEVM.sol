@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
-import { IGatewayEVM, Callable, MessageContext } from "./interfaces/IGatewayEVM.sol";
+import { Callable, IGatewayEVM, MessageContext } from "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -82,7 +82,14 @@ contract GatewayEVM is
         return result;
     }
 
-    function _executeAuthenticatedCall(MessageContext calldata messageContext, address destination, bytes calldata data) internal returns (bytes memory) {
+    function _executeAuthenticatedCall(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        internal
+        returns (bytes memory)
+    {
         return Callable(destination).onCall(messageContext.sender, data);
     }
 
@@ -143,6 +150,24 @@ contract GatewayEVM is
         } else {
             result = _executeAuthenticatedCall(messageContext, destination, data);
         }
+
+        emit Executed(destination, msg.value, data);
+
+        return result;
+    }
+
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        returns (bytes memory)
+    {
+        if (destination == address(0)) revert ZeroAddress();
+        bytes memory result = _executeArbitraryCall(destination, data);
 
         emit Executed(destination, msg.value, data);
 

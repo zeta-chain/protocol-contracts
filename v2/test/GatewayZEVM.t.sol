@@ -334,7 +334,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectEmit(true, true, true, true, address(gateway));
 
-        emit Called(owner, address(zrc20), abi.encodePacked(addr1), message, 1, revertOptions);
+        emit Called(
+            owner,
+            address(zrc20),
+            abi.encodePacked(addr1),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            revertOptions
+        );
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, 1, revertOptions);
     }
 }

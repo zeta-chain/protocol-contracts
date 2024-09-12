@@ -17,8 +17,7 @@ import "./utils/SystemContractMock.sol";
 
 import { GatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
 import { IGatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
-import { IGatewayZEVMErrors } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import { IGatewayZEVMEvents } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { CallOptions, IGatewayZEVMErrors, IGatewayZEVMEvents } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 
 import { IGatewayEVMErrors } from "../contracts/evm/interfaces/IGatewayEVM.sol";
 import { IGatewayEVMEvents } from "../contracts/evm/interfaces/IGatewayEVM.sol";
@@ -135,7 +134,14 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Called(address(ownerZEVM), address(zrc20), abi.encodePacked(receiverEVM), message, 1, revertOptions);
+        emit Called(
+            address(ownerZEVM),
+            address(zrc20),
+            abi.encodePacked(receiverEVM),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            revertOptions
+        );
         gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, 1, revertOptions);
 
         // Call execute on evm
