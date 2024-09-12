@@ -285,7 +285,14 @@ contract GatewayZEVM is
             revert GasFeeTransferFailed();
         }
 
-        emit Called(msg.sender, zrc20, receiver, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
+        emit Called(
+            msg.sender,
+            zrc20,
+            receiver,
+            message,
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
+            revertOptions
+        );
     }
 
     /// @notice Deposit foreign coins into ZRC20.
