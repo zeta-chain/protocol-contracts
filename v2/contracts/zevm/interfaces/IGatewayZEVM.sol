@@ -32,7 +32,7 @@ interface IGatewayZEVMEvents {
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
-    /// @param gasLimit Gas limit.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     event Withdrawn(
         address indexed sender,
@@ -43,7 +43,7 @@ interface IGatewayZEVMEvents {
         uint256 gasfee,
         uint256 protocolFlatFee,
         bytes message,
-        uint256 gasLimit,
+        CallOptions callOptions,
         RevertOptions revertOptions
     );
 }
