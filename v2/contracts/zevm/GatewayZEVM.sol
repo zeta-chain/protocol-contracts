@@ -345,6 +345,12 @@ contract GatewayZEVM is
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
 
+    /// @notice Call a smart contract on an external chain without asset transfer.
+    /// @param receiver The receiver address on the external chain.
+    /// @param zrc20 Address of zrc20 to pay fees.
+    /// @param message The calldata to pass to the contract call.
+    /// @param gasLimit Gas limit.
+    /// @param revertOptions Revert options.
     function call(
         bytes memory receiver,
         address zrc20,
