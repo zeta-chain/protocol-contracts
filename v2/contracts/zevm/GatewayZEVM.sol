@@ -193,6 +193,13 @@ contract GatewayZEVM is
         );
     }
 
+    /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param message The calldata to pass to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
         uint256 amount,
@@ -290,6 +297,13 @@ contract GatewayZEVM is
         );
     }
 
+    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param chainId Chain id of the external chain.
+    /// @param message The calldata to pass to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
         uint256 amount,

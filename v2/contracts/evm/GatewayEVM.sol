@@ -138,6 +138,7 @@ contract GatewayEVM is
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
@@ -166,6 +167,11 @@ contract GatewayEVM is
         return result;
     }
 
+    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
     function execute(
         address destination,
         bytes calldata data

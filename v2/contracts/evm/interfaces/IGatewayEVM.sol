@@ -81,6 +81,7 @@ interface IGatewayEVMErrors {
     /// @notice Error when trying to transfer not whitelisted token to custody.
     error NotWhitelistedInCustody();
 
+    /// @notice Error when trying to call onCall method using arbitrary call.
     error NotAllowedToCallOnCall();
 }
 
@@ -113,6 +114,12 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @return The result of the contract call.
     function execute(address destination, bytes calldata data) external payable returns (bytes memory);
 
+    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
     function execute(
         MessageContext calldata messageContext,
         address destination,
@@ -183,11 +190,15 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
 }
 
+/// @notice Message context passed to execute function.
+/// @param sender Sender from omnichain contract.
+/// @param isArbitraryCall Indicates if call should be arbitrary or authenticated.
 struct MessageContext {
     address sender;
     bool isArbitraryCall;
 }
 
+/// @notice Interface implemented by contracts receiving authenticated calls.
 interface Callable {
     function onCall(address sender, bytes calldata message) external returns (bytes memory);
 }
