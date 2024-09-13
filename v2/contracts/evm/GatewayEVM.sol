@@ -71,7 +71,7 @@ contract GatewayEVM is
     /// @param newImplementation Address of the new implementation.
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
-    /// @dev Internal function to execute a call to a destination address.
+    /// @dev Internal function to execute an arbitrary call to a destination address.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
@@ -92,6 +92,11 @@ contract GatewayEVM is
         return result;
     }
 
+    /// @dev Internal function to execute an authenticated call to a destination address.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
     function _executeAuthenticatedCall(
         MessageContext calldata messageContext,
         address destination,
