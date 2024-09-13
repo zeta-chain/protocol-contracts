@@ -718,7 +718,7 @@ const _abi = [
   },
   {
     type: "error",
-    name: "CallerIsNotFungibleModule",
+    name: "CallerIsNotProtocol",
     inputs: [],
   },
   {
@@ -753,7 +753,7 @@ const _abi = [
   },
   {
     type: "error",
-    name: "OnlyWZETAOrFungible",
+    name: "OnlyWZETAOrProtocol",
     inputs: [],
   },
   {
