@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
-import "./utils/SystemContract.sol";
+import "../contracts/zevm/SystemContract.sol";
 import "./utils/WZETA.sol";
 
 import "../contracts/zevm/GatewayZEVM.sol";

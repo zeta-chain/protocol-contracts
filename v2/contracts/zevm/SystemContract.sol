@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "../../contracts/zevm/interfaces/IZRC20.sol";
-import "../../contracts/zevm/interfaces/UniversalContract.sol";
+import "./interfaces/IZRC20.sol";
+import "./interfaces/UniversalContract.sol";
 
 /**
  * @dev Custom errors for SystemContract
