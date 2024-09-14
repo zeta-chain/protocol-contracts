@@ -22,7 +22,7 @@ contract ZRC20Test is Test, ZRC20Errors {
 
     address owner;
     address addr1;
-    address fungibleModule;
+    address protocolAddress;
 
     function setUp() public {
         owner = address(this);
@@ -36,14 +36,14 @@ contract ZRC20Test is Test, ZRC20Errors {
             )
         );
         gateway = GatewayZEVM(proxy);
-        fungibleModule = gateway.FUNGIBLE_MODULE_ADDRESS();
+        protocolAddress = gateway.PROTOCOL_ADDRESS();
 
-        vm.startPrank(fungibleModule);
+        vm.startPrank(protocolAddress);
         systemContract = new SystemContract(address(0), address(0), address(0));
         zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
-        vm.deal(fungibleModule, 1_000_000_000);
+        vm.deal(protocolAddress, 1_000_000_000);
         vm.deal(proxy, 1_000_000_000);
         zrc20.deposit(owner, 100_000);
         vm.stopPrank();
@@ -67,16 +67,16 @@ contract ZRC20Test is Test, ZRC20Errors {
         assertEq("TOKEN", zrc20.name());
         assertEq("TKN", zrc20.symbol());
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.setName("TOKEN2");
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.setSymbol("TKN2");
 
         assertEq("TOKEN2", zrc20.name());
         assertEq("TKN2", zrc20.symbol());
     }
 
-    function testUpdateNameAndSymbolFailsIfSenderIsNotFungibleModule() public {
+    function testUpdateNameAndSymbolFailsIfSenderIsNotProtocol() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.setName("TOKEN2");
 
@@ -204,13 +204,13 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testWithdrawGasFee() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         uint256 gasLimit = 10;
         uint256 protocolFlatFee = 10;
 
         zrc20.updateGasLimit(10);
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateProtocolFlatFee(10);
 
         (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFee();
@@ -219,7 +219,7 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testWithdrawGasFeeFailsIfGasCoinNotSetForChainId() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         systemContract.setGasCoinZRC20(1, address(0));
 
         vm.expectRevert(ZeroGasCoin.selector);
@@ -227,7 +227,7 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testWithdrawGasFeeFailsIfGasPriceNotSetForChainId() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         systemContract.setGasPrice(1, 0);
 
         vm.expectRevert(ZeroGasPrice.selector);
@@ -238,10 +238,10 @@ contract ZRC20Test is Test, ZRC20Errors {
         uint256 gasLimit = 10;
         uint256 protocolFlatFee = 10;
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateGasLimit(gasLimit);
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateProtocolFlatFee(protocolFlatFee);
 
         uint256 balanceStart = zrc20.balanceOf(owner);
@@ -249,13 +249,13 @@ contract ZRC20Test is Test, ZRC20Errors {
         uint256 totalSupplyStart = zrc20.totalSupply();
         assertEq(100_000, totalSupplyStart);
 
-        uint256 fungibleModuleBalanceStart = zrc20.balanceOf(fungibleModule);
+        uint256 protocolAddressBalanceStart = zrc20.balanceOf(protocolAddress);
 
         zrc20.approve(address(zrc20), 50_000);
         zrc20.withdraw(abi.encodePacked(addr1), 50_000);
 
-        uint256 fungibleModuleBalanceAfter = zrc20.balanceOf(fungibleModule);
-        assertEq(fungibleModuleBalanceStart + gasLimit + protocolFlatFee, fungibleModuleBalanceAfter);
+        uint256 protocolAddressBalanceAfter = zrc20.balanceOf(protocolAddress);
+        assertEq(protocolAddressBalanceStart + gasLimit + protocolFlatFee, protocolAddressBalanceAfter);
 
         uint256 balanceAfter = zrc20.balanceOf(owner);
         assertEq(50_000 - gasLimit - protocolFlatFee, balanceAfter);
@@ -267,10 +267,10 @@ contract ZRC20Test is Test, ZRC20Errors {
         uint256 gasLimit = 10;
         uint256 protocolFlatFee = 100_000_000;
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateGasLimit(gasLimit);
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateProtocolFlatFee(protocolFlatFee);
 
         zrc20.approve(address(zrc20), 200_000_000);
@@ -283,10 +283,10 @@ contract ZRC20Test is Test, ZRC20Errors {
         uint256 gasLimit = 10;
         uint256 protocolFlatFee = 10;
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateGasLimit(gasLimit);
 
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateProtocolFlatFee(protocolFlatFee);
 
         zrc20.approve(address(zrc20), 0);
@@ -301,57 +301,57 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testUpdateSystemContractAddress() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateSystemContractAddress(address(0x3211));
         assertEq(zrc20.SYSTEM_CONTRACT_ADDRESS(), address(0x3211));
     }
 
     function testUpdateSystemContractAddressFailsIfZeroAddress() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
         zrc20.updateSystemContractAddress(address(0));
     }
 
-    function testUpdateSystemContractAddressFailsIfSenderIsNotFungible() public {
+    function testUpdateSystemContractAddressFailsIfSenderIsNotProtocol() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.updateSystemContractAddress(address(0x3211));
     }
 
     function testUpdateGatewayAddress() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateGatewayAddress(address(0x3211));
         assertEq(zrc20.gatewayAddress(), address(0x3211));
     }
 
     function testUpdateGatewayAddressFailsIfZeroAddress() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
         zrc20.updateGatewayAddress(address(0));
     }
 
-    function testUpdateGatewayAddressFailsIfSenderIsNotFungible() public {
+    function testUpdateGatewayAddressFailsIfSenderIsNotProtocol() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.updateGatewayAddress(address(0x3211));
     }
 
     function testUpdateGasLimit() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateGasLimit(10);
         assertEq(10, zrc20.GAS_LIMIT());
     }
 
-    function testUpdateGasLimitFailsIfSenderIsNotFungible() public {
+    function testUpdateGasLimitFailsIfSenderIsNotProtocol() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.updateGasLimit(10);
     }
 
     function testUpdateProtocolFlatFee() public {
-        vm.prank(fungibleModule);
+        vm.prank(protocolAddress);
         zrc20.updateProtocolFlatFee(10);
         assertEq(10, zrc20.PROTOCOL_FLAT_FEE());
     }
 
-    function testUpdateProtocolFlatFeeFailsIfSenderIsNotFungible() public {
+    function testUpdateProtocolFlatFeeFailsIfSenderIsNotProtocol() public {
         vm.expectRevert(CallerIsNotFungibleModule.selector);
         zrc20.updateProtocolFlatFee(10);
     }

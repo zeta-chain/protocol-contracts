@@ -101,8 +101,8 @@ contract GatewayEVMZEVMTest is
         gatewayZEVM = GatewayZEVM(proxyZEVM);
 
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
-        address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
-        vm.startPrank(fungibleModuleAddress);
+        address protocolAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
+        vm.startPrank(protocolAddress);
         systemContract = new SystemContractMock(address(0), address(0), address(0));
         zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Zeta, 0, address(systemContract), address(gatewayZEVM));
         systemContract.setGasCoinZRC20(1, address(zrc20));
