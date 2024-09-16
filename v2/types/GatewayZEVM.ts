@@ -73,8 +73,8 @@ export interface GatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
-      | "FUNGIBLE_MODULE_ADDRESS"
       | "PAUSER_ROLE"
+      | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "deposit"
@@ -120,11 +120,11 @@ export interface GatewayZEVMInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "FUNGIBLE_MODULE_ADDRESS",
+    functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "PAUSER_ROLE",
+    functionFragment: "PROTOCOL_ADDRESS",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -240,11 +240,11 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "FUNGIBLE_MODULE_ADDRESS",
+    functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "PAUSER_ROLE",
+    functionFragment: "PROTOCOL_ADDRESS",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -541,9 +541,9 @@ export interface GatewayZEVM extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
-  FUNGIBLE_MODULE_ADDRESS: TypedContractMethod<[], [string], "view">;
-
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
@@ -726,10 +726,10 @@ export interface GatewayZEVM extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "FUNGIBLE_MODULE_ADDRESS"
+    nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "PAUSER_ROLE"
+    nameOrSignature: "PROTOCOL_ADDRESS"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"

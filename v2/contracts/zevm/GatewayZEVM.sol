@@ -28,18 +28,18 @@ contract GatewayZEVM is
     /// @notice Error indicating a zero address was provided.
     error ZeroAddress();
 
-    /// @notice The constant address of the Fungible module.
-    address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+    /// @notice The constant address of the protocol
+    address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice The address of the Zeta token.
     address public zetaToken;
 
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    /// @dev Only Fungible module address allowed modifier.
-    modifier onlyFungible() {
-        if (msg.sender != FUNGIBLE_MODULE_ADDRESS) {
-            revert CallerIsNotFungibleModule();
+    /// @dev Only protocol address allowed modifier.
+    modifier onlyProtocol() {
+        if (msg.sender != PROTOCOL_ADDRESS) {
+            revert CallerIsNotProtocol();
         }
         _;
     }
@@ -71,7 +71,7 @@ contract GatewayZEVM is
 
     /// @dev Receive function to receive ZETA from WETH9.withdraw().
     receive() external payable whenNotPaused {
-        if (msg.sender != zetaToken && msg.sender != FUNGIBLE_MODULE_ADDRESS) revert OnlyWZETAOrFungible();
+        if (msg.sender != zetaToken && msg.sender != PROTOCOL_ADDRESS) revert OnlyWZETAOrProtocol();
     }
 
     /// @notice Pause contract.
@@ -100,7 +100,7 @@ contract GatewayZEVM is
     /// @return The gas fee for the withdrawal.
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
 
@@ -210,7 +210,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
-        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
+        _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", 0, revertOptions);
     }
 
@@ -234,7 +234,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
-        _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
+        _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, 0, revertOptions);
     }
 
@@ -259,7 +259,7 @@ contract GatewayZEVM is
         if (message.length == 0) revert EmptyMessage();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
 
@@ -270,11 +270,11 @@ contract GatewayZEVM is
     /// @param zrc20 The address of the ZRC20 token.
     /// @param amount The amount of tokens to deposit.
     /// @param target The target address to receive the deposited tokens.
-    function deposit(address zrc20, uint256 amount, address target) external onlyFungible whenNotPaused {
+    function deposit(address zrc20, uint256 amount, address target) external onlyProtocol whenNotPaused {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
     }
@@ -293,7 +293,7 @@ contract GatewayZEVM is
         bytes calldata message
     )
         external
-        onlyFungible
+        onlyProtocol
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
@@ -315,12 +315,12 @@ contract GatewayZEVM is
         bytes calldata message
     )
         external
-        onlyFungible
+        onlyProtocol
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
@@ -338,12 +338,12 @@ contract GatewayZEVM is
         bytes calldata message
     )
         external
-        onlyFungible
+        onlyProtocol
         whenNotPaused
     {
         if (target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
         UniversalContract(target).onCrossChainCall(context, zetaToken, amount, message);
@@ -352,7 +352,7 @@ contract GatewayZEVM is
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
     /// @param revertContext Revert context to pass to onRevert.
-    function executeRevert(address target, RevertContext calldata revertContext) external onlyFungible whenNotPaused {
+    function executeRevert(address target, RevertContext calldata revertContext) external onlyProtocol whenNotPaused {
         if (target == address(0)) revert ZeroAddress();
 
         UniversalContract(target).onRevert(revertContext);
@@ -370,12 +370,12 @@ contract GatewayZEVM is
         RevertContext calldata revertContext
     )
         external
-        onlyFungible
+        onlyProtocol
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
-        if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onRevert(revertContext);

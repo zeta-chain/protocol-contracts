@@ -72,8 +72,8 @@ interface IGatewayZEVMErrors {
     /// @notice Error indicating a failure to transfer gas fee.
     error GasFeeTransferFailed();
 
-    /// @notice Error indicating that the caller is not the Fungible module.
-    error CallerIsNotFungibleModule();
+    /// @notice Error indicating that the caller is not the protocol account.
+    error CallerIsNotProtocol();
 
     /// @notice Error indicating an invalid target address.
     error InvalidTarget();
@@ -81,8 +81,8 @@ interface IGatewayZEVMErrors {
     /// @notice Error indicating a failure to send ZETA tokens.
     error FailedZetaSent();
 
-    /// @notice Error indicating that only WZETA or the Fungible module can call the function.
-    error OnlyWZETAOrFungible();
+    /// @notice Error indicating that only WZETA or the protocol address can call the function.
+    error OnlyWZETAOrProtocol();
 
     /// @notice Error indicating call method received empty message as argument.
     error EmptyMessage();
