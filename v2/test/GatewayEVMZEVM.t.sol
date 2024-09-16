@@ -13,7 +13,7 @@ import "./utils/TestERC20.sol";
 
 import "./utils/SenderZEVM.sol";
 
-import "./utils/SystemContractMock.sol";
+import { SystemContractMock } from "./utils/SystemContractMock.sol";
 
 import { GatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
 import { IGatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";

@@ -192,13 +192,11 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
 
 /// @notice Message context passed to execute function.
 /// @param sender Sender from omnichain contract.
-/// @param isArbitraryCall Indicates if call should be arbitrary or authenticated.
 struct MessageContext {
     address sender;
-    bool isArbitraryCall;
 }
 
 /// @notice Interface implemented by contracts receiving authenticated calls.
 interface Callable {
-    function onCall(address sender, bytes calldata message) external returns (bytes memory);
+    function onCall(MessageContext calldata context, bytes calldata message) external returns (bytes memory);
 }

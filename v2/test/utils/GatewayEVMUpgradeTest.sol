@@ -75,28 +75,6 @@ contract GatewayEVMUpgradeTest is
     /// @param newImplementation Address of the new implementation.
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
-    /// @dev Internal function to execute a call to a destination address.
-    /// @param destination Address to call.
-    /// @param data Calldata to pass to the call.
-    /// @return The result of the call.
-    function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
-        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
-        if (!success) revert ExecutionFailed();
-
-        return result;
-    }
-
-    function _executeAuthenticatedCall(
-        MessageContext calldata messageContext,
-        address destination,
-        bytes calldata data
-    )
-        internal
-        returns (bytes memory)
-    {
-        return Callable(destination).onCall(messageContext.sender, data);
-    }
-
     /// @notice Pause contract.
     function pause() external onlyRole(PAUSER_ROLE) {
         _pause();
@@ -132,6 +110,7 @@ contract GatewayEVMUpgradeTest is
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
@@ -149,17 +128,18 @@ contract GatewayEVMUpgradeTest is
     {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result;
-        if (messageContext.isArbitraryCall) {
-            result = _executeArbitraryCall(destination, data);
-        } else {
-            result = _executeAuthenticatedCall(messageContext, destination, data);
-        }
+        result = _executeAuthenticatedCall(messageContext, destination, data);
 
         emit Executed(destination, msg.value, data);
 
         return result;
     }
 
+    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
     function execute(
         address destination,
         bytes calldata data
@@ -422,6 +402,48 @@ contract GatewayEVMUpgradeTest is
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
+        }
+    }
+
+    /// @dev Internal function to execute an arbitrary call to a destination address.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
+        revertIfAuthenticatedCall(data);
+        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
+        if (!success) revert ExecutionFailed();
+
+        return result;
+    }
+
+    /// @dev Internal function to execute an authenticated call to a destination address.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function _executeAuthenticatedCall(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        internal
+        returns (bytes memory)
+    {
+        return Callable(destination).onCall(messageContext, data);
+    }
+
+    // @dev prevent calling onCall function reserved for authenticated calls
+    function revertIfAuthenticatedCall(bytes calldata data) internal pure {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Callable.onCall.selector) {
+                revert NotAllowedToCallOnCall();
+            }
         }
     }
 }
