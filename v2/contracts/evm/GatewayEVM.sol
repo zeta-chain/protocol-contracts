@@ -76,16 +76,7 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
-        if (data.length >= 4) {
-            bytes4 functionSelector;
-            assembly {
-                functionSelector := calldataload(data.offset)
-            }
-
-            if (functionSelector == Callable.onCall.selector) {
-                revert NotAllowedToCallOnCall();
-            }
-        }
+        revertIfAuthenticatedCall(data);
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
@@ -434,6 +425,20 @@ contract GatewayEVM is
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
+        }
+    }
+
+    // @dev prevent calling onCall function reserved for authenticated calls
+    function revertIfAuthenticatedCall(bytes calldata data) private pure {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Callable.onCall.selector) {
+                revert NotAllowedToCallOnCall();
+            }
         }
     }
 }
