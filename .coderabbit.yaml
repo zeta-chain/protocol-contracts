@@ -2,8 +2,10 @@ reviews:
   path_filters:
     - "!pkg/**"
     - "!typechain-types/**"
-    - "!docs/**"
-    - "!data/**"
+    - "!v1/docs/**"
+    - "!v2/docs/**"
+    - "!v1/data/**"
+    - "!v2/data/**"
     - "!v2/types/**"
     - "!v2/pkg/**"
   path_instructions:
