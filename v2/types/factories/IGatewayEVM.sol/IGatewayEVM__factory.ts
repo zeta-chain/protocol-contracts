@@ -295,6 +295,42 @@ const _abi = [
   },
   {
     type: "function",
+    name: "execute",
+    inputs: [
+      {
+        name: "messageContext",
+        type: "tuple",
+        internalType: "struct MessageContext",
+        components: [
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
+      {
+        name: "destination",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "data",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [
+      {
+        name: "",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    stateMutability: "payable",
+  },
+  {
+    type: "function",
     name: "executeRevert",
     inputs: [
       {
@@ -682,6 +718,11 @@ const _abi = [
   {
     type: "error",
     name: "InsufficientETHAmount",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotAllowedToCallOnCall",
     inputs: [],
   },
   {

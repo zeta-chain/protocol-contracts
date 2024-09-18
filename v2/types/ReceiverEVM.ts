@@ -23,6 +23,10 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
   asset: AddressLike;
   amount: BigNumberish;
@@ -38,6 +42,7 @@ export type RevertContextStructOutput = [
 export interface ReceiverEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "onCall"
       | "onRevert"
       | "receiveERC20"
       | "receiveERC20Partial"
@@ -51,10 +56,15 @@ export interface ReceiverEVMInterface extends Interface {
       | "ReceivedERC20"
       | "ReceivedNoParams"
       | "ReceivedNonPayable"
+      | "ReceivedOnCall"
       | "ReceivedPayable"
       | "ReceivedRevert"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "onCall",
+    values: [MessageContextStruct, BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "onRevert",
     values: [RevertContextStruct]
@@ -80,6 +90,7 @@ export interface ReceiverEVMInterface extends Interface {
     values: [string, BigNumberish, boolean]
   ): string;
 
+  decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "receiveERC20",
@@ -159,6 +170,16 @@ export namespace ReceivedNonPayableEvent {
     nums: bigint[];
     flag: boolean;
   }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ReceivedOnCallEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
   export type Log = TypedEventLog<Event>;
@@ -255,6 +276,12 @@ export interface ReceiverEVM extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  onCall: TypedContractMethod<
+    [messageContext: MessageContextStruct, message: BytesLike],
+    [string],
+    "nonpayable"
+  >;
+
   onRevert: TypedContractMethod<
     [revertContext: RevertContextStruct],
     [void],
@@ -291,6 +318,13 @@ export interface ReceiverEVM extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "onCall"
+  ): TypedContractMethod<
+    [messageContext: MessageContextStruct, message: BytesLike],
+    [string],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "onRevert"
   ): TypedContractMethod<
@@ -352,6 +386,13 @@ export interface ReceiverEVM extends BaseContract {
     ReceivedNonPayableEvent.OutputObject
   >;
   getEvent(
+    key: "ReceivedOnCall"
+  ): TypedContractEvent<
+    ReceivedOnCallEvent.InputTuple,
+    ReceivedOnCallEvent.OutputTuple,
+    ReceivedOnCallEvent.OutputObject
+  >;
+  getEvent(
     key: "ReceivedPayable"
   ): TypedContractEvent<
     ReceivedPayableEvent.InputTuple,
@@ -398,6 +439,17 @@ export interface ReceiverEVM extends BaseContract {
       ReceivedNonPayableEvent.InputTuple,
       ReceivedNonPayableEvent.OutputTuple,
       ReceivedNonPayableEvent.OutputObject
+    >;
+
+    "ReceivedOnCall()": TypedContractEvent<
+      ReceivedOnCallEvent.InputTuple,
+      ReceivedOnCallEvent.OutputTuple,
+      ReceivedOnCallEvent.OutputObject
+    >;
+    ReceivedOnCall: TypedContractEvent<
+      ReceivedOnCallEvent.InputTuple,
+      ReceivedOnCallEvent.OutputTuple,
+      ReceivedOnCallEvent.OutputObject
     >;
 
     "ReceivedPayable(address,uint256,string,uint256,bool)": TypedContractEvent<

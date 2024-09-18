@@ -23,6 +23,16 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export type CallOptionsStruct = {
+  gasLimit: BigNumberish;
+  isArbitraryCall: boolean;
+};
+
+export type CallOptionsStructOutput = [
+  gasLimit: bigint,
+  isArbitraryCall: boolean
+] & { gasLimit: bigint; isArbitraryCall: boolean };
+
 export type RevertOptionsStruct = {
   revertAddress: AddressLike;
   callOnRevert: boolean;
@@ -72,7 +82,8 @@ export type RevertContextStructOutput = [
 export interface IGatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "call"
+      | "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))"
       | "deposit"
       | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
@@ -82,13 +93,25 @@ export interface IGatewayZEVMInterface extends Interface {
       | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
       | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
       | "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
       | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "Called" | "Withdrawn"): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "call",
+    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      AddressLike,
+      BytesLike,
+      CallOptionsStruct,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       AddressLike,
@@ -141,6 +164,17 @@ export interface IGatewayZEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      CallOptionsStruct,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
@@ -150,8 +184,26 @@ export interface IGatewayZEVMInterface extends Interface {
       RevertOptionsStruct
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      CallOptionsStruct,
+      RevertOptionsStruct
+    ]
+  ): string;
 
-  decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
@@ -183,7 +235,15 @@ export interface IGatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
 }
@@ -194,7 +254,7 @@ export namespace CalledEvent {
     zrc20: AddressLike,
     receiver: BytesLike,
     message: BytesLike,
-    gasLimit: BigNumberish,
+    callOptions: CallOptionsStruct,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
@@ -202,7 +262,7 @@ export namespace CalledEvent {
     zrc20: string,
     receiver: string,
     message: string,
-    gasLimit: bigint,
+    callOptions: CallOptionsStructOutput,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
@@ -210,7 +270,7 @@ export namespace CalledEvent {
     zrc20: string;
     receiver: string;
     message: string;
-    gasLimit: bigint;
+    callOptions: CallOptionsStructOutput;
     revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -229,7 +289,7 @@ export namespace WithdrawnEvent {
     gasfee: BigNumberish,
     protocolFlatFee: BigNumberish,
     message: BytesLike,
-    gasLimit: BigNumberish,
+    callOptions: CallOptionsStruct,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
@@ -241,7 +301,7 @@ export namespace WithdrawnEvent {
     gasfee: bigint,
     protocolFlatFee: bigint,
     message: string,
-    gasLimit: bigint,
+    callOptions: CallOptionsStructOutput,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
@@ -253,7 +313,7 @@ export namespace WithdrawnEvent {
     gasfee: bigint;
     protocolFlatFee: bigint;
     message: string;
-    gasLimit: bigint;
+    callOptions: CallOptionsStructOutput;
     revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -305,7 +365,19 @@ export interface IGatewayZEVM extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  call: TypedContractMethod<
+  "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       zrc20: AddressLike,
@@ -410,6 +482,19 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
@@ -422,12 +507,38 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
+  "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "call"
+    nameOrSignature: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -542,6 +653,20 @@ export interface IGatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
@@ -549,6 +674,20 @@ export interface IGatewayZEVM extends BaseContract {
       amount: BigNumberish,
       chainId: BigNumberish,
       message: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct
     ],
     [void],
@@ -571,7 +710,7 @@ export interface IGatewayZEVM extends BaseContract {
   >;
 
   filters: {
-    "Called(address,address,bytes,bytes,uint256,tuple)": TypedContractEvent<
+    "Called(address,address,bytes,bytes,tuple,tuple)": TypedContractEvent<
       CalledEvent.InputTuple,
       CalledEvent.OutputTuple,
       CalledEvent.OutputObject
@@ -582,7 +721,7 @@ export interface IGatewayZEVM extends BaseContract {
       CalledEvent.OutputObject
     >;
 
-    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,uint256,tuple)": TypedContractEvent<
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple,tuple)": TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,
       WithdrawnEvent.OutputObject

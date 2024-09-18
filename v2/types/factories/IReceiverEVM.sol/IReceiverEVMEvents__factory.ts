@@ -86,6 +86,12 @@ const _abi = [
   },
   {
     type: "event",
+    name: "ReceivedOnCall",
+    inputs: [],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "ReceivedPayable",
     inputs: [
       {
