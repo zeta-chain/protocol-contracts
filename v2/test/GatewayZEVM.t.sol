@@ -418,7 +418,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 amount = 1;
         uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
         uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 fungibleModuleBalanceBefore = fungibleModule.balance;
+        uint256 protocolAddressBalanceBefore = protocolAddress.balance;
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 chainId = 1;
 
@@ -444,14 +444,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
         // Verify amount is transfered to fungible module
-        assertEq(fungibleModuleBalanceBefore + 1, fungibleModule.balance);
+        assertEq(protocolAddressBalanceBefore + 1, protocolAddress.balance);
     }
 
     function testWithdrawZETAWithCallOptsWithMessageFailsIfNoAllowance() public {
         uint256 amount = 1;
         uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
         uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 fungibleModuleBalanceBefore = fungibleModule.balance;
+        uint256 protocolAddressBalanceBefore = protocolAddress.balance;
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 chainId = 1;
 
@@ -469,7 +469,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
         assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
-        assertEq(fungibleModuleBalanceBefore, fungibleModule.balance);
+        assertEq(protocolAddressBalanceBefore, protocolAddress.balance);
     }
 
     function testCallFailsIfReceiverIsZeroAddress() public {
