@@ -198,5 +198,5 @@ struct MessageContext {
 
 /// @notice Interface implemented by contracts receiving authenticated calls.
 interface Callable {
-    function onCall(MessageContext calldata context, bytes calldata message) external returns (bytes memory);
+    function onCall(MessageContext calldata context, bytes calldata message) external payable returns (bytes memory);
 }

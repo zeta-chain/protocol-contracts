@@ -430,7 +430,7 @@ contract GatewayEVMUpgradeTest is
         internal
         returns (bytes memory)
     {
-        return Callable(destination).onCall(messageContext, data);
+        return Callable(destination).onCall{value: msg.value}(messageContext, data);
     }
 
     // @dev prevent calling onCall function reserved for authenticated calls
