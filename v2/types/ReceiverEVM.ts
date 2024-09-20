@@ -279,7 +279,7 @@ export interface ReceiverEVM extends BaseContract {
   onCall: TypedContractMethod<
     [messageContext: MessageContextStruct, message: BytesLike],
     [string],
-    "nonpayable"
+    "payable"
   >;
 
   onRevert: TypedContractMethod<
@@ -323,7 +323,7 @@ export interface ReceiverEVM extends BaseContract {
   ): TypedContractMethod<
     [messageContext: MessageContextStruct, message: BytesLike],
     [string],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "onRevert"

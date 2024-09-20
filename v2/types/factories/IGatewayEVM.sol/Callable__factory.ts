@@ -38,7 +38,7 @@ const _abi = [
         internalType: "bytes",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
   },
 ] as const;
 

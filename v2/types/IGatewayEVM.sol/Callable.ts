@@ -81,7 +81,7 @@ export interface Callable extends BaseContract {
   onCall: TypedContractMethod<
     [context: MessageContextStruct, message: BytesLike],
     [string],
-    "nonpayable"
+    "payable"
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -93,7 +93,7 @@ export interface Callable extends BaseContract {
   ): TypedContractMethod<
     [context: MessageContextStruct, message: BytesLike],
     [string],
-    "nonpayable"
+    "payable"
   >;
 
   filters: {};

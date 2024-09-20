@@ -73,7 +73,14 @@ contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
         emit ReceivedRevert(msg.sender, revertContext);
     }
 
-    function onCall(MessageContext calldata messageContext, bytes calldata message) external payable returns (bytes memory) {
+    function onCall(
+        MessageContext calldata messageContext,
+        bytes calldata message
+    )
+        external
+        payable
+        returns (bytes memory)
+    {
         emit ReceivedOnCall();
     }
 
