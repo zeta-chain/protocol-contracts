@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import { CallOptions, IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
-import { RevertContext, RevertOptions } from "../../contracts/Revert.sol";
+import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
@@ -474,7 +474,7 @@ contract GatewayZEVM is
     function executeRevert(address target, RevertContext calldata revertContext) external onlyProtocol whenNotPaused {
         if (target == address(0)) revert ZeroAddress();
 
-        UniversalContract(target).onRevert(revertContext);
+        Revertable(target).onRevert(revertContext);
     }
 
     /// @notice Deposit foreign coins into ZRC20 and revert a user-specified contract on ZEVM.
@@ -497,6 +497,6 @@ contract GatewayZEVM is
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
-        UniversalContract(target).onRevert(revertContext);
+        Revertable(target).onRevert(revertContext);
     }
 }
