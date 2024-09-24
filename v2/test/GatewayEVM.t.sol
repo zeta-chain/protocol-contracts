@@ -76,7 +76,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.deal(tssAddress, 1 ether);
 
-        revertContext = RevertContext({ asset: address(token), amount: 1, revertMessage: "" });
+        revertContext = RevertContext({ sender: owner, asset: address(token), amount: 1, revertMessage: "" });
     }
 
     function testSetCustodyFailsIfSenderIsNotAdmin() public {
@@ -213,7 +213,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 
     function testForwardCallToReceiveOnRevertFails() public {
-        bytes memory data = abi.encodeWithSignature("onRevert((address,uint64,bytes))");
+        bytes memory data = abi.encodeWithSignature("onRevert((address,address,uint64,bytes))");
 
         vm.prank(tssAddress);
         vm.expectRevert(NotAllowedToCallOnRevert.selector);

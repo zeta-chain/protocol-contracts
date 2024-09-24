@@ -73,7 +73,7 @@ contract ZetaConnectorNativeTest is
         zetaToken.mint(address(zetaConnector), 5_000_000);
 
         vm.deal(tssAddress, 1 ether);
-        revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
+        revertContext = RevertContext({ sender: owner, asset: address(zetaToken), amount: 1, revertMessage: "" });
     }
 
     function testWithdraw() public {

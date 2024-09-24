@@ -77,7 +77,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.deal(tssAddress, 1 ether);
 
-        revertContext = RevertContext({ asset: address(token), amount: 1, revertMessage: "" });
+        revertContext = RevertContext({ sender: owner, asset: address(token), amount: 1, revertMessage: "" });
     }
 
     function testWhitelistFailsIfZeroAddress() public {
