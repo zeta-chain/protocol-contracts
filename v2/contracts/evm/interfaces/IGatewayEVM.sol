@@ -83,6 +83,9 @@ interface IGatewayEVMErrors {
 
     /// @notice Error when trying to call onCall method using arbitrary call.
     error NotAllowedToCallOnCall();
+
+    /// @notice Error when trying to call onRevert method using arbitrary call.
+    error NotAllowedToCallOnRevert();
 }
 
 /// @title IGatewayEVM
