@@ -14,8 +14,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-import "forge-std/console.sol";
-
 /// @title GatewayZEVM
 /// @notice The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
@@ -364,7 +362,6 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
-        console.log(msg.sender);
         _call(receiver, zrc20, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
     }
 
@@ -377,7 +374,6 @@ contract GatewayZEVM is
     )
         internal
     {
-        console.log(msg.sender);
         if (receiver.length == 0) revert ZeroAddress();
         if (message.length == 0) revert EmptyMessage();
 
