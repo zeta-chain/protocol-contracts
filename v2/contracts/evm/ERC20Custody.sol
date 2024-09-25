@@ -48,7 +48,7 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(WHITELISTER_ROLE, admin_);
         _grantRole(WHITELISTER_ROLE, tssAddress_);
-        _grantRole(TSS_UPDATER_ROLE, tssAddress_);
+        _grantRole(TSS_UPDATER_ROLE, admin_);
     }
 
     /// @notice Pause contract.

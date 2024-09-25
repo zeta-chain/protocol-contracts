@@ -81,20 +81,20 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 
     function testTSSUpgrade() public {
-        vm.startPrank(tssAddress);
-        gateway.updateTSSAddress(owner);
+        vm.startPrank(owner);
+        gateway.updateTSSAddress(tssAddress);
         address newTssAddress = gateway.tssAddress();
-        assertEq(newTssAddress, owner);
+        assertEq(newTssAddress, tssAddress);
     }
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
-        vm.startPrank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_UPDATER_ROLE));
+        vm.startPrank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, TSS_UPDATER_ROLE));
         gateway.updateTSSAddress(owner);
     }
 
     function testTSSUpgradeFailsIfZeroAddress() public {
-        vm.startPrank(tssAddress);
+        vm.startPrank(owner);
         vm.expectRevert(ZeroAddress.selector);
         gateway.updateTSSAddress(address(0));
     }

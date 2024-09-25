@@ -82,20 +82,20 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     }
 
     function testTSSUpgrade() public {
-        vm.startPrank(tssAddress);
-        custody.updateTSSAddress(owner);
+        vm.startPrank(owner);
+        custody.updateTSSAddress(tssAddress);
         address newTssAddress = custody.tssAddress();
-        assertEq(newTssAddress, owner);
+        assertEq(newTssAddress, tssAddress);
     }
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
-        vm.startPrank(owner);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_UPDATER_ROLE));
+        vm.startPrank(tssAddress);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, TSS_UPDATER_ROLE));
         custody.updateTSSAddress(owner);
     }
 
     function testTSSUpgradeFailsIfZeroAddress() public {
-        vm.startPrank(tssAddress);
+        vm.startPrank(owner);
         vm.expectRevert(ZeroAddress.selector);
         custody.updateTSSAddress(address(0));
     }

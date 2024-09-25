@@ -65,7 +65,7 @@ contract GatewayEVM is
         _grantRole(PAUSER_ROLE, admin_);
         tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
-        _grantRole(TSS_UPDATER_ROLE, tssAddress_);
+        _grantRole(TSS_UPDATER_ROLE, admin_);
 
         zetaToken = zetaToken_;
     }
