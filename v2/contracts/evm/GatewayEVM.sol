@@ -76,6 +76,7 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
+        revertIfCallingOnRevert(data);
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
@@ -383,6 +384,20 @@ contract GatewayEVM is
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
+        }
+    }
+
+    // @dev prevent spoofing onRevert functions
+    function revertIfCallingOnRevert(bytes calldata data) private pure {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Revertable.onRevert.selector) {
+                revert NotAllowedToCallOnRevert();
+            }
         }
     }
 }

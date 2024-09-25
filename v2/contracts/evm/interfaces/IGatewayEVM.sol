@@ -80,6 +80,9 @@ interface IGatewayEVMErrors {
 
     /// @notice Error when trying to transfer not whitelisted token to custody.
     error NotWhitelistedInCustody();
+
+    /// @notice Error when trying to call onRevert method using arbitrary call.
+    error NotAllowedToCallOnRevert();
 }
 
 /// @title IGatewayEVM
