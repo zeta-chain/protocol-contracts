@@ -49,6 +49,10 @@ interface IGatewayEVMEvents {
     /// @param payload The calldata passed to the call.
     /// @param revertOptions Revert options.
     event Called(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
+
+    /// @notice Emitted when tss address is updated
+    /// @param newTSSAddress new tss address
+    event UpdatedGatewayTSSAddress(address newTSSAddress);
 }
 
 /// @title IGatewayEVMErrors

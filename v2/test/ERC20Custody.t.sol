@@ -83,6 +83,8 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
     function testTSSUpgrade() public {
         vm.startPrank(owner);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit UpdatedCustodyTSSAddress(tssAddress);
         custody.updateTSSAddress(tssAddress);
         address newTssAddress = custody.tssAddress();
         assertEq(newTssAddress, tssAddress);

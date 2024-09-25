@@ -82,6 +82,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
     function testTSSUpgrade() public {
         vm.startPrank(owner);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit UpdatedGatewayTSSAddress(tssAddress);
         gateway.updateTSSAddress(tssAddress);
         address newTssAddress = gateway.tssAddress();
         assertEq(newTssAddress, tssAddress);

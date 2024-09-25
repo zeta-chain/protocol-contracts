@@ -65,6 +65,8 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     function updateTSSAddress(address newTSSAddress) external onlyRole(TSS_UPDATER_ROLE) {
         if (newTSSAddress == address(0)) revert ZeroAddress();
         tssAddress = newTSSAddress;
+
+        emit UpdatedCustodyTSSAddress(newTSSAddress);
     }
 
     /// @notice Unpause contract.

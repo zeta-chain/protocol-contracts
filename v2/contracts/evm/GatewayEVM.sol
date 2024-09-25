@@ -89,6 +89,8 @@ contract GatewayEVM is
     function updateTSSAddress(address newTSSAddress) external onlyRole(TSS_UPDATER_ROLE) {
         if (newTSSAddress == address(0)) revert ZeroAddress();
         tssAddress = newTSSAddress;
+
+        emit UpdatedGatewayTSSAddress(newTSSAddress);
     }
 
     /// @notice Pause contract.
