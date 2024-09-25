@@ -94,6 +94,12 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         custody.updateTSSAddress(owner);
     }
 
+    function testTSSUpgradeFailsIfZeroAddress() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        custody.updateTSSAddress(address(0));
+    }
+
     function testWhitelistFailsIfZeroAddress() public {
         vm.expectRevert(ZeroAddress.selector);
         custody.whitelist(address(0));

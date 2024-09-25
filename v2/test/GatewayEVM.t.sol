@@ -93,6 +93,12 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.updateTSSAddress(owner);
     }
 
+    function testTSSUpgradeFailsIfZeroAddress() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.updateTSSAddress(address(0));
+    }
+
     function testSetCustodyFailsIfSenderIsNotAdmin() public {
         vm.startPrank(tssAddress);
         vm.expectRevert(
