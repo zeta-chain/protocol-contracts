@@ -88,7 +88,7 @@ contract GatewayEVM is
 
         _revokeRole(TSS_ROLE, tssAddress);
         _grantRole(TSS_ROLE, newTSSAddress);
-        
+
         tssAddress = newTSSAddress;
 
         emit UpdatedGatewayTSSAddress(newTSSAddress);

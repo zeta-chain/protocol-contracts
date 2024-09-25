@@ -40,7 +40,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
-      | "TSS_UPDATER_ROLE"
       | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
       | "deposit"
@@ -91,10 +90,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "TSS_UPDATER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -199,10 +194,6 @@ export interface ERC20CustodyEchidnaTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "TSS_UPDATER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -536,8 +527,6 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
-  TSS_UPDATER_ROLE: TypedContractMethod<[], [string], "view">;
-
   WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
@@ -663,9 +652,6 @@ export interface ERC20CustodyEchidnaTest extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "TSS_UPDATER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WHITELISTER_ROLE"

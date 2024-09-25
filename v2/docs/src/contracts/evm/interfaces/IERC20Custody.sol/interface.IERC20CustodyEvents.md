@@ -1,5 +1,5 @@
 # IERC20CustodyEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7460fd6c98edf7a57303313f277ac3e3bfe89081/contracts/evm/interfaces/IERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/db433edb21f0084fdbaaabb8e83d79b44b366dd9/contracts/evm/interfaces/IERC20Custody.sol)
 
 Interface for the events emitted by the ERC20 custody contract.
 

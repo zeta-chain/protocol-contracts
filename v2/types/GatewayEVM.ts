@@ -64,7 +64,6 @@ export interface GatewayEVMInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
       | "TSS_ROLE"
-      | "TSS_UPDATER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
@@ -126,10 +125,6 @@ export interface GatewayEVMInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "TSS_UPDATER_ROLE",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
@@ -257,10 +252,6 @@ export interface GatewayEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "TSS_UPDATER_ROLE",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
@@ -636,8 +627,6 @@ export interface GatewayEVM extends BaseContract {
 
   TSS_ROLE: TypedContractMethod<[], [string], "view">;
 
-  TSS_UPDATER_ROLE: TypedContractMethod<[], [string], "view">;
-
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
@@ -821,9 +810,6 @@ export interface GatewayEVM extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "TSS_ROLE"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "TSS_UPDATER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
