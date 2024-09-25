@@ -45,6 +45,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
+    bytes32 public constant TSS_UPDATER_ROLE = keccak256("TSS_UPDATER_ROLE");
 
     function setUp() public {
         owner = address(this);
@@ -78,6 +79,19 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.deal(tssAddress, 1 ether);
 
         revertContext = RevertContext({ asset: address(token), amount: 1, revertMessage: "" });
+    }
+
+    function testTSSUpgrade() public {
+        vm.startPrank(tssAddress);
+        custody.updateTSSAddress(owner);
+        address newTssAddress = custody.tssAddress();
+        assertEq(newTssAddress, owner);
+    }
+
+    function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
+        vm.startPrank(owner);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_UPDATER_ROLE));
+        custody.updateTSSAddress(owner);
     }
 
     function testWhitelistFailsIfZeroAddress() public {
