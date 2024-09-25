@@ -32,8 +32,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     /// @notice New role identifier for whitelister role.
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
-    /// @notice New role identifier for tss updater role.
-    bytes32 public constant TSS_UPDATER_ROLE = keccak256("TSS_UPDATER_ROLE");
 
     /// @notice Constructor for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
@@ -48,7 +46,6 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(WHITELISTER_ROLE, admin_);
         _grantRole(WHITELISTER_ROLE, tssAddress_);
-        _grantRole(TSS_UPDATER_ROLE, admin_);
     }
 
     /// @notice Pause contract.
@@ -62,8 +59,15 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     }
 
     /// @notice Update tss address
-    function updateTSSAddress(address newTSSAddress) external onlyRole(TSS_UPDATER_ROLE) {
+    function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (newTSSAddress == address(0)) revert ZeroAddress();
+        
+        _revokeRole(WITHDRAWER_ROLE, tssAddress);
+        _revokeRole(WHITELISTER_ROLE, tssAddress);
+
+        _grantRole(WITHDRAWER_ROLE, newTSSAddress);
+        _grantRole(WHITELISTER_ROLE, newTSSAddress);
+        
         tssAddress = newTSSAddress;
 
         emit UpdatedCustodyTSSAddress(newTSSAddress);

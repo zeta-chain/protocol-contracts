@@ -44,7 +44,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    bytes32 public constant TSS_UPDATER_ROLE = keccak256("TSS_UPDATER_ROLE");
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
     function setUp() public {
@@ -91,7 +90,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
         vm.startPrank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, TSS_UPDATER_ROLE));
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE));
         gateway.updateTSSAddress(owner);
     }
 

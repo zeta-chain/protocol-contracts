@@ -42,8 +42,6 @@ contract GatewayEVM is
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    /// @notice New role identifier for tss updater role.
-    bytes32 public constant TSS_UPDATER_ROLE = keccak256("TSS_UPDATER_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -65,7 +63,6 @@ contract GatewayEVM is
         _grantRole(PAUSER_ROLE, admin_);
         tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
-        _grantRole(TSS_UPDATER_ROLE, admin_);
 
         zetaToken = zetaToken_;
     }
@@ -86,8 +83,12 @@ contract GatewayEVM is
     }
 
     /// @notice Update tss address
-    function updateTSSAddress(address newTSSAddress) external onlyRole(TSS_UPDATER_ROLE) {
+    function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE) {
         if (newTSSAddress == address(0)) revert ZeroAddress();
+
+        _revokeRole(TSS_ROLE, tssAddress);
+        _grantRole(TSS_ROLE, newTSSAddress);
+        
         tssAddress = newTSSAddress;
 
         emit UpdatedGatewayTSSAddress(newTSSAddress);
