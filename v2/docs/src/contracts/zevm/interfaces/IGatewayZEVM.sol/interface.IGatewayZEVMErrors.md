@@ -1,5 +1,5 @@
 # IGatewayZEVMErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/92837ac9178ca835368558d37c2ae9322f290363/contracts/zevm/interfaces/IGatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/379b1dc7eff9cbfc41057f0a5e9977fe1d8e1e93/contracts/zevm/interfaces/IGatewayZEVM.sol)
 
 Interface for the errors used in the GatewayZEVM contract.
 
@@ -61,12 +61,12 @@ Error indicating a failure to transfer gas fee.
 error GasFeeTransferFailed();
 ```
 
-### CallerIsNotFungibleModule
-Error indicating that the caller is not the Fungible module.
+### CallerIsNotProtocol
+Error indicating that the caller is not the protocol account.
 
 
 ```solidity
-error CallerIsNotFungibleModule();
+error CallerIsNotProtocol();
 ```
 
 ### InvalidTarget
@@ -85,12 +85,12 @@ Error indicating a failure to send ZETA tokens.
 error FailedZetaSent();
 ```
 
-### OnlyWZETAOrFungible
-Error indicating that only WZETA or the Fungible module can call the function.
+### OnlyWZETAOrProtocol
+Error indicating that only WZETA or the protocol address can call the function.
 
 
 ```solidity
-error OnlyWZETAOrFungible();
+error OnlyWZETAOrProtocol();
 ```
 
 ### EmptyMessage

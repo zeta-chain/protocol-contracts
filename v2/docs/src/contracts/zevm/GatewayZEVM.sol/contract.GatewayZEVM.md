@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/92837ac9178ca835368558d37c2ae9322f290363/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/379b1dc7eff9cbfc41057f0a5e9977fe1d8e1e93/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -10,12 +10,12 @@ The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
 
 
 ## State Variables
-### FUNGIBLE_MODULE_ADDRESS
-The constant address of the Fungible module.
+### PROTOCOL_ADDRESS
+The constant address of the protocol
 
 
 ```solidity
-address public constant FUNGIBLE_MODULE_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
 ```
 
 
@@ -38,13 +38,13 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
 
 ## Functions
-### onlyFungible
+### onlyProtocol
 
-*Only Fungible module address allowed modifier.*
+*Only protocol address allowed modifier.*
 
 
 ```solidity
-modifier onlyFungible();
+modifier onlyProtocol();
 ```
 
 ### constructor
@@ -312,7 +312,7 @@ Deposit foreign coins into ZRC20.
 
 
 ```solidity
-function deposit(address zrc20, uint256 amount, address target) external onlyFungible whenNotPaused;
+function deposit(address zrc20, uint256 amount, address target) external onlyProtocol whenNotPaused;
 ```
 **Parameters**
 
@@ -337,7 +337,7 @@ function execute(
     bytes calldata message
 )
     external
-    onlyFungible
+    onlyProtocol
     whenNotPaused;
 ```
 **Parameters**
@@ -365,7 +365,7 @@ function depositAndCall(
     bytes calldata message
 )
     external
-    onlyFungible
+    onlyProtocol
     whenNotPaused;
 ```
 **Parameters**
@@ -392,7 +392,7 @@ function depositAndCall(
     bytes calldata message
 )
     external
-    onlyFungible
+    onlyProtocol
     whenNotPaused;
 ```
 **Parameters**
@@ -411,7 +411,7 @@ Revert a user-specified contract on ZEVM.
 
 
 ```solidity
-function executeRevert(address target, RevertContext calldata revertContext) external onlyFungible whenNotPaused;
+function executeRevert(address target, RevertContext calldata revertContext) external onlyProtocol whenNotPaused;
 ```
 **Parameters**
 
@@ -434,7 +434,7 @@ function depositAndRevert(
     RevertContext calldata revertContext
 )
     external
-    onlyFungible
+    onlyProtocol
     whenNotPaused;
 ```
 **Parameters**

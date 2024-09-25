@@ -97,6 +97,8 @@ $ cast --help
       - [zContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/interface.zContract.md)
       - [UniversalContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/interface.UniversalContract.md)
     - [GatewayZEVM](protocol/contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md)
+    - [SystemContractErrors](protocol/contracts/zevm/SystemContract.sol/interface.SystemContractErrors.md)
+    - [SystemContract](protocol/contracts/zevm/SystemContract.sol/contract.SystemContract.md)
     - [ZRC20Errors](protocol/contracts/zevm/ZRC20.sol/interface.ZRC20Errors.md)
     - [ZRC20](protocol/contracts/zevm/ZRC20.sol/contract.ZRC20.md)
   - [RevertOptions](protocol/contracts/Revert.sol/struct.RevertOptions.md)

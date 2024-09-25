@@ -1,5 +1,5 @@
 # ERC20Custody
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/92837ac9178ca835368558d37c2ae9322f290363/contracts/evm/ERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/379b1dc7eff9cbfc41057f0a5e9977fe1d8e1e93/contracts/evm/ERC20Custody.sol)
 
 **Inherits:**
 [IERC20Custody](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20Custody.md), ReentrancyGuard, AccessControl, Pausable
@@ -73,6 +73,15 @@ bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 ```
 
 
+### TSS_UPDATER_ROLE
+New role identifier for tss updater role.
+
+
+```solidity
+bytes32 public constant TSS_UPDATER_ROLE = keccak256("TSS_UPDATER_ROLE");
+```
+
+
 ## Functions
 ### constructor
 
@@ -101,6 +110,15 @@ Unpause contract.
 
 ```solidity
 function unpause() external onlyRole(PAUSER_ROLE);
+```
+
+### updateTSSAddress
+
+Update tss address
+
+
+```solidity
+function updateTSSAddress(address newTSSAddress) external onlyRole(TSS_UPDATER_ROLE);
 ```
 
 ### setSupportsLegacy

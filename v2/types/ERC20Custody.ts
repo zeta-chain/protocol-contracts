@@ -40,6 +40,7 @@ export interface ERC20CustodyInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "TSS_UPDATER_ROLE"
       | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
       | "deposit"
@@ -57,6 +58,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "tssAddress"
       | "unpause"
       | "unwhitelist"
+      | "updateTSSAddress"
       | "whitelist"
       | "whitelisted"
       | "withdraw"
@@ -85,6 +87,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "TSS_UPDATER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -144,6 +150,10 @@ export interface ERC20CustodyInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "updateTSSAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "whitelist",
     values: [AddressLike]
   ): string;
@@ -176,6 +186,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "TSS_UPDATER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -217,6 +231,10 @@ export interface ERC20CustodyInterface extends Interface {
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "unwhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
@@ -484,6 +502,8 @@ export interface ERC20Custody extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  TSS_UPDATER_ROLE: TypedContractMethod<[], [string], "view">;
+
   WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
@@ -551,6 +571,12 @@ export interface ERC20Custody extends BaseContract {
 
   unwhitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
 
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
 
   whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
@@ -593,6 +619,9 @@ export interface ERC20Custody extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "TSS_UPDATER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WHITELISTER_ROLE"
@@ -670,6 +699,9 @@ export interface ERC20Custody extends BaseContract {
   getFunction(
     nameOrSignature: "unwhitelist"
   ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "whitelist"
   ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;

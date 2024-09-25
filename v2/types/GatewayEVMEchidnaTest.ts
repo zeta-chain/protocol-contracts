@@ -64,6 +64,7 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
       | "TSS_ROLE"
+      | "TSS_UPDATER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "custody"
@@ -92,6 +93,7 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
       | "testExecuteWithERC20"
       | "tssAddress"
       | "unpause"
+      | "updateTSSAddress"
       | "upgradeToAndCall"
       | "zetaConnector"
       | "zetaToken"
@@ -126,6 +128,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "TSS_UPDATER_ROLE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
@@ -236,6 +242,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "updateTSSAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
@@ -258,6 +268,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "TSS_UPDATER_ROLE",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
@@ -331,6 +345,10 @@ export interface GatewayEVMEchidnaTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
@@ -626,6 +644,8 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
 
   TSS_ROLE: TypedContractMethod<[], [string], "view">;
 
+  TSS_UPDATER_ROLE: TypedContractMethod<[], [string], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
@@ -788,6 +808,12 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
     [void],
@@ -813,6 +839,9 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "TSS_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "TSS_UPDATER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
@@ -992,6 +1021,9 @@ export interface GatewayEVMEchidnaTest extends BaseContract {
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<

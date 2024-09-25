@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/92837ac9178ca835368558d37c2ae9322f290363/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/379b1dc7eff9cbfc41057f0a5e9977fe1d8e1e93/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -73,6 +73,15 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
+### TSS_UPDATER_ROLE
+New role identifier for tss updater role.
+
+
+```solidity
+bytes32 public constant TSS_UPDATER_ROLE = keccak256("TSS_UPDATER_ROLE");
+```
+
+
 ## Functions
 ### constructor
 
@@ -128,6 +137,15 @@ function _execute(address destination, bytes calldata data) internal returns (by
 |----|----|-----------|
 |`<none>`|`bytes`|The result of the call.|
 
+
+### updateTSSAddress
+
+Update tss address
+
+
+```solidity
+function updateTSSAddress(address newTSSAddress) external onlyRole(TSS_UPDATER_ROLE);
+```
 
 ### pause
 
