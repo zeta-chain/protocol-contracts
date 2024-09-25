@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/db433edb21f0084fdbaaabb8e83d79b44b366dd9/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/80894a563ae5be7526f28c7162bd136554bc5b86/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable

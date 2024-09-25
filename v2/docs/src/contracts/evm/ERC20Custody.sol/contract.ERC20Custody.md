@@ -1,5 +1,5 @@
 # ERC20Custody
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/db433edb21f0084fdbaaabb8e83d79b44b366dd9/contracts/evm/ERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/80894a563ae5be7526f28c7162bd136554bc5b86/contracts/evm/ERC20Custody.sol)
 
 **Inherits:**
 [IERC20Custody](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20Custody.md), ReentrancyGuard, AccessControl, Pausable
@@ -111,6 +111,12 @@ Update tss address
 ```solidity
 function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newTSSAddress`|`address`|new tss address|
+
 
 ### setSupportsLegacy
 

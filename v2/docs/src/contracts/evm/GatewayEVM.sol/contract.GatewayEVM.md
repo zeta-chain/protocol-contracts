@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/db433edb21f0084fdbaaabb8e83d79b44b366dd9/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/80894a563ae5be7526f28c7162bd136554bc5b86/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -137,6 +137,12 @@ Update tss address
 ```solidity
 function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newTSSAddress`|`address`|new tss address|
+
 
 ### pause
 
