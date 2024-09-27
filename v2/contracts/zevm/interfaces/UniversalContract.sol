@@ -29,6 +29,4 @@ interface UniversalContract {
         bytes calldata message
     )
         external;
-
-    function onRevert(RevertContext calldata revertContext) external;
 }

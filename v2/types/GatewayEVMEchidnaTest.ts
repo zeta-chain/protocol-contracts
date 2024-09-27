@@ -50,16 +50,18 @@ export type MessageContextStruct = { sender: AddressLike };
 export type MessageContextStructOutput = [sender: string] & { sender: string };
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface GatewayEVMEchidnaTestInterface extends Interface {
   getFunction(

@@ -44,16 +44,18 @@ export type RevertOptionsStructOutput = [
 };
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface IGatewayEVMEventsInterface extends Interface {
   getEvent(

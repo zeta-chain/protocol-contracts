@@ -406,7 +406,7 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _executeArbitraryCall(address destination, bytes calldata data) private returns (bytes memory) {
-        revertIfAuthenticatedCall(data);
+        revertIfOnCallOrOnRevert(data);
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
@@ -429,8 +429,8 @@ contract GatewayEVM is
         return Callable(destination).onCall{ value: msg.value }(messageContext, data);
     }
 
-    // @dev prevent calling onCall function reserved for authenticated calls
-    function revertIfAuthenticatedCall(bytes calldata data) private pure {
+    // @dev prevent spoofing onCall and onRevert functions
+    function revertIfOnCallOrOnRevert(bytes calldata data) private pure {
         if (data.length >= 4) {
             bytes4 functionSelector;
             assembly {
@@ -439,6 +439,10 @@ contract GatewayEVM is
 
             if (functionSelector == Callable.onCall.selector) {
                 revert NotAllowedToCallOnCall();
+            }
+
+            if (functionSelector == Revertable.onRevert.selector) {
+                revert NotAllowedToCallOnRevert();
             }
         }
     }

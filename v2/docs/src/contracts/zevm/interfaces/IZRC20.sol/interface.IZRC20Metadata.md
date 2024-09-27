@@ -1,5 +1,5 @@
 # IZRC20Metadata
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/92837ac9178ca835368558d37c2ae9322f290363/contracts/zevm/interfaces/IZRC20.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/3a274ce7bad045a879c73669586611d35509cbce/contracts/zevm/interfaces/IZRC20.sol)
 
 **Inherits:**
 [IZRC20](/contracts/zevm/interfaces/IZRC20.sol/interface.IZRC20.md)

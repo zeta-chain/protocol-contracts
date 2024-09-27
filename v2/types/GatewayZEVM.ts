@@ -68,16 +68,18 @@ export type ZContextStructOutput = [
 ] & { origin: string; sender: string; chainID: bigint };
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface GatewayZEVMInterface extends Interface {
   getFunction(

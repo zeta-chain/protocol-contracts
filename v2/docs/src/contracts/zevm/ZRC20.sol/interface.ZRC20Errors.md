@@ -1,5 +1,5 @@
 # ZRC20Errors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/92837ac9178ca835368558d37c2ae9322f290363/contracts/zevm/ZRC20.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/3a274ce7bad045a879c73669586611d35509cbce/contracts/zevm/ZRC20.sol)
 
 *Custom errors for ZRC20*
 
