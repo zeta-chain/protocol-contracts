@@ -8,7 +8,7 @@ on:
       - "v2/**"
   pull_request:
     branches:
-      - "*"
+      - "**"
     paths:
       - "v2/**"
     types:
