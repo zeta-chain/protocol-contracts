@@ -46,6 +46,16 @@ const _abi = [
   },
   {
     type: "error",
+    name: "NotAllowedToCallOnCall",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotAllowedToCallOnRevert",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "NotWhitelistedInCustody",
     inputs: [],
   },

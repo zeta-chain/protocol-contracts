@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/80894a563ae5be7526f28c7162bd136554bc5b86/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/6accdcc6bd3706c438a6f98bc44ddfca182825fe/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -224,6 +224,36 @@ function withdrawAndCall(
 |`revertOptions`|`RevertOptions`|Revert options.|
 
 
+### withdrawAndCall
+
+Withdraw ZRC20 tokens and call a smart contract on an external chain.
+
+
+```solidity
+function withdrawAndCall(
+    bytes memory receiver,
+    uint256 amount,
+    address zrc20,
+    bytes calldata message,
+    CallOptions calldata callOptions,
+    RevertOptions calldata revertOptions
+)
+    external
+    nonReentrant
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`receiver`|`bytes`|The receiver address on the external chain.|
+|`amount`|`uint256`|The amount of tokens to withdraw.|
+|`zrc20`|`address`|The address of the ZRC20 token.|
+|`message`|`bytes`|The calldata to pass to the contract call.|
+|`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
+|`revertOptions`|`RevertOptions`|Revert options.|
+
+
 ### withdraw
 
 Withdraw ZETA tokens to an external chain.
@@ -278,6 +308,64 @@ function withdrawAndCall(
 |`revertOptions`|`RevertOptions`|Revert options.|
 
 
+### withdrawAndCall
+
+Withdraw ZETA tokens and call a smart contract on an external chain.
+
+
+```solidity
+function withdrawAndCall(
+    bytes memory receiver,
+    uint256 amount,
+    uint256 chainId,
+    bytes calldata message,
+    CallOptions calldata callOptions,
+    RevertOptions calldata revertOptions
+)
+    external
+    nonReentrant
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`receiver`|`bytes`|The receiver address on the external chain.|
+|`amount`|`uint256`|The amount of tokens to withdraw.|
+|`chainId`|`uint256`|Chain id of the external chain.|
+|`message`|`bytes`|The calldata to pass to the contract call.|
+|`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
+|`revertOptions`|`RevertOptions`|Revert options.|
+
+
+### call
+
+Call a smart contract on an external chain without asset transfer.
+
+
+```solidity
+function call(
+    bytes memory receiver,
+    address zrc20,
+    bytes calldata message,
+    CallOptions calldata callOptions,
+    RevertOptions calldata revertOptions
+)
+    external
+    nonReentrant
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`receiver`|`bytes`|The receiver address on the external chain.|
+|`zrc20`|`address`|Address of zrc20 to pay fees.|
+|`message`|`bytes`|The calldata to pass to the contract call.|
+|`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
+|`revertOptions`|`RevertOptions`|Revert options.|
+
+
 ### call
 
 Call a smart contract on an external chain without asset transfer.
@@ -305,6 +393,20 @@ function call(
 |`gasLimit`|`uint256`|Gas limit.|
 |`revertOptions`|`RevertOptions`|Revert options.|
 
+
+### _call
+
+
+```solidity
+function _call(
+    bytes memory receiver,
+    address zrc20,
+    bytes calldata message,
+    CallOptions memory callOptions,
+    RevertOptions memory revertOptions
+)
+    internal;
+```
 
 ### deposit
 

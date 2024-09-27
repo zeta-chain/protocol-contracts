@@ -12,14 +12,14 @@ interface IGatewayZEVMEvents {
     /// @param zrc20 Address of zrc20 to pay fees.
     /// @param receiver The receiver address on the external chain.
     /// @param message The calldata passed to the contract call.
-    /// @param gasLimit Gas limit.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     event Called(
         address indexed sender,
         address indexed zrc20,
         bytes receiver,
         bytes message,
-        uint256 gasLimit,
+        CallOptions callOptions,
         RevertOptions revertOptions
     );
 
@@ -32,7 +32,7 @@ interface IGatewayZEVMEvents {
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
     /// @param message The calldata passed to the contract call.
-    /// @param gasLimit Gas limit.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     event Withdrawn(
         address indexed sender,
@@ -43,7 +43,7 @@ interface IGatewayZEVMEvents {
         uint256 gasfee,
         uint256 protocolFlatFee,
         bytes message,
-        uint256 gasLimit,
+        CallOptions callOptions,
         RevertOptions revertOptions
     );
 }
@@ -134,6 +134,23 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     )
         external;
 
+    /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param message The calldata to pass to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        bytes calldata message,
+        CallOptions calldata callOptions,
+        RevertOptions calldata revertOptions
+    )
+        external;
+
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
@@ -145,6 +162,38 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         uint256 amount,
         uint256 chainId,
         bytes calldata message,
+        RevertOptions calldata revertOptions
+    )
+        external;
+
+    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param chainId Chain id of the external chain.
+    /// @param message The calldata to pass to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message,
+        CallOptions calldata callOptions,
+        RevertOptions calldata revertOptions
+    )
+        external;
+
+    /// @notice Call a smart contract on an external chain without asset transfer.
+    /// @param receiver The receiver address on the external chain.
+    /// @param zrc20 Address of zrc20 to pay fees.
+    /// @param message The calldata to pass to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
+    function call(
+        bytes memory receiver,
+        address zrc20,
+        bytes calldata message,
+        CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
         external;
@@ -230,4 +279,12 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
         RevertContext calldata revertContext
     )
         external;
+}
+
+/// @notice CallOptions struct passed to call and withdrawAndCall functions.
+/// @param gasLimit Gas limit.
+/// @param isArbitraryCall Indicates if call should be arbitrary or authenticated.
+struct CallOptions {
+    uint256 gasLimit;
+    bool isArbitraryCall;
 }

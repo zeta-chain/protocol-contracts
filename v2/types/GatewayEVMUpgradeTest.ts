@@ -45,17 +45,23 @@ export type RevertOptionsStructOutput = [
   onRevertGasLimit: bigint;
 };
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface GatewayEVMUpgradeTestInterface extends Interface {
   getFunction(
@@ -71,7 +77,8 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "deposit(address,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
-      | "execute"
+      | "execute(address,bytes)"
+      | "execute((address),address,bytes)"
       | "executeRevert"
       | "executeWithERC20"
       | "getRoleAdmin"
@@ -157,8 +164,12 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "execute",
+    functionFragment: "execute(address,bytes)",
     values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute((address),address,bytes)",
+    values: [MessageContextStruct, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
@@ -270,7 +281,14 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "execute(address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "execute((address),address,bytes)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
     data: BytesLike
@@ -690,8 +708,18 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  execute: TypedContractMethod<
+  "execute(address,bytes)": TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
+    [string],
+    "payable"
+  >;
+
+  "execute((address),address,bytes)": TypedContractMethod<
+    [
+      messageContext: MessageContextStruct,
+      destination: AddressLike,
+      data: BytesLike
+    ],
     [string],
     "payable"
   >;
@@ -876,9 +904,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "execute"
+    nameOrSignature: "execute(address,bytes)"
   ): TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
+    [string],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "execute((address),address,bytes)"
+  ): TypedContractMethod<
+    [
+      messageContext: MessageContextStruct,
+      destination: AddressLike,
+      data: BytesLike
+    ],
     [string],
     "payable"
   >;

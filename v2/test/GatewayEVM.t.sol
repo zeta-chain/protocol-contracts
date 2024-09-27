@@ -76,7 +76,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.deal(tssAddress, 1 ether);
 
-        revertContext = RevertContext({ asset: address(token), amount: 1, revertMessage: "" });
+        revertContext = RevertContext({ sender: owner, asset: address(token), amount: 1, revertMessage: "" });
     }
 
     function testTSSUpgrade() public {
@@ -160,6 +160,15 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
+    function testForwardCallToReceiveOnCallUsingAuthCall() public {
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedOnCall();
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Executed(address(receiver), 0, bytes("1"));
+        vm.prank(tssAddress);
+        gateway.execute(MessageContext({ sender: address(0x123) }), address(receiver), bytes("1"));
+    }
+
     function testForwardCallToReceiveNonPayableFailsIfSenderIsNotTSS() public {
         string[] memory str = new string[](1);
         str[0] = "Hello, Foundry!";
@@ -171,6 +180,19 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         gateway.execute(address(receiver), data);
+    }
+
+    function testForwardCallToReceiveNonPayableWithMsgContextFailsIfSenderIsNotTSS() public {
+        string[] memory str = new string[](1);
+        str[0] = "Hello, Foundry!";
+        uint256[] memory num = new uint256[](1);
+        num[0] = 42;
+        bool flag = true;
+        bytes memory data = abi.encodeWithSignature("receiveNonPayable(string[],uint256[],bool)", str, num, flag);
+
+        vm.prank(owner);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
+        gateway.execute(MessageContext({ sender: address(0x123) }), address(receiver), data);
     }
 
     function testForwardCallToReceivePayable() public {
@@ -205,12 +227,36 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(address(receiver), data);
     }
 
+    function testForwardCallToReceiveOnCallFails() public {
+        bytes memory data = abi.encodeWithSignature("onCall((address),bytes)", address(123), bytes(""));
+
+        vm.prank(tssAddress);
+        vm.expectRevert(NotAllowedToCallOnCall.selector);
+        gateway.execute(address(receiver), data);
+    }
+
+    function testForwardCallToReceiveOnRevertFails() public {
+        bytes memory data = abi.encodeWithSignature("onRevert((address,address,uint64,bytes))");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(NotAllowedToCallOnRevert.selector);
+        gateway.execute(address(receiver), data);
+    }
+
     function testExecuteFailsIfDestinationIsZeroAddress() public {
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");
 
         vm.prank(tssAddress);
         vm.expectRevert(ZeroAddress.selector);
         gateway.execute(address(0), data);
+    }
+
+    function testExecuteWithMsgContextFailsIfDestinationIsZeroAddress() public {
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.prank(tssAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.execute(MessageContext({ sender: address(0x123) }), address(0), data);
     }
 
     function testForwardCallToReceiveNoParamsTogglePause() public {

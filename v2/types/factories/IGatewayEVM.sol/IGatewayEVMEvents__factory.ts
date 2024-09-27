@@ -228,6 +228,11 @@ const _abi = [
         internalType: "struct RevertContext",
         components: [
           {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
             name: "asset",
             type: "address",
             internalType: "address",

@@ -22,16 +22,18 @@ import type {
 } from "../common";
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface IERC20CustodyEventsInterface extends Interface {
   getEvent(

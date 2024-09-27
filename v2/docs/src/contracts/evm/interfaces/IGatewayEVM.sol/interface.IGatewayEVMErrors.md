@@ -1,5 +1,5 @@
 # IGatewayEVMErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/80894a563ae5be7526f28c7162bd136554bc5b86/contracts/evm/interfaces/IGatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/6accdcc6bd3706c438a6f98bc44ddfca182825fe/contracts/evm/interfaces/IGatewayEVM.sol)
 
 Interface for the errors used in the GatewayEVM contract.
 
@@ -75,5 +75,21 @@ Error when trying to transfer not whitelisted token to custody.
 
 ```solidity
 error NotWhitelistedInCustody();
+```
+
+### NotAllowedToCallOnCall
+Error when trying to call onCall method using arbitrary call.
+
+
+```solidity
+error NotAllowedToCallOnCall();
+```
+
+### NotAllowedToCallOnRevert
+Error when trying to call onRevert method using arbitrary call.
+
+
+```solidity
+error NotAllowedToCallOnRevert();
 ```
 
