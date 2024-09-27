@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
-import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
+import { Callable, IGatewayEVM, MessageContext } from "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -71,17 +71,6 @@ contract GatewayEVM is
     /// @param newImplementation Address of the new implementation.
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
-    /// @dev Internal function to execute a call to a destination address.
-    /// @param destination Address to call.
-    /// @param data Calldata to pass to the call.
-    /// @return The result of the call.
-    function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
-        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
-        if (!success) revert ExecutionFailed();
-
-        return result;
-    }
-
     /// @notice Pause contract.
     function pause() external onlyRole(PAUSER_ROLE) {
         _pause();
@@ -115,7 +104,34 @@ contract GatewayEVM is
         emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
-    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @notice Executes an authenticated call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param messageContext Message context containing sender.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function execute(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        nonReentrant
+        returns (bytes memory)
+    {
+        if (destination == address(0)) revert ZeroAddress();
+        bytes memory result;
+        result = _executeAuthenticatedCall(messageContext, destination, data);
+
+        emit Executed(destination, msg.value, data);
+
+        return result;
+    }
+
+    /// @notice Executes an arbitrary call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
@@ -128,11 +144,10 @@ contract GatewayEVM is
         payable
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
-        bytes memory result = _execute(destination, data);
+        bytes memory result = _executeArbitraryCall(destination, data);
 
         emit Executed(destination, msg.value, data);
 
@@ -163,7 +178,7 @@ contract GatewayEVM is
         if (!resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        _execute(to, data);
+        _executeArbitraryCall(to, data);
 
         // Reset approval
         if (!resetApproval(token, to)) revert ApprovalFailed();
@@ -383,6 +398,48 @@ contract GatewayEVM is
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
+        }
+    }
+
+    /// @dev Private function to execute an arbitrary call to a destination address.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function _executeArbitraryCall(address destination, bytes calldata data) private returns (bytes memory) {
+        revertIfAuthenticatedCall(data);
+        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
+        if (!success) revert ExecutionFailed();
+
+        return result;
+    }
+
+    /// @dev Private function to execute an authenticated call to a destination address.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function _executeAuthenticatedCall(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        private
+        returns (bytes memory)
+    {
+        return Callable(destination).onCall{ value: msg.value }(messageContext, data);
+    }
+
+    // @dev prevent calling onCall function reserved for authenticated calls
+    function revertIfAuthenticatedCall(bytes calldata data) private pure {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Callable.onCall.selector) {
+                revert NotAllowedToCallOnCall();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 pragma solidity 0.8.26;
 
 import { RevertContext } from "../../contracts/Revert.sol";
+import { MessageContext } from "../../contracts/evm/interfaces/IGatewayEVM.sol";
 import "./IReceiverEVM.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -70,6 +71,17 @@ contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
     /// @dev Emits the ReceivedRevert event.
     function onRevert(RevertContext calldata revertContext) external {
         emit ReceivedRevert(msg.sender, revertContext);
+    }
+
+    function onCall(
+        MessageContext calldata messageContext,
+        bytes calldata message
+    )
+        external
+        payable
+        returns (bytes memory)
+    {
+        emit ReceivedOnCall();
     }
 
     /// @notice Receives ETH.
