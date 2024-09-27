@@ -80,12 +80,23 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 
     function testTSSUpgrade() public {
+        address newTSSAddress = address(0x4321);
+
+        bool newTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressHasTSSRole);
+        bool oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasTSSRole);
+
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit UpdatedGatewayTSSAddress(tssAddress);
-        gateway.updateTSSAddress(tssAddress);
-        address newTssAddress = gateway.tssAddress();
-        assertEq(newTssAddress, tssAddress);
+        emit UpdatedGatewayTSSAddress(newTSSAddress);
+        gateway.updateTSSAddress(newTSSAddress);
+        assertEq(newTSSAddress, gateway.tssAddress());
+
+        newTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressHasTSSRole);
+        oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasTSSRole);
     }
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {

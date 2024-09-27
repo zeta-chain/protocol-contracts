@@ -82,12 +82,33 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     }
 
     function testTSSUpgrade() public {
+        address newTSSAddress = address(0x4321);
+
+        bool newTSSAddressWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressWithdrawerRole);
+        bool newTSSAddressWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressWhitelisterRole);
+
+        bool oldTSSAddressHasWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasWithdrawerRole);
+        bool oldTSSAddressHasWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasWhitelisterRole);
+
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit UpdatedCustodyTSSAddress(tssAddress);
-        custody.updateTSSAddress(tssAddress);
-        address newTssAddress = custody.tssAddress();
-        assertEq(newTssAddress, tssAddress);
+        emit UpdatedCustodyTSSAddress(newTSSAddress);
+        custody.updateTSSAddress(newTSSAddress);
+        assertEq(newTSSAddress, custody.tssAddress());
+
+        newTSSAddressWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressWithdrawerRole);
+        newTSSAddressWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressWhitelisterRole);
+
+        oldTSSAddressHasWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasWithdrawerRole);
+        oldTSSAddressHasWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasWhitelisterRole);
     }
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
