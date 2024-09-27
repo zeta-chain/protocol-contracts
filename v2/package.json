@@ -5,15 +5,17 @@
   "files": [
     "abi",
     "types",
-    "contracts"
+    "contracts",
+    "dist"
   ],
+  "main": "./dist/src/index.js",
   "scripts": {
     "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "test": "forge clean && forge test -vvv",
     "coverage": "forge clean && forge coverage --no-match-coverage \"(script|test)\" --report lcov",
     "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types",
-    "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain",
+    "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && yarn lint:fix && yarn typechain && yarn docs && del-cli dist && tsc || true",
     "prepublishOnly": "copyfiles -u 1 'out/**/*' 'abi'",
     "docs": "./scripts/generate_docs.sh"
   },
@@ -25,6 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "copyfiles": "^2.4.1",
+    "del-cli": "^5.1.0",
     "eslint": "^9.8.0",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
@@ -35,6 +38,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
+    "@zetachain/networks": "^10.0.0",
     "ethers": "^6.13.1"
   },
   "packageManager": "yarn@1.22.21+sha1.1959a18351b811cdeedbd484a8f86c3cc3bbaf72"
