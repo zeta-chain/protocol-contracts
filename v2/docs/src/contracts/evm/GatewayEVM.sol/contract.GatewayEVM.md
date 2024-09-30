@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/07bc421f7b5d3de21d96407c91e6a1e2e7289a16/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/eda1e9957411dee4fdf871d69a9caaa035de8918/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -105,28 +105,6 @@ function _authorizeUpgrade(address newImplementation) internal override onlyRole
 |Name|Type|Description|
 |----|----|-----------|
 |`newImplementation`|`address`|Address of the new implementation.|
-
-
-### _execute
-
-*Internal function to execute a call to a destination address.*
-
-
-```solidity
-function _execute(address destination, bytes calldata data) internal returns (bytes memory);
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`destination`|`address`|Address to call.|
-|`data`|`bytes`|Calldata to pass to the call.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`<none>`|`bytes`|The result of the call.|
 
 
 ### updateTSSAddress

@@ -47,6 +47,7 @@ contract ZetaConnectorNativeTest is
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
     function setUp() public {
         owner = address(this);
@@ -105,6 +106,20 @@ contract ZetaConnectorNativeTest is
         assertFalse(oldTSSAddressHasWithdrawerRole);
         oldTSSAddressHasWhitelisterRole = zetaConnector.hasRole(TSS_ROLE, tssAddress);
         assertFalse(oldTSSAddressHasWhitelisterRole);
+    }
+
+    function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE)
+        );
+        zetaConnector.updateTSSAddress(owner);
+    }
+
+    function testTSSUpgradeFailsIfZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        zetaConnector.updateTSSAddress(address(0));
     }
 
     function testWithdraw() public {

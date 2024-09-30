@@ -1,5 +1,5 @@
 # ZetaConnectorBase
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/07bc421f7b5d3de21d96407c91e6a1e2e7289a16/contracts/evm/ZetaConnectorBase.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/eda1e9957411dee4fdf871d69a9caaa035de8918/contracts/evm/ZetaConnectorBase.sol)
 
 **Inherits:**
 [IZetaConnectorEvents](/contracts/evm/interfaces/IZetaConnector.sol/interface.IZetaConnectorEvents.md), ReentrancyGuard, Pausable, AccessControl

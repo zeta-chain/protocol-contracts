@@ -1,5 +1,5 @@
 # CoinType
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/07bc421f7b5d3de21d96407c91e6a1e2e7289a16/contracts/zevm/interfaces/IZRC20.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/eda1e9957411dee4fdf871d69a9caaa035de8918/contracts/zevm/interfaces/IZRC20.sol)
 
 *Coin types for ZRC20. Zeta value should not be used.*
 
