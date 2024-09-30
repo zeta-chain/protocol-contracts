@@ -79,6 +79,40 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         revertContext = RevertContext({ asset: address(token), amount: 1, revertMessage: "" });
     }
 
+    function testTSSUpgrade() public {
+        address newTSSAddress = address(0x4321);
+
+        bool newTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressHasTSSRole);
+        bool oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasTSSRole);
+
+        vm.startPrank(owner);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit UpdatedGatewayTSSAddress(newTSSAddress);
+        gateway.updateTSSAddress(newTSSAddress);
+        assertEq(newTSSAddress, gateway.tssAddress());
+
+        newTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressHasTSSRole);
+        oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasTSSRole);
+    }
+
+    function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE)
+        );
+        gateway.updateTSSAddress(owner);
+    }
+
+    function testTSSUpgradeFailsIfZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.updateTSSAddress(address(0));
+    }
+
     function testSetCustodyFailsIfSenderIsNotAdmin() public {
         vm.startPrank(tssAddress);
         vm.expectRevert(

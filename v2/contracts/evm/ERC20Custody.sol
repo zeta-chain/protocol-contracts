@@ -58,6 +58,22 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         _unpause();
     }
 
+    /// @notice Update tss address
+    /// @param newTSSAddress new tss address
+    function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newTSSAddress == address(0)) revert ZeroAddress();
+
+        _revokeRole(WITHDRAWER_ROLE, tssAddress);
+        _revokeRole(WHITELISTER_ROLE, tssAddress);
+
+        _grantRole(WITHDRAWER_ROLE, newTSSAddress);
+        _grantRole(WHITELISTER_ROLE, newTSSAddress);
+
+        tssAddress = newTSSAddress;
+
+        emit UpdatedCustodyTSSAddress(newTSSAddress);
+    }
+
     /// @notice Unpause contract.
     function setSupportsLegacy(bool _supportsLegacy) external onlyRole(DEFAULT_ADMIN_ROLE) {
         supportsLegacy = _supportsLegacy;
