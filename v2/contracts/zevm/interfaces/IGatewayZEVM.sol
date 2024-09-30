@@ -86,6 +86,9 @@ interface IGatewayZEVMErrors {
 
     /// @notice Error indicating call method received empty message as argument.
     error EmptyMessage();
+
+    /// @notice Error indicating an insufficient gas limit.
+    error InsufficientGasLimit();
 }
 
 /// @title IGatewayZEVM
