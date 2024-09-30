@@ -177,6 +177,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
+        if (gasLimit == 0) revert InsufficientGasLimit();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
@@ -257,6 +258,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (message.length == 0) revert EmptyMessage();
+        if (gasLimit == 0) revert InsufficientGasLimit();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {

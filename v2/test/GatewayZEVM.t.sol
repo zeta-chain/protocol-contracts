@@ -149,6 +149,12 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdrawAndCall(abi.encodePacked(""), 1, address(zrc20), message, 1, revertOptions);
     }
 
+    function testWithdrawAndCallZRC20FailsIfGasLimitIsZero() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        vm.expectRevert(InsufficientGasLimit.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, 0, revertOptions);
+    }
+
     function testWithdrawAndCallZRC20FailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZRC20Amount.selector);
@@ -328,6 +334,12 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
         gateway.call(abi.encodePacked(""), address(zrc20), message, 1, revertOptions);
+    }
+
+    function testCallFailsIfGasLimitIsZero() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        vm.expectRevert(InsufficientGasLimit.selector);
+        gateway.call(abi.encodePacked(addr1), address(zrc20), message, 0, revertOptions);
     }
 
     function testCall() public {
