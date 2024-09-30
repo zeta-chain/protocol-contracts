@@ -177,6 +177,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
+        if (gasLimit == 0) revert InsufficientGasLimit();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
@@ -214,6 +215,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
+        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit Withdrawn(
@@ -318,6 +320,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
+        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -342,6 +345,8 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
 
@@ -362,6 +367,8 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (gasLimit == 0) revert InsufficientGasLimit();
+
         _call(receiver, zrc20, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
     }
 

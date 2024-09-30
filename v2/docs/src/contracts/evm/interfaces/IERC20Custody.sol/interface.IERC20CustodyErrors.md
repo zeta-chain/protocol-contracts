@@ -1,5 +1,5 @@
 # IERC20CustodyErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/07bc421f7b5d3de21d96407c91e6a1e2e7289a16/contracts/evm/interfaces/IERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/90ee283538f7f481339e056dd409e3957361cddd/contracts/evm/interfaces/IERC20Custody.sol)
 
 Interface for the errors used in the ERC20 custody contract.
 
