@@ -96,6 +96,7 @@ export interface GatewayEVMInterface extends Interface {
       | "supportsInterface"
       | "tssAddress"
       | "unpause"
+      | "updateTSSAddress"
       | "upgradeToAndCall"
       | "zetaConnector"
       | "zetaToken"
@@ -114,6 +115,7 @@ export interface GatewayEVMInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
+      | "UpdatedGatewayTSSAddress"
       | "Upgraded"
   ): EventFragment;
 
@@ -235,6 +237,10 @@ export interface GatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "updateTSSAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
@@ -328,6 +334,10 @@ export interface GatewayEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
@@ -560,6 +570,18 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace UpdatedGatewayTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
+    newTSSAddress: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace UpgradedEvent {
   export type InputTuple = [implementation: AddressLike];
   export type OutputTuple = [implementation: string];
@@ -785,6 +807,12 @@ export interface GatewayEVM extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
     [void],
@@ -988,6 +1016,9 @@ export interface GatewayEVM extends BaseContract {
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
@@ -1077,6 +1108,13 @@ export interface GatewayEVM extends BaseContract {
     UnpausedEvent.InputTuple,
     UnpausedEvent.OutputTuple,
     UnpausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "UpdatedGatewayTSSAddress"
+  ): TypedContractEvent<
+    UpdatedGatewayTSSAddressEvent.InputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputObject
   >;
   getEvent(
     key: "Upgraded"
@@ -1206,6 +1244,17 @@ export interface GatewayEVM extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "UpdatedGatewayTSSAddress(address)": TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
+    >;
+    UpdatedGatewayTSSAddress: TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
     >;
 
     "Upgraded(address)": TypedContractEvent<

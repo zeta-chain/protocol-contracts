@@ -59,6 +59,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "tssAddress"
       | "unpause"
       | "unwhitelist"
+      | "updateTSSAddress"
       | "whitelist"
       | "whitelisted"
       | "withdraw"
@@ -75,6 +76,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "RoleRevoked"
       | "Unpaused"
       | "Unwhitelisted"
+      | "UpdatedCustodyTSSAddress"
       | "Whitelisted"
       | "Withdrawn"
       | "WithdrawnAndCalled"
@@ -143,6 +145,10 @@ export interface ERC20CustodyInterface extends Interface {
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "unwhitelist",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateTSSAddress",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -219,6 +225,10 @@ export interface ERC20CustodyInterface extends Interface {
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "unwhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
@@ -349,6 +359,18 @@ export namespace UnwhitelistedEvent {
   export type OutputTuple = [token: string];
   export interface OutputObject {
     token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedCustodyTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
+    newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -553,6 +575,12 @@ export interface ERC20Custody extends BaseContract {
 
   unwhitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
 
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
 
   whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
@@ -673,6 +701,9 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "unwhitelist"
   ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "whitelist"
   ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
   getFunction(
@@ -759,6 +790,13 @@ export interface ERC20Custody extends BaseContract {
     UnwhitelistedEvent.InputTuple,
     UnwhitelistedEvent.OutputTuple,
     UnwhitelistedEvent.OutputObject
+  >;
+  getEvent(
+    key: "UpdatedCustodyTSSAddress"
+  ): TypedContractEvent<
+    UpdatedCustodyTSSAddressEvent.InputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputObject
   >;
   getEvent(
     key: "Whitelisted"
@@ -865,6 +903,17 @@ export interface ERC20Custody extends BaseContract {
       UnwhitelistedEvent.InputTuple,
       UnwhitelistedEvent.OutputTuple,
       UnwhitelistedEvent.OutputObject
+    >;
+
+    "UpdatedCustodyTSSAddress(address)": TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
+    >;
+    UpdatedCustodyTSSAddress: TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
     >;
 
     "Whitelisted(address)": TypedContractEvent<

@@ -1,5 +1,5 @@
 # IZetaNonEthNew
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/3a274ce7bad045a879c73669586611d35509cbce/contracts/evm/interfaces/IZetaNonEthNew.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/5f09d7eb47b707c65cea167574b26d208e366094/contracts/evm/interfaces/IZetaNonEthNew.sol)
 
 **Inherits:**
 IERC20

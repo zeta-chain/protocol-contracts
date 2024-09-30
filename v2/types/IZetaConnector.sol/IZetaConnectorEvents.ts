@@ -38,10 +38,23 @@ export type RevertContextStructOutput = [
 export interface IZetaConnectorEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
+      | "UpdatedZetaConnectorTSSAddress"
       | "Withdrawn"
       | "WithdrawnAndCalled"
       | "WithdrawnAndReverted"
   ): EventFragment;
+}
+
+export namespace UpdatedZetaConnectorTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
+    newTSSAddress: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace WithdrawnEvent {
@@ -148,6 +161,13 @@ export interface IZetaConnectorEvents extends BaseContract {
   ): T;
 
   getEvent(
+    key: "UpdatedZetaConnectorTSSAddress"
+  ): TypedContractEvent<
+    UpdatedZetaConnectorTSSAddressEvent.InputTuple,
+    UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
+    UpdatedZetaConnectorTSSAddressEvent.OutputObject
+  >;
+  getEvent(
     key: "Withdrawn"
   ): TypedContractEvent<
     WithdrawnEvent.InputTuple,
@@ -170,6 +190,17 @@ export interface IZetaConnectorEvents extends BaseContract {
   >;
 
   filters: {
+    "UpdatedZetaConnectorTSSAddress(address)": TypedContractEvent<
+      UpdatedZetaConnectorTSSAddressEvent.InputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputObject
+    >;
+    UpdatedZetaConnectorTSSAddress: TypedContractEvent<
+      UpdatedZetaConnectorTSSAddressEvent.InputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputObject
+    >;
+
     "Withdrawn(address,uint256)": TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,

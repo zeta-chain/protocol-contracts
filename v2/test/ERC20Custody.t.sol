@@ -45,6 +45,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
+    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
     function setUp() public {
         owner = address(this);
@@ -78,6 +79,50 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.deal(tssAddress, 1 ether);
 
         revertContext = RevertContext({ sender: owner, asset: address(token), amount: 1, revertMessage: "" });
+    }
+
+    function testTSSUpgrade() public {
+        address newTSSAddress = address(0x4321);
+
+        bool newTSSAddressWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressWithdrawerRole);
+        bool newTSSAddressWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressWhitelisterRole);
+
+        bool oldTSSAddressHasWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasWithdrawerRole);
+        bool oldTSSAddressHasWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasWhitelisterRole);
+
+        vm.startPrank(owner);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit UpdatedCustodyTSSAddress(newTSSAddress);
+        custody.updateTSSAddress(newTSSAddress);
+        assertEq(newTSSAddress, custody.tssAddress());
+
+        newTSSAddressWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressWithdrawerRole);
+        newTSSAddressWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressWhitelisterRole);
+
+        oldTSSAddressHasWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasWithdrawerRole);
+        oldTSSAddressHasWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasWhitelisterRole);
+    }
+
+    function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE)
+        );
+        custody.updateTSSAddress(owner);
+    }
+
+    function testTSSUpgradeFailsIfZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        custody.updateTSSAddress(address(0));
     }
 
     function testWhitelistFailsIfZeroAddress() public {

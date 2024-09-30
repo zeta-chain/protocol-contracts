@@ -180,6 +180,19 @@ const _abi = [
   },
   {
     type: "event",
+    name: "UpdatedCustodyTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Whitelisted",
     inputs: [
       {

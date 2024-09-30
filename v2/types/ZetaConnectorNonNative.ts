@@ -56,7 +56,9 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
       | "revokeRole"
       | "setMaxSupply"
       | "supportsInterface"
+      | "tssAddress"
       | "unpause"
+      | "updateTSSAddress"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
@@ -71,6 +73,7 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
+      | "UpdatedZetaConnectorTSSAddress"
       | "Withdrawn"
       | "WithdrawnAndCalled"
       | "WithdrawnAndReverted"
@@ -125,7 +128,15 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "tssAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "updateTSSAddress",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [AddressLike, BigNumberish, BytesLike]
@@ -186,7 +197,12 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAndCall",
@@ -286,6 +302,18 @@ export namespace UnpausedEvent {
   export type OutputTuple = [account: string];
   export interface OutputObject {
     account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedZetaConnectorTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
+    newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -452,7 +480,15 @@ export interface ZetaConnectorNonNative extends BaseContract {
     "view"
   >;
 
+  tssAddress: TypedContractMethod<[], [string], "view">;
+
   unpause: TypedContractMethod<[], [void], "nonpayable">;
+
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   withdraw: TypedContractMethod<
     [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
@@ -554,8 +590,14 @@ export interface ZetaConnectorNonNative extends BaseContract {
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
+    nameOrSignature: "tssAddress"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
@@ -633,6 +675,13 @@ export interface ZetaConnectorNonNative extends BaseContract {
     UnpausedEvent.InputTuple,
     UnpausedEvent.OutputTuple,
     UnpausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "UpdatedZetaConnectorTSSAddress"
+  ): TypedContractEvent<
+    UpdatedZetaConnectorTSSAddressEvent.InputTuple,
+    UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
+    UpdatedZetaConnectorTSSAddressEvent.OutputObject
   >;
   getEvent(
     key: "Withdrawn"
@@ -721,6 +770,17 @@ export interface ZetaConnectorNonNative extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "UpdatedZetaConnectorTSSAddress(address)": TypedContractEvent<
+      UpdatedZetaConnectorTSSAddressEvent.InputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputObject
+    >;
+    UpdatedZetaConnectorTSSAddress: TypedContractEvent<
+      UpdatedZetaConnectorTSSAddressEvent.InputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
+      UpdatedZetaConnectorTSSAddressEvent.OutputObject
     >;
 
     "Withdrawn(address,uint256)": TypedContractEvent<

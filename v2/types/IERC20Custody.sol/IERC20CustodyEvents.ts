@@ -40,6 +40,7 @@ export interface IERC20CustodyEventsInterface extends Interface {
     nameOrSignatureOrTopic:
       | "Deposited"
       | "Unwhitelisted"
+      | "UpdatedCustodyTSSAddress"
       | "Whitelisted"
       | "Withdrawn"
       | "WithdrawnAndCalled"
@@ -77,6 +78,18 @@ export namespace UnwhitelistedEvent {
   export type OutputTuple = [token: string];
   export interface OutputObject {
     token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedCustodyTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
+    newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -229,6 +242,13 @@ export interface IERC20CustodyEvents extends BaseContract {
     UnwhitelistedEvent.OutputObject
   >;
   getEvent(
+    key: "UpdatedCustodyTSSAddress"
+  ): TypedContractEvent<
+    UpdatedCustodyTSSAddressEvent.InputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputObject
+  >;
+  getEvent(
     key: "Whitelisted"
   ): TypedContractEvent<
     WhitelistedEvent.InputTuple,
@@ -278,6 +298,17 @@ export interface IERC20CustodyEvents extends BaseContract {
       UnwhitelistedEvent.InputTuple,
       UnwhitelistedEvent.OutputTuple,
       UnwhitelistedEvent.OutputObject
+    >;
+
+    "UpdatedCustodyTSSAddress(address)": TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
+    >;
+    UpdatedCustodyTSSAddress: TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
     >;
 
     "Whitelisted(address)": TypedContractEvent<

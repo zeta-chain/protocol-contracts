@@ -701,6 +701,19 @@ const _abi = [
     anonymous: false,
   },
   {
+    type: "event",
+    name: "UpdatedGatewayTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
     type: "error",
     name: "ApprovalFailed",
     inputs: [],

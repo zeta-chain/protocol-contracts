@@ -252,6 +252,19 @@ const _abi = [
     ],
     anonymous: false,
   },
+  {
+    type: "event",
+    name: "UpdatedGatewayTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
 ] as const;
 
 export class IGatewayEVMEvents__factory {

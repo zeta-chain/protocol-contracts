@@ -85,6 +85,7 @@ export interface IGatewayEVMInterface extends Interface {
       | "Executed"
       | "ExecutedWithERC20"
       | "Reverted"
+      | "UpdatedGatewayTSSAddress"
   ): EventFragment;
 
   encodeFunctionData(
@@ -299,6 +300,18 @@ export namespace RevertedEvent {
     amount: bigint;
     data: string;
     revertContext: RevertContextStructOutput;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedGatewayTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
+    newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -595,6 +608,13 @@ export interface IGatewayEVM extends BaseContract {
     RevertedEvent.OutputTuple,
     RevertedEvent.OutputObject
   >;
+  getEvent(
+    key: "UpdatedGatewayTSSAddress"
+  ): TypedContractEvent<
+    UpdatedGatewayTSSAddressEvent.InputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputObject
+  >;
 
   filters: {
     "Called(address,address,bytes,tuple)": TypedContractEvent<
@@ -650,6 +670,17 @@ export interface IGatewayEVM extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
+    >;
+
+    "UpdatedGatewayTSSAddress(address)": TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
+    >;
+    UpdatedGatewayTSSAddress: TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
     >;
   };
 }
