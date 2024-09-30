@@ -46,6 +46,8 @@ contract ZetaConnectorNativeTest is
 
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
+    bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
 
     function setUp() public {
         owner = address(this);
@@ -74,6 +76,50 @@ contract ZetaConnectorNativeTest is
 
         vm.deal(tssAddress, 1 ether);
         revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
+    }
+
+    function testTSSUpgrade() public {
+        address newTSSAddress = address(0x4321);
+
+        bool newTSSAddressWithdrawerRole = zetaConnector.hasRole(WITHDRAWER_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressWithdrawerRole);
+        bool newTSSAddressWhitelisterRole = zetaConnector.hasRole(TSS_ROLE, newTSSAddress);
+        assertFalse(newTSSAddressWhitelisterRole);
+
+        bool oldTSSAddressHasWithdrawerRole = zetaConnector.hasRole(WITHDRAWER_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasWithdrawerRole);
+        bool oldTSSAddressHasWhitelisterRole = zetaConnector.hasRole(TSS_ROLE, tssAddress);
+        assertTrue(oldTSSAddressHasWhitelisterRole);
+
+        vm.startPrank(owner);
+        vm.expectEmit(true, true, true, true, address(zetaConnector));
+        emit UpdatedZetaConnectorTSSAddress(newTSSAddress);
+        zetaConnector.updateTSSAddress(newTSSAddress);
+        assertEq(newTSSAddress, zetaConnector.tssAddress());
+
+        newTSSAddressWithdrawerRole = zetaConnector.hasRole(WITHDRAWER_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressWithdrawerRole);
+        newTSSAddressWhitelisterRole = zetaConnector.hasRole(TSS_ROLE, newTSSAddress);
+        assertTrue(newTSSAddressWhitelisterRole);
+
+        oldTSSAddressHasWithdrawerRole = zetaConnector.hasRole(WITHDRAWER_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasWithdrawerRole);
+        oldTSSAddressHasWhitelisterRole = zetaConnector.hasRole(TSS_ROLE, tssAddress);
+        assertFalse(oldTSSAddressHasWhitelisterRole);
+    }
+
+    function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
+        vm.startPrank(tssAddress);
+        vm.expectRevert(
+            abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, DEFAULT_ADMIN_ROLE)
+        );
+        zetaConnector.updateTSSAddress(owner);
+    }
+
+    function testTSSUpgradeFailsIfZeroAddress() public {
+        vm.startPrank(owner);
+        vm.expectRevert(ZeroAddress.selector);
+        zetaConnector.updateTSSAddress(address(0));
     }
 
     function testWithdraw() public {

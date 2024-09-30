@@ -11,6 +11,19 @@ import type {
 const _abi = [
   {
     type: "event",
+    name: "UpdatedZetaConnectorTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Withdrawn",
     inputs: [
       {

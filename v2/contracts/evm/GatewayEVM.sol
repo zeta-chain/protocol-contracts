@@ -83,6 +83,19 @@ contract GatewayEVM is
         return result;
     }
 
+    /// @notice Update tss address
+    /// @param newTSSAddress new tss address
+    function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newTSSAddress == address(0)) revert ZeroAddress();
+
+        _revokeRole(TSS_ROLE, tssAddress);
+        _grantRole(TSS_ROLE, newTSSAddress);
+
+        tssAddress = newTSSAddress;
+
+        emit UpdatedGatewayTSSAddress(newTSSAddress);
+    }
+
     /// @notice Pause contract.
     function pause() external onlyRole(PAUSER_ROLE) {
         _pause();

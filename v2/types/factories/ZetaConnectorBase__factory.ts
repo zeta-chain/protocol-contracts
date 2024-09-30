@@ -225,8 +225,34 @@ const _abi = [
   },
   {
     type: "function",
+    name: "tssAddress",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "unpause",
     inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "updateTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        internalType: "address",
+      },
+    ],
     outputs: [],
     stateMutability: "nonpayable",
   },
@@ -438,6 +464,19 @@ const _abi = [
     inputs: [
       {
         name: "account",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "UpdatedZetaConnectorTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
         type: "address",
         indexed: false,
         internalType: "address",
