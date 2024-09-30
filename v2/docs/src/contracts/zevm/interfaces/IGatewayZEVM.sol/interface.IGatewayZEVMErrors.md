@@ -101,3 +101,11 @@ Error indicating call method received empty message as argument.
 error EmptyMessage();
 ```
 
+### InsufficientGasLimit
+Error indicating an insufficient gas limit.
+
+
+```solidity
+error InsufficientGasLimit();
+```
+
