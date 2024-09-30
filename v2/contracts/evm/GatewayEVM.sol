@@ -71,17 +71,6 @@ contract GatewayEVM is
     /// @param newImplementation Address of the new implementation.
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
-    /// @dev Internal function to execute a call to a destination address.
-    /// @param destination Address to call.
-    /// @param data Calldata to pass to the call.
-    /// @return The result of the call.
-    function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
-        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
-        if (!success) revert ExecutionFailed();
-
-        return result;
-    }
-
     /// @notice Update tss address
     /// @param newTSSAddress new tss address
     function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE) {
