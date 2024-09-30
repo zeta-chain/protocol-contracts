@@ -738,6 +738,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "InsufficientGasLimit",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "InsufficientZRC20Amount",
     inputs: [],
   },
