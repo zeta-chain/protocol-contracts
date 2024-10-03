@@ -161,6 +161,20 @@
     "type": "zetaToken"
   },
   {
+    "address": "0x4Ed087B3aB502475c97cF9d3f1637eFd2470B8FE",
+    "category": "omnichain",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "tssUpdater"
+  },
+  {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "tss"
+  },
+  {
     "address": "0x239e96c8f17C85c30100AC26F635Ea15f23E9c67",
     "category": "messaging",
     "chain_id": 7000,
