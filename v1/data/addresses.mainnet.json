@@ -161,7 +161,7 @@
     "type": "zetaToken"
   },
   {
-    "address": "base:0x4Ed087B3aB502475c97cF9d3f1637eFd2470B8FE",
+    "address": "0x4Ed087B3aB502475c97cF9d3f1637eFd2470B8FE",
     "category": "omnichain",
     "chain_id": 8453,
     "chain_name": "base_mainnet",
