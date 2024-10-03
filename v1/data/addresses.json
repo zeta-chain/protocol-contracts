@@ -13,7 +13,7 @@
     "base_mainnet": {
       "connector": "",
       "erc20Custody": "",
-      "immutableCreate2Factory": "",
+      "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
       "tss": "0x70e967acFcC17c3941E87562161406d41676FD83",
       "tssUpdater": "0x4Ed087B3aB502475c97cF9d3f1637eFd2470B8FE",
       "zetaToken": ""
