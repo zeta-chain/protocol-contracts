@@ -10,6 +10,14 @@
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
     },
+    "base_mainnet": {
+      "connector": "",
+      "erc20Custody": "",
+      "immutableCreate2Factory": "",
+      "tss": "0x70e967acFcC17c3941E87562161406d41676FD83",
+      "tssUpdater": "0x4Ed087B3aB502475c97cF9d3f1637eFd2470B8FE",
+      "zetaToken": ""
+    },
     "bsc_mainnet": {
       "connector": "0x000063A6e758D9e2f438d430108377564cf4077D",
       "erc20Custody": "0x00000fF8fA992424957F97688015814e707A0115",
