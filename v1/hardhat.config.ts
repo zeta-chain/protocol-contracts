@@ -20,8 +20,8 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       amoy_testnet: process.env.POLYGONSCAN_API_KEY || "",
-      base_testnet: process.env.BASESCAN_API_KEY || "",
       base_mainnet: process.env.BASESCAN_API_KEY || "",
+      base_testnet: process.env.BASESCAN_API_KEY || "",
       // BSC
       bsc: process.env.BSCSCAN_API_KEY || "",
 
