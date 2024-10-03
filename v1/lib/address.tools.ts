@@ -67,6 +67,7 @@ export declare type ZetaProtocolMainNetwork =
   | "btc_mainnet"
   | "eth_mainnet"
   | "polygon_mainnet"
+  | "base_mainnet"
   | "zeta_mainnet";
 
 export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = [
@@ -74,6 +75,7 @@ export const zetaProtocolMainNetworks: ZetaProtocolMainNetwork[] = [
   "btc_mainnet",
   "eth_mainnet",
   "polygon_mainnet",
+  "base_mainnet"
   "zeta_mainnet",
 ];
 
