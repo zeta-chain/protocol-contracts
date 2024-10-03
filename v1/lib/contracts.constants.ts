@@ -17,7 +17,7 @@ const SALT_NUMBERS = {
     zetaConsumer: "0",
     zetaERC20Custody: "0",
     zetaToken: "0",
-  } 
+  }, 
   baobab_testnet: {
     zetaConnector: "71733",
     zetaConsumer: "0",
