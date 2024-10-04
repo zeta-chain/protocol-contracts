@@ -153,8 +153,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZRC20FailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
 
         vm.expectRevert(MessageSizeExceeded.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, 1, revertOptions);
@@ -222,8 +222,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZRC20WithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
         vm.expectRevert(MessageSizeExceeded.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, callOptions, revertOptions);
     }
@@ -301,8 +301,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZETAFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
         vm.expectRevert(MessageSizeExceeded.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, revertOptions);
     }
@@ -320,8 +320,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZETAWithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
         vm.expectRevert(MessageSizeExceeded.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, callOptions, revertOptions);
     }
@@ -538,8 +538,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testCallFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
         vm.expectRevert(MessageSizeExceeded.selector);
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, 1, revertOptions);
     }
@@ -565,8 +565,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testCallWithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
         vm.expectRevert(MessageSizeExceeded.selector);
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptions);
     }

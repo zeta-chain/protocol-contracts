@@ -36,8 +36,8 @@ contract GatewayZEVM is
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    /// @notice Max message size.
-    uint256 public constant MAX_MESSAGE_SIZE = 512;
+    /// @notice Max size of message + revertOptions revert message.
+    uint256 public constant MAX_MESSAGE_SIZE = 1024;
 
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {

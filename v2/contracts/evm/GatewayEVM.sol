@@ -42,8 +42,8 @@ contract GatewayEVM is
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    /// @notice Max payload size.
-    uint256 public constant MAX_PAYLOAD_SIZE = 512;
+    /// @notice Max size of payload + revertOptions revert message.
+    uint256 public constant MAX_PAYLOAD_SIZE = 1024;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {

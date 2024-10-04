@@ -509,8 +509,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     function testDepositERC20ToCustodyWithPayloadFailsIfPayloadSizeExceeded() public {
         uint256 amount = 100_000;
-        bytes memory payload = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory payload = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
 
         token.approve(address(gateway), amount);
 
@@ -571,8 +571,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     function testDepositEthToTssWithPayloadFailsIfPayloadSizeExceeded() public {
         uint256 amount = 100_000;
-        bytes memory payload = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory payload = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
 
         vm.expectRevert(PayloadSizeExceeded.selector);
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
@@ -603,8 +603,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
     }
 
     function testCallWithPayloadFailsIfPayloadSizeExceeded() public {
-        bytes memory payload = new bytes(256);
-        revertOptions.revertMessage = new bytes(256);
+        bytes memory payload = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
 
         vm.expectRevert(PayloadSizeExceeded.selector);
         gateway.call(destination, payload, revertOptions);
