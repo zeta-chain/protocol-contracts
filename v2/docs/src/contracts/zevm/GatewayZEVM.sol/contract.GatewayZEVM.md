@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e58dcbf9ce300de7ddf02c03c7589608408cb9a0/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -38,11 +38,11 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
 
 ### MAX_MESSAGE_SIZE
-Max message size.
+Max size of message + revertOptions revert message.
 
 
 ```solidity
-uint256 public constant MAX_MESSAGE_SIZE = 512;
+uint256 public constant MAX_MESSAGE_SIZE = 1024;
 ```
 
 

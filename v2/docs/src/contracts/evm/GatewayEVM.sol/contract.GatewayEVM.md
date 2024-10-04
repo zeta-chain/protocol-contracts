@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e58dcbf9ce300de7ddf02c03c7589608408cb9a0/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -74,11 +74,11 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
 
 ### MAX_PAYLOAD_SIZE
-Max payload size.
+Max size of payload + revertOptions revert message.
 
 
 ```solidity
-uint256 public constant MAX_PAYLOAD_SIZE = 512;
+uint256 public constant MAX_PAYLOAD_SIZE = 1024;
 ```
 
 
