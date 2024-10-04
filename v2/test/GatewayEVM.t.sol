@@ -217,7 +217,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 
     function testForwardCallToReceiveOnRevertFails() public {
-        bytes memory data = abi.encodeWithSignature("onRevert((address,uint64,bytes))");
+        bytes memory data = abi.encodeWithSignature("onRevert((address,uint256,bytes))");
 
         vm.prank(tssAddress);
         vm.expectRevert(NotAllowedToCallOnRevert.selector);
