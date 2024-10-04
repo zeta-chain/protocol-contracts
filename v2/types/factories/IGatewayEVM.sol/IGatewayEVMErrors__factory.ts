@@ -56,6 +56,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "PayloadSizeExceeded",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ZeroAddress",
     inputs: [],
   },

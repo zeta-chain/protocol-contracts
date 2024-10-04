@@ -218,8 +218,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
           {
             name: "revertMessage",
@@ -303,8 +303,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
           {
             name: "revertMessage",
@@ -723,11 +723,6 @@ const _abi = [
   },
   {
     type: "error",
-    name: "EmptyMessage",
-    inputs: [],
-  },
-  {
-    type: "error",
     name: "FailedZetaSent",
     inputs: [],
   },
@@ -754,6 +749,11 @@ const _abi = [
   {
     type: "error",
     name: "InvalidTarget",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "MessageSizeExceeded",
     inputs: [],
   },
   {
