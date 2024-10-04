@@ -33,13 +33,13 @@ var (
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
 // IReceiverEVMEventsMetaData contains all meta data concerning the IReceiverEVMEvents contract.
 var IReceiverEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"ReceivedERC20\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"destination\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedNoParams\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedNonPayable\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"strs\",\"type\":\"string[]\",\"indexed\":false,\"internalType\":\"string[]\"},{\"name\":\"nums\",\"type\":\"uint256[]\",\"indexed\":false,\"internalType\":\"uint256[]\"},{\"name\":\"flag\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedOnCall\",\"inputs\":[],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedPayable\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"str\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"num\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"flag\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedRevert\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"ReceivedERC20\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"destination\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedNoParams\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedNonPayable\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"strs\",\"type\":\"string[]\",\"indexed\":false,\"internalType\":\"string[]\"},{\"name\":\"nums\",\"type\":\"uint256[]\",\"indexed\":false,\"internalType\":\"uint256[]\"},{\"name\":\"flag\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedOnCall\",\"inputs\":[],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedPayable\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"str\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"num\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"flag\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ReceivedRevert\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IReceiverEVMEventsABI is the input ABI used to generate the binding from.
@@ -941,9 +941,9 @@ type IReceiverEVMEventsReceivedRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_IReceiverEVMEvents *IReceiverEVMEventsFilterer) FilterReceivedRevert(opts *bind.FilterOpts) (*IReceiverEVMEventsReceivedRevertIterator, error) {
 
 	logs, sub, err := _IReceiverEVMEvents.contract.FilterLogs(opts, "ReceivedRevert")
@@ -953,9 +953,9 @@ func (_IReceiverEVMEvents *IReceiverEVMEventsFilterer) FilterReceivedRevert(opts
 	return &IReceiverEVMEventsReceivedRevertIterator{contract: _IReceiverEVMEvents.contract, event: "ReceivedRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedRevert is a free log subscription operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// WatchReceivedRevert is a free log subscription operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_IReceiverEVMEvents *IReceiverEVMEventsFilterer) WatchReceivedRevert(opts *bind.WatchOpts, sink chan<- *IReceiverEVMEventsReceivedRevert) (event.Subscription, error) {
 
 	logs, sub, err := _IReceiverEVMEvents.contract.WatchLogs(opts, "ReceivedRevert")
@@ -990,9 +990,9 @@ func (_IReceiverEVMEvents *IReceiverEVMEventsFilterer) WatchReceivedRevert(opts 
 	}), nil
 }
 
-// ParseReceivedRevert is a log parse operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// ParseReceivedRevert is a log parse operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_IReceiverEVMEvents *IReceiverEVMEventsFilterer) ParseReceivedRevert(log types.Log) (*IReceiverEVMEventsReceivedRevert, error) {
 	event := new(IReceiverEVMEventsReceivedRevert)
 	if err := _IReceiverEVMEvents.contract.UnpackLog(event, "ReceivedRevert", log); err != nil {
