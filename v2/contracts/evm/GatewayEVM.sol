@@ -42,6 +42,8 @@ contract GatewayEVM is
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @notice Max payload size.
+    uint256 public constant MAX_PAYLOAD_SIZE = 512;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -294,6 +296,7 @@ contract GatewayEVM is
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
+        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -321,6 +324,7 @@ contract GatewayEVM is
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
+        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -341,6 +345,8 @@ contract GatewayEVM is
         nonReentrant
     {
         if (receiver == address(0)) revert ZeroAddress();
+        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
 

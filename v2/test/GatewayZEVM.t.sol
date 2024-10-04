@@ -152,6 +152,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdrawAndCall(abi.encodePacked(""), 1, address(zrc20), message, 1, revertOptions);
     }
 
+    function testWithdrawAndCallZRC20FailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(256);
+        revertOptions.revertMessage = new bytes(256);
+
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, 1, revertOptions);
+    }
+
     function testWithdrawAndCallZRC20FailsIfGasLimitIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientGasLimit.selector);
@@ -211,6 +219,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
         gateway.withdrawAndCall(abi.encodePacked(""), 1, address(zrc20), message, callOptions, revertOptions);
+    }
+
+    function testWithdrawAndCallZRC20WithCallOptsFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(256);
+        revertOptions.revertMessage = new bytes(256);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, callOptions, revertOptions);
     }
 
     function testWithdrawAndCallZRC20WithCallOptsFailsIfGasLimitIsZero() public {
@@ -285,6 +300,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, revertOptions);
     }
 
+    function testWithdrawAndCallZETAFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(256);
+        revertOptions.revertMessage = new bytes(256);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, revertOptions);
+    }
+
     function testWithdrawAndCallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
@@ -295,6 +317,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZetaAmount.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, callOptions, revertOptions);
+    }
+
+    function testWithdrawAndCallZETAWithCallOptsFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(256);
+        revertOptions.revertMessage = new bytes(256);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, callOptions, revertOptions);
     }
 
     function testWithdrawAndCallZETAWithCallOptsFailsIfAmountIsReceiverIsZeroAddress() public {
@@ -508,6 +537,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.call(abi.encodePacked(""), address(zrc20), message, 1, revertOptions);
     }
 
+    function testCallFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(256);
+        revertOptions.revertMessage = new bytes(256);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.call(abi.encodePacked(addr1), address(zrc20), message, 1, revertOptions);
+    }
+
     function testCallFailsIfGasLimitIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientGasLimit.selector);
@@ -526,6 +562,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
         gateway.call(abi.encodePacked(""), address(zrc20), message, callOptions, revertOptions);
+    }
+
+    function testCallWithCallOptsFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(256);
+        revertOptions.revertMessage = new bytes(256);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptions);
     }
 
     function testCallWithCallOptsFailsIfGasLimitIsZero() public {

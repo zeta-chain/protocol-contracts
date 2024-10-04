@@ -84,11 +84,11 @@ interface IGatewayZEVMErrors {
     /// @notice Error indicating that only WZETA or the protocol address can call the function.
     error OnlyWZETAOrProtocol();
 
-    /// @notice Error indicating call method received empty message as argument.
-    error EmptyMessage();
-
     /// @notice Error indicating an insufficient gas limit.
     error InsufficientGasLimit();
+
+    /// @notice Error indicating message size exceeded in external functions.
+    error MessageSizeExceeded();
 }
 
 /// @title IGatewayZEVM
