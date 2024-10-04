@@ -1,5 +1,5 @@
 # ERC20Custody
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/6d255086a2997fe8d79339bbb664b6c1d433f9e9/contracts/evm/ERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e58dcbf9ce300de7ddf02c03c7589608408cb9a0/contracts/evm/ERC20Custody.sol)
 
 **Inherits:**
 [IERC20Custody](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20Custody.md), ReentrancyGuard, AccessControl, Pausable

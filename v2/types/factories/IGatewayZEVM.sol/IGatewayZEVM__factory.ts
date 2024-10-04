@@ -983,11 +983,6 @@ const _abi = [
   },
   {
     type: "error",
-    name: "EmptyMessage",
-    inputs: [],
-  },
-  {
-    type: "error",
     name: "FailedZetaSent",
     inputs: [],
   },
@@ -1014,6 +1009,11 @@ const _abi = [
   {
     type: "error",
     name: "InvalidTarget",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "MessageSizeExceeded",
     inputs: [],
   },
   {

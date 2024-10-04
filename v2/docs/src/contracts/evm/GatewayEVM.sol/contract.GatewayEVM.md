@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/6d255086a2997fe8d79339bbb664b6c1d433f9e9/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e58dcbf9ce300de7ddf02c03c7589608408cb9a0/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -70,6 +70,15 @@ New role identifier for pauser role.
 
 ```solidity
 bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+```
+
+
+### MAX_PAYLOAD_SIZE
+Max payload size.
+
+
+```solidity
+uint256 public constant MAX_PAYLOAD_SIZE = 512;
 ```
 
 
