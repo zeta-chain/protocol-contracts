@@ -36,6 +36,9 @@ contract GatewayZEVM is
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+    /// @notice Max size of message + revertOptions revert message.
+    uint256 public constant MAX_MESSAGE_SIZE = 1024;
+
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
         if (msg.sender != PROTOCOL_ADDRESS) {
@@ -178,6 +181,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
@@ -216,6 +220,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit Withdrawn(
@@ -283,6 +288,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -321,6 +327,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -346,6 +353,7 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
@@ -368,6 +376,7 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _call(receiver, zrc20, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
     }
@@ -382,7 +391,6 @@ contract GatewayZEVM is
         internal
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (message.length == 0) revert EmptyMessage();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {

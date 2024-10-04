@@ -507,6 +507,17 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
+    function testDepositERC20ToCustodyWithPayloadFailsIfPayloadSizeExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
+
+        token.approve(address(gateway), amount);
+
+        vm.expectRevert(PayloadSizeExceeded.selector);
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+    }
+
     function testDepositERC20ToCustodyWithPayload() public {
         uint256 amount = 100_000;
         uint256 custodyBalanceBefore = token.balanceOf(address(custody));
@@ -558,6 +569,15 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         assertEq(tssBalanceBefore + amount, tssBalanceAfter);
     }
 
+    function testDepositEthToTssWithPayloadFailsIfPayloadSizeExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
+
+        vm.expectRevert(PayloadSizeExceeded.selector);
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
+    }
+
     function testFailDepositEthToTssWithPayloadIfAmountIs0() public {
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -579,6 +599,14 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Called(owner, destination, payload, revertOptions);
+        gateway.call(destination, payload, revertOptions);
+    }
+
+    function testCallWithPayloadFailsIfPayloadSizeExceeded() public {
+        bytes memory payload = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
+
+        vm.expectRevert(PayloadSizeExceeded.selector);
         gateway.call(destination, payload, revertOptions);
     }
 

@@ -1,5 +1,5 @@
 # RevertContext
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e55e1d806ff01171e945513bdfc6a523d6a1c116/contracts/Revert.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/Revert.sol)
 
 Struct containing revert context passed to onRevert.
 

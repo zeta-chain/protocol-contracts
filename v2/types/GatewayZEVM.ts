@@ -85,6 +85,7 @@ export interface GatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
+      | "MAX_MESSAGE_SIZE"
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
@@ -132,6 +133,10 @@ export interface GatewayZEVMInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_MESSAGE_SIZE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -284,6 +289,10 @@ export interface GatewayZEVMInterface extends Interface {
 
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_MESSAGE_SIZE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -603,6 +612,8 @@ export interface GatewayZEVM extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
+  MAX_MESSAGE_SIZE: TypedContractMethod<[], [bigint], "view">;
+
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
@@ -825,6 +836,9 @@ export interface GatewayZEVM extends BaseContract {
   getFunction(
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "MAX_MESSAGE_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;

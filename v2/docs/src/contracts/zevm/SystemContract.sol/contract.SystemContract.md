@@ -1,5 +1,5 @@
 # SystemContract
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e55e1d806ff01171e945513bdfc6a523d6a1c116/contracts/zevm/SystemContract.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/zevm/SystemContract.sol)
 
 **Inherits:**
 [SystemContractErrors](/contracts/zevm/SystemContract.sol/interface.SystemContractErrors.md)
