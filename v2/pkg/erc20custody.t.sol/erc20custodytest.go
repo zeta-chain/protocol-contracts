@@ -33,7 +33,7 @@ var (
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -2980,9 +2980,9 @@ type ERC20CustodyTestReceivedRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterReceivedRevert(opts *bind.FilterOpts) (*ERC20CustodyTestReceivedRevertIterator, error) {
 
 	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "ReceivedRevert")
@@ -2992,9 +2992,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterReceivedRevert(opts *bi
 	return &ERC20CustodyTestReceivedRevertIterator{contract: _ERC20CustodyTest.contract, event: "ReceivedRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedRevert is a free log subscription operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// WatchReceivedRevert is a free log subscription operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchReceivedRevert(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestReceivedRevert) (event.Subscription, error) {
 
 	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "ReceivedRevert")
@@ -3029,9 +3029,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchReceivedRevert(opts *bin
 	}), nil
 }
 
-// ParseReceivedRevert is a log parse operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// ParseReceivedRevert is a log parse operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseReceivedRevert(log types.Log) (*ERC20CustodyTestReceivedRevert, error) {
 	event := new(ERC20CustodyTestReceivedRevert)
 	if err := _ERC20CustodyTest.contract.UnpackLog(event, "ReceivedRevert", log); err != nil {
@@ -3118,9 +3118,9 @@ type ERC20CustodyTestReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// FilterReverted is a free log retrieval operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*ERC20CustodyTestRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -3139,9 +3139,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterReverted(opts *bind.Fil
 	return &ERC20CustodyTestRevertedIterator{contract: _ERC20CustodyTest.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// WatchReverted is a free log subscription operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -3185,9 +3185,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchReverted(opts *bind.Watc
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// ParseReverted is a log parse operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseReverted(log types.Log) (*ERC20CustodyTestReverted, error) {
 	event := new(ERC20CustodyTestReverted)
 	if err := _ERC20CustodyTest.contract.UnpackLog(event, "Reverted", log); err != nil {
@@ -4139,9 +4139,9 @@ type ERC20CustodyTestWithdrawnAndReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawnAndReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*ERC20CustodyTestWithdrawnAndRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -4160,9 +4160,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawnAndReverted(op
 	return &ERC20CustodyTestWithdrawnAndRevertedIterator{contract: _ERC20CustodyTest.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawnAndReverted(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestWithdrawnAndReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -4206,9 +4206,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawnAndReverted(opt
 	}), nil
 }
 
-// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdrawnAndReverted(log types.Log) (*ERC20CustodyTestWithdrawnAndReverted, error) {
 	event := new(ERC20CustodyTestWithdrawnAndReverted)
 	if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {

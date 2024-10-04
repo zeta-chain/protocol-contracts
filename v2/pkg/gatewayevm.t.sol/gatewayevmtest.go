@@ -33,7 +33,7 @@ var (
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -2823,9 +2823,9 @@ type GatewayEVMTestReceivedRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterReceivedRevert(opts *bind.FilterOpts) (*GatewayEVMTestReceivedRevertIterator, error) {
 
 	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "ReceivedRevert")
@@ -2835,9 +2835,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterReceivedRevert(opts *bind.F
 	return &GatewayEVMTestReceivedRevertIterator{contract: _GatewayEVMTest.contract, event: "ReceivedRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedRevert is a free log subscription operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// WatchReceivedRevert is a free log subscription operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchReceivedRevert(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestReceivedRevert) (event.Subscription, error) {
 
 	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "ReceivedRevert")
@@ -2872,9 +2872,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchReceivedRevert(opts *bind.Wa
 	}), nil
 }
 
-// ParseReceivedRevert is a log parse operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// ParseReceivedRevert is a log parse operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseReceivedRevert(log types.Log) (*GatewayEVMTestReceivedRevert, error) {
 	event := new(GatewayEVMTestReceivedRevert)
 	if err := _GatewayEVMTest.contract.UnpackLog(event, "ReceivedRevert", log); err != nil {
@@ -2961,9 +2961,9 @@ type GatewayEVMTestReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// FilterReverted is a free log retrieval operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*GatewayEVMTestRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -2982,9 +2982,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterReverted(opts *bind.FilterO
 	return &GatewayEVMTestRevertedIterator{contract: _GatewayEVMTest.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// WatchReverted is a free log subscription operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -3028,9 +3028,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchReverted(opts *bind.WatchOpt
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// ParseReverted is a log parse operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseReverted(log types.Log) (*GatewayEVMTestReverted, error) {
 	event := new(GatewayEVMTestReverted)
 	if err := _GatewayEVMTest.contract.UnpackLog(event, "Reverted", log); err != nil {
@@ -3982,9 +3982,9 @@ type GatewayEVMTestWithdrawnAndReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawnAndReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*GatewayEVMTestWithdrawnAndRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -4003,9 +4003,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterWithdrawnAndReverted(opts *
 	return &GatewayEVMTestWithdrawnAndRevertedIterator{contract: _GatewayEVMTest.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawnAndReverted(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestWithdrawnAndReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -4049,9 +4049,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchWithdrawnAndReverted(opts *b
 	}), nil
 }
 
-// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseWithdrawnAndReverted(log types.Log) (*GatewayEVMTestWithdrawnAndReverted, error) {
 	event := new(GatewayEVMTestWithdrawnAndReverted)
 	if err := _GatewayEVMTest.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {

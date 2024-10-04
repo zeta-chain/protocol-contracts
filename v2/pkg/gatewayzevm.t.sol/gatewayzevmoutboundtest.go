@@ -39,7 +39,7 @@ type CallOptions struct {
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -1833,9 +1833,9 @@ type GatewayZEVMOutboundTestContextDataRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterContextDataRevert is a free log retrieval operation binding the contract event 0xf5d4d6ed1657736cfd625a04e0585c5def81b280f6bc1b7ed4add114e79f7e9a.
+// FilterContextDataRevert is a free log retrieval operation binding the contract event 0xd75bb509c8f32a725aac99ac5c4541060dbfb889a3aca8314d6f00395618c4c4.
 //
-// Solidity: event ContextDataRevert((address,address,uint64,bytes) revertContext)
+// Solidity: event ContextDataRevert((address,address,uint256,bytes) revertContext)
 func (_GatewayZEVMOutboundTest *GatewayZEVMOutboundTestFilterer) FilterContextDataRevert(opts *bind.FilterOpts) (*GatewayZEVMOutboundTestContextDataRevertIterator, error) {
 
 	logs, sub, err := _GatewayZEVMOutboundTest.contract.FilterLogs(opts, "ContextDataRevert")
@@ -1845,9 +1845,9 @@ func (_GatewayZEVMOutboundTest *GatewayZEVMOutboundTestFilterer) FilterContextDa
 	return &GatewayZEVMOutboundTestContextDataRevertIterator{contract: _GatewayZEVMOutboundTest.contract, event: "ContextDataRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchContextDataRevert is a free log subscription operation binding the contract event 0xf5d4d6ed1657736cfd625a04e0585c5def81b280f6bc1b7ed4add114e79f7e9a.
+// WatchContextDataRevert is a free log subscription operation binding the contract event 0xd75bb509c8f32a725aac99ac5c4541060dbfb889a3aca8314d6f00395618c4c4.
 //
-// Solidity: event ContextDataRevert((address,address,uint64,bytes) revertContext)
+// Solidity: event ContextDataRevert((address,address,uint256,bytes) revertContext)
 func (_GatewayZEVMOutboundTest *GatewayZEVMOutboundTestFilterer) WatchContextDataRevert(opts *bind.WatchOpts, sink chan<- *GatewayZEVMOutboundTestContextDataRevert) (event.Subscription, error) {
 
 	logs, sub, err := _GatewayZEVMOutboundTest.contract.WatchLogs(opts, "ContextDataRevert")
@@ -1882,9 +1882,9 @@ func (_GatewayZEVMOutboundTest *GatewayZEVMOutboundTestFilterer) WatchContextDat
 	}), nil
 }
 
-// ParseContextDataRevert is a log parse operation binding the contract event 0xf5d4d6ed1657736cfd625a04e0585c5def81b280f6bc1b7ed4add114e79f7e9a.
+// ParseContextDataRevert is a log parse operation binding the contract event 0xd75bb509c8f32a725aac99ac5c4541060dbfb889a3aca8314d6f00395618c4c4.
 //
-// Solidity: event ContextDataRevert((address,address,uint64,bytes) revertContext)
+// Solidity: event ContextDataRevert((address,address,uint256,bytes) revertContext)
 func (_GatewayZEVMOutboundTest *GatewayZEVMOutboundTestFilterer) ParseContextDataRevert(log types.Log) (*GatewayZEVMOutboundTestContextDataRevert, error) {
 	event := new(GatewayZEVMOutboundTestContextDataRevert)
 	if err := _GatewayZEVMOutboundTest.contract.UnpackLog(event, "ContextDataRevert", log); err != nil {

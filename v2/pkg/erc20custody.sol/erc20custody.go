@@ -33,7 +33,7 @@ var (
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -834,23 +834,23 @@ func (_ERC20Custody *ERC20CustodyTransactorSession) WithdrawAndCall(to common.Ad
 	return _ERC20Custody.Contract.WithdrawAndCall(&_ERC20Custody.TransactOpts, to, token, amount, data)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x5eb72e15.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x99a3c356.
 //
-// Solidity: function withdrawAndRevert(address to, address token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function withdrawAndRevert(address to, address token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext) returns()
 func (_ERC20Custody *ERC20CustodyTransactor) WithdrawAndRevert(opts *bind.TransactOpts, to common.Address, token common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ERC20Custody.contract.Transact(opts, "withdrawAndRevert", to, token, amount, data, revertContext)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x5eb72e15.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x99a3c356.
 //
-// Solidity: function withdrawAndRevert(address to, address token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function withdrawAndRevert(address to, address token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext) returns()
 func (_ERC20Custody *ERC20CustodySession) WithdrawAndRevert(to common.Address, token common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ERC20Custody.Contract.WithdrawAndRevert(&_ERC20Custody.TransactOpts, to, token, amount, data, revertContext)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x5eb72e15.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x99a3c356.
 //
-// Solidity: function withdrawAndRevert(address to, address token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function withdrawAndRevert(address to, address token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext) returns()
 func (_ERC20Custody *ERC20CustodyTransactorSession) WithdrawAndRevert(to common.Address, token common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ERC20Custody.Contract.WithdrawAndRevert(&_ERC20Custody.TransactOpts, to, token, amount, data, revertContext)
 }
@@ -2564,9 +2564,9 @@ type ERC20CustodyWithdrawnAndReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20Custody *ERC20CustodyFilterer) FilterWithdrawnAndReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*ERC20CustodyWithdrawnAndRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -2585,9 +2585,9 @@ func (_ERC20Custody *ERC20CustodyFilterer) FilterWithdrawnAndReverted(opts *bind
 	return &ERC20CustodyWithdrawnAndRevertedIterator{contract: _ERC20Custody.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20Custody *ERC20CustodyFilterer) WatchWithdrawnAndReverted(opts *bind.WatchOpts, sink chan<- *ERC20CustodyWithdrawnAndReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -2631,9 +2631,9 @@ func (_ERC20Custody *ERC20CustodyFilterer) WatchWithdrawnAndReverted(opts *bind.
 	}), nil
 }
 
-// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x84a6ffacc2d811bfa095a126654bc0ae038aac9eeed4390895bf3b3228f17b37.
+// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x7b53ec10a80164e60591c43d9c222e9354886981b880a3fba19c9ceb77fb9721.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ERC20Custody *ERC20CustodyFilterer) ParseWithdrawnAndReverted(log types.Log) (*ERC20CustodyWithdrawnAndReverted, error) {
 	event := new(ERC20CustodyWithdrawnAndReverted)
 	if err := _ERC20Custody.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {

@@ -38,7 +38,7 @@ type MessageContext struct {
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -236,23 +236,23 @@ func (_ReceiverEVM *ReceiverEVMTransactorSession) OnCall(messageContext MessageC
 	return _ReceiverEVM.Contract.OnCall(&_ReceiverEVM.TransactOpts, messageContext, message)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x5ac1e070.
+// OnRevert is a paid mutator transaction binding the contract method 0xc9028a36.
 //
-// Solidity: function onRevert((address,address,uint64,bytes) revertContext) returns()
+// Solidity: function onRevert((address,address,uint256,bytes) revertContext) returns()
 func (_ReceiverEVM *ReceiverEVMTransactor) OnRevert(opts *bind.TransactOpts, revertContext RevertContext) (*types.Transaction, error) {
 	return _ReceiverEVM.contract.Transact(opts, "onRevert", revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x5ac1e070.
+// OnRevert is a paid mutator transaction binding the contract method 0xc9028a36.
 //
-// Solidity: function onRevert((address,address,uint64,bytes) revertContext) returns()
+// Solidity: function onRevert((address,address,uint256,bytes) revertContext) returns()
 func (_ReceiverEVM *ReceiverEVMSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
 	return _ReceiverEVM.Contract.OnRevert(&_ReceiverEVM.TransactOpts, revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x5ac1e070.
+// OnRevert is a paid mutator transaction binding the contract method 0xc9028a36.
 //
-// Solidity: function onRevert((address,address,uint64,bytes) revertContext) returns()
+// Solidity: function onRevert((address,address,uint256,bytes) revertContext) returns()
 func (_ReceiverEVM *ReceiverEVMTransactorSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
 	return _ReceiverEVM.Contract.OnRevert(&_ReceiverEVM.TransactOpts, revertContext)
 }
@@ -1157,9 +1157,9 @@ type ReceiverEVMReceivedRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_ReceiverEVM *ReceiverEVMFilterer) FilterReceivedRevert(opts *bind.FilterOpts) (*ReceiverEVMReceivedRevertIterator, error) {
 
 	logs, sub, err := _ReceiverEVM.contract.FilterLogs(opts, "ReceivedRevert")
@@ -1169,9 +1169,9 @@ func (_ReceiverEVM *ReceiverEVMFilterer) FilterReceivedRevert(opts *bind.FilterO
 	return &ReceiverEVMReceivedRevertIterator{contract: _ReceiverEVM.contract, event: "ReceivedRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedRevert is a free log subscription operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// WatchReceivedRevert is a free log subscription operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_ReceiverEVM *ReceiverEVMFilterer) WatchReceivedRevert(opts *bind.WatchOpts, sink chan<- *ReceiverEVMReceivedRevert) (event.Subscription, error) {
 
 	logs, sub, err := _ReceiverEVM.contract.WatchLogs(opts, "ReceivedRevert")
@@ -1206,9 +1206,9 @@ func (_ReceiverEVM *ReceiverEVMFilterer) WatchReceivedRevert(opts *bind.WatchOpt
 	}), nil
 }
 
-// ParseReceivedRevert is a log parse operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// ParseReceivedRevert is a log parse operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_ReceiverEVM *ReceiverEVMFilterer) ParseReceivedRevert(log types.Log) (*ReceiverEVMReceivedRevert, error) {
 	event := new(ReceiverEVMReceivedRevert)
 	if err := _ReceiverEVM.contract.UnpackLog(event, "ReceivedRevert", log); err != nil {

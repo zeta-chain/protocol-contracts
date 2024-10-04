@@ -33,7 +33,7 @@ var (
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -2163,9 +2163,9 @@ type GatewayEVMUUPSUpgradeTestReceivedRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// FilterReceivedRevert is a free log retrieval operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) FilterReceivedRevert(opts *bind.FilterOpts) (*GatewayEVMUUPSUpgradeTestReceivedRevertIterator, error) {
 
 	logs, sub, err := _GatewayEVMUUPSUpgradeTest.contract.FilterLogs(opts, "ReceivedRevert")
@@ -2175,9 +2175,9 @@ func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) FilterRecei
 	return &GatewayEVMUUPSUpgradeTestReceivedRevertIterator{contract: _GatewayEVMUUPSUpgradeTest.contract, event: "ReceivedRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedRevert is a free log subscription operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// WatchReceivedRevert is a free log subscription operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) WatchReceivedRevert(opts *bind.WatchOpts, sink chan<- *GatewayEVMUUPSUpgradeTestReceivedRevert) (event.Subscription, error) {
 
 	logs, sub, err := _GatewayEVMUUPSUpgradeTest.contract.WatchLogs(opts, "ReceivedRevert")
@@ -2212,9 +2212,9 @@ func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) WatchReceiv
 	}), nil
 }
 
-// ParseReceivedRevert is a log parse operation binding the contract event 0x8f39d9623d22cb24244fa4bf1219c32f0a8c7522a0978f7778ec6e376507e264.
+// ParseReceivedRevert is a log parse operation binding the contract event 0x689a5a5cb55e795ffe4cd8b419cd3bb0a3373974c54d25f64e734d7388b93e9b.
 //
-// Solidity: event ReceivedRevert(address sender, (address,address,uint64,bytes) revertContext)
+// Solidity: event ReceivedRevert(address sender, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) ParseReceivedRevert(log types.Log) (*GatewayEVMUUPSUpgradeTestReceivedRevert, error) {
 	event := new(GatewayEVMUUPSUpgradeTestReceivedRevert)
 	if err := _GatewayEVMUUPSUpgradeTest.contract.UnpackLog(event, "ReceivedRevert", log); err != nil {
@@ -2301,9 +2301,9 @@ type GatewayEVMUUPSUpgradeTestReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// FilterReverted is a free log retrieval operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*GatewayEVMUUPSUpgradeTestRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -2322,9 +2322,9 @@ func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) FilterRever
 	return &GatewayEVMUUPSUpgradeTestRevertedIterator{contract: _GatewayEVMUUPSUpgradeTest.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// WatchReverted is a free log subscription operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *GatewayEVMUUPSUpgradeTestReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -2368,9 +2368,9 @@ func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) WatchRevert
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// ParseReverted is a log parse operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUUPSUpgradeTest *GatewayEVMUUPSUpgradeTestFilterer) ParseReverted(log types.Log) (*GatewayEVMUUPSUpgradeTestReverted, error) {
 	event := new(GatewayEVMUUPSUpgradeTestReverted)
 	if err := _GatewayEVMUUPSUpgradeTest.contract.UnpackLog(event, "Reverted", log); err != nil {

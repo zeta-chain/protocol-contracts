@@ -39,7 +39,7 @@ type CallOptions struct {
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -678,23 +678,23 @@ func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndCall0(context ZConte
 	return _GatewayZEVM.Contract.DepositAndCall0(&_GatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
-// DepositAndRevert is a paid mutator transaction binding the contract method 0xcd73d4c7.
+// DepositAndRevert is a paid mutator transaction binding the contract method 0x9d4ba465.
 //
-// Solidity: function depositAndRevert(address zrc20, uint256 amount, address target, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function depositAndRevert(address zrc20, uint256 amount, address target, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayZEVM *GatewayZEVMTransactor) DepositAndRevert(opts *bind.TransactOpts, zrc20 common.Address, amount *big.Int, target common.Address, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayZEVM.contract.Transact(opts, "depositAndRevert", zrc20, amount, target, revertContext)
 }
 
-// DepositAndRevert is a paid mutator transaction binding the contract method 0xcd73d4c7.
+// DepositAndRevert is a paid mutator transaction binding the contract method 0x9d4ba465.
 //
-// Solidity: function depositAndRevert(address zrc20, uint256 amount, address target, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function depositAndRevert(address zrc20, uint256 amount, address target, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayZEVM *GatewayZEVMSession) DepositAndRevert(zrc20 common.Address, amount *big.Int, target common.Address, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.DepositAndRevert(&_GatewayZEVM.TransactOpts, zrc20, amount, target, revertContext)
 }
 
-// DepositAndRevert is a paid mutator transaction binding the contract method 0xcd73d4c7.
+// DepositAndRevert is a paid mutator transaction binding the contract method 0x9d4ba465.
 //
-// Solidity: function depositAndRevert(address zrc20, uint256 amount, address target, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function depositAndRevert(address zrc20, uint256 amount, address target, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndRevert(zrc20 common.Address, amount *big.Int, target common.Address, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.DepositAndRevert(&_GatewayZEVM.TransactOpts, zrc20, amount, target, revertContext)
 }
@@ -720,23 +720,23 @@ func (_GatewayZEVM *GatewayZEVMTransactorSession) Execute(context ZContext, zrc2
 	return _GatewayZEVM.Contract.Execute(&_GatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0xe7d926b4.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0x184b0793.
 //
-// Solidity: function executeRevert(address target, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function executeRevert(address target, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayZEVM *GatewayZEVMTransactor) ExecuteRevert(opts *bind.TransactOpts, target common.Address, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayZEVM.contract.Transact(opts, "executeRevert", target, revertContext)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0xe7d926b4.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0x184b0793.
 //
-// Solidity: function executeRevert(address target, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function executeRevert(address target, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayZEVM *GatewayZEVMSession) ExecuteRevert(target common.Address, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.ExecuteRevert(&_GatewayZEVM.TransactOpts, target, revertContext)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0xe7d926b4.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0x184b0793.
 //
-// Solidity: function executeRevert(address target, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function executeRevert(address target, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayZEVM *GatewayZEVMTransactorSession) ExecuteRevert(target common.Address, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.ExecuteRevert(&_GatewayZEVM.TransactOpts, target, revertContext)
 }

@@ -33,7 +33,7 @@ var (
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -740,23 +740,23 @@ func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) WithdrawAndCal
 	return _ZetaConnectorNative.Contract.WithdrawAndCall(&_ZetaConnectorNative.TransactOpts, to, amount, data, internalSendHash)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x2ccb404d.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
 func (_ZetaConnectorNative *ZetaConnectorNativeTransactor) WithdrawAndRevert(opts *bind.TransactOpts, to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ZetaConnectorNative.contract.Transact(opts, "withdrawAndRevert", to, amount, data, internalSendHash, revertContext)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x2ccb404d.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
 func (_ZetaConnectorNative *ZetaConnectorNativeSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ZetaConnectorNative.Contract.WithdrawAndRevert(&_ZetaConnectorNative.TransactOpts, to, amount, data, internalSendHash, revertContext)
 }
 
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x2ccb404d.
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
 func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ZetaConnectorNative.Contract.WithdrawAndRevert(&_ZetaConnectorNative.TransactOpts, to, amount, data, internalSendHash, revertContext)
 }
@@ -2016,9 +2016,9 @@ type ZetaConnectorNativeWithdrawnAndReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0xa99787224bed6d592c223365ff0f91d203cd2eea00f6b1be8b0263b835378017.
+// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x5272d2fee39bff41b2e763562526315906046373ce08a7bacf76c3080d731ff0.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdrawnAndReverted(opts *bind.FilterOpts, to []common.Address) (*ZetaConnectorNativeWithdrawnAndRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -2033,9 +2033,9 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) FilterWithdrawnAndRever
 	return &ZetaConnectorNativeWithdrawnAndRevertedIterator{contract: _ZetaConnectorNative.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0xa99787224bed6d592c223365ff0f91d203cd2eea00f6b1be8b0263b835378017.
+// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x5272d2fee39bff41b2e763562526315906046373ce08a7bacf76c3080d731ff0.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawnAndReverted(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNativeWithdrawnAndReverted, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -2075,9 +2075,9 @@ func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) WatchWithdrawnAndRevert
 	}), nil
 }
 
-// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0xa99787224bed6d592c223365ff0f91d203cd2eea00f6b1be8b0263b835378017.
+// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x5272d2fee39bff41b2e763562526315906046373ce08a7bacf76c3080d731ff0.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_ZetaConnectorNative *ZetaConnectorNativeFilterer) ParseWithdrawnAndReverted(log types.Log) (*ZetaConnectorNativeWithdrawnAndReverted, error) {
 	event := new(ZetaConnectorNativeWithdrawnAndReverted)
 	if err := _ZetaConnectorNative.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {

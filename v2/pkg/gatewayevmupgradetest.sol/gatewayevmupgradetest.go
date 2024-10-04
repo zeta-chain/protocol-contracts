@@ -38,7 +38,7 @@ type MessageContext struct {
 type RevertContext struct {
 	Sender        common.Address
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -805,23 +805,23 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Execute0(m
 	return _GatewayEVMUpgradeTest.Contract.Execute0(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, destination, data)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0x1b5ee25b.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0xcb7ba8e5.
 //
-// Solidity: function executeRevert(address destination, bytes data, (address,address,uint64,bytes) revertContext) payable returns()
+// Solidity: function executeRevert(address destination, bytes data, (address,address,uint256,bytes) revertContext) payable returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) ExecuteRevert(opts *bind.TransactOpts, destination common.Address, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.contract.Transact(opts, "executeRevert", destination, data, revertContext)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0x1b5ee25b.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0xcb7ba8e5.
 //
-// Solidity: function executeRevert(address destination, bytes data, (address,address,uint64,bytes) revertContext) payable returns()
+// Solidity: function executeRevert(address destination, bytes data, (address,address,uint256,bytes) revertContext) payable returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) ExecuteRevert(destination common.Address, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.Contract.ExecuteRevert(&_GatewayEVMUpgradeTest.TransactOpts, destination, data, revertContext)
 }
 
-// ExecuteRevert is a paid mutator transaction binding the contract method 0x1b5ee25b.
+// ExecuteRevert is a paid mutator transaction binding the contract method 0xcb7ba8e5.
 //
-// Solidity: function executeRevert(address destination, bytes data, (address,address,uint64,bytes) revertContext) payable returns()
+// Solidity: function executeRevert(address destination, bytes data, (address,address,uint256,bytes) revertContext) payable returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) ExecuteRevert(destination common.Address, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.Contract.ExecuteRevert(&_GatewayEVMUpgradeTest.TransactOpts, destination, data, revertContext)
 }
@@ -931,23 +931,23 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) RenounceRo
 	return _GatewayEVMUpgradeTest.Contract.RenounceRole(&_GatewayEVMUpgradeTest.TransactOpts, role, callerConfirmation)
 }
 
-// RevertWithERC20 is a paid mutator transaction binding the contract method 0x36c99f3b.
+// RevertWithERC20 is a paid mutator transaction binding the contract method 0xaa0c0fc1.
 //
-// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) RevertWithERC20(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.contract.Transact(opts, "revertWithERC20", token, to, amount, data, revertContext)
 }
 
-// RevertWithERC20 is a paid mutator transaction binding the contract method 0x36c99f3b.
+// RevertWithERC20 is a paid mutator transaction binding the contract method 0xaa0c0fc1.
 //
-// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.Contract.RevertWithERC20(&_GatewayEVMUpgradeTest.TransactOpts, token, to, amount, data, revertContext)
 }
 
-// RevertWithERC20 is a paid mutator transaction binding the contract method 0x36c99f3b.
+// RevertWithERC20 is a paid mutator transaction binding the contract method 0xaa0c0fc1.
 //
-// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext) returns()
+// Solidity: function revertWithERC20(address token, address to, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext) returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) RevertWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.Contract.RevertWithERC20(&_GatewayEVMUpgradeTest.TransactOpts, token, to, amount, data, revertContext)
 }
@@ -2161,9 +2161,9 @@ type GatewayEVMUpgradeTestReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// FilterReverted is a free log retrieval operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*GatewayEVMUpgradeTestRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -2182,9 +2182,9 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) FilterReverted(opts
 	return &GatewayEVMUpgradeTestRevertedIterator{contract: _GatewayEVMUpgradeTest.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// WatchReverted is a free log subscription operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *GatewayEVMUpgradeTestReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -2228,9 +2228,9 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) WatchReverted(opts 
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xf196c7207ed90b5ece8dbf4d77864a91b1ccca28fe83e005b4969d7584b2b19b.
+// ParseReverted is a log parse operation binding the contract event 0xde7603a6ed5d07c9f43597ccfe9043d15b66d3284f0de321f5cdf56329e6e035.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint64,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,address,uint256,bytes) revertContext)
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestFilterer) ParseReverted(log types.Log) (*GatewayEVMUpgradeTestReverted, error) {
 	event := new(GatewayEVMUpgradeTestReverted)
 	if err := _GatewayEVMUpgradeTest.contract.UnpackLog(event, "Reverted", log); err != nil {
