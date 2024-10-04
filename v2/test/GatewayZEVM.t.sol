@@ -149,6 +149,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdrawAndCall(abi.encodePacked(""), 1, address(zrc20), message, 1, revertOptions);
     }
 
+    function testWithdrawAndCallZRC20FailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
+
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, 1, revertOptions);
+    }
+
     function testWithdrawAndCallZRC20FailsIfGasLimitIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientGasLimit.selector);
@@ -218,6 +226,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZetaAmount.selector);
         gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, revertOptions);
+    }
+
+    function testWithdrawAndCallZETAFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, revertOptions);
     }
 
     function testWithdrawAndCallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
@@ -334,6 +349,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
         gateway.call(abi.encodePacked(""), address(zrc20), message, 1, revertOptions);
+    }
+
+    function testCallFailsIfMessageSizeExceeded() public {
+        bytes memory message = new bytes(512);
+        revertOptions.revertMessage = new bytes(512);
+        vm.expectRevert(MessageSizeExceeded.selector);
+        gateway.call(abi.encodePacked(addr1), address(zrc20), message, 1, revertOptions);
     }
 
     function testCallFailsIfGasLimitIsZero() public {
