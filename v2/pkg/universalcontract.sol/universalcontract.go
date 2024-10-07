@@ -32,7 +32,7 @@ var (
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Asset         common.Address
-	Amount        uint64
+	Amount        *big.Int
 	RevertMessage []byte
 }
 
@@ -45,7 +45,7 @@ type ZContext struct {
 
 // UniversalContractMetaData contains all meta data concerning the UniversalContract contract.
 var UniversalContractMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"onCrossChainCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"onCrossChainCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
 }
 
 // UniversalContractABI is the input ABI used to generate the binding from.
@@ -215,23 +215,23 @@ func (_UniversalContract *UniversalContractTransactorSession) OnCrossChainCall(c
 	return _UniversalContract.Contract.OnCrossChainCall(&_UniversalContract.TransactOpts, context, zrc20, amount, message)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
+// OnRevert is a paid mutator transaction binding the contract method 0xa9b0a73c.
 //
-// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
+// Solidity: function onRevert((address,uint256,bytes) revertContext) returns()
 func (_UniversalContract *UniversalContractTransactor) OnRevert(opts *bind.TransactOpts, revertContext RevertContext) (*types.Transaction, error) {
 	return _UniversalContract.contract.Transact(opts, "onRevert", revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
+// OnRevert is a paid mutator transaction binding the contract method 0xa9b0a73c.
 //
-// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
+// Solidity: function onRevert((address,uint256,bytes) revertContext) returns()
 func (_UniversalContract *UniversalContractSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
 	return _UniversalContract.Contract.OnRevert(&_UniversalContract.TransactOpts, revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
+// OnRevert is a paid mutator transaction binding the contract method 0xa9b0a73c.
 //
-// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
+// Solidity: function onRevert((address,uint256,bytes) revertContext) returns()
 func (_UniversalContract *UniversalContractTransactorSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
 	return _UniversalContract.Contract.OnRevert(&_UniversalContract.TransactOpts, revertContext)
 }

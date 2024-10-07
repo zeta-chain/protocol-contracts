@@ -62,6 +62,7 @@ export interface GatewayEVMInterface extends Interface {
     nameOrSignature:
       | "ASSET_HANDLER_ROLE"
       | "DEFAULT_ADMIN_ROLE"
+      | "MAX_PAYLOAD_SIZE"
       | "PAUSER_ROLE"
       | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
@@ -118,6 +119,10 @@ export interface GatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_PAYLOAD_SIZE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -245,6 +250,10 @@ export interface GatewayEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_PAYLOAD_SIZE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -623,6 +632,8 @@ export interface GatewayEVM extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
+  MAX_PAYLOAD_SIZE: TypedContractMethod<[], [bigint], "view">;
+
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   TSS_ROLE: TypedContractMethod<[], [string], "view">;
@@ -805,6 +816,9 @@ export interface GatewayEVM extends BaseContract {
   getFunction(
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "MAX_PAYLOAD_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;

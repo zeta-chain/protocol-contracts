@@ -87,6 +87,9 @@ interface IGatewayEVMErrors {
 
     /// @notice Error when trying to call onRevert method using arbitrary call.
     error NotAllowedToCallOnRevert();
+
+    /// @notice Error indicating payload size exceeded in external functions.
+    error PayloadSizeExceeded();
 }
 
 /// @title IGatewayEVM

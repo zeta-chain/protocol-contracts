@@ -36,6 +36,9 @@ contract GatewayZEVM is
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+    /// @notice Max size of message + revertOptions revert message.
+    uint256 public constant MAX_MESSAGE_SIZE = 1024;
+
     /// @dev Only Fungible module address allowed modifier.
     modifier onlyFungible() {
         if (msg.sender != FUNGIBLE_MODULE_ADDRESS) {
@@ -178,6 +181,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
@@ -234,6 +238,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, 0, revertOptions);
@@ -257,8 +262,8 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (message.length == 0) revert EmptyMessage();
         if (gasLimit == 0) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {

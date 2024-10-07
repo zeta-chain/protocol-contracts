@@ -84,11 +84,11 @@ interface IGatewayZEVMErrors {
     /// @notice Error indicating that only WZETA or the Fungible module can call the function.
     error OnlyWZETAOrFungible();
 
-    /// @notice Error indicating call method received empty message as argument.
-    error EmptyMessage();
-
     /// @notice Error indicating an insufficient gas limit.
     error InsufficientGasLimit();
+
+    /// @notice Error indicating message size exceeded in external functions.
+    error MessageSizeExceeded();
 }
 
 /// @title IGatewayZEVM
