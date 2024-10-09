@@ -1,8 +1,5 @@
 {
   "author": "zetachain",
-  "dependencies": {
-    "chokidar": "^4.0.1"
-  },
   "devDependencies": {
     "@changesets/cli": "^2.23.1",
     "@ethersproject/abi": "^5.4.7",
