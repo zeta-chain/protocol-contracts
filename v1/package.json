@@ -1,5 +1,8 @@
 {
   "author": "zetachain",
+  "dependencies": {
+    "chokidar": "^4.0.1"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.23.1",
     "@ethersproject/abi": "^5.4.7",
@@ -89,8 +92,5 @@
     "tsc:watch": "npx tsc --watch"
   },
   "types": "./dist/lib/index.d.ts",
-  "version": "0.0.8",
-  "dependencies": {
-    "chokidar": "^4.0.1"
-  }
+  "version": "0.0.8"
 }
