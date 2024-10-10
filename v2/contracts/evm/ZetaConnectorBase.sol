@@ -61,9 +61,9 @@ abstract contract ZetaConnectorBase is IZetaConnectorEvents, ReentrancyGuard, Pa
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(TSS_ROLE, newTSSAddress);
 
-        tssAddress = newTSSAddress;
+        emit UpdatedZetaConnectorTSSAddress(tssAddress, newTSSAddress);
 
-        emit UpdatedZetaConnectorTSSAddress(newTSSAddress);
+        tssAddress = newTSSAddress;
     }
 
     /// @notice Pause contract.
