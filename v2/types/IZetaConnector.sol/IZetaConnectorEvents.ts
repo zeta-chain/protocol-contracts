@@ -46,9 +46,13 @@ export interface IZetaConnectorEventsInterface extends Interface {
 }
 
 export namespace UpdatedZetaConnectorTSSAddressEvent {
-  export type InputTuple = [newTSSAddress: AddressLike];
-  export type OutputTuple = [newTSSAddress: string];
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
   export interface OutputObject {
+    oldTSSAddress: string;
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -190,7 +194,7 @@ export interface IZetaConnectorEvents extends BaseContract {
   >;
 
   filters: {
-    "UpdatedZetaConnectorTSSAddress(address)": TypedContractEvent<
+    "UpdatedZetaConnectorTSSAddress(address,address)": TypedContractEvent<
       UpdatedZetaConnectorTSSAddressEvent.InputTuple,
       UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
       UpdatedZetaConnectorTSSAddressEvent.OutputObject

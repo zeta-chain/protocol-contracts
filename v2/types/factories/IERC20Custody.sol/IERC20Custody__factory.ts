@@ -183,6 +183,12 @@ const _abi = [
     name: "UpdatedCustodyTSSAddress",
     inputs: [
       {
+        name: "oldTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
         name: "newTSSAddress",
         type: "address",
         indexed: false,

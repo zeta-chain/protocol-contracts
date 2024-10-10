@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/57d1446373e344f7366de3008e0bf2b97aeeabf8/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -118,11 +118,11 @@ function unpause() external onlyRole(PAUSER_ROLE);
 
 ### _withdrawZRC20
 
-*Internal function to withdraw ZRC20 tokens.*
+*Private function to withdraw ZRC20 tokens.*
 
 
 ```solidity
-function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256);
+function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256);
 ```
 **Parameters**
 
@@ -140,11 +140,11 @@ function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256
 
 ### _withdrawZRC20WithGasLimit
 
-*Internal function to withdraw ZRC20 tokens with gas limit.*
+*Private function to withdraw ZRC20 tokens with gas limit.*
 
 
 ```solidity
-function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256);
+function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256);
 ```
 **Parameters**
 
@@ -163,11 +163,11 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 
 ### _transferZETA
 
-*Internal function to transfer ZETA tokens.*
+*Private function to transfer ZETA tokens.*
 
 
 ```solidity
-function _transferZETA(uint256 amount, address to) internal;
+function _transferZETA(uint256 amount, address to) private;
 ```
 **Parameters**
 
@@ -414,7 +414,7 @@ function _call(
     CallOptions memory callOptions,
     RevertOptions memory revertOptions
 )
-    internal;
+    private;
 ```
 
 ### deposit

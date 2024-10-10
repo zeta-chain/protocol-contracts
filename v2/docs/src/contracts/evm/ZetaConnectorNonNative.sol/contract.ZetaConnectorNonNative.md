@@ -1,5 +1,5 @@
 # ZetaConnectorNonNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/evm/ZetaConnectorNonNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/57d1446373e344f7366de3008e0bf2b97aeeabf8/contracts/evm/ZetaConnectorNonNative.sol)
 
 **Inherits:**
 [ZetaConnectorBase](/contracts/evm/ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
@@ -161,7 +161,7 @@ function receiveTokens(uint256 amount) external override whenNotPaused;
 
 
 ```solidity
-function _mintTo(address to, uint256 amount, bytes32 internalSendHash) internal;
+function _mintTo(address to, uint256 amount, bytes32 internalSendHash) private;
 ```
 
 ## Events
