@@ -17,7 +17,16 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @notice Max supply for minting.
     uint256 public maxSupply;
 
-    function initialize(address gateway_, address zetaToken_, address tssAddress_, address admin_) public override initializer {
+    function initialize(
+        address gateway_,
+        address zetaToken_,
+        address tssAddress_,
+        address admin_
+    )
+        public
+        override
+        initializer
+    {
         super.initialize(gateway_, zetaToken_, tssAddress_, admin_);
 
         maxSupply = type(uint256).max;
