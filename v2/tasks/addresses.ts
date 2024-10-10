@@ -58,14 +58,17 @@ const fetchTssData = async (chains: any, addresses: any, network: Network) => {
     if (tssResponse.status === 200) {
       chains.forEach((chain: any) => {
         const { btc, eth } = tssResponse.data;
-        if (["zeta_testnet", "zeta_mainnet"].includes(chain.chain_name)) return;
-        addresses.push({
-          address: ["btc_testnet", "btc_mainnet"].includes(chain.chain_name) ? btc : eth,
-          category: "omnichain",
-          chain_id: parseInt(chain.chain_id),
-          chain_name: chain.chain_name,
-          type: "tss",
-        });
+        const isEVM = chain.consensus === "ethereum";
+        const isBitcoin = chain.consensus === "bitcoin";
+        if (isEVM || isBitcoin) {
+          addresses.push({
+            address: isBitcoin ? btc : eth,
+            category: "omnichain",
+            chain_id: parseInt(chain.chain_id),
+            chain_name: chain.chain_name,
+            type: "tss",
+          });
+        }
       });
     } else {
       console.error("Error fetching TSS data:", tssResponse.status, tssResponse.statusText);
@@ -290,8 +293,6 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   await fetchForeignCoinsData(chains, addresses, network);
   await fetchAthensAddresses(addresses, network);
   await fetchChainSpecificAddresses(chains, addresses, network);
-  // await fetchTSSUpdater(chains, addresses);
-  // await fetchPauser(chains, addresses);
   await fetchFactoryV2(addresses, network);
   await fetchFactoryV3(addresses, network);
 
