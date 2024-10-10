@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Script.sol";
-import "src/evm/GatewayEVM.sol";
+import "contracts/evm/GatewayEVM.sol";
 import "test/utils/TestERC20.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
@@ -46,7 +46,6 @@ contract DeployGatewayEVM is Script {
             abi.encodeWithSelector(GatewayEVM.initialize.selector, tss, address(zeta), admin)
         );
         require(address(gatewayProxy) != address(0), "gatewayProxy deployment failed");
-
 
         require(expectedProxyAddress == address(gatewayProxy), "proxy address doesn't match expected address");
 

@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Script.sol";
-import "src/evm/ZetaConnectorNonNative.sol";
+import "contracts/evm/ZetaConnectorNonNative.sol";
 
 contract DeployZetaConnectorNonNative is Script {
     function run() external {

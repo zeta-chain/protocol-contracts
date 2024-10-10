@@ -23,7 +23,6 @@ import "./utils/IReceiverEVM.sol";
 contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyEvents {
     using SafeERC20 for IERC20;
 
-    address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20Custody custody;
@@ -55,11 +54,14 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
-        proxy = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
         zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
         receiver = new ReceiverEVM();
 
@@ -175,19 +177,6 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         whitelisted = custody.whitelisted(address(token));
         assertEq(false, whitelisted);
-    }
-
-    function testNewCustodyFailsIfAddressesAreZero() public {
-        vm.expectRevert(ZeroAddress.selector);
-        ERC20Custody newCustody = new ERC20Custody(address(0), tssAddress, owner);
-
-        vm.expectRevert(ZeroAddress.selector);
-        newCustody = new ERC20Custody(address(gateway), address(0), owner);
-
-        vm.expectRevert(ZeroAddress.selector);
-        newCustody = new ERC20Custody(address(gateway), tssAddress, address(0));
-
-        newCustody = new ERC20Custody(address(gateway), tssAddress, owner);
     }
 
     function testForwardCallToReceiveERC20ThroughCustody() public {
