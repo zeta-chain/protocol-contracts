@@ -64,7 +64,11 @@ contract ZetaConnectorNonNativeTest is
             "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
         );
         custody = ERC20Custody(proxy);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorNonNative.initialize, (address(gateway), address(zetaToken), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
 
         vm.prank(tssAddress);
         zetaToken.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));

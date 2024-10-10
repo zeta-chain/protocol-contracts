@@ -62,7 +62,11 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
             "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
         );
         custody = ERC20Custody(proxy);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorNonNative.initialize, (address(gateway), address(zeta), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
         receiver = new ReceiverEVM();
 
         vm.deal(tssAddress, 1 ether);

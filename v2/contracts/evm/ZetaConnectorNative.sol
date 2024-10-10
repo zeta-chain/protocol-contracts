@@ -11,14 +11,9 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract ZetaConnectorNative is ZetaConnectorBase {
     using SafeERC20 for IERC20;
 
-    constructor(
-        address gateway_,
-        address zetaToken_,
-        address tssAddress_,
-        address admin_
-    )
-        ZetaConnectorBase(gateway_, zetaToken_, tssAddress_, admin_)
-    { }
+    function initialize(address gateway_, address zetaToken_, address tssAddress_, address admin_) public override initializer {
+        super.initialize(gateway_, zetaToken_, tssAddress_, admin_);
+    }
 
     /// @notice Withdraw tokens to a specified address.
     /// @param to The address to withdraw tokens to.
