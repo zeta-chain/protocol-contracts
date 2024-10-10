@@ -58,8 +58,16 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorNonNative.initialize, (address(gateway), address(zeta), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
+
         vm.prank(tssAddress);
         zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         receiver = new ReceiverEVM();
@@ -386,8 +394,17 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorBase.initialize, (address(gateway), address(zeta), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
+
         vm.prank(tssAddress);
         zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         vm.deal(tssAddress, 1 ether);

@@ -30,7 +30,6 @@ contract ZetaConnectorNativeTest is
 {
     using SafeERC20 for IERC20;
 
-    address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20Custody custody;
@@ -56,12 +55,19 @@ contract ZetaConnectorNativeTest is
 
         zetaToken = new TestERC20("zeta", "ZETA");
 
-        proxy = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNative(address(gateway), address(zetaToken), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNative.sol",
+            abi.encodeCall(ZetaConnectorNative.initialize, (address(gateway), address(zetaToken), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNative(proxy);
 
         receiver = new ReceiverEVM();
 

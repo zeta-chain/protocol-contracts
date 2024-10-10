@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Script.sol";
-import "src/evm/GatewayEVM.sol";
+import "contracts/evm/GatewayEVM.sol";
 import "test/utils/GatewayEVMUpgradeTest.sol";
 import "test/utils/TestERC20.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
