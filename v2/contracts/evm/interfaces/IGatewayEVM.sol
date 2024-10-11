@@ -51,7 +51,7 @@ interface IGatewayEVMEvents {
     event Called(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
 
     /// @notice Emitted when tss address is updated
-    /// @param oldTSSAddress new tss address
+    /// @param oldTSSAddress old tss address
     /// @param newTSSAddress new tss address
     event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
 }

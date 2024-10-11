@@ -25,7 +25,7 @@ interface IZetaConnectorEvents {
     event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, RevertContext revertContext);
 
     /// @notice Emitted when tss address is updated
-    /// @param oldTSSAddress new tss address
+    /// @param oldTSSAddress old tss address
     /// @param newTSSAddress new tss address
     event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress);
 }

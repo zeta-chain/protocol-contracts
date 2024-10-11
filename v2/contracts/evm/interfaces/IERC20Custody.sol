@@ -42,7 +42,7 @@ interface IERC20CustodyEvents {
     event Deposited(bytes recipient, IERC20 indexed asset, uint256 amount, bytes message);
 
     /// @notice Emitted when tss address is updated
-    /// @param oldTSSAddress new tss address
+    /// @param oldTSSAddress old tss address
     /// @param newTSSAddress new tss address
     event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
 }
