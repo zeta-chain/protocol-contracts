@@ -58,6 +58,12 @@ abstract contract ZetaConnectorBase is
         if (gateway_ == address(0) || zetaToken_ == address(0) || tssAddress_ == address(0) || admin_ == address(0)) {
             revert ZeroAddress();
         }
+
+        __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
+        __AccessControl_init();
+        __Pausable_init();
+
         gateway = IGatewayEVM(gateway_);
         zetaToken = zetaToken_;
         tssAddress = tssAddress_;
