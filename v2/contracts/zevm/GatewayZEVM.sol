@@ -164,45 +164,6 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param message The calldata to pass to the contract call.
-    /// @param gasLimit Gas limit.
-    /// @param revertOptions Revert options.
-    function withdrawAndCall(
-        bytes memory receiver,
-        uint256 amount,
-        address zrc20,
-        bytes calldata message,
-        uint256 gasLimit,
-        RevertOptions calldata revertOptions
-    )
-        external
-        nonReentrant
-        whenNotPaused
-    {
-        if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
-        if (gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
-
-        uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
-        emit Withdrawn(
-            msg.sender,
-            0,
-            receiver,
-            zrc20,
-            amount,
-            gasFee,
-            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
-            message,
-            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
-            revertOptions
-        );
-    }
-
-    /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
-    /// @param receiver The receiver address on the external chain.
-    /// @param amount The amount of tokens to withdraw.
-    /// @param zrc20 The address of the ZRC20 token.
-    /// @param message The calldata to pass to the contract call.
     /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     function withdrawAndCall(
@@ -274,42 +235,6 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to withdraw.
     /// @param chainId Chain id of the external chain.
     /// @param message The calldata to pass to the contract call.
-    /// @param revertOptions Revert options.
-    function withdrawAndCall(
-        bytes memory receiver,
-        uint256 amount,
-        uint256 chainId,
-        bytes calldata message,
-        RevertOptions calldata revertOptions
-    )
-        external
-        nonReentrant
-        whenNotPaused
-    {
-        if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
-
-        _transferZETA(amount, PROTOCOL_ADDRESS);
-        emit Withdrawn(
-            msg.sender,
-            chainId,
-            receiver,
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            message,
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
-            revertOptions
-        );
-    }
-
-    /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
-    /// @param receiver The receiver address on the external chain.
-    /// @param amount The amount of tokens to withdraw.
-    /// @param chainId Chain id of the external chain.
-    /// @param message The calldata to pass to the contract call.
     /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     function withdrawAndCall(
@@ -356,29 +281,6 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
-    }
-
-    /// @notice Call a smart contract on an external chain without asset transfer.
-    /// @param receiver The receiver address on the external chain.
-    /// @param zrc20 Address of zrc20 to pay fees.
-    /// @param message The calldata to pass to the contract call.
-    /// @param gasLimit Gas limit.
-    /// @param revertOptions Revert options.
-    function call(
-        bytes memory receiver,
-        address zrc20,
-        bytes calldata message,
-        uint256 gasLimit,
-        RevertOptions calldata revertOptions
-    )
-        external
-        nonReentrant
-        whenNotPaused
-    {
-        if (gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
-
-        _call(receiver, zrc20, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
     }
 
     function _call(
