@@ -7,6 +7,7 @@ import "forge-std/Vm.sol";
 import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
+import "./utils/upgrades/ZetaConnectorNonNativeUpgradeTest.sol";
 
 import "../contracts/evm/ERC20Custody.sol";
 import "../contracts/evm/GatewayEVM.sol";
@@ -43,6 +44,8 @@ contract ZetaConnectorNonNativeTest is
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
     error ExceedsMaxSupply();
     error EnforcedPause();
+
+    event WithdrawnV2(address indexed to, uint256 amount);
 
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
@@ -356,5 +359,26 @@ contract ZetaConnectorNonNativeTest is
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.setMaxSupply(10_000);
+    }
+
+    function testUpgradeAndWithdraw() public {
+        // upgrade
+        Upgrades.upgradeProxy(address(zetaConnector), "ZetaConnectorNonNativeUpgradeTest.sol", "", owner);
+        ZetaConnectorNonNativeUpgradeTest zetaConnectorV2 = ZetaConnectorNonNativeUpgradeTest(address(zetaConnector));
+        // withdraw
+        uint256 amount = 100_000;
+        uint256 balanceBefore = zetaToken.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        bytes32 internalSendHash = "";
+
+        bytes memory data =
+            abi.encodeWithSignature("mint(address,uint256,bytes32)", destination, amount, internalSendHash);
+        vm.expectCall(address(zetaToken), 0, data);
+        vm.expectEmit(true, true, true, true, address(zetaConnectorV2));
+        emit WithdrawnV2(destination, amount);
+        vm.prank(tssAddress);
+        zetaConnectorV2.withdraw(destination, amount, internalSendHash);
+        uint256 balanceAfter = zetaToken.balanceOf(destination);
+        assertEq(balanceAfter, amount);
     }
 }
