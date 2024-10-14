@@ -99,7 +99,7 @@ contract GatewayEVMUpgradeTest is
         _grantRole(TSS_ROLE, newTSSAddress);
 
         emit UpdatedGatewayTSSAddress(tssAddress, newTSSAddress);
-        
+
         tssAddress = newTSSAddress;
     }
 

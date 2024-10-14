@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
-import { RevertContext, RevertOptions, INotSupportedMethods } from "../../contracts/Revert.sol";
+import { INotSupportedMethods, RevertContext, RevertOptions } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";

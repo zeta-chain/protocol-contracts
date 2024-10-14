@@ -91,7 +91,7 @@ abstract contract ZetaConnectorBase is
         _grantRole(TSS_ROLE, newTSSAddress);
 
         emit UpdatedZetaConnectorTSSAddress(tssAddress, newTSSAddress);
-        
+
         tssAddress = newTSSAddress;
     }
 
