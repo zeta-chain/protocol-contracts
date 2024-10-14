@@ -34,6 +34,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     address owner;
     address destination;
     address tssAddress;
+    address foo;
     RevertOptions revertOptions;
     RevertContext revertContext;
 
@@ -52,6 +53,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         owner = address(this);
         destination = address(0x1234);
         tssAddress = address(0x5678);
+        foo = address(0x9876);
 
         token = new TestERC20("test", "TTK");
 
@@ -281,15 +283,15 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 
     function testForwardCallToReceiveNoParamsTogglePause() public {
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.pause();
 
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.unpause();
 
-        vm.prank(owner);
+        vm.prank(tssAddress);
         gateway.pause();
 
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");

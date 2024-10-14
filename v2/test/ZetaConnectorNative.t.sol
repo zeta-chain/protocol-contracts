@@ -39,6 +39,7 @@ contract ZetaConnectorNativeTest is
     address owner;
     address destination;
     address tssAddress;
+    address foo;
     RevertContext revertContext;
 
     error EnforcedPause();
@@ -55,6 +56,7 @@ contract ZetaConnectorNativeTest is
         owner = address(this);
         destination = address(0x1234);
         tssAddress = address(0x5678);
+        foo = address(0x9876);
 
         zetaToken = new TestERC20("zeta", "ZETA");
 
@@ -151,15 +153,15 @@ contract ZetaConnectorNativeTest is
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
 
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         zetaConnector.pause();
 
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         zetaConnector.unpause();
 
-        vm.prank(owner);
+        vm.prank(tssAddress);
         zetaConnector.pause();
 
         vm.expectRevert(EnforcedPause.selector);
