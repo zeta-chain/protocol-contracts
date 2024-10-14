@@ -72,6 +72,7 @@ abstract contract ZetaConnectorBase is
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(TSS_ROLE, tssAddress_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, tssAddress_);
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.

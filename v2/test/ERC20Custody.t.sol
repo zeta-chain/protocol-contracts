@@ -33,6 +33,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     address owner;
     address destination;
     address tssAddress;
+    address foo;
     RevertContext revertContext;
 
     error EnforcedPause();
@@ -53,7 +54,8 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         owner = address(this);
         destination = address(0x1234);
         tssAddress = address(0x5678);
-
+        foo = address(0x9876);
+        
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
@@ -221,15 +223,15 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     }
 
     function testForwardCallToReceiveERC20ThroughCustodyTogglePause() public {
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         custody.pause();
 
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.unpause();
 
-        vm.prank(owner);
+        vm.prank(tssAddress);
         custody.pause();
 
         uint256 amount = 100_000;
