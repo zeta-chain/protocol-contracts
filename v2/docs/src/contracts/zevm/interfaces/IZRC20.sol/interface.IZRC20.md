@@ -1,5 +1,5 @@
 # IZRC20
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/053cc6a26755df7c287c7e44aada3142e3eaa263/contracts/zevm/interfaces/IZRC20.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/zevm/interfaces/IZRC20.sol)
 
 Interface for the ZRC20 token contract.
 

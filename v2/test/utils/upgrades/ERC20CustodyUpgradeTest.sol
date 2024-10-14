@@ -95,7 +95,7 @@ contract ERC20CustodyUpgradeTest is
 
         tssAddress = newTSSAddress;
 
-        emit UpdatedCustodyTSSAddress(newTSSAddress);
+        emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
     }
 
     /// @notice Unpause contract.
