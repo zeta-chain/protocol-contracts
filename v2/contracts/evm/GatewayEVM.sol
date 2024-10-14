@@ -63,6 +63,7 @@ contract GatewayEVM is
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, tssAddress_);
         tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
 

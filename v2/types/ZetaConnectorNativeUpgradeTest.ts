@@ -37,7 +37,7 @@ export type RevertContextStructOutput = [
   revertMessage: string
 ] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
-export interface ZetaConnectorNativeInterface extends Interface {
+export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
@@ -80,6 +80,7 @@ export interface ZetaConnectorNativeInterface extends Interface {
       | "Withdrawn"
       | "WithdrawnAndCalled"
       | "WithdrawnAndReverted"
+      | "WithdrawnV2"
   ): EventFragment;
 
   encodeFunctionData(
@@ -332,13 +333,9 @@ export namespace UnpausedEvent {
 }
 
 export namespace UpdatedZetaConnectorTSSAddressEvent {
-  export type InputTuple = [
-    oldTSSAddress: AddressLike,
-    newTSSAddress: AddressLike
-  ];
-  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
   export interface OutputObject {
-    oldTSSAddress: string;
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -415,11 +412,24 @@ export namespace WithdrawnAndRevertedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface ZetaConnectorNative extends BaseContract {
-  connect(runner?: ContractRunner | null): ZetaConnectorNative;
+export namespace WithdrawnV2Event {
+  export type InputTuple = [to: AddressLike, amount: BigNumberish];
+  export type OutputTuple = [to: string, amount: bigint];
+  export interface OutputObject {
+    to: string;
+    amount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
+  connect(runner?: ContractRunner | null): ZetaConnectorNativeUpgradeTest;
   waitForDeployment(): Promise<this>;
 
-  interface: ZetaConnectorNativeInterface;
+  interface: ZetaConnectorNativeUpgradeTestInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -781,6 +791,13 @@ export interface ZetaConnectorNative extends BaseContract {
     WithdrawnAndRevertedEvent.OutputTuple,
     WithdrawnAndRevertedEvent.OutputObject
   >;
+  getEvent(
+    key: "WithdrawnV2"
+  ): TypedContractEvent<
+    WithdrawnV2Event.InputTuple,
+    WithdrawnV2Event.OutputTuple,
+    WithdrawnV2Event.OutputObject
+  >;
 
   filters: {
     "Initialized(uint64)": TypedContractEvent<
@@ -849,7 +866,7 @@ export interface ZetaConnectorNative extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "UpdatedZetaConnectorTSSAddress(address,address)": TypedContractEvent<
+    "UpdatedZetaConnectorTSSAddress(address)": TypedContractEvent<
       UpdatedZetaConnectorTSSAddressEvent.InputTuple,
       UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
       UpdatedZetaConnectorTSSAddressEvent.OutputObject
@@ -902,6 +919,17 @@ export interface ZetaConnectorNative extends BaseContract {
       WithdrawnAndRevertedEvent.InputTuple,
       WithdrawnAndRevertedEvent.OutputTuple,
       WithdrawnAndRevertedEvent.OutputObject
+    >;
+
+    "WithdrawnV2(address,uint256)": TypedContractEvent<
+      WithdrawnV2Event.InputTuple,
+      WithdrawnV2Event.OutputTuple,
+      WithdrawnV2Event.OutputObject
+    >;
+    WithdrawnV2: TypedContractEvent<
+      WithdrawnV2Event.InputTuple,
+      WithdrawnV2Event.OutputTuple,
+      WithdrawnV2Event.OutputObject
     >;
   };
 }

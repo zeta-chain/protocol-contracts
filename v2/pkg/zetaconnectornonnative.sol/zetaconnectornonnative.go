@@ -52,7 +52,7 @@ var ZetaConnectorNonNativeABI = ZetaConnectorNonNativeMetaData.ABI
 var ZetaConnectorNonNativeBin = ZetaConnectorNonNativeMetaData.Bin
 
 // DeployZetaConnectorNonNative deploys a new Ethereum contract, binding an instance of ZetaConnectorNonNative to it.
-func DeployZetaConnectorNonNative(auth *bind.TransactOpts, backend bind.ContractBackend, gateway_ common.Address, zetaToken_ common.Address, tssAddress_ common.Address, admin_ common.Address) (common.Address, *types.Transaction, *ZetaConnectorNonNative, error) {
+func DeployZetaConnectorNonNative(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *ZetaConnectorNonNative, error) {
 	parsed, err := ZetaConnectorNonNativeMetaData.GetAbi()
 	if err != nil {
 		return common.Address{}, nil, nil, err
@@ -61,7 +61,7 @@ func DeployZetaConnectorNonNative(auth *bind.TransactOpts, backend bind.Contract
 		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
 	}
 
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(ZetaConnectorNonNativeBin), backend, gateway_, zetaToken_, tssAddress_, admin_)
+	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(ZetaConnectorNonNativeBin), backend)
 	if err != nil {
 		return common.Address{}, nil, nil, err
 	}
@@ -303,6 +303,37 @@ func (_ZetaConnectorNonNative *ZetaConnectorNonNativeCallerSession) TSSROLE() ([
 	return _ZetaConnectorNonNative.Contract.TSSROLE(&_ZetaConnectorNonNative.CallOpts)
 }
 
+// UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
+//
+// Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeCaller) UPGRADEINTERFACEVERSION(opts *bind.CallOpts) (string, error) {
+	var out []interface{}
+	err := _ZetaConnectorNonNative.contract.Call(opts, &out, "UPGRADE_INTERFACE_VERSION")
+
+	if err != nil {
+		return *new(string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(string)).(*string)
+
+	return out0, err
+
+}
+
+// UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
+//
+// Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeSession) UPGRADEINTERFACEVERSION() (string, error) {
+	return _ZetaConnectorNonNative.Contract.UPGRADEINTERFACEVERSION(&_ZetaConnectorNonNative.CallOpts)
+}
+
+// UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
+//
+// Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeCallerSession) UPGRADEINTERFACEVERSION() (string, error) {
+	return _ZetaConnectorNonNative.Contract.UPGRADEINTERFACEVERSION(&_ZetaConnectorNonNative.CallOpts)
+}
+
 // WITHDRAWERROLE is a free data retrieval call binding the contract method 0x85f438c1.
 //
 // Solidity: function WITHDRAWER_ROLE() view returns(bytes32)
@@ -489,6 +520,37 @@ func (_ZetaConnectorNonNative *ZetaConnectorNonNativeCallerSession) Paused() (bo
 	return _ZetaConnectorNonNative.Contract.Paused(&_ZetaConnectorNonNative.CallOpts)
 }
 
+// ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
+//
+// Solidity: function proxiableUUID() view returns(bytes32)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeCaller) ProxiableUUID(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _ZetaConnectorNonNative.contract.Call(opts, &out, "proxiableUUID")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
+//
+// Solidity: function proxiableUUID() view returns(bytes32)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeSession) ProxiableUUID() ([32]byte, error) {
+	return _ZetaConnectorNonNative.Contract.ProxiableUUID(&_ZetaConnectorNonNative.CallOpts)
+}
+
+// ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
+//
+// Solidity: function proxiableUUID() view returns(bytes32)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeCallerSession) ProxiableUUID() ([32]byte, error) {
+	return _ZetaConnectorNonNative.Contract.ProxiableUUID(&_ZetaConnectorNonNative.CallOpts)
+}
+
 // SupportsInterface is a free data retrieval call binding the contract method 0x01ffc9a7.
 //
 // Solidity: function supportsInterface(bytes4 interfaceId) view returns(bool)
@@ -601,6 +663,27 @@ func (_ZetaConnectorNonNative *ZetaConnectorNonNativeSession) GrantRole(role [32
 // Solidity: function grantRole(bytes32 role, address account) returns()
 func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactorSession) GrantRole(role [32]byte, account common.Address) (*types.Transaction, error) {
 	return _ZetaConnectorNonNative.Contract.GrantRole(&_ZetaConnectorNonNative.TransactOpts, role, account)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0xf8c8765e.
+//
+// Solidity: function initialize(address gateway_, address zetaToken_, address tssAddress_, address admin_) returns()
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactor) Initialize(opts *bind.TransactOpts, gateway_ common.Address, zetaToken_ common.Address, tssAddress_ common.Address, admin_ common.Address) (*types.Transaction, error) {
+	return _ZetaConnectorNonNative.contract.Transact(opts, "initialize", gateway_, zetaToken_, tssAddress_, admin_)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0xf8c8765e.
+//
+// Solidity: function initialize(address gateway_, address zetaToken_, address tssAddress_, address admin_) returns()
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeSession) Initialize(gateway_ common.Address, zetaToken_ common.Address, tssAddress_ common.Address, admin_ common.Address) (*types.Transaction, error) {
+	return _ZetaConnectorNonNative.Contract.Initialize(&_ZetaConnectorNonNative.TransactOpts, gateway_, zetaToken_, tssAddress_, admin_)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0xf8c8765e.
+//
+// Solidity: function initialize(address gateway_, address zetaToken_, address tssAddress_, address admin_) returns()
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactorSession) Initialize(gateway_ common.Address, zetaToken_ common.Address, tssAddress_ common.Address, admin_ common.Address) (*types.Transaction, error) {
+	return _ZetaConnectorNonNative.Contract.Initialize(&_ZetaConnectorNonNative.TransactOpts, gateway_, zetaToken_, tssAddress_, admin_)
 }
 
 // Pause is a paid mutator transaction binding the contract method 0x8456cb59.
@@ -750,6 +833,27 @@ func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactorSession) UpdateTS
 	return _ZetaConnectorNonNative.Contract.UpdateTSSAddress(&_ZetaConnectorNonNative.TransactOpts, newTSSAddress)
 }
 
+// UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
+//
+// Solidity: function upgradeToAndCall(address newImplementation, bytes data) payable returns()
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactor) UpgradeToAndCall(opts *bind.TransactOpts, newImplementation common.Address, data []byte) (*types.Transaction, error) {
+	return _ZetaConnectorNonNative.contract.Transact(opts, "upgradeToAndCall", newImplementation, data)
+}
+
+// UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
+//
+// Solidity: function upgradeToAndCall(address newImplementation, bytes data) payable returns()
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeSession) UpgradeToAndCall(newImplementation common.Address, data []byte) (*types.Transaction, error) {
+	return _ZetaConnectorNonNative.Contract.UpgradeToAndCall(&_ZetaConnectorNonNative.TransactOpts, newImplementation, data)
+}
+
+// UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
+//
+// Solidity: function upgradeToAndCall(address newImplementation, bytes data) payable returns()
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactorSession) UpgradeToAndCall(newImplementation common.Address, data []byte) (*types.Transaction, error) {
+	return _ZetaConnectorNonNative.Contract.UpgradeToAndCall(&_ZetaConnectorNonNative.TransactOpts, newImplementation, data)
+}
+
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
 // Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
@@ -811,6 +915,140 @@ func (_ZetaConnectorNonNative *ZetaConnectorNonNativeSession) WithdrawAndRevert(
 // Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
 func (_ZetaConnectorNonNative *ZetaConnectorNonNativeTransactorSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
 	return _ZetaConnectorNonNative.Contract.WithdrawAndRevert(&_ZetaConnectorNonNative.TransactOpts, to, amount, data, internalSendHash, revertContext)
+}
+
+// ZetaConnectorNonNativeInitializedIterator is returned from FilterInitialized and is used to iterate over the raw logs and unpacked data for Initialized events raised by the ZetaConnectorNonNative contract.
+type ZetaConnectorNonNativeInitializedIterator struct {
+	Event *ZetaConnectorNonNativeInitialized // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ZetaConnectorNonNativeInitializedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ZetaConnectorNonNativeInitialized)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ZetaConnectorNonNativeInitialized)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ZetaConnectorNonNativeInitializedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ZetaConnectorNonNativeInitializedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ZetaConnectorNonNativeInitialized represents a Initialized event raised by the ZetaConnectorNonNative contract.
+type ZetaConnectorNonNativeInitialized struct {
+	Version uint64
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterInitialized is a free log retrieval operation binding the contract event 0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2.
+//
+// Solidity: event Initialized(uint64 version)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) FilterInitialized(opts *bind.FilterOpts) (*ZetaConnectorNonNativeInitializedIterator, error) {
+
+	logs, sub, err := _ZetaConnectorNonNative.contract.FilterLogs(opts, "Initialized")
+	if err != nil {
+		return nil, err
+	}
+	return &ZetaConnectorNonNativeInitializedIterator{contract: _ZetaConnectorNonNative.contract, event: "Initialized", logs: logs, sub: sub}, nil
+}
+
+// WatchInitialized is a free log subscription operation binding the contract event 0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2.
+//
+// Solidity: event Initialized(uint64 version)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) WatchInitialized(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNonNativeInitialized) (event.Subscription, error) {
+
+	logs, sub, err := _ZetaConnectorNonNative.contract.WatchLogs(opts, "Initialized")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ZetaConnectorNonNativeInitialized)
+				if err := _ZetaConnectorNonNative.contract.UnpackLog(event, "Initialized", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseInitialized is a log parse operation binding the contract event 0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2.
+//
+// Solidity: event Initialized(uint64 version)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) ParseInitialized(log types.Log) (*ZetaConnectorNonNativeInitialized, error) {
+	event := new(ZetaConnectorNonNativeInitialized)
+	if err := _ZetaConnectorNonNative.contract.UnpackLog(event, "Initialized", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
 }
 
 // ZetaConnectorNonNativeMaxSupplyUpdatedIterator is returned from FilterMaxSupplyUpdated and is used to iterate over the raw logs and unpacked data for MaxSupplyUpdated events raised by the ZetaConnectorNonNative contract.
@@ -1830,6 +2068,150 @@ func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) WatchUpdatedZetaC
 func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) ParseUpdatedZetaConnectorTSSAddress(log types.Log) (*ZetaConnectorNonNativeUpdatedZetaConnectorTSSAddress, error) {
 	event := new(ZetaConnectorNonNativeUpdatedZetaConnectorTSSAddress)
 	if err := _ZetaConnectorNonNative.contract.UnpackLog(event, "UpdatedZetaConnectorTSSAddress", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ZetaConnectorNonNativeUpgradedIterator is returned from FilterUpgraded and is used to iterate over the raw logs and unpacked data for Upgraded events raised by the ZetaConnectorNonNative contract.
+type ZetaConnectorNonNativeUpgradedIterator struct {
+	Event *ZetaConnectorNonNativeUpgraded // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ZetaConnectorNonNativeUpgradedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ZetaConnectorNonNativeUpgraded)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ZetaConnectorNonNativeUpgraded)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ZetaConnectorNonNativeUpgradedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ZetaConnectorNonNativeUpgradedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ZetaConnectorNonNativeUpgraded represents a Upgraded event raised by the ZetaConnectorNonNative contract.
+type ZetaConnectorNonNativeUpgraded struct {
+	Implementation common.Address
+	Raw            types.Log // Blockchain specific contextual infos
+}
+
+// FilterUpgraded is a free log retrieval operation binding the contract event 0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b.
+//
+// Solidity: event Upgraded(address indexed implementation)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) FilterUpgraded(opts *bind.FilterOpts, implementation []common.Address) (*ZetaConnectorNonNativeUpgradedIterator, error) {
+
+	var implementationRule []interface{}
+	for _, implementationItem := range implementation {
+		implementationRule = append(implementationRule, implementationItem)
+	}
+
+	logs, sub, err := _ZetaConnectorNonNative.contract.FilterLogs(opts, "Upgraded", implementationRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ZetaConnectorNonNativeUpgradedIterator{contract: _ZetaConnectorNonNative.contract, event: "Upgraded", logs: logs, sub: sub}, nil
+}
+
+// WatchUpgraded is a free log subscription operation binding the contract event 0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b.
+//
+// Solidity: event Upgraded(address indexed implementation)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) WatchUpgraded(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNonNativeUpgraded, implementation []common.Address) (event.Subscription, error) {
+
+	var implementationRule []interface{}
+	for _, implementationItem := range implementation {
+		implementationRule = append(implementationRule, implementationItem)
+	}
+
+	logs, sub, err := _ZetaConnectorNonNative.contract.WatchLogs(opts, "Upgraded", implementationRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ZetaConnectorNonNativeUpgraded)
+				if err := _ZetaConnectorNonNative.contract.UnpackLog(event, "Upgraded", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseUpgraded is a log parse operation binding the contract event 0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b.
+//
+// Solidity: event Upgraded(address indexed implementation)
+func (_ZetaConnectorNonNative *ZetaConnectorNonNativeFilterer) ParseUpgraded(log types.Log) (*ZetaConnectorNonNativeUpgraded, error) {
+	event := new(ZetaConnectorNonNativeUpgraded)
+	if err := _ZetaConnectorNonNative.contract.UnpackLog(event, "Upgraded", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
-import "../../contracts/evm/ZetaConnectorBase.sol";
-import "../../contracts/evm/interfaces/IERC20Custody.sol";
-import "../../contracts/evm/interfaces/IGatewayEVM.sol";
+import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
+import "../../../contracts/evm/ZetaConnectorBase.sol";
+import "../../../contracts/evm/interfaces/IERC20Custody.sol";
+import "../../../contracts/evm/interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -65,6 +65,7 @@ contract GatewayEVMUpgradeTest is
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, tssAddress_);
         tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
 

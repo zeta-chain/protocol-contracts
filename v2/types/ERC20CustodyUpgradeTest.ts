@@ -37,14 +37,15 @@ export type RevertContextStructOutput = [
   revertMessage: string
 ] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
-export interface ZetaConnectorNativeInterface extends Interface {
+export interface ERC20CustodyUpgradeTestInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
-      | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
+      | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
+      | "deposit"
       | "gateway"
       | "getRoleAdmin"
       | "grantRole"
@@ -53,33 +54,40 @@ export interface ZetaConnectorNativeInterface extends Interface {
       | "pause"
       | "paused"
       | "proxiableUUID"
-      | "receiveTokens"
       | "renounceRole"
       | "revokeRole"
+      | "setSupportsLegacy"
       | "supportsInterface"
+      | "supportsLegacy"
       | "tssAddress"
       | "unpause"
+      | "unwhitelist"
       | "updateTSSAddress"
       | "upgradeToAndCall"
+      | "whitelist"
+      | "whitelisted"
       | "withdraw"
       | "withdrawAndCall"
       | "withdrawAndRevert"
-      | "zetaToken"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "Deposited"
       | "Initialized"
       | "Paused"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
-      | "UpdatedZetaConnectorTSSAddress"
+      | "Unwhitelisted"
+      | "UpdatedCustodyTSSAddress"
       | "Upgraded"
+      | "Whitelisted"
       | "Withdrawn"
       | "WithdrawnAndCalled"
       | "WithdrawnAndReverted"
+      | "WithdrawnV2"
   ): EventFragment;
 
   encodeFunctionData(
@@ -90,14 +98,21 @@ export interface ZetaConnectorNativeInterface extends Interface {
     functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "WHITELISTER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "WITHDRAWER_ROLE",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [BytesLike, AddressLike, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
@@ -114,17 +129,13 @@ export interface ZetaConnectorNativeInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike, AddressLike, AddressLike, AddressLike]
+    values: [AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "receiveTokens",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -135,14 +146,26 @@ export interface ZetaConnectorNativeInterface extends Interface {
     values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "setSupportsLegacy",
+    values: [boolean]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "supportsLegacy",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "tssAddress",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "unwhitelist",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "updateTSSAddress",
     values: [AddressLike]
@@ -152,24 +175,31 @@ export interface ZetaConnectorNativeInterface extends Interface {
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "whitelist",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelisted",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "withdraw",
-    values: [AddressLike, BigNumberish, BytesLike]
+    values: [AddressLike, AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCall",
-    values: [AddressLike, BigNumberish, BytesLike, BytesLike]
+    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
     values: [
       AddressLike,
+      AddressLike,
       BigNumberish,
-      BytesLike,
       BytesLike,
       RevertContextStruct
     ]
   ): string;
-  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
@@ -179,15 +209,19 @@ export interface ZetaConnectorNativeInterface extends Interface {
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "WHITELISTER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "WITHDRAWER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
@@ -203,26 +237,39 @@ export interface ZetaConnectorNativeInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "receiveTokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "setSupportsLegacy",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "supportsLegacy",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unwhitelist",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "updateTSSAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelisted",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
@@ -234,7 +281,31 @@ export interface ZetaConnectorNativeInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
+}
+
+export namespace DepositedEvent {
+  export type InputTuple = [
+    recipient: BytesLike,
+    asset: AddressLike,
+    amount: BigNumberish,
+    message: BytesLike
+  ];
+  export type OutputTuple = [
+    recipient: string,
+    asset: string,
+    amount: bigint,
+    message: string
+  ];
+  export interface OutputObject {
+    recipient: string;
+    asset: string;
+    amount: bigint;
+    message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace InitializedEvent {
@@ -331,14 +402,22 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace UpdatedZetaConnectorTSSAddressEvent {
-  export type InputTuple = [
-    oldTSSAddress: AddressLike,
-    newTSSAddress: AddressLike
-  ];
-  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
+export namespace UnwhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
   export interface OutputObject {
-    oldTSSAddress: string;
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedCustodyTSSAddressEvent {
+  export type InputTuple = [newTSSAddress: AddressLike];
+  export type OutputTuple = [newTSSAddress: string];
+  export interface OutputObject {
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -359,11 +438,28 @@ export namespace UpgradedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace WhitelistedEvent {
+  export type InputTuple = [token: AddressLike];
+  export type OutputTuple = [token: string];
+  export interface OutputObject {
+    token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace WithdrawnEvent {
-  export type InputTuple = [to: AddressLike, amount: BigNumberish];
-  export type OutputTuple = [to: string, amount: bigint];
+  export type InputTuple = [
+    to: AddressLike,
+    token: AddressLike,
+    amount: BigNumberish
+  ];
+  export type OutputTuple = [to: string, token: string, amount: bigint];
   export interface OutputObject {
     to: string;
+    token: string;
     amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -375,12 +471,19 @@ export namespace WithdrawnEvent {
 export namespace WithdrawnAndCalledEvent {
   export type InputTuple = [
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
     data: BytesLike
   ];
-  export type OutputTuple = [to: string, amount: bigint, data: string];
+  export type OutputTuple = [
+    to: string,
+    token: string,
+    amount: bigint,
+    data: string
+  ];
   export interface OutputObject {
     to: string;
+    token: string;
     amount: bigint;
     data: string;
   }
@@ -393,18 +496,21 @@ export namespace WithdrawnAndCalledEvent {
 export namespace WithdrawnAndRevertedEvent {
   export type InputTuple = [
     to: AddressLike,
+    token: AddressLike,
     amount: BigNumberish,
     data: BytesLike,
     revertContext: RevertContextStruct
   ];
   export type OutputTuple = [
     to: string,
+    token: string,
     amount: bigint,
     data: string,
     revertContext: RevertContextStructOutput
   ];
   export interface OutputObject {
     to: string;
+    token: string;
     amount: bigint;
     data: string;
     revertContext: RevertContextStructOutput;
@@ -415,11 +521,29 @@ export namespace WithdrawnAndRevertedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface ZetaConnectorNative extends BaseContract {
-  connect(runner?: ContractRunner | null): ZetaConnectorNative;
+export namespace WithdrawnV2Event {
+  export type InputTuple = [
+    to: AddressLike,
+    token: AddressLike,
+    amount: BigNumberish
+  ];
+  export type OutputTuple = [to: string, token: string, amount: bigint];
+  export interface OutputObject {
+    to: string;
+    token: string;
+    amount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export interface ERC20CustodyUpgradeTest extends BaseContract {
+  connect(runner?: ContractRunner | null): ERC20CustodyUpgradeTest;
   waitForDeployment(): Promise<this>;
 
-  interface: ZetaConnectorNativeInterface;
+  interface: ERC20CustodyUpgradeTestInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -462,11 +586,22 @@ export interface ZetaConnectorNative extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
-  TSS_ROLE: TypedContractMethod<[], [string], "view">;
-
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
+  WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
+
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  deposit: TypedContractMethod<
+    [
+      recipient: BytesLike,
+      asset: AddressLike,
+      amount: BigNumberish,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
 
   gateway: TypedContractMethod<[], [string], "view">;
 
@@ -485,12 +620,7 @@ export interface ZetaConnectorNative extends BaseContract {
   >;
 
   initialize: TypedContractMethod<
-    [
-      gateway_: AddressLike,
-      zetaToken_: AddressLike,
-      tssAddress_: AddressLike,
-      admin_: AddressLike
-    ],
+    [gateway_: AddressLike, tssAddress_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -500,12 +630,6 @@ export interface ZetaConnectorNative extends BaseContract {
   paused: TypedContractMethod<[], [boolean], "view">;
 
   proxiableUUID: TypedContractMethod<[], [string], "view">;
-
-  receiveTokens: TypedContractMethod<
-    [amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
 
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
@@ -519,15 +643,25 @@ export interface ZetaConnectorNative extends BaseContract {
     "nonpayable"
   >;
 
+  setSupportsLegacy: TypedContractMethod<
+    [_supportsLegacy: boolean],
+    [void],
+    "nonpayable"
+  >;
+
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
     "view"
   >;
 
+  supportsLegacy: TypedContractMethod<[], [boolean], "view">;
+
   tssAddress: TypedContractMethod<[], [string], "view">;
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
+
+  unwhitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
 
   updateTSSAddress: TypedContractMethod<
     [newTSSAddress: AddressLike],
@@ -541,8 +675,12 @@ export interface ZetaConnectorNative extends BaseContract {
     "payable"
   >;
 
+  whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+
+  whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+
   withdraw: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -550,9 +688,9 @@ export interface ZetaConnectorNative extends BaseContract {
   withdrawAndCall: TypedContractMethod<
     [
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
-      data: BytesLike,
-      internalSendHash: BytesLike
+      data: BytesLike
     ],
     [void],
     "nonpayable"
@@ -561,16 +699,14 @@ export interface ZetaConnectorNative extends BaseContract {
   withdrawAndRevert: TypedContractMethod<
     [
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
   >;
-
-  zetaToken: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -583,14 +719,26 @@ export interface ZetaConnectorNative extends BaseContract {
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "TSS_ROLE"
+    nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "UPGRADE_INTERFACE_VERSION"
+    nameOrSignature: "WHITELISTER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "WITHDRAWER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "deposit"
+  ): TypedContractMethod<
+    [
+      recipient: BytesLike,
+      asset: AddressLike,
+      amount: BigNumberish,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "gateway"
   ): TypedContractMethod<[], [string], "view">;
@@ -614,12 +762,7 @@ export interface ZetaConnectorNative extends BaseContract {
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
-    [
-      gateway_: AddressLike,
-      zetaToken_: AddressLike,
-      tssAddress_: AddressLike,
-      admin_: AddressLike
-    ],
+    [gateway_: AddressLike, tssAddress_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -632,9 +775,6 @@ export interface ZetaConnectorNative extends BaseContract {
   getFunction(
     nameOrSignature: "proxiableUUID"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "receiveTokens"
-  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<
@@ -650,14 +790,23 @@ export interface ZetaConnectorNative extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setSupportsLegacy"
+  ): TypedContractMethod<[_supportsLegacy: boolean], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "supportsLegacy"
+  ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
     nameOrSignature: "tssAddress"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "unwhitelist"
+  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "updateTSSAddress"
   ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
@@ -669,9 +818,15 @@ export interface ZetaConnectorNative extends BaseContract {
     "payable"
   >;
   getFunction(
+    nameOrSignature: "whitelist"
+  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "whitelisted"
+  ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+  getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
+    [to: AddressLike, token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -680,9 +835,9 @@ export interface ZetaConnectorNative extends BaseContract {
   ): TypedContractMethod<
     [
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
-      data: BytesLike,
-      internalSendHash: BytesLike
+      data: BytesLike
     ],
     [void],
     "nonpayable"
@@ -692,18 +847,22 @@ export interface ZetaConnectorNative extends BaseContract {
   ): TypedContractMethod<
     [
       to: AddressLike,
+      token: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],
     "nonpayable"
   >;
-  getFunction(
-    nameOrSignature: "zetaToken"
-  ): TypedContractMethod<[], [string], "view">;
 
+  getEvent(
+    key: "Deposited"
+  ): TypedContractEvent<
+    DepositedEvent.InputTuple,
+    DepositedEvent.OutputTuple,
+    DepositedEvent.OutputObject
+  >;
   getEvent(
     key: "Initialized"
   ): TypedContractEvent<
@@ -747,11 +906,18 @@ export interface ZetaConnectorNative extends BaseContract {
     UnpausedEvent.OutputObject
   >;
   getEvent(
-    key: "UpdatedZetaConnectorTSSAddress"
+    key: "Unwhitelisted"
   ): TypedContractEvent<
-    UpdatedZetaConnectorTSSAddressEvent.InputTuple,
-    UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
-    UpdatedZetaConnectorTSSAddressEvent.OutputObject
+    UnwhitelistedEvent.InputTuple,
+    UnwhitelistedEvent.OutputTuple,
+    UnwhitelistedEvent.OutputObject
+  >;
+  getEvent(
+    key: "UpdatedCustodyTSSAddress"
+  ): TypedContractEvent<
+    UpdatedCustodyTSSAddressEvent.InputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputObject
   >;
   getEvent(
     key: "Upgraded"
@@ -759,6 +925,13 @@ export interface ZetaConnectorNative extends BaseContract {
     UpgradedEvent.InputTuple,
     UpgradedEvent.OutputTuple,
     UpgradedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Whitelisted"
+  ): TypedContractEvent<
+    WhitelistedEvent.InputTuple,
+    WhitelistedEvent.OutputTuple,
+    WhitelistedEvent.OutputObject
   >;
   getEvent(
     key: "Withdrawn"
@@ -781,8 +954,26 @@ export interface ZetaConnectorNative extends BaseContract {
     WithdrawnAndRevertedEvent.OutputTuple,
     WithdrawnAndRevertedEvent.OutputObject
   >;
+  getEvent(
+    key: "WithdrawnV2"
+  ): TypedContractEvent<
+    WithdrawnV2Event.InputTuple,
+    WithdrawnV2Event.OutputTuple,
+    WithdrawnV2Event.OutputObject
+  >;
 
   filters: {
+    "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
+    >;
+    Deposited: TypedContractEvent<
+      DepositedEvent.InputTuple,
+      DepositedEvent.OutputTuple,
+      DepositedEvent.OutputObject
+    >;
+
     "Initialized(uint64)": TypedContractEvent<
       InitializedEvent.InputTuple,
       InitializedEvent.OutputTuple,
@@ -849,15 +1040,26 @@ export interface ZetaConnectorNative extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "UpdatedZetaConnectorTSSAddress(address,address)": TypedContractEvent<
-      UpdatedZetaConnectorTSSAddressEvent.InputTuple,
-      UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
-      UpdatedZetaConnectorTSSAddressEvent.OutputObject
+    "Unwhitelisted(address)": TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
     >;
-    UpdatedZetaConnectorTSSAddress: TypedContractEvent<
-      UpdatedZetaConnectorTSSAddressEvent.InputTuple,
-      UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
-      UpdatedZetaConnectorTSSAddressEvent.OutputObject
+    Unwhitelisted: TypedContractEvent<
+      UnwhitelistedEvent.InputTuple,
+      UnwhitelistedEvent.OutputTuple,
+      UnwhitelistedEvent.OutputObject
+    >;
+
+    "UpdatedCustodyTSSAddress(address)": TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
+    >;
+    UpdatedCustodyTSSAddress: TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
     >;
 
     "Upgraded(address)": TypedContractEvent<
@@ -871,7 +1073,18 @@ export interface ZetaConnectorNative extends BaseContract {
       UpgradedEvent.OutputObject
     >;
 
-    "Withdrawn(address,uint256)": TypedContractEvent<
+    "Whitelisted(address)": TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
+    >;
+    Whitelisted: TypedContractEvent<
+      WhitelistedEvent.InputTuple,
+      WhitelistedEvent.OutputTuple,
+      WhitelistedEvent.OutputObject
+    >;
+
+    "Withdrawn(address,address,uint256)": TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,
       WithdrawnEvent.OutputObject
@@ -882,7 +1095,7 @@ export interface ZetaConnectorNative extends BaseContract {
       WithdrawnEvent.OutputObject
     >;
 
-    "WithdrawnAndCalled(address,uint256,bytes)": TypedContractEvent<
+    "WithdrawnAndCalled(address,address,uint256,bytes)": TypedContractEvent<
       WithdrawnAndCalledEvent.InputTuple,
       WithdrawnAndCalledEvent.OutputTuple,
       WithdrawnAndCalledEvent.OutputObject
@@ -893,7 +1106,7 @@ export interface ZetaConnectorNative extends BaseContract {
       WithdrawnAndCalledEvent.OutputObject
     >;
 
-    "WithdrawnAndReverted(address,uint256,bytes,tuple)": TypedContractEvent<
+    "WithdrawnAndReverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
       WithdrawnAndRevertedEvent.InputTuple,
       WithdrawnAndRevertedEvent.OutputTuple,
       WithdrawnAndRevertedEvent.OutputObject
@@ -902,6 +1115,17 @@ export interface ZetaConnectorNative extends BaseContract {
       WithdrawnAndRevertedEvent.InputTuple,
       WithdrawnAndRevertedEvent.OutputTuple,
       WithdrawnAndRevertedEvent.OutputObject
+    >;
+
+    "WithdrawnV2(address,address,uint256)": TypedContractEvent<
+      WithdrawnV2Event.InputTuple,
+      WithdrawnV2Event.OutputTuple,
+      WithdrawnV2Event.OutputObject
+    >;
+    WithdrawnV2: TypedContractEvent<
+      WithdrawnV2Event.InputTuple,
+      WithdrawnV2Event.OutputTuple,
+      WithdrawnV2Event.OutputObject
     >;
   };
 }

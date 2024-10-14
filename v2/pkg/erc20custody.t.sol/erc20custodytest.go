@@ -1068,27 +1068,6 @@ func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestForwardCallToRec
 	return _ERC20CustodyTest.Contract.TestForwardCallToReceiveNoParamsThroughCustody(&_ERC20CustodyTest.TransactOpts)
 }
 
-// TestNewCustodyFailsIfAddressesAreZero is a paid mutator transaction binding the contract method 0x4b5838d2.
-//
-// Solidity: function testNewCustodyFailsIfAddressesAreZero() returns()
-func (_ERC20CustodyTest *ERC20CustodyTestTransactor) TestNewCustodyFailsIfAddressesAreZero(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _ERC20CustodyTest.contract.Transact(opts, "testNewCustodyFailsIfAddressesAreZero")
-}
-
-// TestNewCustodyFailsIfAddressesAreZero is a paid mutator transaction binding the contract method 0x4b5838d2.
-//
-// Solidity: function testNewCustodyFailsIfAddressesAreZero() returns()
-func (_ERC20CustodyTest *ERC20CustodyTestSession) TestNewCustodyFailsIfAddressesAreZero() (*types.Transaction, error) {
-	return _ERC20CustodyTest.Contract.TestNewCustodyFailsIfAddressesAreZero(&_ERC20CustodyTest.TransactOpts)
-}
-
-// TestNewCustodyFailsIfAddressesAreZero is a paid mutator transaction binding the contract method 0x4b5838d2.
-//
-// Solidity: function testNewCustodyFailsIfAddressesAreZero() returns()
-func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestNewCustodyFailsIfAddressesAreZero() (*types.Transaction, error) {
-	return _ERC20CustodyTest.Contract.TestNewCustodyFailsIfAddressesAreZero(&_ERC20CustodyTest.TransactOpts)
-}
-
 // TestTSSUpgrade is a paid mutator transaction binding the contract method 0x52ff5939.
 //
 // Solidity: function testTSSUpgrade() returns()
@@ -1213,6 +1192,27 @@ func (_ERC20CustodyTest *ERC20CustodyTestSession) TestUnwhitelistFailsIfZeroAddr
 // Solidity: function testUnwhitelistFailsIfZeroAddress() returns()
 func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestUnwhitelistFailsIfZeroAddress() (*types.Transaction, error) {
 	return _ERC20CustodyTest.Contract.TestUnwhitelistFailsIfZeroAddress(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestUpgradeAndWithdraw is a paid mutator transaction binding the contract method 0xaf298bb1.
+//
+// Solidity: function testUpgradeAndWithdraw() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactor) TestUpgradeAndWithdraw(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ERC20CustodyTest.contract.Transact(opts, "testUpgradeAndWithdraw")
+}
+
+// TestUpgradeAndWithdraw is a paid mutator transaction binding the contract method 0xaf298bb1.
+//
+// Solidity: function testUpgradeAndWithdraw() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestSession) TestUpgradeAndWithdraw() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestUpgradeAndWithdraw(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestUpgradeAndWithdraw is a paid mutator transaction binding the contract method 0xaf298bb1.
+//
+// Solidity: function testUpgradeAndWithdraw() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestUpgradeAndWithdraw() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestUpgradeAndWithdraw(&_ERC20CustodyTest.TransactOpts)
 }
 
 // TestWhitelist is a paid mutator transaction binding the contract method 0x284cb929.
@@ -4214,6 +4214,160 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawnAndReverted(opt
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdrawnAndReverted(log types.Log) (*ERC20CustodyTestWithdrawnAndReverted, error) {
 	event := new(ERC20CustodyTestWithdrawnAndReverted)
 	if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ERC20CustodyTestWithdrawnV2Iterator is returned from FilterWithdrawnV2 and is used to iterate over the raw logs and unpacked data for WithdrawnV2 events raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawnV2Iterator struct {
+	Event *ERC20CustodyTestWithdrawnV2 // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ERC20CustodyTestWithdrawnV2Iterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ERC20CustodyTestWithdrawnV2)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ERC20CustodyTestWithdrawnV2)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ERC20CustodyTestWithdrawnV2Iterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ERC20CustodyTestWithdrawnV2Iterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ERC20CustodyTestWithdrawnV2 represents a WithdrawnV2 event raised by the ERC20CustodyTest contract.
+type ERC20CustodyTestWithdrawnV2 struct {
+	To     common.Address
+	Token  common.Address
+	Amount *big.Int
+	Raw    types.Log // Blockchain specific contextual infos
+}
+
+// FilterWithdrawnV2 is a free log retrieval operation binding the contract event 0xd4dabfe72081670cc78f2ebda8e2eddaf3feebde6288dcb8fe673b3dc201b5a4.
+//
+// Solidity: event WithdrawnV2(address indexed to, address indexed token, uint256 amount)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterWithdrawnV2(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*ERC20CustodyTestWithdrawnV2Iterator, error) {
+
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+
+	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "WithdrawnV2", toRule, tokenRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ERC20CustodyTestWithdrawnV2Iterator{contract: _ERC20CustodyTest.contract, event: "WithdrawnV2", logs: logs, sub: sub}, nil
+}
+
+// WatchWithdrawnV2 is a free log subscription operation binding the contract event 0xd4dabfe72081670cc78f2ebda8e2eddaf3feebde6288dcb8fe673b3dc201b5a4.
+//
+// Solidity: event WithdrawnV2(address indexed to, address indexed token, uint256 amount)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchWithdrawnV2(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestWithdrawnV2, to []common.Address, token []common.Address) (event.Subscription, error) {
+
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+	var tokenRule []interface{}
+	for _, tokenItem := range token {
+		tokenRule = append(tokenRule, tokenItem)
+	}
+
+	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "WithdrawnV2", toRule, tokenRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ERC20CustodyTestWithdrawnV2)
+				if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnV2", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseWithdrawnV2 is a log parse operation binding the contract event 0xd4dabfe72081670cc78f2ebda8e2eddaf3feebde6288dcb8fe673b3dc201b5a4.
+//
+// Solidity: event WithdrawnV2(address indexed to, address indexed token, uint256 amount)
+func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseWithdrawnV2(log types.Log) (*ERC20CustodyTestWithdrawnV2, error) {
+	event := new(ERC20CustodyTestWithdrawnV2)
+	if err := _ERC20CustodyTest.contract.UnpackLog(event, "WithdrawnV2", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

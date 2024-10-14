@@ -1310,6 +1310,27 @@ func (_GatewayEVMTest *GatewayEVMTestTransactorSession) TestTSSUpgradeFailsIfZer
 	return _GatewayEVMTest.Contract.TestTSSUpgradeFailsIfZeroAddress(&_GatewayEVMTest.TransactOpts)
 }
 
+// TestUpgradeAndForwardCallToReceivePayable is a paid mutator transaction binding the contract method 0x7a380ebf.
+//
+// Solidity: function testUpgradeAndForwardCallToReceivePayable() returns()
+func (_GatewayEVMTest *GatewayEVMTestTransactor) TestUpgradeAndForwardCallToReceivePayable(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _GatewayEVMTest.contract.Transact(opts, "testUpgradeAndForwardCallToReceivePayable")
+}
+
+// TestUpgradeAndForwardCallToReceivePayable is a paid mutator transaction binding the contract method 0x7a380ebf.
+//
+// Solidity: function testUpgradeAndForwardCallToReceivePayable() returns()
+func (_GatewayEVMTest *GatewayEVMTestSession) TestUpgradeAndForwardCallToReceivePayable() (*types.Transaction, error) {
+	return _GatewayEVMTest.Contract.TestUpgradeAndForwardCallToReceivePayable(&_GatewayEVMTest.TransactOpts)
+}
+
+// TestUpgradeAndForwardCallToReceivePayable is a paid mutator transaction binding the contract method 0x7a380ebf.
+//
+// Solidity: function testUpgradeAndForwardCallToReceivePayable() returns()
+func (_GatewayEVMTest *GatewayEVMTestTransactorSession) TestUpgradeAndForwardCallToReceivePayable() (*types.Transaction, error) {
+	return _GatewayEVMTest.Contract.TestUpgradeAndForwardCallToReceivePayable(&_GatewayEVMTest.TransactOpts)
+}
+
 // GatewayEVMTestCalledIterator is returned from FilterCalled and is used to iterate over the raw logs and unpacked data for Called events raised by the GatewayEVMTest contract.
 type GatewayEVMTestCalledIterator struct {
 	Event *GatewayEVMTestCalled // Event containing the contract specifics and raw log
@@ -1909,6 +1930,152 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchExecuted(opts *bind.WatchOpt
 func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseExecuted(log types.Log) (*GatewayEVMTestExecuted, error) {
 	event := new(GatewayEVMTestExecuted)
 	if err := _GatewayEVMTest.contract.UnpackLog(event, "Executed", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// GatewayEVMTestExecutedV2Iterator is returned from FilterExecutedV2 and is used to iterate over the raw logs and unpacked data for ExecutedV2 events raised by the GatewayEVMTest contract.
+type GatewayEVMTestExecutedV2Iterator struct {
+	Event *GatewayEVMTestExecutedV2 // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *GatewayEVMTestExecutedV2Iterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(GatewayEVMTestExecutedV2)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(GatewayEVMTestExecutedV2)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *GatewayEVMTestExecutedV2Iterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *GatewayEVMTestExecutedV2Iterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// GatewayEVMTestExecutedV2 represents a ExecutedV2 event raised by the GatewayEVMTest contract.
+type GatewayEVMTestExecutedV2 struct {
+	Destination common.Address
+	Value       *big.Int
+	Data        []byte
+	Raw         types.Log // Blockchain specific contextual infos
+}
+
+// FilterExecutedV2 is a free log retrieval operation binding the contract event 0x373df382b9c587826f3de13f16d67f8d99f28ee947fc0924c6ef2d6d2c7e8546.
+//
+// Solidity: event ExecutedV2(address indexed destination, uint256 value, bytes data)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterExecutedV2(opts *bind.FilterOpts, destination []common.Address) (*GatewayEVMTestExecutedV2Iterator, error) {
+
+	var destinationRule []interface{}
+	for _, destinationItem := range destination {
+		destinationRule = append(destinationRule, destinationItem)
+	}
+
+	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "ExecutedV2", destinationRule)
+	if err != nil {
+		return nil, err
+	}
+	return &GatewayEVMTestExecutedV2Iterator{contract: _GatewayEVMTest.contract, event: "ExecutedV2", logs: logs, sub: sub}, nil
+}
+
+// WatchExecutedV2 is a free log subscription operation binding the contract event 0x373df382b9c587826f3de13f16d67f8d99f28ee947fc0924c6ef2d6d2c7e8546.
+//
+// Solidity: event ExecutedV2(address indexed destination, uint256 value, bytes data)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchExecutedV2(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestExecutedV2, destination []common.Address) (event.Subscription, error) {
+
+	var destinationRule []interface{}
+	for _, destinationItem := range destination {
+		destinationRule = append(destinationRule, destinationItem)
+	}
+
+	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "ExecutedV2", destinationRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(GatewayEVMTestExecutedV2)
+				if err := _GatewayEVMTest.contract.UnpackLog(event, "ExecutedV2", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseExecutedV2 is a log parse operation binding the contract event 0x373df382b9c587826f3de13f16d67f8d99f28ee947fc0924c6ef2d6d2c7e8546.
+//
+// Solidity: event ExecutedV2(address indexed destination, uint256 value, bytes data)
+func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseExecutedV2(log types.Log) (*GatewayEVMTestExecutedV2, error) {
+	event := new(GatewayEVMTestExecutedV2)
+	if err := _GatewayEVMTest.contract.UnpackLog(event, "ExecutedV2", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

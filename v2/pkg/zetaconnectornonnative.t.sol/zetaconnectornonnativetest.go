@@ -744,6 +744,27 @@ func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactorSession) 
 	return _ZetaConnectorNonNativeTest.Contract.TestSexMaxSupplyFailsIfSenderIsNotTss(&_ZetaConnectorNonNativeTest.TransactOpts)
 }
 
+// TestUpgradeAndWithdraw is a paid mutator transaction binding the contract method 0xaf298bb1.
+//
+// Solidity: function testUpgradeAndWithdraw() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactor) TestUpgradeAndWithdraw(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.contract.Transact(opts, "testUpgradeAndWithdraw")
+}
+
+// TestUpgradeAndWithdraw is a paid mutator transaction binding the contract method 0xaf298bb1.
+//
+// Solidity: function testUpgradeAndWithdraw() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestSession) TestUpgradeAndWithdraw() (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.Contract.TestUpgradeAndWithdraw(&_ZetaConnectorNonNativeTest.TransactOpts)
+}
+
+// TestUpgradeAndWithdraw is a paid mutator transaction binding the contract method 0xaf298bb1.
+//
+// Solidity: function testUpgradeAndWithdraw() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactorSession) TestUpgradeAndWithdraw() (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.Contract.TestUpgradeAndWithdraw(&_ZetaConnectorNonNativeTest.TransactOpts)
+}
+
 // TestWithdraw is a paid mutator transaction binding the contract method 0xd509b16c.
 //
 // Solidity: function testWithdraw() returns()
@@ -3281,6 +3302,151 @@ func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) WatchWith
 func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) ParseWithdrawnAndReverted(log types.Log) (*ZetaConnectorNonNativeTestWithdrawnAndReverted, error) {
 	event := new(ZetaConnectorNonNativeTestWithdrawnAndReverted)
 	if err := _ZetaConnectorNonNativeTest.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ZetaConnectorNonNativeTestWithdrawnV2Iterator is returned from FilterWithdrawnV2 and is used to iterate over the raw logs and unpacked data for WithdrawnV2 events raised by the ZetaConnectorNonNativeTest contract.
+type ZetaConnectorNonNativeTestWithdrawnV2Iterator struct {
+	Event *ZetaConnectorNonNativeTestWithdrawnV2 // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ZetaConnectorNonNativeTestWithdrawnV2Iterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ZetaConnectorNonNativeTestWithdrawnV2)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ZetaConnectorNonNativeTestWithdrawnV2)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ZetaConnectorNonNativeTestWithdrawnV2Iterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ZetaConnectorNonNativeTestWithdrawnV2Iterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ZetaConnectorNonNativeTestWithdrawnV2 represents a WithdrawnV2 event raised by the ZetaConnectorNonNativeTest contract.
+type ZetaConnectorNonNativeTestWithdrawnV2 struct {
+	To     common.Address
+	Amount *big.Int
+	Raw    types.Log // Blockchain specific contextual infos
+}
+
+// FilterWithdrawnV2 is a free log retrieval operation binding the contract event 0x3e35ef4326151011878c9e8e968a0f3913fe98ca68f72a1e0c2e9be13ffb3ee9.
+//
+// Solidity: event WithdrawnV2(address indexed to, uint256 amount)
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) FilterWithdrawnV2(opts *bind.FilterOpts, to []common.Address) (*ZetaConnectorNonNativeTestWithdrawnV2Iterator, error) {
+
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+
+	logs, sub, err := _ZetaConnectorNonNativeTest.contract.FilterLogs(opts, "WithdrawnV2", toRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ZetaConnectorNonNativeTestWithdrawnV2Iterator{contract: _ZetaConnectorNonNativeTest.contract, event: "WithdrawnV2", logs: logs, sub: sub}, nil
+}
+
+// WatchWithdrawnV2 is a free log subscription operation binding the contract event 0x3e35ef4326151011878c9e8e968a0f3913fe98ca68f72a1e0c2e9be13ffb3ee9.
+//
+// Solidity: event WithdrawnV2(address indexed to, uint256 amount)
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) WatchWithdrawnV2(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNonNativeTestWithdrawnV2, to []common.Address) (event.Subscription, error) {
+
+	var toRule []interface{}
+	for _, toItem := range to {
+		toRule = append(toRule, toItem)
+	}
+
+	logs, sub, err := _ZetaConnectorNonNativeTest.contract.WatchLogs(opts, "WithdrawnV2", toRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ZetaConnectorNonNativeTestWithdrawnV2)
+				if err := _ZetaConnectorNonNativeTest.contract.UnpackLog(event, "WithdrawnV2", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseWithdrawnV2 is a log parse operation binding the contract event 0x3e35ef4326151011878c9e8e968a0f3913fe98ca68f72a1e0c2e9be13ffb3ee9.
+//
+// Solidity: event WithdrawnV2(address indexed to, uint256 amount)
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) ParseWithdrawnV2(log types.Log) (*ZetaConnectorNonNativeTestWithdrawnV2, error) {
+	event := new(ZetaConnectorNonNativeTestWithdrawnV2)
+	if err := _ZetaConnectorNonNativeTest.contract.UnpackLog(event, "WithdrawnV2", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

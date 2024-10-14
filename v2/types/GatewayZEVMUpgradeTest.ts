@@ -23,6 +23,50 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type CallOptionsStruct = {
+  gasLimit: BigNumberish;
+  isArbitraryCall: boolean;
+};
+
+export type CallOptionsStructOutput = [
+  gasLimit: bigint,
+  isArbitraryCall: boolean
+] & { gasLimit: bigint; isArbitraryCall: boolean };
+
+export type RevertOptionsStruct = {
+  revertAddress: AddressLike;
+  callOnRevert: boolean;
+  abortAddress: AddressLike;
+  revertMessage: BytesLike;
+  onRevertGasLimit: BigNumberish;
+};
+
+export type RevertOptionsStructOutput = [
+  revertAddress: string,
+  callOnRevert: boolean,
+  abortAddress: string,
+  revertMessage: string,
+  onRevertGasLimit: bigint
+] & {
+  revertAddress: string;
+  callOnRevert: boolean;
+  abortAddress: string;
+  revertMessage: string;
+  onRevertGasLimit: bigint;
+};
+
+export type ZContextStruct = {
+  origin: BytesLike;
+  sender: AddressLike;
+  chainID: BigNumberish;
+};
+
+export type ZContextStructOutput = [
+  origin: string,
+  sender: string,
+  chainID: bigint
+] & { origin: string; sender: string; chainID: bigint };
+
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -37,16 +81,22 @@ export type RevertContextStructOutput = [
   revertMessage: string
 ] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
-export interface ERC20CustodyInterface extends Interface {
+export interface GatewayZEVMUpgradeTestInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
+      | "MAX_MESSAGE_SIZE"
       | "PAUSER_ROLE"
+      | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
-      | "WHITELISTER_ROLE"
-      | "WITHDRAWER_ROLE"
+      | "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))"
       | "deposit"
-      | "gateway"
+      | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
+      | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
+      | "depositAndRevert"
+      | "execute"
+      | "executeRevert"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -56,37 +106,30 @@ export interface ERC20CustodyInterface extends Interface {
       | "proxiableUUID"
       | "renounceRole"
       | "revokeRole"
-      | "setSupportsLegacy"
       | "supportsInterface"
-      | "supportsLegacy"
-      | "tssAddress"
       | "unpause"
-      | "unwhitelist"
-      | "updateTSSAddress"
       | "upgradeToAndCall"
-      | "whitelist"
-      | "whitelisted"
-      | "withdraw"
-      | "withdrawAndCall"
-      | "withdrawAndRevert"
+      | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
+      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "zetaToken"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
-      | "Deposited"
+      | "Called"
       | "Initialized"
       | "Paused"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
-      | "Unwhitelisted"
-      | "UpdatedCustodyTSSAddress"
       | "Upgraded"
-      | "Whitelisted"
       | "Withdrawn"
-      | "WithdrawnAndCalled"
-      | "WithdrawnAndReverted"
+      | "WithdrawnV2"
   ): EventFragment;
 
   encodeFunctionData(
@@ -94,7 +137,15 @@ export interface ERC20CustodyInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "MAX_MESSAGE_SIZE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "PROTOCOL_ADDRESS",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -102,18 +153,49 @@ export interface ERC20CustodyInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "WHITELISTER_ROLE",
-    values?: undefined
+    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      AddressLike,
+      BytesLike,
+      CallOptionsStruct,
+      RevertOptionsStruct
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "WITHDRAWER_ROLE",
-    values?: undefined
+    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      AddressLike,
+      BytesLike,
+      BigNumberish,
+      RevertOptionsStruct
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "deposit",
-    values: [BytesLike, AddressLike, BigNumberish, BytesLike]
+    values: [AddressLike, BigNumberish, AddressLike]
   ): string;
-  encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
+    values: [ZContextStruct, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
+    values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndRevert",
+    values: [AddressLike, BigNumberish, AddressLike, RevertContextStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute",
+    values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeRevert",
+    values: [AddressLike, RevertContextStruct]
+  ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
@@ -128,7 +210,7 @@ export interface ERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike, AddressLike, AddressLike]
+    values: [AddressLike, AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
@@ -145,63 +227,73 @@ export interface ERC20CustodyInterface extends Interface {
     values: [BytesLike, AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "setSupportsLegacy",
-    values: [boolean]
-  ): string;
-  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "supportsLegacy",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tssAddress",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "unwhitelist",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "updateTSSAddress",
-    values: [AddressLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "whitelist",
-    values: [AddressLike]
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
+    values: [BytesLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "whitelisted",
-    values: [AddressLike]
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
+    values: [BytesLike, BigNumberish, BigNumberish, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [AddressLike, AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAndCall",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAndRevert",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     values: [
-      AddressLike,
-      AddressLike,
-      BigNumberish,
       BytesLike,
-      RevertContextStruct
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      BigNumberish,
+      RevertOptionsStruct
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      CallOptionsStruct,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike,
+      CallOptionsStruct,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_MESSAGE_SIZE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -209,19 +301,39 @@ export interface ERC20CustodyInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "PROTOCOL_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "WHITELISTER_ROLE",
+    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "WITHDRAWER_ROLE",
+    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndRevert",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeRevert",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -241,65 +353,65 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setSupportsLegacy",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "supportsLegacy",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "unwhitelist",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "updateTSSAddress",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "whitelisted",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawAndCall",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndRevert",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
 }
 
-export namespace DepositedEvent {
+export namespace CalledEvent {
   export type InputTuple = [
-    recipient: BytesLike,
-    asset: AddressLike,
-    amount: BigNumberish,
-    message: BytesLike
+    sender: AddressLike,
+    zrc20: AddressLike,
+    receiver: BytesLike,
+    message: BytesLike,
+    callOptions: CallOptionsStruct,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
-    recipient: string,
-    asset: string,
-    amount: bigint,
-    message: string
+    sender: string,
+    zrc20: string,
+    receiver: string,
+    message: string,
+    callOptions: CallOptionsStructOutput,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
-    recipient: string;
-    asset: string;
-    amount: bigint;
+    sender: string;
+    zrc20: string;
+    receiver: string;
     message: string;
+    callOptions: CallOptionsStructOutput;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -401,34 +513,6 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace UnwhitelistedEvent {
-  export type InputTuple = [token: AddressLike];
-  export type OutputTuple = [token: string];
-  export interface OutputObject {
-    token: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace UpdatedCustodyTSSAddressEvent {
-  export type InputTuple = [
-    oldTSSAddress: AddressLike,
-    newTSSAddress: AddressLike
-  ];
-  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
-  export interface OutputObject {
-    oldTSSAddress: string;
-    newTSSAddress: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
 export namespace UpgradedEvent {
   export type InputTuple = [implementation: AddressLike];
   export type OutputTuple = [implementation: string];
@@ -441,54 +525,42 @@ export namespace UpgradedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WhitelistedEvent {
-  export type InputTuple = [token: AddressLike];
-  export type OutputTuple = [token: string];
-  export interface OutputObject {
-    token: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
 export namespace WithdrawnEvent {
   export type InputTuple = [
-    to: AddressLike,
-    token: AddressLike,
-    amount: BigNumberish
-  ];
-  export type OutputTuple = [to: string, token: string, amount: bigint];
-  export interface OutputObject {
-    to: string;
-    token: string;
-    amount: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace WithdrawnAndCalledEvent {
-  export type InputTuple = [
-    to: AddressLike,
-    token: AddressLike,
-    amount: BigNumberish,
-    data: BytesLike
+    sender: AddressLike,
+    chainId: BigNumberish,
+    receiver: BytesLike,
+    zrc20: AddressLike,
+    value: BigNumberish,
+    gasfee: BigNumberish,
+    protocolFlatFee: BigNumberish,
+    message: BytesLike,
+    callOptions: CallOptionsStruct,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
-    to: string,
-    token: string,
-    amount: bigint,
-    data: string
+    sender: string,
+    chainId: bigint,
+    receiver: string,
+    zrc20: string,
+    value: bigint,
+    gasfee: bigint,
+    protocolFlatFee: bigint,
+    message: string,
+    callOptions: CallOptionsStructOutput,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
-    to: string;
-    token: string;
-    amount: bigint;
-    data: string;
+    sender: string;
+    chainId: bigint;
+    receiver: string;
+    zrc20: string;
+    value: bigint;
+    gasfee: bigint;
+    protocolFlatFee: bigint;
+    message: string;
+    callOptions: CallOptionsStructOutput;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -496,27 +568,42 @@ export namespace WithdrawnAndCalledEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace WithdrawnAndRevertedEvent {
+export namespace WithdrawnV2Event {
   export type InputTuple = [
-    to: AddressLike,
-    token: AddressLike,
-    amount: BigNumberish,
-    data: BytesLike,
-    revertContext: RevertContextStruct
+    sender: AddressLike,
+    chainId: BigNumberish,
+    receiver: BytesLike,
+    zrc20: AddressLike,
+    value: BigNumberish,
+    gasfee: BigNumberish,
+    protocolFlatFee: BigNumberish,
+    message: BytesLike,
+    callOptions: CallOptionsStruct,
+    revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
-    to: string,
-    token: string,
-    amount: bigint,
-    data: string,
-    revertContext: RevertContextStructOutput
+    sender: string,
+    chainId: bigint,
+    receiver: string,
+    zrc20: string,
+    value: bigint,
+    gasfee: bigint,
+    protocolFlatFee: bigint,
+    message: string,
+    callOptions: CallOptionsStructOutput,
+    revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
-    to: string;
-    token: string;
-    amount: bigint;
-    data: string;
-    revertContext: RevertContextStructOutput;
+    sender: string;
+    chainId: bigint;
+    receiver: string;
+    zrc20: string;
+    value: bigint;
+    gasfee: bigint;
+    protocolFlatFee: bigint;
+    message: string;
+    callOptions: CallOptionsStructOutput;
+    revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -524,11 +611,11 @@ export namespace WithdrawnAndRevertedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface ERC20Custody extends BaseContract {
-  connect(runner?: ContractRunner | null): ERC20Custody;
+export interface GatewayZEVMUpgradeTest extends BaseContract {
+  connect(runner?: ContractRunner | null): GatewayZEVMUpgradeTest;
   waitForDeployment(): Promise<this>;
 
-  interface: ERC20CustodyInterface;
+  interface: GatewayZEVMUpgradeTestInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -569,26 +656,95 @@ export interface ERC20Custody extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
+  MAX_MESSAGE_SIZE: TypedContractMethod<[], [bigint], "view">;
+
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
-  WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
+  "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
 
-  WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
+  "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      zrc20: AddressLike,
+      message: BytesLike,
+      gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
 
   deposit: TypedContractMethod<
+    [zrc20: AddressLike, amount: BigNumberish, target: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  "depositAndCall((bytes,address,uint256),uint256,address,bytes)": TypedContractMethod<
     [
-      recipient: BytesLike,
-      asset: AddressLike,
+      context: ZContextStruct,
       amount: BigNumberish,
+      target: AddressLike,
       message: BytesLike
     ],
     [void],
     "nonpayable"
   >;
 
-  gateway: TypedContractMethod<[], [string], "view">;
+  "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)": TypedContractMethod<
+    [
+      context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  depositAndRevert: TypedContractMethod<
+    [
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      revertContext: RevertContextStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  execute: TypedContractMethod<
+    [
+      context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  executeRevert: TypedContractMethod<
+    [target: AddressLike, revertContext: RevertContextStruct],
+    [void],
+    "nonpayable"
+  >;
 
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
@@ -605,7 +761,7 @@ export interface ERC20Custody extends BaseContract {
   >;
 
   initialize: TypedContractMethod<
-    [gateway_: AddressLike, tssAddress_: AddressLike, admin_: AddressLike],
+    [zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -628,31 +784,13 @@ export interface ERC20Custody extends BaseContract {
     "nonpayable"
   >;
 
-  setSupportsLegacy: TypedContractMethod<
-    [_supportsLegacy: boolean],
-    [void],
-    "nonpayable"
-  >;
-
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
     "view"
   >;
 
-  supportsLegacy: TypedContractMethod<[], [boolean], "view">;
-
-  tssAddress: TypedContractMethod<[], [string], "view">;
-
   unpause: TypedContractMethod<[], [void], "nonpayable">;
-
-  unwhitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
-
-  updateTSSAddress: TypedContractMethod<
-    [newTSSAddress: AddressLike],
-    [void],
-    "nonpayable"
-  >;
 
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
@@ -660,38 +798,80 @@ export interface ERC20Custody extends BaseContract {
     "payable"
   >;
 
-  whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
-
-  whitelisted: TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
-
-  withdraw: TypedContractMethod<
-    [to: AddressLike, token: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  withdrawAndCall: TypedContractMethod<
+  "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
-      to: AddressLike,
-      token: AddressLike,
+      receiver: BytesLike,
       amount: BigNumberish,
-      data: BytesLike
+      zrc20: AddressLike,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
   >;
 
-  withdrawAndRevert: TypedContractMethod<
+  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
-      to: AddressLike,
-      token: AddressLike,
+      receiver: BytesLike,
       amount: BigNumberish,
-      data: BytesLike,
-      revertContext: RevertContextStruct
+      chainId: BigNumberish,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
   >;
+
+  "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  zetaToken: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -701,32 +881,107 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "MAX_MESSAGE_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "PROTOCOL_ADDRESS"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "WHITELISTER_ROLE"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
-    nameOrSignature: "WITHDRAWER_ROLE"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      zrc20: AddressLike,
+      message: BytesLike,
+      gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "deposit"
   ): TypedContractMethod<
+    [zrc20: AddressLike, amount: BigNumberish, target: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
+  ): TypedContractMethod<
     [
-      recipient: BytesLike,
-      asset: AddressLike,
+      context: ZContextStruct,
       amount: BigNumberish,
+      target: AddressLike,
       message: BytesLike
     ],
     [void],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "gateway"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
+  ): TypedContractMethod<
+    [
+      context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndRevert"
+  ): TypedContractMethod<
+    [
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      revertContext: RevertContextStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "execute"
+  ): TypedContractMethod<
+    [
+      context: ZContextStruct,
+      zrc20: AddressLike,
+      amount: BigNumberish,
+      target: AddressLike,
+      message: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "executeRevert"
+  ): TypedContractMethod<
+    [target: AddressLike, revertContext: RevertContextStruct],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;
@@ -747,7 +1002,7 @@ export interface ERC20Custody extends BaseContract {
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
-    [gateway_: AddressLike, tssAddress_: AddressLike, admin_: AddressLike],
+    [zetaToken_: AddressLike, admin_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -775,26 +1030,11 @@ export interface ERC20Custody extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "setSupportsLegacy"
-  ): TypedContractMethod<[_supportsLegacy: boolean], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
-    nameOrSignature: "supportsLegacy"
-  ): TypedContractMethod<[], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "tssAddress"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "unwhitelist"
-  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "updateTSSAddress"
-  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<
@@ -803,50 +1043,94 @@ export interface ERC20Custody extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "whitelist"
-  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "whitelisted"
-  ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
-  getFunction(
-    nameOrSignature: "withdraw"
-  ): TypedContractMethod<
-    [to: AddressLike, token: AddressLike, amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndCall"
+    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
-      to: AddressLike,
-      token: AddressLike,
+      receiver: BytesLike,
       amount: BigNumberish,
-      data: BytesLike
+      zrc20: AddressLike,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdrawAndRevert"
+    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
-      to: AddressLike,
-      token: AddressLike,
+      receiver: BytesLike,
       amount: BigNumberish,
-      data: BytesLike,
-      revertContext: RevertContextStruct
+      chainId: BigNumberish,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "zetaToken"
+  ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
-    key: "Deposited"
+    key: "Called"
   ): TypedContractEvent<
-    DepositedEvent.InputTuple,
-    DepositedEvent.OutputTuple,
-    DepositedEvent.OutputObject
+    CalledEvent.InputTuple,
+    CalledEvent.OutputTuple,
+    CalledEvent.OutputObject
   >;
   getEvent(
     key: "Initialized"
@@ -891,32 +1175,11 @@ export interface ERC20Custody extends BaseContract {
     UnpausedEvent.OutputObject
   >;
   getEvent(
-    key: "Unwhitelisted"
-  ): TypedContractEvent<
-    UnwhitelistedEvent.InputTuple,
-    UnwhitelistedEvent.OutputTuple,
-    UnwhitelistedEvent.OutputObject
-  >;
-  getEvent(
-    key: "UpdatedCustodyTSSAddress"
-  ): TypedContractEvent<
-    UpdatedCustodyTSSAddressEvent.InputTuple,
-    UpdatedCustodyTSSAddressEvent.OutputTuple,
-    UpdatedCustodyTSSAddressEvent.OutputObject
-  >;
-  getEvent(
     key: "Upgraded"
   ): TypedContractEvent<
     UpgradedEvent.InputTuple,
     UpgradedEvent.OutputTuple,
     UpgradedEvent.OutputObject
-  >;
-  getEvent(
-    key: "Whitelisted"
-  ): TypedContractEvent<
-    WhitelistedEvent.InputTuple,
-    WhitelistedEvent.OutputTuple,
-    WhitelistedEvent.OutputObject
   >;
   getEvent(
     key: "Withdrawn"
@@ -926,30 +1189,23 @@ export interface ERC20Custody extends BaseContract {
     WithdrawnEvent.OutputObject
   >;
   getEvent(
-    key: "WithdrawnAndCalled"
+    key: "WithdrawnV2"
   ): TypedContractEvent<
-    WithdrawnAndCalledEvent.InputTuple,
-    WithdrawnAndCalledEvent.OutputTuple,
-    WithdrawnAndCalledEvent.OutputObject
-  >;
-  getEvent(
-    key: "WithdrawnAndReverted"
-  ): TypedContractEvent<
-    WithdrawnAndRevertedEvent.InputTuple,
-    WithdrawnAndRevertedEvent.OutputTuple,
-    WithdrawnAndRevertedEvent.OutputObject
+    WithdrawnV2Event.InputTuple,
+    WithdrawnV2Event.OutputTuple,
+    WithdrawnV2Event.OutputObject
   >;
 
   filters: {
-    "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
-      DepositedEvent.InputTuple,
-      DepositedEvent.OutputTuple,
-      DepositedEvent.OutputObject
+    "Called(address,address,bytes,bytes,tuple,tuple)": TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
-    Deposited: TypedContractEvent<
-      DepositedEvent.InputTuple,
-      DepositedEvent.OutputTuple,
-      DepositedEvent.OutputObject
+    Called: TypedContractEvent<
+      CalledEvent.InputTuple,
+      CalledEvent.OutputTuple,
+      CalledEvent.OutputObject
     >;
 
     "Initialized(uint64)": TypedContractEvent<
@@ -1018,28 +1274,6 @@ export interface ERC20Custody extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "Unwhitelisted(address)": TypedContractEvent<
-      UnwhitelistedEvent.InputTuple,
-      UnwhitelistedEvent.OutputTuple,
-      UnwhitelistedEvent.OutputObject
-    >;
-    Unwhitelisted: TypedContractEvent<
-      UnwhitelistedEvent.InputTuple,
-      UnwhitelistedEvent.OutputTuple,
-      UnwhitelistedEvent.OutputObject
-    >;
-
-    "UpdatedCustodyTSSAddress(address,address)": TypedContractEvent<
-      UpdatedCustodyTSSAddressEvent.InputTuple,
-      UpdatedCustodyTSSAddressEvent.OutputTuple,
-      UpdatedCustodyTSSAddressEvent.OutputObject
-    >;
-    UpdatedCustodyTSSAddress: TypedContractEvent<
-      UpdatedCustodyTSSAddressEvent.InputTuple,
-      UpdatedCustodyTSSAddressEvent.OutputTuple,
-      UpdatedCustodyTSSAddressEvent.OutputObject
-    >;
-
     "Upgraded(address)": TypedContractEvent<
       UpgradedEvent.InputTuple,
       UpgradedEvent.OutputTuple,
@@ -1051,18 +1285,7 @@ export interface ERC20Custody extends BaseContract {
       UpgradedEvent.OutputObject
     >;
 
-    "Whitelisted(address)": TypedContractEvent<
-      WhitelistedEvent.InputTuple,
-      WhitelistedEvent.OutputTuple,
-      WhitelistedEvent.OutputObject
-    >;
-    Whitelisted: TypedContractEvent<
-      WhitelistedEvent.InputTuple,
-      WhitelistedEvent.OutputTuple,
-      WhitelistedEvent.OutputObject
-    >;
-
-    "Withdrawn(address,address,uint256)": TypedContractEvent<
+    "Withdrawn(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple,tuple)": TypedContractEvent<
       WithdrawnEvent.InputTuple,
       WithdrawnEvent.OutputTuple,
       WithdrawnEvent.OutputObject
@@ -1073,26 +1296,15 @@ export interface ERC20Custody extends BaseContract {
       WithdrawnEvent.OutputObject
     >;
 
-    "WithdrawnAndCalled(address,address,uint256,bytes)": TypedContractEvent<
-      WithdrawnAndCalledEvent.InputTuple,
-      WithdrawnAndCalledEvent.OutputTuple,
-      WithdrawnAndCalledEvent.OutputObject
+    "WithdrawnV2(address,uint256,bytes,address,uint256,uint256,uint256,bytes,tuple,tuple)": TypedContractEvent<
+      WithdrawnV2Event.InputTuple,
+      WithdrawnV2Event.OutputTuple,
+      WithdrawnV2Event.OutputObject
     >;
-    WithdrawnAndCalled: TypedContractEvent<
-      WithdrawnAndCalledEvent.InputTuple,
-      WithdrawnAndCalledEvent.OutputTuple,
-      WithdrawnAndCalledEvent.OutputObject
-    >;
-
-    "WithdrawnAndReverted(address,address,uint256,bytes,tuple)": TypedContractEvent<
-      WithdrawnAndRevertedEvent.InputTuple,
-      WithdrawnAndRevertedEvent.OutputTuple,
-      WithdrawnAndRevertedEvent.OutputObject
-    >;
-    WithdrawnAndReverted: TypedContractEvent<
-      WithdrawnAndRevertedEvent.InputTuple,
-      WithdrawnAndRevertedEvent.OutputTuple,
-      WithdrawnAndRevertedEvent.OutputObject
+    WithdrawnV2: TypedContractEvent<
+      WithdrawnV2Event.InputTuple,
+      WithdrawnV2Event.OutputTuple,
+      WithdrawnV2Event.OutputObject
     >;
   };
 }

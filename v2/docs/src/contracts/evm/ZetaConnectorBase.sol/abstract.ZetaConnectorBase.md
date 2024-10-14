@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/053cc6a26755df7c287c7e44aada3142e3eaa263/contracts/evm/ZetaConnectorBase.sol)
 
 **Inherits:**
-[IZetaConnectorEvents](/contracts/evm/interfaces/IZetaConnector.sol/interface.IZetaConnectorEvents.md), ReentrancyGuard, Pausable, AccessControl
+Initializable, UUPSUpgradeable, [IZetaConnectorEvents](/contracts/evm/interfaces/IZetaConnector.sol/interface.IZetaConnectorEvents.md), ReentrancyGuardUpgradeable, PausableUpgradeable, AccessControlUpgradeable
 
 Abstract base contract for ZetaConnector.
 
@@ -15,7 +15,7 @@ The Gateway contract used for executing cross-chain calls.
 
 
 ```solidity
-IGatewayEVM public immutable gateway;
+IGatewayEVM public gateway;
 ```
 
 
@@ -24,7 +24,7 @@ The address of the Zeta token.
 
 
 ```solidity
-address public immutable zetaToken;
+address public zetaToken;
 ```
 
 
@@ -65,16 +65,39 @@ bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
 
 ## Functions
-### constructor
+### initialize
 
-Constructor for ZetaConnectors.
+Initializer for ZetaConnectors.
 
 *Set admin as default admin and pauser, and tssAddress as tss role.*
 
 
 ```solidity
-constructor(address gateway_, address zetaToken_, address tssAddress_, address admin_);
+function initialize(
+    address gateway_,
+    address zetaToken_,
+    address tssAddress_,
+    address admin_
+)
+    public
+    virtual
+    initializer;
 ```
+
+### _authorizeUpgrade
+
+*Authorizes the upgrade of the contract, sender must be owner.*
+
+
+```solidity
+function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newImplementation`|`address`|Address of the new implementation.|
+
 
 ### updateTSSAddress
 

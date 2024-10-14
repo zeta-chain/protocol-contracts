@@ -9,6 +9,7 @@ import "../contracts/zevm/SystemContract.sol";
 import "./utils/TestUniversalContract.sol";
 
 import "./utils/WZETA.sol";
+import "./utils/upgrades/GatewayZEVMUpgradeTest.sol";
 
 import "../contracts/zevm/GatewayZEVM.sol";
 import "../contracts/zevm/ZRC20.sol";
@@ -31,6 +32,19 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     error ZeroAddress();
     error LowBalance();
+
+    event WithdrawnV2(
+        address indexed sender,
+        uint256 indexed chainId,
+        bytes receiver,
+        address zrc20,
+        uint256 value,
+        uint256 gasfee,
+        uint256 protocolFlatFee,
+        bytes message,
+        CallOptions callOptions,
+        RevertOptions revertOptions
+    );
 
     function setUp() public {
         owner = address(this);
@@ -596,6 +610,33 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         emit Called(owner, address(zrc20), abi.encodePacked(addr1), message, callOptions, revertOptions);
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptions);
+    }
+
+    function testUpgradeAndWithdrawZRC20() public {
+        // upgrade
+        Upgrades.upgradeProxy(proxy, "GatewayZEVMUpgradeTest.sol", "", owner);
+        GatewayZEVMUpgradeTest gatewayUpgradeTest = GatewayZEVMUpgradeTest(proxy);
+        // withdraw
+        uint256 amount = 1;
+        uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
+
+        vm.expectEmit(true, true, true, true, address(gatewayUpgradeTest));
+        emit WithdrawnV2(
+            owner,
+            0,
+            abi.encodePacked(addr1),
+            address(zrc20),
+            amount,
+            0,
+            zrc20.PROTOCOL_FLAT_FEE(),
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
+        gatewayUpgradeTest.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
+
+        uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
+        assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
     }
 }
 

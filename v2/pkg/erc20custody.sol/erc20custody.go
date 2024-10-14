@@ -52,7 +52,7 @@ var ERC20CustodyABI = ERC20CustodyMetaData.ABI
 var ERC20CustodyBin = ERC20CustodyMetaData.Bin
 
 // DeployERC20Custody deploys a new Ethereum contract, binding an instance of ERC20Custody to it.
-func DeployERC20Custody(auth *bind.TransactOpts, backend bind.ContractBackend, gateway_ common.Address, tssAddress_ common.Address, admin_ common.Address) (common.Address, *types.Transaction, *ERC20Custody, error) {
+func DeployERC20Custody(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *ERC20Custody, error) {
 	parsed, err := ERC20CustodyMetaData.GetAbi()
 	if err != nil {
 		return common.Address{}, nil, nil, err
@@ -61,7 +61,7 @@ func DeployERC20Custody(auth *bind.TransactOpts, backend bind.ContractBackend, g
 		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
 	}
 
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(ERC20CustodyBin), backend, gateway_, tssAddress_, admin_)
+	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(ERC20CustodyBin), backend)
 	if err != nil {
 		return common.Address{}, nil, nil, err
 	}
@@ -272,6 +272,37 @@ func (_ERC20Custody *ERC20CustodyCallerSession) PAUSERROLE() ([32]byte, error) {
 	return _ERC20Custody.Contract.PAUSERROLE(&_ERC20Custody.CallOpts)
 }
 
+// UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
+//
+// Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
+func (_ERC20Custody *ERC20CustodyCaller) UPGRADEINTERFACEVERSION(opts *bind.CallOpts) (string, error) {
+	var out []interface{}
+	err := _ERC20Custody.contract.Call(opts, &out, "UPGRADE_INTERFACE_VERSION")
+
+	if err != nil {
+		return *new(string), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(string)).(*string)
+
+	return out0, err
+
+}
+
+// UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
+//
+// Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
+func (_ERC20Custody *ERC20CustodySession) UPGRADEINTERFACEVERSION() (string, error) {
+	return _ERC20Custody.Contract.UPGRADEINTERFACEVERSION(&_ERC20Custody.CallOpts)
+}
+
+// UPGRADEINTERFACEVERSION is a free data retrieval call binding the contract method 0xad3cb1cc.
+//
+// Solidity: function UPGRADE_INTERFACE_VERSION() view returns(string)
+func (_ERC20Custody *ERC20CustodyCallerSession) UPGRADEINTERFACEVERSION() (string, error) {
+	return _ERC20Custody.Contract.UPGRADEINTERFACEVERSION(&_ERC20Custody.CallOpts)
+}
+
 // WHITELISTERROLE is a free data retrieval call binding the contract method 0x570618e1.
 //
 // Solidity: function WHITELISTER_ROLE() view returns(bytes32)
@@ -458,6 +489,37 @@ func (_ERC20Custody *ERC20CustodyCallerSession) Paused() (bool, error) {
 	return _ERC20Custody.Contract.Paused(&_ERC20Custody.CallOpts)
 }
 
+// ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
+//
+// Solidity: function proxiableUUID() view returns(bytes32)
+func (_ERC20Custody *ERC20CustodyCaller) ProxiableUUID(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _ERC20Custody.contract.Call(opts, &out, "proxiableUUID")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
+//
+// Solidity: function proxiableUUID() view returns(bytes32)
+func (_ERC20Custody *ERC20CustodySession) ProxiableUUID() ([32]byte, error) {
+	return _ERC20Custody.Contract.ProxiableUUID(&_ERC20Custody.CallOpts)
+}
+
+// ProxiableUUID is a free data retrieval call binding the contract method 0x52d1902d.
+//
+// Solidity: function proxiableUUID() view returns(bytes32)
+func (_ERC20Custody *ERC20CustodyCallerSession) ProxiableUUID() ([32]byte, error) {
+	return _ERC20Custody.Contract.ProxiableUUID(&_ERC20Custody.CallOpts)
+}
+
 // SupportsInterface is a free data retrieval call binding the contract method 0x01ffc9a7.
 //
 // Solidity: function supportsInterface(bytes4 interfaceId) view returns(bool)
@@ -624,6 +686,27 @@ func (_ERC20Custody *ERC20CustodyTransactorSession) GrantRole(role [32]byte, acc
 	return _ERC20Custody.Contract.GrantRole(&_ERC20Custody.TransactOpts, role, account)
 }
 
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
+//
+// Solidity: function initialize(address gateway_, address tssAddress_, address admin_) returns()
+func (_ERC20Custody *ERC20CustodyTransactor) Initialize(opts *bind.TransactOpts, gateway_ common.Address, tssAddress_ common.Address, admin_ common.Address) (*types.Transaction, error) {
+	return _ERC20Custody.contract.Transact(opts, "initialize", gateway_, tssAddress_, admin_)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
+//
+// Solidity: function initialize(address gateway_, address tssAddress_, address admin_) returns()
+func (_ERC20Custody *ERC20CustodySession) Initialize(gateway_ common.Address, tssAddress_ common.Address, admin_ common.Address) (*types.Transaction, error) {
+	return _ERC20Custody.Contract.Initialize(&_ERC20Custody.TransactOpts, gateway_, tssAddress_, admin_)
+}
+
+// Initialize is a paid mutator transaction binding the contract method 0xc0c53b8b.
+//
+// Solidity: function initialize(address gateway_, address tssAddress_, address admin_) returns()
+func (_ERC20Custody *ERC20CustodyTransactorSession) Initialize(gateway_ common.Address, tssAddress_ common.Address, admin_ common.Address) (*types.Transaction, error) {
+	return _ERC20Custody.Contract.Initialize(&_ERC20Custody.TransactOpts, gateway_, tssAddress_, admin_)
+}
+
 // Pause is a paid mutator transaction binding the contract method 0x8456cb59.
 //
 // Solidity: function pause() returns()
@@ -769,6 +852,27 @@ func (_ERC20Custody *ERC20CustodySession) UpdateTSSAddress(newTSSAddress common.
 // Solidity: function updateTSSAddress(address newTSSAddress) returns()
 func (_ERC20Custody *ERC20CustodyTransactorSession) UpdateTSSAddress(newTSSAddress common.Address) (*types.Transaction, error) {
 	return _ERC20Custody.Contract.UpdateTSSAddress(&_ERC20Custody.TransactOpts, newTSSAddress)
+}
+
+// UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
+//
+// Solidity: function upgradeToAndCall(address newImplementation, bytes data) payable returns()
+func (_ERC20Custody *ERC20CustodyTransactor) UpgradeToAndCall(opts *bind.TransactOpts, newImplementation common.Address, data []byte) (*types.Transaction, error) {
+	return _ERC20Custody.contract.Transact(opts, "upgradeToAndCall", newImplementation, data)
+}
+
+// UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
+//
+// Solidity: function upgradeToAndCall(address newImplementation, bytes data) payable returns()
+func (_ERC20Custody *ERC20CustodySession) UpgradeToAndCall(newImplementation common.Address, data []byte) (*types.Transaction, error) {
+	return _ERC20Custody.Contract.UpgradeToAndCall(&_ERC20Custody.TransactOpts, newImplementation, data)
+}
+
+// UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.
+//
+// Solidity: function upgradeToAndCall(address newImplementation, bytes data) payable returns()
+func (_ERC20Custody *ERC20CustodyTransactorSession) UpgradeToAndCall(newImplementation common.Address, data []byte) (*types.Transaction, error) {
+	return _ERC20Custody.Contract.UpgradeToAndCall(&_ERC20Custody.TransactOpts, newImplementation, data)
 }
 
 // Whitelist is a paid mutator transaction binding the contract method 0x9b19251a.
@@ -996,6 +1100,140 @@ func (_ERC20Custody *ERC20CustodyFilterer) WatchDeposited(opts *bind.WatchOpts, 
 func (_ERC20Custody *ERC20CustodyFilterer) ParseDeposited(log types.Log) (*ERC20CustodyDeposited, error) {
 	event := new(ERC20CustodyDeposited)
 	if err := _ERC20Custody.contract.UnpackLog(event, "Deposited", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ERC20CustodyInitializedIterator is returned from FilterInitialized and is used to iterate over the raw logs and unpacked data for Initialized events raised by the ERC20Custody contract.
+type ERC20CustodyInitializedIterator struct {
+	Event *ERC20CustodyInitialized // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ERC20CustodyInitializedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ERC20CustodyInitialized)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ERC20CustodyInitialized)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ERC20CustodyInitializedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ERC20CustodyInitializedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ERC20CustodyInitialized represents a Initialized event raised by the ERC20Custody contract.
+type ERC20CustodyInitialized struct {
+	Version uint64
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterInitialized is a free log retrieval operation binding the contract event 0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2.
+//
+// Solidity: event Initialized(uint64 version)
+func (_ERC20Custody *ERC20CustodyFilterer) FilterInitialized(opts *bind.FilterOpts) (*ERC20CustodyInitializedIterator, error) {
+
+	logs, sub, err := _ERC20Custody.contract.FilterLogs(opts, "Initialized")
+	if err != nil {
+		return nil, err
+	}
+	return &ERC20CustodyInitializedIterator{contract: _ERC20Custody.contract, event: "Initialized", logs: logs, sub: sub}, nil
+}
+
+// WatchInitialized is a free log subscription operation binding the contract event 0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2.
+//
+// Solidity: event Initialized(uint64 version)
+func (_ERC20Custody *ERC20CustodyFilterer) WatchInitialized(opts *bind.WatchOpts, sink chan<- *ERC20CustodyInitialized) (event.Subscription, error) {
+
+	logs, sub, err := _ERC20Custody.contract.WatchLogs(opts, "Initialized")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ERC20CustodyInitialized)
+				if err := _ERC20Custody.contract.UnpackLog(event, "Initialized", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseInitialized is a log parse operation binding the contract event 0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2.
+//
+// Solidity: event Initialized(uint64 version)
+func (_ERC20Custody *ERC20CustodyFilterer) ParseInitialized(log types.Log) (*ERC20CustodyInitialized, error) {
+	event := new(ERC20CustodyInitialized)
+	if err := _ERC20Custody.contract.UnpackLog(event, "Initialized", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -2029,6 +2267,150 @@ func (_ERC20Custody *ERC20CustodyFilterer) WatchUpdatedCustodyTSSAddress(opts *b
 func (_ERC20Custody *ERC20CustodyFilterer) ParseUpdatedCustodyTSSAddress(log types.Log) (*ERC20CustodyUpdatedCustodyTSSAddress, error) {
 	event := new(ERC20CustodyUpdatedCustodyTSSAddress)
 	if err := _ERC20Custody.contract.UnpackLog(event, "UpdatedCustodyTSSAddress", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ERC20CustodyUpgradedIterator is returned from FilterUpgraded and is used to iterate over the raw logs and unpacked data for Upgraded events raised by the ERC20Custody contract.
+type ERC20CustodyUpgradedIterator struct {
+	Event *ERC20CustodyUpgraded // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ERC20CustodyUpgradedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ERC20CustodyUpgraded)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ERC20CustodyUpgraded)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ERC20CustodyUpgradedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ERC20CustodyUpgradedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ERC20CustodyUpgraded represents a Upgraded event raised by the ERC20Custody contract.
+type ERC20CustodyUpgraded struct {
+	Implementation common.Address
+	Raw            types.Log // Blockchain specific contextual infos
+}
+
+// FilterUpgraded is a free log retrieval operation binding the contract event 0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b.
+//
+// Solidity: event Upgraded(address indexed implementation)
+func (_ERC20Custody *ERC20CustodyFilterer) FilterUpgraded(opts *bind.FilterOpts, implementation []common.Address) (*ERC20CustodyUpgradedIterator, error) {
+
+	var implementationRule []interface{}
+	for _, implementationItem := range implementation {
+		implementationRule = append(implementationRule, implementationItem)
+	}
+
+	logs, sub, err := _ERC20Custody.contract.FilterLogs(opts, "Upgraded", implementationRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ERC20CustodyUpgradedIterator{contract: _ERC20Custody.contract, event: "Upgraded", logs: logs, sub: sub}, nil
+}
+
+// WatchUpgraded is a free log subscription operation binding the contract event 0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b.
+//
+// Solidity: event Upgraded(address indexed implementation)
+func (_ERC20Custody *ERC20CustodyFilterer) WatchUpgraded(opts *bind.WatchOpts, sink chan<- *ERC20CustodyUpgraded, implementation []common.Address) (event.Subscription, error) {
+
+	var implementationRule []interface{}
+	for _, implementationItem := range implementation {
+		implementationRule = append(implementationRule, implementationItem)
+	}
+
+	logs, sub, err := _ERC20Custody.contract.WatchLogs(opts, "Upgraded", implementationRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ERC20CustodyUpgraded)
+				if err := _ERC20Custody.contract.UnpackLog(event, "Upgraded", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseUpgraded is a log parse operation binding the contract event 0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b.
+//
+// Solidity: event Upgraded(address indexed implementation)
+func (_ERC20Custody *ERC20CustodyFilterer) ParseUpgraded(log types.Log) (*ERC20CustodyUpgraded, error) {
+	event := new(ERC20CustodyUpgraded)
+	if err := _ERC20Custody.contract.UnpackLog(event, "Upgraded", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
-import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
+import { IERC20Custody } from "../../../contracts/evm/interfaces/IERC20Custody.sol";
+import { IGatewayEVM } from "../../../contracts/evm/interfaces/IGatewayEVM.sol";
 
-import { RevertContext } from "../../contracts/Revert.sol";
+import { RevertContext } from "../../../contracts/Revert.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
@@ -15,10 +15,11 @@ import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-/// @title ERC20Custody
-/// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
-/// @dev This contract does not call smart contracts directly, it passes through the Gateway contract.
-contract ERC20Custody is
+/// @title ERC20CustodyUpgradeTest
+/// @notice Modified ERC20Custody contract for testing upgrades
+/// @dev The only difference is in event naming
+/// @custom:oz-upgrades-from ERC20Custody
+contract ERC20CustodyUpgradeTest is
     Initializable,
     UUPSUpgradeable,
     IERC20Custody,
@@ -43,6 +44,9 @@ contract ERC20Custody is
     /// @notice New role identifier for whitelister role.
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 
+    /// @dev Modified event for testing upgrade.
+    event WithdrawnV2(address indexed to, address indexed token, uint256 amount);
+
     /// @notice Initializer for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
     function initialize(address gateway_, address tssAddress_, address admin_) public initializer {
@@ -59,7 +63,6 @@ contract ERC20Custody is
         tssAddress = tssAddress_;
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, tssAddress_);
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(WHITELISTER_ROLE, admin_);
         _grantRole(WHITELISTER_ROLE, tssAddress_);
@@ -90,9 +93,9 @@ contract ERC20Custody is
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(WHITELISTER_ROLE, newTSSAddress);
 
-        emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
-
         tssAddress = newTSSAddress;
+
+        emit UpdatedCustodyTSSAddress(newTSSAddress);
     }
 
     /// @notice Unpause contract.
@@ -135,7 +138,7 @@ contract ERC20Custody is
 
         IERC20(token).safeTransfer(to, amount);
 
-        emit Withdrawn(to, token, amount);
+        emit WithdrawnV2(to, token, amount);
     }
 
     /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.

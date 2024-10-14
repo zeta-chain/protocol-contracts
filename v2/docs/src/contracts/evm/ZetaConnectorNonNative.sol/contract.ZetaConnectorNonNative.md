@@ -15,22 +15,24 @@ Max supply for minting.
 
 
 ```solidity
-uint256 public maxSupply = type(uint256).max;
+uint256 public maxSupply;
 ```
 
 
 ## Functions
-### constructor
+### initialize
 
 
 ```solidity
-constructor(
+function initialize(
     address gateway_,
     address zetaToken_,
     address tssAddress_,
     address admin_
 )
-    ZetaConnectorBase(gateway_, zetaToken_, tssAddress_, admin_);
+    public
+    override
+    initializer;
 ```
 
 ### setMaxSupply

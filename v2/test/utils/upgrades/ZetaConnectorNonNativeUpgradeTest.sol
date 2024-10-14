@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorBase.sol";
-import "./interfaces/IZetaNonEthNew.sol";
+import "../../../contracts/evm/ZetaConnectorBase.sol";
+import "../../../contracts/evm/interfaces/IZetaNonEthNew.sol";
 
-/// @title ZetaConnectorNonNative
-/// @notice Implementation of ZetaConnectorBase for non-native token handling.
-/// @dev This contract mints and burns Zeta tokens and interacts with the Gateway contract.
-contract ZetaConnectorNonNative is ZetaConnectorBase {
+/// @title ZetaConnectorNonNativeUpgradeTest
+/// @notice Modified ZetaConnectorNonNative contract for testing upgrades
+/// @dev The only difference is in event naming
+/// @custom:oz-upgrades-from ZetaConnectorNonNative
+contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
     /// @notice Event triggered when max supply is updated.
     /// @param maxSupply New max supply.
     event MaxSupplyUpdated(uint256 maxSupply);
@@ -16,6 +17,9 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
 
     /// @notice Max supply for minting.
     uint256 public maxSupply;
+
+    /// @dev Modified event for testing upgrade.
+    event WithdrawnV2(address indexed to, uint256 amount);
 
     function initialize(
         address gateway_,
@@ -57,7 +61,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         whenNotPaused
     {
         _mintTo(to, amount, internalSendHash);
-        emit Withdrawn(to, amount);
+        emit WithdrawnV2(to, amount);
     }
 
     /// @notice Withdraw tokens and call a contract through Gateway.
@@ -123,7 +127,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     }
 
     /// @dev mints to provided account and checks if totalSupply will be exceeded
-    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) private {
+    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) internal {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
         IZetaNonEthNew(zetaToken).mint(address(to), amount, internalSendHash);
     }
