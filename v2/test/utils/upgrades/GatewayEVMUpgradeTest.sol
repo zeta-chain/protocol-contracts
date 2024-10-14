@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
-import "../../contracts/evm/ZetaConnectorBase.sol";
-import "../../contracts/evm/interfaces/IERC20Custody.sol";
-import "../../contracts/evm/interfaces/IGatewayEVM.sol";
+import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
+import { ZetaConnectorBase } from "../../../contracts/evm/ZetaConnectorBase.sol";
+import { IERC20Custody } from "../../../contracts/evm/interfaces/IERC20Custody.sol";
+import { IGatewayEVM } from "../../../contracts/evm/interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -46,6 +46,8 @@ contract GatewayEVMUpgradeTest is
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @notice Max size of payload + revertOptions revert message.
+    uint256 public constant MAX_PAYLOAD_SIZE = 1024;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -80,10 +82,24 @@ contract GatewayEVMUpgradeTest is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
+        revertIfCallingOnRevert(data);
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
         return result;
+    }
+
+    /// @notice Update tss address
+    /// @param newTSSAddress new tss address
+    function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newTSSAddress == address(0)) revert ZeroAddress();
+
+        _revokeRole(TSS_ROLE, tssAddress);
+        _grantRole(TSS_ROLE, newTSSAddress);
+
+        tssAddress = newTSSAddress;
+
+        emit UpdatedGatewayTSSAddress(newTSSAddress);
     }
 
     /// @notice Pause contract.
@@ -270,6 +286,7 @@ contract GatewayEVMUpgradeTest is
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
+        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -297,6 +314,7 @@ contract GatewayEVMUpgradeTest is
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
+        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -317,6 +335,8 @@ contract GatewayEVMUpgradeTest is
         nonReentrant
     {
         if (receiver == address(0)) revert ZeroAddress();
+        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
 
@@ -387,6 +407,20 @@ contract GatewayEVMUpgradeTest is
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
+        }
+    }
+
+    // @dev prevent spoofing onRevert functions
+    function revertIfCallingOnRevert(bytes calldata data) private pure {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Revertable.onRevert.selector) {
+                revert NotAllowedToCallOnRevert();
+            }
         }
     }
 }

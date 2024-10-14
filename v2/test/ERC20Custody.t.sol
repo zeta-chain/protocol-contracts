@@ -12,6 +12,7 @@ import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import "./utils/upgrades/ERC20CustodyUpgradeTest.sol";
 
 import "../contracts/evm/ERC20Custody.sol";
 import "../contracts/evm/GatewayEVM.sol";
@@ -23,7 +24,6 @@ import "./utils/IReceiverEVM.sol";
 contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyEvents {
     using SafeERC20 for IERC20;
 
-    address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20Custody custody;
@@ -40,6 +40,8 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
     error LegacyMethodsNotSupported();
 
+    event WithdrawnV2(address indexed to, address indexed token, uint256 amount);
+
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
@@ -55,12 +57,19 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
-        proxy = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+       proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorNonNative.initialize, (address(gateway), address(zeta), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
         receiver = new ReceiverEVM();
 
         vm.deal(tssAddress, 1 ether);
@@ -175,19 +184,6 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         whitelisted = custody.whitelisted(address(token));
         assertEq(false, whitelisted);
-    }
-
-    function testNewCustodyFailsIfAddressesAreZero() public {
-        vm.expectRevert(ZeroAddress.selector);
-        ERC20Custody newCustody = new ERC20Custody(address(0), tssAddress, owner);
-
-        vm.expectRevert(ZeroAddress.selector);
-        newCustody = new ERC20Custody(address(gateway), address(0), owner);
-
-        vm.expectRevert(ZeroAddress.selector);
-        newCustody = new ERC20Custody(address(gateway), tssAddress, address(0));
-
-        newCustody = new ERC20Custody(address(gateway), tssAddress, owner);
     }
 
     function testForwardCallToReceiveERC20ThroughCustody() public {
@@ -558,5 +554,35 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.expectRevert(NotWhitelisted.selector);
         custody.deposit(abi.encodePacked(destination), token, 1000, message);
+    }
+
+    function testUpgradeAndWithdraw() public {
+        // upgrade
+        Upgrades.upgradeProxy(address(custody), "ERC20CustodyUpgradeTest.sol", "", owner);
+        ERC20CustodyUpgradeTest custodyV2 = ERC20CustodyUpgradeTest(address(custody));
+        // withdraw
+        uint256 amount = 100_000;
+        uint256 balanceBefore = token.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custodyV2));
+
+        bytes memory transferData = abi.encodeWithSignature("transfer(address,uint256)", address(destination), amount);
+        vm.expectCall(address(token), 0, transferData);
+        vm.expectEmit(true, true, true, true, address(custodyV2));
+        emit WithdrawnV2(destination, address(token), amount);
+        vm.prank(tssAddress);
+        custodyV2.withdraw(destination, address(token), amount);
+
+        // Verify that the tokens were transferred to the destination address
+        uint256 balanceAfter = token.balanceOf(destination);
+        assertEq(balanceAfter, amount);
+
+        // Verify that the tokens were substracted from custody
+        uint256 balanceAfterCustody = token.balanceOf(address(custodyV2));
+        assertEq(balanceAfterCustody, balanceBeforeCustody - amount);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
     }
 }

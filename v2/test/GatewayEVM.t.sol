@@ -7,6 +7,7 @@ import "forge-std/Vm.sol";
 import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
+import "./utils/upgrades/GatewayEVMUpgradeTest.sol";
 
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -24,7 +25,6 @@ import "./utils/Zeta.non-eth.sol";
 contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyEvents {
     using SafeERC20 for IERC20;
 
-    address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20Custody custody;
@@ -40,6 +40,8 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
 
+    event ExecutedV2(address indexed destination, uint256 value, bytes data);
+
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant ASSET_HANDLER_ROLE = keccak256("ASSET_HANDLER_ROLE");
@@ -54,12 +56,19 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         token = new TestERC20("test", "TTK");
 
         zeta = new ZetaNonEth(tssAddress, tssAddress);
-        proxy = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorNonNative.initialize, (address(gateway), address(zeta), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
         vm.prank(tssAddress);
         zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         receiver = new ReceiverEVM();
@@ -318,12 +327,37 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectRevert(ZeroAddress.selector);
         gateway.executeRevert{ value: value }(address(0), data, revertContext);
     }
+
+    function testUpgradeAndForwardCallToReceivePayable() public {
+        // upgrade
+        Upgrades.upgradeProxy(address(gateway), "GatewayEVMUpgradeTest.sol", "", owner);
+        GatewayEVMUpgradeTest gatewayUpgradeTest = GatewayEVMUpgradeTest(address(gateway));
+        // call
+        address custodyBeforeUpgrade = gateway.custody();
+        address tssBeforeUpgrade = gateway.tssAddress();
+
+        string memory str = "Hello, Foundry!";
+        uint256 num = 42;
+        bool flag = true;
+        uint256 value = 1 ether;
+
+        bytes memory data = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
+        vm.expectCall(address(receiver), value, data);
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedPayable(address(gateway), value, str, num, flag);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit ExecutedV2(address(receiver), value, data);
+        vm.prank(tssAddress);
+        gatewayUpgradeTest.execute{ value: value }(address(receiver), data);
+
+        assertEq(custodyBeforeUpgrade, gateway.custody());
+        assertEq(tssBeforeUpgrade, gateway.tssAddress());
+    }
 }
 
 contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
     using SafeERC20 for IERC20;
 
-    address proxy;
     GatewayEVM gateway;
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
@@ -344,12 +378,19 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         token = new TestERC20("test", "TTK");
 
         zeta = new ZetaNonEth(tssAddress, tssAddress);
-        proxy = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), owner))
         );
         gateway = GatewayEVM(proxy);
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zeta), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorBase.initialize, (address(gateway), address(zeta), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
         vm.prank(tssAddress);
         zeta.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
         vm.deal(tssAddress, 1 ether);

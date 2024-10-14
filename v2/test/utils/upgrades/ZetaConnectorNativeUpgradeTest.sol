@@ -1,21 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./ZetaConnectorBase.sol";
-import "./interfaces/IZetaNonEthNew.sol";
+import "../../../contracts/evm/ZetaConnectorBase.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-/// @title ZetaConnectorNonNative
-/// @notice Implementation of ZetaConnectorBase for non-native token handling.
-/// @dev This contract mints and burns Zeta tokens and interacts with the Gateway contract.
-contract ZetaConnectorNonNative is ZetaConnectorBase {
-    /// @notice Event triggered when max supply is updated.
-    /// @param maxSupply New max supply.
-    event MaxSupplyUpdated(uint256 maxSupply);
+/// @title ZetaConnectorNativeUpgradeTest
+/// @notice Modified ZetaConnectorNative contract for testing upgrades
+/// @dev The only difference is in event naming
+/// @custom:oz-upgrades-from ZetaConnectorNative
+contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
+    using SafeERC20 for IERC20;
 
-    error ExceedsMaxSupply();
-
-    /// @notice Max supply for minting.
-    uint256 public maxSupply;
+    /// @dev Modified event for testing upgrade.
+    event WithdrawnV2(address indexed to, uint256 amount);
 
     function initialize(
         address gateway_,
@@ -28,16 +26,6 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         initializer
     {
         super.initialize(gateway_, zetaToken_, tssAddress_, admin_);
-
-        maxSupply = type(uint256).max;
-    }
-
-    /// @notice Set max supply for minting.
-    /// @param maxSupply_ New max supply.
-    /// @dev This function can only be called by the TSS address.
-    function setMaxSupply(uint256 maxSupply_) external onlyRole(TSS_ROLE) whenNotPaused {
-        maxSupply = maxSupply_;
-        emit MaxSupplyUpdated(maxSupply_);
     }
 
     /// @notice Withdraw tokens to a specified address.
@@ -56,8 +44,8 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
-        _mintTo(to, amount, internalSendHash);
-        emit Withdrawn(to, amount);
+        IERC20(zetaToken).safeTransfer(to, amount);
+        emit WithdrawnV2(to, amount);
     }
 
     /// @notice Withdraw tokens and call a contract through Gateway.
@@ -65,7 +53,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
-    /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
+    /// @dev This function can only be called by the TSS address.
     function withdrawAndCall(
         address to,
         uint256 amount,
@@ -78,8 +66,8 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
-        // Mint zetaToken to the Gateway contract
-        _mintTo(address(gateway), amount, internalSendHash);
+        // Transfer zetaToken to the Gateway contract
+        IERC20(zetaToken).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
         gateway.executeWithERC20(address(zetaToken), to, amount, data);
@@ -92,7 +80,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
-    /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
+    /// @dev This function can only be called by the TSS address.
     /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address to,
@@ -107,8 +95,8 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
     {
-        // Mint zetaToken to the Gateway contract
-        _mintTo(address(gateway), amount, internalSendHash);
+        // Transfer zetaToken to the Gateway contract
+        IERC20(zetaToken).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
         gateway.revertWithERC20(address(zetaToken), to, amount, data, revertContext);
@@ -116,15 +104,9 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         emit WithdrawnAndReverted(to, amount, data, revertContext);
     }
 
-    /// @notice Handle received tokens and burn them.
+    /// @notice Handle received tokens.
     /// @param amount The amount of tokens received.
     function receiveTokens(uint256 amount) external override whenNotPaused {
-        IZetaNonEthNew(zetaToken).burnFrom(msg.sender, amount);
-    }
-
-    /// @dev mints to provided account and checks if totalSupply will be exceeded
-    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) internal {
-        if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
-        IZetaNonEthNew(zetaToken).mint(address(to), amount, internalSendHash);
+        IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), amount);
     }
 }
