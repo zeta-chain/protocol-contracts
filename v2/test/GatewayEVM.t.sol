@@ -446,6 +446,15 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
+    function testDepositERC20ToCustodyFailsIfPayloadSizeExceeded() public {
+        uint256 amount = 100_000;
+        token.approve(address(gateway), amount);
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() + 1);
+
+        vm.expectRevert(PayloadSizeExceeded.selector);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+    }
+
     function testDepositZetaToConnector() public {
         uint256 amount = 100_000;
         zeta.approve(address(gateway), amount);
@@ -490,6 +499,12 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         vm.expectRevert("InsufficientETHAmount");
         gateway.deposit{ value: amount }(destination, revertOptions);
+    }
+
+    function testFailDepositEthToTssIfPayloadSizeExceeded() public {
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() + 1);
+        vm.expectRevert("PayloadSizeExceeded");
+        gateway.deposit{ value: 1 }(destination, revertOptions);
     }
 
     function testFailDepositEthToTssIfReceiverIsZeroAddress() public {
