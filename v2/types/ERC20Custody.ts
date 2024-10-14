@@ -42,6 +42,7 @@ export interface ERC20CustodyInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "UPGRADE_INTERFACE_VERSION"
       | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
       | "deposit"
@@ -49,8 +50,10 @@ export interface ERC20CustodyInterface extends Interface {
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
+      | "initialize"
       | "pause"
       | "paused"
+      | "proxiableUUID"
       | "renounceRole"
       | "revokeRole"
       | "setSupportsLegacy"
@@ -60,6 +63,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "unpause"
       | "unwhitelist"
       | "updateTSSAddress"
+      | "upgradeToAndCall"
       | "whitelist"
       | "whitelisted"
       | "withdraw"
@@ -70,6 +74,7 @@ export interface ERC20CustodyInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
       | "Deposited"
+      | "Initialized"
       | "Paused"
       | "RoleAdminChanged"
       | "RoleGranted"
@@ -77,6 +82,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "Unpaused"
       | "Unwhitelisted"
       | "UpdatedCustodyTSSAddress"
+      | "Upgraded"
       | "Whitelisted"
       | "Withdrawn"
       | "WithdrawnAndCalled"
@@ -89,6 +95,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -116,8 +126,16 @@ export interface ERC20CustodyInterface extends Interface {
     functionFragment: "hasRole",
     values: [BytesLike, AddressLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [AddressLike, AddressLike, AddressLike]
+  ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "proxiableUUID",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
     values: [BytesLike, AddressLike]
@@ -150,6 +168,10 @@ export interface ERC20CustodyInterface extends Interface {
   encodeFunctionData(
     functionFragment: "updateTSSAddress",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upgradeToAndCall",
+    values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "whitelist",
@@ -187,6 +209,10 @@ export interface ERC20CustodyInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "UPGRADE_INTERFACE_VERSION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "WHITELISTER_ROLE",
     data: BytesLike
   ): Result;
@@ -202,8 +228,13 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "proxiableUUID",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceRole",
     data: BytesLike
@@ -229,6 +260,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "updateTSSAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
@@ -265,6 +300,18 @@ export namespace DepositedEvent {
     asset: string;
     amount: bigint;
     message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace InitializedEvent {
+  export type InputTuple = [version: BigNumberish];
+  export type OutputTuple = [version: bigint];
+  export interface OutputObject {
+    version: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -371,6 +418,18 @@ export namespace UpdatedCustodyTSSAddressEvent {
   export type OutputTuple = [newTSSAddress: string];
   export interface OutputObject {
     newTSSAddress: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpgradedEvent {
+  export type InputTuple = [implementation: AddressLike];
+  export type OutputTuple = [implementation: string];
+  export interface OutputObject {
+    implementation: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -508,6 +567,8 @@ export interface ERC20Custody extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
+
   WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
@@ -539,9 +600,17 @@ export interface ERC20Custody extends BaseContract {
     "view"
   >;
 
+  initialize: TypedContractMethod<
+    [gateway_: AddressLike, tssAddress_: AddressLike, admin_: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   pause: TypedContractMethod<[], [void], "nonpayable">;
 
   paused: TypedContractMethod<[], [boolean], "view">;
+
+  proxiableUUID: TypedContractMethod<[], [string], "view">;
 
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
@@ -579,6 +648,12 @@ export interface ERC20Custody extends BaseContract {
     [newTSSAddress: AddressLike],
     [void],
     "nonpayable"
+  >;
+
+  upgradeToAndCall: TypedContractMethod<
+    [newImplementation: AddressLike, data: BytesLike],
+    [void],
+    "payable"
   >;
 
   whitelist: TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
@@ -625,6 +700,9 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "UPGRADE_INTERFACE_VERSION"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "WHITELISTER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -663,11 +741,21 @@ export interface ERC20Custody extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<
+    [gateway_: AddressLike, tssAddress_: AddressLike, admin_: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "pause"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "paused"
   ): TypedContractMethod<[], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "proxiableUUID"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<
@@ -703,6 +791,13 @@ export interface ERC20Custody extends BaseContract {
   getFunction(
     nameOrSignature: "updateTSSAddress"
   ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "upgradeToAndCall"
+  ): TypedContractMethod<
+    [newImplementation: AddressLike, data: BytesLike],
+    [void],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "whitelist"
   ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
@@ -748,6 +843,13 @@ export interface ERC20Custody extends BaseContract {
     DepositedEvent.InputTuple,
     DepositedEvent.OutputTuple,
     DepositedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Initialized"
+  ): TypedContractEvent<
+    InitializedEvent.InputTuple,
+    InitializedEvent.OutputTuple,
+    InitializedEvent.OutputObject
   >;
   getEvent(
     key: "Paused"
@@ -799,6 +901,13 @@ export interface ERC20Custody extends BaseContract {
     UpdatedCustodyTSSAddressEvent.OutputObject
   >;
   getEvent(
+    key: "Upgraded"
+  ): TypedContractEvent<
+    UpgradedEvent.InputTuple,
+    UpgradedEvent.OutputTuple,
+    UpgradedEvent.OutputObject
+  >;
+  getEvent(
     key: "Whitelisted"
   ): TypedContractEvent<
     WhitelistedEvent.InputTuple,
@@ -837,6 +946,17 @@ export interface ERC20Custody extends BaseContract {
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
+    >;
+
+    "Initialized(uint64)": TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+    Initialized: TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
     >;
 
     "Paused(address)": TypedContractEvent<
@@ -914,6 +1034,17 @@ export interface ERC20Custody extends BaseContract {
       UpdatedCustodyTSSAddressEvent.InputTuple,
       UpdatedCustodyTSSAddressEvent.OutputTuple,
       UpdatedCustodyTSSAddressEvent.OutputObject
+    >;
+
+    "Upgraded(address)": TypedContractEvent<
+      UpgradedEvent.InputTuple,
+      UpgradedEvent.OutputTuple,
+      UpgradedEvent.OutputObject
+    >;
+    Upgraded: TypedContractEvent<
+      UpgradedEvent.InputTuple,
+      UpgradedEvent.OutputTuple,
+      UpgradedEvent.OutputObject
     >;
 
     "Whitelisted(address)": TypedContractEvent<

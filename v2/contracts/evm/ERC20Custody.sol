@@ -6,20 +6,30 @@ import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
 
 import { RevertContext } from "../../contracts/Revert.sol";
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title ERC20Custody
 /// @notice Holds the ERC20 tokens deposited on ZetaChain and includes functionality to call a contract.
 /// @dev This contract does not call smart contracts directly, it passes through the Gateway contract.
-contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable {
+contract ERC20Custody is
+    Initializable,
+    UUPSUpgradeable,
+    IERC20Custody,
+    ReentrancyGuardUpgradeable,
+    AccessControlUpgradeable,
+    PausableUpgradeable
+{
     using SafeERC20 for IERC20;
 
     /// @notice Gateway contract.
-    IGatewayEVM public immutable gateway;
+    IGatewayEVM public gateway;
     /// @notice Mapping of whitelisted tokens => true/false.
     mapping(address => bool) public whitelisted;
     /// @notice The address of the TSS (Threshold Signature Scheme) contract.
@@ -33,12 +43,18 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
     /// @notice New role identifier for whitelister role.
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 
-    /// @notice Constructor for ERC20Custody.
+    /// @notice Initializer for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
-    constructor(address gateway_, address tssAddress_, address admin_) {
+    function initialize(address gateway_, address tssAddress_, address admin_) public initializer {
         if (gateway_ == address(0) || tssAddress_ == address(0) || admin_ == address(0)) {
             revert ZeroAddress();
         }
+
+        __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
+        __AccessControl_init();
+        __Pausable_init();
+
         gateway = IGatewayEVM(gateway_);
         tssAddress = tssAddress_;
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
@@ -48,6 +64,10 @@ contract ERC20Custody is IERC20Custody, ReentrancyGuard, AccessControl, Pausable
         _grantRole(WHITELISTER_ROLE, admin_);
         _grantRole(WHITELISTER_ROLE, tssAddress_);
     }
+
+    /// @dev Authorizes the upgrade of the contract, sender must be owner.
+    /// @param newImplementation Address of the new implementation.
+    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
 
     /// @notice Pause contract.
     function pause() external onlyRole(PAUSER_ROLE) {
