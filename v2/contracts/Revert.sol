@@ -21,7 +21,7 @@ struct RevertOptions {
 /// @param revertMessage Arbitrary data sent back in onRevert.
 struct RevertContext {
     address asset;
-    uint256 amount;
+    uint64 amount;
     bytes revertMessage;
 }
 
