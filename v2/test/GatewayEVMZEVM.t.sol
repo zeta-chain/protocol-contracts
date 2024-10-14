@@ -41,7 +41,6 @@ contract GatewayEVMZEVMTest is
     // evm
     using SafeERC20 for IERC20;
 
-    address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
@@ -72,12 +71,21 @@ contract GatewayEVMZEVMTest is
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
-        proxyEVM = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), ownerEVM))
         );
-        gatewayEVM = GatewayEVM(proxyEVM);
-        custody = new ERC20Custody(address(gatewayEVM), tssAddress, ownerEVM);
-        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress, ownerEVM);
+        gatewayEVM = GatewayEVM(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gatewayEVM), tssAddress, ownerEVM))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(
+                ZetaConnectorNonNative.initialize, (address(gatewayEVM), address(zeta), tssAddress, ownerEVM)
+            )
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
 
         vm.deal(tssAddress, 1 ether);
 

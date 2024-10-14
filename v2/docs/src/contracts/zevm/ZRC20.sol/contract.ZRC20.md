@@ -1,5 +1,5 @@
 # ZRC20
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/dedf2ca4d335fe85937fd686450fecebb5456bc9/contracts/zevm/ZRC20.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/ec2fd2afc191922ecd1aea1903a837977ec7967e/contracts/zevm/ZRC20.sol)
 
 **Inherits:**
 [IZRC20Metadata](/contracts/zevm/interfaces/IZRC20.sol/interface.IZRC20Metadata.md), [ZRC20Errors](/contracts/zevm/ZRC20.sol/interface.ZRC20Errors.md), [ZRC20Events](/contracts/zevm/interfaces/IZRC20.sol/interface.ZRC20Events.md)

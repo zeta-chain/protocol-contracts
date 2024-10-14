@@ -8,23 +8,29 @@ import "./interfaces/IZetaNonEthNew.sol";
 /// @notice Implementation of ZetaConnectorBase for non-native token handling.
 /// @dev This contract mints and burns Zeta tokens and interacts with the Gateway contract.
 contract ZetaConnectorNonNative is ZetaConnectorBase {
-    /// @notice Max supply for minting.
-    uint256 public maxSupply = type(uint256).max;
-
     /// @notice Event triggered when max supply is updated.
     /// @param maxSupply New max supply.
     event MaxSupplyUpdated(uint256 maxSupply);
 
     error ExceedsMaxSupply();
 
-    constructor(
+    /// @notice Max supply for minting.
+    uint256 public maxSupply;
+
+    function initialize(
         address gateway_,
         address zetaToken_,
         address tssAddress_,
         address admin_
     )
-        ZetaConnectorBase(gateway_, zetaToken_, tssAddress_, admin_)
-    { }
+        public
+        override
+        initializer
+    {
+        super.initialize(gateway_, zetaToken_, tssAddress_, admin_);
+
+        maxSupply = type(uint256).max;
+    }
 
     /// @notice Set max supply for minting.
     /// @param maxSupply_ New max supply.
