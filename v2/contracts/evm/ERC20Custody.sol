@@ -90,9 +90,9 @@ contract ERC20Custody is
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(WHITELISTER_ROLE, newTSSAddress);
 
-        tssAddress = newTSSAddress;
+        emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
 
-        emit UpdatedCustodyTSSAddress(newTSSAddress);
+        tssAddress = newTSSAddress;
     }
 
     /// @notice Unpause contract.

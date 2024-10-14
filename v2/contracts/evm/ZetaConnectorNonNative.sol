@@ -123,7 +123,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     }
 
     /// @dev mints to provided account and checks if totalSupply will be exceeded
-    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) internal {
+    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) private {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
         IZetaNonEthNew(zetaToken).mint(address(to), amount, internalSendHash);
     }

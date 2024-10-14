@@ -98,9 +98,9 @@ contract GatewayEVMUpgradeTest is
         _revokeRole(TSS_ROLE, tssAddress);
         _grantRole(TSS_ROLE, newTSSAddress);
 
+        emit UpdatedGatewayTSSAddress(tssAddress, newTSSAddress);
+        
         tssAddress = newTSSAddress;
-
-        emit UpdatedGatewayTSSAddress(newTSSAddress);
     }
 
     /// @notice Pause contract.

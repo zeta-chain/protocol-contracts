@@ -100,7 +100,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit UpdatedGatewayTSSAddress(newTSSAddress);
+        emit UpdatedGatewayTSSAddress(tssAddress, newTSSAddress);
         gateway.updateTSSAddress(newTSSAddress);
         assertEq(newTSSAddress, gateway.tssAddress());
 
@@ -501,8 +501,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     function testDepositERC20ToCustodyWithPayloadFailsIfPayloadSizeExceeded() public {
         uint256 amount = 100_000;
-        bytes memory payload = new bytes(512);
-        revertOptions.revertMessage = new bytes(512);
+        bytes memory payload = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2);
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2 + 1);
 
         token.approve(address(gateway), amount);
 
@@ -576,8 +576,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
     function testDepositEthToTssWithPayloadFailsIfPayloadSizeExceeded() public {
         uint256 amount = 100_000;
-        bytes memory payload = new bytes(512);
-        revertOptions.revertMessage = new bytes(512);
+        bytes memory payload = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2);
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2 + 1);
 
         vm.expectRevert(PayloadSizeExceeded.selector);
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
@@ -608,8 +608,8 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
     }
 
     function testCallWithPayloadFailsIfPayloadSizeExceeded() public {
-        bytes memory payload = new bytes(512);
-        revertOptions.revertMessage = new bytes(512);
+        bytes memory payload = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2);
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2 + 1);
 
         vm.expectRevert(PayloadSizeExceeded.selector);
         gateway.call(destination, payload, revertOptions);

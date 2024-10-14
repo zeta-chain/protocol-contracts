@@ -52,7 +52,8 @@ interface IGatewayEVMEvents {
 
     /// @notice Emitted when tss address is updated
     /// @param newTSSAddress new tss address
-    event UpdatedGatewayTSSAddress(address newTSSAddress);
+    /// @param oldTSSAddress old tss address
+    event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
 }
 
 /// @title IGatewayEVMErrors

@@ -88,21 +88,21 @@ contract GatewayZEVM is
         _unpause();
     }
 
-    /// @dev Internal function to withdraw ZRC20 tokens.
+    /// @dev Private function to withdraw ZRC20 tokens.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @return The gas fee for the withdrawal.
-    function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256) {
+    function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256) {
         // Use gas limit from zrc20
         return _withdrawZRC20WithGasLimit(amount, zrc20, IZRC20(zrc20).GAS_LIMIT());
     }
 
-    /// @dev Internal function to withdraw ZRC20 tokens with gas limit.
+    /// @dev Private function to withdraw ZRC20 tokens with gas limit.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param gasLimit Gas limit.
     /// @return The gas fee for the withdrawal.
-    function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256) {
+    function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
@@ -117,10 +117,10 @@ contract GatewayZEVM is
         return gasFee;
     }
 
-    /// @dev Internal function to transfer ZETA tokens.
+    /// @dev Private function to transfer ZETA tokens.
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
-    function _transferZETA(uint256 amount, address to) internal {
+    function _transferZETA(uint256 amount, address to) private {
         if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
         IWETH9(zetaToken).withdraw(amount);
         (bool sent,) = to.call{ value: amount }("");
@@ -145,6 +145,7 @@ contract GatewayZEVM is
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
+        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
@@ -219,6 +220,7 @@ contract GatewayZEVM is
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
+        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", 0, revertOptions);
@@ -245,7 +247,7 @@ contract GatewayZEVM is
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, 0, revertOptions);
@@ -271,7 +273,7 @@ contract GatewayZEVM is
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {

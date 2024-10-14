@@ -104,7 +104,7 @@ contract ZetaConnectorNativeTest is
 
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(zetaConnector));
-        emit UpdatedZetaConnectorTSSAddress(newTSSAddress);
+        emit UpdatedZetaConnectorTSSAddress(tssAddress, newTSSAddress);
         zetaConnector.updateTSSAddress(newTSSAddress);
         assertEq(newTSSAddress, zetaConnector.tssAddress());
 

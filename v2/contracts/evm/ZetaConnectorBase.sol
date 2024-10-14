@@ -90,9 +90,9 @@ abstract contract ZetaConnectorBase is
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(TSS_ROLE, newTSSAddress);
 
+        emit UpdatedZetaConnectorTSSAddress(tssAddress, newTSSAddress);
+        
         tssAddress = newTSSAddress;
-
-        emit UpdatedZetaConnectorTSSAddress(newTSSAddress);
     }
 
     /// @notice Pause contract.
