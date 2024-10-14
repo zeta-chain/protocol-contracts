@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
-import { RevertContext, RevertOptions } from "../../contracts/Revert.sol";
+import { RevertContext, RevertOptions, INotSupportedMethods } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
@@ -23,7 +23,8 @@ contract GatewayZEVM is
     AccessControlUpgradeable,
     UUPSUpgradeable,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    INotSupportedMethods
 {
     /// @notice Error indicating a zero address was provided.
     error ZeroAddress();
@@ -141,6 +142,7 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
 
@@ -178,6 +180,7 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (gasLimit == 0) revert InsufficientGasLimit();
@@ -212,6 +215,8 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        revert ZETANotSupported();
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
 
@@ -236,6 +241,8 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        revert ZETANotSupported();
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
         if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
@@ -261,6 +268,7 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (gasLimit == 0) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
@@ -348,6 +356,7 @@ contract GatewayZEVM is
         onlyFungible
         whenNotPaused
     {
+        revert ZETANotSupported();
         if (target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();

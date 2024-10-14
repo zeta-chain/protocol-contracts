@@ -32,3 +32,8 @@ interface Revertable {
     /// @param revertContext Revert context to pass to onRevert.
     function onRevert(RevertContext calldata revertContext) external;
 }
+
+interface INotSupportedMethods {
+    error CallOnRevertNotSupported();
+    error ZETANotSupported();
+}

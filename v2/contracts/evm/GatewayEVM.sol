@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import { RevertContext, RevertOptions, Revertable, INotSupportedMethods } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
@@ -23,7 +23,8 @@ contract GatewayEVM is
     UUPSUpgradeable,
     IGatewayEVM,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    INotSupportedMethods
 {
     using SafeERC20 for IERC20;
 
@@ -233,6 +234,7 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
 
@@ -258,6 +260,7 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
 
@@ -280,6 +283,7 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
@@ -308,6 +312,7 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
@@ -330,6 +335,7 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 

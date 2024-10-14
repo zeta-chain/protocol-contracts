@@ -33,7 +33,7 @@ contract SenderZEVM {
 
         RevertOptions memory revertOptions = RevertOptions({
             revertAddress: address(0x321),
-            callOnRevert: true,
+            callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
             onRevertGasLimit: 0
@@ -72,7 +72,7 @@ contract SenderZEVM {
 
         RevertOptions memory revertOptions = RevertOptions({
             revertAddress: address(0x321),
-            callOnRevert: true,
+            callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
             onRevertGasLimit: 0

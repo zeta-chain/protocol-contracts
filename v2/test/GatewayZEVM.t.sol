@@ -80,7 +80,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         revertOptions = RevertOptions({
             revertAddress: address(0x321),
-            callOnRevert: true,
+            callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
             onRevertGasLimit: 0
@@ -226,55 +226,55 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(ownerBalanceBefore - amount - expectedGasFee, ownerBalanceAfter);
     }
 
-    function testWithdrawZETAFailsIfAmountIsZero() public {
-        vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.withdraw(abi.encodePacked(addr1), 0, 1, revertOptions);
-    }
+    // function testWithdrawZETAFailsIfAmountIsZero() public {
+    //     vm.expectRevert(InsufficientZetaAmount.selector);
+    //     gateway.withdraw(abi.encodePacked(addr1), 0, 1, revertOptions);
+    // }
 
-    function testWithdrawZETAFailsIfReceiverIsZeroAddress() public {
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.withdraw(abi.encodePacked(""), 0, 1, revertOptions);
-    }
+    // function testWithdrawZETAFailsIfReceiverIsZeroAddress() public {
+    //     vm.expectRevert(ZeroAddress.selector);
+    //     gateway.withdraw(abi.encodePacked(""), 0, 1, revertOptions);
+    // }
 
-    function testWithdrawAndCallZETAFailsIfAmountIsZero() public {
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, revertOptions);
-    }
+    // function testWithdrawAndCallZETAFailsIfAmountIsZero() public {
+    //     bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+    //     vm.expectRevert(InsufficientZetaAmount.selector);
+    //     gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, revertOptions);
+    // }
 
-    function testWithdrawAndCallZETAFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(512);
-        revertOptions.revertMessage = new bytes(512);
-        vm.expectRevert(MessageSizeExceeded.selector);
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, revertOptions);
-    }
+    // function testWithdrawAndCallZETAFailsIfMessageSizeExceeded() public {
+    //     bytes memory message = new bytes(512);
+    //     revertOptions.revertMessage = new bytes(512);
+    //     vm.expectRevert(MessageSizeExceeded.selector);
+    //     gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, revertOptions);
+    // }
 
-    function testWithdrawAndCallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message, revertOptions);
-    }
+    // function testWithdrawAndCallZETAFailsIfAmountIsReceiverIsZeroAddress() public {
+    //     bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+    //     vm.expectRevert(ZeroAddress.selector);
+    //     gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message, revertOptions);
+    // }
 
-    function testWithdrawZETA() public {
-        uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 fungibleModuleBalanceBefore = fungibleModule.balance;
-        uint256 chainId = 1;
+    // function testWithdrawZETA() public {
+    //     uint256 amount = 1;
+    //     uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+    //     uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+    //     uint256 fungibleModuleBalanceBefore = fungibleModule.balance;
+    //     uint256 chainId = 1;
 
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "", 0, revertOptions);
-        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
+    //     vm.expectEmit(true, true, true, true, address(gateway));
+    //     emit Withdrawn(owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, "", 0, revertOptions);
+    //     gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
 
-        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
-        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+    //     uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+    //     assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
 
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+    //     uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+    //     assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
-        // Verify amount is transfered to fungible module
-        assertEq(fungibleModuleBalanceBefore + 1, fungibleModule.balance);
-    }
+    //     // Verify amount is transfered to fungible module
+    //     assertEq(fungibleModuleBalanceBefore + 1, fungibleModule.balance);
+    // }
 
     function testWithdrawZETAFailsIfNoAllowance() public {
         uint256 amount = 1;
@@ -310,29 +310,29 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
     }
 
-    function testWithdrawZETAWithMessage() public {
-        uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 fungibleModuleBalanceBefore = fungibleModule.balance;
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 chainId = 1;
+    // function testWithdrawZETAWithMessage() public {
+    //     uint256 amount = 1;
+    //     uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+    //     uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+    //     uint256 fungibleModuleBalanceBefore = fungibleModule.balance;
+    //     bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+    //     uint256 chainId = 1;
 
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(
-            owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message, 0, revertOptions
-        );
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, revertOptions);
+    //     vm.expectEmit(true, true, true, true, address(gateway));
+    //     emit Withdrawn(
+    //         owner, chainId, abi.encodePacked(addr1), address(zetaToken), amount, 0, 0, message, 0, revertOptions
+    //     );
+    //     gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, revertOptions);
 
-        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
-        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+    //     uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+    //     assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
 
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+    //     uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+    //     assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
-        // Verify amount is transfered to fungible module
-        assertEq(fungibleModuleBalanceBefore + 1, fungibleModule.balance);
-    }
+    //     // Verify amount is transfered to fungible module
+    //     assertEq(fungibleModuleBalanceBefore + 1, fungibleModule.balance);
+    // }
 
     function testWithdrawZETAWithMessageFailsIfNoAllowance() public {
         uint256 amount = 1;
@@ -758,104 +758,104 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.depositAndRevert(address(zrc20), 1, address(gateway), revertContext);
     }
 
-    function testDepositZETAAndCallUniversalContractFailsIfTargetIsZeroAddress() public {
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContractFailsIfTargetIsZeroAddress() public {
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.prank(fungibleModule);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.depositAndCall(context, 1, address(0), message);
-    }
+    //     vm.prank(fungibleModule);
+    //     vm.expectRevert(ZeroAddress.selector);
+    //     gateway.depositAndCall(context, 1, address(0), message);
+    // }
 
-    function testDepositZETAAndCallUniversalContractFailsIfTargetIsAmountIsZero() public {
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContractFailsIfTargetIsAmountIsZero() public {
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.prank(fungibleModule);
-        vm.expectRevert(InsufficientZetaAmount.selector);
-        gateway.depositAndCall(context, 0, address(zrc20), message);
-    }
+    //     vm.prank(fungibleModule);
+    //     vm.expectRevert(InsufficientZetaAmount.selector);
+    //     gateway.depositAndCall(context, 0, address(zrc20), message);
+    // }
 
-    function testDepositZETAAndCallUniversalContractFailsIfZeroAddress() public {
-        uint256 amount = 1;
-        uint256 fungibleBalanceBefore = zetaToken.balanceOf(fungibleModule);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 destinationBalanceBefore = address(testUniversalContract).balance;
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContractFailsIfZeroAddress() public {
+    //     uint256 amount = 1;
+    //     uint256 fungibleBalanceBefore = zetaToken.balanceOf(fungibleModule);
+    //     uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+    //     uint256 destinationBalanceBefore = address(testUniversalContract).balance;
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.prank(fungibleModule);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.depositAndCall(context, 1, address(0), message);
-    }
+    //     vm.prank(fungibleModule);
+    //     vm.expectRevert(ZeroAddress.selector);
+    //     gateway.depositAndCall(context, 1, address(0), message);
+    // }
 
-    function testDepositZETAAndCallUniversal() public {
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversal() public {
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.prank(fungibleModule);
-        vm.expectRevert(ZeroAddress.selector);
-        gateway.depositAndCall(context, 1, address(0), message);
-    }
+    //     vm.prank(fungibleModule);
+    //     vm.expectRevert(ZeroAddress.selector);
+    //     gateway.depositAndCall(context, 1, address(0), message);
+    // }
 
-    function testDepositZETAAndCallUniversalContract() public {
-        uint256 amount = 1;
-        uint256 fungibleBalanceBefore = zetaToken.balanceOf(fungibleModule);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 destinationBalanceBefore = address(testUniversalContract).balance;
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContract() public {
+    //     uint256 amount = 1;
+    //     uint256 fungibleBalanceBefore = zetaToken.balanceOf(fungibleModule);
+    //     uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+    //     uint256 destinationBalanceBefore = address(testUniversalContract).balance;
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.expectEmit(true, true, true, true, address(testUniversalContract));
-        emit ContextData(abi.encodePacked(gateway), fungibleModule, amount, address(gateway), "hello");
-        vm.prank(fungibleModule);
-        gateway.depositAndCall(context, amount, address(testUniversalContract), message);
+    //     vm.expectEmit(true, true, true, true, address(testUniversalContract));
+    //     emit ContextData(abi.encodePacked(gateway), fungibleModule, amount, address(gateway), "hello");
+    //     vm.prank(fungibleModule);
+    //     gateway.depositAndCall(context, amount, address(testUniversalContract), message);
 
-        uint256 fungibleBalanceAfter = zetaToken.balanceOf(fungibleModule);
-        assertEq(fungibleBalanceBefore - amount, fungibleBalanceAfter);
+    //     uint256 fungibleBalanceAfter = zetaToken.balanceOf(fungibleModule);
+    //     assertEq(fungibleBalanceBefore - amount, fungibleBalanceAfter);
 
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+    //     uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+    //     assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
-        // Verify amount is transfered to destination
-        assertEq(destinationBalanceBefore + amount, address(testUniversalContract).balance);
-    }
+    //     // Verify amount is transfered to destination
+    //     assertEq(destinationBalanceBefore + amount, address(testUniversalContract).balance);
+    // }
 
-    function testDepositZETAAndCallUniversalContractFailsIfSenderIsNotFungibleModule() public {
-        uint256 amount = 1;
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContractFailsIfSenderIsNotFungibleModule() public {
+    //     uint256 amount = 1;
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.expectRevert(CallerIsNotFungibleModule.selector);
-        vm.prank(owner);
-        gateway.depositAndCall(context, amount, address(testUniversalContract), message);
-    }
+    //     vm.expectRevert(CallerIsNotFungibleModule.selector);
+    //     vm.prank(owner);
+    //     gateway.depositAndCall(context, amount, address(testUniversalContract), message);
+    // }
 
-    function testDepositZETAAndCallUniversalContractFailsIfTargetIsFungibleModule() public {
-        uint256 amount = 1;
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContractFailsIfTargetIsFungibleModule() public {
+    //     uint256 amount = 1;
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.expectRevert(InvalidTarget.selector);
-        vm.prank(fungibleModule);
-        gateway.depositAndCall(context, amount, fungibleModule, message);
-    }
+    //     vm.expectRevert(InvalidTarget.selector);
+    //     vm.prank(fungibleModule);
+    //     gateway.depositAndCall(context, amount, fungibleModule, message);
+    // }
 
-    function testDepositZETAAndCallUniversalContractFailsIfTargetIsGateway() public {
-        uint256 amount = 1;
-        bytes memory message = abi.encode("hello");
-        zContext memory context =
-            zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
+    // function testDepositZETAAndCallUniversalContractFailsIfTargetIsGateway() public {
+    //     uint256 amount = 1;
+    //     bytes memory message = abi.encode("hello");
+    //     zContext memory context =
+    //         zContext({ origin: abi.encodePacked(address(gateway)), sender: fungibleModule, chainID: 1 });
 
-        vm.expectRevert(InvalidTarget.selector);
-        vm.prank(fungibleModule);
-        gateway.depositAndCall(context, amount, address(gateway), message);
-    }
+    //     vm.expectRevert(InvalidTarget.selector);
+    //     vm.prank(fungibleModule);
+    //     gateway.depositAndCall(context, amount, address(gateway), message);
+    // }
 }
