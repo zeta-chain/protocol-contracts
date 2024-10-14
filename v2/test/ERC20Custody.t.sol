@@ -107,7 +107,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
 
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(custody));
-        emit UpdatedCustodyTSSAddress(newTSSAddress);
+        emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
         custody.updateTSSAddress(newTSSAddress);
         assertEq(newTSSAddress, custody.tssAddress());
 

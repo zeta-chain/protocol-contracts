@@ -1,5 +1,5 @@
 # IZetaConnectorEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/b0a690824216f461bd292d05ff57810c5c3ecafd/contracts/evm/interfaces/IZetaConnector.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/evm/interfaces/IZetaConnector.sol)
 
 Interface for the events emitted by the ZetaConnector contracts.
 
@@ -58,12 +58,13 @@ Emitted when tss address is updated
 
 
 ```solidity
-event UpdatedZetaConnectorTSSAddress(address newTSSAddress);
+event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress);
 ```
 
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
 

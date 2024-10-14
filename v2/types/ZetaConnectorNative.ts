@@ -332,9 +332,13 @@ export namespace UnpausedEvent {
 }
 
 export namespace UpdatedZetaConnectorTSSAddressEvent {
-  export type InputTuple = [newTSSAddress: AddressLike];
-  export type OutputTuple = [newTSSAddress: string];
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
   export interface OutputObject {
+    oldTSSAddress: string;
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -845,7 +849,7 @@ export interface ZetaConnectorNative extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "UpdatedZetaConnectorTSSAddress(address)": TypedContractEvent<
+    "UpdatedZetaConnectorTSSAddress(address,address)": TypedContractEvent<
       UpdatedZetaConnectorTSSAddressEvent.InputTuple,
       UpdatedZetaConnectorTSSAddressEvent.OutputTuple,
       UpdatedZetaConnectorTSSAddressEvent.OutputObject
