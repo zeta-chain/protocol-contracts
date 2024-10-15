@@ -358,7 +358,6 @@ contract GatewayZEVM is
         onlyFungible
         whenNotPaused
     {
-        revert ZETANotSupported();
         if (target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
