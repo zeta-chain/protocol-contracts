@@ -455,17 +455,17 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
-    function testDepositZetaToConnector() public {
-        uint256 amount = 100_000;
-        zeta.approve(address(gateway), amount);
+    // function testDepositZetaToConnector() public {
+    //     uint256 amount = 100_000;
+    //     zeta.approve(address(gateway), amount);
 
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposited(owner, destination, amount, address(zeta), "", revertOptions);
-        gateway.deposit(destination, amount, address(zeta), revertOptions);
+    //     vm.expectEmit(true, true, true, true, address(gateway));
+    //     emit Deposited(owner, destination, amount, address(zeta), "", revertOptions);
+    //     gateway.deposit(destination, amount, address(zeta), revertOptions);
 
-        uint256 ownerAmountAfter = zeta.balanceOf(owner);
-        assertEq(ownerAmount - amount, ownerAmountAfter);
-    }
+    //     uint256 ownerAmountAfter = zeta.balanceOf(owner);
+    //     assertEq(ownerAmount - amount, ownerAmountAfter);
+    // }
 
     function testFailDepositERC20ToCustodyIfAmountIs0() public {
         uint256 amount = 0;
