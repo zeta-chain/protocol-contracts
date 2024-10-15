@@ -6,7 +6,7 @@ import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 import { INotSupportedMethods, RevertContext, RevertOptions } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
-import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
+import { MessageContext, UniversalContract } from "./interfaces/UniversalContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -303,7 +303,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function execute(
-        zContext calldata context,
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -315,7 +315,7 @@ contract GatewayZEVM is
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
 
-        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
     /// @notice Deposit foreign coins into ZRC20 and call a user-specified contract on ZEVM.
@@ -325,7 +325,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
-        zContext calldata context,
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -340,7 +340,7 @@ contract GatewayZEVM is
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
-        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
     /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
@@ -349,7 +349,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
-        zContext calldata context,
+        MessageContext calldata context,
         uint256 amount,
         address target,
         bytes calldata message
@@ -363,7 +363,7 @@ contract GatewayZEVM is
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
-        UniversalContract(target).onCrossChainCall(context, zetaToken, amount, message);
+        UniversalContract(target).onCall(context, zetaToken, amount, message);
     }
 
     /// @notice Revert a user-specified contract on ZEVM.

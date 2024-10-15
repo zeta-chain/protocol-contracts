@@ -11,12 +11,12 @@ import type {
 const _abi = [
   {
     type: "function",
-    name: "onCrossChainCall",
+    name: "onCall",
     inputs: [
       {
         name: "context",
         type: "tuple",
-        internalType: "struct zContext",
+        internalType: "struct MessageContext",
         components: [
           {
             name: "origin",

@@ -29,6 +29,13 @@ var (
 	_ = abi.ConvertType
 )
 
+// MessageContext is an auto generated low-level Go binding around an user-defined struct.
+type MessageContext struct {
+	Origin  []byte
+	Sender  common.Address
+	ChainID *big.Int
+}
+
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Asset         common.Address
@@ -36,16 +43,9 @@ type RevertContext struct {
 	RevertMessage []byte
 }
 
-// ZContext is an auto generated low-level Go binding around an user-defined struct.
-type ZContext struct {
-	Origin  []byte
-	Sender  common.Address
-	ChainID *big.Int
-}
-
 // UniversalContractMetaData contains all meta data concerning the UniversalContract contract.
 var UniversalContractMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"onCrossChainCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"onCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structMessageContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
 }
 
 // UniversalContractABI is the input ABI used to generate the binding from.
@@ -194,25 +194,25 @@ func (_UniversalContract *UniversalContractTransactorRaw) Transact(opts *bind.Tr
 	return _UniversalContract.Contract.contract.Transact(opts, method, params...)
 }
 
-// OnCrossChainCall is a paid mutator transaction binding the contract method 0xde43156e.
+// OnCall is a paid mutator transaction binding the contract method 0x5bcfd616.
 //
-// Solidity: function onCrossChainCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
-func (_UniversalContract *UniversalContractTransactor) OnCrossChainCall(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
-	return _UniversalContract.contract.Transact(opts, "onCrossChainCall", context, zrc20, amount, message)
+// Solidity: function onCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
+func (_UniversalContract *UniversalContractTransactor) OnCall(opts *bind.TransactOpts, context MessageContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
+	return _UniversalContract.contract.Transact(opts, "onCall", context, zrc20, amount, message)
 }
 
-// OnCrossChainCall is a paid mutator transaction binding the contract method 0xde43156e.
+// OnCall is a paid mutator transaction binding the contract method 0x5bcfd616.
 //
-// Solidity: function onCrossChainCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
-func (_UniversalContract *UniversalContractSession) OnCrossChainCall(context ZContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
-	return _UniversalContract.Contract.OnCrossChainCall(&_UniversalContract.TransactOpts, context, zrc20, amount, message)
+// Solidity: function onCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
+func (_UniversalContract *UniversalContractSession) OnCall(context MessageContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
+	return _UniversalContract.Contract.OnCall(&_UniversalContract.TransactOpts, context, zrc20, amount, message)
 }
 
-// OnCrossChainCall is a paid mutator transaction binding the contract method 0xde43156e.
+// OnCall is a paid mutator transaction binding the contract method 0x5bcfd616.
 //
-// Solidity: function onCrossChainCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
-func (_UniversalContract *UniversalContractTransactorSession) OnCrossChainCall(context ZContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
-	return _UniversalContract.Contract.OnCrossChainCall(&_UniversalContract.TransactOpts, context, zrc20, amount, message)
+// Solidity: function onCall((bytes,address,uint256) context, address zrc20, uint256 amount, bytes message) returns()
+func (_UniversalContract *UniversalContractTransactorSession) OnCall(context MessageContext, zrc20 common.Address, amount *big.Int, message []byte) (*types.Transaction, error) {
+	return _UniversalContract.Contract.OnCall(&_UniversalContract.TransactOpts, context, zrc20, amount, message)
 }
 
 // OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
