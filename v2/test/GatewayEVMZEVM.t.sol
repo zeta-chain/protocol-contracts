@@ -150,7 +150,7 @@ contract GatewayEVMZEVMTest is
             CallOptions({ gasLimit: 1, isArbitraryCall: true }),
             revertOptions
         );
-        gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, 1, revertOptions);
+        gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, CallOptions({ gasLimit: 1, isArbitraryCall: true }), revertOptions);
 
         // Call execute on evm
         vm.deal(address(gatewayEVM), value);
