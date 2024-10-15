@@ -404,7 +404,6 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to transfer.
     function _transferToAssetHandler(address token, uint256 amount) private {
         if (token == zetaToken) {
-            revert ZETANotSupported();
             // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
