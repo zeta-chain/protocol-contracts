@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import { INotSupportedMethods } from "../../contracts/Errors.sol";
 import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
@@ -23,7 +24,8 @@ contract GatewayEVM is
     UUPSUpgradeable,
     IGatewayEVM,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    INotSupportedMethods
 {
     using SafeERC20 for IERC20;
 
@@ -390,6 +392,10 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to transfer.
     function _transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
+
+            // ZETA token is currently not supported for deposit
+            revert ZETANotSupported();
+            
             // transfer to connector
             // transfer amount to gateway
             IERC20(token).safeTransferFrom(from, address(this), amount);
@@ -411,6 +417,10 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to transfer.
     function _transferToAssetHandler(address token, uint256 amount) private {
         if (token == zetaToken) {
+
+            // ZETA token is currently not supported for deposit
+            revert ZETANotSupported();
+
             // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
