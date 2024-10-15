@@ -14,6 +14,12 @@ const _abi = [
     name: "UpdatedZetaConnectorTSSAddress",
     inputs: [
       {
+        name: "oldTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
         name: "newTSSAddress",
         type: "address",
         indexed: false,
@@ -101,8 +107,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
           {
             name: "revertMessage",

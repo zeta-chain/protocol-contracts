@@ -32,7 +32,7 @@ var (
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Asset         common.Address
-	Amount        *big.Int
+	Amount        uint64
 	RevertMessage []byte
 }
 
@@ -45,8 +45,8 @@ type ZContext struct {
 
 // TestUniversalContractMetaData contains all meta data concerning the TestUniversalContract contract.
 var TestUniversalContractMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"fallback\",\"stateMutability\":\"payable\"},{\"type\":\"receive\",\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"onCrossChainCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"ContextData\",\"inputs\":[{\"name\":\"origin\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"msgSender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContextDataRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
-	Bin: "0x6080604052348015600f57600080fd5b506106098061001f6000396000f3fe60806040526004361061002a5760003560e01c8063a9b0a73c14610033578063de43156e1461005357005b3661003157005b005b34801561003f57600080fd5b5061003161004e366004610140565b610073565b34801561005f57600080fd5b5061003161006e3660046101a6565b6100ad565b7fecf5d82c48083c30b9ba8e8536ba84ae739724bdd8a42c47c1304f5437ade807816040516100a291906102a7565b60405180910390a150565b606081156100c4576100c18284018461038d565b90505b7fcdc8ee677dc5ebe680fb18cebda5e26ba5ea1f0ba504a47e2a9a2ecb476dc98e6100ef8780610483565b6100ff60408a0160208b016104ef565b8960400135338660405161011896959493929190610511565b60405180910390a1505050505050565b60006060828403121561013a57600080fd5b50919050565b60006020828403121561015257600080fd5b813567ffffffffffffffff81111561016957600080fd5b61017584828501610128565b949350505050565b803573ffffffffffffffffffffffffffffffffffffffff811681146101a157600080fd5b919050565b6000806000806000608086880312156101be57600080fd5b853567ffffffffffffffff8111156101d557600080fd5b6101e188828901610128565b9550506101f06020870161017d565b935060408601359250606086013567ffffffffffffffff81111561021357600080fd5b8601601f8101881361022457600080fd5b803567ffffffffffffffff81111561023b57600080fd5b88602082840101111561024d57600080fd5b959894975092955050506020019190565b8183528181602085013750600060208284010152600060207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f840116840101905092915050565b6020815273ffffffffffffffffffffffffffffffffffffffff6102c98361017d565b166020820152600080602084013590508060408401525060408301357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe184360301811261031557600080fd5b830160208101903567ffffffffffffffff81111561033257600080fd5b80360382131561034157600080fd5b60608085015261035560808501828461025e565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60006020828403121561039f57600080fd5b813567ffffffffffffffff8111156103b657600080fd5b8201601f810184136103c757600080fd5b803567ffffffffffffffff8111156103e1576103e161035e565b6040517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0603f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8501160116810181811067ffffffffffffffff8211171561044d5761044d61035e565b60405281815282820160200186101561046557600080fd5b81602084016020830137600091810160200191909152949350505050565b60008083357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe18436030181126104b857600080fd5b83018035915067ffffffffffffffff8211156104d357600080fd5b6020019150368190038213156104e857600080fd5b9250929050565b60006020828403121561050157600080fd5b61050a8261017d565b9392505050565b60a08152600061052560a08301888a61025e565b73ffffffffffffffffffffffffffffffffffffffff8716602084015285604084015273ffffffffffffffffffffffffffffffffffffffff851660608401528281036080840152835180825260005b8181101561058f57602081870181015184830182015201610573565b5060006020828401015260207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168301019250505097965050505050505056fea264697066735822122010486f94f449fc99b4a8d453c3a51c73eb1de12f7d8756d65324b00797fda02e64736f6c634300081a0033",
+	ABI: "[{\"type\":\"fallback\",\"stateMutability\":\"payable\"},{\"type\":\"receive\",\"stateMutability\":\"payable\"},{\"type\":\"function\",\"name\":\"onCrossChainCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structzContext\",\"components\":[{\"name\":\"origin\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"onRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"ContextData\",\"inputs\":[{\"name\":\"origin\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"sender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"msgSender\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"message\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContextDataRevert\",\"inputs\":[{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
+	Bin: "0x6080604052348015600f57600080fd5b5061061e8061001f6000396000f3fe60806040526004361061002a5760003560e01c8063660b9de014610033578063de43156e1461005357005b3661003157005b005b34801561003f57600080fd5b5061003161004e366004610140565b610073565b34801561005f57600080fd5b5061003161006e3660046101a6565b6100ad565b7f35a9324413457251c1059312318f6f1cec6bd0da4105d01315f3151b1e3a2c76816040516100a291906102a7565b60405180910390a150565b606081156100c4576100c1828401846103a2565b90505b7fcdc8ee677dc5ebe680fb18cebda5e26ba5ea1f0ba504a47e2a9a2ecb476dc98e6100ef8780610498565b6100ff60408a0160208b01610504565b8960400135338660405161011896959493929190610526565b60405180910390a1505050505050565b60006060828403121561013a57600080fd5b50919050565b60006020828403121561015257600080fd5b813567ffffffffffffffff81111561016957600080fd5b61017584828501610128565b949350505050565b803573ffffffffffffffffffffffffffffffffffffffff811681146101a157600080fd5b919050565b6000806000806000608086880312156101be57600080fd5b853567ffffffffffffffff8111156101d557600080fd5b6101e188828901610128565b9550506101f06020870161017d565b935060408601359250606086013567ffffffffffffffff81111561021357600080fd5b8601601f8101881361022457600080fd5b803567ffffffffffffffff81111561023b57600080fd5b88602082840101111561024d57600080fd5b959894975092955050506020019190565b8183528181602085013750600060208284010152600060207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f840116840101905092915050565b6020815273ffffffffffffffffffffffffffffffffffffffff6102c98361017d565b1660208201526000602083013567ffffffffffffffff81168082146102ed57600080fd5b806040850152505060408301357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe184360301811261032a57600080fd5b830160208101903567ffffffffffffffff81111561034757600080fd5b80360382131561035657600080fd5b60608085015261036a60808501828461025e565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6000602082840312156103b457600080fd5b813567ffffffffffffffff8111156103cb57600080fd5b8201601f810184136103dc57600080fd5b803567ffffffffffffffff8111156103f6576103f6610373565b6040517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0603f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8501160116810181811067ffffffffffffffff8211171561046257610462610373565b60405281815282820160200186101561047a57600080fd5b81602084016020830137600091810160200191909152949350505050565b60008083357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe18436030181126104cd57600080fd5b83018035915067ffffffffffffffff8211156104e857600080fd5b6020019150368190038213156104fd57600080fd5b9250929050565b60006020828403121561051657600080fd5b61051f8261017d565b9392505050565b60a08152600061053a60a08301888a61025e565b73ffffffffffffffffffffffffffffffffffffffff8716602084015285604084015273ffffffffffffffffffffffffffffffffffffffff851660608401528281036080840152835180825260005b818110156105a457602081870181015184830182015201610588565b5060006020828401015260207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168301019250505097965050505050505056fea264697066735822122002711b914cfa85869597d761ee7a81ae9c55589f2201dbf0c65836b421bff96564736f6c634300081a0033",
 }
 
 // TestUniversalContractABI is the input ABI used to generate the binding from.
@@ -237,23 +237,23 @@ func (_TestUniversalContract *TestUniversalContractTransactorSession) OnCrossCha
 	return _TestUniversalContract.Contract.OnCrossChainCall(&_TestUniversalContract.TransactOpts, context, zrc20, amount, message)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0xa9b0a73c.
+// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
 //
-// Solidity: function onRevert((address,uint256,bytes) revertContext) returns()
+// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
 func (_TestUniversalContract *TestUniversalContractTransactor) OnRevert(opts *bind.TransactOpts, revertContext RevertContext) (*types.Transaction, error) {
 	return _TestUniversalContract.contract.Transact(opts, "onRevert", revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0xa9b0a73c.
+// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
 //
-// Solidity: function onRevert((address,uint256,bytes) revertContext) returns()
+// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
 func (_TestUniversalContract *TestUniversalContractSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
 	return _TestUniversalContract.Contract.OnRevert(&_TestUniversalContract.TransactOpts, revertContext)
 }
 
-// OnRevert is a paid mutator transaction binding the contract method 0xa9b0a73c.
+// OnRevert is a paid mutator transaction binding the contract method 0x660b9de0.
 //
-// Solidity: function onRevert((address,uint256,bytes) revertContext) returns()
+// Solidity: function onRevert((address,uint64,bytes) revertContext) returns()
 func (_TestUniversalContract *TestUniversalContractTransactorSession) OnRevert(revertContext RevertContext) (*types.Transaction, error) {
 	return _TestUniversalContract.Contract.OnRevert(&_TestUniversalContract.TransactOpts, revertContext)
 }
@@ -511,9 +511,9 @@ type TestUniversalContractContextDataRevert struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterContextDataRevert is a free log retrieval operation binding the contract event 0xecf5d82c48083c30b9ba8e8536ba84ae739724bdd8a42c47c1304f5437ade807.
+// FilterContextDataRevert is a free log retrieval operation binding the contract event 0x35a9324413457251c1059312318f6f1cec6bd0da4105d01315f3151b1e3a2c76.
 //
-// Solidity: event ContextDataRevert((address,uint256,bytes) revertContext)
+// Solidity: event ContextDataRevert((address,uint64,bytes) revertContext)
 func (_TestUniversalContract *TestUniversalContractFilterer) FilterContextDataRevert(opts *bind.FilterOpts) (*TestUniversalContractContextDataRevertIterator, error) {
 
 	logs, sub, err := _TestUniversalContract.contract.FilterLogs(opts, "ContextDataRevert")
@@ -523,9 +523,9 @@ func (_TestUniversalContract *TestUniversalContractFilterer) FilterContextDataRe
 	return &TestUniversalContractContextDataRevertIterator{contract: _TestUniversalContract.contract, event: "ContextDataRevert", logs: logs, sub: sub}, nil
 }
 
-// WatchContextDataRevert is a free log subscription operation binding the contract event 0xecf5d82c48083c30b9ba8e8536ba84ae739724bdd8a42c47c1304f5437ade807.
+// WatchContextDataRevert is a free log subscription operation binding the contract event 0x35a9324413457251c1059312318f6f1cec6bd0da4105d01315f3151b1e3a2c76.
 //
-// Solidity: event ContextDataRevert((address,uint256,bytes) revertContext)
+// Solidity: event ContextDataRevert((address,uint64,bytes) revertContext)
 func (_TestUniversalContract *TestUniversalContractFilterer) WatchContextDataRevert(opts *bind.WatchOpts, sink chan<- *TestUniversalContractContextDataRevert) (event.Subscription, error) {
 
 	logs, sub, err := _TestUniversalContract.contract.WatchLogs(opts, "ContextDataRevert")
@@ -560,9 +560,9 @@ func (_TestUniversalContract *TestUniversalContractFilterer) WatchContextDataRev
 	}), nil
 }
 
-// ParseContextDataRevert is a log parse operation binding the contract event 0xecf5d82c48083c30b9ba8e8536ba84ae739724bdd8a42c47c1304f5437ade807.
+// ParseContextDataRevert is a log parse operation binding the contract event 0x35a9324413457251c1059312318f6f1cec6bd0da4105d01315f3151b1e3a2c76.
 //
-// Solidity: event ContextDataRevert((address,uint256,bytes) revertContext)
+// Solidity: event ContextDataRevert((address,uint64,bytes) revertContext)
 func (_TestUniversalContract *TestUniversalContractFilterer) ParseContextDataRevert(log types.Log) (*TestUniversalContractContextDataRevert, error) {
 	event := new(TestUniversalContractContextDataRevert)
 	if err := _TestUniversalContract.contract.UnpackLog(event, "ContextDataRevert", log); err != nil {
