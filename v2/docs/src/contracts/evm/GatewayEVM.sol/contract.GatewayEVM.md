@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/2ec55b0a1ac0f37560641afe12becc523babb9ca/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable

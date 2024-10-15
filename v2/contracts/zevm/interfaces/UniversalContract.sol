@@ -31,6 +31,4 @@ struct MessageContext {
 
 interface UniversalContract {
     function onCall(MessageContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
-
-    function onRevert(RevertContext calldata revertContext) external;
 }

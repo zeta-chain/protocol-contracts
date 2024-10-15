@@ -1,5 +1,5 @@
 # ISystem
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/zevm/interfaces/ISystem.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/2ec55b0a1ac0f37560641afe12becc523babb9ca/contracts/zevm/interfaces/ISystem.sol)
 
 Interface for the System contract.
 

@@ -34,17 +34,14 @@ export type MessageContextStructOutput = [
 ] & { origin: string; sender: string; chainID: bigint };
 
 export interface UniversalContractInterface extends Interface {
-  getFunction(nameOrSignature: "onCrossChainCall"): FunctionFragment;
+  getFunction(nameOrSignature: "onCall"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "onCall",
     values: [MessageContextStruct, AddressLike, BigNumberish, BytesLike]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "onCrossChainCall",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
 }
 
 export interface UniversalContract extends BaseContract {
