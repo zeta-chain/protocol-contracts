@@ -1,5 +1,5 @@
 # IGatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/zevm/interfaces/IGatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/zevm/interfaces/IGatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVMErrors](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md), [IGatewayZEVMEvents](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
