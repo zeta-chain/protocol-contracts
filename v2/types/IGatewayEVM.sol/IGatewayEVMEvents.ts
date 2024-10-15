@@ -44,16 +44,18 @@ export type RevertOptionsStructOutput = [
 };
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface IGatewayEVMEventsInterface extends Interface {
   getEvent(
@@ -63,6 +65,7 @@ export interface IGatewayEVMEventsInterface extends Interface {
       | "Executed"
       | "ExecutedWithERC20"
       | "Reverted"
+      | "UpdatedGatewayTSSAddress"
   ): EventFragment;
 }
 
@@ -193,6 +196,22 @@ export namespace RevertedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace UpdatedGatewayTSSAddressEvent {
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
+  export interface OutputObject {
+    oldTSSAddress: string;
+    newTSSAddress: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export interface IGatewayEVMEvents extends BaseContract {
   connect(runner?: ContractRunner | null): IGatewayEVMEvents;
   waitForDeployment(): Promise<this>;
@@ -275,6 +294,13 @@ export interface IGatewayEVMEvents extends BaseContract {
     RevertedEvent.OutputTuple,
     RevertedEvent.OutputObject
   >;
+  getEvent(
+    key: "UpdatedGatewayTSSAddress"
+  ): TypedContractEvent<
+    UpdatedGatewayTSSAddressEvent.InputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputObject
+  >;
 
   filters: {
     "Called(address,address,bytes,tuple)": TypedContractEvent<
@@ -330,6 +356,17 @@ export interface IGatewayEVMEvents extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
+    >;
+
+    "UpdatedGatewayTSSAddress(address,address)": TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
+    >;
+    UpdatedGatewayTSSAddress: TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
     >;
   };
 }

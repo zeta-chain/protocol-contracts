@@ -38,10 +38,22 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "gasLimit",
-        type: "uint256",
+        name: "callOptions",
+        type: "tuple",
         indexed: false,
-        internalType: "uint256",
+        internalType: "struct CallOptions",
+        components: [
+          {
+            name: "gasLimit",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "isArbitraryCall",
+            type: "bool",
+            internalType: "bool",
+          },
+        ],
       },
       {
         name: "revertOptions",
@@ -132,10 +144,22 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "gasLimit",
-        type: "uint256",
+        name: "callOptions",
+        type: "tuple",
         indexed: false,
-        internalType: "uint256",
+        internalType: "struct CallOptions",
+        components: [
+          {
+            name: "gasLimit",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "isArbitraryCall",
+            type: "bool",
+            internalType: "bool",
+          },
+        ],
       },
       {
         name: "revertOptions",

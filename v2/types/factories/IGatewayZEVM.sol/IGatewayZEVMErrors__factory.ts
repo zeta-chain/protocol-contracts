@@ -11,12 +11,7 @@ import type {
 const _abi = [
   {
     type: "error",
-    name: "CallerIsNotFungibleModule",
-    inputs: [],
-  },
-  {
-    type: "error",
-    name: "EmptyMessage",
+    name: "CallerIsNotProtocol",
     inputs: [],
   },
   {
@@ -27,6 +22,11 @@ const _abi = [
   {
     type: "error",
     name: "GasFeeTransferFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InsufficientGasLimit",
     inputs: [],
   },
   {
@@ -46,7 +46,12 @@ const _abi = [
   },
   {
     type: "error",
-    name: "OnlyWZETAOrFungible",
+    name: "MessageSizeExceeded",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "OnlyWZETAOrProtocol",
     inputs: [],
   },
   {

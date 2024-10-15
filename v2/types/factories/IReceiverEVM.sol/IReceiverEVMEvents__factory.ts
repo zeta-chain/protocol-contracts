@@ -86,6 +86,12 @@ const _abi = [
   },
   {
     type: "event",
+    name: "ReceivedOnCall",
+    inputs: [],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "ReceivedPayable",
     inputs: [
       {
@@ -138,14 +144,19 @@ const _abi = [
         internalType: "struct RevertContext",
         components: [
           {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
             name: "asset",
             type: "address",
             internalType: "address",
           },
           {
             name: "amount",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
           {
             name: "revertMessage",

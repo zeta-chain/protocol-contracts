@@ -22,16 +22,18 @@ import type {
 } from "../common";
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface IReceiverEVMEventsInterface extends Interface {
   getEvent(
@@ -39,6 +41,7 @@ export interface IReceiverEVMEventsInterface extends Interface {
       | "ReceivedERC20"
       | "ReceivedNoParams"
       | "ReceivedNonPayable"
+      | "ReceivedOnCall"
       | "ReceivedPayable"
       | "ReceivedRevert"
   ): EventFragment;
@@ -100,6 +103,16 @@ export namespace ReceivedNonPayableEvent {
     nums: bigint[];
     flag: boolean;
   }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ReceivedOnCallEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
   export type Log = TypedEventLog<Event>;
@@ -222,6 +235,13 @@ export interface IReceiverEVMEvents extends BaseContract {
     ReceivedNonPayableEvent.OutputObject
   >;
   getEvent(
+    key: "ReceivedOnCall"
+  ): TypedContractEvent<
+    ReceivedOnCallEvent.InputTuple,
+    ReceivedOnCallEvent.OutputTuple,
+    ReceivedOnCallEvent.OutputObject
+  >;
+  getEvent(
     key: "ReceivedPayable"
   ): TypedContractEvent<
     ReceivedPayableEvent.InputTuple,
@@ -268,6 +288,17 @@ export interface IReceiverEVMEvents extends BaseContract {
       ReceivedNonPayableEvent.InputTuple,
       ReceivedNonPayableEvent.OutputTuple,
       ReceivedNonPayableEvent.OutputObject
+    >;
+
+    "ReceivedOnCall()": TypedContractEvent<
+      ReceivedOnCallEvent.InputTuple,
+      ReceivedOnCallEvent.OutputTuple,
+      ReceivedOnCallEvent.OutputObject
+    >;
+    ReceivedOnCall: TypedContractEvent<
+      ReceivedOnCallEvent.InputTuple,
+      ReceivedOnCallEvent.OutputTuple,
+      ReceivedOnCallEvent.OutputObject
     >;
 
     "ReceivedPayable(address,uint256,string,uint256,bool)": TypedContractEvent<

@@ -1,5 +1,5 @@
 # IGatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/evm/interfaces/IGatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/evm/interfaces/IGatewayEVM.sol)
 
 **Inherits:**
 [IGatewayEVMErrors](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVMErrors.md), [IGatewayEVMEvents](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVMEvents.md)
@@ -71,6 +71,38 @@ function execute(address destination, bytes calldata data) external payable retu
 |Name|Type|Description|
 |----|----|-----------|
 |`<none>`|`bytes`|The result of the contract call.|
+
+
+### execute
+
+Executes a call to a destination address without ERC20 tokens.
+
+*This function can only be called by the TSS address and it is payable.*
+
+
+```solidity
+function execute(
+    MessageContext calldata messageContext,
+    address destination,
+    bytes calldata data
+)
+    external
+    payable
+    returns (bytes memory);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender and arbitrary call flag.|
+|`destination`|`address`|Address to call.|
+|`data`|`bytes`|Calldata to pass to the call.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bytes`|The result of the call.|
 
 
 ### revertWithERC20

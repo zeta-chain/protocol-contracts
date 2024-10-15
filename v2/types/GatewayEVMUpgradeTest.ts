@@ -45,17 +45,23 @@ export type RevertOptionsStructOutput = [
   onRevertGasLimit: bigint;
 };
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface GatewayEVMUpgradeTestInterface extends Interface {
   getFunction(
@@ -71,7 +77,8 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "deposit(address,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
-      | "execute"
+      | "execute(address,bytes)"
+      | "execute((address),address,bytes)"
       | "executeRevert"
       | "executeWithERC20"
       | "getRoleAdmin"
@@ -108,6 +115,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
+      | "UpdatedGatewayTSSAddress"
       | "Upgraded"
   ): EventFragment;
 
@@ -156,8 +164,12 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "execute",
+    functionFragment: "execute(address,bytes)",
     values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute((address),address,bytes)",
+    values: [MessageContextStruct, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
@@ -269,7 +281,14 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "execute(address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "execute((address),address,bytes)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
     data: BytesLike
@@ -561,6 +580,22 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace UpdatedGatewayTSSAddressEvent {
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
+  export interface OutputObject {
+    oldTSSAddress: string;
+    newTSSAddress: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace UpgradedEvent {
   export type InputTuple = [implementation: AddressLike];
   export type OutputTuple = [implementation: string];
@@ -677,8 +712,18 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  execute: TypedContractMethod<
+  "execute(address,bytes)": TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
+    [string],
+    "payable"
+  >;
+
+  "execute((address),address,bytes)": TypedContractMethod<
+    [
+      messageContext: MessageContextStruct,
+      destination: AddressLike,
+      data: BytesLike
+    ],
     [string],
     "payable"
   >;
@@ -863,9 +908,20 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "execute"
+    nameOrSignature: "execute(address,bytes)"
   ): TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
+    [string],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "execute((address),address,bytes)"
+  ): TypedContractMethod<
+    [
+      messageContext: MessageContextStruct,
+      destination: AddressLike,
+      data: BytesLike
+    ],
     [string],
     "payable"
   >;
@@ -1066,6 +1122,13 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     UnpausedEvent.OutputObject
   >;
   getEvent(
+    key: "UpdatedGatewayTSSAddress"
+  ): TypedContractEvent<
+    UpdatedGatewayTSSAddressEvent.InputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputObject
+  >;
+  getEvent(
     key: "Upgraded"
   ): TypedContractEvent<
     UpgradedEvent.InputTuple,
@@ -1204,6 +1267,17 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "UpdatedGatewayTSSAddress(address,address)": TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
+    >;
+    UpdatedGatewayTSSAddress: TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
     >;
 
     "Upgraded(address)": TypedContractEvent<

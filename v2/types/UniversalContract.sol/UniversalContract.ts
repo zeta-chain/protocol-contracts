@@ -33,32 +33,18 @@ export type MessageContextStructOutput = [
   chainID: bigint
 ] & { origin: string; sender: string; chainID: bigint };
 
-export type RevertContextStruct = {
-  asset: AddressLike;
-  amount: BigNumberish;
-  revertMessage: BytesLike;
-};
-
-export type RevertContextStructOutput = [
-  asset: string,
-  amount: bigint,
-  revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
-
 export interface UniversalContractInterface extends Interface {
-  getFunction(nameOrSignature: "onCall" | "onRevert"): FunctionFragment;
+  getFunction(nameOrSignature: "onCrossChainCall"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "onCall",
     values: [MessageContextStruct, AddressLike, BigNumberish, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "onRevert",
-    values: [RevertContextStruct]
-  ): string;
 
-  decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "onCrossChainCall",
+    data: BytesLike
+  ): Result;
 }
 
 export interface UniversalContract extends BaseContract {
@@ -115,12 +101,6 @@ export interface UniversalContract extends BaseContract {
     "nonpayable"
   >;
 
-  onRevert: TypedContractMethod<
-    [revertContext: RevertContextStruct],
-    [void],
-    "nonpayable"
-  >;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -134,13 +114,6 @@ export interface UniversalContract extends BaseContract {
       amount: BigNumberish,
       message: BytesLike
     ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "onRevert"
-  ): TypedContractMethod<
-    [revertContext: RevertContextStruct],
     [void],
     "nonpayable"
   >;

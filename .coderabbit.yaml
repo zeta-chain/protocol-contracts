@@ -1,11 +1,13 @@
 reviews:
   path_filters:
-    - "!pkg/**"
-    - "!typechain-types/**"
-    - "!docs/**"
-    - "!data/**"
-    - "!v2/types/**"
+    - "!v1/pkg/**"
     - "!v2/pkg/**"
+    - "!v1/typechain-types/**"
+    - "!v2/types/**"
+    - "!v1/docs/**"
+    - "!v2/docs/**"
+    - "!v1/data/**"
+    - "!v2/data/**"
   path_instructions:
     - path: "contracts/**"
       instructions: >-

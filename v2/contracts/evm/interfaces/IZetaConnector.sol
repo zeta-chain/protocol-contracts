@@ -23,4 +23,9 @@ interface IZetaConnectorEvents {
     /// @param data The calldata passed to the contract call.
     /// @param revertContext Revert context to pass to onRevert.
     event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, RevertContext revertContext);
+
+    /// @notice Emitted when tss address is updated
+    /// @param oldTSSAddress old tss address
+    /// @param newTSSAddress new tss address
+    event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress);
 }

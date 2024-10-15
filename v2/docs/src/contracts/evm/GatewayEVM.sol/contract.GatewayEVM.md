@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -73,6 +73,15 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
+### MAX_PAYLOAD_SIZE
+Max size of payload + revertOptions revert message.
+
+
+```solidity
+uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+```
+
+
 ## Functions
 ### constructor
 
@@ -107,26 +116,19 @@ function _authorizeUpgrade(address newImplementation) internal override onlyRole
 |`newImplementation`|`address`|Address of the new implementation.|
 
 
-### _execute
+### updateTSSAddress
 
-*Internal function to execute a call to a destination address.*
+Update tss address
 
 
 ```solidity
-function _execute(address destination, bytes calldata data) internal returns (bytes memory);
+function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`destination`|`address`|Address to call.|
-|`data`|`bytes`|Calldata to pass to the call.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`<none>`|`bytes`|The result of the call.|
+|`newTSSAddress`|`address`|new tss address|
 
 
 ### pause
@@ -177,7 +179,42 @@ function executeRevert(
 
 ### execute
 
-Executes a call to a destination address without ERC20 tokens.
+Executes an authenticated call to a destination address without ERC20 tokens.
+
+*This function can only be called by the TSS address and it is payable.*
+
+
+```solidity
+function execute(
+    MessageContext calldata messageContext,
+    address destination,
+    bytes calldata data
+)
+    external
+    payable
+    onlyRole(TSS_ROLE)
+    whenNotPaused
+    nonReentrant
+    returns (bytes memory);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender.|
+|`destination`|`address`|Address to call.|
+|`data`|`bytes`|Calldata to pass to the call.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bytes`|The result of the call.|
+
+
+### execute
+
+Executes an arbitrary call to a destination address without ERC20 tokens.
 
 *This function can only be called by the TSS address and it is payable.*
 
@@ -191,7 +228,6 @@ function execute(
     payable
     onlyRole(TSS_ROLE)
     whenNotPaused
-    nonReentrant
     returns (bytes memory);
 ```
 **Parameters**
@@ -418,14 +454,14 @@ function setConnector(address zetaConnector_) external onlyRole(DEFAULT_ADMIN_RO
 |`zetaConnector_`|`address`|Address of the connector contract.|
 
 
-### resetApproval
+### _resetApproval
 
 *Resets the approval of a token for a specified address.
 This is used to ensure that the approval is set to zero before setting it to a new value.*
 
 
 ```solidity
-function resetApproval(address token, address to) private returns (bool);
+function _resetApproval(address token, address to) private returns (bool);
 ```
 **Parameters**
 
@@ -441,7 +477,7 @@ function resetApproval(address token, address to) private returns (bool);
 |`<none>`|`bool`|True if the approval reset was successful, false otherwise.|
 
 
-### transferFromToAssetHandler
+### _transferFromToAssetHandler
 
 *Transfers tokens from the sender to the asset handler.
 This function handles the transfer of tokens to either the connector or custody contract based on the asset
@@ -449,7 +485,7 @@ type.*
 
 
 ```solidity
-function transferFromToAssetHandler(address from, address token, uint256 amount) private;
+function _transferFromToAssetHandler(address from, address token, uint256 amount) private;
 ```
 **Parameters**
 
@@ -460,7 +496,7 @@ function transferFromToAssetHandler(address from, address token, uint256 amount)
 |`amount`|`uint256`|Amount of tokens to transfer.|
 
 
-### transferToAssetHandler
+### _transferToAssetHandler
 
 *Transfers tokens to the asset handler.
 This function handles the transfer of tokens to either the connector or custody contract based on the asset
@@ -468,7 +504,7 @@ type.*
 
 
 ```solidity
-function transferToAssetHandler(address token, uint256 amount) private;
+function _transferToAssetHandler(address token, uint256 amount) private;
 ```
 **Parameters**
 
@@ -477,4 +513,62 @@ function transferToAssetHandler(address token, uint256 amount) private;
 |`token`|`address`|Address of the ERC20 token.|
 |`amount`|`uint256`|Amount of tokens to transfer.|
 
+
+### _executeArbitraryCall
+
+*Private function to execute an arbitrary call to a destination address.*
+
+
+```solidity
+function _executeArbitraryCall(address destination, bytes calldata data) private returns (bytes memory);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`destination`|`address`|Address to call.|
+|`data`|`bytes`|Calldata to pass to the call.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bytes`|The result of the call.|
+
+
+### _executeAuthenticatedCall
+
+*Private function to execute an authenticated call to a destination address.*
+
+
+```solidity
+function _executeAuthenticatedCall(
+    MessageContext calldata messageContext,
+    address destination,
+    bytes calldata data
+)
+    private
+    returns (bytes memory);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender and arbitrary call flag.|
+|`destination`|`address`|Address to call.|
+|`data`|`bytes`|Calldata to pass to the call.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bytes`|The result of the call.|
+
+
+### _revertIfOnCallOrOnRevert
+
+
+```solidity
+function _revertIfOnCallOrOnRevert(bytes calldata data) private pure;
+```
 

@@ -228,14 +228,19 @@ const _abi = [
         internalType: "struct RevertContext",
         components: [
           {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
             name: "asset",
             type: "address",
             internalType: "address",
           },
           {
             name: "amount",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
           {
             name: "revertMessage",
@@ -243,6 +248,25 @@ const _abi = [
             internalType: "bytes",
           },
         ],
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "UpdatedGatewayTSSAddress",
+    inputs: [
+      {
+        name: "oldTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "newTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
       },
     ],
     anonymous: false,

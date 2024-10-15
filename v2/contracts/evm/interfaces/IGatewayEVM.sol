@@ -49,6 +49,11 @@ interface IGatewayEVMEvents {
     /// @param payload The calldata passed to the call.
     /// @param revertOptions Revert options.
     event Called(address indexed sender, address indexed receiver, bytes payload, RevertOptions revertOptions);
+
+    /// @notice Emitted when tss address is updated
+    /// @param oldTSSAddress old tss address
+    /// @param newTSSAddress new tss address
+    event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
 }
 
 /// @title IGatewayEVMErrors
@@ -80,6 +85,15 @@ interface IGatewayEVMErrors {
 
     /// @notice Error when trying to transfer not whitelisted token to custody.
     error NotWhitelistedInCustody();
+
+    /// @notice Error when trying to call onCall method using arbitrary call.
+    error NotAllowedToCallOnCall();
+
+    /// @notice Error when trying to call onRevert method using arbitrary call.
+    error NotAllowedToCallOnRevert();
+
+    /// @notice Error indicating payload size exceeded in external functions.
+    error PayloadSizeExceeded();
 }
 
 /// @title IGatewayEVM
@@ -110,6 +124,21 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param data The calldata to pass to the contract call.
     /// @return The result of the contract call.
     function execute(address destination, bytes calldata data) external payable returns (bytes memory);
+
+    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function execute(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        returns (bytes memory);
 
     /// @notice Executes a revertable call to a contract using ERC20 tokens.
     /// @param token The address of the ERC20 token.
@@ -170,4 +199,15 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param payload Calldata to pass to the call.
     /// @param revertOptions Revert options.
     function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
+}
+
+/// @notice Message context passed to execute function.
+/// @param sender Sender from omnichain contract.
+struct MessageContext {
+    address sender;
+}
+
+/// @notice Interface implemented by contracts receiving authenticated calls.
+interface Callable {
+    function onCall(MessageContext calldata context, bytes calldata message) external payable returns (bytes memory);
 }

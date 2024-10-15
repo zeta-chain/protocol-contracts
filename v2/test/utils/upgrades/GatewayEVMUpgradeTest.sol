@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
-import "../../contracts/evm/ZetaConnectorBase.sol";
-import "../../contracts/evm/interfaces/IERC20Custody.sol";
-import "../../contracts/evm/interfaces/IGatewayEVM.sol";
+import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
+import "../../../contracts/evm/ZetaConnectorBase.sol";
+import "../../../contracts/evm/interfaces/IERC20Custody.sol";
+import "../../../contracts/evm/interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -65,6 +65,7 @@ contract GatewayEVMUpgradeTest is
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, tssAddress_);
         tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
 
@@ -74,17 +75,6 @@ contract GatewayEVMUpgradeTest is
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
     /// @param newImplementation Address of the new implementation.
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
-
-    /// @dev Internal function to execute a call to a destination address.
-    /// @param destination Address to call.
-    /// @param data Calldata to pass to the call.
-    /// @return The result of the call.
-    function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
-        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
-        if (!success) revert ExecutionFailed();
-
-        return result;
-    }
 
     /// @notice Pause contract.
     function pause() external onlyRole(PAUSER_ROLE) {
@@ -121,10 +111,12 @@ contract GatewayEVMUpgradeTest is
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function execute(
+        MessageContext calldata messageContext,
         address destination,
         bytes calldata data
     )
@@ -136,7 +128,31 @@ contract GatewayEVMUpgradeTest is
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
-        bytes memory result = _execute(destination, data);
+        bytes memory result;
+        result = _executeAuthenticatedCall(messageContext, destination, data);
+
+        emit Executed(destination, msg.value, data);
+
+        return result;
+    }
+
+    /// @notice Executes a call to a destination address without ERC20 tokens.
+    /// @dev This function can only be called by the TSS address and it is payable.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function execute(
+        address destination,
+        bytes calldata data
+    )
+        external
+        payable
+        onlyRole(TSS_ROLE)
+        whenNotPaused
+        returns (bytes memory)
+    {
+        if (destination == address(0)) revert ZeroAddress();
+        bytes memory result = _executeArbitraryCall(destination, data);
 
         emit ExecutedV2(destination, msg.value, data);
 
@@ -167,7 +183,7 @@ contract GatewayEVMUpgradeTest is
         if (!resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        _execute(to, data);
+        _executeArbitraryCall(to, data);
 
         // Reset approval
         if (!resetApproval(token, to)) revert ApprovalFailed();
@@ -387,6 +403,48 @@ contract GatewayEVMUpgradeTest is
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
             IERC20(token).safeTransfer(custody, amount);
+        }
+    }
+
+    /// @dev Internal function to execute an arbitrary call to a destination address.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function _executeArbitraryCall(address destination, bytes calldata data) internal returns (bytes memory) {
+        revertIfAuthenticatedCall(data);
+        (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
+        if (!success) revert ExecutionFailed();
+
+        return result;
+    }
+
+    /// @dev Internal function to execute an authenticated call to a destination address.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
+    /// @param destination Address to call.
+    /// @param data Calldata to pass to the call.
+    /// @return The result of the call.
+    function _executeAuthenticatedCall(
+        MessageContext calldata messageContext,
+        address destination,
+        bytes calldata data
+    )
+        internal
+        returns (bytes memory)
+    {
+        return Callable(destination).onCall{ value: msg.value }(messageContext, data);
+    }
+
+    // @dev prevent calling onCall function reserved for authenticated calls
+    function revertIfAuthenticatedCall(bytes calldata data) internal pure {
+        if (data.length >= 4) {
+            bytes4 functionSelector;
+            assembly {
+                functionSelector := calldataload(data.offset)
+            }
+
+            if (functionSelector == Callable.onCall.selector) {
+                revert NotAllowedToCallOnCall();
+            }
         }
     }
 }

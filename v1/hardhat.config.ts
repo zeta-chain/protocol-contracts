@@ -20,6 +20,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       amoy_testnet: process.env.POLYGONSCAN_API_KEY || "",
+      base_mainnet: process.env.BASESCAN_API_KEY || "",
       base_testnet: process.env.BASESCAN_API_KEY || "",
       // BSC
       bsc: process.env.BSCSCAN_API_KEY || "",
@@ -45,6 +46,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-sepolia.basescan.org/api",
           browserURL: "https://sepolia.basescan.org/",
+        },
+      },
+      {
+        chainId: 8453,
+        network: "base_mainnet",
+        urls: {
+          apiURL: "https://api.basescan.org/api",
+          browserURL: "https://basescan.org/",
         },
       },
     ],
@@ -80,5 +89,4 @@ const config: HardhatUserConfig = {
     ],
   },
 };
-
 export default config;

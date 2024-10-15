@@ -50,6 +50,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "UPGRADE_INTERFACE_VERSION",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "string",
+        internalType: "string",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "WITHDRAWER_ROLE",
     inputs: [],
     outputs: [
@@ -137,6 +150,34 @@ const _abi = [
   },
   {
     type: "function",
+    name: "initialize",
+    inputs: [
+      {
+        name: "gateway_",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "zetaToken_",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "tssAddress_",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "admin_",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "pause",
     inputs: [],
     outputs: [],
@@ -151,6 +192,19 @@ const _abi = [
         name: "",
         type: "bool",
         internalType: "bool",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "proxiableUUID",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "bytes32",
+        internalType: "bytes32",
       },
     ],
     stateMutability: "view",
@@ -225,10 +279,54 @@ const _abi = [
   },
   {
     type: "function",
+    name: "tssAddress",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "unpause",
     inputs: [],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "updateTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "upgradeToAndCall",
+    inputs: [
+      {
+        name: "newImplementation",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "data",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
   },
   {
     type: "function",
@@ -311,14 +409,19 @@ const _abi = [
         internalType: "struct RevertContext",
         components: [
           {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
             name: "asset",
             type: "address",
             internalType: "address",
           },
           {
             name: "amount",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
           {
             name: "revertMessage",
@@ -343,6 +446,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+  },
+  {
+    type: "event",
+    name: "Initialized",
+    inputs: [
+      {
+        name: "version",
+        type: "uint64",
+        indexed: false,
+        internalType: "uint64",
+      },
+    ],
+    anonymous: false,
   },
   {
     type: "event",
@@ -447,6 +563,38 @@ const _abi = [
   },
   {
     type: "event",
+    name: "UpdatedZetaConnectorTSSAddress",
+    inputs: [
+      {
+        name: "oldTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "newTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "Upgraded",
+    inputs: [
+      {
+        name: "implementation",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Withdrawn",
     inputs: [
       {
@@ -518,14 +666,19 @@ const _abi = [
         internalType: "struct RevertContext",
         components: [
           {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+          {
             name: "asset",
             type: "address",
             internalType: "address",
           },
           {
             name: "amount",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
           {
             name: "revertMessage",
@@ -560,6 +713,33 @@ const _abi = [
   },
   {
     type: "error",
+    name: "AddressEmptyCode",
+    inputs: [
+      {
+        name: "target",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+  },
+  {
+    type: "error",
+    name: "ERC1967InvalidImplementation",
+    inputs: [
+      {
+        name: "implementation",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+  },
+  {
+    type: "error",
+    name: "ERC1967NonPayable",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "EnforcedPause",
     inputs: [],
   },
@@ -570,8 +750,39 @@ const _abi = [
   },
   {
     type: "error",
+    name: "FailedInnerCall",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InvalidInitialization",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "NotInitializing",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ReentrancyGuardReentrantCall",
     inputs: [],
+  },
+  {
+    type: "error",
+    name: "UUPSUnauthorizedCallContext",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "UUPSUnsupportedProxiableUUID",
+    inputs: [
+      {
+        name: "slot",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
   },
   {
     type: "error",

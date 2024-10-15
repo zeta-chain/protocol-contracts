@@ -1,5 +1,5 @@
 # IGatewayEVMEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/evm/interfaces/IGatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/evm/interfaces/IGatewayEVM.sol)
 
 Interface for the events emitted by the GatewayEVM contract.
 
@@ -98,4 +98,19 @@ event Called(address indexed sender, address indexed receiver, bytes payload, Re
 |`receiver`|`address`|The address of the receiver.|
 |`payload`|`bytes`|The calldata passed to the call.|
 |`revertOptions`|`RevertOptions`|Revert options.|
+
+### UpdatedGatewayTSSAddress
+Emitted when tss address is updated
+
+
+```solidity
+event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
+|`newTSSAddress`|`address`|new tss address|
 

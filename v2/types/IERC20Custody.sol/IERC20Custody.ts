@@ -24,16 +24,18 @@ import type {
 } from "../common";
 
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface IERC20CustodyInterface extends Interface {
   getFunction(
@@ -48,6 +50,7 @@ export interface IERC20CustodyInterface extends Interface {
     nameOrSignatureOrTopic:
       | "Deposited"
       | "Unwhitelisted"
+      | "UpdatedCustodyTSSAddress"
       | "Whitelisted"
       | "Withdrawn"
       | "WithdrawnAndCalled"
@@ -122,6 +125,22 @@ export namespace UnwhitelistedEvent {
   export type OutputTuple = [token: string];
   export interface OutputObject {
     token: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace UpdatedCustodyTSSAddressEvent {
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
+  export interface OutputObject {
+    oldTSSAddress: string;
+    newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -341,6 +360,13 @@ export interface IERC20Custody extends BaseContract {
     UnwhitelistedEvent.OutputObject
   >;
   getEvent(
+    key: "UpdatedCustodyTSSAddress"
+  ): TypedContractEvent<
+    UpdatedCustodyTSSAddressEvent.InputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputTuple,
+    UpdatedCustodyTSSAddressEvent.OutputObject
+  >;
+  getEvent(
     key: "Whitelisted"
   ): TypedContractEvent<
     WhitelistedEvent.InputTuple,
@@ -390,6 +416,17 @@ export interface IERC20Custody extends BaseContract {
       UnwhitelistedEvent.InputTuple,
       UnwhitelistedEvent.OutputTuple,
       UnwhitelistedEvent.OutputObject
+    >;
+
+    "UpdatedCustodyTSSAddress(address,address)": TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
+    >;
+    UpdatedCustodyTSSAddress: TypedContractEvent<
+      UpdatedCustodyTSSAddressEvent.InputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputTuple,
+      UpdatedCustodyTSSAddressEvent.OutputObject
     >;
 
     "Whitelisted(address)": TypedContractEvent<

@@ -7,6 +7,7 @@ import "forge-std/Vm.sol";
 import "./utils/ReceiverEVM.sol";
 
 import "./utils/TestERC20.sol";
+import "./utils/upgrades/ZetaConnectorNonNativeUpgradeTest.sol";
 
 import "../contracts/evm/ERC20Custody.sol";
 import "../contracts/evm/GatewayEVM.sol";
@@ -30,7 +31,6 @@ contract ZetaConnectorNonNativeTest is
 {
     using SafeERC20 for IERC20;
 
-    address proxy;
     GatewayEVM gateway;
     ReceiverEVM receiver;
     ERC20Custody custody;
@@ -39,11 +39,14 @@ contract ZetaConnectorNonNativeTest is
     address owner;
     address destination;
     address tssAddress;
+    address foo;
     RevertContext revertContext;
 
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
     error ExceedsMaxSupply();
     error EnforcedPause();
+
+    event WithdrawnV2(address indexed to, uint256 amount);
 
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
@@ -53,16 +56,24 @@ contract ZetaConnectorNonNativeTest is
         owner = address(this);
         destination = address(0x1234);
         tssAddress = address(0x5678);
+        foo = address(0x9876);
 
         zetaToken = new ZetaNonEth(tssAddress, tssAddress);
 
-        proxy = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zetaToken), owner))
         );
         gateway = GatewayEVM(proxy);
 
-        custody = new ERC20Custody(address(gateway), tssAddress, owner);
-        zetaConnector = new ZetaConnectorNonNative(address(gateway), address(zetaToken), tssAddress, owner);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gateway), tssAddress, owner))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(ZetaConnectorNonNative.initialize, (address(gateway), address(zetaToken), tssAddress, owner))
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
 
         vm.prank(tssAddress);
         zetaToken.updateTssAndConnectorAddresses(tssAddress, address(zetaConnector));
@@ -76,7 +87,7 @@ contract ZetaConnectorNonNativeTest is
         gateway.setConnector(address(zetaConnector));
         vm.stopPrank();
 
-        revertContext = RevertContext({ asset: address(zetaToken), amount: 1, revertMessage: "" });
+        revertContext = RevertContext({ sender: owner, asset: address(zetaToken), amount: 1, revertMessage: "" });
     }
 
     function testWithdraw() public {
@@ -100,15 +111,15 @@ contract ZetaConnectorNonNativeTest is
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";
 
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         zetaConnector.pause();
 
-        vm.prank(tssAddress);
-        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, tssAddress, PAUSER_ROLE));
+        vm.prank(foo);
+        vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         zetaConnector.unpause();
 
-        vm.prank(owner);
+        vm.prank(tssAddress);
         zetaConnector.pause();
 
         vm.expectRevert(EnforcedPause.selector);
@@ -350,5 +361,26 @@ contract ZetaConnectorNonNativeTest is
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
         zetaConnector.setMaxSupply(10_000);
+    }
+
+    function testUpgradeAndWithdraw() public {
+        // upgrade
+        Upgrades.upgradeProxy(address(zetaConnector), "ZetaConnectorNonNativeUpgradeTest.sol", "", owner);
+        ZetaConnectorNonNativeUpgradeTest zetaConnectorV2 = ZetaConnectorNonNativeUpgradeTest(address(zetaConnector));
+        // withdraw
+        uint256 amount = 100_000;
+        uint256 balanceBefore = zetaToken.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        bytes32 internalSendHash = "";
+
+        bytes memory data =
+            abi.encodeWithSignature("mint(address,uint256,bytes32)", destination, amount, internalSendHash);
+        vm.expectCall(address(zetaToken), 0, data);
+        vm.expectEmit(true, true, true, true, address(zetaConnectorV2));
+        emit WithdrawnV2(destination, amount);
+        vm.prank(tssAddress);
+        zetaConnectorV2.withdraw(destination, amount, internalSendHash);
+        uint256 balanceAfter = zetaToken.balanceOf(destination);
+        assertEq(balanceAfter, amount);
     }
 }

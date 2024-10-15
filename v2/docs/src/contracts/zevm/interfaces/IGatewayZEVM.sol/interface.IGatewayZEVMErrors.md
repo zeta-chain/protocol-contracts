@@ -1,5 +1,5 @@
 # IGatewayZEVMErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/zevm/interfaces/IGatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/zevm/interfaces/IGatewayZEVM.sol)
 
 Interface for the errors used in the GatewayZEVM contract.
 
@@ -61,12 +61,12 @@ Error indicating a failure to transfer gas fee.
 error GasFeeTransferFailed();
 ```
 
-### CallerIsNotFungibleModule
-Error indicating that the caller is not the Fungible module.
+### CallerIsNotProtocol
+Error indicating that the caller is not the protocol account.
 
 
 ```solidity
-error CallerIsNotFungibleModule();
+error CallerIsNotProtocol();
 ```
 
 ### InvalidTarget
@@ -85,19 +85,27 @@ Error indicating a failure to send ZETA tokens.
 error FailedZetaSent();
 ```
 
-### OnlyWZETAOrFungible
-Error indicating that only WZETA or the Fungible module can call the function.
+### OnlyWZETAOrProtocol
+Error indicating that only WZETA or the protocol address can call the function.
 
 
 ```solidity
-error OnlyWZETAOrFungible();
+error OnlyWZETAOrProtocol();
 ```
 
-### EmptyMessage
-Error indicating call method received empty message as argument.
+### InsufficientGasLimit
+Error indicating an insufficient gas limit.
 
 
 ```solidity
-error EmptyMessage();
+error InsufficientGasLimit();
+```
+
+### MessageSizeExceeded
+Error indicating message size exceeded in external functions.
+
+
+```solidity
+error MessageSizeExceeded();
 ```
 

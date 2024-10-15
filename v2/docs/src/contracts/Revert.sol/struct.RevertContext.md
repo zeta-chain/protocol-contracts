@@ -1,13 +1,14 @@
 # RevertContext
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/Revert.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/Revert.sol)
 
 Struct containing revert context passed to onRevert.
 
 
 ```solidity
 struct RevertContext {
+    address sender;
     address asset;
-    uint64 amount;
+    uint256 amount;
     bytes revertMessage;
 }
 ```
@@ -16,7 +17,8 @@ struct RevertContext {
 
 |Name|Type|Description|
 |----|----|-----------|
+|`sender`|`address`|Address of account that initiated smart contract call.|
 |`asset`|`address`|Address of asset, empty if it's gas token.|
-|`amount`|`uint64`|Amount specified with the transaction.|
+|`amount`|`uint256`|Amount specified with the transaction.|
 |`revertMessage`|`bytes`|Arbitrary data sent back in onRevert.|
 

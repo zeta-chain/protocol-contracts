@@ -45,17 +45,23 @@ export type RevertOptionsStructOutput = [
   onRevertGasLimit: bigint;
 };
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
+  sender: AddressLike;
   asset: AddressLike;
   amount: BigNumberish;
   revertMessage: BytesLike;
 };
 
 export type RevertContextStructOutput = [
+  sender: string,
   asset: string,
   amount: bigint,
   revertMessage: string
-] & { asset: string; amount: bigint; revertMessage: string };
+] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface IGatewayEVMInterface extends Interface {
   getFunction(
@@ -65,7 +71,8 @@ export interface IGatewayEVMInterface extends Interface {
       | "deposit(address,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
-      | "execute"
+      | "execute(address,bytes)"
+      | "execute((address),address,bytes)"
       | "executeRevert"
       | "executeWithERC20"
       | "revertWithERC20"
@@ -78,6 +85,7 @@ export interface IGatewayEVMInterface extends Interface {
       | "Executed"
       | "ExecutedWithERC20"
       | "Reverted"
+      | "UpdatedGatewayTSSAddress"
   ): EventFragment;
 
   encodeFunctionData(
@@ -107,8 +115,12 @@ export interface IGatewayEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "execute",
+    functionFragment: "execute(address,bytes)",
     values: [AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "execute((address),address,bytes)",
+    values: [MessageContextStruct, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
@@ -146,7 +158,14 @@ export interface IGatewayEVMInterface extends Interface {
     functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "execute(address,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "execute((address),address,bytes)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
     data: BytesLike
@@ -288,6 +307,22 @@ export namespace RevertedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace UpdatedGatewayTSSAddressEvent {
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
+  export interface OutputObject {
+    oldTSSAddress: string;
+    newTSSAddress: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export interface IGatewayEVM extends BaseContract {
   connect(runner?: ContractRunner | null): IGatewayEVM;
   waitForDeployment(): Promise<this>;
@@ -380,8 +415,18 @@ export interface IGatewayEVM extends BaseContract {
     "nonpayable"
   >;
 
-  execute: TypedContractMethod<
+  "execute(address,bytes)": TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
+    [string],
+    "payable"
+  >;
+
+  "execute((address),address,bytes)": TypedContractMethod<
+    [
+      messageContext: MessageContextStruct,
+      destination: AddressLike,
+      data: BytesLike
+    ],
     [string],
     "payable"
   >;
@@ -478,9 +523,20 @@ export interface IGatewayEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "execute"
+    nameOrSignature: "execute(address,bytes)"
   ): TypedContractMethod<
     [destination: AddressLike, data: BytesLike],
+    [string],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "execute((address),address,bytes)"
+  ): TypedContractMethod<
+    [
+      messageContext: MessageContextStruct,
+      destination: AddressLike,
+      data: BytesLike
+    ],
     [string],
     "payable"
   >;
@@ -556,6 +612,13 @@ export interface IGatewayEVM extends BaseContract {
     RevertedEvent.OutputTuple,
     RevertedEvent.OutputObject
   >;
+  getEvent(
+    key: "UpdatedGatewayTSSAddress"
+  ): TypedContractEvent<
+    UpdatedGatewayTSSAddressEvent.InputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputTuple,
+    UpdatedGatewayTSSAddressEvent.OutputObject
+  >;
 
   filters: {
     "Called(address,address,bytes,tuple)": TypedContractEvent<
@@ -611,6 +674,17 @@ export interface IGatewayEVM extends BaseContract {
       RevertedEvent.InputTuple,
       RevertedEvent.OutputTuple,
       RevertedEvent.OutputObject
+    >;
+
+    "UpdatedGatewayTSSAddress(address,address)": TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
+    >;
+    UpdatedGatewayTSSAddress: TypedContractEvent<
+      UpdatedGatewayTSSAddressEvent.InputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputTuple,
+      UpdatedGatewayTSSAddressEvent.OutputObject
     >;
   };
 }

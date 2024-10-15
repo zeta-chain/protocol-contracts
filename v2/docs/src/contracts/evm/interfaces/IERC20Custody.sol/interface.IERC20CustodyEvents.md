@@ -1,5 +1,5 @@
 # IERC20CustodyEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/0d9bd97652a5b48cac02a68a671d223c054a0a52/contracts/evm/interfaces/IERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/evm/interfaces/IERC20Custody.sol)
 
 Interface for the events emitted by the ERC20 custody contract.
 
@@ -93,4 +93,19 @@ Emitted in legacy deposit method.
 ```solidity
 event Deposited(bytes recipient, IERC20 indexed asset, uint256 amount, bytes message);
 ```
+
+### UpdatedCustodyTSSAddress
+Emitted when tss address is updated
+
+
+```solidity
+event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
+|`newTSSAddress`|`address`|new tss address|
 

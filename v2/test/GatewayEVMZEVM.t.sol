@@ -13,12 +13,11 @@ import "./utils/TestERC20.sol";
 
 import "./utils/SenderZEVM.sol";
 
-import "./utils/SystemContractMock.sol";
+import { SystemContractMock } from "./utils/SystemContractMock.sol";
 
 import { GatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
 import { IGatewayZEVM } from "../contracts/zevm/GatewayZEVM.sol";
-import { IGatewayZEVMErrors } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import { IGatewayZEVMEvents } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { CallOptions, IGatewayZEVMErrors, IGatewayZEVMEvents } from "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 
 import { IGatewayEVMErrors } from "../contracts/evm/interfaces/IGatewayEVM.sol";
 import { IGatewayEVMEvents } from "../contracts/evm/interfaces/IGatewayEVM.sol";
@@ -42,7 +41,6 @@ contract GatewayEVMZEVMTest is
     // evm
     using SafeERC20 for IERC20;
 
-    address proxyEVM;
     GatewayEVM gatewayEVM;
     ERC20Custody custody;
     ZetaConnectorNonNative zetaConnector;
@@ -73,12 +71,21 @@ contract GatewayEVMZEVMTest is
         token = new TestERC20("test", "TTK");
         zeta = new TestERC20("zeta", "ZETA");
 
-        proxyEVM = Upgrades.deployUUPSProxy(
+        address proxy = Upgrades.deployUUPSProxy(
             "GatewayEVM.sol", abi.encodeCall(GatewayEVM.initialize, (tssAddress, address(zeta), ownerEVM))
         );
-        gatewayEVM = GatewayEVM(proxyEVM);
-        custody = new ERC20Custody(address(gatewayEVM), tssAddress, ownerEVM);
-        zetaConnector = new ZetaConnectorNonNative(address(gatewayEVM), address(zeta), tssAddress, ownerEVM);
+        gatewayEVM = GatewayEVM(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ERC20Custody.sol", abi.encodeCall(ERC20Custody.initialize, (address(gatewayEVM), tssAddress, ownerEVM))
+        );
+        custody = ERC20Custody(proxy);
+        proxy = Upgrades.deployUUPSProxy(
+            "ZetaConnectorNonNative.sol",
+            abi.encodeCall(
+                ZetaConnectorNonNative.initialize, (address(gatewayEVM), address(zeta), tssAddress, ownerEVM)
+            )
+        );
+        zetaConnector = ZetaConnectorNonNative(proxy);
 
         vm.deal(tssAddress, 1 ether);
 
@@ -101,8 +108,8 @@ contract GatewayEVMZEVMTest is
         gatewayZEVM = GatewayZEVM(proxyZEVM);
 
         senderZEVM = new SenderZEVM(address(gatewayZEVM));
-        address fungibleModuleAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
-        vm.startPrank(fungibleModuleAddress);
+        address protocolAddress = address(0x735b14BB79463307AAcBED86DAf3322B1e6226aB);
+        vm.startPrank(protocolAddress);
         systemContract = new SystemContractMock(address(0), address(0), address(0));
         zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Zeta, 0, address(systemContract), address(gatewayZEVM));
         systemContract.setGasCoinZRC20(1, address(zrc20));
@@ -135,7 +142,14 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         vm.prank(ownerZEVM);
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Called(address(ownerZEVM), address(zrc20), abi.encodePacked(receiverEVM), message, 1, revertOptions);
+        emit Called(
+            address(ownerZEVM),
+            address(zrc20),
+            abi.encodePacked(receiverEVM),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            revertOptions
+        );
         gatewayZEVM.call(abi.encodePacked(receiverEVM), address(zrc20), message, 1, revertOptions);
 
         // Call execute on evm
@@ -195,11 +209,18 @@ contract GatewayEVMZEVMTest is
             expectedGasFee,
             zrc20.PROTOCOL_FLAT_FEE(),
             message,
-            1,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
             revertOptions
         );
         vm.prank(ownerZEVM);
-        gatewayZEVM.withdrawAndCall(abi.encodePacked(receiverEVM), 500_000, address(zrc20), message, 1, revertOptions);
+        gatewayZEVM.withdrawAndCall(
+            abi.encodePacked(receiverEVM),
+            500_000,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            revertOptions
+        );
 
         // Check the balance after withdrawal
         uint256 balanceOfAfterWithdrawal = zrc20.balanceOf(ownerZEVM);

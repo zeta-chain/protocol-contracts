@@ -10,6 +10,14 @@
       "zetaTokenConsumerUniV2": "",
       "zetaTokenConsumerUniV3": ""
     },
+    "base_mainnet": {
+      "connector": "0xfc6a3d4D373B522B182E8caDd66ECF140a313E2F",
+      "erc20Custody": "0x53b0705194e686Ba745eF8A80cB1Ef355dE645D0",
+      "immutableCreate2Factory": "0x095a03c6a68137fE9a566bBc3e552F299d8b886d",
+      "tss": "0x70e967acFcC17c3941E87562161406d41676FD83",
+      "tssUpdater": "0x4Ed087B3aB502475c97cF9d3f1637eFd2470B8FE",
+      "zetaToken": "0x7FB8E2aE4A5923BBd8e1513945914b5AB69cdA2a"
+    },
     "bsc_mainnet": {
       "connector": "0x000063A6e758D9e2f438d430108377564cf4077D",
       "erc20Custody": "0x00000fF8fA992424957F97688015814e707A0115",
@@ -164,3 +172,4 @@
     }
   }
 }
+
