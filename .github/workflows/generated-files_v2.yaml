@@ -50,6 +50,9 @@ jobs:
           tar -zxvf geth-alltools-linux-amd64-1.11.5-a38f4108.tar.gz
           sudo mv geth-alltools-linux-amd64-1.11.5-a38f4108/abigen /usr/local/bin/
 
+      - name: Run abigen --version
+        run: abigen --version
+
       - name: Generate Go packages and types
         run: |
           yarn generate
