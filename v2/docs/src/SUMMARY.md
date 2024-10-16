@@ -38,6 +38,7 @@
     - [SystemContract](contracts/zevm/SystemContract.sol/contract.SystemContract.md)
     - [ZRC20Errors](contracts/zevm/ZRC20.sol/interface.ZRC20Errors.md)
     - [ZRC20](contracts/zevm/ZRC20.sol/contract.ZRC20.md)
+  - [INotSupportedMethods](contracts/Errors.sol/interface.INotSupportedMethods.md)
   - [RevertOptions](contracts/Revert.sol/struct.RevertOptions.md)
   - [RevertContext](contracts/Revert.sol/struct.RevertContext.md)
   - [Revertable](contracts/Revert.sol/interface.Revertable.md)

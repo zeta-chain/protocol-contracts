@@ -39,10 +39,7 @@ contract SenderZEVM {
             onRevertGasLimit: 0
         });
 
-        CallOptions memory callOptions = CallOptions({
-            gasLimit: 1,
-            isArbitraryCall: false
-        });
+        CallOptions memory callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: false });
 
         IZRC20(zrc20).approve(gateway, 1);
 
@@ -82,10 +79,7 @@ contract SenderZEVM {
             onRevertGasLimit: 0
         });
 
-        CallOptions memory callOptions = CallOptions({
-            gasLimit: 1,
-            isArbitraryCall: false
-        });
+        CallOptions memory callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: false });
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, callOptions, revertOptions);

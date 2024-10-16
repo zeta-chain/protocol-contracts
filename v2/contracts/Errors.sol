@@ -6,4 +6,3 @@ pragma solidity 0.8.26;
 interface INotSupportedMethods {
     error ZETANotSupported();
 }
-

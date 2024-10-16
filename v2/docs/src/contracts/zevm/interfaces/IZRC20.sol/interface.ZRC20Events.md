@@ -1,5 +1,5 @@
 # ZRC20Events
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/45df03a49b31cc5722a5bb6453b743fc8ac35d1f/contracts/zevm/interfaces/IZRC20.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7e13d4407420cd4ff52ed44cc892c54d5f3d02cd/contracts/zevm/interfaces/IZRC20.sol)
 
 Interface for the ZRC20 events.
 

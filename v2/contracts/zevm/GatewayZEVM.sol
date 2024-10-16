@@ -206,9 +206,9 @@ contract GatewayZEVM is
     //// @param amount The amount of tokens to withdraw.
     //// @param revertOptions Revert options.
     function withdraw(
-        bytes memory /*receiver*/,
-        uint256 /*amount*/,
-        uint256 /*chainId*/,
+        bytes memory, /*receiver*/
+        uint256, /*amount*/
+        uint256, /*chainId*/
         RevertOptions calldata /*revertOptions*/
     )
         external
@@ -247,11 +247,11 @@ contract GatewayZEVM is
     //// @param callOptions Call options including gas limit and arbirtrary call flag.
     //// @param revertOptions Revert options.
     function withdrawAndCall(
-        bytes memory /*receiver*/,
-        uint256 /*amount*/,
-        uint256 /*chainId*/,
-        bytes calldata /*message*/,
-        CallOptions calldata /*callOptions*/,
+        bytes memory, /*receiver*/
+        uint256, /*amount*/
+        uint256, /*chainId*/
+        bytes calldata, /*message*/
+        CallOptions calldata, /*callOptions*/
         RevertOptions calldata /*revertOptions*/
     )
         external

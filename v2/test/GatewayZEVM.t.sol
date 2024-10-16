@@ -170,7 +170,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     function testWithdrawAndCallZRC20FailsIfReceiverIsZeroAddress() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.withdrawAndCall(abi.encodePacked(""), 1, address(zrc20), message, CallOptions({ gasLimit: 1, isArbitraryCall: false }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(""),
+            1,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            revertOptions
+        );
     }
 
     function testWithdrawAndCallZRC20FailsIfMessageSizeExceeded() public {
@@ -178,19 +185,40 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
 
         vm.expectRevert(MessageSizeExceeded.selector);
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, CallOptions({ gasLimit: 1, isArbitraryCall: false }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            1,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            revertOptions
+        );
     }
 
     function testWithdrawAndCallZRC20FailsIfGasLimitIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientGasLimit.selector);
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, address(zrc20), message, CallOptions({ gasLimit: 0, isArbitraryCall: false }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            1,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 0, isArbitraryCall: false }),
+            revertOptions
+        );
     }
 
     function testWithdrawAndCallZRC20FailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZRC20Amount.selector);
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 0, address(zrc20), message, CallOptions({ gasLimit: 1, isArbitraryCall: false }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            0,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            revertOptions
+        );
     }
 
     function testWithdrawZRC20WithMessageFailsIfNoAllowance() public {
@@ -203,7 +231,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert();
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, address(zrc20), message,  CallOptions({ gasLimit: 1, isArbitraryCall: false }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            amount,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            revertOptions
+        );
 
         // Check that balance didn't change
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
@@ -230,7 +265,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, address(zrc20), message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            amount,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
+            revertOptions
+        );
 
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
         assertEq(ownerBalanceBefore - amount - expectedGasFee, ownerBalanceAfter);
@@ -299,7 +341,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, address(zrc20), message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            amount,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
+            revertOptions
+        );
 
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
         assertEq(ownerBalanceBefore - amount - expectedGasFee, ownerBalanceAfter);
@@ -310,13 +359,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         // https://github.com/zeta-chain/protocol-contracts/issues/394
         // vm.expectRevert(InsufficientZetaAmount.selector);
         vm.expectRevert(ZETANotSupported.selector);
-      
+
         gateway.withdraw(abi.encodePacked(addr1), 0, 1, revertOptions);
     }
 
     function testWithdrawZETAFailsIfMessageSizeExceeded() public {
         revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() + 1);
-       
+
         // TODO: replace error to check once ZETA supported back
         // https://github.com/zeta-chain/protocol-contracts/issues/394
         // vm.expectRevert(MessageSizeExceeded.selector);
@@ -515,7 +564,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         zetaToken.approve(address(gateway), 0);
 
         callOptions.gasLimit = 0;
-        
+
         // TODO: replace error to check once ZETA supported back
         // https://github.com/zeta-chain/protocol-contracts/issues/394
         // vm.expectRevert(InsufficientGasLimit.selector);

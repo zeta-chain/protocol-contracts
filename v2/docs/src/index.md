@@ -104,6 +104,7 @@ $ cast --help
     - [SystemContract](protocol/contracts/zevm/SystemContract.sol/contract.SystemContract.md)
     - [ZRC20Errors](protocol/contracts/zevm/ZRC20.sol/interface.ZRC20Errors.md)
     - [ZRC20](protocol/contracts/zevm/ZRC20.sol/contract.ZRC20.md)
+  - [INotSupportedMethods](protocol/contracts/Errors.sol/interface.INotSupportedMethods.md)
   - [RevertOptions](protocol/contracts/Revert.sol/struct.RevertOptions.md)
   - [RevertContext](protocol/contracts/Revert.sol/struct.RevertContext.md)
   - [Revertable](protocol/contracts/Revert.sol/interface.Revertable.md)
