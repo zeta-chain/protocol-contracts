@@ -23,13 +23,13 @@ import type {
   TypedContractMethod,
 } from "./common";
 
-export type ZContextStruct = {
+export type MessageContextStruct = {
   origin: BytesLike;
   sender: AddressLike;
   chainID: BigNumberish;
 };
 
-export type ZContextStructOutput = [
+export type MessageContextStructOutput = [
   origin: string,
   sender: string,
   chainID: bigint
@@ -50,27 +50,22 @@ export type RevertContextStructOutput = [
 ] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface TestUniversalContractInterface extends Interface {
-  getFunction(
-    nameOrSignature: "onCrossChainCall" | "onRevert"
-  ): FunctionFragment;
+  getFunction(nameOrSignature: "onCall" | "onRevert"): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic: "ContextData" | "ContextDataRevert"
   ): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "onCrossChainCall",
-    values: [ZContextStruct, AddressLike, BigNumberish, BytesLike]
+    functionFragment: "onCall",
+    values: [MessageContextStruct, AddressLike, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "onRevert",
     values: [RevertContextStruct]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "onCrossChainCall",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
 }
 
@@ -157,9 +152,9 @@ export interface TestUniversalContract extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  onCrossChainCall: TypedContractMethod<
+  onCall: TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       message: BytesLike
@@ -179,10 +174,10 @@ export interface TestUniversalContract extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "onCrossChainCall"
+    nameOrSignature: "onCall"
   ): TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       message: BytesLike

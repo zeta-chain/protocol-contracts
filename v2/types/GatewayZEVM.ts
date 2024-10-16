@@ -55,13 +55,13 @@ export type RevertOptionsStructOutput = [
   onRevertGasLimit: bigint;
 };
 
-export type ZContextStruct = {
+export type MessageContextStruct = {
   origin: BytesLike;
   sender: AddressLike;
   chainID: BigNumberish;
 };
 
-export type ZContextStructOutput = [
+export type MessageContextStructOutput = [
   origin: string,
   sender: string,
   chainID: bigint
@@ -177,11 +177,17 @@ export interface GatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
-    values: [ZContextStruct, BigNumberish, AddressLike, BytesLike]
+    values: [MessageContextStruct, BigNumberish, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
-    values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndRevert",
@@ -189,7 +195,13 @@ export interface GatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
-    values: [ZContextStruct, AddressLike, BigNumberish, AddressLike, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      BigNumberish,
+      AddressLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
@@ -652,7 +664,7 @@ export interface GatewayZEVM extends BaseContract {
 
   "depositAndCall((bytes,address,uint256),uint256,address,bytes)": TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       amount: BigNumberish,
       target: AddressLike,
       message: BytesLike
@@ -663,7 +675,7 @@ export interface GatewayZEVM extends BaseContract {
 
   "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)": TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -686,7 +698,7 @@ export interface GatewayZEVM extends BaseContract {
 
   execute: TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -885,7 +897,7 @@ export interface GatewayZEVM extends BaseContract {
     nameOrSignature: "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
   ): TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       amount: BigNumberish,
       target: AddressLike,
       message: BytesLike
@@ -897,7 +909,7 @@ export interface GatewayZEVM extends BaseContract {
     nameOrSignature: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
   ): TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,
@@ -922,7 +934,7 @@ export interface GatewayZEVM extends BaseContract {
     nameOrSignature: "execute"
   ): TypedContractMethod<
     [
-      context: ZContextStruct,
+      context: MessageContextStruct,
       zrc20: AddressLike,
       amount: BigNumberish,
       target: AddressLike,

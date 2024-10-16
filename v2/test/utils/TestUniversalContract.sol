@@ -28,8 +28,8 @@ contract TestUniversalContract is UniversalContract, Revertable {
     /// @param amount The amount of tokens transferred.
     /// @param message The calldata passed to the contract call.
     /// @dev Decodes the message and emits a ContextData event.
-    function onCrossChainCall(
-        zContext calldata context,
+    function onCall(
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         bytes calldata message
