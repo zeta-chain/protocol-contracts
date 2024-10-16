@@ -419,9 +419,9 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testWithdrawZETA() public {
         uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 protocolBalanceBefore = protocolAddress.balance;
+        // uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        // uint256 protocolBalanceBefore = protocolAddress.balance;
         uint256 chainId = 1;
 
         // vm.expectEmit(true, true, true, true, address(gateway));
@@ -490,9 +490,9 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testWithdrawZETAWithCallOptsWithMessage() public {
         uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 protocolAddressBalanceBefore = protocolAddress.balance;
+        // uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        // uint256 protocolAddressBalanceBefore = protocolAddress.balance;
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 chainId = 1;
 
