@@ -53,6 +53,9 @@ jobs:
       - name: Run forge --version
         run: forge --version
 
+      - name: Run soldeer --version
+        run: forge soldeer version
+
       - name: Generate Go packages and types
         run: |
           yarn generate
