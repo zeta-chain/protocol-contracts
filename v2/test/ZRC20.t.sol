@@ -50,6 +50,9 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testZRC20BasicInfo() public {
+        // silence view function warning
+        zrc20 = zrc20;
+
         string memory name = zrc20.name();
         assertEq("TOKEN", name);
 

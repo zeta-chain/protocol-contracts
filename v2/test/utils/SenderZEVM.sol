@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import { IGatewayZEVM } from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import { RevertOptions } from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { CallOptions, RevertOptions } from "../../contracts/zevm/interfaces/IGatewayZEVM.sol";
 import "../../contracts/zevm/interfaces/IZRC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -42,8 +42,13 @@ contract SenderZEVM {
         uint256 gasLimit = 1;
         IZRC20(zrc20).approve(gateway, gasLimit);
 
+        CallOptions memory callOptions = CallOptions({
+            gasLimit: gasLimit,
+            isArbitraryCall: true
+        });
+
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).call(receiver, zrc20, message, gasLimit, revertOptions);
+        IGatewayZEVM(gateway).call(receiver, zrc20, message, callOptions, revertOptions);
     }
 
     /// @notice Withdraw and call a receiver on EVM.
@@ -78,7 +83,12 @@ contract SenderZEVM {
             onRevertGasLimit: 0
         });
 
+        CallOptions memory callOptions = CallOptions({
+            gasLimit: 1,
+            isArbitraryCall: true
+        });
+
         // Pass encoded call to gateway
-        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, 1, revertOptions);
+        IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, callOptions, revertOptions);
     }
 }

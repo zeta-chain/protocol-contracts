@@ -524,7 +524,6 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         zeta.approve(address(custody), 1_000_000);
 
         uint256 custodyTokenBalanceBefore = token.balanceOf(address(custody));
-        uint256 tssZetaBalanceBefore = zeta.balanceOf(tssAddress);
 
         bytes memory message = abi.encodePacked("hello");
 
