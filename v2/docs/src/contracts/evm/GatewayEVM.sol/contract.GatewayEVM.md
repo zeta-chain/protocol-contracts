@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
-Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
+Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Errors.sol/interface.INotSupportedMethods.md)
 
 The GatewayEVM contract is the endpoint to call smart contracts on external chains.
 
