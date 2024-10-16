@@ -105,7 +105,14 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function executeWithERC20(MessageContext calldata messageContext, address token, address to, uint256 amount, bytes calldata data) external;
+    function executeWithERC20(
+        MessageContext calldata messageContext,
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        external;
 
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
     /// @dev This function can only be called by the TSS address and it is payable.

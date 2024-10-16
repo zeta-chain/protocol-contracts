@@ -179,7 +179,7 @@ contract GatewayEVM is
         if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-         if (messageContext.sender == address(0)) {
+        if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
         } else {
             _executeAuthenticatedCall(messageContext, to, data);

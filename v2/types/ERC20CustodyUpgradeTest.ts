@@ -23,6 +23,10 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -188,7 +192,13 @@ export interface ERC20CustodyUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCall",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
@@ -691,6 +701,7 @@ export interface ERC20CustodyUpgradeTest extends BaseContract {
 
   withdrawAndCall: TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       to: AddressLike,
       token: AddressLike,
       amount: BigNumberish,
@@ -838,6 +849,7 @@ export interface ERC20CustodyUpgradeTest extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       to: AddressLike,
       token: AddressLike,
       amount: BigNumberish,

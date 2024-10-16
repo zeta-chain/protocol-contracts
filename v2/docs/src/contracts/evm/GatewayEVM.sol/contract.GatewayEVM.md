@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7e13d4407420cd4ff52ed44cc892c54d5f3d02cd/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/86bca2c09f7eb3b8509097193b2e7504ddcc7cee/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Errors.sol/interface.INotSupportedMethods.md)
@@ -212,38 +212,6 @@ function execute(
 |`<none>`|`bytes`|The result of the call.|
 
 
-### execute
-
-Executes an arbitrary call to a destination address without ERC20 tokens.
-
-*This function can only be called by the TSS address and it is payable.*
-
-
-```solidity
-function execute(
-    address destination,
-    bytes calldata data
-)
-    external
-    payable
-    onlyRole(TSS_ROLE)
-    whenNotPaused
-    returns (bytes memory);
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`destination`|`address`|Address to call.|
-|`data`|`bytes`|Calldata to pass to the call.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`<none>`|`bytes`|The result of the call.|
-
-
 ### executeWithERC20
 
 Executes a call to a destination contract using ERC20 tokens.
@@ -254,6 +222,7 @@ It uses the ERC20 allowance system, resetting gateway allowance at the end.*
 
 ```solidity
 function executeWithERC20(
+    MessageContext calldata messageContext,
     address token,
     address to,
     uint256 amount,
@@ -268,6 +237,7 @@ function executeWithERC20(
 
 |Name|Type|Description|
 |----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender.|
 |`token`|`address`|Address of the ERC20 token.|
 |`to`|`address`|Address of the contract to call.|
 |`amount`|`uint256`|Amount of tokens to transfer.|

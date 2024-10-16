@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
 import { INotSupportedMethods } from "../../../contracts/Errors.sol";
+import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
 import "../../../contracts/evm/ZetaConnectorBase.sol";
 import "../../../contracts/evm/interfaces/IERC20Custody.sol";
 import "../../../contracts/evm/interfaces/IGatewayEVM.sol";
@@ -183,7 +183,7 @@ contract GatewayEVMUpgradeTest is
         if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-         if (messageContext.sender == address(0)) {
+        if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
         } else {
             _executeAuthenticatedCall(messageContext, to, data);

@@ -2,8 +2,9 @@
 pragma solidity 0.8.26;
 
 import { RevertContext } from "../../../contracts/Revert.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import { MessageContext } from "./IGatewayEVM.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /// @title IERC20CustodyEvents
 /// @notice Interface for the events emitted by the ERC20 custody contract.
@@ -77,7 +78,14 @@ interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
-    function withdrawAndCall(MessageContext calldata messageContext, address token, address to, uint256 amount, bytes calldata data) external;
+    function withdrawAndCall(
+        MessageContext calldata messageContext,
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        external;
 
     /// @notice WithdrawAndRevert transfers tokens to Gateway and call a contract with a revert functionality through
     /// the Gateway.
