@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import { RevertContext } from "../../contracts/Revert.sol";
-import { IGatewayEVM, IGatewayEVMErrors, IGatewayEVMEvents } from "../../contracts/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVM, IGatewayEVMErrors, IGatewayEVMEvents, MessageContext } from "../../contracts/evm/interfaces/IGatewayEVM.sol";
 import "../../contracts/evm/interfaces/IZetaConnector.sol";
 
 /// @title ZetaConnectorBase
@@ -112,11 +112,13 @@ abstract contract ZetaConnectorBase is
     function withdraw(address to, uint256 amount, bytes32 internalSendHash) external virtual;
 
     /// @notice Withdraw tokens and call a contract through Gateway.
+    /// @param messageContext Message context containing sender.
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     function withdrawAndCall(
+        MessageContext calldata messageContext,
         address to,
         uint256 amount,
         bytes calldata data,

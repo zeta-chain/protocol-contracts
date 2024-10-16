@@ -41,6 +41,7 @@ contract ZetaConnectorNativeTest is
     address tssAddress;
     address foo;
     RevertContext revertContext;
+    MessageContext arbitraryCallMessageContext = MessageContext({ sender: address(0) });
 
     error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
@@ -209,7 +210,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawnAndCalled(address(receiver), amount, data);
         vm.prank(tssAddress);
-        zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndCall(arbitraryCallMessageContext, address(receiver), amount, data, internalSendHash);
 
         // Verify that the tokens were transferred to the destination address
         uint256 balanceAfter = zetaToken.balanceOf(destination);
@@ -236,7 +237,7 @@ contract ZetaConnectorNativeTest is
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, WITHDRAWER_ROLE));
-        zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndCall(arbitraryCallMessageContext, address(receiver), amount, data, internalSendHash);
     }
 
     function testWithdrawAndCallReceiveNoParams() public {
@@ -254,7 +255,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawnAndCalled(address(receiver), amount, data);
         vm.prank(tssAddress);
-        zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndCall(arbitraryCallMessageContext, address(receiver), amount, data, internalSendHash);
 
         // Verify that the no tokens were transferred to the destination address
         uint256 balanceAfter = zetaToken.balanceOf(destination);
@@ -290,7 +291,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawnAndCalled(address(receiver), amount, data);
         vm.prank(tssAddress);
-        zetaConnector.withdrawAndCall(address(receiver), amount, data, internalSendHash);
+        zetaConnector.withdrawAndCall(arbitraryCallMessageContext, address(receiver), amount, data, internalSendHash);
 
         // Verify that the tokens were transferred to the destination address
         uint256 balanceAfter = zetaToken.balanceOf(destination);

@@ -65,12 +65,14 @@ contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
     }
 
     /// @notice Withdraw tokens and call a contract through Gateway.
+    /// @param messageContext Message context containing sender.
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
     /// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address, and mints if supply is not reached.
     function withdrawAndCall(
+        MessageContext calldata messageContext,
         address to,
         uint256 amount,
         bytes calldata data,
@@ -86,7 +88,7 @@ contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
         _mintTo(address(gateway), amount, internalSendHash);
 
         // Forward the call to the Gateway contract
-        gateway.executeWithERC20(address(zetaToken), to, amount, data);
+        gateway.executeWithERC20(messageContext, address(zetaToken), to, amount, data);
 
         emit WithdrawnAndCalled(to, amount, data);
     }
@@ -127,7 +129,7 @@ contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
     }
 
     /// @dev mints to provided account and checks if totalSupply will be exceeded
-    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) internal {
+    function _mintTo(address to, uint256 amount, bytes32 internalSendHash) private {
         if (amount + IERC20(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply();
         IZetaNonEthNew(zetaToken).mint(address(to), amount, internalSendHash);
     }
