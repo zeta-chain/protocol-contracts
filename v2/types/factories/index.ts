@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as erc20 from "./ERC20";
+export * as errorsSol from "./Errors.sol";
 export * as ierc20CustodySol from "./IERC20Custody.sol";
 export * as ierc721Sol from "./IERC721.sol";
 export * as iGatewayEvmSol from "./IGatewayEVM.sol";
