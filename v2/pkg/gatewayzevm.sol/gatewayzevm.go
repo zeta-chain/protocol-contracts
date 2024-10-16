@@ -35,6 +35,13 @@ type CallOptions struct {
 	IsArbitraryCall bool
 }
 
+// MessageContext is an auto generated low-level Go binding around an user-defined struct.
+type MessageContext struct {
+	Origin  []byte
+	Sender  common.Address
+	ChainID *big.Int
+}
+
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Sender        common.Address
@@ -50,13 +57,6 @@ type RevertOptions struct {
 	AbortAddress     common.Address
 	RevertMessage    []byte
 	OnRevertGasLimit *big.Int
-}
-
-// ZContext is an auto generated low-level Go binding around an user-defined struct.
-type ZContext struct {
-	Origin  []byte
-	Sender  common.Address
-	ChainID *big.Int
 }
 
 // GatewayZEVMMetaData contains all meta data concerning the GatewayZEVM contract.
@@ -618,42 +618,42 @@ func (_GatewayZEVM *GatewayZEVMTransactorSession) Deposit(zrc20 common.Address, 
 // DepositAndCall is a paid mutator transaction binding the contract method 0x21501a95.
 //
 // Solidity: function depositAndCall((bytes,address,uint256) context, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMTransactor) DepositAndCall(opts *bind.TransactOpts, context ZContext, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMTransactor) DepositAndCall(opts *bind.TransactOpts, context MessageContext, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.contract.Transact(opts, "depositAndCall", context, amount, target, message)
 }
 
 // DepositAndCall is a paid mutator transaction binding the contract method 0x21501a95.
 //
 // Solidity: function depositAndCall((bytes,address,uint256) context, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMSession) DepositAndCall(context ZContext, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMSession) DepositAndCall(context MessageContext, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.DepositAndCall(&_GatewayZEVM.TransactOpts, context, amount, target, message)
 }
 
 // DepositAndCall is a paid mutator transaction binding the contract method 0x21501a95.
 //
 // Solidity: function depositAndCall((bytes,address,uint256) context, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndCall(context ZContext, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndCall(context MessageContext, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.DepositAndCall(&_GatewayZEVM.TransactOpts, context, amount, target, message)
 }
 
 // DepositAndCall0 is a paid mutator transaction binding the contract method 0xc39aca37.
 //
 // Solidity: function depositAndCall((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMTransactor) DepositAndCall0(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMTransactor) DepositAndCall0(opts *bind.TransactOpts, context MessageContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.contract.Transact(opts, "depositAndCall0", context, zrc20, amount, target, message)
 }
 
 // DepositAndCall0 is a paid mutator transaction binding the contract method 0xc39aca37.
 //
 // Solidity: function depositAndCall((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMSession) DepositAndCall0(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMSession) DepositAndCall0(context MessageContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.DepositAndCall0(&_GatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
 // DepositAndCall0 is a paid mutator transaction binding the contract method 0xc39aca37.
 //
 // Solidity: function depositAndCall((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndCall0(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndCall0(context MessageContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.DepositAndCall0(&_GatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
@@ -681,21 +681,21 @@ func (_GatewayZEVM *GatewayZEVMTransactorSession) DepositAndRevert(zrc20 common.
 // Execute is a paid mutator transaction binding the contract method 0xbcf7f32b.
 //
 // Solidity: function execute((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMTransactor) Execute(opts *bind.TransactOpts, context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMTransactor) Execute(opts *bind.TransactOpts, context MessageContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.contract.Transact(opts, "execute", context, zrc20, amount, target, message)
 }
 
 // Execute is a paid mutator transaction binding the contract method 0xbcf7f32b.
 //
 // Solidity: function execute((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMSession) Execute(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMSession) Execute(context MessageContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.Execute(&_GatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 
 // Execute is a paid mutator transaction binding the contract method 0xbcf7f32b.
 //
 // Solidity: function execute((bytes,address,uint256) context, address zrc20, uint256 amount, address target, bytes message) returns()
-func (_GatewayZEVM *GatewayZEVMTransactorSession) Execute(context ZContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
+func (_GatewayZEVM *GatewayZEVMTransactorSession) Execute(context MessageContext, zrc20 common.Address, amount *big.Int, target common.Address, message []byte) (*types.Transaction, error) {
 	return _GatewayZEVM.Contract.Execute(&_GatewayZEVM.TransactOpts, context, zrc20, amount, target, message)
 }
 

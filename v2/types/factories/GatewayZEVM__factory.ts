@@ -188,7 +188,7 @@ const _abi = [
       {
         name: "context",
         type: "tuple",
-        internalType: "struct zContext",
+        internalType: "struct MessageContext",
         components: [
           {
             name: "origin",
@@ -233,7 +233,7 @@ const _abi = [
       {
         name: "context",
         type: "tuple",
-        internalType: "struct zContext",
+        internalType: "struct MessageContext",
         components: [
           {
             name: "origin",
@@ -333,7 +333,7 @@ const _abi = [
       {
         name: "context",
         type: "tuple",
-        internalType: "struct zContext",
+        internalType: "struct MessageContext",
         components: [
           {
             name: "origin",

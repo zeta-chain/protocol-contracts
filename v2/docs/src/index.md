@@ -98,6 +98,7 @@ $ cast --help
       - [CoinType](protocol/contracts/zevm/interfaces/IZRC20.sol/enum.CoinType.md)
       - [zContext](protocol/contracts/zevm/interfaces/UniversalContract.sol/struct.zContext.md)
       - [zContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/interface.zContract.md)
+      - [MessageContext](protocol/contracts/zevm/interfaces/UniversalContract.sol/struct.MessageContext.md)
       - [UniversalContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/interface.UniversalContract.md)
     - [GatewayZEVM](protocol/contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md)
     - [SystemContractErrors](protocol/contracts/zevm/SystemContract.sol/interface.SystemContractErrors.md)
