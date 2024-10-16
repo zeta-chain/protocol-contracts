@@ -115,8 +115,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
           {
             name: "revertMessage",
@@ -177,6 +177,12 @@ const _abi = [
     type: "event",
     name: "UpdatedCustodyTSSAddress",
     inputs: [
+      {
+        name: "oldTSSAddress",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
       {
         name: "newTSSAddress",
         type: "address",
@@ -296,8 +302,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
           {
             name: "revertMessage",

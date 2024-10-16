@@ -62,6 +62,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     nameOrSignature:
       | "ASSET_HANDLER_ROLE"
       | "DEFAULT_ADMIN_ROLE"
+      | "MAX_PAYLOAD_SIZE"
       | "PAUSER_ROLE"
       | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
@@ -89,6 +90,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "supportsInterface"
       | "tssAddress"
       | "unpause"
+      | "updateTSSAddress"
       | "upgradeToAndCall"
       | "zetaConnector"
       | "zetaToken"
@@ -118,6 +120,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_PAYLOAD_SIZE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -226,6 +232,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "updateTSSAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
@@ -241,6 +251,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_PAYLOAD_SIZE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -312,6 +326,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
@@ -563,9 +581,13 @@ export namespace UnpausedEvent {
 }
 
 export namespace UpdatedGatewayTSSAddressEvent {
-  export type InputTuple = [newTSSAddress: AddressLike];
-  export type OutputTuple = [newTSSAddress: string];
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
   export interface OutputObject {
+    oldTSSAddress: string;
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -632,6 +654,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   ASSET_HANDLER_ROLE: TypedContractMethod<[], [string], "view">;
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
+
+  MAX_PAYLOAD_SIZE: TypedContractMethod<[], [bigint], "view">;
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
@@ -789,6 +813,12 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
     [void],
@@ -809,6 +839,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "MAX_PAYLOAD_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
@@ -980,6 +1013,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<
@@ -1226,7 +1262,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "UpdatedGatewayTSSAddress(address)": TypedContractEvent<
+    "UpdatedGatewayTSSAddress(address,address)": TypedContractEvent<
       UpdatedGatewayTSSAddressEvent.InputTuple,
       UpdatedGatewayTSSAddressEvent.OutputTuple,
       UpdatedGatewayTSSAddressEvent.OutputObject

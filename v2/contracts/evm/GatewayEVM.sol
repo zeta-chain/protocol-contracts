@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import { INotSupportedMethods, RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { IGatewayEVM } from "./interfaces/IGatewayEVM.sol";
@@ -23,7 +23,8 @@ contract GatewayEVM is
     UUPSUpgradeable,
     IGatewayEVM,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    INotSupportedMethods
 {
     using SafeERC20 for IERC20;
 
@@ -63,6 +64,7 @@ contract GatewayEVM is
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, tssAddress_);
         tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
 
@@ -78,7 +80,7 @@ contract GatewayEVM is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _execute(address destination, bytes calldata data) internal returns (bytes memory) {
-        revertIfCallingOnRevert(data);
+        _revertIfCallingOnRevert(data);
         (bool success, bytes memory result) = destination.call{ value: msg.value }(data);
         if (!success) revert ExecutionFailed();
 
@@ -93,9 +95,9 @@ contract GatewayEVM is
         _revokeRole(TSS_ROLE, tssAddress);
         _grantRole(TSS_ROLE, newTSSAddress);
 
-        tssAddress = newTSSAddress;
+        emit UpdatedGatewayTSSAddress(tssAddress, newTSSAddress);
 
-        emit UpdatedGatewayTSSAddress(newTSSAddress);
+        tssAddress = newTSSAddress;
     }
 
     /// @notice Pause contract.
@@ -176,18 +178,18 @@ contract GatewayEVM is
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
         // Approve the target contract to spend the tokens
-        if (!resetApproval(token, to)) revert ApprovalFailed();
+        if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
         _execute(to, data);
 
         // Reset approval
-        if (!resetApproval(token, to)) revert ApprovalFailed();
+        if (!_resetApproval(token, to)) revert ApprovalFailed();
 
         // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
         if (remainingBalance > 0) {
-            transferToAssetHandler(token, remainingBalance);
+            _transferToAssetHandler(token, remainingBalance);
         }
 
         emit ExecutedWithERC20(token, to, amount, data);
@@ -233,8 +235,10 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
+        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -258,10 +262,12 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
+        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
-        transferFromToAssetHandler(msg.sender, asset, amount);
+        _transferFromToAssetHandler(msg.sender, asset, amount);
 
         emit Deposited(msg.sender, receiver, amount, asset, "", revertOptions);
     }
@@ -280,9 +286,10 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -308,11 +315,12 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
-        transferFromToAssetHandler(msg.sender, asset, amount);
+        _transferFromToAssetHandler(msg.sender, asset, amount);
 
         emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
@@ -330,8 +338,9 @@ contract GatewayEVM is
         whenNotPaused
         nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length >= MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
@@ -361,7 +370,7 @@ contract GatewayEVM is
     /// @param token Address of the ERC20 token.
     /// @param to Address to reset the approval for.
     /// @return True if the approval reset was successful, false otherwise.
-    function resetApproval(address token, address to) private returns (bool) {
+    function _resetApproval(address token, address to) private returns (bool) {
         return IERC20(token).approve(to, 0);
     }
 
@@ -371,8 +380,9 @@ contract GatewayEVM is
     /// @param from Address of the sender.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to transfer.
-    function transferFromToAssetHandler(address from, address token, uint256 amount) private {
+    function _transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
+            revert ZETANotSupported();
             // transfer to connector
             // transfer amount to gateway
             IERC20(token).safeTransferFrom(from, address(this), amount);
@@ -392,7 +402,7 @@ contract GatewayEVM is
     /// type.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to transfer.
-    function transferToAssetHandler(address token, uint256 amount) private {
+    function _transferToAssetHandler(address token, uint256 amount) private {
         if (token == zetaToken) {
             // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
@@ -407,7 +417,7 @@ contract GatewayEVM is
     }
 
     // @dev prevent spoofing onRevert functions
-    function revertIfCallingOnRevert(bytes calldata data) private pure {
+    function _revertIfCallingOnRevert(bytes calldata data) private pure {
         if (data.length >= 4) {
             bytes4 functionSelector;
             assembly {

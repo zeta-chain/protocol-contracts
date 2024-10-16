@@ -43,7 +43,8 @@ interface IERC20CustodyEvents {
 
     /// @notice Emitted when tss address is updated
     /// @param newTSSAddress new tss address
-    event UpdatedCustodyTSSAddress(address newTSSAddress);
+    /// @param oldTSSAddress old tss address
+    event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
 }
 
 /// @title IERC20CustodyErrors

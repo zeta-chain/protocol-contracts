@@ -26,5 +26,6 @@ interface IZetaConnectorEvents {
 
     /// @notice Emitted when tss address is updated
     /// @param newTSSAddress new tss address
-    event UpdatedZetaConnectorTSSAddress(address newTSSAddress);
+    /// @param oldTSSAddress old tss address
+    event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress);
 }

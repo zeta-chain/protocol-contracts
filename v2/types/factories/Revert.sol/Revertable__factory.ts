@@ -25,8 +25,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
           {
             name: "revertMessage",

@@ -21,7 +21,7 @@ struct RevertOptions {
 /// @param revertMessage Arbitrary data sent back in onRevert.
 struct RevertContext {
     address asset;
-    uint256 amount;
+    uint64 amount;
     bytes revertMessage;
 }
 
@@ -31,4 +31,9 @@ interface Revertable {
     /// @notice Called when a revertable call is made.
     /// @param revertContext Revert context to pass to onRevert.
     function onRevert(RevertContext calldata revertContext) external;
+}
+
+interface INotSupportedMethods {
+    error CallOnRevertNotSupported();
+    error ZETANotSupported();
 }
