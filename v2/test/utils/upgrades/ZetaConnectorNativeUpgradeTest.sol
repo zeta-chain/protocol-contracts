@@ -86,7 +86,7 @@ contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
         address to,
         uint256 amount,
         bytes calldata data,
-        bytes32 /*internalSendHash*/,
+        bytes32, /*internalSendHash*/
         RevertContext calldata revertContext
     )
         external

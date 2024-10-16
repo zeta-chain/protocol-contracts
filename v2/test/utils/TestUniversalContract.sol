@@ -30,8 +30,8 @@ contract TestUniversalContract is UniversalContract, Revertable {
     /// @dev Decodes the message and emits a ContextData event.
     function onCall(
         MessageContext calldata context,
-        address /*zrc20*/,
-        uint256 /*amount*/,
+        address, /*zrc20*/
+        uint256, /*amount*/
         bytes calldata message
     )
         external

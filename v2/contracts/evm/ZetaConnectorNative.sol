@@ -27,7 +27,8 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     /// @notice Withdraw tokens to a specified address.
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
-    //// @param internalSendHash A hash used for internal tracking of the transaction (not used currently https://github.com/zeta-chain/protocol-contracts/issues/398)
+    //// @param internalSendHash A hash used for internal tracking of the transaction (not used currently
+    // https://github.com/zeta-chain/protocol-contracts/issues/398)
     /// @dev This function can only be called by the TSS address.
     function withdraw(
         address to,
@@ -48,7 +49,8 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
-    //// @param internalSendHash A hash used for internal tracking of the transaction (not used currently https://github.com/zeta-chain/protocol-contracts/issues/398)
+    //// @param internalSendHash A hash used for internal tracking of the transaction (not used currently
+    // https://github.com/zeta-chain/protocol-contracts/issues/398)
     /// @dev This function can only be called by the TSS address.
     function withdrawAndCall(
         address to,
@@ -75,14 +77,15 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
-    //// @param internalSendHash A hash used for internal tracking of the transaction (not used currently https://github.com/zeta-chain/protocol-contracts/issues/398)
+    //// @param internalSendHash A hash used for internal tracking of the transaction (not used currently
+    // https://github.com/zeta-chain/protocol-contracts/issues/398)
     /// @dev This function can only be called by the TSS address.
     /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address to,
         uint256 amount,
         bytes calldata data,
-        bytes32 /*internalSendHash*/,
+        bytes32, /*internalSendHash*/
         RevertContext calldata revertContext
     )
         external
