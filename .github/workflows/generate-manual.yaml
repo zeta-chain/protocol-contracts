@@ -7,6 +7,10 @@ on:
         description: 'The branch to create the pull request into'
         required: true
         default: 'main'
+      custom_branch_name:
+        description: 'The custom branch name for generated code changes'
+        required: true
+        default: 'update-generated-files'
 
 defaults:
   run:
@@ -58,17 +62,17 @@ jobs:
             echo "::set-output name=changes::true"
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git checkout -b update-generated-files
+            git checkout -b ${{ github.event.inputs.custom_branch_name }}
             git add pkg types
-            git commit -m "Update generated Go files"
-            git push origin update-generated-files
+            git commit -m "ci: generate files"
+            git push origin ${{ github.event.inputs.custom_branch_name }}
 
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-generated-files
+          branch: ${{ github.event.inputs.custom_branch_name }}
           base: ${{ github.event.inputs.branch }}
           title: "ci: generate files"
           body: |
