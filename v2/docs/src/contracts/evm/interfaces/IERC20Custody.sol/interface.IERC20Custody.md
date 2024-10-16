@@ -1,5 +1,5 @@
 # IERC20Custody
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/86bca2c09f7eb3b8509097193b2e7504ddcc7cee/contracts/evm/interfaces/IERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/interfaces/IERC20Custody.sol)
 
 **Inherits:**
 [IERC20CustodyEvents](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20CustodyEvents.md), [IERC20CustodyErrors](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20CustodyErrors.md)

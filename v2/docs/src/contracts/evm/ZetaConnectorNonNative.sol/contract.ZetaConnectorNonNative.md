@@ -1,5 +1,5 @@
 # ZetaConnectorNonNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/86bca2c09f7eb3b8509097193b2e7504ddcc7cee/contracts/evm/ZetaConnectorNonNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/ZetaConnectorNonNative.sol)
 
 **Inherits:**
 [ZetaConnectorBase](/contracts/evm/ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
