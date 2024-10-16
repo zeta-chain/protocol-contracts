@@ -1,5 +1,5 @@
 # SystemContractErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7e13d4407420cd4ff52ed44cc892c54d5f3d02cd/contracts/zevm/SystemContract.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/40c5aaa5c865ea06658f463587fd9248724b3b38/contracts/zevm/SystemContract.sol)
 
 *Custom errors for SystemContract*
 
