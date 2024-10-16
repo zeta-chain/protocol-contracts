@@ -175,7 +175,7 @@ contract GatewayEVMZEVMTest is
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "call(bytes,address,bytes,(uint256, bool),(address,bool,address,bytes,uint256))",
+            "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
             abi.encodePacked(receiverEVM),
             address(zrc20),
             message,
@@ -252,7 +252,7 @@ contract GatewayEVMZEVMTest is
         uint256 senderBalanceBeforeWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         bytes memory data = abi.encodeWithSignature(
-            "withdrawAndCall(bytes,uint256,address,bytes,(uint256, bool),(address,bool,address,bytes,uint256))",
+            "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
             abi.encodePacked(receiverEVM),
             500_000,
             address(zrc20),

@@ -35,7 +35,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     error ZETANotSupported();
 
     event WithdrawnV2(
-        address indexed sfender,
+        address indexed sender,
         uint256 indexed chainId,
         bytes receiver,
         address zrc20,
