@@ -542,9 +542,6 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testWithdrawZETAWithCallOptsWithMessageFailsIfGasLimitIsZero() public {
         uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 protocolAddressBalanceBefore = protocolAddress.balance;
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 chainId = 1;
 
@@ -1005,7 +1002,6 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfZeroAddress() public {
-        uint256 destinationBalanceBefore = address(testUniversalContract).balance;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
