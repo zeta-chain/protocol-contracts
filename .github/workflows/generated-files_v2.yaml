@@ -50,12 +50,6 @@ jobs:
           tar -zxvf geth-alltools-linux-amd64-1.11.5-a38f4108.tar.gz
           sudo mv geth-alltools-linux-amd64-1.11.5-a38f4108/abigen /usr/local/bin/
 
-      - name: Run forge --version
-        run: forge --version
-
-      - name: Run soldeer --version
-        run: forge soldeer version
-
       - name: Generate Go packages and types
         run: |
           yarn generate
