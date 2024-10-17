@@ -419,7 +419,6 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
     function testWithdrawZETA() public {
         uint256 amount = 1;
-        // uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
         // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
         // uint256 protocolBalanceBefore = protocolAddress.balance;
         uint256 chainId = 1;
