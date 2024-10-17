@@ -32,14 +32,14 @@ interface IGatewayEVMEvents {
     /// @param receiver The address of the receiver.
     /// @param amount The amount of ETH or tokens deposited.
     /// @param asset The address of the ERC20 token (zero address if ETH).
-    /// @param reserved Reserved for future use; previously used as `payload`.
+    /// @param payload The calldata passed with the deposit. No longer used. Kept to maintain compatibility.
     /// @param revertOptions Revert options.
     event Deposited(
         address indexed sender,
         address indexed receiver,
         uint256 amount,
         address asset,
-        bytes reserved,
+        bytes payload,
         RevertOptions revertOptions
     );
 

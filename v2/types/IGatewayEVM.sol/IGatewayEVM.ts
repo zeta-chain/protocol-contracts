@@ -212,7 +212,7 @@ export namespace DepositedEvent {
     receiver: AddressLike,
     amount: BigNumberish,
     asset: AddressLike,
-    reserved: BytesLike,
+    payload: BytesLike,
     revertOptions: RevertOptionsStruct
   ];
   export type OutputTuple = [
@@ -220,7 +220,7 @@ export namespace DepositedEvent {
     receiver: string,
     amount: bigint,
     asset: string,
-    reserved: string,
+    payload: string,
     revertOptions: RevertOptionsStructOutput
   ];
   export interface OutputObject {
@@ -228,7 +228,7 @@ export namespace DepositedEvent {
     receiver: string;
     amount: bigint;
     asset: string;
-    reserved: string;
+    payload: string;
     revertOptions: RevertOptionsStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;

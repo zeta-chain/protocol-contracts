@@ -66,7 +66,7 @@ event Deposited(
     address indexed receiver,
     uint256 amount,
     address asset,
-    bytes reserved,
+    bytes payload,
     RevertOptions revertOptions
 );
 ```
@@ -79,7 +79,7 @@ event Deposited(
 |`receiver`|`address`|The address of the receiver.|
 |`amount`|`uint256`|The amount of ETH or tokens deposited.|
 |`asset`|`address`|The address of the ERC20 token (zero address if ETH).|
-|`reserved`|`bytes`|Reserved for future use; previously used as `payload`.|
+|`payload`|`bytes`|The calldata passed with the deposit. No longer used. Kept to maintain compatibility.|
 |`revertOptions`|`RevertOptions`|Revert options.|
 
 ### DepositedAndCalled
