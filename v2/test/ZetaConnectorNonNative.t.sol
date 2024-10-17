@@ -190,6 +190,53 @@ contract ZetaConnectorNonNativeTest is
         assertEq(balanceGateway, 0);
     }
 
+    function testWithdrawAndCallReceiveOnCall() public {
+        uint256 amount = 100_000;
+        bytes32 internalSendHash = "";
+        address sender = address(0x123);
+        bytes memory message = bytes("1");
+        uint256 balanceBefore = zetaToken.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeZetaConnector = zetaToken.balanceOf(address(zetaConnector));
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedOnCall(sender, message);
+        vm.expectEmit(true, true, true, true, address(zetaConnector));
+        emit WithdrawnAndCalled(address(receiver), amount, message);
+        vm.prank(tssAddress);
+        zetaConnector.withdrawAndCall(
+            MessageContext({ sender: sender }), address(receiver), amount, message, internalSendHash
+        );
+
+        // Verify that the no tokens were transferred to the destination address
+        uint256 balanceAfter = zetaToken.balanceOf(destination);
+        assertEq(balanceAfter, 0);
+
+        // Verify that zeta connector doesn't get more tokens
+        uint256 balanceAfterZetaConnector = zetaToken.balanceOf(address(zetaConnector));
+        assertEq(balanceAfterZetaConnector, balanceBeforeZetaConnector);
+
+        // Verify that the approval was reset
+        uint256 allowance = zetaToken.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = zetaToken.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
+    }
+
+    function testWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall() public {
+        uint256 amount = 100_000;
+        bytes32 internalSendHash = "";
+        address sender = address(0x123);
+        bytes memory message = bytes("1");
+        bytes memory data = abi.encodeWithSignature("onCall((address),bytes)", sender, message);
+
+        vm.expectRevert(NotAllowedToCallOnCall.selector);
+        vm.prank(tssAddress);
+        zetaConnector.withdrawAndCall(arbitraryCallMessageContext, address(receiver), amount, data, internalSendHash);
+    }
+
     function testWithdrawAndCallReceiveERC20FailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes32 internalSendHash = "";

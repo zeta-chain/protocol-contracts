@@ -186,11 +186,12 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
     function testForwardCallToReceiveOnCallUsingAuthCall() public {
         vm.expectEmit(true, true, true, true, address(receiver));
-        emit ReceivedOnCall();
+        address sender = address(0x123);
+        emit ReceivedOnCall(sender, bytes("1"));
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), 0, bytes("1"));
         vm.prank(tssAddress);
-        gateway.execute(MessageContext({ sender: address(0x123) }), address(receiver), bytes("1"));
+        gateway.execute(MessageContext({ sender: sender }), address(receiver), bytes("1"));
     }
 
     function testForwardCallToReceiveNonPayableFailsIfSenderIsNotTSS() public {

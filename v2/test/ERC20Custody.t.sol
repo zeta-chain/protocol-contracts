@@ -340,6 +340,58 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         assertEq(balanceGateway, 0);
     }
 
+    function testForwardCallToReceiveOnCallThroughCustody() public {
+        uint256 amount = 100_000;
+        address sender = address(0x123);
+        bytes memory message = bytes("1");
+        uint256 balanceBefore = token.balanceOf(destination);
+        assertEq(balanceBefore, 0);
+        uint256 balanceBeforeCustody = token.balanceOf(address(custody));
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedOnCall(sender, message);
+        vm.expectEmit(true, true, true, true, address(custody));
+        emit WithdrawnAndCalled(address(receiver), address(token), amount, message);
+        vm.prank(tssAddress);
+        custody.withdrawAndCall(MessageContext({ sender: sender }), address(receiver), address(token), amount, message);
+
+        // Verify that the tokens were not transferred to the destination address
+        uint256 balanceAfter = token.balanceOf(destination);
+        assertEq(balanceAfter, 0);
+
+        // Verify that the remaining tokens were refunded to the Custody contract
+        uint256 balanceAfterCustody = token.balanceOf(address(custody));
+        assertEq(balanceAfterCustody, balanceBeforeCustody);
+
+        // Verify that the approval was reset
+        uint256 allowance = token.allowance(address(gateway), address(receiver));
+        assertEq(allowance, 0);
+
+        // Verify that gateway doesn't hold any tokens
+        uint256 balanceGateway = token.balanceOf(address(gateway));
+        assertEq(balanceGateway, 0);
+    }
+
+    function testForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall() public {
+        uint256 amount = 100_000;
+        address sender = address(0x123);
+        bytes memory message = bytes("1");
+        bytes memory data = abi.encodeWithSignature("onCall((address),bytes)", sender, message);
+
+        vm.expectRevert(NotAllowedToCallOnCall.selector);
+        vm.prank(tssAddress);
+        custody.withdrawAndCall(arbitraryCallMessageContext, address(receiver), address(token), amount, data);
+    }
+
+    function testForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall() public {
+        uint256 amount = 100_000;
+        bytes memory data = abi.encodeWithSignature("onRevert((address,address,uint256,bytes))");
+
+        vm.expectRevert(NotAllowedToCallOnRevert.selector);
+        vm.prank(tssAddress);
+        custody.withdrawAndCall(arbitraryCallMessageContext, address(receiver), address(token), amount, data);
+    }
+
     function testForwardCallToReceiveERC20PartialThroughCustodyFailsIfSenderIsNotWithdrawer() public {
         uint256 amount = 100_000;
         bytes memory data =
