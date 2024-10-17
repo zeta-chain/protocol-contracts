@@ -24,14 +24,14 @@ contract TestUniversalContract is UniversalContract, Revertable {
 
     /// @notice Handles a cross-chain call.
     /// @param context The context of the cross-chain call.
-    /// @param zrc20 The address of the ZRC20 token.
-    /// @param amount The amount of tokens transferred.
+    //// @param zrc20 The address of the ZRC20 token.
+    //// @param amount The amount of tokens transferred.
     /// @param message The calldata passed to the contract call.
     /// @dev Decodes the message and emits a ContextData event.
     function onCall(
         MessageContext calldata context,
-        address zrc20,
-        uint256 amount,
+        address, /*zrc20*/
+        uint256, /*amount*/
         bytes calldata message
     )
         external

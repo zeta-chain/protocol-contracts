@@ -50,6 +50,9 @@ contract ZRC20Test is Test, ZRC20Errors {
     }
 
     function testZRC20BasicInfo() public {
+        // silence view function warning
+        zrc20 = zrc20;
+
         string memory name = zrc20.name();
         assertEq("TOKEN", name);
 
@@ -223,7 +226,7 @@ contract ZRC20Test is Test, ZRC20Errors {
         systemContract.setGasCoinZRC20(1, address(0));
 
         vm.expectRevert(ZeroGasCoin.selector);
-        (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFee();
+        zrc20.withdrawGasFee();
     }
 
     function testWithdrawGasFeeFailsIfGasPriceNotSetForChainId() public {
@@ -231,7 +234,7 @@ contract ZRC20Test is Test, ZRC20Errors {
         systemContract.setGasPrice(1, 0);
 
         vm.expectRevert(ZeroGasPrice.selector);
-        (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFee();
+        zrc20.withdrawGasFee();
     }
 
     function testWithdraw() public {

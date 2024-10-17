@@ -36,7 +36,7 @@ Withdraw tokens to a specified address.
 function withdraw(
     address to,
     uint256 amount,
-    bytes32 internalSendHash
+    bytes32
 )
     external
     override
@@ -50,7 +50,7 @@ function withdraw(
 |----|----|-----------|
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
-|`internalSendHash`|`bytes32`|A hash used for internal tracking of the transaction.|
+|`<none>`|`bytes32`||
 
 
 ### withdrawAndCall
@@ -65,7 +65,7 @@ function withdrawAndCall(
     address to,
     uint256 amount,
     bytes calldata data,
-    bytes32 internalSendHash
+    bytes32
 )
     external
     override
@@ -80,7 +80,7 @@ function withdrawAndCall(
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
 |`data`|`bytes`|The calldata to pass to the contract call.|
-|`internalSendHash`|`bytes32`|A hash used for internal tracking of the transaction.|
+|`<none>`|`bytes32`||
 
 
 ### withdrawAndRevert
@@ -95,7 +95,7 @@ function withdrawAndRevert(
     address to,
     uint256 amount,
     bytes calldata data,
-    bytes32 internalSendHash,
+    bytes32,
     RevertContext calldata revertContext
 )
     external
@@ -111,7 +111,7 @@ function withdrawAndRevert(
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
 |`data`|`bytes`|The calldata to pass to the contract call.|
-|`internalSendHash`|`bytes32`|A hash used for internal tracking of the transaction.|
+|`<none>`|`bytes32`||
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
