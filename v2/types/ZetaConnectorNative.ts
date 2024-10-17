@@ -563,7 +563,7 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      arg4: BytesLike
     ],
     [void],
     "nonpayable"
@@ -694,7 +694,7 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      arg4: BytesLike
     ],
     [void],
     "nonpayable"
