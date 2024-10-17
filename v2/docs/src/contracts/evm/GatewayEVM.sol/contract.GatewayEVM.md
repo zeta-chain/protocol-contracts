@@ -179,7 +179,7 @@ function executeRevert(
 
 ### execute
 
-Executes an authenticated call to a destination address without ERC20 tokens.
+Executes a call to a destination address without ERC20 tokens.
 
 *This function can only be called by the TSS address and it is payable.*
 

@@ -122,7 +122,7 @@ contract GatewayEVM is
         emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
-    /// @notice Executes an authenticated call to a destination address without ERC20 tokens.
+    /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param messageContext Message context containing sender.
     /// @param destination Address to call.
@@ -142,6 +142,9 @@ contract GatewayEVM is
     {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result;
+        // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
         if (messageContext.sender == address(0)) {
             result = _executeArbitraryCall(destination, data);
         } else {
@@ -179,6 +182,8 @@ contract GatewayEVM is
         if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
         if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
         } else {
