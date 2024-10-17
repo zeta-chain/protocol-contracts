@@ -187,7 +187,7 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
-        emit Withdrawn(
+        emit WithdrawnAndCalled(
             msg.sender,
             0,
             receiver,
@@ -269,7 +269,7 @@ contract GatewayZEVM is
         // if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         // _transferZETA(amount, PROTOCOL_ADDRESS);
-        // emit Withdrawn(
+        // emit WithdrawnAndCalled(
         //     msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, callOptions, revertOptions
         // );
     }

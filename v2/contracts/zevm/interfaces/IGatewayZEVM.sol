@@ -31,10 +31,34 @@ interface IGatewayZEVMEvents {
     /// @param value The amount of tokens withdrawn.
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
-    /// @param message The calldata passed to the contract call.
+    /// @param message The calldata passed with the withdraw. No longer used. Kept to maintain compatibility.
     /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     event Withdrawn(
+        address indexed sender,
+        uint256 indexed chainId,
+        bytes receiver,
+        address zrc20,
+        uint256 value,
+        uint256 gasfee,
+        uint256 protocolFlatFee,
+        bytes message,
+        CallOptions callOptions,
+        RevertOptions revertOptions
+    );
+
+    /// @notice Emitted when a withdraw and call is made.
+    /// @param sender The address from which the tokens are withdrawn.
+    /// @param chainId Chain id of external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param value The amount of tokens withdrawn.
+    /// @param gasfee The gas fee for the withdrawal.
+    /// @param protocolFlatFee The protocol flat fee for the withdrawal.
+    /// @param message The calldata passed to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
+    event WithdrawnAndCalled(
         address indexed sender,
         uint256 indexed chainId,
         bytes receiver,

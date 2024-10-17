@@ -209,7 +209,7 @@ contract GatewayEVMZEVMTest is
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
         uint256 expectedGasFee = 1;
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
-        emit Withdrawn(
+        emit WithdrawnAndCalled(
             ownerZEVM,
             0,
             abi.encodePacked(receiverEVM),
