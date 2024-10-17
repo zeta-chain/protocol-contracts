@@ -217,23 +217,23 @@ func (_ReceiverEVM *ReceiverEVMTransactorRaw) Transact(opts *bind.TransactOpts, 
 
 // OnCall is a paid mutator transaction binding the contract method 0x676cc054.
 //
-// Solidity: function onCall((address) messageContext, bytes message) payable returns(bytes)
-func (_ReceiverEVM *ReceiverEVMTransactor) OnCall(opts *bind.TransactOpts, messageContext MessageContext, message []byte) (*types.Transaction, error) {
-	return _ReceiverEVM.contract.Transact(opts, "onCall", messageContext, message)
+// Solidity: function onCall((address) , bytes ) payable returns(bytes)
+func (_ReceiverEVM *ReceiverEVMTransactor) OnCall(opts *bind.TransactOpts, arg0 MessageContext, arg1 []byte) (*types.Transaction, error) {
+	return _ReceiverEVM.contract.Transact(opts, "onCall", arg0, arg1)
 }
 
 // OnCall is a paid mutator transaction binding the contract method 0x676cc054.
 //
-// Solidity: function onCall((address) messageContext, bytes message) payable returns(bytes)
-func (_ReceiverEVM *ReceiverEVMSession) OnCall(messageContext MessageContext, message []byte) (*types.Transaction, error) {
-	return _ReceiverEVM.Contract.OnCall(&_ReceiverEVM.TransactOpts, messageContext, message)
+// Solidity: function onCall((address) , bytes ) payable returns(bytes)
+func (_ReceiverEVM *ReceiverEVMSession) OnCall(arg0 MessageContext, arg1 []byte) (*types.Transaction, error) {
+	return _ReceiverEVM.Contract.OnCall(&_ReceiverEVM.TransactOpts, arg0, arg1)
 }
 
 // OnCall is a paid mutator transaction binding the contract method 0x676cc054.
 //
-// Solidity: function onCall((address) messageContext, bytes message) payable returns(bytes)
-func (_ReceiverEVM *ReceiverEVMTransactorSession) OnCall(messageContext MessageContext, message []byte) (*types.Transaction, error) {
-	return _ReceiverEVM.Contract.OnCall(&_ReceiverEVM.TransactOpts, messageContext, message)
+// Solidity: function onCall((address) , bytes ) payable returns(bytes)
+func (_ReceiverEVM *ReceiverEVMTransactorSession) OnCall(arg0 MessageContext, arg1 []byte) (*types.Transaction, error) {
+	return _ReceiverEVM.Contract.OnCall(&_ReceiverEVM.TransactOpts, arg0, arg1)
 }
 
 // OnRevert is a paid mutator transaction binding the contract method 0xc9028a36.

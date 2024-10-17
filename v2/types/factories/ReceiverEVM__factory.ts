@@ -25,7 +25,7 @@ const _abi = [
     name: "onCall",
     inputs: [
       {
-        name: "messageContext",
+        name: "",
         type: "tuple",
         internalType: "struct MessageContext",
         components: [
@@ -37,7 +37,7 @@ const _abi = [
         ],
       },
       {
-        name: "message",
+        name: "",
         type: "bytes",
         internalType: "bytes",
       },

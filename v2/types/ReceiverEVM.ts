@@ -282,7 +282,7 @@ export interface ReceiverEVM extends BaseContract {
   ): Promise<this>;
 
   onCall: TypedContractMethod<
-    [messageContext: MessageContextStruct, message: BytesLike],
+    [arg0: MessageContextStruct, arg1: BytesLike],
     [string],
     "payable"
   >;
@@ -326,7 +326,7 @@ export interface ReceiverEVM extends BaseContract {
   getFunction(
     nameOrSignature: "onCall"
   ): TypedContractMethod<
-    [messageContext: MessageContextStruct, message: BytesLike],
+    [arg0: MessageContextStruct, arg1: BytesLike],
     [string],
     "payable"
   >;

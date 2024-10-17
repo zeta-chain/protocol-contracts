@@ -552,7 +552,7 @@ export interface ZetaConnectorNative extends BaseContract {
   >;
 
   withdraw: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
+    [to: AddressLike, amount: BigNumberish, arg2: BytesLike],
     [void],
     "nonpayable"
   >;
@@ -574,7 +574,7 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike,
+      arg3: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],
@@ -682,7 +682,7 @@ export interface ZetaConnectorNative extends BaseContract {
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
+    [to: AddressLike, amount: BigNumberish, arg2: BytesLike],
     [void],
     "nonpayable"
   >;
@@ -706,7 +706,7 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike,
+      arg3: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],

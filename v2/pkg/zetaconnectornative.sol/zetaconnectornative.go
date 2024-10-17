@@ -809,23 +809,23 @@ func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) UpgradeToAndCa
 
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
-// Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNative *ZetaConnectorNativeTransactor) Withdraw(opts *bind.TransactOpts, to common.Address, amount *big.Int, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNative.contract.Transact(opts, "withdraw", to, amount, internalSendHash)
+// Solidity: function withdraw(address to, uint256 amount, bytes32 ) returns()
+func (_ZetaConnectorNative *ZetaConnectorNativeTransactor) Withdraw(opts *bind.TransactOpts, to common.Address, amount *big.Int, arg2 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNative.contract.Transact(opts, "withdraw", to, amount, arg2)
 }
 
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
-// Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNative *ZetaConnectorNativeSession) Withdraw(to common.Address, amount *big.Int, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNative.Contract.Withdraw(&_ZetaConnectorNative.TransactOpts, to, amount, internalSendHash)
+// Solidity: function withdraw(address to, uint256 amount, bytes32 ) returns()
+func (_ZetaConnectorNative *ZetaConnectorNativeSession) Withdraw(to common.Address, amount *big.Int, arg2 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNative.Contract.Withdraw(&_ZetaConnectorNative.TransactOpts, to, amount, arg2)
 }
 
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
-// Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) Withdraw(to common.Address, amount *big.Int, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNative.Contract.Withdraw(&_ZetaConnectorNative.TransactOpts, to, amount, internalSendHash)
+// Solidity: function withdraw(address to, uint256 amount, bytes32 ) returns()
+func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) Withdraw(to common.Address, amount *big.Int, arg2 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNative.Contract.Withdraw(&_ZetaConnectorNative.TransactOpts, to, amount, arg2)
 }
 
 // WithdrawAndCall is a paid mutator transaction binding the contract method 0x6fb9a7af.
@@ -851,23 +851,23 @@ func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) WithdrawAndCal
 
 // WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
-func (_ZetaConnectorNative *ZetaConnectorNativeTransactor) WithdrawAndRevert(opts *bind.TransactOpts, to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
-	return _ZetaConnectorNative.contract.Transact(opts, "withdrawAndRevert", to, amount, data, internalSendHash, revertContext)
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 , (address,address,uint256,bytes) revertContext) returns()
+func (_ZetaConnectorNative *ZetaConnectorNativeTransactor) WithdrawAndRevert(opts *bind.TransactOpts, to common.Address, amount *big.Int, data []byte, arg3 [32]byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _ZetaConnectorNative.contract.Transact(opts, "withdrawAndRevert", to, amount, data, arg3, revertContext)
 }
 
 // WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
-func (_ZetaConnectorNative *ZetaConnectorNativeSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
-	return _ZetaConnectorNative.Contract.WithdrawAndRevert(&_ZetaConnectorNative.TransactOpts, to, amount, data, internalSendHash, revertContext)
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 , (address,address,uint256,bytes) revertContext) returns()
+func (_ZetaConnectorNative *ZetaConnectorNativeSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, arg3 [32]byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _ZetaConnectorNative.Contract.WithdrawAndRevert(&_ZetaConnectorNative.TransactOpts, to, amount, data, arg3, revertContext)
 }
 
 // WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
-func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
-	return _ZetaConnectorNative.Contract.WithdrawAndRevert(&_ZetaConnectorNative.TransactOpts, to, amount, data, internalSendHash, revertContext)
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 , (address,address,uint256,bytes) revertContext) returns()
+func (_ZetaConnectorNative *ZetaConnectorNativeTransactorSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, arg3 [32]byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _ZetaConnectorNative.Contract.WithdrawAndRevert(&_ZetaConnectorNative.TransactOpts, to, amount, data, arg3, revertContext)
 }
 
 // ZetaConnectorNativeInitializedIterator is returned from FilterInitialized and is used to iterate over the raw logs and unpacked data for Initialized events raised by the ZetaConnectorNative contract.

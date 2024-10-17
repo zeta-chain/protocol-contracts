@@ -349,7 +349,7 @@ const _abi = [
         internalType: "uint256",
       },
       {
-        name: "internalSendHash",
+        name: "",
         type: "bytes32",
         internalType: "bytes32",
       },
@@ -389,7 +389,7 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "internalSendHash",
+        name: "",
         type: "bytes32",
         internalType: "bytes32",
       },
@@ -417,7 +417,7 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "internalSendHash",
+        name: "",
         type: "bytes32",
         internalType: "bytes32",
       },
