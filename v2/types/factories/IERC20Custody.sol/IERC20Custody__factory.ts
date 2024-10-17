@@ -56,6 +56,18 @@ const _abi = [
     name: "withdrawAndCall",
     inputs: [
       {
+        name: "messageContext",
+        type: "tuple",
+        internalType: "struct MessageContext",
+        components: [
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
+      {
         name: "token",
         type: "address",
         internalType: "address",

@@ -23,6 +23,10 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -165,7 +169,13 @@ export interface ZetaConnectorNonNativeInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCall",
-    values: [AddressLike, BigNumberish, BytesLike, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
@@ -582,6 +592,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
 
   withdrawAndCall: TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
@@ -718,6 +729,7 @@ export interface ZetaConnectorNonNative extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,

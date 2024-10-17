@@ -23,6 +23,10 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -158,7 +162,13 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCall",
-    values: [AddressLike, BigNumberish, BytesLike, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
@@ -562,7 +572,13 @@ export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
   >;
 
   withdrawAndCall: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, data: BytesLike, arg3: BytesLike],
+    [
+      messageContext: MessageContextStruct,
+      to: AddressLike,
+      amount: BigNumberish,
+      data: BytesLike,
+      arg4: BytesLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -687,7 +703,13 @@ export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, data: BytesLike, arg3: BytesLike],
+    [
+      messageContext: MessageContextStruct,
+      to: AddressLike,
+      amount: BigNumberish,
+      data: BytesLike,
+      arg4: BytesLike
+    ],
     [void],
     "nonpayable"
   >;
