@@ -307,7 +307,7 @@ contract GatewayEVM is
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposited(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -333,7 +333,7 @@ contract GatewayEVM is
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
