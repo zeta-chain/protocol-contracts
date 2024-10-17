@@ -104,12 +104,13 @@ Emitted when tss address is updated
 
 
 ```solidity
-event UpdatedGatewayTSSAddress(address newTSSAddress);
+event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
 ```
 
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
 

@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/bacc1a1f30b7a6d837b8275e0dfeae0c739ef3ee/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
-[IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
+[IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Errors.sol/interface.INotSupportedMethods.md)
 
 The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
 
@@ -118,11 +118,11 @@ function unpause() external onlyRole(PAUSER_ROLE);
 
 ### _withdrawZRC20
 
-*Internal function to withdraw ZRC20 tokens.*
+*Private function to withdraw ZRC20 tokens.*
 
 
 ```solidity
-function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256);
+function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256);
 ```
 **Parameters**
 
@@ -140,11 +140,11 @@ function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256
 
 ### _withdrawZRC20WithGasLimit
 
-*Internal function to withdraw ZRC20 tokens with gas limit.*
+*Private function to withdraw ZRC20 tokens with gas limit.*
 
 
 ```solidity
-function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256);
+function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256);
 ```
 **Parameters**
 
@@ -163,11 +163,11 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 
 ### _transferZETA
 
-*Internal function to transfer ZETA tokens.*
+*Private function to transfer ZETA tokens.*
 
 
 ```solidity
-function _transferZETA(uint256 amount, address to) internal;
+function _transferZETA(uint256 amount, address to) private;
 ```
 **Parameters**
 
@@ -214,36 +214,6 @@ function withdrawAndCall(
     uint256 amount,
     address zrc20,
     bytes calldata message,
-    uint256 gasLimit,
-    RevertOptions calldata revertOptions
-)
-    external
-    nonReentrant
-    whenNotPaused;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address on the external chain.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`zrc20`|`address`|The address of the ZRC20 token.|
-|`message`|`bytes`|The calldata to pass to the contract call.|
-|`gasLimit`|`uint256`|Gas limit.|
-|`revertOptions`|`RevertOptions`|Revert options.|
-
-
-### withdrawAndCall
-
-Withdraw ZRC20 tokens and call a smart contract on an external chain.
-
-
-```solidity
-function withdrawAndCall(
-    bytes memory receiver,
-    uint256 amount,
-    address zrc20,
-    bytes calldata message,
     CallOptions calldata callOptions,
     RevertOptions calldata revertOptions
 )
@@ -269,25 +239,8 @@ Withdraw ZETA tokens to an external chain.
 
 
 ```solidity
-function withdraw(
-    bytes memory receiver,
-    uint256 amount,
-    uint256 chainId,
-    RevertOptions calldata revertOptions
-)
-    external
-    nonReentrant
-    whenNotPaused;
+function withdraw(bytes memory, uint256, uint256, RevertOptions calldata) external nonReentrant whenNotPaused;
 ```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address on the external chain.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`chainId`|`uint256`||
-|`revertOptions`|`RevertOptions`|Revert options.|
-
 
 ### withdrawAndCall
 
@@ -296,56 +249,17 @@ Withdraw ZETA tokens and call a smart contract on an external chain.
 
 ```solidity
 function withdrawAndCall(
-    bytes memory receiver,
-    uint256 amount,
-    uint256 chainId,
-    bytes calldata message,
-    RevertOptions calldata revertOptions
+    bytes memory,
+    uint256,
+    uint256,
+    bytes calldata,
+    CallOptions calldata,
+    RevertOptions calldata
 )
     external
     nonReentrant
     whenNotPaused;
 ```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address on the external chain.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`chainId`|`uint256`|Chain id of the external chain.|
-|`message`|`bytes`|The calldata to pass to the contract call.|
-|`revertOptions`|`RevertOptions`|Revert options.|
-
-
-### withdrawAndCall
-
-Withdraw ZETA tokens and call a smart contract on an external chain.
-
-
-```solidity
-function withdrawAndCall(
-    bytes memory receiver,
-    uint256 amount,
-    uint256 chainId,
-    bytes calldata message,
-    CallOptions calldata callOptions,
-    RevertOptions calldata revertOptions
-)
-    external
-    nonReentrant
-    whenNotPaused;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address on the external chain.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`chainId`|`uint256`|Chain id of the external chain.|
-|`message`|`bytes`|The calldata to pass to the contract call.|
-|`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
-|`revertOptions`|`RevertOptions`|Revert options.|
-
 
 ### call
 
@@ -372,34 +286,6 @@ function call(
 |`zrc20`|`address`|Address of zrc20 to pay fees.|
 |`message`|`bytes`|The calldata to pass to the contract call.|
 |`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
-|`revertOptions`|`RevertOptions`|Revert options.|
-
-
-### call
-
-Call a smart contract on an external chain without asset transfer.
-
-
-```solidity
-function call(
-    bytes memory receiver,
-    address zrc20,
-    bytes calldata message,
-    uint256 gasLimit,
-    RevertOptions calldata revertOptions
-)
-    external
-    nonReentrant
-    whenNotPaused;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address on the external chain.|
-|`zrc20`|`address`|Address of zrc20 to pay fees.|
-|`message`|`bytes`|The calldata to pass to the contract call.|
-|`gasLimit`|`uint256`|Gas limit.|
 |`revertOptions`|`RevertOptions`|Revert options.|
 
 
@@ -414,7 +300,7 @@ function _call(
     CallOptions memory callOptions,
     RevertOptions memory revertOptions
 )
-    internal;
+    private;
 ```
 
 ### deposit
@@ -441,7 +327,7 @@ Execute a user-specified contract on ZEVM.
 
 ```solidity
 function execute(
-    zContext calldata context,
+    MessageContext calldata context,
     address zrc20,
     uint256 amount,
     address target,
@@ -455,7 +341,7 @@ function execute(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
@@ -469,7 +355,7 @@ Deposit foreign coins into ZRC20 and call a user-specified contract on ZEVM.
 
 ```solidity
 function depositAndCall(
-    zContext calldata context,
+    MessageContext calldata context,
     address zrc20,
     uint256 amount,
     address target,
@@ -483,7 +369,7 @@ function depositAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
@@ -497,7 +383,7 @@ Deposit ZETA and call a user-specified contract on ZEVM.
 
 ```solidity
 function depositAndCall(
-    zContext calldata context,
+    MessageContext calldata context,
     uint256 amount,
     address target,
     bytes calldata message
@@ -510,7 +396,7 @@ function depositAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
 |`message`|`bytes`|The calldata to pass to the contract call.|

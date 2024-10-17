@@ -133,9 +133,13 @@ export namespace UnwhitelistedEvent {
 }
 
 export namespace UpdatedCustodyTSSAddressEvent {
-  export type InputTuple = [newTSSAddress: AddressLike];
-  export type OutputTuple = [newTSSAddress: string];
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
   export interface OutputObject {
+    oldTSSAddress: string;
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -414,7 +418,7 @@ export interface IERC20Custody extends BaseContract {
       UnwhitelistedEvent.OutputObject
     >;
 
-    "UpdatedCustodyTSSAddress(address)": TypedContractEvent<
+    "UpdatedCustodyTSSAddress(address,address)": TypedContractEvent<
       UpdatedCustodyTSSAddressEvent.InputTuple,
       UpdatedCustodyTSSAddressEvent.OutputTuple,
       UpdatedCustodyTSSAddressEvent.OutputObject

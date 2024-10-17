@@ -58,12 +58,13 @@ Emitted when tss address is updated
 
 
 ```solidity
-event UpdatedZetaConnectorTSSAddress(address newTSSAddress);
+event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress);
 ```
 
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
 

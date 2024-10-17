@@ -99,12 +99,13 @@ Emitted when tss address is updated
 
 
 ```solidity
-event UpdatedCustodyTSSAddress(address newTSSAddress);
+event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
 ```
 
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
 
