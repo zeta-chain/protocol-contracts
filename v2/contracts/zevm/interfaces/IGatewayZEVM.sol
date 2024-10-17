@@ -31,7 +31,7 @@ interface IGatewayZEVMEvents {
     /// @param value The amount of tokens withdrawn.
     /// @param gasfee The gas fee for the withdrawal.
     /// @param protocolFlatFee The protocol flat fee for the withdrawal.
-    /// @param reserved Reserved for future use; previously used as `message`.
+    /// @param message The calldata passed with the withdraw. No longer used. Kept to maintain compatibility.
     /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     event Withdrawn(
@@ -42,7 +42,7 @@ interface IGatewayZEVMEvents {
         uint256 value,
         uint256 gasfee,
         uint256 protocolFlatFee,
-        bytes reserved,
+        bytes message,
         CallOptions callOptions,
         RevertOptions revertOptions
     );

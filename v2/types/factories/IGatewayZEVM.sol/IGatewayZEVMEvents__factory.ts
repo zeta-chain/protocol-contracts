@@ -138,7 +138,7 @@ const _abi = [
         internalType: "uint256",
       },
       {
-        name: "reserved",
+        name: "message",
         type: "bytes",
         indexed: false,
         internalType: "bytes",

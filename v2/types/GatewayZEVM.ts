@@ -497,7 +497,7 @@ export namespace WithdrawnEvent {
     value: BigNumberish,
     gasfee: BigNumberish,
     protocolFlatFee: BigNumberish,
-    reserved: BytesLike,
+    message: BytesLike,
     callOptions: CallOptionsStruct,
     revertOptions: RevertOptionsStruct
   ];
@@ -509,7 +509,7 @@ export namespace WithdrawnEvent {
     value: bigint,
     gasfee: bigint,
     protocolFlatFee: bigint,
-    reserved: string,
+    message: string,
     callOptions: CallOptionsStructOutput,
     revertOptions: RevertOptionsStructOutput
   ];
@@ -521,7 +521,7 @@ export namespace WithdrawnEvent {
     value: bigint;
     gasfee: bigint;
     protocolFlatFee: bigint;
-    reserved: string;
+    message: string;
     callOptions: CallOptionsStructOutput;
     revertOptions: RevertOptionsStructOutput;
   }

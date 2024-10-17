@@ -44,7 +44,7 @@ event Withdrawn(
     uint256 value,
     uint256 gasfee,
     uint256 protocolFlatFee,
-    bytes reserved,
+    bytes message,
     CallOptions callOptions,
     RevertOptions revertOptions
 );
@@ -61,7 +61,7 @@ event Withdrawn(
 |`value`|`uint256`|The amount of tokens withdrawn.|
 |`gasfee`|`uint256`|The gas fee for the withdrawal.|
 |`protocolFlatFee`|`uint256`|The protocol flat fee for the withdrawal.|
-|`reserved`|`bytes`|Reserved for future use; previously used as `message`.|
+|`message`|`bytes`|The calldata passed with the withdraw. No longer used. Kept to maintain compatibility.|
 |`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
 |`revertOptions`|`RevertOptions`|Revert options.|
 
