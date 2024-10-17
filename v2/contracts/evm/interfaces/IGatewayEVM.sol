@@ -39,7 +39,7 @@ interface IGatewayEVMEvents {
         address indexed receiver,
         uint256 amount,
         address asset,
-        bytes reserved, // Previously `payload`
+        bytes reserved,
         RevertOptions revertOptions
     );
 
@@ -58,7 +58,6 @@ interface IGatewayEVMEvents {
         bytes payload,
         RevertOptions revertOptions
     );
-
 
     /// @notice Emitted when an omnichain smart contract call is made without asset transfer.
     /// @param sender The address of the sender.

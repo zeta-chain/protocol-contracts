@@ -42,7 +42,7 @@ interface IGatewayZEVMEvents {
         uint256 value,
         uint256 gasfee,
         uint256 protocolFlatFee,
-        bytes reserved, // Previously `message`
+        bytes reserved,
         CallOptions callOptions,
         RevertOptions revertOptions
     );
