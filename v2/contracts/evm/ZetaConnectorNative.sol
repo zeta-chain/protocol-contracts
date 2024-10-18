@@ -46,6 +46,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     }
 
     /// @notice Withdraw tokens and call a contract through Gateway.
+    /// @param messageContext Message context containing sender.
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
@@ -53,6 +54,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
     // https://github.com/zeta-chain/protocol-contracts/issues/398)
     /// @dev This function can only be called by the TSS address.
     function withdrawAndCall(
+        MessageContext calldata messageContext,
         address to,
         uint256 amount,
         bytes calldata data,
@@ -68,7 +70,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
         IERC20(zetaToken).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
-        gateway.executeWithERC20(address(zetaToken), to, amount, data);
+        gateway.executeWithERC20(messageContext, address(zetaToken), to, amount, data);
 
         emit WithdrawnAndCalled(to, amount, data);
     }

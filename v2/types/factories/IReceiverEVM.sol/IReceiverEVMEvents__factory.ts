@@ -87,7 +87,20 @@ const _abi = [
   {
     type: "event",
     name: "ReceivedOnCall",
-    inputs: [],
+    inputs: [
+      {
+        name: "sender",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+    ],
     anonymous: false,
   },
   {

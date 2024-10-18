@@ -122,7 +122,7 @@ contract GatewayEVM is
         emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
-    /// @notice Executes an authenticated call to a destination address without ERC20 tokens.
+    /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param messageContext Message context containing sender.
     /// @param destination Address to call.
@@ -142,30 +142,14 @@ contract GatewayEVM is
     {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result;
-        result = _executeAuthenticatedCall(messageContext, destination, data);
-
-        emit Executed(destination, msg.value, data);
-
-        return result;
-    }
-
-    /// @notice Executes an arbitrary call to a destination address without ERC20 tokens.
-    /// @dev This function can only be called by the TSS address and it is payable.
-    /// @param destination Address to call.
-    /// @param data Calldata to pass to the call.
-    /// @return The result of the call.
-    function execute(
-        address destination,
-        bytes calldata data
-    )
-        external
-        payable
-        onlyRole(TSS_ROLE)
-        whenNotPaused
-        returns (bytes memory)
-    {
-        if (destination == address(0)) revert ZeroAddress();
-        bytes memory result = _executeArbitraryCall(destination, data);
+        // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
+        if (messageContext.sender == address(0)) {
+            result = _executeArbitraryCall(destination, data);
+        } else {
+            result = _executeAuthenticatedCall(messageContext, destination, data);
+        }
 
         emit Executed(destination, msg.value, data);
 
@@ -175,11 +159,13 @@ contract GatewayEVM is
     /// @notice Executes a call to a destination contract using ERC20 tokens.
     /// @dev This function can only be called by the custody or connector address.
     ///      It uses the ERC20 allowance system, resetting gateway allowance at the end.
+    /// @param messageContext Message context containing sender.
     /// @param token Address of the ERC20 token.
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to transfer.
     /// @param data Calldata to pass to the call.
     function executeWithERC20(
+        MessageContext calldata messageContext,
         address token,
         address to,
         uint256 amount,
@@ -196,7 +182,13 @@ contract GatewayEVM is
         if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        _executeArbitraryCall(to, data);
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
+        if (messageContext.sender == address(0)) {
+            _executeArbitraryCall(to, data);
+        } else {
+            _executeAuthenticatedCall(messageContext, to, data);
+        }
 
         // Reset approval
         if (!_resetApproval(token, to)) revert ApprovalFailed();
