@@ -81,6 +81,7 @@ export interface IGatewayEVMInterface extends Interface {
     nameOrSignatureOrTopic:
       | "Called"
       | "Deposited"
+      | "DepositedAndCalled"
       | "Executed"
       | "ExecutedWithERC20"
       | "Reverted"
@@ -200,6 +201,37 @@ export namespace CalledEvent {
 }
 
 export namespace DepositedEvent {
+  export type InputTuple = [
+    sender: AddressLike,
+    receiver: AddressLike,
+    amount: BigNumberish,
+    asset: AddressLike,
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
+  ];
+  export type OutputTuple = [
+    sender: string,
+    receiver: string,
+    amount: bigint,
+    asset: string,
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
+  ];
+  export interface OutputObject {
+    sender: string;
+    receiver: string;
+    amount: bigint;
+    asset: string;
+    payload: string;
+    revertOptions: RevertOptionsStructOutput;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace DepositedAndCalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
@@ -575,6 +607,13 @@ export interface IGatewayEVM extends BaseContract {
     DepositedEvent.OutputObject
   >;
   getEvent(
+    key: "DepositedAndCalled"
+  ): TypedContractEvent<
+    DepositedAndCalledEvent.InputTuple,
+    DepositedAndCalledEvent.OutputTuple,
+    DepositedAndCalledEvent.OutputObject
+  >;
+  getEvent(
     key: "Executed"
   ): TypedContractEvent<
     ExecutedEvent.InputTuple,
@@ -624,6 +663,17 @@ export interface IGatewayEVM extends BaseContract {
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
+    >;
+
+    "DepositedAndCalled(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
+      DepositedAndCalledEvent.InputTuple,
+      DepositedAndCalledEvent.OutputTuple,
+      DepositedAndCalledEvent.OutputObject
+    >;
+    DepositedAndCalled: TypedContractEvent<
+      DepositedAndCalledEvent.InputTuple,
+      DepositedAndCalledEvent.OutputTuple,
+      DepositedAndCalledEvent.OutputObject
     >;
 
     "Executed(address,uint256,bytes)": TypedContractEvent<

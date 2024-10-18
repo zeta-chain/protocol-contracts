@@ -253,7 +253,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 expectedGasFee = 1;
         uint256 gasLimit = 1;
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(
+        emit WithdrawnAndCalled(
             owner,
             0,
             abi.encodePacked(addr1),
@@ -329,7 +329,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 expectedGasFee = 1;
         uint256 gasLimit = 1;
         vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(
+        emit WithdrawnAndCalled(
             owner,
             0,
             abi.encodePacked(addr1),

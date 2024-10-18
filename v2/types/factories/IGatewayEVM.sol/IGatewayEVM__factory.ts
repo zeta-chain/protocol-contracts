@@ -575,6 +575,76 @@ const _abi = [
   },
   {
     type: "event",
+    name: "DepositedAndCalled",
+    inputs: [
+      {
+        name: "sender",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "receiver",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "asset",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "payload",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        indexed: false,
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "onRevertGasLimit",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Executed",
     inputs: [
       {
