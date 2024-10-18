@@ -50,6 +50,7 @@ contract GatewayEVMZEVMTest is
     address ownerEVM;
     address destination;
     address tssAddress;
+    MessageContext arbitraryCallMessageContext = MessageContext({ sender: address(0) });
 
     // zevm
     address payable proxyZEVM;
@@ -166,7 +167,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(arbitraryCallMessageContext, address(receiverEVM), message);
     }
 
     function testCallReceiverEVMFromSenderZEVM() public {
@@ -196,7 +197,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(arbitraryCallMessageContext, address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromZEVM() public {
@@ -242,7 +243,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(arbitraryCallMessageContext, address(receiverEVM), message);
     }
 
     function testWithdrawAndCallReceiverEVMFromSenderZEVM() public {
@@ -274,7 +275,7 @@ contract GatewayEVMZEVMTest is
         vm.expectEmit(true, true, true, true, address(gatewayEVM));
         emit Executed(address(receiverEVM), value, message);
         vm.prank(tssAddress);
-        gatewayEVM.execute{ value: value }(address(receiverEVM), message);
+        gatewayEVM.execute{ value: value }(arbitraryCallMessageContext, address(receiverEVM), message);
 
         // Check the balance after withdrawal
         uint256 senderBalanceAfterWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));

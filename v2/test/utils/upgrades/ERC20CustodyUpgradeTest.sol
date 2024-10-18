@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import { IERC20Custody } from "../../../contracts/evm/interfaces/IERC20Custody.sol";
-import { IGatewayEVM } from "../../../contracts/evm/interfaces/IGatewayEVM.sol";
+import { IGatewayEVM, MessageContext } from "../../../contracts/evm/interfaces/IGatewayEVM.sol";
 
 import { RevertContext } from "../../../contracts/Revert.sol";
 
@@ -63,6 +63,7 @@ contract ERC20CustodyUpgradeTest is
         tssAddress = tssAddress_;
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, tssAddress_);
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(WHITELISTER_ROLE, admin_);
         _grantRole(WHITELISTER_ROLE, tssAddress_);
@@ -93,9 +94,9 @@ contract ERC20CustodyUpgradeTest is
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(WHITELISTER_ROLE, newTSSAddress);
 
-        tssAddress = newTSSAddress;
-
         emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
+
+        tssAddress = newTSSAddress;
     }
 
     /// @notice Unpause contract.
@@ -143,11 +144,13 @@ contract ERC20CustodyUpgradeTest is
 
     /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.
     /// @dev This function can only be called by the TSS address.
+    /// @param messageContext Message context containing sender.
     /// @param to Address of the contract to call.
     /// @param token Address of the ERC20 token.
     /// @param amount Amount of tokens to withdraw.
     /// @param data Calldata to pass to the contract call.
     function withdrawAndCall(
+        MessageContext calldata messageContext,
         address to,
         address token,
         uint256 amount,
@@ -164,7 +167,7 @@ contract ERC20CustodyUpgradeTest is
         IERC20(token).safeTransfer(address(gateway), amount);
 
         // Forward the call to the Gateway contract
-        gateway.executeWithERC20(token, to, amount, data);
+        gateway.executeWithERC20(messageContext, token, to, amount, data);
 
         emit WithdrawnAndCalled(to, token, amount, data);
     }

@@ -891,6 +891,48 @@ func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactorSession) 
 	return _ZetaConnectorNonNativeTest.Contract.TestWithdrawAndCallReceiveNoParams(&_ZetaConnectorNonNativeTest.TransactOpts)
 }
 
+// TestWithdrawAndCallReceiveOnCall is a paid mutator transaction binding the contract method 0xb0a64d03.
+//
+// Solidity: function testWithdrawAndCallReceiveOnCall() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactor) TestWithdrawAndCallReceiveOnCall(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.contract.Transact(opts, "testWithdrawAndCallReceiveOnCall")
+}
+
+// TestWithdrawAndCallReceiveOnCall is a paid mutator transaction binding the contract method 0xb0a64d03.
+//
+// Solidity: function testWithdrawAndCallReceiveOnCall() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestSession) TestWithdrawAndCallReceiveOnCall() (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.Contract.TestWithdrawAndCallReceiveOnCall(&_ZetaConnectorNonNativeTest.TransactOpts)
+}
+
+// TestWithdrawAndCallReceiveOnCall is a paid mutator transaction binding the contract method 0xb0a64d03.
+//
+// Solidity: function testWithdrawAndCallReceiveOnCall() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactorSession) TestWithdrawAndCallReceiveOnCall() (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.Contract.TestWithdrawAndCallReceiveOnCall(&_ZetaConnectorNonNativeTest.TransactOpts)
+}
+
+// TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0x95665330.
+//
+// Solidity: function testWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactor) TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.contract.Transact(opts, "testWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall")
+}
+
+// TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0x95665330.
+//
+// Solidity: function testWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestSession) TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall() (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.Contract.TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall(&_ZetaConnectorNonNativeTest.TransactOpts)
+}
+
+// TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0x95665330.
+//
+// Solidity: function testWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall() returns()
+func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestTransactorSession) TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall() (*types.Transaction, error) {
+	return _ZetaConnectorNonNativeTest.Contract.TestWithdrawAndCallReceiveOnCallTNotAllowedWithArbitraryCall(&_ZetaConnectorNonNativeTest.TransactOpts)
+}
+
 // TestWithdrawAndFailsIfMaxSupplyIsReached is a paid mutator transaction binding the contract method 0x7db20efb.
 //
 // Solidity: function testWithdrawAndFailsIfMaxSupplyIsReached() returns()
@@ -2264,12 +2306,14 @@ func (it *ZetaConnectorNonNativeTestReceivedOnCallIterator) Close() error {
 
 // ZetaConnectorNonNativeTestReceivedOnCall represents a ReceivedOnCall event raised by the ZetaConnectorNonNativeTest contract.
 type ZetaConnectorNonNativeTestReceivedOnCall struct {
-	Raw types.Log // Blockchain specific contextual infos
+	Sender  common.Address
+	Message []byte
+	Raw     types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedOnCall is a free log retrieval operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// FilterReceivedOnCall is a free log retrieval operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) FilterReceivedOnCall(opts *bind.FilterOpts) (*ZetaConnectorNonNativeTestReceivedOnCallIterator, error) {
 
 	logs, sub, err := _ZetaConnectorNonNativeTest.contract.FilterLogs(opts, "ReceivedOnCall")
@@ -2279,9 +2323,9 @@ func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) FilterRec
 	return &ZetaConnectorNonNativeTestReceivedOnCallIterator{contract: _ZetaConnectorNonNativeTest.contract, event: "ReceivedOnCall", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedOnCall is a free log subscription operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// WatchReceivedOnCall is a free log subscription operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) WatchReceivedOnCall(opts *bind.WatchOpts, sink chan<- *ZetaConnectorNonNativeTestReceivedOnCall) (event.Subscription, error) {
 
 	logs, sub, err := _ZetaConnectorNonNativeTest.contract.WatchLogs(opts, "ReceivedOnCall")
@@ -2316,9 +2360,9 @@ func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) WatchRece
 	}), nil
 }
 
-// ParseReceivedOnCall is a log parse operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// ParseReceivedOnCall is a log parse operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_ZetaConnectorNonNativeTest *ZetaConnectorNonNativeTestFilterer) ParseReceivedOnCall(log types.Log) (*ZetaConnectorNonNativeTestReceivedOnCall, error) {
 	event := new(ZetaConnectorNonNativeTestReceivedOnCall)
 	if err := _ZetaConnectorNonNativeTest.contract.UnpackLog(event, "ReceivedOnCall", log); err != nil {

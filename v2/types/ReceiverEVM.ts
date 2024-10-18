@@ -179,9 +179,12 @@ export namespace ReceivedNonPayableEvent {
 }
 
 export namespace ReceivedOnCallEvent {
-  export type InputTuple = [];
-  export type OutputTuple = [];
-  export interface OutputObject {}
+  export type InputTuple = [sender: AddressLike, message: BytesLike];
+  export type OutputTuple = [sender: string, message: string];
+  export interface OutputObject {
+    sender: string;
+    message: string;
+  }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
   export type Log = TypedEventLog<Event>;
@@ -443,7 +446,7 @@ export interface ReceiverEVM extends BaseContract {
       ReceivedNonPayableEvent.OutputObject
     >;
 
-    "ReceivedOnCall()": TypedContractEvent<
+    "ReceivedOnCall(address,bytes)": TypedContractEvent<
       ReceivedOnCallEvent.InputTuple,
       ReceivedOnCallEvent.OutputTuple,
       ReceivedOnCallEvent.OutputObject

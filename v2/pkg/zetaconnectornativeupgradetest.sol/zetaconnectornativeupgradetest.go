@@ -29,6 +29,11 @@ var (
 	_ = abi.ConvertType
 )
 
+// MessageContext is an auto generated low-level Go binding around an user-defined struct.
+type MessageContext struct {
+	Sender common.Address
+}
+
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Sender        common.Address
@@ -804,65 +809,65 @@ func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorS
 
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
-// Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactor) Withdraw(opts *bind.TransactOpts, to common.Address, amount *big.Int, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.contract.Transact(opts, "withdraw", to, amount, internalSendHash)
+// Solidity: function withdraw(address to, uint256 amount, bytes32 ) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactor) Withdraw(opts *bind.TransactOpts, to common.Address, amount *big.Int, arg2 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.contract.Transact(opts, "withdraw", to, amount, arg2)
 }
 
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
-// Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestSession) Withdraw(to common.Address, amount *big.Int, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.Contract.Withdraw(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, internalSendHash)
+// Solidity: function withdraw(address to, uint256 amount, bytes32 ) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestSession) Withdraw(to common.Address, amount *big.Int, arg2 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.Contract.Withdraw(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, arg2)
 }
 
 // Withdraw is a paid mutator transaction binding the contract method 0x106e6290.
 //
-// Solidity: function withdraw(address to, uint256 amount, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorSession) Withdraw(to common.Address, amount *big.Int, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.Contract.Withdraw(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, internalSendHash)
+// Solidity: function withdraw(address to, uint256 amount, bytes32 ) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorSession) Withdraw(to common.Address, amount *big.Int, arg2 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.Contract.Withdraw(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, arg2)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x5e3e9fef.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0x6fb9a7af.
 //
-// Solidity: function withdrawAndCall(address to, uint256 amount, bytes data, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactor) WithdrawAndCall(opts *bind.TransactOpts, to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.contract.Transact(opts, "withdrawAndCall", to, amount, data, internalSendHash)
+// Solidity: function withdrawAndCall((address) messageContext, address to, uint256 amount, bytes data, bytes32 ) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactor) WithdrawAndCall(opts *bind.TransactOpts, messageContext MessageContext, to common.Address, amount *big.Int, data []byte, arg4 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.contract.Transact(opts, "withdrawAndCall", messageContext, to, amount, data, arg4)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x5e3e9fef.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0x6fb9a7af.
 //
-// Solidity: function withdrawAndCall(address to, uint256 amount, bytes data, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestSession) WithdrawAndCall(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndCall(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, data, internalSendHash)
+// Solidity: function withdrawAndCall((address) messageContext, address to, uint256 amount, bytes data, bytes32 ) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestSession) WithdrawAndCall(messageContext MessageContext, to common.Address, amount *big.Int, data []byte, arg4 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndCall(&_ZetaConnectorNativeUpgradeTest.TransactOpts, messageContext, to, amount, data, arg4)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x5e3e9fef.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0x6fb9a7af.
 //
-// Solidity: function withdrawAndCall(address to, uint256 amount, bytes data, bytes32 internalSendHash) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorSession) WithdrawAndCall(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndCall(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, data, internalSendHash)
-}
-
-// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
-//
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactor) WithdrawAndRevert(opts *bind.TransactOpts, to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.contract.Transact(opts, "withdrawAndRevert", to, amount, data, internalSendHash, revertContext)
+// Solidity: function withdrawAndCall((address) messageContext, address to, uint256 amount, bytes data, bytes32 ) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorSession) WithdrawAndCall(messageContext MessageContext, to common.Address, amount *big.Int, data []byte, arg4 [32]byte) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndCall(&_ZetaConnectorNativeUpgradeTest.TransactOpts, messageContext, to, amount, data, arg4)
 }
 
 // WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndRevert(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, data, internalSendHash, revertContext)
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 , (address,address,uint256,bytes) revertContext) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactor) WithdrawAndRevert(opts *bind.TransactOpts, to common.Address, amount *big.Int, data []byte, arg3 [32]byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.contract.Transact(opts, "withdrawAndRevert", to, amount, data, arg3, revertContext)
 }
 
 // WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
 //
-// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 internalSendHash, (address,address,uint256,bytes) revertContext) returns()
-func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, internalSendHash [32]byte, revertContext RevertContext) (*types.Transaction, error) {
-	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndRevert(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, data, internalSendHash, revertContext)
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 , (address,address,uint256,bytes) revertContext) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, arg3 [32]byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndRevert(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, data, arg3, revertContext)
+}
+
+// WithdrawAndRevert is a paid mutator transaction binding the contract method 0x6f8728ad.
+//
+// Solidity: function withdrawAndRevert(address to, uint256 amount, bytes data, bytes32 , (address,address,uint256,bytes) revertContext) returns()
+func (_ZetaConnectorNativeUpgradeTest *ZetaConnectorNativeUpgradeTestTransactorSession) WithdrawAndRevert(to common.Address, amount *big.Int, data []byte, arg3 [32]byte, revertContext RevertContext) (*types.Transaction, error) {
+	return _ZetaConnectorNativeUpgradeTest.Contract.WithdrawAndRevert(&_ZetaConnectorNativeUpgradeTest.TransactOpts, to, amount, data, arg3, revertContext)
 }
 
 // ZetaConnectorNativeUpgradeTestInitializedIterator is returned from FilterInitialized and is used to iterate over the raw logs and unpacked data for Initialized events raised by the ZetaConnectorNativeUpgradeTest contract.

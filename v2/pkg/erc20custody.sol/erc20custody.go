@@ -29,6 +29,11 @@ var (
 	_ = abi.ConvertType
 )
 
+// MessageContext is an auto generated low-level Go binding around an user-defined struct.
+type MessageContext struct {
+	Sender common.Address
+}
+
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Sender        common.Address
@@ -917,25 +922,25 @@ func (_ERC20Custody *ERC20CustodyTransactorSession) Withdraw(to common.Address, 
 	return _ERC20Custody.Contract.Withdraw(&_ERC20Custody.TransactOpts, to, token, amount)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x21fc65f2.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0xad081852.
 //
-// Solidity: function withdrawAndCall(address to, address token, uint256 amount, bytes data) returns()
-func (_ERC20Custody *ERC20CustodyTransactor) WithdrawAndCall(opts *bind.TransactOpts, to common.Address, token common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _ERC20Custody.contract.Transact(opts, "withdrawAndCall", to, token, amount, data)
+// Solidity: function withdrawAndCall((address) messageContext, address to, address token, uint256 amount, bytes data) returns()
+func (_ERC20Custody *ERC20CustodyTransactor) WithdrawAndCall(opts *bind.TransactOpts, messageContext MessageContext, to common.Address, token common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _ERC20Custody.contract.Transact(opts, "withdrawAndCall", messageContext, to, token, amount, data)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x21fc65f2.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0xad081852.
 //
-// Solidity: function withdrawAndCall(address to, address token, uint256 amount, bytes data) returns()
-func (_ERC20Custody *ERC20CustodySession) WithdrawAndCall(to common.Address, token common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _ERC20Custody.Contract.WithdrawAndCall(&_ERC20Custody.TransactOpts, to, token, amount, data)
+// Solidity: function withdrawAndCall((address) messageContext, address to, address token, uint256 amount, bytes data) returns()
+func (_ERC20Custody *ERC20CustodySession) WithdrawAndCall(messageContext MessageContext, to common.Address, token common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _ERC20Custody.Contract.WithdrawAndCall(&_ERC20Custody.TransactOpts, messageContext, to, token, amount, data)
 }
 
-// WithdrawAndCall is a paid mutator transaction binding the contract method 0x21fc65f2.
+// WithdrawAndCall is a paid mutator transaction binding the contract method 0xad081852.
 //
-// Solidity: function withdrawAndCall(address to, address token, uint256 amount, bytes data) returns()
-func (_ERC20Custody *ERC20CustodyTransactorSession) WithdrawAndCall(to common.Address, token common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _ERC20Custody.Contract.WithdrawAndCall(&_ERC20Custody.TransactOpts, to, token, amount, data)
+// Solidity: function withdrawAndCall((address) messageContext, address to, address token, uint256 amount, bytes data) returns()
+func (_ERC20Custody *ERC20CustodyTransactorSession) WithdrawAndCall(messageContext MessageContext, to common.Address, token common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _ERC20Custody.Contract.WithdrawAndCall(&_ERC20Custody.TransactOpts, messageContext, to, token, amount, data)
 }
 
 // WithdrawAndRevert is a paid mutator transaction binding the contract method 0x99a3c356.

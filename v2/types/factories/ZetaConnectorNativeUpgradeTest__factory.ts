@@ -349,7 +349,7 @@ const _abi = [
         internalType: "uint256",
       },
       {
-        name: "internalSendHash",
+        name: "",
         type: "bytes32",
         internalType: "bytes32",
       },
@@ -361,6 +361,18 @@ const _abi = [
     type: "function",
     name: "withdrawAndCall",
     inputs: [
+      {
+        name: "messageContext",
+        type: "tuple",
+        internalType: "struct MessageContext",
+        components: [
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
       {
         name: "to",
         type: "address",
@@ -377,7 +389,7 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "internalSendHash",
+        name: "",
         type: "bytes32",
         internalType: "bytes32",
       },
@@ -405,7 +417,7 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "internalSendHash",
+        name: "",
         type: "bytes32",
         internalType: "bytes32",
       },

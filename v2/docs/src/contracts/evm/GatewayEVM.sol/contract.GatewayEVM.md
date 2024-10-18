@@ -182,7 +182,7 @@ function executeRevert(
 
 ### execute
 
-Executes an authenticated call to a destination address without ERC20 tokens.
+Executes a call to a destination address without ERC20 tokens.
 
 *This function can only be called by the TSS address and it is payable.*
 
@@ -215,38 +215,6 @@ function execute(
 |`<none>`|`bytes`|The result of the call.|
 
 
-### execute
-
-Executes an arbitrary call to a destination address without ERC20 tokens.
-
-*This function can only be called by the TSS address and it is payable.*
-
-
-```solidity
-function execute(
-    address destination,
-    bytes calldata data
-)
-    external
-    payable
-    onlyRole(TSS_ROLE)
-    whenNotPaused
-    returns (bytes memory);
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`destination`|`address`|Address to call.|
-|`data`|`bytes`|Calldata to pass to the call.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`<none>`|`bytes`|The result of the call.|
-
-
 ### executeWithERC20
 
 Executes a call to a destination contract using ERC20 tokens.
@@ -257,6 +225,7 @@ It uses the ERC20 allowance system, resetting gateway allowance at the end.*
 
 ```solidity
 function executeWithERC20(
+    MessageContext calldata messageContext,
     address token,
     address to,
     uint256 amount,
@@ -271,6 +240,7 @@ function executeWithERC20(
 
 |Name|Type|Description|
 |----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender.|
 |`token`|`address`|Address of the ERC20 token.|
 |`to`|`address`|Address of the contract to call.|
 |`amount`|`uint256`|Amount of tokens to transfer.|

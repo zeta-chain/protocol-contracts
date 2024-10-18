@@ -48,6 +48,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "MAX_PAYLOAD_SIZE",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "PAUSER_ROLE",
     inputs: [],
     outputs: [
@@ -363,30 +376,6 @@ const _abi = [
     name: "execute",
     inputs: [
       {
-        name: "destination",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "data",
-        type: "bytes",
-        internalType: "bytes",
-      },
-    ],
-    outputs: [
-      {
-        name: "",
-        type: "bytes",
-        internalType: "bytes",
-      },
-    ],
-    stateMutability: "payable",
-  },
-  {
-    type: "function",
-    name: "execute",
-    inputs: [
-      {
         name: "messageContext",
         type: "tuple",
         internalType: "struct MessageContext",
@@ -467,6 +456,18 @@ const _abi = [
     type: "function",
     name: "executeWithERC20",
     inputs: [
+      {
+        name: "messageContext",
+        type: "tuple",
+        internalType: "struct MessageContext",
+        components: [
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
       {
         name: "token",
         type: "address",
@@ -761,6 +762,19 @@ const _abi = [
     type: "function",
     name: "unpause",
     inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "updateTSSAddress",
+    inputs: [
+      {
+        name: "newTSSAddress",
+        type: "address",
+        internalType: "address",
+      },
+    ],
     outputs: [],
     stateMutability: "nonpayable",
   },
@@ -1462,6 +1476,11 @@ const _abi = [
         internalType: "bytes32",
       },
     ],
+  },
+  {
+    type: "error",
+    name: "ZETANotSupported",
+    inputs: [],
   },
   {
     type: "error",

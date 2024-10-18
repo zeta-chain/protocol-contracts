@@ -879,6 +879,27 @@ func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestDepositLegacyFai
 	return _ERC20CustodyTest.Contract.TestDepositLegacyFailsIfTokenNotWhitelisted(&_ERC20CustodyTest.TransactOpts)
 }
 
+// TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0x9319ae1b.
+//
+// Solidity: function testForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactor) TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ERC20CustodyTest.contract.Transact(opts, "testForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall")
+}
+
+// TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0x9319ae1b.
+//
+// Solidity: function testForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestSession) TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0x9319ae1b.
+//
+// Solidity: function testForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestForwardCallOnRevertThroughCustodyNotAllowedWithArbitraryCall(&_ERC20CustodyTest.TransactOpts)
+}
+
 // TestForwardCallToReceiveERC20PartialThroughCustody is a paid mutator transaction binding the contract method 0xfb176c12.
 //
 // Solidity: function testForwardCallToReceiveERC20PartialThroughCustody() returns()
@@ -1066,6 +1087,48 @@ func (_ERC20CustodyTest *ERC20CustodyTestSession) TestForwardCallToReceiveNoPara
 // Solidity: function testForwardCallToReceiveNoParamsThroughCustody() returns()
 func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestForwardCallToReceiveNoParamsThroughCustody() (*types.Transaction, error) {
 	return _ERC20CustodyTest.Contract.TestForwardCallToReceiveNoParamsThroughCustody(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestForwardCallToReceiveOnCallThroughCustody is a paid mutator transaction binding the contract method 0x3aa1298f.
+//
+// Solidity: function testForwardCallToReceiveOnCallThroughCustody() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactor) TestForwardCallToReceiveOnCallThroughCustody(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ERC20CustodyTest.contract.Transact(opts, "testForwardCallToReceiveOnCallThroughCustody")
+}
+
+// TestForwardCallToReceiveOnCallThroughCustody is a paid mutator transaction binding the contract method 0x3aa1298f.
+//
+// Solidity: function testForwardCallToReceiveOnCallThroughCustody() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestSession) TestForwardCallToReceiveOnCallThroughCustody() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestForwardCallToReceiveOnCallThroughCustody(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestForwardCallToReceiveOnCallThroughCustody is a paid mutator transaction binding the contract method 0x3aa1298f.
+//
+// Solidity: function testForwardCallToReceiveOnCallThroughCustody() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestForwardCallToReceiveOnCallThroughCustody() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestForwardCallToReceiveOnCallThroughCustody(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0xc9ea7aa5.
+//
+// Solidity: function testForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactor) TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ERC20CustodyTest.contract.Transact(opts, "testForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall")
+}
+
+// TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0xc9ea7aa5.
+//
+// Solidity: function testForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestSession) TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall(&_ERC20CustodyTest.TransactOpts)
+}
+
+// TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall is a paid mutator transaction binding the contract method 0xc9ea7aa5.
+//
+// Solidity: function testForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall() returns()
+func (_ERC20CustodyTest *ERC20CustodyTestTransactorSession) TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall() (*types.Transaction, error) {
+	return _ERC20CustodyTest.Contract.TestForwardCallToReceiveOnCallThroughCustodyNotAllowedWithArbitraryCall(&_ERC20CustodyTest.TransactOpts)
 }
 
 // TestTSSUpgrade is a paid mutator transaction binding the contract method 0x52ff5939.
@@ -2861,12 +2924,14 @@ func (it *ERC20CustodyTestReceivedOnCallIterator) Close() error {
 
 // ERC20CustodyTestReceivedOnCall represents a ReceivedOnCall event raised by the ERC20CustodyTest contract.
 type ERC20CustodyTestReceivedOnCall struct {
-	Raw types.Log // Blockchain specific contextual infos
+	Sender  common.Address
+	Message []byte
+	Raw     types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedOnCall is a free log retrieval operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// FilterReceivedOnCall is a free log retrieval operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterReceivedOnCall(opts *bind.FilterOpts) (*ERC20CustodyTestReceivedOnCallIterator, error) {
 
 	logs, sub, err := _ERC20CustodyTest.contract.FilterLogs(opts, "ReceivedOnCall")
@@ -2876,9 +2941,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) FilterReceivedOnCall(opts *bi
 	return &ERC20CustodyTestReceivedOnCallIterator{contract: _ERC20CustodyTest.contract, event: "ReceivedOnCall", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedOnCall is a free log subscription operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// WatchReceivedOnCall is a free log subscription operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchReceivedOnCall(opts *bind.WatchOpts, sink chan<- *ERC20CustodyTestReceivedOnCall) (event.Subscription, error) {
 
 	logs, sub, err := _ERC20CustodyTest.contract.WatchLogs(opts, "ReceivedOnCall")
@@ -2913,9 +2978,9 @@ func (_ERC20CustodyTest *ERC20CustodyTestFilterer) WatchReceivedOnCall(opts *bin
 	}), nil
 }
 
-// ParseReceivedOnCall is a log parse operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// ParseReceivedOnCall is a log parse operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_ERC20CustodyTest *ERC20CustodyTestFilterer) ParseReceivedOnCall(log types.Log) (*ERC20CustodyTestReceivedOnCall, error) {
 	event := new(ERC20CustodyTestReceivedOnCall)
 	if err := _ERC20CustodyTest.contract.UnpackLog(event, "ReceivedOnCall", log); err != nil {

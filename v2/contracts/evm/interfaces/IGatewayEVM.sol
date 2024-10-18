@@ -116,11 +116,19 @@ interface IGatewayEVMErrors {
 /// @notice Interface for the GatewayEVM contract.
 interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @notice Executes a call to a contract using ERC20 tokens.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param token The address of the ERC20 token.
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
+    function executeWithERC20(
+        MessageContext calldata messageContext,
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        external;
 
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
     /// @dev This function can only be called by the TSS address and it is payable.
@@ -134,12 +142,6 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     )
         external
         payable;
-
-    /// @notice Executes a call to a contract.
-    /// @param destination The address of the contract to call.
-    /// @param data The calldata to pass to the contract call.
-    /// @return The result of the contract call.
-    function execute(address destination, bytes calldata data) external payable returns (bytes memory);
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.

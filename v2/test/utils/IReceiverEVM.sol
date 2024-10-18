@@ -37,5 +37,8 @@ interface IReceiverEVMEvents {
     /// @param revertContext Revert Context.
     event ReceivedRevert(address sender, RevertContext revertContext);
 
-    event ReceivedOnCall();
+    /// @notice Emitted when onCall function is called with authenticated call.
+    /// @param sender Message context sender.
+    /// @param message Message received.
+    event ReceivedOnCall(address sender, bytes message);
 }

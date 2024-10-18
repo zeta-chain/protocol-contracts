@@ -286,6 +286,37 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCallerSession) DEFAULTADMINRO
 	return _GatewayEVMUpgradeTest.Contract.DEFAULTADMINROLE(&_GatewayEVMUpgradeTest.CallOpts)
 }
 
+// MAXPAYLOADSIZE is a free data retrieval call binding the contract method 0xa2ba1934.
+//
+// Solidity: function MAX_PAYLOAD_SIZE() view returns(uint256)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCaller) MAXPAYLOADSIZE(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _GatewayEVMUpgradeTest.contract.Call(opts, &out, "MAX_PAYLOAD_SIZE")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// MAXPAYLOADSIZE is a free data retrieval call binding the contract method 0xa2ba1934.
+//
+// Solidity: function MAX_PAYLOAD_SIZE() view returns(uint256)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) MAXPAYLOADSIZE() (*big.Int, error) {
+	return _GatewayEVMUpgradeTest.Contract.MAXPAYLOADSIZE(&_GatewayEVMUpgradeTest.CallOpts)
+}
+
+// MAXPAYLOADSIZE is a free data retrieval call binding the contract method 0xa2ba1934.
+//
+// Solidity: function MAX_PAYLOAD_SIZE() view returns(uint256)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestCallerSession) MAXPAYLOADSIZE() (*big.Int, error) {
+	return _GatewayEVMUpgradeTest.Contract.MAXPAYLOADSIZE(&_GatewayEVMUpgradeTest.CallOpts)
+}
+
 // PAUSERROLE is a free data retrieval call binding the contract method 0xe63ab1e9.
 //
 // Solidity: function PAUSER_ROLE() view returns(bytes32)
@@ -763,46 +794,25 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) DepositAnd
 	return _GatewayEVMUpgradeTest.Contract.DepositAndCall0(&_GatewayEVMUpgradeTest.TransactOpts, receiver, amount, asset, payload, revertOptions)
 }
 
-// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
-//
-// Solidity: function execute(address destination, bytes data) payable returns(bytes)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) Execute(opts *bind.TransactOpts, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.contract.Transact(opts, "execute", destination, data)
-}
-
-// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
-//
-// Solidity: function execute(address destination, bytes data) payable returns(bytes)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.Execute(&_GatewayEVMUpgradeTest.TransactOpts, destination, data)
-}
-
-// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
-//
-// Solidity: function execute(address destination, bytes data) payable returns(bytes)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.Execute(&_GatewayEVMUpgradeTest.TransactOpts, destination, data)
-}
-
-// Execute0 is a paid mutator transaction binding the contract method 0x38e22527.
+// Execute is a paid mutator transaction binding the contract method 0x38e22527.
 //
 // Solidity: function execute((address) messageContext, address destination, bytes data) payable returns(bytes)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) Execute0(opts *bind.TransactOpts, messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.contract.Transact(opts, "execute0", messageContext, destination, data)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) Execute(opts *bind.TransactOpts, messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.contract.Transact(opts, "execute", messageContext, destination, data)
 }
 
-// Execute0 is a paid mutator transaction binding the contract method 0x38e22527.
+// Execute is a paid mutator transaction binding the contract method 0x38e22527.
 //
 // Solidity: function execute((address) messageContext, address destination, bytes data) payable returns(bytes)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Execute0(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.Execute0(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, destination, data)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Execute(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.Execute(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, destination, data)
 }
 
-// Execute0 is a paid mutator transaction binding the contract method 0x38e22527.
+// Execute is a paid mutator transaction binding the contract method 0x38e22527.
 //
 // Solidity: function execute((address) messageContext, address destination, bytes data) payable returns(bytes)
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Execute0(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.Execute0(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, destination, data)
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Execute(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.Execute(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, destination, data)
 }
 
 // ExecuteRevert is a paid mutator transaction binding the contract method 0xcb7ba8e5.
@@ -826,25 +836,25 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) ExecuteRev
 	return _GatewayEVMUpgradeTest.Contract.ExecuteRevert(&_GatewayEVMUpgradeTest.TransactOpts, destination, data, revertContext)
 }
 
-// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
+// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x7bbe9afa.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) ExecuteWithERC20(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.contract.Transact(opts, "executeWithERC20", token, to, amount, data)
+// Solidity: function executeWithERC20((address) messageContext, address token, address to, uint256 amount, bytes data) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) ExecuteWithERC20(opts *bind.TransactOpts, messageContext MessageContext, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.contract.Transact(opts, "executeWithERC20", messageContext, token, to, amount, data)
 }
 
-// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
+// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x7bbe9afa.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.ExecuteWithERC20(&_GatewayEVMUpgradeTest.TransactOpts, token, to, amount, data)
+// Solidity: function executeWithERC20((address) messageContext, address token, address to, uint256 amount, bytes data) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) ExecuteWithERC20(messageContext MessageContext, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.ExecuteWithERC20(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, token, to, amount, data)
 }
 
-// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
+// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x7bbe9afa.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _GatewayEVMUpgradeTest.Contract.ExecuteWithERC20(&_GatewayEVMUpgradeTest.TransactOpts, token, to, amount, data)
+// Solidity: function executeWithERC20((address) messageContext, address token, address to, uint256 amount, bytes data) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) ExecuteWithERC20(messageContext MessageContext, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.ExecuteWithERC20(&_GatewayEVMUpgradeTest.TransactOpts, messageContext, token, to, amount, data)
 }
 
 // GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
@@ -1034,6 +1044,27 @@ func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) Unpause() (*types.Tr
 // Solidity: function unpause() returns()
 func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) Unpause() (*types.Transaction, error) {
 	return _GatewayEVMUpgradeTest.Contract.Unpause(&_GatewayEVMUpgradeTest.TransactOpts)
+}
+
+// UpdateTSSAddress is a paid mutator transaction binding the contract method 0x950837aa.
+//
+// Solidity: function updateTSSAddress(address newTSSAddress) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactor) UpdateTSSAddress(opts *bind.TransactOpts, newTSSAddress common.Address) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.contract.Transact(opts, "updateTSSAddress", newTSSAddress)
+}
+
+// UpdateTSSAddress is a paid mutator transaction binding the contract method 0x950837aa.
+//
+// Solidity: function updateTSSAddress(address newTSSAddress) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestSession) UpdateTSSAddress(newTSSAddress common.Address) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.UpdateTSSAddress(&_GatewayEVMUpgradeTest.TransactOpts, newTSSAddress)
+}
+
+// UpdateTSSAddress is a paid mutator transaction binding the contract method 0x950837aa.
+//
+// Solidity: function updateTSSAddress(address newTSSAddress) returns()
+func (_GatewayEVMUpgradeTest *GatewayEVMUpgradeTestTransactorSession) UpdateTSSAddress(newTSSAddress common.Address) (*types.Transaction, error) {
+	return _GatewayEVMUpgradeTest.Contract.UpdateTSSAddress(&_GatewayEVMUpgradeTest.TransactOpts, newTSSAddress)
 }
 
 // UpgradeToAndCall is a paid mutator transaction binding the contract method 0x4f1ef286.

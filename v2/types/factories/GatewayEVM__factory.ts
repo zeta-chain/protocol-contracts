@@ -373,30 +373,6 @@ const _abi = [
     name: "execute",
     inputs: [
       {
-        name: "destination",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "data",
-        type: "bytes",
-        internalType: "bytes",
-      },
-    ],
-    outputs: [
-      {
-        name: "",
-        type: "bytes",
-        internalType: "bytes",
-      },
-    ],
-    stateMutability: "payable",
-  },
-  {
-    type: "function",
-    name: "execute",
-    inputs: [
-      {
         name: "messageContext",
         type: "tuple",
         internalType: "struct MessageContext",
@@ -477,6 +453,18 @@ const _abi = [
     type: "function",
     name: "executeWithERC20",
     inputs: [
+      {
+        name: "messageContext",
+        type: "tuple",
+        internalType: "struct MessageContext",
+        components: [
+          {
+            name: "sender",
+            type: "address",
+            internalType: "address",
+          },
+        ],
+      },
       {
         name: "token",
         type: "address",

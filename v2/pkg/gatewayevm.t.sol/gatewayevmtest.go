@@ -2871,12 +2871,14 @@ func (it *GatewayEVMTestReceivedOnCallIterator) Close() error {
 
 // GatewayEVMTestReceivedOnCall represents a ReceivedOnCall event raised by the GatewayEVMTest contract.
 type GatewayEVMTestReceivedOnCall struct {
-	Raw types.Log // Blockchain specific contextual infos
+	Sender  common.Address
+	Message []byte
+	Raw     types.Log // Blockchain specific contextual infos
 }
 
-// FilterReceivedOnCall is a free log retrieval operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// FilterReceivedOnCall is a free log retrieval operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterReceivedOnCall(opts *bind.FilterOpts) (*GatewayEVMTestReceivedOnCallIterator, error) {
 
 	logs, sub, err := _GatewayEVMTest.contract.FilterLogs(opts, "ReceivedOnCall")
@@ -2886,9 +2888,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) FilterReceivedOnCall(opts *bind.F
 	return &GatewayEVMTestReceivedOnCallIterator{contract: _GatewayEVMTest.contract, event: "ReceivedOnCall", logs: logs, sub: sub}, nil
 }
 
-// WatchReceivedOnCall is a free log subscription operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// WatchReceivedOnCall is a free log subscription operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchReceivedOnCall(opts *bind.WatchOpts, sink chan<- *GatewayEVMTestReceivedOnCall) (event.Subscription, error) {
 
 	logs, sub, err := _GatewayEVMTest.contract.WatchLogs(opts, "ReceivedOnCall")
@@ -2923,9 +2925,9 @@ func (_GatewayEVMTest *GatewayEVMTestFilterer) WatchReceivedOnCall(opts *bind.Wa
 	}), nil
 }
 
-// ParseReceivedOnCall is a log parse operation binding the contract event 0x3658b46bab672c7672b69c2f0feda706eabdb7d2231421c96e9049b2db5e7eee.
+// ParseReceivedOnCall is a log parse operation binding the contract event 0xd80b62959d9a7e797f352e4015e65d345f402ea21972256fb0ba94f00a352501.
 //
-// Solidity: event ReceivedOnCall()
+// Solidity: event ReceivedOnCall(address sender, bytes message)
 func (_GatewayEVMTest *GatewayEVMTestFilterer) ParseReceivedOnCall(log types.Log) (*GatewayEVMTestReceivedOnCall, error) {
 	event := new(GatewayEVMTestReceivedOnCall)
 	if err := _GatewayEVMTest.contract.UnpackLog(event, "ReceivedOnCall", log); err != nil {

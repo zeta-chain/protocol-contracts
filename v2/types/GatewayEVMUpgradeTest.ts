@@ -68,6 +68,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     nameOrSignature:
       | "ASSET_HANDLER_ROLE"
       | "DEFAULT_ADMIN_ROLE"
+      | "MAX_PAYLOAD_SIZE"
       | "PAUSER_ROLE"
       | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
@@ -77,8 +78,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "deposit(address,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
-      | "execute(address,bytes)"
-      | "execute((address),address,bytes)"
+      | "execute"
       | "executeRevert"
       | "executeWithERC20"
       | "getRoleAdmin"
@@ -96,6 +96,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "supportsInterface"
       | "tssAddress"
       | "unpause"
+      | "updateTSSAddress"
       | "upgradeToAndCall"
       | "zetaConnector"
       | "zetaToken"
@@ -126,6 +127,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_PAYLOAD_SIZE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -165,11 +170,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "execute(address,bytes)",
-    values: [AddressLike, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "execute((address),address,bytes)",
+    functionFragment: "execute",
     values: [MessageContextStruct, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
@@ -178,7 +179,13 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeWithERC20",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -238,6 +245,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "updateTSSAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
@@ -253,6 +264,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_PAYLOAD_SIZE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -282,14 +297,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "execute(address,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "execute((address),address,bytes)",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
     data: BytesLike
@@ -331,6 +339,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateTSSAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
@@ -687,6 +699,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
+  MAX_PAYLOAD_SIZE: TypedContractMethod<[], [bigint], "view">;
+
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   TSS_ROLE: TypedContractMethod<[], [string], "view">;
@@ -744,13 +758,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  "execute(address,bytes)": TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
-    [string],
-    "payable"
-  >;
-
-  "execute((address),address,bytes)": TypedContractMethod<
+  execute: TypedContractMethod<
     [
       messageContext: MessageContextStruct,
       destination: AddressLike,
@@ -772,6 +780,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   executeWithERC20: TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
@@ -853,6 +862,12 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  updateTSSAddress: TypedContractMethod<
+    [newTSSAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   upgradeToAndCall: TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
     [void],
@@ -873,6 +888,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "MAX_PAYLOAD_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
@@ -940,14 +958,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "execute(address,bytes)"
-  ): TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
-    [string],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "execute((address),address,bytes)"
+    nameOrSignature: "execute"
   ): TypedContractMethod<
     [
       messageContext: MessageContextStruct,
@@ -972,6 +983,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     nameOrSignature: "executeWithERC20"
   ): TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
@@ -1055,6 +1067,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "updateTSSAddress"
+  ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<

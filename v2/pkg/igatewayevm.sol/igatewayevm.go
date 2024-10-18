@@ -307,46 +307,25 @@ func (_IGatewayEVM *IGatewayEVMTransactorSession) DepositAndCall0(receiver commo
 	return _IGatewayEVM.Contract.DepositAndCall0(&_IGatewayEVM.TransactOpts, receiver, amount, asset, payload, revertOptions)
 }
 
-// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
-//
-// Solidity: function execute(address destination, bytes data) payable returns(bytes)
-func (_IGatewayEVM *IGatewayEVMTransactor) Execute(opts *bind.TransactOpts, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "execute", destination, data)
-}
-
-// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
-//
-// Solidity: function execute(address destination, bytes data) payable returns(bytes)
-func (_IGatewayEVM *IGatewayEVMSession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Execute(&_IGatewayEVM.TransactOpts, destination, data)
-}
-
-// Execute is a paid mutator transaction binding the contract method 0x1cff79cd.
-//
-// Solidity: function execute(address destination, bytes data) payable returns(bytes)
-func (_IGatewayEVM *IGatewayEVMTransactorSession) Execute(destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Execute(&_IGatewayEVM.TransactOpts, destination, data)
-}
-
-// Execute0 is a paid mutator transaction binding the contract method 0x38e22527.
+// Execute is a paid mutator transaction binding the contract method 0x38e22527.
 //
 // Solidity: function execute((address) messageContext, address destination, bytes data) payable returns(bytes)
-func (_IGatewayEVM *IGatewayEVMTransactor) Execute0(opts *bind.TransactOpts, messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "execute0", messageContext, destination, data)
+func (_IGatewayEVM *IGatewayEVMTransactor) Execute(opts *bind.TransactOpts, messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "execute", messageContext, destination, data)
 }
 
-// Execute0 is a paid mutator transaction binding the contract method 0x38e22527.
+// Execute is a paid mutator transaction binding the contract method 0x38e22527.
 //
 // Solidity: function execute((address) messageContext, address destination, bytes data) payable returns(bytes)
-func (_IGatewayEVM *IGatewayEVMSession) Execute0(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Execute0(&_IGatewayEVM.TransactOpts, messageContext, destination, data)
+func (_IGatewayEVM *IGatewayEVMSession) Execute(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Execute(&_IGatewayEVM.TransactOpts, messageContext, destination, data)
 }
 
-// Execute0 is a paid mutator transaction binding the contract method 0x38e22527.
+// Execute is a paid mutator transaction binding the contract method 0x38e22527.
 //
 // Solidity: function execute((address) messageContext, address destination, bytes data) payable returns(bytes)
-func (_IGatewayEVM *IGatewayEVMTransactorSession) Execute0(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.Execute0(&_IGatewayEVM.TransactOpts, messageContext, destination, data)
+func (_IGatewayEVM *IGatewayEVMTransactorSession) Execute(messageContext MessageContext, destination common.Address, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.Execute(&_IGatewayEVM.TransactOpts, messageContext, destination, data)
 }
 
 // ExecuteRevert is a paid mutator transaction binding the contract method 0xcb7ba8e5.
@@ -370,25 +349,25 @@ func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteRevert(destination comm
 	return _IGatewayEVM.Contract.ExecuteRevert(&_IGatewayEVM.TransactOpts, destination, data, revertContext)
 }
 
-// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
+// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x7bbe9afa.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_IGatewayEVM *IGatewayEVMTransactor) ExecuteWithERC20(opts *bind.TransactOpts, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.contract.Transact(opts, "executeWithERC20", token, to, amount, data)
+// Solidity: function executeWithERC20((address) messageContext, address token, address to, uint256 amount, bytes data) returns()
+func (_IGatewayEVM *IGatewayEVMTransactor) ExecuteWithERC20(opts *bind.TransactOpts, messageContext MessageContext, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.contract.Transact(opts, "executeWithERC20", messageContext, token, to, amount, data)
 }
 
-// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
+// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x7bbe9afa.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_IGatewayEVM *IGatewayEVMSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
+// Solidity: function executeWithERC20((address) messageContext, address token, address to, uint256 amount, bytes data) returns()
+func (_IGatewayEVM *IGatewayEVMSession) ExecuteWithERC20(messageContext MessageContext, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, messageContext, token, to, amount, data)
 }
 
-// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x5131ab59.
+// ExecuteWithERC20 is a paid mutator transaction binding the contract method 0x7bbe9afa.
 //
-// Solidity: function executeWithERC20(address token, address to, uint256 amount, bytes data) returns()
-func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteWithERC20(token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
-	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, token, to, amount, data)
+// Solidity: function executeWithERC20((address) messageContext, address token, address to, uint256 amount, bytes data) returns()
+func (_IGatewayEVM *IGatewayEVMTransactorSession) ExecuteWithERC20(messageContext MessageContext, token common.Address, to common.Address, amount *big.Int, data []byte) (*types.Transaction, error) {
+	return _IGatewayEVM.Contract.ExecuteWithERC20(&_IGatewayEVM.TransactOpts, messageContext, token, to, amount, data)
 }
 
 // RevertWithERC20 is a paid mutator transaction binding the contract method 0xaa0c0fc1.
