@@ -398,7 +398,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 }
 
-contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents {
+contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, INotSupportedMethods {
     using SafeERC20 for IERC20;
 
     address proxy;
@@ -413,8 +413,6 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
     RevertOptions revertOptions;
 
     uint256 ownerAmount = 1_000_000;
-
-    error ZETANotSupported();
 
     function setUp() public {
         owner = address(this);
@@ -456,7 +454,7 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
 
         revertOptions = RevertOptions({
             revertAddress: address(0x321),
-            callOnRevert: true,
+            callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
             onRevertGasLimit: 0
@@ -677,6 +675,14 @@ contract GatewayEVMInboundTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IR
         revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2 + 1);
 
         vm.expectRevert(PayloadSizeExceeded.selector);
+        gateway.call(destination, payload, revertOptions);
+    }
+
+    function testCallWithPayloadFailsIfCallOnRevertIsTrue() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        revertOptions.callOnRevert = true;
+
+        vm.expectRevert(CallOnRevertNotSupported.selector);
         gateway.call(destination, payload, revertOptions);
     }
 

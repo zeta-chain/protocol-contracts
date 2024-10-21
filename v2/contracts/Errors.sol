@@ -5,4 +5,5 @@ pragma solidity 0.8.26;
 /// @notice Interface for contracts that with non supported methods.
 interface INotSupportedMethods {
     error ZETANotSupported();
+    error CallOnRevertNotSupported(); 
 }
