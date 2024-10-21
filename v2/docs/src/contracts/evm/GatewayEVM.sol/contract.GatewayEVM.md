@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7ede96463093bfd534382563222812e5557c84df/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -73,6 +73,15 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
+### MAX_PAYLOAD_SIZE
+Max size of payload + revertOptions revert message.
+
+
+```solidity
+uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+```
+
+
 ## Functions
 ### constructor
 
@@ -127,6 +136,21 @@ function _execute(address destination, bytes calldata data) internal returns (by
 |Name|Type|Description|
 |----|----|-----------|
 |`<none>`|`bytes`|The result of the call.|
+
+
+### updateTSSAddress
+
+Update tss address
+
+
+```solidity
+function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newTSSAddress`|`address`|new tss address|
 
 
 ### pause
@@ -477,4 +501,11 @@ function transferToAssetHandler(address token, uint256 amount) private;
 |`token`|`address`|Address of the ERC20 token.|
 |`amount`|`uint256`|Amount of tokens to transfer.|
 
+
+### revertIfCallingOnRevert
+
+
+```solidity
+function revertIfCallingOnRevert(bytes calldata data) private pure;
+```
 

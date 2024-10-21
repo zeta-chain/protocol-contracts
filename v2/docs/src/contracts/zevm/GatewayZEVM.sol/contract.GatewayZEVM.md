@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7ede96463093bfd534382563222812e5557c84df/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
@@ -34,6 +34,15 @@ New role identifier for pauser role.
 
 ```solidity
 bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+```
+
+
+### MAX_MESSAGE_SIZE
+Max size of message + revertOptions revert message.
+
+
+```solidity
+uint256 public constant MAX_MESSAGE_SIZE = 1024;
 ```
 
 
