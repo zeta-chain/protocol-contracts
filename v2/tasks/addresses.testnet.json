@@ -1,0 +1,9 @@
+[
+  {
+    "address": "ZETAjseVjuFsxdRxo6MmTCvqFwb3ZHUx56Co3vCmGis",
+    "category": "omnichain",
+    "chain_id": 901,
+    "chain_name": "solana_devnet",
+    "type": "gateway"
+  }
+]

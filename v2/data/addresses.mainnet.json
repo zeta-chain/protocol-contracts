@@ -14,25 +14,11 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "messaging",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "pauser"
-  },
-  {
     "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
     "category": "omnichain",
     "chain_id": 1,
     "chain_name": "eth_mainnet",
     "type": "tss"
-  },
-  {
-    "address": "0xaeB6dDB7708467814D557e340283248be8E43124",
-    "category": "omnichain",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "tssUpdater"
   },
   {
     "address": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
@@ -91,25 +77,11 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
-    "category": "messaging",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "pauser"
-  },
-  {
     "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
     "category": "omnichain",
     "chain_id": 56,
     "chain_name": "bsc_mainnet",
     "type": "tss"
-  },
-  {
-    "address": "0xaf28a257D292e7f0E531073f70a175b57E0261a8",
-    "category": "omnichain",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "tssUpdater"
   },
   {
     "address": "0x0000028a2eB8346cd5c0267856aB7594B7a55308",
@@ -133,25 +105,11 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0x7828F92E7d79E141189f24C98aceF71Bc07bad3f",
-    "category": "messaging",
-    "chain_id": 137,
-    "chain_name": "polygon_mainnet",
-    "type": "pauser"
-  },
-  {
     "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
     "category": "omnichain",
     "chain_id": 137,
     "chain_name": "polygon_mainnet",
     "type": "tss"
-  },
-  {
-    "address": "0x7828F92E7d79E141189f24C98aceF71Bc07bad3f",
-    "category": "omnichain",
-    "chain_id": 137,
-    "chain_name": "polygon_mainnet",
-    "type": "tssUpdater"
   },
   {
     "address": "0x2eff750c9D770BaBE6dBe84d05E40e4C65d7938d",
@@ -168,10 +126,10 @@
     "type": "connector"
   },
   {
-    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
+    "address": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
     "type": "fungibleModule"
   },
   {
@@ -182,24 +140,24 @@
     "type": "systemContract"
   },
   {
-    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
+    "address": "0x9fd96203f7b22bCF72d9DCb40ff98302376cE09c",
     "type": "uniswapV2Factory"
   },
   {
-    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
+    "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "type": "uniswapV2Router02"
   },
   {
-    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "category": "omnichain",
     "chain_id": 7000,
     "chain_name": "zeta_mainnet",
+    "address": "0x5F0b1a82749cb4E2278EC87F8BF6B618dC71a8bf",
     "type": "zetaToken"
   },
   {
@@ -239,6 +197,19 @@
     "description": "ZetaChain ZRC20 BTC-btc_mainnet",
     "foreign_chain_id": "8332",
     "symbol": "BTC.BTC",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x1de70f3e971B62A0707dA18100392af14f7fB677",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Base Mainnet ETH",
+    "foreign_chain_id": "8453",
+    "symbol": "ETH.BASE",
     "type": "zrc20"
   },
   {
@@ -307,6 +278,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x96152E6180E085FA57c7708e18AF8F05e37B479D",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDC on BASE",
+    "foreign_chain_id": "8453",
+    "symbol": "USDC.BASE",
+    "type": "zrc20"
+  },
+  {
     "address": "0xADF73ebA3Ebaa7254E859549A44c74eF7cff7501",
     "asset": "",
     "category": "omnichain",
@@ -330,6 +314,19 @@
     "description": "ZetaChain ZRC20 DAI on ETH",
     "foreign_chain_id": "1",
     "symbol": "DAI.ETH",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xD10932EB3616a937bd4a2652c87E9FeBbAce53e5",
+    "asset": "0x0E7779e698052f8fe56C415C3818FCf89de9aC6D",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 ULTI on BNB Chain",
+    "foreign_chain_id": "56",
+    "symbol": "ULTI.BSC",
     "type": "zrc20"
   },
   {
@@ -359,6 +356,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xe573a6e11f8506620F123DBF930222163D46BCB6",
+    "asset": "0x0E7779e698052f8fe56C415C3818FCf89de9aC6D",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 ULTI on Ethereum",
+    "foreign_chain_id": "1",
+    "symbol": "ULTI.ETH",
+    "type": "zrc20"
+  },
+  {
     "address": "0xfC9201f4116aE6b054722E10b98D904829b469c3",
     "asset": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359",
     "category": "omnichain",
@@ -377,5 +387,33 @@
     "chain_id": 8332,
     "chain_name": "btc_mainnet",
     "type": "tss"
+  },
+  {
+    "address": "0xfc6a3d4D373B522B182E8caDd66ECF140a313E2F",
+    "category": "messaging",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "connector"
+  },
+  {
+    "address": "0x53b0705194e686Ba745eF8A80cB1Ef355dE645D0",
+    "category": "omnichain",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "tss"
+  },
+  {
+    "address": "0x7FB8E2aE4A5923BBd8e1513945914b5AB69cdA2a",
+    "category": "messaging",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "zetaToken"
   }
 ]
