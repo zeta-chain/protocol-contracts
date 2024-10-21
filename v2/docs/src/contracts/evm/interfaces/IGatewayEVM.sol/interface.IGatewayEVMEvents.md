@@ -1,5 +1,5 @@
 # IGatewayEVMEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/317e9a168aa19dc31b1217eef2a50dbf71ae4d80/contracts/evm/interfaces/IGatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/interfaces/IGatewayEVM.sol)
 
 Interface for the events emitted by the GatewayEVM contract.
 
@@ -62,6 +62,32 @@ Emitted when a deposit is made.
 
 ```solidity
 event Deposited(
+    address indexed sender,
+    address indexed receiver,
+    uint256 amount,
+    address asset,
+    bytes payload,
+    RevertOptions revertOptions
+);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`sender`|`address`|The address of the sender.|
+|`receiver`|`address`|The address of the receiver.|
+|`amount`|`uint256`|The amount of ETH or tokens deposited.|
+|`asset`|`address`|The address of the ERC20 token (zero address if ETH).|
+|`payload`|`bytes`|The calldata passed with the deposit. No longer used. Kept to maintain compatibility.|
+|`revertOptions`|`RevertOptions`|Revert options.|
+
+### DepositedAndCalled
+Emitted when a deposit and call is made.
+
+
+```solidity
+event DepositedAndCalled(
     address indexed sender,
     address indexed receiver,
     uint256 amount,

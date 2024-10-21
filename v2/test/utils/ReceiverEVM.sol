@@ -81,7 +81,8 @@ contract ReceiverEVM is IReceiverEVMEvents, ReentrancyGuard {
         payable
         returns (bytes memory)
     {
-        emit ReceivedOnCall();
+        emit ReceivedOnCall(messageContext.sender, message);
+        return "";
     }
 
     /// @notice Receives ETH.

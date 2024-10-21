@@ -1,5 +1,5 @@
 # IERC20Custody
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/317e9a168aa19dc31b1217eef2a50dbf71ae4d80/contracts/evm/interfaces/IERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/interfaces/IERC20Custody.sol)
 
 **Inherits:**
 [IERC20CustodyEvents](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20CustodyEvents.md), [IERC20CustodyErrors](/contracts/evm/interfaces/IERC20Custody.sol/interface.IERC20CustodyErrors.md)
@@ -42,12 +42,20 @@ WithdrawAndCall transfers tokens to Gateway and call a contract through the Gate
 
 
 ```solidity
-function withdrawAndCall(address token, address to, uint256 amount, bytes calldata data) external;
+function withdrawAndCall(
+    MessageContext calldata messageContext,
+    address token,
+    address to,
+    uint256 amount,
+    bytes calldata data
+)
+    external;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender.|
 |`token`|`address`|Address of the ERC20 token.|
 |`to`|`address`|Address of the contract to call.|
 |`amount`|`uint256`|Amount of tokens to withdraw.|

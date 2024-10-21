@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import { INotSupportedMethods } from "../../contracts/Errors.sol";
 import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
@@ -23,7 +24,8 @@ contract GatewayEVM is
     UUPSUpgradeable,
     IGatewayEVM,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    INotSupportedMethods
 {
     using SafeERC20 for IERC20;
 
@@ -120,7 +122,7 @@ contract GatewayEVM is
         emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
-    /// @notice Executes an authenticated call to a destination address without ERC20 tokens.
+    /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param messageContext Message context containing sender.
     /// @param destination Address to call.
@@ -139,30 +141,14 @@ contract GatewayEVM is
     {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result;
-        result = _executeAuthenticatedCall(messageContext, destination, data);
-
-        emit Executed(destination, msg.value, data);
-
-        return result;
-    }
-
-    /// @notice Executes an arbitrary call to a destination address without ERC20 tokens.
-    /// @dev This function can only be called by the TSS address and it is payable.
-    /// @param destination Address to call.
-    /// @param data Calldata to pass to the call.
-    /// @return The result of the call.
-    function execute(
-        address destination,
-        bytes calldata data
-    )
-        external
-        payable
-        onlyRole(TSS_ROLE)
-        whenNotPaused
-        returns (bytes memory)
-    {
-        if (destination == address(0)) revert ZeroAddress();
-        bytes memory result = _executeArbitraryCall(destination, data);
+        // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
+        if (messageContext.sender == address(0)) {
+            result = _executeArbitraryCall(destination, data);
+        } else {
+            result = _executeAuthenticatedCall(messageContext, destination, data);
+        }
 
         emit Executed(destination, msg.value, data);
 
@@ -172,11 +158,13 @@ contract GatewayEVM is
     /// @notice Executes a call to a destination contract using ERC20 tokens.
     /// @dev This function can only be called by the custody or connector address.
     ///      It uses the ERC20 allowance system, resetting gateway allowance at the end.
+    /// @param messageContext Message context containing sender.
     /// @param token Address of the ERC20 token.
     /// @param to Address of the contract to call.
     /// @param amount Amount of tokens to transfer.
     /// @param data Calldata to pass to the call.
     function executeWithERC20(
+        MessageContext calldata messageContext,
         address token,
         address to,
         uint256 amount,
@@ -192,7 +180,13 @@ contract GatewayEVM is
         if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
-        _executeArbitraryCall(to, data);
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
+        if (messageContext.sender == address(0)) {
+            _executeArbitraryCall(to, data);
+        } else {
+            _executeAuthenticatedCall(messageContext, to, data);
+        }
 
         // Reset approval
         if (!_resetApproval(token, to)) revert ApprovalFailed();
@@ -303,7 +297,7 @@ contract GatewayEVM is
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposited(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -329,7 +323,7 @@ contract GatewayEVM is
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
@@ -388,13 +382,18 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to transfer.
     function _transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
-            // transfer to connector
-            // transfer amount to gateway
-            IERC20(token).safeTransferFrom(from, address(this), amount);
-            // approve connector to handle tokens depending on connector version (eg. lock or burn)
-            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
-            // send tokens to connector
-            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
+            // TODO: remove error and comment out code once ZETA supported back
+            // https://github.com/zeta-chain/protocol-contracts/issues/394
+            // ZETA token is currently not supported for deposit
+            revert ZETANotSupported();
+
+            // // transfer to connector
+            // // transfer amount to gateway
+            // IERC20(token).safeTransferFrom(from, address(this), amount);
+            // // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            // if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
+            // // send tokens to connector
+            // ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();

@@ -3,6 +3,8 @@
 /* eslint-disable */
 import type * as erc20 from "./ERC20";
 export type { erc20 };
+import type * as errorsSol from "./Errors.sol";
+export type { errorsSol };
 import type * as ierc20CustodySol from "./IERC20Custody.sol";
 export type { ierc20CustodySol };
 import type * as ierc721Sol from "./IERC721.sol";
@@ -123,6 +125,8 @@ export { IERC20__factory } from "./factories/ERC20/IERC20__factory";
 export { ERC20Burnable__factory } from "./factories/ERC20Burnable__factory";
 export { ERC20Custody__factory } from "./factories/ERC20Custody__factory";
 export { ERC20CustodyUpgradeTest__factory } from "./factories/ERC20CustodyUpgradeTest__factory";
+export type { INotSupportedMethods } from "./Errors.sol/INotSupportedMethods";
+export { INotSupportedMethods__factory } from "./factories/Errors.sol/INotSupportedMethods__factory";
 export { GatewayEVM__factory } from "./factories/GatewayEVM__factory";
 export { GatewayEVMUpgradeTest__factory } from "./factories/GatewayEVMUpgradeTest__factory";
 export { GatewayZEVM__factory } from "./factories/GatewayZEVM__factory";

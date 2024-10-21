@@ -155,8 +155,8 @@ export interface TestUniversalContract extends BaseContract {
   onCall: TypedContractMethod<
     [
       context: MessageContextStruct,
-      zrc20: AddressLike,
-      amount: BigNumberish,
+      arg1: AddressLike,
+      arg2: BigNumberish,
       message: BytesLike
     ],
     [void],
@@ -178,8 +178,8 @@ export interface TestUniversalContract extends BaseContract {
   ): TypedContractMethod<
     [
       context: MessageContextStruct,
-      zrc20: AddressLike,
-      amount: BigNumberish,
+      arg1: AddressLike,
+      arg2: BigNumberish,
       message: BytesLike
     ],
     [void],

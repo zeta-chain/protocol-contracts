@@ -1,5 +1,5 @@
 # IGatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/317e9a168aa19dc31b1217eef2a50dbf71ae4d80/contracts/evm/interfaces/IGatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/interfaces/IGatewayEVM.sol)
 
 **Inherits:**
 [IGatewayEVMErrors](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVMErrors.md), [IGatewayEVMEvents](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVMEvents.md)
@@ -14,12 +14,20 @@ Executes a call to a contract using ERC20 tokens.
 
 
 ```solidity
-function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
+function executeWithERC20(
+    MessageContext calldata messageContext,
+    address token,
+    address to,
+    uint256 amount,
+    bytes calldata data
+)
+    external;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender and arbitrary call flag.|
 |`token`|`address`|The address of the ERC20 token.|
 |`to`|`address`|The address of the contract to call.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
@@ -49,28 +57,6 @@ function executeRevert(
 |`destination`|`address`|Address to call.|
 |`data`|`bytes`|Calldata to pass to the call.|
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
-
-
-### execute
-
-Executes a call to a contract.
-
-
-```solidity
-function execute(address destination, bytes calldata data) external payable returns (bytes memory);
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`destination`|`address`|The address of the contract to call.|
-|`data`|`bytes`|The calldata to pass to the contract call.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`<none>`|`bytes`|The result of the contract call.|
 
 
 ### execute

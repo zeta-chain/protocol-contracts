@@ -23,6 +23,10 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -67,7 +71,13 @@ export interface IERC20CustodyInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCall",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
@@ -284,6 +294,7 @@ export interface IERC20Custody extends BaseContract {
 
   withdrawAndCall: TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
@@ -323,6 +334,7 @@ export interface IERC20Custody extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,

@@ -32,9 +32,25 @@ interface IGatewayEVMEvents {
     /// @param receiver The address of the receiver.
     /// @param amount The amount of ETH or tokens deposited.
     /// @param asset The address of the ERC20 token (zero address if ETH).
-    /// @param payload The calldata passed with the deposit.
+    /// @param payload The calldata passed with the deposit. No longer used. Kept to maintain compatibility.
     /// @param revertOptions Revert options.
     event Deposited(
+        address indexed sender,
+        address indexed receiver,
+        uint256 amount,
+        address asset,
+        bytes payload,
+        RevertOptions revertOptions
+    );
+
+    /// @notice Emitted when a deposit and call is made.
+    /// @param sender The address of the sender.
+    /// @param receiver The address of the receiver.
+    /// @param amount The amount of ETH or tokens deposited.
+    /// @param asset The address of the ERC20 token (zero address if ETH).
+    /// @param payload The calldata passed with the deposit.
+    /// @param revertOptions Revert options.
+    event DepositedAndCalled(
         address indexed sender,
         address indexed receiver,
         uint256 amount,
@@ -100,11 +116,19 @@ interface IGatewayEVMErrors {
 /// @notice Interface for the GatewayEVM contract.
 interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @notice Executes a call to a contract using ERC20 tokens.
+    /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param token The address of the ERC20 token.
     /// @param to The address of the contract to call.
     /// @param amount The amount of tokens to transfer.
     /// @param data The calldata to pass to the contract call.
-    function executeWithERC20(address token, address to, uint256 amount, bytes calldata data) external;
+    function executeWithERC20(
+        MessageContext calldata messageContext,
+        address token,
+        address to,
+        uint256 amount,
+        bytes calldata data
+    )
+        external;
 
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
     /// @dev This function can only be called by the TSS address and it is payable.
@@ -118,12 +142,6 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     )
         external
         payable;
-
-    /// @notice Executes a call to a contract.
-    /// @param destination The address of the contract to call.
-    /// @param data The calldata to pass to the contract call.
-    /// @return The result of the contract call.
-    function execute(address destination, bytes calldata data) external payable returns (bytes memory);
 
     /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.

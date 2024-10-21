@@ -23,6 +23,10 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type MessageContextStruct = { sender: AddressLike };
+
+export type MessageContextStructOutput = [sender: string] & { sender: string };
+
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -157,7 +161,13 @@ export interface ZetaConnectorNativeInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndCall",
-    values: [AddressLike, BigNumberish, BytesLike, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      BigNumberish,
+      BytesLike,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawAndRevert",
@@ -542,17 +552,18 @@ export interface ZetaConnectorNative extends BaseContract {
   >;
 
   withdraw: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
+    [to: AddressLike, amount: BigNumberish, arg2: BytesLike],
     [void],
     "nonpayable"
   >;
 
   withdrawAndCall: TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      arg4: BytesLike
     ],
     [void],
     "nonpayable"
@@ -563,7 +574,7 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike,
+      arg3: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],
@@ -671,7 +682,7 @@ export interface ZetaConnectorNative extends BaseContract {
   getFunction(
     nameOrSignature: "withdraw"
   ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
+    [to: AddressLike, amount: BigNumberish, arg2: BytesLike],
     [void],
     "nonpayable"
   >;
@@ -679,10 +690,11 @@ export interface ZetaConnectorNative extends BaseContract {
     nameOrSignature: "withdrawAndCall"
   ): TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike
+      arg4: BytesLike
     ],
     [void],
     "nonpayable"
@@ -694,7 +706,7 @@ export interface ZetaConnectorNative extends BaseContract {
       to: AddressLike,
       amount: BigNumberish,
       data: BytesLike,
-      internalSendHash: BytesLike,
+      arg3: BytesLike,
       revertContext: RevertContextStruct
     ],
     [void],

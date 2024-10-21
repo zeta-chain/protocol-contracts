@@ -1,5 +1,5 @@
 # ZetaConnectorNonNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/317e9a168aa19dc31b1217eef2a50dbf71ae4d80/contracts/evm/ZetaConnectorNonNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/ZetaConnectorNonNative.sol)
 
 **Inherits:**
 [ZetaConnectorBase](/contracts/evm/ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
@@ -89,6 +89,7 @@ Withdraw tokens and call a contract through Gateway.
 
 ```solidity
 function withdrawAndCall(
+    MessageContext calldata messageContext,
     address to,
     uint256 amount,
     bytes calldata data,
@@ -104,6 +105,7 @@ function withdrawAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
+|`messageContext`|`MessageContext`|Message context containing sender.|
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
 |`data`|`bytes`|The calldata to pass to the contract call.|

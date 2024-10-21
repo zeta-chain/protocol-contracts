@@ -71,8 +71,7 @@ export interface IGatewayEVMInterface extends Interface {
       | "deposit(address,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
-      | "execute(address,bytes)"
-      | "execute((address),address,bytes)"
+      | "execute"
       | "executeRevert"
       | "executeWithERC20"
       | "revertWithERC20"
@@ -82,6 +81,7 @@ export interface IGatewayEVMInterface extends Interface {
     nameOrSignatureOrTopic:
       | "Called"
       | "Deposited"
+      | "DepositedAndCalled"
       | "Executed"
       | "ExecutedWithERC20"
       | "Reverted"
@@ -115,11 +115,7 @@ export interface IGatewayEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "execute(address,bytes)",
-    values: [AddressLike, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "execute((address),address,bytes)",
+    functionFragment: "execute",
     values: [MessageContextStruct, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
@@ -128,7 +124,13 @@ export interface IGatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeWithERC20",
-    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
+    values: [
+      MessageContextStruct,
+      AddressLike,
+      AddressLike,
+      BigNumberish,
+      BytesLike
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "revertWithERC20",
@@ -158,14 +160,7 @@ export interface IGatewayEVMInterface extends Interface {
     functionFragment: "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "execute(address,bytes)",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "execute((address),address,bytes)",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
     data: BytesLike
@@ -206,6 +201,37 @@ export namespace CalledEvent {
 }
 
 export namespace DepositedEvent {
+  export type InputTuple = [
+    sender: AddressLike,
+    receiver: AddressLike,
+    amount: BigNumberish,
+    asset: AddressLike,
+    payload: BytesLike,
+    revertOptions: RevertOptionsStruct
+  ];
+  export type OutputTuple = [
+    sender: string,
+    receiver: string,
+    amount: bigint,
+    asset: string,
+    payload: string,
+    revertOptions: RevertOptionsStructOutput
+  ];
+  export interface OutputObject {
+    sender: string;
+    receiver: string;
+    amount: bigint;
+    asset: string;
+    payload: string;
+    revertOptions: RevertOptionsStructOutput;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace DepositedAndCalledEvent {
   export type InputTuple = [
     sender: AddressLike,
     receiver: AddressLike,
@@ -415,13 +441,7 @@ export interface IGatewayEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "execute(address,bytes)": TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
-    [string],
-    "payable"
-  >;
-
-  "execute((address),address,bytes)": TypedContractMethod<
+  execute: TypedContractMethod<
     [
       messageContext: MessageContextStruct,
       destination: AddressLike,
@@ -443,6 +463,7 @@ export interface IGatewayEVM extends BaseContract {
 
   executeWithERC20: TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
@@ -523,14 +544,7 @@ export interface IGatewayEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "execute(address,bytes)"
-  ): TypedContractMethod<
-    [destination: AddressLike, data: BytesLike],
-    [string],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "execute((address),address,bytes)"
+    nameOrSignature: "execute"
   ): TypedContractMethod<
     [
       messageContext: MessageContextStruct,
@@ -555,6 +569,7 @@ export interface IGatewayEVM extends BaseContract {
     nameOrSignature: "executeWithERC20"
   ): TypedContractMethod<
     [
+      messageContext: MessageContextStruct,
       token: AddressLike,
       to: AddressLike,
       amount: BigNumberish,
@@ -590,6 +605,13 @@ export interface IGatewayEVM extends BaseContract {
     DepositedEvent.InputTuple,
     DepositedEvent.OutputTuple,
     DepositedEvent.OutputObject
+  >;
+  getEvent(
+    key: "DepositedAndCalled"
+  ): TypedContractEvent<
+    DepositedAndCalledEvent.InputTuple,
+    DepositedAndCalledEvent.OutputTuple,
+    DepositedAndCalledEvent.OutputObject
   >;
   getEvent(
     key: "Executed"
@@ -641,6 +663,17 @@ export interface IGatewayEVM extends BaseContract {
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
+    >;
+
+    "DepositedAndCalled(address,address,uint256,address,bytes,tuple)": TypedContractEvent<
+      DepositedAndCalledEvent.InputTuple,
+      DepositedAndCalledEvent.OutputTuple,
+      DepositedAndCalledEvent.OutputObject
+    >;
+    DepositedAndCalled: TypedContractEvent<
+      DepositedAndCalledEvent.InputTuple,
+      DepositedAndCalledEvent.OutputTuple,
+      DepositedAndCalledEvent.OutputObject
     >;
 
     "Executed(address,uint256,bytes)": TypedContractEvent<
