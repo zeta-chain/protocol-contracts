@@ -1,5 +1,5 @@
 # ZetaConnectorBase
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/ZetaConnectorBase.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7ede96463093bfd534382563222812e5557c84df/contracts/evm/ZetaConnectorBase.sol)
 
 **Inherits:**
 [IZetaConnectorEvents](/contracts/evm/interfaces/IZetaConnector.sol/interface.IZetaConnectorEvents.md), ReentrancyGuard, Pausable, AccessControl
@@ -25,6 +25,15 @@ The address of the Zeta token.
 
 ```solidity
 address public immutable zetaToken;
+```
+
+
+### tssAddress
+The address of the TSS (Threshold Signature Scheme) contract.
+
+
+```solidity
+address public tssAddress;
 ```
 
 
@@ -66,6 +75,21 @@ Constructor for ZetaConnectors.
 ```solidity
 constructor(address gateway_, address zetaToken_, address tssAddress_, address admin_);
 ```
+
+### updateTSSAddress
+
+Update tss address
+
+
+```solidity
+function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newTSSAddress`|`address`|new tss address|
+
 
 ### pause
 
