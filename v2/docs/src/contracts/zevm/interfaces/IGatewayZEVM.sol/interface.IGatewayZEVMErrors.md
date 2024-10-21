@@ -1,5 +1,5 @@
 # IGatewayZEVMErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/zevm/interfaces/IGatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7ede96463093bfd534382563222812e5557c84df/contracts/zevm/interfaces/IGatewayZEVM.sol)
 
 Interface for the errors used in the GatewayZEVM contract.
 
@@ -93,11 +93,19 @@ Error indicating that only WZETA or the Fungible module can call the function.
 error OnlyWZETAOrFungible();
 ```
 
-### EmptyMessage
-Error indicating call method received empty message as argument.
+### InsufficientGasLimit
+Error indicating an insufficient gas limit.
 
 
 ```solidity
-error EmptyMessage();
+error InsufficientGasLimit();
+```
+
+### MessageSizeExceeded
+Error indicating message size exceeded in external functions.
+
+
+```solidity
+error MessageSizeExceeded();
 ```
 
