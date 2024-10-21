@@ -140,7 +140,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
@@ -178,7 +177,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
@@ -212,7 +210,6 @@ contract GatewayZEVM is
         RevertOptions calldata /*revertOptions*/
     )
         external
-        nonReentrant
         whenNotPaused
     {
         // TODO: remove error and comment out code once ZETA supported back
@@ -255,7 +252,6 @@ contract GatewayZEVM is
         RevertOptions calldata /*revertOptions*/
     )
         external
-        nonReentrant
         whenNotPaused
     {
         // TODO: remove error and comment out code once ZETA supported back
@@ -288,7 +284,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
@@ -345,6 +340,7 @@ contract GatewayZEVM is
         external
         onlyProtocol
         whenNotPaused
+        nonReentrant
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
 
@@ -367,6 +363,7 @@ contract GatewayZEVM is
         external
         onlyProtocol
         whenNotPaused
+        nonReentrant
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
@@ -390,6 +387,7 @@ contract GatewayZEVM is
         external
         onlyProtocol
         whenNotPaused
+        nonReentrant
     {
         if (target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
@@ -402,7 +400,7 @@ contract GatewayZEVM is
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
     /// @param revertContext Revert context to pass to onRevert.
-    function executeRevert(address target, RevertContext calldata revertContext) external onlyProtocol whenNotPaused {
+    function executeRevert(address target, RevertContext calldata revertContext) external onlyProtocol whenNotPaused nonReentrant {
         if (target == address(0)) revert ZeroAddress();
 
         Revertable(target).onRevert(revertContext);
@@ -422,6 +420,7 @@ contract GatewayZEVM is
         external
         onlyProtocol
         whenNotPaused
+        nonReentrant
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();

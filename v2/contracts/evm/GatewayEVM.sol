@@ -137,6 +137,7 @@ contract GatewayEVM is
         payable
         onlyRole(TSS_ROLE)
         whenNotPaused
+        nonReentrant
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
@@ -173,6 +174,7 @@ contract GatewayEVM is
         public
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
+        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -238,7 +240,6 @@ contract GatewayEVM is
         external
         payable
         whenNotPaused
-        nonReentrant
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -264,7 +265,6 @@ contract GatewayEVM is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -287,7 +287,6 @@ contract GatewayEVM is
         external
         payable
         whenNotPaused
-        nonReentrant
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -315,7 +314,6 @@ contract GatewayEVM is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -337,7 +335,6 @@ contract GatewayEVM is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
