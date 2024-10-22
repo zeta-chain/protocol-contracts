@@ -32,13 +32,13 @@ var (
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Asset         common.Address
-	Amount        *big.Int
+	Amount        uint64
 	RevertMessage []byte
 }
 
 // IZetaConnectorEventsMetaData contains all meta data concerning the IZetaConnectorEvents contract.
 var IZetaConnectorEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"UpdatedZetaConnectorTSSAddress\",\"inputs\":[{\"name\":\"newTSSAddress\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawn\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawnAndCalled\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawnAndReverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"UpdatedZetaConnectorTSSAddress\",\"inputs\":[{\"name\":\"oldTSSAddress\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"newTSSAddress\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Withdrawn\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawnAndCalled\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WithdrawnAndReverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false}]",
 }
 
 // IZetaConnectorEventsABI is the input ABI used to generate the binding from.
@@ -256,13 +256,14 @@ func (it *IZetaConnectorEventsUpdatedZetaConnectorTSSAddressIterator) Close() er
 
 // IZetaConnectorEventsUpdatedZetaConnectorTSSAddress represents a UpdatedZetaConnectorTSSAddress event raised by the IZetaConnectorEvents contract.
 type IZetaConnectorEventsUpdatedZetaConnectorTSSAddress struct {
+	OldTSSAddress common.Address
 	NewTSSAddress common.Address
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterUpdatedZetaConnectorTSSAddress is a free log retrieval operation binding the contract event 0xa38189053f94a2657ffb2b9fc651eddd1606a7cefc9f08d30eb72e3dbb51c1f1.
+// FilterUpdatedZetaConnectorTSSAddress is a free log retrieval operation binding the contract event 0x33770ab682353c17917ad3e667f05905fc8dda00671ef1ed33bef9bc8db0323e.
 //
-// Solidity: event UpdatedZetaConnectorTSSAddress(address newTSSAddress)
+// Solidity: event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterUpdatedZetaConnectorTSSAddress(opts *bind.FilterOpts) (*IZetaConnectorEventsUpdatedZetaConnectorTSSAddressIterator, error) {
 
 	logs, sub, err := _IZetaConnectorEvents.contract.FilterLogs(opts, "UpdatedZetaConnectorTSSAddress")
@@ -272,9 +273,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterUpdatedZetaConn
 	return &IZetaConnectorEventsUpdatedZetaConnectorTSSAddressIterator{contract: _IZetaConnectorEvents.contract, event: "UpdatedZetaConnectorTSSAddress", logs: logs, sub: sub}, nil
 }
 
-// WatchUpdatedZetaConnectorTSSAddress is a free log subscription operation binding the contract event 0xa38189053f94a2657ffb2b9fc651eddd1606a7cefc9f08d30eb72e3dbb51c1f1.
+// WatchUpdatedZetaConnectorTSSAddress is a free log subscription operation binding the contract event 0x33770ab682353c17917ad3e667f05905fc8dda00671ef1ed33bef9bc8db0323e.
 //
-// Solidity: event UpdatedZetaConnectorTSSAddress(address newTSSAddress)
+// Solidity: event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchUpdatedZetaConnectorTSSAddress(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsUpdatedZetaConnectorTSSAddress) (event.Subscription, error) {
 
 	logs, sub, err := _IZetaConnectorEvents.contract.WatchLogs(opts, "UpdatedZetaConnectorTSSAddress")
@@ -309,9 +310,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchUpdatedZetaConne
 	}), nil
 }
 
-// ParseUpdatedZetaConnectorTSSAddress is a log parse operation binding the contract event 0xa38189053f94a2657ffb2b9fc651eddd1606a7cefc9f08d30eb72e3dbb51c1f1.
+// ParseUpdatedZetaConnectorTSSAddress is a log parse operation binding the contract event 0x33770ab682353c17917ad3e667f05905fc8dda00671ef1ed33bef9bc8db0323e.
 //
-// Solidity: event UpdatedZetaConnectorTSSAddress(address newTSSAddress)
+// Solidity: event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseUpdatedZetaConnectorTSSAddress(log types.Log) (*IZetaConnectorEventsUpdatedZetaConnectorTSSAddress, error) {
 	event := new(IZetaConnectorEventsUpdatedZetaConnectorTSSAddress)
 	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "UpdatedZetaConnectorTSSAddress", log); err != nil {
@@ -688,9 +689,9 @@ type IZetaConnectorEventsWithdrawnAndReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x56a2fc827d20ff3b62f19b9302a7b18e4c8a011918713faaa6dab6dd0cfd2dac.
+// FilterWithdrawnAndReverted is a free log retrieval operation binding the contract event 0x52d8cccccf212da1f2b87140143958eb3bbf8a92e3833c50a8bf8a719a0da44c.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,uint256,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawnAndReverted(opts *bind.FilterOpts, to []common.Address) (*IZetaConnectorEventsWithdrawnAndRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -705,9 +706,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) FilterWithdrawnAndRev
 	return &IZetaConnectorEventsWithdrawnAndRevertedIterator{contract: _IZetaConnectorEvents.contract, event: "WithdrawnAndReverted", logs: logs, sub: sub}, nil
 }
 
-// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x56a2fc827d20ff3b62f19b9302a7b18e4c8a011918713faaa6dab6dd0cfd2dac.
+// WatchWithdrawnAndReverted is a free log subscription operation binding the contract event 0x52d8cccccf212da1f2b87140143958eb3bbf8a92e3833c50a8bf8a719a0da44c.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,uint256,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawnAndReverted(opts *bind.WatchOpts, sink chan<- *IZetaConnectorEventsWithdrawnAndReverted, to []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -747,9 +748,9 @@ func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) WatchWithdrawnAndReve
 	}), nil
 }
 
-// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x56a2fc827d20ff3b62f19b9302a7b18e4c8a011918713faaa6dab6dd0cfd2dac.
+// ParseWithdrawnAndReverted is a log parse operation binding the contract event 0x52d8cccccf212da1f2b87140143958eb3bbf8a92e3833c50a8bf8a719a0da44c.
 //
-// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,uint256,bytes) revertContext)
+// Solidity: event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IZetaConnectorEvents *IZetaConnectorEventsFilterer) ParseWithdrawnAndReverted(log types.Log) (*IZetaConnectorEventsWithdrawnAndReverted, error) {
 	event := new(IZetaConnectorEventsWithdrawnAndReverted)
 	if err := _IZetaConnectorEvents.contract.UnpackLog(event, "WithdrawnAndReverted", log); err != nil {

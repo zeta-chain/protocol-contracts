@@ -180,7 +180,7 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function execute(
-        zContext calldata context,
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -195,7 +195,7 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
-        zContext calldata context,
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -209,7 +209,7 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
-        zContext calldata context,
+        MessageContext calldata context,
         uint256 amount,
         address target,
         bytes calldata message

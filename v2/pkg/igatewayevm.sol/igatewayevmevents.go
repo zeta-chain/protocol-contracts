@@ -32,7 +32,7 @@ var (
 // RevertContext is an auto generated low-level Go binding around an user-defined struct.
 type RevertContext struct {
 	Asset         common.Address
-	Amount        *big.Int
+	Amount        uint64
 	RevertMessage []byte
 }
 
@@ -47,7 +47,7 @@ type RevertOptions struct {
 
 // IGatewayEVMEventsMetaData contains all meta data concerning the IGatewayEVMEvents contract.
 var IGatewayEVMEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"onRevertGasLimit\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposited\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"onRevertGasLimit\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"UpdatedGatewayTSSAddress\",\"inputs\":[{\"name\":\"newTSSAddress\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"Called\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"onRevertGasLimit\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Deposited\",\"inputs\":[{\"name\":\"sender\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"receiver\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"asset\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"payload\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertOptions\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertOptions\",\"components\":[{\"name\":\"revertAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"callOnRevert\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"abortAddress\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"onRevertGasLimit\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Executed\",\"inputs\":[{\"name\":\"destination\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ExecutedWithERC20\",\"inputs\":[{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Reverted\",\"inputs\":[{\"name\":\"to\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"token\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"revertContext\",\"type\":\"tuple\",\"indexed\":false,\"internalType\":\"structRevertContext\",\"components\":[{\"name\":\"asset\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint64\",\"internalType\":\"uint64\"},{\"name\":\"revertMessage\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"UpdatedGatewayTSSAddress\",\"inputs\":[{\"name\":\"oldTSSAddress\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"newTSSAddress\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"}],\"anonymous\":false}]",
 }
 
 // IGatewayEVMEventsABI is the input ABI used to generate the binding from.
@@ -886,9 +886,9 @@ type IGatewayEVMEventsReverted struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterReverted is a free log retrieval operation binding the contract event 0xbe86105e00a37d2c98cbeef14dfc05db548ded5316da916a011fdf24c79fec2c.
+// FilterReverted is a free log retrieval operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint256,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterReverted(opts *bind.FilterOpts, to []common.Address, token []common.Address) (*IGatewayEVMEventsRevertedIterator, error) {
 
 	var toRule []interface{}
@@ -907,9 +907,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterReverted(opts *bind.F
 	return &IGatewayEVMEventsRevertedIterator{contract: _IGatewayEVMEvents.contract, event: "Reverted", logs: logs, sub: sub}, nil
 }
 
-// WatchReverted is a free log subscription operation binding the contract event 0xbe86105e00a37d2c98cbeef14dfc05db548ded5316da916a011fdf24c79fec2c.
+// WatchReverted is a free log subscription operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint256,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchReverted(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsReverted, to []common.Address, token []common.Address) (event.Subscription, error) {
 
 	var toRule []interface{}
@@ -953,9 +953,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchReverted(opts *bind.Wa
 	}), nil
 }
 
-// ParseReverted is a log parse operation binding the contract event 0xbe86105e00a37d2c98cbeef14dfc05db548ded5316da916a011fdf24c79fec2c.
+// ParseReverted is a log parse operation binding the contract event 0x1647880d5adf27692c774debf932b888ba15381ed4c4115a9eafeb68080b1436.
 //
-// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint256,bytes) revertContext)
+// Solidity: event Reverted(address indexed to, address indexed token, uint256 amount, bytes data, (address,uint64,bytes) revertContext)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseReverted(log types.Log) (*IGatewayEVMEventsReverted, error) {
 	event := new(IGatewayEVMEventsReverted)
 	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "Reverted", log); err != nil {
@@ -1034,13 +1034,14 @@ func (it *IGatewayEVMEventsUpdatedGatewayTSSAddressIterator) Close() error {
 
 // IGatewayEVMEventsUpdatedGatewayTSSAddress represents a UpdatedGatewayTSSAddress event raised by the IGatewayEVMEvents contract.
 type IGatewayEVMEventsUpdatedGatewayTSSAddress struct {
+	OldTSSAddress common.Address
 	NewTSSAddress common.Address
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterUpdatedGatewayTSSAddress is a free log retrieval operation binding the contract event 0x7598d084f3a8d9a71847119f6fdb694046bc0aaab0dee775c33c1df9be089a05.
+// FilterUpdatedGatewayTSSAddress is a free log retrieval operation binding the contract event 0x3a7b8d6372645f474fe60c115a2ef21421306a3ed4664fa0023c461413c08579.
 //
-// Solidity: event UpdatedGatewayTSSAddress(address newTSSAddress)
+// Solidity: event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterUpdatedGatewayTSSAddress(opts *bind.FilterOpts) (*IGatewayEVMEventsUpdatedGatewayTSSAddressIterator, error) {
 
 	logs, sub, err := _IGatewayEVMEvents.contract.FilterLogs(opts, "UpdatedGatewayTSSAddress")
@@ -1050,9 +1051,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) FilterUpdatedGatewayTSSAddr
 	return &IGatewayEVMEventsUpdatedGatewayTSSAddressIterator{contract: _IGatewayEVMEvents.contract, event: "UpdatedGatewayTSSAddress", logs: logs, sub: sub}, nil
 }
 
-// WatchUpdatedGatewayTSSAddress is a free log subscription operation binding the contract event 0x7598d084f3a8d9a71847119f6fdb694046bc0aaab0dee775c33c1df9be089a05.
+// WatchUpdatedGatewayTSSAddress is a free log subscription operation binding the contract event 0x3a7b8d6372645f474fe60c115a2ef21421306a3ed4664fa0023c461413c08579.
 //
-// Solidity: event UpdatedGatewayTSSAddress(address newTSSAddress)
+// Solidity: event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchUpdatedGatewayTSSAddress(opts *bind.WatchOpts, sink chan<- *IGatewayEVMEventsUpdatedGatewayTSSAddress) (event.Subscription, error) {
 
 	logs, sub, err := _IGatewayEVMEvents.contract.WatchLogs(opts, "UpdatedGatewayTSSAddress")
@@ -1087,9 +1088,9 @@ func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) WatchUpdatedGatewayTSSAddre
 	}), nil
 }
 
-// ParseUpdatedGatewayTSSAddress is a log parse operation binding the contract event 0x7598d084f3a8d9a71847119f6fdb694046bc0aaab0dee775c33c1df9be089a05.
+// ParseUpdatedGatewayTSSAddress is a log parse operation binding the contract event 0x3a7b8d6372645f474fe60c115a2ef21421306a3ed4664fa0023c461413c08579.
 //
-// Solidity: event UpdatedGatewayTSSAddress(address newTSSAddress)
+// Solidity: event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress)
 func (_IGatewayEVMEvents *IGatewayEVMEventsFilterer) ParseUpdatedGatewayTSSAddress(log types.Log) (*IGatewayEVMEventsUpdatedGatewayTSSAddress, error) {
 	event := new(IGatewayEVMEventsUpdatedGatewayTSSAddress)
 	if err := _IGatewayEVMEvents.contract.UnpackLog(event, "UpdatedGatewayTSSAddress", log); err != nil {

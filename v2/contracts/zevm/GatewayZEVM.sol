@@ -3,10 +3,10 @@ pragma solidity 0.8.26;
 
 import { IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
-import { RevertContext, RevertOptions } from "../../contracts/Revert.sol";
+import { INotSupportedMethods, RevertContext, RevertOptions } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
-import { UniversalContract, zContext } from "./interfaces/UniversalContract.sol";
+import { MessageContext, UniversalContract } from "./interfaces/UniversalContract.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -23,7 +23,8 @@ contract GatewayZEVM is
     AccessControlUpgradeable,
     UUPSUpgradeable,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    INotSupportedMethods
 {
     /// @notice Error indicating a zero address was provided.
     error ZeroAddress();
@@ -87,21 +88,21 @@ contract GatewayZEVM is
         _unpause();
     }
 
-    /// @dev Internal function to withdraw ZRC20 tokens.
+    /// @dev Private function to withdraw ZRC20 tokens.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @return The gas fee for the withdrawal.
-    function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256) {
+    function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256) {
         // Use gas limit from zrc20
         return _withdrawZRC20WithGasLimit(amount, zrc20, IZRC20(zrc20).GAS_LIMIT());
     }
 
-    /// @dev Internal function to withdraw ZRC20 tokens with gas limit.
+    /// @dev Private function to withdraw ZRC20 tokens with gas limit.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param gasLimit Gas limit.
     /// @return The gas fee for the withdrawal.
-    function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256) {
+    function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
@@ -116,10 +117,10 @@ contract GatewayZEVM is
         return gasFee;
     }
 
-    /// @dev Internal function to transfer ZETA tokens.
+    /// @dev Private function to transfer ZETA tokens.
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
-    function _transferZETA(uint256 amount, address to) internal {
+    function _transferZETA(uint256 amount, address to) private {
         if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
         IWETH9(zetaToken).withdraw(amount);
         (bool sent,) = to.call{ value: amount }("");
@@ -141,8 +142,10 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
+        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
@@ -178,6 +181,7 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (gasLimit == 0) revert InsufficientGasLimit();
@@ -212,8 +216,11 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        revert ZETANotSupported();
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
+        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, "", 0, revertOptions);
@@ -236,9 +243,11 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        revert ZETANotSupported();
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         _transferZETA(amount, FUNGIBLE_MODULE_ADDRESS);
         emit Withdrawn(msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, 0, revertOptions);
@@ -261,9 +270,10 @@ contract GatewayZEVM is
         nonReentrant
         whenNotPaused
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver.length == 0) revert ZeroAddress();
         if (gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length >= MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, gasFee)) {
@@ -293,7 +303,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function execute(
-        zContext calldata context,
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -305,7 +315,7 @@ contract GatewayZEVM is
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
 
-        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
     /// @notice Deposit foreign coins into ZRC20 and call a user-specified contract on ZEVM.
@@ -315,7 +325,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
-        zContext calldata context,
+        MessageContext calldata context,
         address zrc20,
         uint256 amount,
         address target,
@@ -330,7 +340,7 @@ contract GatewayZEVM is
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
-        UniversalContract(target).onCrossChainCall(context, zrc20, amount, message);
+        UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
     /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
@@ -339,7 +349,7 @@ contract GatewayZEVM is
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
-        zContext calldata context,
+        MessageContext calldata context,
         uint256 amount,
         address target,
         bytes calldata message
@@ -353,7 +363,7 @@ contract GatewayZEVM is
         if (target == FUNGIBLE_MODULE_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
-        UniversalContract(target).onCrossChainCall(context, zetaToken, amount, message);
+        UniversalContract(target).onCall(context, zetaToken, amount, message);
     }
 
     /// @notice Revert a user-specified contract on ZEVM.

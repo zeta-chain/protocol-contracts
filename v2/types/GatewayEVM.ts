@@ -562,9 +562,13 @@ export namespace UnpausedEvent {
 }
 
 export namespace UpdatedGatewayTSSAddressEvent {
-  export type InputTuple = [newTSSAddress: AddressLike];
-  export type OutputTuple = [newTSSAddress: string];
+  export type InputTuple = [
+    oldTSSAddress: AddressLike,
+    newTSSAddress: AddressLike
+  ];
+  export type OutputTuple = [oldTSSAddress: string, newTSSAddress: string];
   export interface OutputObject {
+    oldTSSAddress: string;
     newTSSAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -1221,7 +1225,7 @@ export interface GatewayEVM extends BaseContract {
       UnpausedEvent.OutputObject
     >;
 
-    "UpdatedGatewayTSSAddress(address)": TypedContractEvent<
+    "UpdatedGatewayTSSAddress(address,address)": TypedContractEvent<
       UpdatedGatewayTSSAddressEvent.InputTuple,
       UpdatedGatewayTSSAddressEvent.OutputTuple,
       UpdatedGatewayTSSAddressEvent.OutputObject

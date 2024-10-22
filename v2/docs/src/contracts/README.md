@@ -6,3 +6,4 @@
 - [RevertOptions](Revert.sol/struct.RevertOptions.md)
 - [RevertContext](Revert.sol/struct.RevertContext.md)
 - [Revertable](Revert.sol/interface.Revertable.md)
+- [INotSupportedMethods](Revert.sol/interface.INotSupportedMethods.md)

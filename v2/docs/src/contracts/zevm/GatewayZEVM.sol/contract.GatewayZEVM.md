@@ -1,8 +1,8 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7ede96463093bfd534382563222812e5557c84df/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
-[IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable
+[IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Revert.sol/interface.INotSupportedMethods.md)
 
 The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
 
@@ -57,6 +57,9 @@ modifier onlyFungible();
 ```
 
 ### constructor
+
+**Note:**
+constructor
 
 
 ```solidity
@@ -118,11 +121,11 @@ function unpause() external onlyRole(PAUSER_ROLE);
 
 ### _withdrawZRC20
 
-*Internal function to withdraw ZRC20 tokens.*
+*Private function to withdraw ZRC20 tokens.*
 
 
 ```solidity
-function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256);
+function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256);
 ```
 **Parameters**
 
@@ -140,11 +143,11 @@ function _withdrawZRC20(uint256 amount, address zrc20) internal returns (uint256
 
 ### _withdrawZRC20WithGasLimit
 
-*Internal function to withdraw ZRC20 tokens with gas limit.*
+*Private function to withdraw ZRC20 tokens with gas limit.*
 
 
 ```solidity
-function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) internal returns (uint256);
+function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256);
 ```
 **Parameters**
 
@@ -163,11 +166,11 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 
 ### _transferZETA
 
-*Internal function to transfer ZETA tokens.*
+*Private function to transfer ZETA tokens.*
 
 
 ```solidity
-function _transferZETA(uint256 amount, address to) internal;
+function _transferZETA(uint256 amount, address to) private;
 ```
 **Parameters**
 
@@ -339,7 +342,7 @@ Execute a user-specified contract on ZEVM.
 
 ```solidity
 function execute(
-    zContext calldata context,
+    MessageContext calldata context,
     address zrc20,
     uint256 amount,
     address target,
@@ -353,7 +356,7 @@ function execute(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
@@ -367,7 +370,7 @@ Deposit foreign coins into ZRC20 and call a user-specified contract on ZEVM.
 
 ```solidity
 function depositAndCall(
-    zContext calldata context,
+    MessageContext calldata context,
     address zrc20,
     uint256 amount,
     address target,
@@ -381,7 +384,7 @@ function depositAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
@@ -395,7 +398,7 @@ Deposit ZETA and call a user-specified contract on ZEVM.
 
 ```solidity
 function depositAndCall(
-    zContext calldata context,
+    MessageContext calldata context,
     uint256 amount,
     address target,
     bytes calldata message
@@ -408,7 +411,7 @@ function depositAndCall(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`context`|`zContext`|The context of the cross-chain call.|
+|`context`|`MessageContext`|The context of the cross-chain call.|
 |`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
 |`message`|`bytes`|The calldata to pass to the contract call.|

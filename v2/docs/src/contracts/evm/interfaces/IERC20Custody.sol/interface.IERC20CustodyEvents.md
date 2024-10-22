@@ -1,5 +1,5 @@
 # IERC20CustodyEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/7ede96463093bfd534382563222812e5557c84df/contracts/evm/interfaces/IERC20Custody.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/evm/interfaces/IERC20Custody.sol)
 
 Interface for the events emitted by the ERC20 custody contract.
 
@@ -99,12 +99,13 @@ Emitted when tss address is updated
 
 
 ```solidity
-event UpdatedCustodyTSSAddress(address newTSSAddress);
+event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
 ```
 
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
 

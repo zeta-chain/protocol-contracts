@@ -11,12 +11,12 @@ import type {
 const _abi = [
   {
     type: "function",
-    name: "onCrossChainCall",
+    name: "onCall",
     inputs: [
       {
         name: "context",
         type: "tuple",
-        internalType: "struct zContext",
+        internalType: "struct MessageContext",
         components: [
           {
             name: "origin",
@@ -70,8 +70,8 @@ const _abi = [
           },
           {
             name: "amount",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
           {
             name: "revertMessage",
