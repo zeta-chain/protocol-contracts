@@ -8,7 +8,7 @@ import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy
 contract DeployGatewayZEVM is Script {
     function run() external {
         address admin = vm.envAddress("GATEWAY_ADMIN_ADDRESS_ZEVM");
-        address zeta = vm.envAddress("ZETA_TOKEN");
+        address zeta = vm.envAddress("WZETA");
 
         address expectedImplAddress;
         address expectedProxyAddress;
