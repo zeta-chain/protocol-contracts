@@ -1,5 +1,5 @@
 # ZetaConnectorNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/ZetaConnectorNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/evm/ZetaConnectorNative.sol)
 
 **Inherits:**
 [ZetaConnectorBase](/contracts/evm/ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
@@ -10,17 +10,19 @@ Implementation of ZetaConnectorBase for native token handling.
 
 
 ## Functions
-### constructor
+### initialize
 
 
 ```solidity
-constructor(
+function initialize(
     address gateway_,
     address zetaToken_,
     address tssAddress_,
     address admin_
 )
-    ZetaConnectorBase(gateway_, zetaToken_, tssAddress_, admin_);
+    public
+    override
+    initializer;
 ```
 
 ### withdraw

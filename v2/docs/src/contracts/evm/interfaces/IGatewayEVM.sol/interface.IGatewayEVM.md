@@ -1,5 +1,5 @@
 # IGatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/interfaces/IGatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/evm/interfaces/IGatewayEVM.sol)
 
 **Inherits:**
 [IGatewayEVMErrors](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVMErrors.md), [IGatewayEVMEvents](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVMEvents.md)

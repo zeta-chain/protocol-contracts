@@ -1,5 +1,9 @@
 # zContract
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/zevm/interfaces/UniversalContract.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/zevm/interfaces/UniversalContract.sol)
+
+**Note:**
+should be removed once v2 SystemContract is not used anymore.
+UniversalContract should be used
 
 
 ## Functions

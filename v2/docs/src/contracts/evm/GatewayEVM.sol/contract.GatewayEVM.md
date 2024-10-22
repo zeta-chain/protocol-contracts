@@ -1,8 +1,8 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
-Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable
+Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Revert.sol/interface.INotSupportedMethods.md)
 
 The GatewayEVM contract is the endpoint to call smart contracts on external chains.
 
@@ -73,8 +73,20 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
+### MAX_PAYLOAD_SIZE
+Max size of payload + revertOptions revert message.
+
+
+```solidity
+uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+```
+
+
 ## Functions
 ### constructor
+
+**Note:**
+constructor
 
 
 ```solidity
@@ -127,6 +139,21 @@ function _execute(address destination, bytes calldata data) internal returns (by
 |Name|Type|Description|
 |----|----|-----------|
 |`<none>`|`bytes`|The result of the call.|
+
+
+### updateTSSAddress
+
+Update tss address
+
+
+```solidity
+function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newTSSAddress`|`address`|new tss address|
 
 
 ### pause
@@ -418,14 +445,14 @@ function setConnector(address zetaConnector_) external onlyRole(DEFAULT_ADMIN_RO
 |`zetaConnector_`|`address`|Address of the connector contract.|
 
 
-### resetApproval
+### _resetApproval
 
 *Resets the approval of a token for a specified address.
 This is used to ensure that the approval is set to zero before setting it to a new value.*
 
 
 ```solidity
-function resetApproval(address token, address to) private returns (bool);
+function _resetApproval(address token, address to) private returns (bool);
 ```
 **Parameters**
 
@@ -441,7 +468,7 @@ function resetApproval(address token, address to) private returns (bool);
 |`<none>`|`bool`|True if the approval reset was successful, false otherwise.|
 
 
-### transferFromToAssetHandler
+### _transferFromToAssetHandler
 
 *Transfers tokens from the sender to the asset handler.
 This function handles the transfer of tokens to either the connector or custody contract based on the asset
@@ -449,7 +476,7 @@ type.*
 
 
 ```solidity
-function transferFromToAssetHandler(address from, address token, uint256 amount) private;
+function _transferFromToAssetHandler(address from, address token, uint256 amount) private;
 ```
 **Parameters**
 
@@ -460,7 +487,7 @@ function transferFromToAssetHandler(address from, address token, uint256 amount)
 |`amount`|`uint256`|Amount of tokens to transfer.|
 
 
-### transferToAssetHandler
+### _transferToAssetHandler
 
 *Transfers tokens to the asset handler.
 This function handles the transfer of tokens to either the connector or custody contract based on the asset
@@ -468,7 +495,7 @@ type.*
 
 
 ```solidity
-function transferToAssetHandler(address token, uint256 amount) private;
+function _transferToAssetHandler(address token, uint256 amount) private;
 ```
 **Parameters**
 
@@ -477,4 +504,11 @@ function transferToAssetHandler(address token, uint256 amount) private;
 |`token`|`address`|Address of the ERC20 token.|
 |`amount`|`uint256`|Amount of tokens to transfer.|
 
+
+### _revertIfCallingOnRevert
+
+
+```solidity
+function _revertIfCallingOnRevert(bytes calldata data) private pure;
+```
 

@@ -1,13 +1,13 @@
 # UniversalContract
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/zevm/interfaces/UniversalContract.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/zevm/interfaces/UniversalContract.sol)
 
 
 ## Functions
-### onCrossChainCall
+### onCall
 
 
 ```solidity
-function onCrossChainCall(zContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
+function onCall(MessageContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
 ```
 
 ### onRevert

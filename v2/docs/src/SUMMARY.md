@@ -29,6 +29,7 @@
       - [CoinType](contracts/zevm/interfaces/IZRC20.sol/enum.CoinType.md)
       - [zContext](contracts/zevm/interfaces/UniversalContract.sol/struct.zContext.md)
       - [zContract](contracts/zevm/interfaces/UniversalContract.sol/interface.zContract.md)
+      - [MessageContext](contracts/zevm/interfaces/UniversalContract.sol/struct.MessageContext.md)
       - [UniversalContract](contracts/zevm/interfaces/UniversalContract.sol/interface.UniversalContract.md)
     - [GatewayZEVM](contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md)
     - [ZRC20Errors](contracts/zevm/ZRC20.sol/interface.ZRC20Errors.md)
@@ -36,3 +37,4 @@
   - [RevertOptions](contracts/Revert.sol/struct.RevertOptions.md)
   - [RevertContext](contracts/Revert.sol/struct.RevertContext.md)
   - [Revertable](contracts/Revert.sol/interface.Revertable.md)
+  - [INotSupportedMethods](contracts/Revert.sol/interface.INotSupportedMethods.md)

@@ -1,5 +1,5 @@
 # IZetaConnectorEvents
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/e9e111d59a014252dbe61290a7e2992479a0a46d/contracts/evm/interfaces/IZetaConnector.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/evm/interfaces/IZetaConnector.sol)
 
 Interface for the events emitted by the ZetaConnector contracts.
 
@@ -52,4 +52,19 @@ event WithdrawnAndReverted(address indexed to, uint256 amount, bytes data, Rever
 |`amount`|`uint256`|The amount of tokens withdrawn.|
 |`data`|`bytes`|The calldata passed to the contract call.|
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
+
+### UpdatedZetaConnectorTSSAddress
+Emitted when tss address is updated
+
+
+```solidity
+event UpdatedZetaConnectorTSSAddress(address oldTSSAddress, address newTSSAddress);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`oldTSSAddress`|`address`|old tss address|
+|`newTSSAddress`|`address`|new tss address|
 
