@@ -139,7 +139,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
@@ -178,7 +177,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
@@ -213,7 +211,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         revert ZETANotSupported();
@@ -240,7 +237,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         revert ZETANotSupported();
@@ -267,7 +263,6 @@ contract GatewayZEVM is
         RevertOptions calldata revertOptions
     )
         external
-        nonReentrant
         whenNotPaused
     {
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
@@ -310,6 +305,7 @@ contract GatewayZEVM is
         bytes calldata message
     )
         external
+        nonReentrant
         onlyFungible
         whenNotPaused
     {
@@ -332,6 +328,7 @@ contract GatewayZEVM is
         bytes calldata message
     )
         external
+        nonReentrant
         onlyFungible
         whenNotPaused
     {
@@ -355,6 +352,7 @@ contract GatewayZEVM is
         bytes calldata message
     )
         external
+        nonReentrant
         onlyFungible
         whenNotPaused
     {
@@ -369,7 +367,15 @@ contract GatewayZEVM is
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
     /// @param revertContext Revert context to pass to onRevert.
-    function executeRevert(address target, RevertContext calldata revertContext) external onlyFungible whenNotPaused {
+    function executeRevert(
+        address target,
+        RevertContext calldata revertContext
+    )
+        external
+        nonReentrant
+        onlyFungible
+        whenNotPaused
+    {
         if (target == address(0)) revert ZeroAddress();
 
         UniversalContract(target).onRevert(revertContext);
@@ -387,6 +393,7 @@ contract GatewayZEVM is
         RevertContext calldata revertContext
     )
         external
+        nonReentrant
         onlyFungible
         whenNotPaused
     {
