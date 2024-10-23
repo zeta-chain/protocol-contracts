@@ -233,14 +233,7 @@ contract GatewayEVM is
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
     /// @param revertOptions Revert options.
-    function deposit(
-        address receiver,
-        RevertOptions calldata revertOptions
-    )
-        external
-        payable
-        whenNotPaused
-    {
+    function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
         if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
