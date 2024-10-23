@@ -164,9 +164,9 @@ function executeRevert(
 )
     public
     payable
+    nonReentrant
     onlyRole(TSS_ROLE)
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -192,9 +192,9 @@ function execute(
 )
     external
     payable
+    nonReentrant
     onlyRole(TSS_ROLE)
     whenNotPaused
-    nonReentrant
     returns (bytes memory);
 ```
 **Parameters**
@@ -229,9 +229,9 @@ function executeWithERC20(
     bytes calldata data
 )
     public
+    nonReentrant
     onlyRole(ASSET_HANDLER_ROLE)
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -260,9 +260,9 @@ function revertWithERC20(
     RevertContext calldata revertContext
 )
     external
+    nonReentrant
     onlyRole(ASSET_HANDLER_ROLE)
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -281,7 +281,7 @@ Deposits ETH to the TSS address.
 
 
 ```solidity
-function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused nonReentrant;
+function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused;
 ```
 **Parameters**
 
@@ -304,8 +304,7 @@ function deposit(
     RevertOptions calldata revertOptions
 )
     external
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -330,8 +329,7 @@ function depositAndCall(
 )
     external
     payable
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -356,8 +354,7 @@ function depositAndCall(
     RevertOptions calldata revertOptions
 )
     external
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -376,14 +373,7 @@ Calls an omnichain smart contract without asset transfer.
 
 
 ```solidity
-function call(
-    address receiver,
-    bytes calldata payload,
-    RevertOptions calldata revertOptions
-)
-    external
-    whenNotPaused
-    nonReentrant;
+function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external whenNotPaused;
 ```
 **Parameters**
 

@@ -11,6 +11,11 @@ import type {
 const _abi = [
   {
     type: "error",
+    name: "CallOnRevertNotSupported",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ZETANotSupported",
     inputs: [],
   },
