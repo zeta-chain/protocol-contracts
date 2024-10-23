@@ -110,9 +110,9 @@ contract GatewayEVM is
     )
         public
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
@@ -135,9 +135,9 @@ contract GatewayEVM is
     )
         external
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
@@ -172,9 +172,9 @@ contract GatewayEVM is
         bytes calldata data
     )
         public
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -217,9 +217,9 @@ contract GatewayEVM is
         RevertContext calldata revertContext
     )
         external
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -233,15 +233,7 @@ contract GatewayEVM is
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
     /// @param revertOptions Revert options.
-    function deposit(
-        address receiver,
-        RevertOptions calldata revertOptions
-    )
-        external
-        payable
-        whenNotPaused
-        nonReentrant
-    {
+    function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
         if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
@@ -266,7 +258,6 @@ contract GatewayEVM is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -289,7 +280,6 @@ contract GatewayEVM is
         external
         payable
         whenNotPaused
-        nonReentrant
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -317,7 +307,6 @@ contract GatewayEVM is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -339,7 +328,6 @@ contract GatewayEVM is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
