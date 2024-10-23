@@ -110,9 +110,9 @@ contract GatewayEVM is
     )
         public
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
@@ -135,9 +135,9 @@ contract GatewayEVM is
     )
         external
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
@@ -172,9 +172,9 @@ contract GatewayEVM is
         bytes calldata data
     )
         public
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -217,9 +217,9 @@ contract GatewayEVM is
         RevertContext calldata revertContext
     )
         external
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
