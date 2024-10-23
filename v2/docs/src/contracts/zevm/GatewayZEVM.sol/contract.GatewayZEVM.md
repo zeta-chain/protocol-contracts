@@ -1,5 +1,5 @@
 # GatewayZEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/zevm/GatewayZEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/03043003e2b510828e96289d740026d785c81bde/contracts/zevm/GatewayZEVM.sol)
 
 **Inherits:**
 [IGatewayZEVM](/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md), Initializable, AccessControlUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Revert.sol/interface.INotSupportedMethods.md)
@@ -57,9 +57,6 @@ modifier onlyFungible();
 ```
 
 ### constructor
-
-**Note:**
-constructor
 
 
 ```solidity
@@ -193,7 +190,6 @@ function withdraw(
     RevertOptions calldata revertOptions
 )
     external
-    nonReentrant
     whenNotPaused;
 ```
 **Parameters**
@@ -221,7 +217,6 @@ function withdrawAndCall(
     RevertOptions calldata revertOptions
 )
     external
-    nonReentrant
     whenNotPaused;
 ```
 **Parameters**
@@ -249,7 +244,6 @@ function withdraw(
     RevertOptions calldata revertOptions
 )
     external
-    nonReentrant
     whenNotPaused;
 ```
 **Parameters**
@@ -276,7 +270,6 @@ function withdrawAndCall(
     RevertOptions calldata revertOptions
 )
     external
-    nonReentrant
     whenNotPaused;
 ```
 **Parameters**
@@ -304,7 +297,6 @@ function call(
     RevertOptions calldata revertOptions
 )
     external
-    nonReentrant
     whenNotPaused;
 ```
 **Parameters**
@@ -349,6 +341,7 @@ function execute(
     bytes calldata message
 )
     external
+    nonReentrant
     onlyFungible
     whenNotPaused;
 ```
@@ -377,6 +370,7 @@ function depositAndCall(
     bytes calldata message
 )
     external
+    nonReentrant
     onlyFungible
     whenNotPaused;
 ```
@@ -404,6 +398,7 @@ function depositAndCall(
     bytes calldata message
 )
     external
+    nonReentrant
     onlyFungible
     whenNotPaused;
 ```
@@ -423,7 +418,14 @@ Revert a user-specified contract on ZEVM.
 
 
 ```solidity
-function executeRevert(address target, RevertContext calldata revertContext) external onlyFungible whenNotPaused;
+function executeRevert(
+    address target,
+    RevertContext calldata revertContext
+)
+    external
+    nonReentrant
+    onlyFungible
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -446,6 +448,7 @@ function depositAndRevert(
     RevertContext calldata revertContext
 )
     external
+    nonReentrant
     onlyFungible
     whenNotPaused;
 ```

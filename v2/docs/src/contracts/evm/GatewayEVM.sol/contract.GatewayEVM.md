@@ -1,5 +1,5 @@
 # GatewayEVM
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/evm/GatewayEVM.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/03043003e2b510828e96289d740026d785c81bde/contracts/evm/GatewayEVM.sol)
 
 **Inherits:**
 Initializable, AccessControlUpgradeable, UUPSUpgradeable, [IGatewayEVM](/contracts/evm/interfaces/IGatewayEVM.sol/interface.IGatewayEVM.md), ReentrancyGuardUpgradeable, PausableUpgradeable, [INotSupportedMethods](/contracts/Revert.sol/interface.INotSupportedMethods.md)
@@ -84,9 +84,6 @@ uint256 public constant MAX_PAYLOAD_SIZE = 1024;
 
 ## Functions
 ### constructor
-
-**Note:**
-constructor
 
 
 ```solidity
@@ -189,9 +186,9 @@ function executeRevert(
 )
     public
     payable
+    nonReentrant
     onlyRole(TSS_ROLE)
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -216,9 +213,9 @@ function execute(
 )
     external
     payable
+    nonReentrant
     onlyRole(TSS_ROLE)
     whenNotPaused
-    nonReentrant
     returns (bytes memory);
 ```
 **Parameters**
@@ -251,9 +248,9 @@ function executeWithERC20(
     bytes calldata data
 )
     public
+    nonReentrant
     onlyRole(ASSET_HANDLER_ROLE)
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -281,9 +278,9 @@ function revertWithERC20(
     RevertContext calldata revertContext
 )
     external
+    nonReentrant
     onlyRole(ASSET_HANDLER_ROLE)
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -302,7 +299,7 @@ Deposits ETH to the TSS address.
 
 
 ```solidity
-function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused nonReentrant;
+function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused;
 ```
 **Parameters**
 
@@ -325,8 +322,7 @@ function deposit(
     RevertOptions calldata revertOptions
 )
     external
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -351,8 +347,7 @@ function depositAndCall(
 )
     external
     payable
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -377,8 +372,7 @@ function depositAndCall(
     RevertOptions calldata revertOptions
 )
     external
-    whenNotPaused
-    nonReentrant;
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -397,14 +391,7 @@ Calls an omnichain smart contract without asset transfer.
 
 
 ```solidity
-function call(
-    address receiver,
-    bytes calldata payload,
-    RevertOptions calldata revertOptions
-)
-    external
-    whenNotPaused
-    nonReentrant;
+function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external whenNotPaused;
 ```
 **Parameters**
 

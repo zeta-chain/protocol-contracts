@@ -1,9 +1,5 @@
 # zContext
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/aef054e72dc168bc0642efb673261c9477c170ae/contracts/zevm/interfaces/UniversalContract.sol)
-
-**Note:**
-should be removed once v2 SystemContract is not used anymore.
-MessageContext should be used
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/03043003e2b510828e96289d740026d785c81bde/contracts/zevm/interfaces/UniversalContract.sol)
 
 
 ```solidity
