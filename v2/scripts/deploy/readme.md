@@ -14,11 +14,11 @@ Currently, `.env.sample` is set with test env variables that can be used to test
 
 ## Deploying the protocol contracts on connected chains
 
-The GatewayEVM and ERC20Custody contracts must be deploy to setup a new environment on a connected chains.
+The GatewayEVM and ERC20Custody contracts must be deployed to setup a new environment on a connected chain.
 
 **GatewayEVM**
 
-The following environment variable must be set in the `.env` file:
+The following environment variables must be set in the `.env` file:
 
 - `TSS_ADDRESS`: address of the TSS used on the network
 - `GATEWAY_ADMIN_ADDRESS_EVM`: address of the admin
@@ -61,7 +61,7 @@ forge script scripts/deploy/deterministic/DeployERC20Custody.s.sol \
 
 Since ZRC20s are deployed by the protocol, only the `GatewayZEVM` contract needs to be deployed manually on ZetaChain.
 
-The following environment variable must be set in the `.env` file:
+The following environment variables must be set in the `.env` file:
 
 - `GATEWAY_ADMIN_ADDRESS_ZEVM`: address of the admin 
 - `WZETA`: wrapped ZETA contract address
@@ -82,7 +82,7 @@ forge script scripts/deploy/deterministic/DeployGatewayZEVM.s.sol \
 ## Deterministic deployments
 
 Deployment scripts in `deterministic` uses create2 with Foundry (https://book.getfoundry.sh/tutorials/create2-tutorial) to perform deterministic deployment of  contracts.
-This ensures that on every EVM chain `GatewayEVM` contract will be on same address.
+This ensures that the GatewayEVM contract will have the same address on every EVM chain.
 
 Since UUPS proxy is used for the contracts, both implementation and `ERC1967Proxy` are deployed using above technique:
 
