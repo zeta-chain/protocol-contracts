@@ -95,3 +95,13 @@ The contract can be upgraded with the following documentation: https://github.co
 - deploy new implementation (doesn't need to be deterministic since proxy address doesn't change)
 - use plugin to upgrade proxy
 
+
+## All deployment scripts
+
+- `deterministic/DeployERC20Custody.s.sol`: deploy the ERC20 custody contract on a connected chain
+- `deterministic/DeployGatewayEVM.s.sol`: deploy the gateway contract on a connected chain
+- `deterministic/DeployGatewayZEVM.s.sol`: deploy the gateway contract on ZetaChain
+- `deterministic/TestERC20.s.sol`: deploy a ERC20 for test purpose
+- `deterministic/ZetaConnectorNonNative.s.sol`: deploy the ZETA connector contract on a connected chain, currently not used
+- `deterministic/UpgradeGatewayEVM.s.sol`: upgrade the GatewayEVM contract to a test contract implementation, used for test purposes only
+- `DeployZRC20.s.sol`: deploy a ZRC20 for test purpose
