@@ -36,7 +36,12 @@ forge script scripts/deploy/deterministic/DeployGatewayEVM.s.sol \
   --broadcast
 ```
 
-Note: `verify` and `etherscan-api-key` options are optional for the contract deployment itself.
+Note: `verify` and `etherscan-api-key` options are optional for the contract deployment itself. Some other explorers require different options, for example Blockscout:
+```
+  --verify \
+  --verifier blockscout \
+  --verifier-url <VERIFIER_URL> \
+```
 
 **ERC20Custody**
 
