@@ -81,7 +81,7 @@ forge script scripts/deploy/deterministic/DeployGatewayZEVM.s.sol \
 
 ## Deterministic deployments
 
-Deployment scripts in `deterministic` uses create2 with Foundry (https://book.getfoundry.sh/tutorials/create2-tutorial) to perform deterministic deployment of  contracts.
+Deployment scripts in `deterministic` uses create2 with Foundry (https://book.getfoundry.sh/tutorials/create2-tutorial) to perform deterministic deployment of contracts.
 This ensures that the GatewayEVM contract will have the same address on every EVM chain.
 
 Since UUPS proxy is used for the contracts, both implementation and `ERC1967Proxy` are deployed using above technique:
