@@ -1,4 +1,4 @@
 export type ParamSymbol = "USDC.BSC" | "USDC.ETH" | "BTC.BTC" | "ETH.BASE" | "PEPE.ETH" | "BNB.BSC" | "SHIB.ETH" | "USDT.ETH" | "USDT.BSC" | "USDC.BASE" | "POL.POLYGON" | "DAI.ETH" | "ULTI.BSC" | "ETH.ETH" | "USDT.POL" | "ULTI.ETH" | "USDC.POL" | "sETH.SEPOLIA" | "USDC" | "gETH" | "ETH.BASESEPOLIA" | "tMATIC" | "tBTC" | "MATIC.AMOY" | "SOL.SOLANA" | "USDC.SEPOLIA" | "tBNB";
 export type ParamChainName = "eth_mainnet" | "bsc_mainnet" | "polygon_mainnet" | "zeta_mainnet" | "btc_mainnet" | "base_mainnet" | "bsc_testnet" | "solana_devnet" | "zeta_testnet" | "btc_testnet" | "amoy_testnet" | "base_sepolia" | "sepolia_testnet";
-export type ParamType = "connector" | "erc20Custody" | "tss" | "uniswapV2Factory" | "uniswapV2Router02" | "uniswapV3Factory" | "uniswapV3Router" | "weth9" | "zetaToken" | "fungibleModule" | "systemContract" | "zrc20" | "gateway";
+export type ParamType = "connector" | "erc20Custody" | "tss" | "uniswapV2Factory" | "uniswapV2Router02" | "uniswapV3Factory" | "uniswapV3Router" | "weth9" | "zetaToken" | "fungibleModule" | "systemContract" | "zrc20" | "custody" | "custody_implementation" | "gateway" | "gateway_implementation";
 
