@@ -7,25 +7,11 @@
     "type": "gateway"
   },
   {
-    "address": "0x4f8b2c28a670ae47049fae0a114af0204752df0d",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_sepolia",
-    "type": "gateway_implementation"
-  },
-  {
     "address": "0x0c487a766110c85d301d96e33579c5b317fa4995",
     "category": "omnichain",
     "chain_id": 84532,
     "chain_name": "base_sepolia",
     "type": "gateway"
-  },
-  {
-    "address": "0x61ed1f2d85f95182740fa1f6618d4542fedb7468",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_sepolia",
-    "type": "custody_implementation"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
@@ -35,25 +21,11 @@
     "type": "custody"
   },
   {
-    "address": "0x4f8b2c28a670ae47049fae0a114af0204752df0d",
-    "category": "omnichain",
-    "chain_id": 11155111,
-    "chain_name": "sepolia_testnet",
-    "type": "gateway_implementation"
-  },
-  {
     "address": "0x0c487a766110c85d301d96e33579c5b317fa4995",
     "category": "omnichain",
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x61ed1f2d85f95182740fa1f6618d4542fedb7468",
-    "category": "omnichain",
-    "chain_id": 11155111,
-    "chain_name": "sepolia_testnet",
-    "type": "custody_implementation"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
@@ -63,25 +35,11 @@
     "type": "custody"
   },
   {
-    "address": "0x4f8b2c28a670ae47049fae0a114af0204752df0d",
-    "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
-    "type": "gateway_implementation"
-  },
-  {
     "address": "0x0c487a766110c85d301d96e33579c5b317fa4995",
     "category": "omnichain",
     "chain_id": 97,
     "chain_name": "bsc_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x61ed1f2d85f95182740fa1f6618d4542fedb7468",
-    "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
-    "type": "custody_implementation"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
@@ -91,25 +49,11 @@
     "type": "custody"
   },
   {
-    "address": "0x4f8b2c28a670ae47049fae0a114af0204752df0d",
-    "category": "omnichain",
-    "chain_id": 80002,
-    "chain_name": "amoy_testnet",
-    "type": "gateway_implementation"
-  },
-  {
     "address": "0x0c487a766110c85d301d96e33579c5b317fa4995",
     "category": "omnichain",
     "chain_id": 80002,
     "chain_name": "amoy_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x61ed1f2d85f95182740fa1f6618d4542fedb7468",
-    "category": "omnichain",
-    "chain_id": 80002,
-    "chain_name": "amoy_testnet",
-    "type": "custody_implementation"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
