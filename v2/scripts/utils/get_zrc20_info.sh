@@ -7,11 +7,6 @@
 #
 # Usage:
 #   ./get_zrc20_info.sh <contract_address> <rpc_url>
-#
-# Arguments:
-#   <contract_address> : The address of the ZRC20 contract to query.
-#   <rpc_url>          : The RPC URL of the blockchain network to connect to.
-#
 
 # Check if cast is installed
 if ! command -v cast &> /dev/null
