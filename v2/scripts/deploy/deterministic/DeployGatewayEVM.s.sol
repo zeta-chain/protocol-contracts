@@ -15,8 +15,8 @@ contract DeployGatewayEVM is Script {
         address expectedImplAddress;
         address expectedProxyAddress;
 
-        bytes32 implSalt = keccak256("GatewayEVM");
-        bytes32 proxySalt = keccak256("GatewayEVMProxy");
+        bytes32 implSalt = keccak256("GatewayEVM-2");
+        bytes32 proxySalt = keccak256("GatewayEVMProxy-2");
 
         vm.startBroadcast();
 
