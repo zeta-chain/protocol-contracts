@@ -30,7 +30,7 @@ fetch_zrc20_info() {
     local CONTRACT_ADDRESS=$1
     local RPC_URL=$2
 
-    SYSTEM_CONTRACT=$(cast call "$CONTRACT_ADDRESS" "SYSTEM_CONTRACT_ADDRESS()(uint256)" --rpc-url "$RPC_URL" | tr -d '\n')
+    SYSTEM_CONTRACT=$(cast call "$CONTRACT_ADDRESS" "SYSTEM_CONTRACT_ADDRESS()(address)" --rpc-url "$RPC_URL" | tr -d '\n')
     ZRC20_NAME=$(cast call "$CONTRACT_ADDRESS" "name()(string)" --rpc-url "$RPC_URL" | tr -d '\n' | sed 's/"//g')
     ZRC20_SYMBOL=$(cast call "$CONTRACT_ADDRESS" "symbol()(string)" --rpc-url "$RPC_URL" | tr -d '\n' | sed 's/"//g')
     ZRC20_DECIMALS=$(cast call "$CONTRACT_ADDRESS" "decimals()(uint8)" --rpc-url "$RPC_URL" | tr -d '\n')
