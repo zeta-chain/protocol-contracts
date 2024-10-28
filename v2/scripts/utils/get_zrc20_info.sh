@@ -30,7 +30,7 @@ SYSTEM_CONTRACT=$(cast call "$CONTRACT_ADDRESS" "SYSTEM_CONTRACT_ADDRESS()(addre
 ZRC20_NAME=$(cast call "$CONTRACT_ADDRESS" "name()(string)" --rpc-url "$RPC_URL" | tr -d '\n' | sed 's/"//g')
 ZRC20_SYMBOL=$(cast call "$CONTRACT_ADDRESS" "symbol()(string)" --rpc-url "$RPC_URL" | tr -d '\n' | sed 's/"//g')
 ZRC20_DECIMALS=$(cast call "$CONTRACT_ADDRESS" "decimals()(uint8)" --rpc-url "$RPC_URL" | tr -d '\n')
-ZRC20_CHAIN_ID=$(cast call "$CONTRACT_ADDRESS" "CHAIN_ID()(uint256)" --rpc-url "$RPC_URL" | tr -d '\n')
+ZRC20_CHAIN_ID=$(cast call "$CONTRACT_ADDRESS" "CHAIN_ID()(uint256)" --rpc-url "$RPC_URL" | tr -d '\n' | sed 's/\[.*\]//g')
 ZRC20_COIN_TYPE=$(cast call "$CONTRACT_ADDRESS" "COIN_TYPE()(uint256)" --rpc-url "$RPC_URL" | tr -d '\n')
 ZRC20_GAS_LIMIT=$(cast call "$CONTRACT_ADDRESS" "GAS_LIMIT()(uint256)" --rpc-url "$RPC_URL" | tr -d '\n' | sed 's/\[.*\]//g')
 
