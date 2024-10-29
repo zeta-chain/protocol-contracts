@@ -37,7 +37,7 @@ crytic-export
 
 out
 cache_forge
-v2/broadcast/*
+v2/broadcast/*/31337
 
 dependencies/
 
