@@ -84,6 +84,50 @@ forge script scripts/deploy/deterministic/DeployGatewayZEVM.s.sol \
   --broadcast
 ```
 
+## Deploying a ZRC20 reference contract
+
+ZRC20 contract is upgradable by the protocol but doesn't follow the `ERC1967Proxy` standard.
+The process requires to:
+- Deploy a reference for the ZRC20 to upgrade
+- Use the `MsgUpdateContractBytecode` message of the blockchain to upgrade the contract using the reference bytecode
+
+The reference must be deployed using the same constructor argument as the base contract.
+To obtain the arguments, the following utility script can be used:
+```
+./scripts/utils/get_zrc20_info.sh <zrc20_address> <rpc>
+```
+
+Note: the script requires `cast` CLI (Foundry suite) to be installed.
+
+The command prints the environment variable to put in the `.env` file to deploy the new contract.
+Example:
+```
+SYSTEM_CONTRACT=0xEdf1c3275d13489aCdC6cD6eD246E72458B8795B
+ZRC20_NAME=ZetaChain ZRC20 SOL on Solana Devnet
+ZRC20_SYMBOL=SOL.SOLANA
+ZRC20_DECIMALS=9
+ZRC20_CHAIN_ID=901
+ZRC20_COIN_TYPE=1
+ZRC20_GAS_LIMIT=5000
+```
+
+Once the environment variables are set, the ZRC20 can be deployed:
+```
+forge script scripts/deploy/DeployZRC20.s.sol \
+  --private-key <PRIVATE_KEY> \
+  --rpc-url <RPC_URL> \
+  --verify \
+  --verifier blockscout \
+  --verifier-url <VERIFIER_URL> \
+  --chain-id <CHAIN_ID> \
+  --broadcast
+```
+
+After deployment, the following utility script allows to verify the ZRC20 has been deployed with the correct constructor arguments:
+```
+./scripts/utils/compare_zrc20_info.sh <base_contract> <reference_contract> <rpc>
+```
+
 ## Deterministic deployments
 
 Deployment scripts in `deterministic` uses create2 with Foundry (https://book.getfoundry.sh/tutorials/create2-tutorial) to perform deterministic deployment of contracts.
@@ -109,4 +153,4 @@ The contract can be upgraded with the following documentation: https://github.co
 - `deterministic/TestERC20.s.sol`: deploy a ERC20 for test purpose
 - `deterministic/ZetaConnectorNonNative.s.sol`: deploy the ZETA connector contract on a connected chain, currently not used
 - `deterministic/UpgradeGatewayEVM.s.sol`: upgrade the GatewayEVM contract to a test contract implementation, used for test purposes only
-- `DeployZRC20.s.sol`: deploy a ZRC20 for test purpose
+- `DeployZRC20.s.sol`: deploy a ZRC20 for test purpose or for the ZRC20 upgrade process
