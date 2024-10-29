@@ -96,6 +96,9 @@ To obtain the arguments, the following utility script can be used:
 ```
 ./scripts/utils/get_zrc20_info.sh <zrc20_address> <rpc>
 ```
+
+Note: the script requires `cast` CLI (Foundry suite) to be installed.
+
 The command prints the environment variable to put in the `.env` file to deploy the new contract.
 Example:
 ```
@@ -124,7 +127,6 @@ After deployment, the following utility script allows to verify the ZRC20 has be
 ```
 ./scripts/utils/compare_zrc20_info.sh <base_contract> <reference_contract> <rpc>
 ```
-
 
 ## Deterministic deployments
 
