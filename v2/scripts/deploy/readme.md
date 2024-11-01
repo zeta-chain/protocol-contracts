@@ -148,8 +148,11 @@ The contract can be upgraded with the following documentation: https://github.co
 ## All deployment scripts
 
 - `deterministic/DeployERC20Custody.s.sol`: deploy the ERC20 custody contract on a connected chain
+- `deterministic/DeployERC20CustodyImplementation.s.sol`: deploy the ERC20 custody contract implementation on a connected chain for a contract upgrade
 - `deterministic/DeployGatewayEVM.s.sol`: deploy the gateway contract on a connected chain
+- `deterministic/DeployGatewayEVMImplementation.s.sol`: deploy the gateway contract implementation on a connected chain for a contract upgrade
 - `deterministic/DeployGatewayZEVM.s.sol`: deploy the gateway contract on ZetaChain
+- `deterministic/DeployGatewayZEVMImplementation.s.sol`: deploy the gateway contract implementation on ZetaChain for a contract upgrade
 - `deterministic/TestERC20.s.sol`: deploy a ERC20 for test purpose
 - `deterministic/ZetaConnectorNonNative.s.sol`: deploy the ZETA connector contract on a connected chain, currently not used
 - `deterministic/UpgradeGatewayEVM.s.sol`: upgrade the GatewayEVM contract to a test contract implementation, used for test purposes only
