@@ -84,6 +84,61 @@ forge script scripts/deploy/deterministic/DeployGatewayZEVM.s.sol \
   --broadcast
 ```
 
+## Deploying protocol contracts implementation for upgrades
+
+Protocol contracts (Gateway and ERC20Custody) follow ERC1967 standard. The contracts can be upgraded by deploying a new implementation and upgrading to this new implementation.
+
+The implementation contracts don't require environment variables or paramters to be deployed.
+
+**GatewayEVM**
+
+Deploy a wew implementation of the GatewayEVM:
+
+```
+forge script scripts/deploy/deterministic/DeployGatewayEVMImplementation.s.sol \
+  --private-key <PRIVATE_KEY> \
+  --rpc-url <RPC_URL> \
+  --verify \
+  --etherscan-api-key <ETHERSCAN_API_KEY> \
+  --chain-id <CHAIN_ID> \
+  --broadcast
+```
+
+**ERC20Custody**
+
+Deploy a wew implementation of the ERC20Custody:
+
+```
+forge script scripts/deploy/deterministic/DeployERC20CustodyImplementation.s.sol \
+  --private-key <PRIVATE_KEY> \
+  --rpc-url <RPC_URL> \
+  --verify \
+  --etherscan-api-key <ETHERSCAN_API_KEY> \
+  --chain-id <CHAIN_ID> \
+  --broadcast
+```
+
+**GatewayZEVM**
+
+Deploy a wew implementation of the GatewayZEVM:
+
+```
+forge script scripts/deploy/deterministic/DeployGatewayZEVMImplementation.s.sol \
+  --private-key <PRIVATE_KEY> \
+  --rpc-url <RPC_URL> \
+  --verify \
+  --verifier blockscout \
+  --verifier-url <VERIFIER_URL> \
+  --chain-id <CHAIN_ID> \
+  --broadcast
+```
+
+After the implementation is deployed, the contract can be upgraded by calling the following function from the admin:
+
+```
+upgradeToAndCall(0, <implementation_address>, "")
+```
+
 ## Deploying a ZRC20 reference contract
 
 ZRC20 contract is upgradable by the protocol but doesn't follow the `ERC1967Proxy` standard.
