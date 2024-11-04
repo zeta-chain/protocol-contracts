@@ -139,6 +139,60 @@ After the implementation is deployed, the contract can be upgraded by calling th
 upgradeToAndCall(0, <implementation_address>, "")
 ```
 
+## Simulating a protocol contract upgrade
+
+The scripts in `upgrade` allow to locally simulate the upgrade process with the protocol contract and verify the state is not corrupted.
+
+First a forked localnet must be started in a separate terminal. The RPC will be the connected EVM chain for testing `GatewayEVM` or `ERC20Custody`, or ZetaChain for `GatewayZEVM`
+
+```
+anvil --fork-url <rpc>
+```
+Example:
+```
+anvil --fork-url https://ethereum-sepolia.rpc.subquery.network/public
+anvil --fork-url https://zetachain-athens.g.allthatnode.com/archive/evm
+```
+
+The following environment variable must be set:
+```
+export PROXY_ADDRESS=<proxy address of the contract to test>
+export ADMIN_ADDRESS=<address of the admin that upgrade the contract>
+```
+
+Then the script can be run.
+
+`GatewayEVM`:
+```
+forge script scripts/upgrade/SimulateGatewayEVMUpgrade.s.sol --rpc-url http://localhost:8545
+```
+`ERC20Custody`:
+```
+forge script scripts/upgrade/SimulateERC20CustodyUpgrade.s.sol --rpc-url http://localhost:8545
+```
+`GatewayZEVM`:
+```
+forge script scripts/upgrade/SimulateGatewayZEVMUpgrade.s.sol --rpc-url http://localhost:8545
+```
+
+The scripts will log the different state variables of the contract. There is no automatic assertion, the values must be manually checked against the current values of the proxy contract.
+
+These scripts must be maintained in the future to log all eventual new variables.
+
+Example output:
+
+```
+Script ran successfully.
+
+== Logs ==
+  Upgraded contract state:
+  custody address: 0xD80BE3710F08D280F51115e072e5d2a778946cd7
+  tss address: 0x8531a5aB847ff5B22D855633C25ED1DA3255247e
+  zetaConnector address: 0x0000000000000000000000000000000000000000
+  zetaToken address: 0x1432612E60cad487C857E7D38AFf57134916c902
+```
+
+
 ## Deploying a ZRC20 reference contract
 
 ZRC20 contract is upgradable by the protocol but doesn't follow the `ERC1967Proxy` standard.
