@@ -14,6 +14,13 @@
     "type": "gateway"
   },
   {
+    "address": "0x6c533f7fe93fae114d0954697069df33c9b74fd7",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "gateway"
+  },
+  {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
     "category": "omnichain",
     "chain_id": 84532,
