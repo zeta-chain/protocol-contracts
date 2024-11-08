@@ -15,12 +15,18 @@ contract UpgradeSimulation is Script {
         bytes32 implSalt = keccak256("GatewayZEVM");
         address gatewayImpl = address(new GatewayZEVM{salt: implSalt}());
 
-        // Simulate the upgrade
         GatewayZEVM proxy = GatewayZEVM(proxyAddress);
+
+        // Get the current state
+        address zetaToken = proxy.zetaToken();
+
+        // Simulate the upgrade
         vm.prank(adminAddress);
         proxy.upgradeToAndCall(gatewayImpl, "");
 
         // After upgrade, verify that the state is intact
+        require(zetaToken == proxy.zetaToken(), "zetaToken address mismatch");
+
         console.log("Upgraded contract state:");
         console.log("zetaToken address:", proxy.zetaToken());
     }
