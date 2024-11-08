@@ -58,6 +58,9 @@ modifier onlyProtocol();
 
 ### constructor
 
+**Note:**
+constructor
+
 
 ```solidity
 constructor();
