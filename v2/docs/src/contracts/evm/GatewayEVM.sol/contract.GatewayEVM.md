@@ -85,6 +85,9 @@ uint256 public constant MAX_PAYLOAD_SIZE = 1024;
 ## Functions
 ### constructor
 
+**Note:**
+constructor
+
 
 ```solidity
 constructor();

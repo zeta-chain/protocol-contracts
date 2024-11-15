@@ -46,6 +46,20 @@ uint256 public constant MAX_MESSAGE_SIZE = 1024;
 ```
 
 
+### MAX_GAS_LIMIT
+Max gas left for the contract call.
+
+*This is a safety mechanism to prevent the contract call from consuming too much gas.
+The gas limit is set to 1 million gas.
+This value will aproximately allow the same function calls as once the gas limit is enforced in:
+https://github.com/zeta-chain/node/pull/3106*
+
+
+```solidity
+uint256 public constant MAX_GAS_LIMIT = 1_000_000;
+```
+
+
 ## Functions
 ### onlyProtocol
 
@@ -57,6 +71,9 @@ modifier onlyProtocol();
 ```
 
 ### constructor
+
+**Note:**
+constructor
 
 
 ```solidity
@@ -458,5 +475,13 @@ Error indicating a zero address was provided.
 
 ```solidity
 error ZeroAddress();
+```
+
+### GasLimitExceeded
+Error indicating that the contract call is consuming too much gas to be processed.
+
+
+```solidity
+error GasLimitExceeded();
 ```
 
