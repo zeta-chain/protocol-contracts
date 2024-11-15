@@ -647,6 +647,17 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+    uint256 private filler;
+
+    /// @notice Simulate consuming gas until gasleft is less than `targetGas`
+    /// @param targetGas The gas level to reach
+    function setRemainingGas(uint256 targetGas) internal {
+        while (gasleft() > targetGas) {
+            // Perform dummy operations to consume gas
+            filler += 1;
+        }
+    }
+
     function setUp() public {
         owner = address(this);
         addr1 = address(0x1234);
@@ -803,10 +814,12 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.execute(context, address(0), 1, address(testUniversalContract), message);
     }
 
-    function testExecuteUniversalContract() public {
+    function testExecuteUniversalContract() public {        
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+
+        setRemainingGas(gateway.MAX_GAS_LIMIT());
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextData(abi.encodePacked(gateway), protocolAddress, 1, address(gateway), "hello");
@@ -831,9 +844,12 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     }
 
     function testExecuteRevertUniversalContract() public {
+        setRemainingGas(gateway.MAX_GAS_LIMIT());
+        
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
         vm.prank(protocolAddress);
+
         gateway.executeRevert(address(testUniversalContract), revertContext);
     }
 
@@ -876,6 +892,8 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContract() public {
         uint256 balanceBefore = zrc20.balanceOf(address(testUniversalContract));
         assertEq(0, balanceBefore);
+
+        setRemainingGas(gateway.MAX_GAS_LIMIT());
 
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
@@ -941,6 +959,8 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositAndRevertZRC20AndCallUniversalContract() public {
         uint256 balanceBefore = zrc20.balanceOf(address(testUniversalContract));
         assertEq(0, balanceBefore);
+
+        setRemainingGas(gateway.MAX_GAS_LIMIT());
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
@@ -1017,6 +1037,8 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+
+        setRemainingGas(gateway.MAX_GAS_LIMIT());
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextData(abi.encodePacked(gateway), protocolAddress, amount, address(gateway), "hello");

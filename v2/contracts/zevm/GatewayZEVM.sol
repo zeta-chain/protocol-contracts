@@ -49,7 +49,7 @@ contract GatewayZEVM is
     /// The gas limit is set to 1 million gas.
     /// This value will aproximately allow the same function calls as once the gas limit is enforced in:
     /// https://github.com/zeta-chain/node/pull/3106
-    uint256 public constant MAX_GAS_LIMIT = 1_000_000;
+    uint256 public constant MAX_GAS_LIMIT = 2_000_000;
 
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
