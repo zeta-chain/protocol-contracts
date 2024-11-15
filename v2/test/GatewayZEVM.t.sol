@@ -814,7 +814,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.execute(context, address(0), 1, address(testUniversalContract), message);
     }
 
-    function testExecuteUniversalContract() public {        
+    function testExecuteUniversalContract() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
@@ -845,7 +845,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
     function testExecuteRevertUniversalContract() public {
         setRemainingGas(gateway.MAX_GAS_LIMIT());
-        
+
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
         vm.prank(protocolAddress);

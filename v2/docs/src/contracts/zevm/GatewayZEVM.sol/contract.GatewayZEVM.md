@@ -56,7 +56,7 @@ https://github.com/zeta-chain/node/pull/3106*
 
 
 ```solidity
-uint256 public constant MAX_GAS_LIMIT = 1_000_000;
+uint256 public constant MAX_GAS_LIMIT = 2_000_000;
 ```
 
 
