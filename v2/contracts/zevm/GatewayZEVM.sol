@@ -355,7 +355,7 @@ contract GatewayZEVM is
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
-        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        // if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         UniversalContract(target).onCall(context, zrc20, amount, message);
     }
@@ -383,7 +383,7 @@ contract GatewayZEVM is
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
-        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        // if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onCall(context, zrc20, amount, message);
@@ -410,7 +410,7 @@ contract GatewayZEVM is
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
-        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        // if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         _transferZETA(amount, target);
         UniversalContract(target).onCall(context, zetaToken, amount, message);
@@ -431,7 +431,7 @@ contract GatewayZEVM is
         if (target == address(0)) revert ZeroAddress();
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
-        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        // if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         Revertable(target).onRevert(revertContext);
     }
@@ -457,7 +457,7 @@ contract GatewayZEVM is
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
-        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        // if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         Revertable(target).onRevert(revertContext);
