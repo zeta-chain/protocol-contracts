@@ -30,6 +30,9 @@ contract GatewayZEVM is
     /// @notice Error indicating a zero address was provided.
     error ZeroAddress();
 
+    /// @notice Error indicating that the contract call is consuming too much gas to be processed.
+    error GasLimitExceeded();
+
     /// @notice The constant address of the protocol
     address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice The address of the Zeta token.
@@ -40,6 +43,13 @@ contract GatewayZEVM is
 
     /// @notice Max size of message + revertOptions revert message.
     uint256 public constant MAX_MESSAGE_SIZE = 1024;
+
+    /// @notice Max gas left for the contract call.
+    /// @dev This is a safety mechanism to prevent the contract call from consuming too much gas.
+    /// The gas limit is set to 1 million gas.
+    /// This value will aproximately allow the same function calls as once the gas limit is enforced in:
+    /// https://github.com/zeta-chain/node/pull/3106
+    uint256 public constant MAX_GAS_LIMIT = 1_000_000;
 
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
@@ -344,6 +354,9 @@ contract GatewayZEVM is
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
 
+        // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
+        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+
         UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
@@ -369,6 +382,9 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
+        // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
+        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onCall(context, zrc20, amount, message);
     }
@@ -393,6 +409,9 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
+        // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
+        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
+
         _transferZETA(amount, target);
         UniversalContract(target).onCall(context, zetaToken, amount, message);
     }
@@ -410,6 +429,9 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (target == address(0)) revert ZeroAddress();
+
+        // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
+        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         Revertable(target).onRevert(revertContext);
     }
@@ -433,6 +455,9 @@ contract GatewayZEVM is
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
+        if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         Revertable(target).onRevert(revertContext);
