@@ -86,7 +86,7 @@ uint256 public constant MAX_PAYLOAD_SIZE = 1024;
 ### constructor
 
 **Note:**
-constructor
+oz-upgrades-unsafe-allow: constructor
 
 
 ```solidity
