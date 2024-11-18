@@ -383,8 +383,8 @@ contract GatewayZEVM is
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
-        // if (gasleft() > MAX_GAS_LIMIT) revert GasLimitExceeded();
         uint256 leftGas = uint256(gasleft());
+        if (leftGas > MAX_GAS_LIMIT) revert GasLimitExceeded();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         UniversalContract(target).onCall(context, zrc20, leftGas, message);
