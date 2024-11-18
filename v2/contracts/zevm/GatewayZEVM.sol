@@ -51,6 +51,8 @@ contract GatewayZEVM is
     /// https://github.com/zeta-chain/node/pull/3106
     uint256 public constant MAX_GAS_LIMIT = 2_000_000;
 
+    uint256 public constant SIMULATION_GAS_LIMIT = 24_000_000;
+
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
         if (msg.sender != PROTOCOL_ADDRESS) {
@@ -384,7 +386,7 @@ contract GatewayZEVM is
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
         uint256 leftGas = uint256(gasleft());
-        if (leftGas > MAX_GAS_LIMIT) {
+        if (leftGas > MAX_GAS_LIMIT && leftGas < SIMULATION_GAS_LIMIT) {
             revert GasLimitExceeded();
         }
 

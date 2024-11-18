@@ -89,6 +89,7 @@ export interface GatewayZEVMInterface extends Interface {
       | "MAX_MESSAGE_SIZE"
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
+      | "SIMULATION_GAS_LIMIT"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "deposit"
@@ -148,6 +149,10 @@ export interface GatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PROTOCOL_ADDRESS",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "SIMULATION_GAS_LIMIT",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -289,6 +294,10 @@ export interface GatewayZEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PROTOCOL_ADDRESS",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "SIMULATION_GAS_LIMIT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -636,6 +645,8 @@ export interface GatewayZEVM extends BaseContract {
 
   PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
 
+  SIMULATION_GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
@@ -829,6 +840,9 @@ export interface GatewayZEVM extends BaseContract {
   getFunction(
     nameOrSignature: "PROTOCOL_ADDRESS"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "SIMULATION_GAS_LIMIT"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;

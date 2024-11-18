@@ -60,6 +60,13 @@ uint256 public constant MAX_GAS_LIMIT = 2_000_000;
 ```
 
 
+### SIMULATION_GAS_LIMIT
+
+```solidity
+uint256 public constant SIMULATION_GAS_LIMIT = 24_000_000;
+```
+
+
 ## Functions
 ### onlyProtocol
 
