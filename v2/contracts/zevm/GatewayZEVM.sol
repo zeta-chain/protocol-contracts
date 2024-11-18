@@ -384,10 +384,11 @@ contract GatewayZEVM is
 
         // TODO: remove after the protocol upgrad with this change: https://github.com/zeta-chain/node/pull/3106
         uint256 leftGas = uint256(gasleft());
-        if (leftGas > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        // if (leftGas > MAX_GAS_LIMIT) revert GasLimitExceeded();
+        uint256 testValue = leftGas + MAX_GAS_LIMIT;
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
-        UniversalContract(target).onCall(context, zrc20, leftGas, message);
+        UniversalContract(target).onCall(context, zrc20, testValue, message);
     }
 
     /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
