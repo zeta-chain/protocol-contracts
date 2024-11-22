@@ -58,9 +58,6 @@ modifier onlyProtocol();
 
 ### constructor
 
-**Note:**
-oz-upgrades-unsafe-allow: constructor
-
 
 ```solidity
 constructor();

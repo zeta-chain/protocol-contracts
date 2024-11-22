@@ -266,9 +266,6 @@ function withdrawAndRevert(
 
 Deposits asset to custody and pay fee in zeta erc20.
 
-**Note:**
-deprecated: This method is deprecated.
-
 
 ```solidity
 function deposit(
