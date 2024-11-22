@@ -182,7 +182,7 @@
     "type": "connector"
   },
   {
-    "address": "0x53b0705194e686Ba745eF8A80cB1Ef355dE645D0",
+    "address": "0x0Bad40D9e9C369f2223c835E108f43a45fd223B5",
     "category": "omnichain",
     "chain_id": 8453,
     "chain_name": "base_mainnet",
