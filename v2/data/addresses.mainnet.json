@@ -1,5 +1,3 @@
-
-
 [
   {
     "address": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
@@ -9,7 +7,7 @@
     "type": "connector"
   },
   {
-    "address": "0x0000030Ec64DF25301d8414eE5a29588C4B0dE10",
+    "address": "0x0Bad40D9e9C369f2223c835E108f43a45fd223B5",
     "category": "omnichain",
     "chain_id": 1,
     "chain_name": "eth_mainnet",
@@ -72,7 +70,7 @@
     "type": "connector"
   },
   {
-    "address": "0x00000fF8fA992424957F97688015814e707A0115",
+    "address": "0x0Bad40D9e9C369f2223c835E108f43a45fd223B5",
     "category": "omnichain",
     "chain_id": 56,
     "chain_name": "bsc_mainnet",
@@ -100,7 +98,7 @@
     "type": "connector"
   },
   {
-    "address": "0x69727Ef241ebD6e42Fc3A798092077069B415B2D",
+    "address": "0x0Bad40D9e9C369f2223c835E108f43a45fd223B5",
     "category": "omnichain",
     "chain_id": 137,
     "chain_name": "polygon_mainnet",
@@ -398,7 +396,7 @@
     "type": "connector"
   },
   {
-    "address": "0x53b0705194e686Ba745eF8A80cB1Ef355dE645D0",
+    "address": "0x0Bad40D9e9C369f2223c835E108f43a45fd223B5",
     "category": "omnichain",
     "chain_id": 8453,
     "chain_name": "base_mainnet",

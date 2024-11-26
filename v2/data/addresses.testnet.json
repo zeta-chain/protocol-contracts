@@ -1,5 +1,3 @@
-
-
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -204,10 +202,30 @@
     "type": "zrc20"
   },
   {
+    "address": "0xdbfF6471a79E5374d771922F2194eccc42210B9F",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 8,
+    "description": "sBTC.sBTC",
+    "foreign_chain_id": "18333",
+    "symbol": "sBTC",
+    "type": "zrc20"
+  },
+  {
     "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
     "category": "omnichain",
     "chain_id": 18332,
     "chain_name": "btc_testnet",
+    "type": "tss"
+  },
+  {
+    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
+    "category": "omnichain",
+    "chain_id": 18333,
+    "chain_name": "empty",
     "type": "tss"
   },
   {
