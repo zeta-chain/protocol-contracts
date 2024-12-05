@@ -68,5 +68,19 @@
     "chain_id": 80002,
     "chain_name": "amoy_testnet",
     "type": "custody"
+  },
+  {
+    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
+    "category": "omnichain",
+    "chain_id": 18333,
+    "chain_name": "btc_signet",
+    "type": "tss"
+  },
+  {
+    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
+    "category": "omnichain",
+    "chain_id": 18334,
+    "chain_name": "btc_testnet4",
+    "type": "tss"
   }
 ]
