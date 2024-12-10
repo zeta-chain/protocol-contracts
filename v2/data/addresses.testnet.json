@@ -215,6 +215,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xfC9201f4116aE6b054722E10b98D904829b469c3",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 8,
+    "description": "ZetaChain ZRC20 Bitcoin Testnet4",
+    "foreign_chain_id": "18334",
+    "symbol": "tBTC",
+    "type": "zrc20"
+  },
+  {
     "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
     "category": "omnichain",
     "chain_id": 18332,
@@ -225,7 +238,14 @@
     "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
     "category": "omnichain",
     "chain_id": 18333,
-    "chain_name": "empty",
+    "chain_name": "btc_signet_testnet",
+    "type": "tss"
+  },
+  {
+    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
+    "category": "omnichain",
+    "chain_id": 18334,
+    "chain_name": "btc_testnet4",
     "type": "tss"
   },
   {

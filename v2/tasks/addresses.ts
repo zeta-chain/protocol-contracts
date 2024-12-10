@@ -65,7 +65,7 @@ const fetchTssData = async (chains: any, addresses: any, network: Network) => {
             address: isBitcoin ? btc : eth,
             category: "omnichain",
             chain_id: parseInt(chain.chain_id),
-            chain_name: chain.chain_name,
+            chain_name: chain.name,
             type: "tss",
           });
         }
