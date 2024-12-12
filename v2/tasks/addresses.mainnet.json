@@ -12,5 +12,40 @@
     "chain_id": 1,
     "chain_name": "eth_mainnet",
     "type": "uniswapV3Router"
+  },
+  {
+    "address": "0x48B9AACC350b20147001f88821d31731Ba4C30ed",
+    "category": "omnichain",
+    "chain_id": 8453,
+    "chain_name": "base_mainnet",
+    "type": "gateway"
+  },
+  {
+    "address": "0x48B9AACC350b20147001f88821d31731Ba4C30ed",
+    "category": "omnichain",
+    "chain_id": 1,
+    "chain_name": "eth_mainnet",
+    "type": "gateway"
+  },
+  {
+    "address": "0x48B9AACC350b20147001f88821d31731Ba4C30ed",
+    "category": "omnichain",
+    "chain_id": 56,
+    "chain_name": "bsc_mainnet",
+    "type": "gateway"
+  },
+  {
+    "address": "0x48B9AACC350b20147001f88821d31731Ba4C30ed",
+    "category": "omnichain",
+    "chain_id": 137,
+    "chain_name": "polygon_mainnet",
+    "type": "gateway"
+  },
+  {
+    "address": "0xfEDD7A6e3Ef1cC470fbfbF955a22D793dDC0F44E",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "type": "gateway"
   }
 ]
