@@ -18,7 +18,7 @@ contract UpgradeSimulation is Script {
         ERC20Custody proxy = ERC20Custody(proxyAddress);
 
         // Get the current state
-        address gateway = proxy.gateway();
+        address gateway = address(proxy.gateway());
         address tssAddress = proxy.tssAddress();
         bool supportsLegacy = proxy.supportsLegacy();
 
@@ -27,7 +27,7 @@ contract UpgradeSimulation is Script {
         proxy.upgradeToAndCall(erc20CustodyImpl, "");
 
         // After upgrade, verify that the state is intact
-        require(gateway == proxy.gateway(), "gateway address mismatch");
+        require(gateway == address(proxy.gateway()), "gateway address mismatch");
         require(tssAddress == proxy.tssAddress(), "tss address mismatch");
         require(supportsLegacy == proxy.supportsLegacy(), "supportsLegacy mismatch");
 
