@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
+pragma solidity ^0.8.26;
 
 import "../../../contracts/evm/ZetaConnectorBase.sol";
 import "../../../contracts/evm/interfaces/IZetaNonEthNew.sol";
