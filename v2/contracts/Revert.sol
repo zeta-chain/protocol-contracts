@@ -17,8 +17,8 @@ struct RevertOptions {
 
 /// @notice Struct containing revert context passed to onRevert.
 /// @param sender Address of account that initiated smart contract call.
-/// @param asset Address of asset. On a connected chain, it contains the fungible 
-/// token address or is empty if it's a gas token. On ZetaChain, it contains the 
+/// @param asset Address of asset. On a connected chain, it contains the fungible
+/// token address or is empty if it's a gas token. On ZetaChain, it contains the
 /// address of the ZRC20.
 /// @param amount Amount specified with the transaction.
 /// @param revertMessage Arbitrary data sent back in onRevert.
