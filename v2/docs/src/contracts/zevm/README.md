@@ -1,7 +1,9 @@
 
 
 # Contents
+- [forks](/contracts/zevm/forks)
 - [interfaces](/contracts/zevm/interfaces)
+- [legacy](/contracts/zevm/legacy)
 - [GatewayZEVM](GatewayZEVM.sol/contract.GatewayZEVM.md)
 - [SystemContractErrors](SystemContract.sol/interface.SystemContractErrors.md)
 - [SystemContract](SystemContract.sol/contract.SystemContract.md)

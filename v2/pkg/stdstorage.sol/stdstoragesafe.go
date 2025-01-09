@@ -32,7 +32,7 @@ var (
 // StdStorageSafeMetaData contains all meta data concerning the StdStorageSafe contract.
 var StdStorageSafeMetaData = &bind.MetaData{
 	ABI: "[{\"type\":\"event\",\"name\":\"SlotFound\",\"inputs\":[{\"name\":\"who\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"fsig\",\"type\":\"bytes4\",\"indexed\":false,\"internalType\":\"bytes4\"},{\"name\":\"keysHash\",\"type\":\"bytes32\",\"indexed\":false,\"internalType\":\"bytes32\"},{\"name\":\"slot\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"WARNING_UninitedSlot\",\"inputs\":[{\"name\":\"who\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"slot\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false}]",
-	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220b9ae532ec0e0263d093c73fe11e27f7c536ea19536560fc3285dfbb15cceacc764736f6c634300081a0033",
+	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212203658cbf0f85b5d02769b503dfe233d27de3ed98fbef83f42e6da0581a9a4a2c564736f6c634300081a0033",
 }
 
 // StdStorageSafeABI is the input ABI used to generate the binding from.

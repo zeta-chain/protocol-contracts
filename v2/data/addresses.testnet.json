@@ -1,3 +1,5 @@
+
+
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -124,19 +126,6 @@
     "type": "zrc20"
   },
   {
-    "address": "0x65a45c57636f9BcCeD4fe193A602008578BcA90b",
-    "asset": "",
-    "category": "omnichain",
-    "chain_id": 7001,
-    "chain_name": "zeta_testnet",
-    "coin_type": "gas",
-    "decimals": 8,
-    "description": "BTC-btc_testnet-btc_testnet",
-    "foreign_chain_id": "18332",
-    "symbol": "tBTC",
-    "type": "zrc20"
-  },
-  {
     "address": "0x777915D031d1e8144c90D025C594b3b8Bf07a08d",
     "asset": "",
     "category": "omnichain",
@@ -252,13 +241,6 @@
     "foreign_chain_id": "18334",
     "symbol": "tBTC",
     "type": "zrc20"
-  },
-  {
-    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
-    "category": "omnichain",
-    "chain_id": 18332,
-    "chain_name": "btc_testnet",
-    "type": "tss"
   },
   {
     "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",

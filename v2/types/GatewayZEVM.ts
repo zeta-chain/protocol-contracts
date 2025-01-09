@@ -768,7 +768,7 @@ export interface GatewayZEVM extends BaseContract {
       arg3: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "view"
   >;
 
   "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
@@ -781,7 +781,7 @@ export interface GatewayZEVM extends BaseContract {
       arg5: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "view"
   >;
 
   "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
@@ -977,7 +977,7 @@ export interface GatewayZEVM extends BaseContract {
       arg3: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "view"
   >;
   getFunction(
     nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
@@ -991,7 +991,7 @@ export interface GatewayZEVM extends BaseContract {
       arg5: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "view"
   >;
   getFunction(
     nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"

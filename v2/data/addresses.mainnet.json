@@ -1,3 +1,5 @@
+
+
 [
   {
     "address": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
@@ -267,6 +269,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x4bC32034caCcc9B7e02536945eDbC286bACbA073",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 SOL on Solana Mainnet",
+    "foreign_chain_id": "900",
+    "symbol": "SOL.SOL",
+    "type": "zrc20"
+  },
+  {
     "address": "0x777915D031d1e8144c90D025C594b3b8Bf07a08d",
     "asset": "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce",
     "category": "omnichain",
@@ -290,6 +305,19 @@
     "description": "ZetaChain ZRC20 USDT on ETH",
     "foreign_chain_id": "1",
     "symbol": "USDT.ETH",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x8344d6f84d26f998fa070BbEA6D2E15E359e2641",
+    "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDC on Solana Mainnet",
+    "foreign_chain_id": "900",
+    "symbol": "USDC.SOL",
     "type": "zrc20"
   },
   {
