@@ -13,7 +13,7 @@
     "lint": "npx eslint . --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "test": "forge clean && forge test -vvv",
-    "coverage": "forge clean && forge coverage  --no-match-coverage \"(script|test|legacy)\" --report lcov",
+    "coverage": "forge clean && forge coverage --no-match-coverage \"(script|test|legacy)\" --report lcov",
     "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types",
     "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix && yarn typechain && yarn docs && del-cli dist && tsc || true",
     "prepublishOnly": "copyfiles -u 1 'out/**/*' 'abi'",
@@ -37,6 +37,8 @@
     "@types/mocha": ">=9.1.0",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "@uniswap/v3-periphery": "^1.4.4",
     "axios": "^1.7.7",
     "chai": "^4.2.0",
     "copyfiles": "^2.4.1",
@@ -55,8 +57,6 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
-    "@uniswap/v2-core": "^1.0.1",
-    "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "@zetachain/networks": "^10.0.0",
     "ethers": "5.6.8"
   },

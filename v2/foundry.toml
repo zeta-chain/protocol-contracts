@@ -10,7 +10,7 @@ remappings = [
   "openzeppelin-foundry-upgrades/=dependencies/openzeppelin-foundry-upgrades-0.3.2/src/",
   "solidity-stringutils/=dependencies/openzeppelin-foundry-upgrades-0.3.2/lib/solidity-stringutils/",
   "@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/",
-  "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/",
+  "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/"
 ]
 
 no-match-contract = '.*EchidnaTest$'
@@ -24,8 +24,6 @@ ast = true
 build_info = true
 extra_output = ["storageLayout"]
 evm_version = "london"
-
-no_analyze_assembly = true
 
 [fmt]
 bracket_spacing = true
