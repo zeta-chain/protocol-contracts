@@ -13,7 +13,6 @@ remappings = [
   "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/"
 ]
 
-solc-version = "0.8.26"
 no-match-contract = '.*EchidnaTest$'
 optimizer = true
 optimizer_runs = 10_000

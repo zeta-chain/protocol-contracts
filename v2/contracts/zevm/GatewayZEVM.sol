@@ -210,6 +210,7 @@ contract GatewayZEVM is
         RevertOptions calldata /*revertOptions*/
     )
         external
+        view
         whenNotPaused
     {
         // TODO: remove error and comment out code once ZETA supported back
@@ -252,6 +253,7 @@ contract GatewayZEVM is
         RevertOptions calldata /*revertOptions*/
     )
         external
+        view
         whenNotPaused
     {
         // TODO: remove error and comment out code once ZETA supported back
