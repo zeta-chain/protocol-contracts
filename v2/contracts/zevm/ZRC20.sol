@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
+pragma solidity ^0.8.26;
 
 import "../../contracts/zevm/interfaces/ISystem.sol";
 import "../../contracts/zevm/interfaces/IZRC20.sol";
