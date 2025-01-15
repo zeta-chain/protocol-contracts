@@ -9,7 +9,7 @@ Contracts of official protocol contracts deployed by the core ZetaChain team.
 
 ### Codebase
 
-The protocol contracts V2 codebase is separated into two sections:
+The protocol contracts codebase is separated into two sections:
 
 - `zevm`: contracts deployed on ZetaChain
 - `evm`: contracts deployed on EVM connected chains (Ethereum, Base, etc..)
