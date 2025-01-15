@@ -282,6 +282,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x54Bf2B1E91FCb56853097BD2545750d218E245e1",
+    "asset": "cbbtcf3aa214zXHbiAZQwf4122FBYbraNdFqgw4iMij",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 8,
+    "description": "ZetaChain ZRC20 cbBTC on Solana Mainnet",
+    "foreign_chain_id": "900",
+    "symbol": "CBBTC.SOL",
+    "type": "zrc20"
+  },
+  {
     "address": "0x777915D031d1e8144c90D025C594b3b8Bf07a08d",
     "asset": "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce",
     "category": "omnichain",
@@ -422,6 +435,19 @@
     "description": "ZetaChain ZRC20 ULTI on Ethereum",
     "foreign_chain_id": "1",
     "symbol": "ULTI.ETH",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xEe9CC614D03e7Dbe994b514079f4914a605B4719",
+    "asset": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDT on Solana Mainnet",
+    "foreign_chain_id": "900",
+    "symbol": "USDT.SOL",
     "type": "zrc20"
   },
   {
