@@ -1,4 +1,4 @@
-name: Publish to NPM (V2)
+name: Publish to NPM
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./v2
+    working-directory: .
 
 jobs:
   publish:
