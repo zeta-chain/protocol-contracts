@@ -29,6 +29,8 @@ The protocol contracts V2 codebase is separated into two sections:
     - Non-Native: when ZETA tokens where never native to the chains but withdrawn from ZetaChain. Use mint/burn model.
 - TSS (EOA): Threshold-signature-scheme wallet, this address holds the gas token sent to ZetaChain (like Ethers)
 
+[Learn more about the Gateway contracts](https://www.zetachain.com/docs/developers/evm/gateway/)
+
 ### Usage
 
 **Install dependencies**
