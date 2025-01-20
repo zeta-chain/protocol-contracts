@@ -6,14 +6,14 @@ title: "Protocol contracts"
 
 Contracts of official protocol contracts deployed by the core ZetaChain team.
 
-### Learn more about ZetaChain
+## Learn more about ZetaChain
 
 * Check our [website](https://www.zetachain.com/).
 * Read our [docs](https://docs.zetachain.com/).
 
-### Codebase
+## Codebase
 
-The protocol contracts V2 codebase is separated into two sections:
+The protocol contracts codebase is separated into two sections:
 
 - `zevm`: contracts deployed on ZetaChain
 - `evm`: contracts deployed on EVM connected chains (Ethereum, Base, etc..)
@@ -35,7 +35,7 @@ The protocol contracts V2 codebase is separated into two sections:
 
 [Learn more about the Gateway contracts](https://www.zetachain.com/docs/developers/evm/gateway/)
 
-### Usage
+## Usage
 
 **Install dependencies**
 
@@ -72,7 +72,7 @@ To view detailed instructions on how to deploy the contracts, please refer to th
 
 This guide covers all steps required to deploy the contracts, including environment setup, commands, and best practices.
 
-### Community
+## Community
 
 [X](https://x.com/zetablockchain) | [Discord](https://discord.com/invite/zetachain) | [Telegram](https://t.me/zetachainofficial) | [Website](https://zetachain.com)# Summary
 - [Home](README.md)
