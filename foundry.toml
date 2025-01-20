@@ -2,6 +2,7 @@
 src = "contracts"
 out = "out"
 libs = ["lib"]
+default_solc_version = "0.8.26"
 
 remappings = [
   "ds-test/=node_modules/ds-test/src",
