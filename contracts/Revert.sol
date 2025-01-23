@@ -39,7 +39,7 @@ struct RevertContext {
 /// @param outgoing Flag to indicate if the crosschain transaction was outgoing: from ZetaChain to connected chain.
 /// if false, the transaction was incoming: from connected chain to ZetaChain.
 /// @param chainID Chain ID of the connected chain.
-/// @param revertMessage Arbitrary data specified in the revert options
+/// @param revertMessage Arbitrary data specified in the RevertOptions object when initating the crosschain transaction.
 struct AbortContext {
     bytes sender;
     address asset;
