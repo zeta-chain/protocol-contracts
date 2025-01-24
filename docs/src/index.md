@@ -137,4 +137,6 @@ This guide covers all steps required to deploy the contracts, including environm
   - [INotSupportedMethods](protocol/contracts/Errors.sol/interface.INotSupportedMethods.md)
   - [RevertOptions](protocol/contracts/Revert.sol/struct.RevertOptions.md)
   - [RevertContext](protocol/contracts/Revert.sol/struct.RevertContext.md)
+  - [AbortContext](protocol/contracts/Revert.sol/struct.AbortContext.md)
   - [Revertable](protocol/contracts/Revert.sol/interface.Revertable.md)
+  - [Abortable](protocol/contracts/Revert.sol/interface.Abortable.md)
