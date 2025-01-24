@@ -44,7 +44,7 @@ jobs:
           yarn install
           forge soldeer update
 
-      - name: Install specific version of aibgen
+      - name: Install specific version of abigen
         run: |
           wget https://gethstore.blob.core.windows.net/builds/geth-alltools-linux-amd64-1.11.5-a38f4108.tar.gz
           tar -zxvf geth-alltools-linux-amd64-1.11.5-a38f4108.tar.gz
