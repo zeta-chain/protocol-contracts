@@ -218,6 +218,8 @@ export { ProxyAdmin__factory } from "./factories/ProxyAdmin__factory";
 export { ReceiverEVM__factory } from "./factories/ReceiverEVM__factory";
 export { ReentrancyGuard__factory } from "./factories/ReentrancyGuard__factory";
 export { ReentrancyGuardUpgradeable__factory } from "./factories/ReentrancyGuardUpgradeable__factory";
+export type { Abortable } from "./Revert.sol/Abortable";
+export { Abortable__factory } from "./factories/Revert.sol/Abortable__factory";
 export type { Revertable } from "./Revert.sol/Revertable";
 export { Revertable__factory } from "./factories/Revert.sol/Revertable__factory";
 export { SafeERC20__factory } from "./factories/SafeERC20__factory";

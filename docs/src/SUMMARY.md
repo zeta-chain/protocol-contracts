@@ -61,4 +61,6 @@
   - [INotSupportedMethods](contracts/Errors.sol/interface.INotSupportedMethods.md)
   - [RevertOptions](contracts/Revert.sol/struct.RevertOptions.md)
   - [RevertContext](contracts/Revert.sol/struct.RevertContext.md)
+  - [AbortContext](contracts/Revert.sol/struct.AbortContext.md)
   - [Revertable](contracts/Revert.sol/interface.Revertable.md)
+  - [Abortable](contracts/Revert.sol/interface.Abortable.md)
