@@ -81,6 +81,31 @@ export type RevertContextStructOutput = [
   revertMessage: string
 ] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
+export type AbortContextStruct = {
+  sender: BytesLike;
+  asset: AddressLike;
+  amount: BigNumberish;
+  outgoing: boolean;
+  chainID: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type AbortContextStructOutput = [
+  sender: string,
+  asset: string,
+  amount: bigint,
+  outgoing: boolean,
+  chainID: bigint,
+  revertMessage: string
+] & {
+  sender: string;
+  asset: string;
+  amount: bigint;
+  outgoing: boolean;
+  chainID: bigint;
+  revertMessage: string;
+};
+
 export interface GatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -95,6 +120,7 @@ export interface GatewayZEVMInterface extends Interface {
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
       | "depositAndRevert"
       | "execute"
+      | "executeAbort"
       | "executeRevert"
       | "getRoleAdmin"
       | "grantRole"
@@ -190,6 +216,10 @@ export interface GatewayZEVMInterface extends Interface {
       AddressLike,
       BytesLike
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeAbort",
+    values: [AddressLike, AbortContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "executeRevert",
@@ -301,6 +331,10 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "executeAbort",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
     data: BytesLike
@@ -691,6 +725,12 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
+  executeAbort: TypedContractMethod<
+    [target: AddressLike, abortContext: AbortContextStruct],
+    [void],
+    "nonpayable"
+  >;
+
   executeRevert: TypedContractMethod<
     [target: AddressLike, revertContext: RevertContextStruct],
     [void],
@@ -885,6 +925,13 @@ export interface GatewayZEVM extends BaseContract {
       target: AddressLike,
       message: BytesLike
     ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "executeAbort"
+  ): TypedContractMethod<
+    [target: AddressLike, abortContext: AbortContextStruct],
     [void],
     "nonpayable"
   >;
