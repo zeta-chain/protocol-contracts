@@ -141,7 +141,7 @@ upgradeToAndCall(0, <implementation_address>, "")
 
 ## Verifying a contract already deployed
 
-If the contract has been deployed without verification option or the deployment was successful but not the verification, the deployed contract can be verified using the `verify` command. The command takes the same verification arguments as for the deployment command. It also requires the constructor arguments.
+If the contract has been deployed without verification option or the deployment was successful but not the verification, the deployed contract can be verified using the `verify-contract` command. The command takes the same verification arguments as for the deployment command. It also requires the constructor arguments.
 
 Example of verification command:
 
