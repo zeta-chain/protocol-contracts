@@ -1,15 +1,8 @@
 name: Publish to NPM
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "The version to release, e.g., 10.0.0-rc2"
-        required: true
-
-defaults:
-  run:
-    working-directory: .
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -27,7 +20,7 @@ jobs:
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
-      
+
       - name: Install Dependencies
         run: |
           yarn install
@@ -39,14 +32,17 @@ jobs:
       - name: Determine NPM Tag
         id: determine-npm-tag
         run: |
-          VERSION_TAG="${{ github.event.inputs.version }}"
+          VERSION_TAG=${GITHUB_REF#refs/tags/v}
           if [[ $VERSION_TAG == *"-"* ]]; then
-            echo "NPM_TAG=${VERSION_TAG#*-}" >> $GITHUB_ENV
+            echo ::set-output name=NPM_TAG::${VERSION_TAG#*-}
           else
-            echo "NPM_TAG=latest" >> $GITHUB_ENV
+            echo ::set-output name=NPM_TAG::latest
           fi
+        env:
+          GITHUB_REF: ${{ github.ref }}
 
       - name: Publish to NPM
-        run: yarn publish --new-version ${{ github.event.inputs.version }} --tag ${{ env.NPM_TAG }} --no-git-tag-version
+        run: yarn publish --new-version ${GITHUB_REF#refs/tags/v} --tag ${{ steps.determine-npm-tag.outputs.NPM_TAG }} --no-git-tag-version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_REF: ${{ github.ref }}
