@@ -60,7 +60,9 @@ contract DeployERC20Custody is Script {
         require(address(erc20Custody.gateway()) == gateway, "gateway not set");
 
         // Transfer admin role from deployer to admin
-        transferAdmin(erc20Custody, msg.sender, admin);
+        if (msg.sender != admin) {
+            transferAdmin(erc20Custody, msg.sender, admin);
+        }
 
         vm.stopBroadcast();
     }
