@@ -60,9 +60,10 @@ contract DeployGatewayEVM is Script {
         require(gateway.tssAddress() == tss, "tss not set");
         require(gateway.zetaToken() == address(zeta), "zeta token not set");
 
-        // Transfer admin role from deployer to admin
-        transferAdmin(gateway, msg.sender, admin);
-
+        // Transfer admin role from deployer to admin if the address is different
+        if (msg.sender != admin) {
+            transferAdmin(gateway, msg.sender, admin);
+        }
         vm.stopBroadcast();
     }
 

@@ -58,7 +58,9 @@ contract DeployGatewayZEVM is Script {
         require(gateway.zetaToken() == zeta, "zeta token not set");
 
         // Transfer admin role from deployer to admin
-        transferAdmin(gateway, msg.sender, admin);
+        if (msg.sender != admin) {
+            transferAdmin(gateway, msg.sender, admin);
+        }
 
         vm.stopBroadcast();
     }
