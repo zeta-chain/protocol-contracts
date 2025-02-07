@@ -1,5 +1,3 @@
-
-
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -113,6 +111,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x1de70f3e971B62A0707dA18100392af14f7fB677",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Arbitrum Sepolia ETH",
+    "foreign_chain_id": "421614",
+    "symbol": "ETH.ARBSEP",
+    "type": "zrc20"
+  },
+  {
     "address": "0x236b0DE675cC8F46AE186897fCCeFe3370C9eDeD",
     "asset": "",
     "category": "omnichain",
@@ -123,6 +134,19 @@
     "description": "ZetaChain ZRC20 Base Sepolia ETH-base_sepolia",
     "foreign_chain_id": "84532",
     "symbol": "ETH.BASESEPOLIA",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x4bC32034caCcc9B7e02536945eDbC286bACbA073",
+    "asset": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDC-Dev on Arbitrum Sepolia",
+    "foreign_chain_id": "421614",
+    "symbol": "USDC.ARBSEP",
     "type": "zrc20"
   },
   {
@@ -149,6 +173,32 @@
     "description": "USDC-bsc_testnet",
     "foreign_chain_id": "97",
     "symbol": "USDC",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x8344d6f84d26f998fa070BbEA6D2E15E359e2641",
+    "asset": "0x5425890298aed601595a70AB815c96711a31Bc65",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDC-Dev on Avalanche Fuji C-Chain",
+    "foreign_chain_id": "43113",
+    "symbol": "USDC.FUJI",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x96152E6180E085FA57c7708e18AF8F05e37B479D",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 Avalanche Fuji C-Chain AVAX",
+    "foreign_chain_id": "43113",
+    "symbol": "AVAX.FUJI",
     "type": "zrc20"
   },
   {
@@ -257,6 +307,13 @@
     "type": "tss"
   },
   {
+    "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
+    "category": "omnichain",
+    "chain_id": 43113,
+    "chain_name": "empty",
+    "type": "erc20Custody"
+  },
+  {
     "address": "0x60E6b70bC2761f878Ff992276612F67FbABC1761",
     "category": "messaging",
     "chain_id": 80002,
@@ -339,6 +396,13 @@
     "chain_id": 84532,
     "chain_name": "base_sepolia",
     "type": "zetaToken"
+  },
+  {
+    "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
+    "category": "omnichain",
+    "chain_id": 421614,
+    "chain_name": "empty",
+    "type": "erc20Custody"
   },
   {
     "address": "0x3963341dad121c9CD33046089395D66eBF20Fb03",

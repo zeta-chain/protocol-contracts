@@ -1,5 +1,12 @@
 [
   {
+    "address": "ZETAjseVjuFsxdRxo6MmTCvqFwb3ZHUx56Co3vCmGis",
+    "category": "omnichain",
+    "chain_id": 900,
+    "chain_name": "solana_mainnet",
+    "type": "gateway"
+  },
+  {
     "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
     "category": "messaging",
     "chain_id": 1,
