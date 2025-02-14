@@ -637,9 +637,11 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     address protocolAddress;
     RevertOptions revertOptions;
     RevertContext revertContext;
+    AbortContext abortContext;
 
     event ContextData(bytes origin, address sender, uint256 chainID, address msgSender, string message);
     event ContextDataRevert(RevertContext revertContext);
+    event ContextDataAbort(AbortContext abortContext);
 
     error ZeroAddress();
     error EnforcedPause();
@@ -682,6 +684,14 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.stopPrank();
 
         revertContext = RevertContext({ sender: owner, asset: address(0), amount: 1, revertMessage: "" });
+        abortContext = AbortContext({
+            sender: abi.encodePacked(owner),
+            asset: address(0),
+            amount: 1,
+            outgoing: false,
+            chainID: 1,
+            revertMessage: ""
+        });
     }
 
     function testDepositFailsIfZRC20IsZeroAddress() public {
@@ -1064,5 +1074,18 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
         gateway.depositAndCall(context, amount, address(gateway), message);
+    }
+
+    function testExecuteAbortUniversalContract() public {
+        vm.expectEmit(true, true, true, true, address(testUniversalContract));
+        emit ContextDataAbort(abortContext);
+        vm.prank(protocolAddress);
+        gateway.executeAbort(address(testUniversalContract), abortContext);
+    }
+
+    function testExecuteAbortUniversalContractFailsIfTargetIsZeroAddress() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.executeAbort(address(0), abortContext);
     }
 }

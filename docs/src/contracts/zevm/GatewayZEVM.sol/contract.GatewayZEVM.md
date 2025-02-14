@@ -455,6 +455,31 @@ function depositAndRevert(
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
+### executeAbort
+
+Call onAbort on a user-specified contract on ZEVM.
+this function doesn't deposit the asset to the target contract. This operation is done directly by the protocol.
+the assets are deposited to the target contract even if onAbort reverts.
+
+
+```solidity
+function executeAbort(
+    address target,
+    AbortContext calldata abortContext
+)
+    external
+    nonReentrant
+    onlyProtocol
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`target`|`address`|The target contract to call.|
+|`abortContext`|`AbortContext`|Abort context to pass to onAbort.|
+
+
 ## Errors
 ### ZeroAddress
 Error indicating a zero address was provided.

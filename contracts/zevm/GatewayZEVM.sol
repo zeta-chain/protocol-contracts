@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { CallOptions, IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
 import { INotSupportedMethods } from "../../contracts/Errors.sol";
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import { AbortContext, Abortable, RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { MessageContext, UniversalContract } from "./interfaces/UniversalContract.sol";
@@ -438,5 +438,23 @@ contract GatewayZEVM is
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
         Revertable(target).onRevert(revertContext);
+    }
+
+    /// @notice Call onAbort on a user-specified contract on ZEVM.
+    /// this function doesn't deposit the asset to the target contract. This operation is done directly by the protocol.
+    /// the assets are deposited to the target contract even if onAbort reverts.
+    /// @param target The target contract to call.
+    /// @param abortContext Abort context to pass to onAbort.
+    function executeAbort(
+        address target,
+        AbortContext calldata abortContext
+    )
+        external
+        nonReentrant
+        onlyProtocol
+        whenNotPaused
+    {
+        if (target == address(0)) revert ZeroAddress();
+        Abortable(target).onAbort(abortContext);
     }
 }

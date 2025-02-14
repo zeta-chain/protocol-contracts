@@ -3,13 +3,13 @@ pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import { RevertContext, Revertable } from "../../contracts/Revert.sol";
+import { AbortContext, Abortable, RevertContext, Revertable } from "../../contracts/Revert.sol";
 import "../../contracts/zevm/interfaces/UniversalContract.sol";
 
 /// @title TestUniversalContract
 /// @notice This contract is used just for testing.
 /// @dev Implements the UniversalContract interface for handling cross-chain calls and reverts.
-contract TestUniversalContract is UniversalContract, Revertable {
+contract TestUniversalContract is UniversalContract, Revertable, Abortable {
     /// @notice Emitted when a cross-chain call is received.
     /// @param origin The origin address on the external chain.
     /// @param sender The sender address on the external chain.
@@ -21,6 +21,10 @@ contract TestUniversalContract is UniversalContract, Revertable {
     /// @notice Emitted when a cross-chain call is reverted.
     /// @param revertContext Revert context.
     event ContextDataRevert(RevertContext revertContext);
+
+    /// @notice Emitted when a cross-chain call is aborted.
+    /// @param abortContext Abort context.
+    event ContextDataAbort(AbortContext abortContext);
 
     /// @notice Handles a cross-chain call.
     /// @param context The context of the cross-chain call.
@@ -48,6 +52,12 @@ contract TestUniversalContract is UniversalContract, Revertable {
     /// @param revertContext Revert context.
     function onRevert(RevertContext calldata revertContext) external override {
         emit ContextDataRevert(revertContext);
+    }
+
+    /// @notice Handles a cross-chain call abort.
+    /// @param abortContext Abort context.
+    function onAbort(AbortContext calldata abortContext) external override {
+        emit ContextDataAbort(abortContext);
     }
 
     /// @notice Allows the contract to receive ETH.
