@@ -314,13 +314,6 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
-    "category": "omnichain",
-    "chain_id": 43113,
-    "chain_name": "empty",
-    "type": "gateway"
-  },
-  {
     "address": "0x60E6b70bC2761f878Ff992276612F67FbABC1761",
     "category": "messaging",
     "chain_id": 80002,
@@ -410,13 +403,6 @@
     "chain_id": 421614,
     "chain_name": "empty",
     "type": "erc20Custody"
-  },
-  {
-    "address": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
-    "category": "omnichain",
-    "chain_id": 421614,
-    "chain_name": "empty",
-    "type": "gateway"
   },
   {
     "address": "0x3963341dad121c9CD33046089395D66eBF20Fb03",
