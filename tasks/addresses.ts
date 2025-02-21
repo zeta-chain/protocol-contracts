@@ -171,7 +171,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
               address: zetaToken,
               category: "messaging",
               chain_id: parseInt(chain.chain_id),
-              chain_name: chain.chain_name,
+              chain_name: chain.name,
               type: "zetaToken",
             });
           }
@@ -181,7 +181,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
               address: connector,
               category: "messaging",
               chain_id: parseInt(chain.chain_id),
-              chain_name: chain.chain_name,
+              chain_name: chain.name,
               type: "connector",
             });
           }
@@ -191,7 +191,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
               address: data.chain_params.erc20_custody_contract_address,
               category: "omnichain",
               chain_id: parseInt(chain.chain_id),
-              chain_name: chain.chain_name,
+              chain_name: chain.name,
               type: "erc20Custody",
             });
           }

@@ -14,8 +14,8 @@ contract DeployERC20Custody is Script {
         address expectedImplAddress;
         address expectedProxyAddress;
 
-        bytes32 implSalt = keccak256("ERC20Custody-2");
-        bytes32 proxySalt = keccak256("ERC20CustodyProxy-2");
+        bytes32 implSalt = keccak256("ERC20Custody");
+        bytes32 proxySalt = keccak256("ERC20CustodyProxy");
 
         // Add this specific check to ensure contract is not deployed at deterministic address with wrong admin
         require(admin != address(0), "Environment variable ERC20_CUSTODY_ADMIN_ADDRESS_EVM is not set");
