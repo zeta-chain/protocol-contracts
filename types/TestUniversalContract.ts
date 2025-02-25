@@ -23,6 +23,31 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type AbortContextStruct = {
+  sender: BytesLike;
+  asset: AddressLike;
+  amount: BigNumberish;
+  outgoing: boolean;
+  chainID: BigNumberish;
+  revertMessage: BytesLike;
+};
+
+export type AbortContextStructOutput = [
+  sender: string,
+  asset: string,
+  amount: bigint,
+  outgoing: boolean,
+  chainID: bigint,
+  revertMessage: string
+] & {
+  sender: string;
+  asset: string;
+  amount: bigint;
+  outgoing: boolean;
+  chainID: bigint;
+  revertMessage: string;
+};
+
 export type MessageContextStruct = {
   origin: BytesLike;
   sender: AddressLike;
@@ -50,12 +75,21 @@ export type RevertContextStructOutput = [
 ] & { sender: string; asset: string; amount: bigint; revertMessage: string };
 
 export interface TestUniversalContractInterface extends Interface {
-  getFunction(nameOrSignature: "onCall" | "onRevert"): FunctionFragment;
+  getFunction(
+    nameOrSignature: "onAbort" | "onCall" | "onRevert"
+  ): FunctionFragment;
 
   getEvent(
-    nameOrSignatureOrTopic: "ContextData" | "ContextDataRevert"
+    nameOrSignatureOrTopic:
+      | "ContextData"
+      | "ContextDataAbort"
+      | "ContextDataRevert"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "onAbort",
+    values: [AbortContextStruct]
+  ): string;
   encodeFunctionData(
     functionFragment: "onCall",
     values: [MessageContextStruct, AddressLike, BigNumberish, BytesLike]
@@ -65,6 +99,7 @@ export interface TestUniversalContractInterface extends Interface {
     values: [RevertContextStruct]
   ): string;
 
+  decodeFunctionResult(functionFragment: "onAbort", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
 }
@@ -90,6 +125,18 @@ export namespace ContextDataEvent {
     chainID: bigint;
     msgSender: string;
     message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ContextDataAbortEvent {
+  export type InputTuple = [abortContext: AbortContextStruct];
+  export type OutputTuple = [abortContext: AbortContextStructOutput];
+  export interface OutputObject {
+    abortContext: AbortContextStructOutput;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -152,6 +199,12 @@ export interface TestUniversalContract extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  onAbort: TypedContractMethod<
+    [abortContext: AbortContextStruct],
+    [void],
+    "nonpayable"
+  >;
+
   onCall: TypedContractMethod<
     [
       context: MessageContextStruct,
@@ -173,6 +226,13 @@ export interface TestUniversalContract extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "onAbort"
+  ): TypedContractMethod<
+    [abortContext: AbortContextStruct],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "onCall"
   ): TypedContractMethod<
@@ -201,6 +261,13 @@ export interface TestUniversalContract extends BaseContract {
     ContextDataEvent.OutputObject
   >;
   getEvent(
+    key: "ContextDataAbort"
+  ): TypedContractEvent<
+    ContextDataAbortEvent.InputTuple,
+    ContextDataAbortEvent.OutputTuple,
+    ContextDataAbortEvent.OutputObject
+  >;
+  getEvent(
     key: "ContextDataRevert"
   ): TypedContractEvent<
     ContextDataRevertEvent.InputTuple,
@@ -218,6 +285,17 @@ export interface TestUniversalContract extends BaseContract {
       ContextDataEvent.InputTuple,
       ContextDataEvent.OutputTuple,
       ContextDataEvent.OutputObject
+    >;
+
+    "ContextDataAbort(tuple)": TypedContractEvent<
+      ContextDataAbortEvent.InputTuple,
+      ContextDataAbortEvent.OutputTuple,
+      ContextDataAbortEvent.OutputObject
+    >;
+    ContextDataAbort: TypedContractEvent<
+      ContextDataAbortEvent.InputTuple,
+      ContextDataAbortEvent.OutputTuple,
+      ContextDataAbortEvent.OutputObject
     >;
 
     "ContextDataRevert(tuple)": TypedContractEvent<

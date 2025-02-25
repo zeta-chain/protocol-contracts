@@ -521,18 +521,18 @@ contract GatewayEVMInboundTest is
         // assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testFailDepositERC20ToCustodyIfAmountIs0() public {
+    function testRevertDepositERC20ToCustodyIfAmountIs0() public {
         uint256 amount = 0;
 
         token.approve(address(gateway), amount);
 
-        vm.expectRevert("InsufficientERC20Amount");
+        vm.expectRevert(InsufficientERC20Amount.selector);
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
-    function testFailDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
+    function testRevertDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
-        vm.expectRevert("ZeroAddress");
+        vm.expectRevert(ZeroAddress.selector);
         gateway.deposit(address(0), amount, address(token), revertOptions);
     }
 
@@ -548,23 +548,23 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + amount, tssBalanceAfter);
     }
 
-    function testFailDepositEthToTssIfAmountIs0() public {
+    function testRevertDepositEthToTssIfAmountIs0() public {
         uint256 amount = 0;
 
-        vm.expectRevert("InsufficientETHAmount");
+        vm.expectRevert(InsufficientETHAmount.selector);
         gateway.deposit{ value: amount }(destination, revertOptions);
     }
 
-    function testFailDepositEthToTssIfPayloadSizeExceeded() public {
+    function testRevertDepositEthToTssIfPayloadSizeExceeded() public {
         revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() + 1);
-        vm.expectRevert("PayloadSizeExceeded");
+        vm.expectRevert(PayloadSizeExceeded.selector);
         gateway.deposit{ value: 1 }(destination, revertOptions);
     }
 
-    function testFailDepositEthToTssIfReceiverIsZeroAddress() public {
+    function testRevertDepositEthToTssIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
-        vm.expectRevert("ZeroAddress");
+        vm.expectRevert(ZeroAddress.selector);
         gateway.deposit{ value: amount }(address(0), revertOptions);
     }
 
@@ -612,21 +612,21 @@ contract GatewayEVMInboundTest is
         assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testFailDepositERC20ToCustodyWithPayloadIfAmountIs0() public {
+    function testRevertDepositERC20ToCustodyWithPayloadIfAmountIs0() public {
         uint256 amount = 0;
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert("InsufficientERC20Amount");
+        vm.expectRevert(InsufficientERC20Amount.selector);
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
-    function testFailDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
+    function testRevertDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert("ZeroAddress");
+        vm.expectRevert(ZeroAddress.selector);
         gateway.depositAndCall(address(0), amount, address(token), payload, revertOptions);
     }
 
@@ -652,19 +652,19 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
-    function testFailDepositEthToTssWithPayloadIfAmountIs0() public {
+    function testRevertDepositEthToTssWithPayloadIfAmountIs0() public {
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert("InsufficientETHAmount");
+        vm.expectRevert(InsufficientETHAmount.selector);
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
-    function testFailDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
+    function testRevertDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert("ZeroAddress");
+        vm.expectRevert(ZeroAddress.selector);
         gateway.depositAndCall{ value: amount }(address(0), payload, revertOptions);
     }
 
