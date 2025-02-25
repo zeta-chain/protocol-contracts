@@ -1,5 +1,3 @@
-
-
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -7,13 +5,6 @@
     "chain_id": 97,
     "chain_name": "bsc_testnet",
     "type": "connector"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
-    "type": "custody"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
@@ -312,8 +303,15 @@
     "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
     "category": "omnichain",
     "chain_id": 43113,
-    "chain_name": "empty",
+    "chain_name": "avalanche_testnet",
     "type": "erc20Custody"
+  },
+  {
+    "address": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
+    "category": "omnichain",
+    "chain_id": 43113,
+    "chain_name": "avalanche_testnet",
+    "type": "gateway"
   },
   {
     "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
@@ -328,13 +326,6 @@
     "chain_id": 80002,
     "chain_name": "amoy_testnet",
     "type": "connector"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 80002,
-    "chain_name": "amoy_testnet",
-    "type": "custody"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
@@ -376,13 +367,6 @@
     "category": "omnichain",
     "chain_id": 84532,
     "chain_name": "base_sepolia",
-    "type": "custody"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_sepolia",
     "type": "erc20Custody"
   },
   {
@@ -410,8 +394,15 @@
     "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
     "category": "omnichain",
     "chain_id": 421614,
-    "chain_name": "empty",
+    "chain_name": "arbitrum_sepolia",
     "type": "erc20Custody"
+  },
+  {
+    "address": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
+    "category": "omnichain",
+    "chain_id": 421614,
+    "chain_name": "arbitrum_sepolia",
+    "type": "gateway"
   },
   {
     "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
@@ -426,13 +417,6 @@
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "connector"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 11155111,
-    "chain_name": "sepolia_testnet",
-    "type": "custody"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",

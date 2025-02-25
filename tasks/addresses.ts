@@ -171,7 +171,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
               address: zetaToken,
               category: "messaging",
               chain_id: parseInt(chain.chain_id),
-              chain_name: chain.chain_name,
+              chain_name: chain.name,
               type: "zetaToken",
             });
           }
@@ -181,18 +181,28 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
               address: connector,
               category: "messaging",
               chain_id: parseInt(chain.chain_id),
-              chain_name: chain.chain_name,
+              chain_name: chain.name,
               type: "connector",
             });
           }
           const erc20Custody = data.chain_params.erc20_custody_contract_address;
           if (erc20Custody && erc20Custody != "0x0000000000000000000000000000000000000000") {
             addresses.push({
-              address: data.chain_params.erc20_custody_contract_address,
+              address: erc20Custody,
               category: "omnichain",
               chain_id: parseInt(chain.chain_id),
-              chain_name: chain.chain_name,
+              chain_name: chain.name,
               type: "erc20Custody",
+            });
+          }
+          const gateway = data.chain_params.gateway_address;
+          if (gateway && gateway != "0x0000000000000000000000000000000000000000") {
+            addresses.push({
+              address: gateway,
+              category: "omnichain",
+              chain_id: parseInt(chain.chain_id),
+              chain_name: chain.name,
+              type: "gateway",
             });
           }
         });
