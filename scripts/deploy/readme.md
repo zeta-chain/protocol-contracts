@@ -139,6 +139,30 @@ After the implementation is deployed, the contract can be upgraded by calling th
 upgradeToAndCall(0, <implementation_address>, "")
 ```
 
+## Verifying a contract already deployed
+
+If the contract has been deployed without verification option or the deployment was successful but not the verification, the deployed contract can be verified using the `verify-contract` command. The command takes the same verification arguments as for the deployment command. It also requires the constructor arguments.
+
+Example of verification command:
+
+```
+forge verify-contract \
+    --chain-id 7001 \
+    --verifier blockscout \
+    --verifier-url https://zetachain-testnet.blockscout.com/api \
+    0xa8c15af25fe229f399affefbb8bb733ece35fb39 \
+    contracts/zevm/ZRC20.sol:ZRC20 \
+    --constructor-args $(cast abi-encode "constructor(string,string,uint8,uint256,uint256,uint256,address,address)" \
+    "USDC-bsc_testnet" \
+    "USDC" \
+    6 \
+    97 \
+    2 \
+    100000 \
+    0xEdf1c3275d13489aCdC6cD6eD246E72458B8795B \
+    0x6c533f7fe93fae114d0954697069df33c9b74fd7)
+```
+
 ## Simulating a protocol contract upgrade
 
 The scripts in `upgrade` allow to locally simulate the upgrade process with the protocol contract and verify the state is not corrupted.
