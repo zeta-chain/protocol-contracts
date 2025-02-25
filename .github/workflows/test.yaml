@@ -43,6 +43,9 @@ jobs:
           yarn install
           forge soldeer update
   
+      - name: Build
+        run: forge build
+
       - name: Test
         run: yarn test
 
