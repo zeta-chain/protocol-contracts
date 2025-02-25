@@ -1,3 +1,5 @@
+
+
 [
   {
     "address": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
@@ -196,6 +198,19 @@
     "type": "zetaToken"
   },
   {
+    "address": "0x0327f0660525b15Cdb8f1f5FBF0dD7Cd5Ba182aD",
+    "asset": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDC on Arbitrum One",
+    "foreign_chain_id": "42161",
+    "symbol": "USDC.ARB",
+    "type": "zrc20"
+  },
+  {
     "address": "0x05BA149A7bd6dC1F937fA9046A9e05C05f3b18b0",
     "asset": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
     "category": "omnichain",
@@ -206,6 +221,19 @@
     "description": "ZetaChain ZRC20 USDC on BSC",
     "foreign_chain_id": "56",
     "symbol": "USDC.BSC",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x0ca762FA958194795320635c11fF0C45C6412958",
+    "asset": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDT on Arbitrum One",
+    "foreign_chain_id": "42161",
+    "symbol": "USDT.ARB",
     "type": "zrc20"
   },
   {
@@ -258,6 +286,19 @@
     "description": "ZetaChain ZRC20 PEPE on ETH",
     "foreign_chain_id": "1",
     "symbol": "PEPE.ETH",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x2Db395976CDb9eeFCc8920F4F2f0736f1D575794",
+    "asset": "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDT on Avalanche C-Chain",
+    "foreign_chain_id": "43114",
+    "symbol": "USDT.AVAX",
     "type": "zrc20"
   },
   {
@@ -378,6 +419,32 @@
     "type": "zrc20"
   },
   {
+    "address": "0xa52Ad01A1d62b408fFe06C2467439251da61E4a9",
+    "asset": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 6,
+    "description": "ZetaChain ZRC20 USDC on Avalanche C-Chain",
+    "foreign_chain_id": "43114",
+    "symbol": "USDC.AVAX",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xA614Aebf7924A3Eb4D066aDCA5595E4980407f1d",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Arbitrum One ETH",
+    "foreign_chain_id": "42161",
+    "symbol": "ETH.ARB",
+    "type": "zrc20"
+  },
+  {
     "address": "0xADF73ebA3Ebaa7254E859549A44c74eF7cff7501",
     "asset": "",
     "category": "omnichain",
@@ -456,6 +523,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xe1A4f44b12eb72DC6da556Be9Ed1185141d7C23c",
+    "asset": "0x8eD97a637A790Be1feff5e888d43629dc05408F6",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "erc20",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 NPC on Ethereum Mainnet",
+    "foreign_chain_id": "1",
+    "symbol": "NPC.ETH",
+    "type": "zrc20"
+  },
+  {
     "address": "0xe573a6e11f8506620F123DBF930222163D46BCB6",
     "asset": "0x0E7779e698052f8fe56C415C3818FCf89de9aC6D",
     "category": "omnichain",
@@ -479,6 +559,19 @@
     "description": "ZetaChain ZRC20 cbBTC on Base Mainnet",
     "foreign_chain_id": "8453",
     "symbol": "CBBTC.BASE",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xE8d7796535F1cd63F0fe8D631E68eACe6839869B",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 Avalanche C-Chain AVAX",
+    "foreign_chain_id": "43114",
+    "symbol": "AVAX.AVAX",
     "type": "zrc20"
   },
   {
@@ -548,5 +641,33 @@
     "chain_id": 8453,
     "chain_name": "base_mainnet",
     "type": "zetaToken"
+  },
+  {
+    "address": "0xECe33274237E6422f2668eD7dEE5901b16336aA0",
+    "category": "omnichain",
+    "chain_id": 42161,
+    "chain_name": "empty",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 42161,
+    "chain_name": "arbitrum_mainnet",
+    "type": "tss"
+  },
+  {
+    "address": "0xECe33274237E6422f2668eD7dEE5901b16336aA0",
+    "category": "omnichain",
+    "chain_id": 43114,
+    "chain_name": "empty",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": 43114,
+    "chain_name": "avalanche_mainnet",
+    "type": "tss"
   }
 ]
