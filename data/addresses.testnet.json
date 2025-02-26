@@ -21,13 +21,6 @@
     "type": "gateway"
   },
   {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
-    "type": "tss"
-  },
-  {
     "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
     "category": "messaging",
     "chain_id": 97,
@@ -140,6 +133,19 @@
     "description": "ZetaChain ZRC20 USDC-Dev on Arbitrum Sepolia",
     "foreign_chain_id": "421614",
     "symbol": "USDC.ARBSEP",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x54Bf2B1E91FCb56853097BD2545750d218E245e1",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 TON Testnet TON",
+    "foreign_chain_id": "2015141",
+    "symbol": "TON.TON",
     "type": "zrc20"
   },
   {
@@ -288,15 +294,8 @@
   {
     "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
     "category": "omnichain",
-    "chain_id": 18333,
-    "chain_name": "btc_signet_testnet",
-    "type": "tss"
-  },
-  {
-    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
-    "category": "omnichain",
-    "chain_id": 18334,
-    "chain_name": "btc_testnet4",
+    "chain_id": "18332",
+    "chain_name": "btc_testnet",
     "type": "tss"
   },
   {
@@ -312,13 +311,6 @@
     "chain_id": 43113,
     "chain_name": "avalanche_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 43113,
-    "chain_name": "avalanche_testnet",
-    "type": "tss"
   },
   {
     "address": "0x60E6b70bC2761f878Ff992276612F67FbABC1761",
@@ -340,13 +332,6 @@
     "chain_id": 80002,
     "chain_name": "amoy_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 80002,
-    "chain_name": "amoy_testnet",
-    "type": "tss"
   },
   {
     "address": "0x1432612E60cad487C857E7D38AFf57134916c902",
@@ -377,13 +362,6 @@
     "type": "gateway"
   },
   {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_sepolia",
-    "type": "tss"
-  },
-  {
     "address": "0xf4e63991E7475b659bd97Bba85f32a7259239D5d",
     "category": "messaging",
     "chain_id": 84532,
@@ -405,10 +383,17 @@
     "type": "gateway"
   },
   {
+    "address": "0:7a4d41496726aadb227cf4d313c95912f1fe6cc742c18ebde306ff59881d8816",
+    "category": "omnichain",
+    "chain_id": 2015141,
+    "chain_name": "ton_testnet",
+    "type": "gateway"
+  },
+  {
     "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
     "category": "omnichain",
-    "chain_id": 421614,
-    "chain_name": "arbitrum_sepolia",
+    "chain_id": "11155111",
+    "chain_name": "sepolia_testnet",
     "type": "tss"
   },
   {
@@ -431,13 +416,6 @@
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 11155111,
-    "chain_name": "sepolia_testnet",
-    "type": "tss"
   },
   {
     "address": "0x0000c304D2934c00Db1d51995b9f6996AffD17c0",

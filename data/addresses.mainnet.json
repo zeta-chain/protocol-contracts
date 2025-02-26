@@ -1,5 +1,12 @@
 [
   {
+    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
+    "category": "omnichain",
+    "chain_id": "1",
+    "chain_name": "eth_mainnet",
+    "type": "tss"
+  },
+  {
     "address": "0x000007Cf399229b2f5A4D043F20E90C9C98B7C6a",
     "category": "messaging",
     "chain_id": 1,
@@ -19,13 +26,6 @@
     "chain_id": 1,
     "chain_name": "eth_mainnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 1,
-    "chain_name": "eth_mainnet",
-    "type": "tss"
   },
   {
     "address": "0xf091867EC603A6628eD83D274E835539D82e9cc8",
@@ -56,13 +56,6 @@
     "type": "gateway"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 56,
-    "chain_name": "bsc_mainnet",
-    "type": "tss"
-  },
-  {
     "address": "0x0000028a2eB8346cd5c0267856aB7594B7a55308",
     "category": "messaging",
     "chain_id": 56,
@@ -89,13 +82,6 @@
     "chain_id": 137,
     "chain_name": "polygon_mainnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 137,
-    "chain_name": "polygon_mainnet",
-    "type": "tss"
   },
   {
     "address": "0x2eff750c9D770BaBE6dBe84d05E40e4C65d7938d",
@@ -566,7 +552,7 @@
   {
     "address": "bc1qm24wp577nk8aacckv8np465z3dvmu7ry45el6y",
     "category": "omnichain",
-    "chain_id": 8332,
+    "chain_id": "8332",
     "chain_name": "btc_mainnet",
     "type": "tss"
   },
@@ -592,13 +578,6 @@
     "type": "gateway"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 8453,
-    "chain_name": "base_mainnet",
-    "type": "tss"
-  },
-  {
     "address": "0x7FB8E2aE4A5923BBd8e1513945914b5AB69cdA2a",
     "category": "messaging",
     "chain_id": 8453,
@@ -620,13 +599,6 @@
     "type": "gateway"
   },
   {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 42161,
-    "chain_name": "arbitrum_mainnet",
-    "type": "tss"
-  },
-  {
     "address": "0xECe33274237E6422f2668eD7dEE5901b16336aA0",
     "category": "omnichain",
     "chain_id": 43114,
@@ -639,12 +611,5 @@
     "chain_id": 43114,
     "chain_name": "avalanche_mainnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x70e967acFcC17c3941E87562161406d41676FD83",
-    "category": "omnichain",
-    "chain_id": 43114,
-    "chain_name": "avalanche_mainnet",
-    "type": "tss"
   }
 ]
