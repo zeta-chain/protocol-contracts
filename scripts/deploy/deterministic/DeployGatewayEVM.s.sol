@@ -15,8 +15,8 @@ contract DeployGatewayEVM is Script {
         address expectedImplAddress;
         address expectedProxyAddress;
 
-        bytes32 implSalt = keccak256("GatewayEVM-2");
-        bytes32 proxySalt = keccak256("GatewayEVMProxy-2");
+        bytes32 implSalt = keccak256("GatewayEVM");
+        bytes32 proxySalt = keccak256("GatewayEVMProxy");
 
         // Add this specific check to ensure contract is not deployed at deterministic address with wrong admin
         require(admin != address(0), "Environment variable GATEWAY_ADMIN_ADDRESS_EVM is not set");

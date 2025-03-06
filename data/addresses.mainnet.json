@@ -646,7 +646,14 @@
     "address": "0xECe33274237E6422f2668eD7dEE5901b16336aA0",
     "category": "omnichain",
     "chain_id": 42161,
-    "chain_name": "empty",
+    "chain_name": "arbitrum_mainnet",
+    "type": "erc20Custody"
+  },
+  {
+    "address": "0xECe33274237E6422f2668eD7dEE5901b16336aA0",
+    "category": "omnichain",
+    "chain_id": 43114,
+    "chain_name": "avalanche_mainnet",
     "type": "erc20Custody"
   },
   {
@@ -655,13 +662,6 @@
     "chain_id": 42161,
     "chain_name": "arbitrum_mainnet",
     "type": "tss"
-  },
-  {
-    "address": "0xECe33274237E6422f2668eD7dEE5901b16336aA0",
-    "category": "omnichain",
-    "chain_id": 43114,
-    "chain_name": "empty",
-    "type": "erc20Custody"
   },
   {
     "address": "0x70e967acFcC17c3941E87562161406d41676FD83",

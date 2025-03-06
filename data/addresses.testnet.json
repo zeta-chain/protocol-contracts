@@ -312,7 +312,7 @@
     "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
     "category": "omnichain",
     "chain_id": 43113,
-    "chain_name": "empty",
+    "chain_name": "avalanche_testnet",
     "type": "erc20Custody"
   },
   {
@@ -410,7 +410,7 @@
     "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
     "category": "omnichain",
     "chain_id": 421614,
-    "chain_name": "empty",
+    "chain_name": "arbitrum_sepolia",
     "type": "erc20Custody"
   },
   {
