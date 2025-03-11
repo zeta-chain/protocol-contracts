@@ -34,6 +34,7 @@
     "@typechain/hardhat": "^9.0.0",
     "@types/chai": "^4.2.0",
     "@types/eslint__js": "^8.42.3",
+    "@types/lodash": "^4.17.16",
     "@types/mocha": ">=9.1.0",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
