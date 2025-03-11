@@ -168,7 +168,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
         .get(`${api[network].rpc}/zeta-chain/observer/get_chain_params_for_chain/${chain.chain_id}`)
         .then(({ data }) => {
           const zetaToken = data.chain_params.zeta_token_contract_address;
-          if (zetaToken && zetaToken != "0x0000000000000000000000000000000000000000") {
+          if (zetaToken && zetaToken != ethers.constants.AddressZero) {
             addresses.push({
               address: zetaToken,
               category: "messaging",
@@ -178,7 +178,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const connector = data.chain_params.connector_contract_address;
-          if (connector && connector != "0x0000000000000000000000000000000000000000") {
+          if (connector && connector != ethers.constants.AddressZero) {
             addresses.push({
               address: connector,
               category: "messaging",
@@ -188,7 +188,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const erc20Custody = data.chain_params.erc20_custody_contract_address;
-          if (erc20Custody && erc20Custody != "0x0000000000000000000000000000000000000000") {
+          if (erc20Custody && erc20Custody != ethers.constants.AddressZero) {
             addresses.push({
               address: erc20Custody,
               category: "omnichain",
@@ -198,7 +198,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const gateway = data.chain_params.gateway_address;
-          if (gateway && gateway != "0x0000000000000000000000000000000000000000") {
+          if (gateway && gateway != ethers.constants.AddressZero) {
             addresses.push({
               address: gateway,
               category: "omnichain",
