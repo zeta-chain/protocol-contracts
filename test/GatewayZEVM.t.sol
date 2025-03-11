@@ -122,7 +122,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         vm.prank(protocolAddress);
         zrc20.updateGasLimit(10);
 
-        vm.expectRevert(LowBalance.selector);
+        vm.expectRevert(GasFeeTransferFailed.selector);
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
     }
 
@@ -131,7 +131,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 ownerBalance = zrc20.balanceOf(owner);
         zrc20.transfer(address(0x123), ownerBalance - 1);
 
-        vm.expectRevert(LowBalance.selector);
+        vm.expectRevert(ZRC20TransferFailed.selector);
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
     }
 
