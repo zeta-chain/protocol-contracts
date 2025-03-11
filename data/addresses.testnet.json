@@ -1,3 +1,5 @@
+
+
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -188,19 +190,6 @@
     "type": "zrc20"
   },
   {
-    "address": "0x96152E6180E085FA57c7708e18AF8F05e37B479D",
-    "asset": "",
-    "category": "omnichain",
-    "chain_id": 7001,
-    "chain_name": "zeta_testnet",
-    "coin_type": "gas",
-    "decimals": 9,
-    "description": "ZetaChain ZRC20 Avalanche Fuji C-Chain AVAX",
-    "foreign_chain_id": "43113",
-    "symbol": "AVAX.FUJI",
-    "type": "zrc20"
-  },
-  {
     "address": "0xADF73ebA3Ebaa7254E859549A44c74eF7cff7501",
     "asset": "",
     "category": "omnichain",
@@ -276,6 +265,19 @@
     "description": "ZetaChain ZRC20 USDC on Polygon Amoy",
     "foreign_chain_id": "80002",
     "symbol": "USDC.AMOY",
+    "type": "zrc20"
+  },
+  {
+    "address": "0xEe9CC614D03e7Dbe994b514079f4914a605B4719",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 AVAX on Avalanche Fuji C-Chain",
+    "foreign_chain_id": "43113",
+    "symbol": "AVAX.FUJI",
     "type": "zrc20"
   },
   {
