@@ -30,6 +30,9 @@ contract GatewayZEVM is
     /// @notice Error indicating a zero address was provided.
     error ZeroAddress();
 
+    /// @notice Error for failed external contract calls
+    error ExternalCallFailed(string reason);
+
     /// @notice The constant address of the protocol
     address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
     /// @notice The address of the Zeta token.
@@ -89,6 +92,22 @@ contract GatewayZEVM is
         _unpause();
     }
 
+    /// @notice Helper function to safely execute transferFrom
+    /// @param zrc20 The ZRC20 token address
+    /// @param from The sender address
+    /// @param to The recipient address
+    /// @param amount The amount to transfer
+    /// @return True if the transfer was successful, false otherwise.
+    function _safeTransferFrom(address zrc20, address from, address to, uint256 amount) private returns (bool) {
+        try IZRC20(zrc20).transferFrom(from, to, amount) returns (bool success) {
+            return success;
+        } catch Error(string memory reason) {
+            revert ExternalCallFailed(reason);
+        } catch {
+            return false;
+        }
+    }
+
     /// @dev Private function to withdraw ZRC20 tokens.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
@@ -105,15 +124,22 @@ contract GatewayZEVM is
     /// @return The gas fee for the withdrawal.
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
+
+        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
 
-        if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
+        if (!_safeTransferFrom(zrc20, msg.sender, address(this), amount)) {
             revert ZRC20TransferFailed();
         }
 
-        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
+        try IZRC20(zrc20).burn(amount) returns (bool success) {
+            if (!success) revert ZRC20BurnFailed();
+        } catch Error(string memory reason) {
+            revert ExternalCallFailed(reason);
+        } catch {
+            revert ZRC20BurnFailed();
+        }
 
         return gasFee;
     }
@@ -122,10 +148,17 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
     function _transferZETA(uint256 amount, address to) private {
-        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
-        IWETH9(zetaToken).withdraw(amount);
-        (bool sent,) = to.call{ value: amount }("");
-        if (!sent) revert FailedZetaSent();
+        if (!_safeTransferFrom(zetaToken, msg.sender, address(this), amount)) {
+            revert FailedZetaSent();
+        }
+        try IWETH9(zetaToken).withdraw(amount) {
+            (bool sent,) = to.call{ value: amount }("");
+            if (!sent) revert FailedZetaSent();
+        } catch Error(string memory reason) {
+            revert ExternalCallFailed(reason);
+        } catch {
+            revert FailedZetaSent();
+        }
     }
 
     /// @notice Withdraw ZRC20 tokens to an external chain.
@@ -306,7 +339,7 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
+        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
             revert GasFeeTransferFailed();
         }
 
@@ -323,7 +356,13 @@ contract GatewayZEVM is
 
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        try IZRC20(zrc20).deposit(target, amount) returns (bool success) {
+            if (!success) revert ZRC20DepositFailed();
+        } catch Error(string memory reason) {
+            revert ExternalCallFailed(reason);
+        } catch {
+            revert ZRC20DepositFailed();
+        }
     }
 
     /// @notice Execute a user-specified contract on ZEVM.
