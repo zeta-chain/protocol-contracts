@@ -260,16 +260,17 @@ const fetchFactoryV3 = async (addresses: any, network: Network) => {
       const wethAddress = await routerContract.WETH9();
       const factoryAddress = await routerContract.factory();
 
-      const wethObj = {
-        address: wethAddress,
-        category: "messaging",
-        chain_id: router.chain_id,
-        chain_name: router.chain_name,
-        type: "weth9",
-      };
-
-      if (!addresses.some((e: any) => isEqual(e, wethObj))) {
-        addresses.push(wethObj);
+      if (router.chain_id !== 7000 && router.chain_id !== 7001) {
+        const wethObj = {
+          address: wethAddress,
+          category: "messaging",
+          chain_id: router.chain_id,
+          chain_name: router.chain_name,
+          type: "weth9",
+        };
+        if (!addresses.some((e: any) => isEqual(e, wethObj))) {
+          addresses.push(wethObj);
+        }
       }
 
       addresses.push({
