@@ -50,25 +50,27 @@ const fetchChains = async (network: Network) => {
 };
 
 const fetchTssData = async (chains: any, addresses: any, network: Network) => {
-  const bitcoinChainID = network === "zeta_mainnet" ? "8332" : "18332";
+  const isMainnet = network == "zeta_mainnet";
+  const bitcoinChainID = isMainnet ? "8332" : "18332";
   const URL = `${api[network].rpc}/zeta-chain/observer/get_tss_address/${bitcoinChainID}`;
   try {
     const tssResponse: AxiosResponse<any> = await axios.get(URL);
 
     if (tssResponse.status === 200) {
-      chains.forEach((chain: any) => {
-        const { btc, eth } = tssResponse.data;
-        const isEVM = chain.consensus === "ethereum";
-        const isBitcoin = chain.consensus === "bitcoin";
-        if (isEVM || isBitcoin) {
-          addresses.push({
-            address: isBitcoin ? btc : eth,
-            category: "omnichain",
-            chain_id: parseInt(chain.chain_id),
-            chain_name: chain.name,
-            type: "tss",
-          });
-        }
+      const { btc, eth } = tssResponse.data;
+      addresses.push({
+        address: btc,
+        category: "omnichain",
+        chain_id: bitcoinChainID,
+        chain_name: isMainnet ? "btc_mainnet" : "btc_testnet",
+        type: "tss",
+      });
+      addresses.push({
+        address: eth,
+        category: "omnichain",
+        chain_id: isMainnet ? "1" : "11155111",
+        chain_name: isMainnet ? "eth_mainnet" : "sepolia_testnet",
+        type: "tss",
       });
     } else {
       console.error("Error fetching TSS data:", tssResponse.status, tssResponse.statusText);
@@ -166,7 +168,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
         .get(`${api[network].rpc}/zeta-chain/observer/get_chain_params_for_chain/${chain.chain_id}`)
         .then(({ data }) => {
           const zetaToken = data.chain_params.zeta_token_contract_address;
-          if (zetaToken && zetaToken != "0x0000000000000000000000000000000000000000") {
+          if (zetaToken && zetaToken != ethers.constants.AddressZero) {
             addresses.push({
               address: zetaToken,
               category: "messaging",
@@ -176,7 +178,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const connector = data.chain_params.connector_contract_address;
-          if (connector && connector != "0x0000000000000000000000000000000000000000") {
+          if (connector && connector != ethers.constants.AddressZero) {
             addresses.push({
               address: connector,
               category: "messaging",
@@ -186,13 +188,23 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const erc20Custody = data.chain_params.erc20_custody_contract_address;
-          if (erc20Custody && erc20Custody != "0x0000000000000000000000000000000000000000") {
+          if (erc20Custody && erc20Custody != ethers.constants.AddressZero) {
             addresses.push({
-              address: data.chain_params.erc20_custody_contract_address,
+              address: erc20Custody,
               category: "omnichain",
               chain_id: parseInt(chain.chain_id),
               chain_name: chain.name,
               type: "erc20Custody",
+            });
+          }
+          const gateway = data.chain_params.gateway_address;
+          if (gateway && gateway != ethers.constants.AddressZero) {
+            addresses.push({
+              address: gateway,
+              category: "omnichain",
+              chain_id: parseInt(chain.chain_id),
+              chain_name: chain.name,
+              type: "gateway",
             });
           }
         });

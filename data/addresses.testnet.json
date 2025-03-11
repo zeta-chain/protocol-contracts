@@ -13,13 +13,6 @@
     "category": "omnichain",
     "chain_id": 97,
     "chain_name": "bsc_testnet",
-    "type": "custody"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
     "type": "erc20Custody"
   },
   {
@@ -28,13 +21,6 @@
     "chain_id": 97,
     "chain_name": "bsc_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 97,
-    "chain_name": "bsc_testnet",
-    "type": "tss"
   },
   {
     "address": "0x0000c9ec4042283e8139c74f4c64bcd1e0b9b54f",
@@ -152,6 +138,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0x54Bf2B1E91FCb56853097BD2545750d218E245e1",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 TON Testnet TON",
+    "foreign_chain_id": "2015141",
+    "symbol": "TON.TON",
+    "type": "zrc20"
+  },
+  {
     "address": "0x777915D031d1e8144c90D025C594b3b8Bf07a08d",
     "asset": "",
     "category": "omnichain",
@@ -188,19 +187,6 @@
     "description": "ZetaChain ZRC20 USDC-Dev on Avalanche Fuji C-Chain",
     "foreign_chain_id": "43113",
     "symbol": "USDC.FUJI",
-    "type": "zrc20"
-  },
-  {
-    "address": "0x96152E6180E085FA57c7708e18AF8F05e37B479D",
-    "asset": "",
-    "category": "omnichain",
-    "chain_id": 7001,
-    "chain_name": "zeta_testnet",
-    "coin_type": "gas",
-    "decimals": 9,
-    "description": "ZetaChain ZRC20 Avalanche Fuji C-Chain AVAX",
-    "foreign_chain_id": "43113",
-    "symbol": "AVAX.FUJI",
     "type": "zrc20"
   },
   {
@@ -282,6 +268,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xEe9CC614D03e7Dbe994b514079f4914a605B4719",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 18,
+    "description": "ZetaChain ZRC20 AVAX on Avalanche Fuji C-Chain",
+    "foreign_chain_id": "43113",
+    "symbol": "AVAX.FUJI",
+    "type": "zrc20"
+  },
+  {
     "address": "0xfC9201f4116aE6b054722E10b98D904829b469c3",
     "asset": "",
     "category": "omnichain",
@@ -297,15 +296,8 @@
   {
     "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
     "category": "omnichain",
-    "chain_id": 18333,
-    "chain_name": "btc_signet_testnet",
-    "type": "tss"
-  },
-  {
-    "address": "tb1qy9pqmk2pd9sv63g27jt8r657wy0d9ueeh0nqur",
-    "category": "omnichain",
-    "chain_id": 18334,
-    "chain_name": "btc_testnet4",
+    "chain_id": "18332",
+    "chain_name": "btc_testnet",
     "type": "tss"
   },
   {
@@ -316,11 +308,11 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "address": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
     "category": "omnichain",
     "chain_id": 43113,
     "chain_name": "avalanche_testnet",
-    "type": "tss"
+    "type": "gateway"
   },
   {
     "address": "0x60E6b70bC2761f878Ff992276612F67FbABC1761",
@@ -328,13 +320,6 @@
     "chain_id": 80002,
     "chain_name": "amoy_testnet",
     "type": "connector"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 80002,
-    "chain_name": "amoy_testnet",
-    "type": "custody"
   },
   {
     "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
@@ -349,13 +334,6 @@
     "chain_id": 80002,
     "chain_name": "amoy_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 80002,
-    "chain_name": "amoy_testnet",
-    "type": "tss"
   },
   {
     "address": "0x1432612E60cad487C857E7D38AFf57134916c902",
@@ -376,13 +354,6 @@
     "category": "omnichain",
     "chain_id": 84532,
     "chain_name": "base_sepolia",
-    "type": "custody"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_sepolia",
     "type": "erc20Custody"
   },
   {
@@ -391,13 +362,6 @@
     "chain_id": 84532,
     "chain_name": "base_sepolia",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 84532,
-    "chain_name": "base_sepolia",
-    "type": "tss"
   },
   {
     "address": "0xf4e63991E7475b659bd97Bba85f32a7259239D5d",
@@ -414,10 +378,24 @@
     "type": "erc20Custody"
   },
   {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "address": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
     "category": "omnichain",
     "chain_id": 421614,
     "chain_name": "arbitrum_sepolia",
+    "type": "gateway"
+  },
+  {
+    "address": "0:7a4d41496726aadb227cf4d313c95912f1fe6cc742c18ebde306ff59881d8816",
+    "category": "omnichain",
+    "chain_id": 2015141,
+    "chain_name": "ton_testnet",
+    "type": "gateway"
+  },
+  {
+    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
+    "category": "omnichain",
+    "chain_id": "11155111",
+    "chain_name": "sepolia_testnet",
     "type": "tss"
   },
   {
@@ -432,13 +410,6 @@
     "category": "omnichain",
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
-    "type": "custody"
-  },
-  {
-    "address": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
-    "category": "omnichain",
-    "chain_id": 11155111,
-    "chain_name": "sepolia_testnet",
     "type": "erc20Custody"
   },
   {
@@ -447,13 +418,6 @@
     "chain_id": 11155111,
     "chain_name": "sepolia_testnet",
     "type": "gateway"
-  },
-  {
-    "address": "0x8531a5aB847ff5B22D855633C25ED1DA3255247e",
-    "category": "omnichain",
-    "chain_id": 11155111,
-    "chain_name": "sepolia_testnet",
-    "type": "tss"
   },
   {
     "address": "0x0000c304D2934c00Db1d51995b9f6996AffD17c0",
