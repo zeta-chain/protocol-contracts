@@ -50,8 +50,8 @@ const fetchChains = async (network: Network) => {
 };
 
 const fetchTssData = async (chains: any, addresses: any, network: Network) => {
-  const bitcoinChainID = network === "zeta_mainnet" ? "8332" : "18332";
-  const isMainnet = bitcoinChainID === "8332";
+  const isMainnet = network == "zeta_mainnet";
+  const bitcoinChainID = isMainnet ? "8332" : "18332";
   const URL = `${api[network].rpc}/zeta-chain/observer/get_tss_address/${bitcoinChainID}`;
   try {
     const tssResponse: AxiosResponse<any> = await axios.get(URL);
