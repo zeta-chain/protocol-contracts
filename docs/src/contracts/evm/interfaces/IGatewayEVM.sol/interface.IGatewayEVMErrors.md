@@ -50,7 +50,7 @@ Error for failed token approval.
 
 
 ```solidity
-error ApprovalFailed();
+error ApprovalFailed(address token, address spender);
 ```
 
 ### CustodyInitialized
@@ -74,7 +74,7 @@ Error when trying to transfer not whitelisted token to custody.
 
 
 ```solidity
-error NotWhitelistedInCustody();
+error NotWhitelistedInCustody(address token);
 ```
 
 ### NotAllowedToCallOnCall
@@ -98,6 +98,6 @@ Error indicating payload size exceeded in external functions.
 
 
 ```solidity
-error PayloadSizeExceeded();
+error PayloadSizeExceeded(uint256 provided, uint256 maximum);
 ```
 

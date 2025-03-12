@@ -10,7 +10,7 @@ Error indicating a withdrawal failure.
 
 
 ```solidity
-error WithdrawalFailed();
+error WithdrawalFailed(address token, address recipient, uint256 amount);
 ```
 
 ### InsufficientZRC20Amount
@@ -34,7 +34,7 @@ Error indicating a failure to burn ZRC20 tokens.
 
 
 ```solidity
-error ZRC20BurnFailed();
+error ZRC20BurnFailed(address zrc20, uint256 amount);
 ```
 
 ### ZRC20TransferFailed
@@ -42,7 +42,7 @@ Error indicating a failure to transfer ZRC20 tokens.
 
 
 ```solidity
-error ZRC20TransferFailed();
+error ZRC20TransferFailed(address zrc20, address from, address to, uint256 amount);
 ```
 
 ### ZRC20DepositFailed
@@ -50,7 +50,7 @@ Error indicating a failure to deposit ZRC20 tokens.
 
 
 ```solidity
-error ZRC20DepositFailed();
+error ZRC20DepositFailed(address zrc20, address to, uint256 amount);
 ```
 
 ### GasFeeTransferFailed
@@ -58,7 +58,7 @@ Error indicating a failure to transfer gas fee.
 
 
 ```solidity
-error GasFeeTransferFailed();
+error GasFeeTransferFailed(address token, address to, uint256 amount);
 ```
 
 ### CallerIsNotProtocol
@@ -82,7 +82,7 @@ Error indicating a failure to send ZETA tokens.
 
 
 ```solidity
-error FailedZetaSent();
+error FailedZetaSent(address recipient, uint256 amount);
 ```
 
 ### OnlyWZETAOrProtocol
@@ -106,6 +106,6 @@ Error indicating message size exceeded in external functions.
 
 
 ```solidity
-error MessageSizeExceeded();
+error MessageSizeExceeded(uint256 provided, uint256 maximum);
 ```
 

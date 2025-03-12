@@ -119,6 +119,30 @@ Unpause contract.
 function unpause() external onlyRole(PAUSER_ROLE);
 ```
 
+### _safeTransferFrom
+
+Helper function to safely execute transferFrom
+
+
+```solidity
+function _safeTransferFrom(address zrc20, address from, address to, uint256 amount) private returns (bool);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`zrc20`|`address`|The ZRC20 token address|
+|`from`|`address`|The sender address|
+|`to`|`address`|The recipient address|
+|`amount`|`uint256`|The amount to transfer|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bool`|True if the transfer was successful, false otherwise.|
+
+
 ### _withdrawZRC20
 
 *Private function to withdraw ZRC20 tokens.*
@@ -487,5 +511,13 @@ Error indicating a zero address was provided.
 
 ```solidity
 error ZeroAddress();
+```
+
+### ExternalCallFailed
+Error for failed external contract calls
+
+
+```solidity
+error ExternalCallFailed(string reason);
 ```
 
