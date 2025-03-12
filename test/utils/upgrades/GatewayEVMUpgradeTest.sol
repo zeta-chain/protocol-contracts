@@ -180,8 +180,8 @@ contract GatewayEVMUpgradeTest is
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
         // Approve the target contract to spend the tokens
-        if (!_resetApproval(token, to)) revert ApprovalFailed();
-        if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
+        if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
+        if (!IERC20(token).approve(to, amount)) revert ApprovalFailed(token, to);
         // Execute the call on the target contract
         if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
@@ -190,7 +190,7 @@ contract GatewayEVMUpgradeTest is
         }
 
         // Reset approval
-        if (!_resetApproval(token, to)) revert ApprovalFailed();
+        if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
 
         // Transfer any remaining tokens back to the custody/connector contract
         uint256 remainingBalance = IERC20(token).balanceOf(address(this));
@@ -243,7 +243,8 @@ contract GatewayEVMUpgradeTest is
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        uint256 payloadSize = revertOptions.revertMessage.length;
+        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -269,7 +270,8 @@ contract GatewayEVMUpgradeTest is
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        uint256 payloadSize = revertOptions.revertMessage.length;
+        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -292,7 +294,8 @@ contract GatewayEVMUpgradeTest is
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
+        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -320,7 +323,8 @@ contract GatewayEVMUpgradeTest is
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
+        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -341,7 +345,8 @@ contract GatewayEVMUpgradeTest is
         nonReentrant
     {
         if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
+        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
+        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
 
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
@@ -397,7 +402,7 @@ contract GatewayEVMUpgradeTest is
             // ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
-            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
+            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);
             IERC20(token).safeTransferFrom(from, custody, amount);
         }
     }
@@ -411,12 +416,12 @@ contract GatewayEVMUpgradeTest is
         if (token == zetaToken) {
             // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
-            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
+            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
             // send tokens to connector
             ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
-            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody();
+            if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);
             IERC20(token).safeTransfer(custody, amount);
         }
     }
