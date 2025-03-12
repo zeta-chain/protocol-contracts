@@ -786,7 +786,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testExecuteFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -796,7 +796,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testExecuteFailsIfTargetIsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -806,7 +806,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testExecuteUniversalContractFailsIfZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -816,7 +816,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testExecuteUniversalContract() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextData(abi.encodePacked(gateway), protocolAddress, 1, address(gateway), "hello");
@@ -827,7 +827,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testExecuteUniversalContractFailsIfSenderIsNotProtocol() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(CallerIsNotProtocol.selector);
         vm.prank(owner);
@@ -856,7 +856,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContractFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -866,7 +866,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContractFailsIfTargetIsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -876,7 +876,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContractFailsIfAmountIsZero() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(InsufficientZRC20Amount.selector);
@@ -889,7 +889,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextData(abi.encodePacked(gateway), protocolAddress, 1, address(gateway), "hello");
@@ -903,7 +903,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContractFailsIfSenderIsNotProtocol() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(CallerIsNotProtocol.selector);
         vm.prank(owner);
@@ -913,7 +913,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContractIfTargetIsProtocol() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
@@ -923,7 +923,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZRC20AndCallUniversalContractIfTargetIsGateway() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
@@ -982,7 +982,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -992,7 +992,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsAmountIsZero() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(InsufficientZetaAmount.selector);
@@ -1002,7 +1002,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZETAAndCallUniversalContractFailsIfZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -1012,7 +1012,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZETAAndCallUniversal() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
@@ -1026,7 +1026,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         uint256 destinationBalanceBefore = address(testUniversalContract).balance;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextData(abi.encodePacked(gateway), protocolAddress, amount, address(gateway), "hello");
@@ -1047,7 +1047,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         uint256 amount = 1;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(CallerIsNotProtocol.selector);
         vm.prank(owner);
@@ -1058,7 +1058,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         uint256 amount = 1;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
@@ -1069,7 +1069,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         uint256 amount = 1;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
-            MessageContext({ origin: abi.encodePacked(address(gateway)), sender: protocolAddress, chainID: 1 });
+            MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
