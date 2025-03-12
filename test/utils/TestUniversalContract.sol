@@ -45,7 +45,7 @@ contract TestUniversalContract is UniversalContract, Revertable, Abortable {
         if (message.length > 0) {
             decodedMessage = abi.decode(message, (string));
         }
-        emit ContextData(context.origin, context.sender, context.chainID, msg.sender, decodedMessage);
+        emit ContextData(context.sender, context.senderEVM, context.chainID, msg.sender, decodedMessage);
     }
 
     /// @notice Handles a cross-chain call revert.

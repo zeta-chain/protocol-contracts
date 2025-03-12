@@ -19,12 +19,12 @@ const _abi = [
         internalType: "struct MessageContext",
         components: [
           {
-            name: "origin",
+            name: "sender",
             type: "bytes",
             internalType: "bytes",
           },
           {
-            name: "sender",
+            name: "senderEVM",
             type: "address",
             internalType: "address",
           },
