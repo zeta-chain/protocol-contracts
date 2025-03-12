@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import {RevertContext} from "../../../contracts/Revert.sol";
+import { RevertContext } from "../../../contracts/Revert.sol";
 
 /// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
 /// MessageContext should be used
@@ -19,7 +19,8 @@ interface zContract {
         address zrc20,
         uint256 amount,
         bytes calldata message
-    ) external;
+    )
+        external;
 }
 
 /// @notice Provides contextual information when executing a cross-chain call on ZetaChain.
