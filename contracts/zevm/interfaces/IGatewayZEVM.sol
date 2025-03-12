@@ -76,7 +76,7 @@ interface IGatewayZEVMEvents {
 /// @notice Interface for the errors used in the GatewayZEVM contract.
 interface IGatewayZEVMErrors {
     /// @notice Error indicating a withdrawal failure.
-    error WithdrawalFailed();
+    error WithdrawalFailed(address token, address recipient, uint256 amount);
 
     /// @notice Error indicating an insufficient ZRC20 token amount.
     error InsufficientZRC20Amount();
@@ -85,16 +85,16 @@ interface IGatewayZEVMErrors {
     error InsufficientZetaAmount();
 
     /// @notice Error indicating a failure to burn ZRC20 tokens.
-    error ZRC20BurnFailed();
+    error ZRC20BurnFailed(address zrc20, uint256 amount);
 
     /// @notice Error indicating a failure to transfer ZRC20 tokens.
-    error ZRC20TransferFailed();
+    error ZRC20TransferFailed(address zrc20, address from, address to, uint256 amount);
 
     /// @notice Error indicating a failure to deposit ZRC20 tokens.
-    error ZRC20DepositFailed();
+    error ZRC20DepositFailed(address zrc20, address to, uint256 amount);
 
     /// @notice Error indicating a failure to transfer gas fee.
-    error GasFeeTransferFailed();
+    error GasFeeTransferFailed(address token, address to, uint256 amount);
 
     /// @notice Error indicating that the caller is not the protocol account.
     error CallerIsNotProtocol();
@@ -103,7 +103,7 @@ interface IGatewayZEVMErrors {
     error InvalidTarget();
 
     /// @notice Error indicating a failure to send ZETA tokens.
-    error FailedZetaSent();
+    error FailedZetaSent(address recipient, uint256 amount);
 
     /// @notice Error indicating that only WZETA or the protocol address can call the function.
     error OnlyWZETAOrProtocol();
@@ -112,7 +112,7 @@ interface IGatewayZEVMErrors {
     error InsufficientGasLimit();
 
     /// @notice Error indicating message size exceeded in external functions.
-    error MessageSizeExceeded();
+    error MessageSizeExceeded(uint256 provided, uint256 maximum);
 }
 
 /// @title IGatewayZEVM
