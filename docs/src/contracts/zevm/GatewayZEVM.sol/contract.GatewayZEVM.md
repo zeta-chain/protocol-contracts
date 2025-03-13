@@ -143,6 +143,20 @@ function _safeTransferFrom(address zrc20, address from, address to, uint256 amou
 |`<none>`|`bool`|True if the transfer was successful, false otherwise.|
 
 
+### _safeBurn
+
+
+```solidity
+function _safeBurn(address zrc20, uint256 amount) private returns (bool);
+```
+
+### _safeDeposit
+
+
+```solidity
+function _safeDeposit(address zrc20, address target, uint256 amount) private returns (bool);
+```
+
 ### _withdrawZRC20
 
 *Private function to withdraw ZRC20 tokens.*
@@ -511,13 +525,5 @@ Error indicating a zero address was provided.
 
 ```solidity
 error ZeroAddress();
-```
-
-### ExternalCallFailed
-Error for failed external contract calls
-
-
-```solidity
-error ExternalCallFailed(string reason);
 ```
 
