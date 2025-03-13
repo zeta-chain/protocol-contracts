@@ -236,8 +236,9 @@ contract GatewayEVM is
     function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -262,8 +263,9 @@ contract GatewayEVM is
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -285,8 +287,9 @@ contract GatewayEVM is
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -313,8 +316,9 @@ contract GatewayEVM is
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 

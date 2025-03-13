@@ -76,6 +76,9 @@ interface IGatewayZEVMEvents {
 /// @notice Interface for the errors used in the GatewayZEVM contract.
 interface IGatewayZEVMErrors {
     /// @notice Error indicating a withdrawal failure.
+    /// @param token The address of the token that failed to withdraw.
+    /// @param recipient The address that was supposed to receive the tokens.
+    /// @param amount The amount of tokens that failed to withdraw.
     error WithdrawalFailed(address token, address recipient, uint256 amount);
 
     /// @notice Error indicating an insufficient ZRC20 token amount.
@@ -85,15 +88,27 @@ interface IGatewayZEVMErrors {
     error InsufficientZetaAmount();
 
     /// @notice Error indicating a failure to burn ZRC20 tokens.
+    /// @param zrc20 The address of the ZRC20 token that failed to burn.
+    /// @param amount The amount of tokens that failed to burn.
     error ZRC20BurnFailed(address zrc20, uint256 amount);
 
     /// @notice Error indicating a failure to transfer ZRC20 tokens.
+    /// @param zrc20 The address of the ZRC20 token that failed to transfer.
+    /// @param from The address sending the tokens.
+    /// @param to The address receiving the tokens.
+    /// @param amount The amount of tokens that failed to transfer.
     error ZRC20TransferFailed(address zrc20, address from, address to, uint256 amount);
 
     /// @notice Error indicating a failure to deposit ZRC20 tokens.
+    /// @param zrc20 The address of the ZRC20 token that failed to deposit.
+    /// @param to The address that was supposed to receive the deposit.
+    /// @param amount The amount of tokens that failed to deposit.
     error ZRC20DepositFailed(address zrc20, address to, uint256 amount);
 
     /// @notice Error indicating a failure to transfer gas fee.
+    /// @param token The address of the token used for gas fee.
+    /// @param to The address that was supposed to receive the gas fee.
+    /// @param amount The amount of gas fee that failed to transfer.
     error GasFeeTransferFailed(address token, address to, uint256 amount);
 
     /// @notice Error indicating that the caller is not the protocol account.
@@ -103,6 +118,8 @@ interface IGatewayZEVMErrors {
     error InvalidTarget();
 
     /// @notice Error indicating a failure to send ZETA tokens.
+    /// @param recipient The address that was supposed to receive the ZETA tokens.
+    /// @param amount The amount of ZETA tokens that failed to send.
     error FailedZetaSent(address recipient, uint256 amount);
 
     /// @notice Error indicating that only WZETA or the protocol address can call the function.
@@ -112,6 +129,8 @@ interface IGatewayZEVMErrors {
     error InsufficientGasLimit();
 
     /// @notice Error indicating message size exceeded in external functions.
+    /// @param provided The size of the message that was provided.
+    /// @param maximum The maximum allowed message size.
     error MessageSizeExceeded(uint256 provided, uint256 maximum);
 }
 
