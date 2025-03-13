@@ -1,5 +1,3 @@
-
-
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -122,6 +120,19 @@
     "description": "ZetaChain ZRC20 Base Sepolia ETH-base_sepolia",
     "foreign_chain_id": "84532",
     "symbol": "ETH.BASESEPOLIA",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x3e128c169564DD527C8e9bd85124BF6A890E5a5f",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 SUI Testnet SUI",
+    "foreign_chain_id": "103",
+    "symbol": "SUI.SUI",
     "type": "zrc20"
   },
   {
