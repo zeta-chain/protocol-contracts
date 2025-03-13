@@ -28,6 +28,13 @@
     "type": "zetaToken"
   },
   {
+    "address": "0x6b2fe12c605d64e14ca69f9aba51550593ba92ff43376d0a6cc26a5ca226f9bd,0x6fc08f682551e52c2cc34362a20f744ba6a3d8d17f6583fa2f774887c4079700",
+    "category": "omnichain",
+    "chain_id": 103,
+    "chain_name": "sui_testnet",
+    "type": "gateway"
+  },
+  {
     "address": "ZETAjseVjuFsxdRxo6MmTCvqFwb3ZHUx56Co3vCmGis",
     "category": "omnichain",
     "chain_id": 901,
