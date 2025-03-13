@@ -17,12 +17,39 @@ const _abi = [
   {
     type: "error",
     name: "FailedZetaSent",
-    inputs: [],
+    inputs: [
+      {
+        name: "recipient",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
     name: "GasFeeTransferFailed",
-    inputs: [],
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "to",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
@@ -47,7 +74,18 @@ const _abi = [
   {
     type: "error",
     name: "MessageSizeExceeded",
-    inputs: [],
+    inputs: [
+      {
+        name: "provided",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "maximum",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
@@ -57,22 +95,86 @@ const _abi = [
   {
     type: "error",
     name: "WithdrawalFailed",
-    inputs: [],
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "recipient",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
     name: "ZRC20BurnFailed",
-    inputs: [],
+    inputs: [
+      {
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
     name: "ZRC20DepositFailed",
-    inputs: [],
+    inputs: [
+      {
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "to",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
     name: "ZRC20TransferFailed",
-    inputs: [],
+    inputs: [
+      {
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "from",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "to",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
 ] as const;
 
