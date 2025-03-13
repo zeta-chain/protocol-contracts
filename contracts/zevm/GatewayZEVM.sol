@@ -494,7 +494,10 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed(zrc20, target, amount);
+        if (!_safeDeposit(zrc20, target, amount)) {
+            revert ZRC20DepositFailed(zrc20, target, amount);
+        }
+
         Revertable(target).onRevert(revertContext);
     }
 
