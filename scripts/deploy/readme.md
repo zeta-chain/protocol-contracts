@@ -90,9 +90,11 @@ Protocol contracts (Gateway and ERC20Custody) follow ERC1967 standard. The contr
 
 The implementation contracts don't require environment variables or paramters to be deployed.
 
+NOTE: If deployment works, but verification fails, same command can be re-run with `--resume` flag, and only verification will be attempted.
+
 **GatewayEVM**
 
-Deploy a wew implementation of the GatewayEVM:
+Deploy a new implementation of the GatewayEVM:
 
 ```
 forge script scripts/deploy/deterministic/DeployGatewayEVMImplementation.s.sol \
@@ -106,7 +108,7 @@ forge script scripts/deploy/deterministic/DeployGatewayEVMImplementation.s.sol \
 
 **ERC20Custody**
 
-Deploy a wew implementation of the ERC20Custody:
+Deploy a new implementation of the ERC20Custody:
 
 ```
 forge script scripts/deploy/deterministic/DeployERC20CustodyImplementation.s.sol \
@@ -120,7 +122,7 @@ forge script scripts/deploy/deterministic/DeployERC20CustodyImplementation.s.sol
 
 **GatewayZEVM**
 
-Deploy a wew implementation of the GatewayZEVM:
+Deploy a new implementation of the GatewayZEVM:
 
 ```
 forge script scripts/deploy/deterministic/DeployGatewayZEVMImplementation.s.sol \
