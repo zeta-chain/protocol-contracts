@@ -143,7 +143,7 @@ const fetchAthensAddresses = async (addresses: any, network: Network) => {
   const systemContract = addresses.find((a: any) => {
     return a.chain_name === network && a.type === "systemContract";
   })?.address;
-  const provider = new ethers.providers.JsonRpcProvider(api[network].evm);
+  const provider = new ethers.JsonRpcProvider(api[network].evm);
   const sc = SystemContract__factory.connect(systemContract, provider);
   const common = {
     category: "omnichain",
@@ -168,7 +168,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
         .get(`${api[network].rpc}/zeta-chain/observer/get_chain_params_for_chain/${chain.chain_id}`)
         .then(({ data }) => {
           const zetaToken = data.chain_params.zeta_token_contract_address;
-          if (zetaToken && zetaToken != ethers.constants.AddressZero) {
+          if (zetaToken && zetaToken != ethers.ZeroAddress) {
             addresses.push({
               address: zetaToken,
               category: "messaging",
@@ -178,7 +178,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const connector = data.chain_params.connector_contract_address;
-          if (connector && connector != ethers.constants.AddressZero) {
+          if (connector && connector != ethers.ZeroAddress) {
             addresses.push({
               address: connector,
               category: "messaging",
@@ -188,7 +188,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const erc20Custody = data.chain_params.erc20_custody_contract_address;
-          if (erc20Custody && erc20Custody != ethers.constants.AddressZero) {
+          if (erc20Custody && erc20Custody != ethers.ZeroAddress) {
             addresses.push({
               address: erc20Custody,
               category: "omnichain",
@@ -198,7 +198,7 @@ const fetchChainSpecificAddresses = async (chains: any, addresses: any, network:
             });
           }
           const gateway = data.chain_params.gateway_address;
-          if (gateway && gateway != ethers.constants.AddressZero) {
+          if (gateway && gateway != ethers.ZeroAddress) {
             addresses.push({
               address: gateway,
               category: "omnichain",
@@ -217,7 +217,7 @@ const fetchFactoryV2 = async (addresses: any, network: Network) => {
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
-    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const provider = new ethers.JsonRpcProvider(rpc);
     const routerContract = new ethers.Contract(router.address, uniswapV2Router.abi, provider);
 
     try {
@@ -253,7 +253,7 @@ const fetchFactoryV3 = async (addresses: any, network: Network) => {
 
   for (const router of routers) {
     const rpc = getEndpoints("evm", router.chain_name)[0]?.url;
-    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const provider = new ethers.JsonRpcProvider(rpc);
     const routerContract = new ethers.Contract(router.address, SwapRouter.abi, provider);
 
     try {
