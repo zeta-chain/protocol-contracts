@@ -95,9 +95,11 @@ contract ERC20Custody is
         tssAddress = newTSSAddress;
     }
 
-    /// @notice Unpause contract.
+    /// @notice Sets whether this contract supports legacy methods such as deposit
+    /// @param _supportsLegacy Boolean flag indicating whether to enable or disable legacy method support
     function setSupportsLegacy(bool _supportsLegacy) external onlyRole(DEFAULT_ADMIN_ROLE) {
         supportsLegacy = _supportsLegacy;
+        emit SupportsLegacyUpdated(supportsLegacy);
     }
 
     /// @notice Whitelist ERC20 token.

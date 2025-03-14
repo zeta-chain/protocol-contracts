@@ -47,6 +47,10 @@ interface IERC20CustodyEvents {
     /// @param oldTSSAddress old tss address
     /// @param newTSSAddress new tss address
     event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
+
+    /// @notice Emitted when the legacy support flag is updated
+    /// @param newSupportsLegacy New legacy support flag value
+    event SupportsLegacyUpdated(bool newSupportsLegacy);
 }
 
 /// @title IERC20CustodyErrors
