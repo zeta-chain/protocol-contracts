@@ -83,6 +83,7 @@ export interface ERC20CustodyInterface extends Interface {
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
+      | "SupportsLegacyUpdated"
       | "Unpaused"
       | "Unwhitelisted"
       | "UpdatedCustodyTSSAddress"
@@ -392,6 +393,18 @@ export namespace RoleRevokedEvent {
     role: string;
     account: string;
     sender: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SupportsLegacyUpdatedEvent {
+  export type InputTuple = [newSupportsLegacy: boolean];
+  export type OutputTuple = [newSupportsLegacy: boolean];
+  export interface OutputObject {
+    newSupportsLegacy: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -896,6 +909,13 @@ export interface ERC20Custody extends BaseContract {
     RoleRevokedEvent.OutputObject
   >;
   getEvent(
+    key: "SupportsLegacyUpdated"
+  ): TypedContractEvent<
+    SupportsLegacyUpdatedEvent.InputTuple,
+    SupportsLegacyUpdatedEvent.OutputTuple,
+    SupportsLegacyUpdatedEvent.OutputObject
+  >;
+  getEvent(
     key: "Unpaused"
   ): TypedContractEvent<
     UnpausedEvent.InputTuple,
@@ -1017,6 +1037,17 @@ export interface ERC20Custody extends BaseContract {
       RoleRevokedEvent.InputTuple,
       RoleRevokedEvent.OutputTuple,
       RoleRevokedEvent.OutputObject
+    >;
+
+    "SupportsLegacyUpdated(bool)": TypedContractEvent<
+      SupportsLegacyUpdatedEvent.InputTuple,
+      SupportsLegacyUpdatedEvent.OutputTuple,
+      SupportsLegacyUpdatedEvent.OutputObject
+    >;
+    SupportsLegacyUpdated: TypedContractEvent<
+      SupportsLegacyUpdatedEvent.InputTuple,
+      SupportsLegacyUpdatedEvent.OutputTuple,
+      SupportsLegacyUpdatedEvent.OutputObject
     >;
 
     "Unpaused(address)": TypedContractEvent<

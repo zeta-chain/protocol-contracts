@@ -39,6 +39,7 @@ export interface IERC20CustodyEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
       | "Deposited"
+      | "SupportsLegacyUpdated"
       | "Unwhitelisted"
       | "UpdatedCustodyTSSAddress"
       | "Whitelisted"
@@ -66,6 +67,18 @@ export namespace DepositedEvent {
     asset: string;
     amount: bigint;
     message: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SupportsLegacyUpdatedEvent {
+  export type InputTuple = [newSupportsLegacy: boolean];
+  export type OutputTuple = [newSupportsLegacy: boolean];
+  export interface OutputObject {
+    newSupportsLegacy: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -239,6 +252,13 @@ export interface IERC20CustodyEvents extends BaseContract {
     DepositedEvent.OutputObject
   >;
   getEvent(
+    key: "SupportsLegacyUpdated"
+  ): TypedContractEvent<
+    SupportsLegacyUpdatedEvent.InputTuple,
+    SupportsLegacyUpdatedEvent.OutputTuple,
+    SupportsLegacyUpdatedEvent.OutputObject
+  >;
+  getEvent(
     key: "Unwhitelisted"
   ): TypedContractEvent<
     UnwhitelistedEvent.InputTuple,
@@ -291,6 +311,17 @@ export interface IERC20CustodyEvents extends BaseContract {
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
       DepositedEvent.OutputObject
+    >;
+
+    "SupportsLegacyUpdated(bool)": TypedContractEvent<
+      SupportsLegacyUpdatedEvent.InputTuple,
+      SupportsLegacyUpdatedEvent.OutputTuple,
+      SupportsLegacyUpdatedEvent.OutputObject
+    >;
+    SupportsLegacyUpdated: TypedContractEvent<
+      SupportsLegacyUpdatedEvent.InputTuple,
+      SupportsLegacyUpdatedEvent.OutputTuple,
+      SupportsLegacyUpdatedEvent.OutputObject
     >;
 
     "Unwhitelisted(address)": TypedContractEvent<

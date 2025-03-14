@@ -109,3 +109,17 @@ event UpdatedCustodyTSSAddress(address oldTSSAddress, address newTSSAddress);
 |`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
 
+### SupportsLegacyUpdated
+Emitted when the legacy support flag is updated
+
+
+```solidity
+event SupportsLegacyUpdated(bool newSupportsLegacy);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newSupportsLegacy`|`bool`|New legacy support flag value|
+

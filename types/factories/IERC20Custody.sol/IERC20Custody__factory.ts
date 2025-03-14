@@ -179,6 +179,19 @@ const _abi = [
   },
   {
     type: "event",
+    name: "SupportsLegacyUpdated",
+    inputs: [
+      {
+        name: "newSupportsLegacy",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Unwhitelisted",
     inputs: [
       {

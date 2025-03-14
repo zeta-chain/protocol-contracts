@@ -135,12 +135,18 @@ function updateTSSAddress(address newTSSAddress) external onlyRole(DEFAULT_ADMIN
 
 ### setSupportsLegacy
 
-Unpause contract.
+Sets whether this contract supports legacy methods such as deposit
 
 
 ```solidity
 function setSupportsLegacy(bool _supportsLegacy) external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`_supportsLegacy`|`bool`|Boolean flag indicating whether to enable or disable legacy method support|
+
 
 ### whitelist
 
