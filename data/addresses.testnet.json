@@ -1,3 +1,5 @@
+
+
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -26,6 +28,13 @@
     "chain_id": 97,
     "chain_name": "bsc_testnet",
     "type": "zetaToken"
+  },
+  {
+    "address": "0x6b2fe12c605d64e14ca69f9aba51550593ba92ff43376d0a6cc26a5ca226f9bd,0x6fc08f682551e52c2cc34362a20f744ba6a3d8d17f6583fa2f774887c4079700",
+    "category": "omnichain",
+    "chain_id": 103,
+    "chain_name": "sui_testnet",
+    "type": "gateway"
   },
   {
     "address": "ZETAjseVjuFsxdRxo6MmTCvqFwb3ZHUx56Co3vCmGis",
@@ -120,6 +129,19 @@
     "description": "ZetaChain ZRC20 Base Sepolia ETH-base_sepolia",
     "foreign_chain_id": "84532",
     "symbol": "ETH.BASESEPOLIA",
+    "type": "zrc20"
+  },
+  {
+    "address": "0x3e128c169564DD527C8e9bd85124BF6A890E5a5f",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 SUI Testnet SUI",
+    "foreign_chain_id": "103",
+    "symbol": "SUI.SUI",
     "type": "zrc20"
   },
   {
