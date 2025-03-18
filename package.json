@@ -14,7 +14,7 @@
     "lint:fix": "npx eslint . --fix --ignore-pattern coverage/ --ignore-pattern coverage.json --ignore-pattern lib/ --ignore-pattern out --ignore-pattern cache_forge/",
     "test": "forge clean && forge test -vvv",
     "coverage": "forge coverage --no-match-coverage \"(script|test|legacy)\" --report lcov",
-    "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test|IERC20|ZetaConnectorBase|ZetaErrors|ZetaNonEthInterface).sol/!(*.abi).json\" --out-dir types",
+    "typechain": "npx typechain --target ethers-v6 \"out/**/!(*.t|test).sol/!(*.abi).json\" --out-dir types && npx ts-node ./src/fix-duplicates.ts",
     "generate": "forge clean && forge build && forge fmt && ./scripts/generate_go.sh || true && ./scripts/generate_addresses.sh && yarn lint:fix && yarn typechain && yarn docs && del-cli dist && tsc || true",
     "prepublishOnly": "copyfiles -u 1 'out/**/*' 'abi'",
     "docs": "./scripts/generate_docs.sh"
