@@ -19,6 +19,7 @@ tsconfig.tsbuildinfo
 # Misc
 .env
 .DS_Store
+.idea
 .secrets
 .wallet.json
 

@@ -89,6 +89,45 @@ contract GatewayZEVM is
         _unpause();
     }
 
+    /// @notice Helper function to safely execute transferFrom
+    /// @param zrc20 The ZRC20 token address
+    /// @param from The sender address
+    /// @param to The recipient address
+    /// @param amount The amount to transfer
+    /// @return True if the transfer was successful, false otherwise.
+    function _safeTransferFrom(address zrc20, address from, address to, uint256 amount) private returns (bool) {
+        try IZRC20(zrc20).transferFrom(from, to, amount) returns (bool success) {
+            return success;
+        } catch {
+            return false;
+        }
+    }
+
+    // @notice Helper function to safely burn ZRC20 tokens
+    // @param zrc20 The ZRC20 token address
+    // @param amount The amount to burn
+    // @return True if the burn was successful, false otherwise
+    function _safeBurn(address zrc20, uint256 amount) private returns (bool) {
+        try IZRC20(zrc20).burn(amount) returns (bool success) {
+            return success;
+        } catch {
+            return false;
+        }
+    }
+
+    // @notice Helper function to safely deposit
+    // @param zrc20 The ZRC20 token address
+    // @param amount The target address to receive the deposited tokens
+    // @param amount The amount to deposit
+    // @return True if the deposit was successful, false otherwise
+    function _safeDeposit(address zrc20, address target, uint256 amount) private returns (bool) {
+        try IZRC20(zrc20).deposit(target, amount) returns (bool success) {
+            return success;
+        } catch {
+            return false;
+        }
+    }
+
     /// @dev Private function to withdraw ZRC20 tokens.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
@@ -105,15 +144,18 @@ contract GatewayZEVM is
     /// @return The gas fee for the withdrawal.
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed();
+
+        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
+            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
         }
 
-        if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
-            revert ZRC20TransferFailed();
+        if (!_safeTransferFrom(zrc20, msg.sender, address(this), amount)) {
+            revert ZRC20TransferFailed(zrc20, msg.sender, address(this), amount);
         }
 
-        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
+        if (!_safeBurn(zrc20, amount)) {
+            revert ZRC20BurnFailed(zrc20, amount);
+        }
 
         return gasFee;
     }
@@ -122,10 +164,15 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
     function _transferZETA(uint256 amount, address to) private {
-        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
-        IWETH9(zetaToken).withdraw(amount);
-        (bool sent,) = to.call{ value: amount }("");
-        if (!sent) revert FailedZetaSent();
+        if (!_safeTransferFrom(zetaToken, msg.sender, address(this), amount)) {
+            revert FailedZetaSent(address(this), amount);
+        }
+        try IWETH9(zetaToken).withdraw(amount) {
+            (bool sent,) = to.call{ value: amount }("");
+            if (!sent) revert FailedZetaSent(to, amount);
+        } catch {
+            revert FailedZetaSent(to, amount);
+        }
     }
 
     /// @notice Withdraw ZRC20 tokens to an external chain.
@@ -144,7 +191,9 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
-        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
+            revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
@@ -182,7 +231,9 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
+            revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit WithdrawnAndCalled(
@@ -289,7 +340,9 @@ contract GatewayZEVM is
         whenNotPaused
     {
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
+            revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
@@ -306,8 +359,8 @@ contract GatewayZEVM is
         if (receiver.length == 0) revert ZeroAddress();
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
-        if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed();
+        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
+            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
         }
 
         emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
@@ -323,7 +376,9 @@ contract GatewayZEVM is
 
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        if (!_safeDeposit(zrc20, target, amount)) {
+            revert ZRC20DepositFailed(zrc20, target, amount);
+        }
     }
 
     /// @notice Execute a user-specified contract on ZEVM.
@@ -371,7 +426,10 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        if (!_safeDeposit(zrc20, target, amount)) {
+            revert ZRC20DepositFailed(zrc20, target, amount);
+        }
+
         UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
@@ -436,7 +494,10 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        if (!_safeDeposit(zrc20, target, amount)) {
+            revert ZRC20DepositFailed(zrc20, target, amount);
+        }
+
         Revertable(target).onRevert(revertContext);
     }
 
