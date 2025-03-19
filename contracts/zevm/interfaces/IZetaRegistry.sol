@@ -32,30 +32,20 @@ interface IZetaRegistryEvents {
     /// @param contractIdentifier Unique identifier for the contract.
     /// @param configurationData New configuration data (encoded).
     event ContractConfigurationUpdated(
-        bytes32 indexed chainIdentifier,
-        bytes32 indexed contractIdentifier,
-        bytes configurationData
+        bytes32 indexed chainIdentifier, bytes32 indexed contractIdentifier, bytes configurationData
     );
 
     /// @notice Emitted when a contract's active status is updated.
     /// @param chainIdentifier Unique identifier for the blockchain.
     /// @param contractIdentifier Unique identifier for the contract.
     /// @param active New active status.
-    event ContractStatusUpdated(
-        bytes32 indexed chainIdentifier,
-        bytes32 indexed contractIdentifier,
-        bool active
-    );
+    event ContractStatusUpdated(bytes32 indexed chainIdentifier, bytes32 indexed contractIdentifier, bool active);
 
     /// @notice Emitted when a ZRC20 token is added to the registry.
     /// @param chainIdentifier Unique identifier for the blockchain.
     /// @param tokenIdentifier Unique identifier for the token.
     /// @param tokenAddress Address of the ZRC20 token.
-    event ZRC20TokenAdded(
-        bytes32 indexed chainIdentifier,
-        bytes32 indexed tokenIdentifier,
-        address tokenAddress
-    );
+    event ZRC20TokenAdded(bytes32 indexed chainIdentifier, bytes32 indexed tokenIdentifier, address tokenAddress);
 }
 
 /// @title IZetaRegistryErrors
@@ -201,7 +191,9 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32 contractIdentifier,
         ContractCategory category,
         ContractInfo calldata contractInfo
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 
     /// @notice Updates an existing contract's information.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -212,7 +204,9 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32 chainIdentifier,
         bytes32 contractIdentifier,
         ContractInfo calldata contractInfo
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 
     /// @notice Updates only a contract's address.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -223,7 +217,9 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32 chainIdentifier,
         bytes32 contractIdentifier,
         address newAddress
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 
     /// @notice Updates a contract's configuration data.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -234,7 +230,9 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32 chainIdentifier,
         bytes32 contractIdentifier,
         bytes calldata configurationData
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 
     /// @notice Sets a contract's active status.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -245,16 +243,15 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32 chainIdentifier,
         bytes32 contractIdentifier,
         bool active
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 
     /// @notice Removes a contract from a blockchain.
     /// @param chainIdentifier Unique identifier for the blockchain.
     /// @param contractIdentifier Unique identifier for the contract.
     /// @return success True if the operation was successful.
-    function removeContract(
-        bytes32 chainIdentifier,
-        bytes32 contractIdentifier
-    ) external returns (bool success);
+    function removeContract(bytes32 chainIdentifier, bytes32 contractIdentifier) external returns (bool success);
 
     /// @notice Gets information about a contract.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -263,7 +260,10 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
     function getContractInfo(
         bytes32 chainIdentifier,
         bytes32 contractIdentifier
-    ) external view returns (ContractInfo memory contractInfo);
+    )
+        external
+        view
+        returns (ContractInfo memory contractInfo);
 
     /// @notice Gets a contract's address.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -272,14 +272,18 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
     function getContractAddress(
         bytes32 chainIdentifier,
         bytes32 contractIdentifier
-    ) external view returns (address addr);
+    )
+        external
+        view
+        returns (address addr);
 
     /// @notice Gets all contract identifiers for a blockchain.
     /// @param chainIdentifier Unique identifier for the blockchain.
     /// @return contractIdentifiers Array of all contract identifiers for the blockchain.
-    function getContractIdentifiers(
-        bytes32 chainIdentifier
-    ) external view returns (bytes32[] memory contractIdentifiers);
+    function getContractIdentifiers(bytes32 chainIdentifier)
+        external
+        view
+        returns (bytes32[] memory contractIdentifiers);
 
     /// @notice Gets all contract identifiers for a blockchain by category.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -288,16 +292,16 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
     function getContractIdentifiersByCategory(
         bytes32 chainIdentifier,
         ContractCategory category
-    ) external view returns (bytes32[] memory contractIdentifiers);
+    )
+        external
+        view
+        returns (bytes32[] memory contractIdentifiers);
 
     /// @notice Checks if a contract exists in the registry.
     /// @param chainIdentifier Unique identifier for the blockchain.
     /// @param contractIdentifier Unique identifier for the contract.
     /// @return exists True if the contract exists.
-    function contractExists(
-        bytes32 chainIdentifier,
-        bytes32 contractIdentifier
-    ) external view returns (bool exists);
+    function contractExists(bytes32 chainIdentifier, bytes32 contractIdentifier) external view returns (bool exists);
 
     /// @notice Creates a contract identifier from a string.
     /// @param name String name for the contract.
@@ -317,15 +321,9 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
     /// @return tssUpdater The TSS updater contract address.
     /// @return zetaToken The ZETA token contract address.
     function getSystemAddresses(bytes32 chainIdentifier)
-    external
-    view
-    returns (
-        address connector,
-        address erc20Custody,
-        address tss,
-        address tssUpdater,
-        address zetaToken
-    );
+        external
+        view
+        returns (address connector, address erc20Custody, address tss, address tssUpdater, address zetaToken);
 
     /// @notice Helper to get ZRC-20 token address for a given chain and token.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -334,7 +332,10 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
     function getZRC20Address(
         bytes32 chainIdentifier,
         bytes32 tokenIdentifier
-    ) external view returns (address tokenAddress);
+    )
+        external
+        view
+        returns (address tokenAddress);
 
     /// @notice Adds a new ZRC-20 token to the registry.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -345,7 +346,9 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32 chainIdentifier,
         bytes32 tokenIdentifier,
         address tokenAddress
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 
     /// @notice Batch add contracts to a blockchain.
     /// @param chainIdentifier Unique identifier for the blockchain.
@@ -358,5 +361,7 @@ interface IZetaRegistry is IZetaRegistryEvents, IZetaRegistryErrors {
         bytes32[] calldata contractIdentifiers,
         ContractCategory[] calldata categories,
         ContractInfo[] calldata contractInfos
-    ) external returns (bool success);
+    )
+        external
+        returns (bool success);
 }
