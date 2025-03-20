@@ -21,6 +21,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     address payable proxy;
     GatewayZEVM gateway;
     ZRC20 zrc20;
+    ZRC20 solanaZRC20;
     WETH9 zetaToken;
     SystemContract systemContract;
     TestUniversalContract testUniversalContract;
@@ -65,17 +66,27 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.startPrank(protocolAddress);
         systemContract = new SystemContract(address(0), address(0), address(0));
+
+        // test token
         zrc20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(gateway));
         systemContract.setGasCoinZRC20(1, address(zrc20));
         systemContract.setGasPrice(1, 1);
+
+        // test Solana token
+        solanaZRC20 = new ZRC20("SOLANA", "SOL", 9, 900, CoinType.Gas, 0, address(systemContract), address(gateway));
+        systemContract.setGasCoinZRC20(900, address(solanaZRC20));
+        systemContract.setGasPrice(900, 1);
+
         vm.deal(protocolAddress, 1_000_000_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
         zrc20.deposit(owner, 100_000);
+        solanaZRC20.deposit(owner, 100_000);
         vm.stopPrank();
 
         vm.startPrank(owner);
         zrc20.approve(address(gateway), 100_000);
+        solanaZRC20.approve(address(gateway), 100_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
         vm.stopPrank();
@@ -111,6 +122,29 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
 
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
+        assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
+    }
+
+    function testWithdrawZRC20Solana() public {
+        uint256 amount = 1;
+        uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawn(
+            owner,
+            0,
+            abi.encodePacked(addr1),
+            address(solanaZRC20),
+            amount,
+            0,
+            solanaZRC20.PROTOCOL_FLAT_FEE(),
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(solanaZRC20), revertOptions);
+
+        uint256 ownerBalanceAfter = solanaZRC20.balanceOf(owner);
         assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
     }
 
@@ -243,6 +277,24 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         // Check that balance didn't change
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
         assertEq(ownerBalanceBefore, ownerBalanceAfter);
+    }
+
+    function testWithdrawAndCallZRC20SolanaFails() public {
+        uint256 amount = 1;
+        uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
+
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        uint256 expectedGasFee = 1;
+        uint256 gasLimit = 1;
+        vm.expectRevert();
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            amount,
+            address(solanaZRC20),
+            message,
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
+            revertOptions
+        );
     }
 
     function testWithdrawZRC20WithMessage() public {
