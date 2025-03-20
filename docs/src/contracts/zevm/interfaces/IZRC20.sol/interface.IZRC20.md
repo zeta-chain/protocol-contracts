@@ -114,3 +114,12 @@ function setName(string memory newName) external;
 function setSymbol(string memory newSymbol) external;
 ```
 
+### CHAIN_ID
+
+*Name is in upper case to maintain compatibility with ZRC20.sol v1*
+
+
+```solidity
+function CHAIN_ID() external view returns (uint256);
+```
+

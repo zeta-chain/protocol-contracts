@@ -8,6 +8,19 @@ import type { IZRC20, IZRC20Interface } from "../../IZRC20.sol/IZRC20";
 const _abi = [
   {
     type: "function",
+    name: "CHAIN_ID",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "GAS_LIMIT",
     inputs: [],
     outputs: [
