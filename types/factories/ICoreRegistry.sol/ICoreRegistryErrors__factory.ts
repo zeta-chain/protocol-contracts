@@ -70,17 +70,6 @@ const _abi = [
   },
   {
     type: "error",
-    name: "InvalidChainId",
-    inputs: [
-      {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-  },
-  {
-    type: "error",
     name: "InvalidContractType",
     inputs: [
       {

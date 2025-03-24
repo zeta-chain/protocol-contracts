@@ -41,6 +41,21 @@ event ZRC20TokenRegistered(
 |`originChainId`|`uint256`|The ID of the foreign chain where the original asset exists.|
 |`symbol`|`string`|The symbol of the token.|
 
+### ZRC20TokenUpdated
+Emitted when a ZRC20 token is updated.
+
+
+```solidity
+event ZRC20TokenUpdated(address address_, bool active);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`address_`|`address`|The address of the ZRC20 token.|
+|`active`|`bool`|Whether the token should be active.|
+
 ### ChainStatusChanged
 Emitted when a chain status has changed
 
@@ -101,19 +116,4 @@ event NewContractConfiguration(uint256 indexed chainId, string contractType, str
 |`contractType`|`string`|The type of the contract.|
 |`key`|`string`|The configuration key to update.|
 |`value`|`bytes`|The new value for the configuration.|
-
-### UpdatedRegistryManager
-Emitted when registry manager address is updated
-
-
-```solidity
-event UpdatedRegistryManager(address oldRegistryManager, address newRegistryManager);
-```
-
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`oldRegistryManager`|`address`|old registry manager address|
-|`newRegistryManager`|`address`|new registry manager address|
 

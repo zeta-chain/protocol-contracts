@@ -320,6 +320,8 @@ contract CoreRegistry is
 
         // Broadcast update to satellite registries
         _broadcastZRC20Update(address_, active);
+
+        emit ZRC20TokenUpdated(address_, active);
     }
 
     /// @notice Gets chain-specific metadata

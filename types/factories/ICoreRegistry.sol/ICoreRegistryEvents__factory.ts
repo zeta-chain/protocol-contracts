@@ -118,25 +118,6 @@ const _abi = [
   },
   {
     type: "event",
-    name: "UpdatedRegistryManager",
-    inputs: [
-      {
-        name: "oldRegistryManager",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-      {
-        name: "newRegistryManager",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
     name: "ZRC20TokenRegistered",
     inputs: [
       {
@@ -168,6 +149,25 @@ const _abi = [
         type: "string",
         indexed: false,
         internalType: "string",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "ZRC20TokenUpdated",
+    inputs: [
+      {
+        name: "address_",
+        type: "address",
+        indexed: false,
+        internalType: "address",
+      },
+      {
+        name: "active",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
       },
     ],
     anonymous: false,

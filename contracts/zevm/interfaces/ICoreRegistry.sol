@@ -20,6 +20,11 @@ interface ICoreRegistryEvents {
         string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol
     );
 
+    /// @notice Emitted when a ZRC20 token is updated.
+    /// @param address_ The address of the ZRC20 token.
+    /// @param active Whether the token should be active.
+    event ZRC20TokenUpdated(address address_, bool active);
+
     /// @notice Emitted when a chain status has changed
     /// @param chainId The ID of the chain.
     event ChainStatusChanged(uint256 indexed chainId);
@@ -40,20 +45,11 @@ interface ICoreRegistryEvents {
     /// @param key The configuration key to update.
     /// @param value The new value for the configuration.
     event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value);
-
-    /// @notice Emitted when registry manager address is updated
-    /// @param oldRegistryManager old registry manager address
-    /// @param newRegistryManager new registry manager address
-    event UpdatedRegistryManager(address oldRegistryManager, address newRegistryManager);
 }
 
 /// @title ICoreRegistryErrors
 /// @notice Interface for the errors used in the CoreRegistry contract.
 interface ICoreRegistryErrors {
-    /// @notice Error thrown when a chain ID is invalid  or not supported.
-    /// @param chainId The invalid chain ID.
-    error InvalidChainId(uint256 chainId);
-
     /// @notice Error thrown when a contract type is invalid.
     /// @param message Describes why error happened
     error InvalidContractType(string message);

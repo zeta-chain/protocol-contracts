@@ -29,8 +29,8 @@ export interface ICoreRegistryEventsInterface extends Interface {
       | "ContractStatusChanged"
       | "NewChainMetadata"
       | "NewContractConfiguration"
-      | "UpdatedRegistryManager"
       | "ZRC20TokenRegistered"
+      | "ZRC20TokenUpdated"
   ): EventFragment;
 }
 
@@ -123,25 +123,6 @@ export namespace NewContractConfigurationEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace UpdatedRegistryManagerEvent {
-  export type InputTuple = [
-    oldRegistryManager: AddressLike,
-    newRegistryManager: AddressLike
-  ];
-  export type OutputTuple = [
-    oldRegistryManager: string,
-    newRegistryManager: string
-  ];
-  export interface OutputObject {
-    oldRegistryManager: string;
-    newRegistryManager: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
 export namespace ZRC20TokenRegisteredEvent {
   export type InputTuple = [
     originAddress: string,
@@ -163,6 +144,19 @@ export namespace ZRC20TokenRegisteredEvent {
     decimals: bigint;
     originChainId: bigint;
     symbol: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ZRC20TokenUpdatedEvent {
+  export type InputTuple = [address_: AddressLike, active: boolean];
+  export type OutputTuple = [address_: string, active: boolean];
+  export interface OutputObject {
+    address_: string;
+    active: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -253,18 +247,18 @@ export interface ICoreRegistryEvents extends BaseContract {
     NewContractConfigurationEvent.OutputObject
   >;
   getEvent(
-    key: "UpdatedRegistryManager"
-  ): TypedContractEvent<
-    UpdatedRegistryManagerEvent.InputTuple,
-    UpdatedRegistryManagerEvent.OutputTuple,
-    UpdatedRegistryManagerEvent.OutputObject
-  >;
-  getEvent(
     key: "ZRC20TokenRegistered"
   ): TypedContractEvent<
     ZRC20TokenRegisteredEvent.InputTuple,
     ZRC20TokenRegisteredEvent.OutputTuple,
     ZRC20TokenRegisteredEvent.OutputObject
+  >;
+  getEvent(
+    key: "ZRC20TokenUpdated"
+  ): TypedContractEvent<
+    ZRC20TokenUpdatedEvent.InputTuple,
+    ZRC20TokenUpdatedEvent.OutputTuple,
+    ZRC20TokenUpdatedEvent.OutputObject
   >;
 
   filters: {
@@ -323,17 +317,6 @@ export interface ICoreRegistryEvents extends BaseContract {
       NewContractConfigurationEvent.OutputObject
     >;
 
-    "UpdatedRegistryManager(address,address)": TypedContractEvent<
-      UpdatedRegistryManagerEvent.InputTuple,
-      UpdatedRegistryManagerEvent.OutputTuple,
-      UpdatedRegistryManagerEvent.OutputObject
-    >;
-    UpdatedRegistryManager: TypedContractEvent<
-      UpdatedRegistryManagerEvent.InputTuple,
-      UpdatedRegistryManagerEvent.OutputTuple,
-      UpdatedRegistryManagerEvent.OutputObject
-    >;
-
     "ZRC20TokenRegistered(string,address,uint8,uint256,string)": TypedContractEvent<
       ZRC20TokenRegisteredEvent.InputTuple,
       ZRC20TokenRegisteredEvent.OutputTuple,
@@ -343,6 +326,17 @@ export interface ICoreRegistryEvents extends BaseContract {
       ZRC20TokenRegisteredEvent.InputTuple,
       ZRC20TokenRegisteredEvent.OutputTuple,
       ZRC20TokenRegisteredEvent.OutputObject
+    >;
+
+    "ZRC20TokenUpdated(address,bool)": TypedContractEvent<
+      ZRC20TokenUpdatedEvent.InputTuple,
+      ZRC20TokenUpdatedEvent.OutputTuple,
+      ZRC20TokenUpdatedEvent.OutputObject
+    >;
+    ZRC20TokenUpdated: TypedContractEvent<
+      ZRC20TokenUpdatedEvent.InputTuple,
+      ZRC20TokenUpdatedEvent.OutputTuple,
+      ZRC20TokenUpdatedEvent.OutputObject
     >;
   };
 }

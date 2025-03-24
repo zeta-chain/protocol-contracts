@@ -5,20 +5,6 @@ Interface for the errors used in the CoreRegistry contract.
 
 
 ## Errors
-### InvalidChainId
-Error thrown when a chain ID is invalid  or not supported.
-
-
-```solidity
-error InvalidChainId(uint256 chainId);
-```
-
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`chainId`|`uint256`|The invalid chain ID.|
-
 ### InvalidContractType
 Error thrown when a contract type is invalid.
 
