@@ -503,13 +503,13 @@ function getActiveChains() external view override returns (uint256[] memory);
 |`<none>`|`uint256[]`|Array of chain IDs for all active chains.|
 
 
-### _propagateChainActivation
+### _broadcastChainActivation
 
-Propagates chain activation update to all satellite registries.
+Broadcast chain activation update to all satellite registries.
 
 
 ```solidity
-function _propagateChainActivation(uint256 chainId, bool activation) internal;
+function _broadcastChainActivation(uint256 chainId, bool activation) internal;
 ```
 **Parameters**
 
@@ -519,13 +519,13 @@ function _propagateChainActivation(uint256 chainId, bool activation) internal;
 |`activation`|`bool`|Whether the chain is being activated or deactivated|
 
 
-### _propagateChainMetadataUpdate
+### _broadcastChainMetadataUpdate
 
-Propagates chain metadata to all satellite registries
+Broadcast chain metadata to all satellite registries
 
 
 ```solidity
-function _propagateChainMetadataUpdate(uint256 chainId, string calldata key, bytes calldata value) private;
+function _broadcastChainMetadataUpdate(uint256 chainId, string calldata key, bytes calldata value) private;
 ```
 **Parameters**
 
@@ -536,9 +536,9 @@ function _propagateChainMetadataUpdate(uint256 chainId, string calldata key, byt
 |`value`|`bytes`|The new value for the metadata|
 
 
-### _propagateContractRegistration
+### _broadcastContractRegistration
 
-Propagates contract registration to all satellite registries
+Broadcast contract registration to all satellite registries
 
 address_ The address of the contract
 
@@ -548,7 +548,7 @@ addressString The string representation of the non-EVM address
 
 
 ```solidity
-function _propagateContractRegistration(
+function _broadcastContractRegistration(
     uint256 chainId,
     address address_,
     string calldata contractType,
@@ -566,9 +566,9 @@ function _propagateContractRegistration(
 |`addressString`|`string`||
 
 
-### _propagateContractConfigUpdate
+### _broadcastContractConfigUpdate
 
-Propagates contract configuration update to all satellite registries
+Broadcast contract configuration update to all satellite registries
 
 contractType The type of the contract
 
@@ -578,7 +578,7 @@ value The new value for the configuration
 
 
 ```solidity
-function _propagateContractConfigUpdate(
+function _broadcastContractConfigUpdate(
     uint256 chainId,
     string calldata contractType,
     string calldata key,
@@ -596,9 +596,9 @@ function _propagateContractConfigUpdate(
 |`value`|`bytes`||
 
 
-### _propagateContractStatusUpdate
+### _broadcastContractStatusUpdate
 
-Propagates contract status update to all satellite registries
+Broadcast contract status update to all satellite registries
 
 contractType The type of the contract
 
@@ -606,7 +606,7 @@ active Whether the contract should be active
 
 
 ```solidity
-function _propagateContractStatusUpdate(uint256 chainId, string calldata contractType, bool active) private;
+function _broadcastContractStatusUpdate(uint256 chainId, string calldata contractType, bool active) private;
 ```
 **Parameters**
 
@@ -617,13 +617,13 @@ function _propagateContractStatusUpdate(uint256 chainId, string calldata contrac
 |`active`|`bool`||
 
 
-### _propagateZRC20Registration
+### _broadcastZRC20Registration
 
-Propagates ZRC20 token registration to all satellite registries
+Broadcast ZRC20 token registration to all satellite registries
 
 
 ```solidity
-function _propagateZRC20Registration(
+function _broadcastZRC20Registration(
     address address_,
     string calldata symbol,
     uint256 originChainId,
@@ -645,13 +645,13 @@ function _propagateZRC20Registration(
 |`decimals`|`uint8`|The number of decimals the token uses|
 
 
-### _propagateZRC20Update
+### _broadcastZRC20Update
 
-Propagates ZRC20 token update to all satellite registries
+Broadcast ZRC20 token update to all satellite registries
 
 
 ```solidity
-function _propagateZRC20Update(address address_, bool active) private;
+function _broadcastZRC20Update(address address_, bool active) private;
 ```
 **Parameters**
 
@@ -659,6 +659,21 @@ function _propagateZRC20Update(address address_, bool active) private;
 |----|----|-----------|
 |`address_`|`address`|The address of the ZRC20 token|
 |`active`|`bool`|Whether the token should be active|
+
+
+### _broadcastToAllChains
+
+Generic function to broadcast encoded messages to all satellite registries
+
+
+```solidity
+function _broadcastToAllChains(bytes memory encodedMessage) private;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`encodedMessage`|`bytes`|The fully encoded function call to broadcast|
 
 
 ### _sendCrossChainMessage

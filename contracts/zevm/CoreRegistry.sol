@@ -4,7 +4,6 @@ pragma solidity 0.8.26;
 import "./interfaces/ICoreRegistry.sol";
 import "./interfaces/IGatewayZEVM.sol";
 
-import { stdMath } from "../../dependencies/forge-std-1.9.2/src/StdMath.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -112,8 +111,8 @@ contract CoreRegistry is
             _removeFromActiveChains(chainId);
         }
 
-        // Propagate update to satellite registries
-        _propagateChainActivation(chainId, activation);
+        // Broadcast update to satellite registries
+        _broadcastChainActivation(chainId, activation);
 
         emit ChainStatusChanged(chainId);
     }
@@ -175,8 +174,8 @@ contract CoreRegistry is
         _contracts[chainId][contractType].addressString = addressString;
         _contracts[chainId][contractType].contractType = contractType;
 
-        // Propagate update to satellite registries
-        _propagateContractRegistration(chainId, address_, contractType, addressString);
+        // Broadcast update to satellite registries
+        _broadcastContractRegistration(chainId, address_, contractType, addressString);
 
         emit ContractRegistered(chainId, contractType, addressString);
     }
@@ -212,8 +211,8 @@ contract CoreRegistry is
         // Store new configuration in the storage.
         _contracts[chainId][contractType].configuration[key] = value;
 
-        // Propagate update to satellite registries
-        _propagateContractConfigUpdate(chainId, contractType, key, value);
+        // Broadcast update to satellite registries
+        _broadcastContractConfigUpdate(chainId, contractType, key, value);
 
         emit NewContractConfiguration(chainId, contractType, key, value);
     }
@@ -247,8 +246,8 @@ contract CoreRegistry is
         // Update the active status
         _contracts[chainId][contractType].active = active;
 
-        // Propagate update to satellite registries
-        _propagateContractStatusUpdate(chainId, contractType, active);
+        // Broadcast update to satellite registries
+        _broadcastContractStatusUpdate(chainId, contractType, active);
 
         emit ContractStatusChanged(_contracts[chainId][contractType].addressString);
     }
@@ -296,8 +295,8 @@ contract CoreRegistry is
         // Map symbol to address
         _zrc20SymbolToAddress[symbol] = address_;
 
-        // Propagate update to satellite registries
-        _propagateZRC20Registration(address_, symbol, originChainId, originAddress, coinType, decimals);
+        // Broadcast update to satellite registries
+        _broadcastZRC20Registration(address_, symbol, originChainId, originAddress, coinType, decimals);
 
         emit ZRC20TokenRegistered(originAddress, address_, decimals, originChainId, symbol);
     }
@@ -319,8 +318,8 @@ contract CoreRegistry is
         // Update token status.
         _zrc20Tokens[address_].active = active;
 
-        // Propagate update to satellite registries
-        _propagateZRC20Update(address_, active);
+        // Broadcast update to satellite registries
+        _broadcastZRC20Update(address_, active);
     }
 
     /// @notice Gets chain-specific metadata
@@ -419,39 +418,31 @@ contract CoreRegistry is
         return _activeChains;
     }
 
-    // TODO: check how to abstract propagation functions
-    /// @notice Propagates chain activation update to all satellite registries.
+    /// @notice Broadcast chain activation update to all satellite registries.
     /// @param chainId The ID of the chain being activated/deactivated
     /// @param activation Whether the chain is being activated or deactivated
-    function _propagateChainActivation(uint256 chainId, bool activation) internal {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message = abi.encodeWithSignature("updateChainActivation(uint256,bool)", chainId, activation);
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
-        }
+    function _broadcastChainActivation(uint256 chainId, bool activation) internal {
+        // Encode the function call for the Registry contract on the target chain
+        bytes memory message = abi.encodeWithSignature("updateChainActivation(uint256,bool)", chainId, activation);
+        _broadcastToAllChains(message);
     }
 
-    /// @notice Propagates chain metadata to all satellite registries
+    /// @notice Broadcast chain metadata to all satellite registries
     /// @param chainId The ID of the chain whose metadata is being updated
     /// @param key The metadata key being updated
     /// @param value The new value for the metadata
-    function _propagateChainMetadataUpdate(uint256 chainId, string calldata key, bytes calldata value) private {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message =
-                abi.encodeWithSignature("updateChainMetadata(uint256,string,bytes)", chainId, key, value);
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
-        }
+    function _broadcastChainMetadataUpdate(uint256 chainId, string calldata key, bytes calldata value) private {
+        // Encode the function call for the Registry contract on the target chain
+        bytes memory message = abi.encodeWithSignature("updateChainMetadata(uint256,string,bytes)", chainId, key, value);
+        _broadcastToAllChains(message);
     }
 
-    /// @notice Propagates contract registration to all satellite registries
+    /// @notice Broadcast contract registration to all satellite registries
     /// @param chainId The ID of the chain where the contract is deployed
     /// @notice address_ The address of the contract
     /// @notice contractType The type of the contract
     /// @notice addressString The string representation of the non-EVM address
-    function _propagateContractRegistration(
+    function _broadcastContractRegistration(
         uint256 chainId,
         address address_,
         string calldata contractType,
@@ -459,22 +450,18 @@ contract CoreRegistry is
     )
         private
     {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message = abi.encodeWithSignature(
-                "registerContract(uint256,address,string,string)", chainId, address_, contractType, addressString
-            );
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
-        }
+        bytes memory message = abi.encodeWithSignature(
+            "registerContract(uint256,address,string,string)", chainId, address_, contractType, addressString
+        );
+        _broadcastToAllChains(message);
     }
 
-    /// @notice Propagates contract configuration update to all satellite registries
+    /// @notice Broadcast contract configuration update to all satellite registries
     /// @param chainId The ID of the chain where the contract is deployed
     /// @notice contractType The type of the contract
     /// @notice key The configuration key being updated
     /// @notice value The new value for the configuration
-    function _propagateContractConfigUpdate(
+    function _broadcastContractConfigUpdate(
         uint256 chainId,
         string calldata contractType,
         string calldata key,
@@ -482,38 +469,32 @@ contract CoreRegistry is
     )
         private
     {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message = abi.encodeWithSignature(
-                "updateContractConfiguration(uint256,string,string,bytes)", chainId, contractType, key, value
-            );
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
-        }
+        // Encode the function call for the Registry contract on the target chain
+        bytes memory message = abi.encodeWithSignature(
+            "updateContractConfiguration(uint256,string,string,bytes)", chainId, contractType, key, value
+        );
+        _broadcastToAllChains(message);
     }
 
-    /// @notice Propagates contract status update to all satellite registries
+    /// @notice Broadcast contract status update to all satellite registries
     /// @param chainId The ID of the chain where the contract is deployed
     /// @notice contractType The type of the contract
     /// @notice active Whether the contract should be active
-    function _propagateContractStatusUpdate(uint256 chainId, string calldata contractType, bool active) private {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message =
-                abi.encodeWithSignature("setContractActive(uint256,string,bool)", chainId, contractType, active);
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
-        }
+    function _broadcastContractStatusUpdate(uint256 chainId, string calldata contractType, bool active) private {
+        // Encode the function call for the Registry contract on the target chain
+        bytes memory message =
+            abi.encodeWithSignature("setContractActive(uint256,string,bool)", chainId, contractType, active);
+        _broadcastToAllChains(message);
     }
 
-    /// @notice Propagates ZRC20 token registration to all satellite registries
+    /// @notice Broadcast ZRC20 token registration to all satellite registries
     /// @param address_ The address of the ZRC20 token on ZetaChain
     /// @param symbol The symbol of the token
     /// @param originChainId The ID of the foreign chain where the original asset exists
     /// @param originAddress The address or identifier of the asset on its native chain
     /// @param coinType The type of the original coin
     /// @param decimals The number of decimals the token uses
-    function _propagateZRC20Registration(
+    function _broadcastZRC20Registration(
         address address_,
         string calldata symbol,
         uint256 originChainId,
@@ -523,31 +504,33 @@ contract CoreRegistry is
     )
         private
     {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message = abi.encodeWithSignature(
-                "registerZRC20Token(address,string,uint256,string,string,uint8)",
-                address_,
-                symbol,
-                originChainId,
-                originAddress,
-                coinType,
-                decimals
-            );
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
-        }
+        // Encode the function call for the Registry contract on the target chain
+        bytes memory message = abi.encodeWithSignature(
+            "registerZRC20Token(address,string,uint256,string,string,uint8)",
+            address_,
+            symbol,
+            originChainId,
+            originAddress,
+            coinType,
+            decimals
+        );
+        _broadcastToAllChains(message);
     }
 
-    /// @notice Propagates ZRC20 token update to all satellite registries
+    /// @notice Broadcast ZRC20 token update to all satellite registries
     /// @param address_ The address of the ZRC20 token
     /// @param active Whether the token should be active
-    function _propagateZRC20Update(address address_, bool active) private {
+    function _broadcastZRC20Update(address address_, bool active) private {
+        // Encode the function call for the Registry contract on the target chain
+        bytes memory message = abi.encodeWithSignature("updateZRC20Token(address,bool,string)", address_, active);
+        _broadcastToAllChains(message);
+    }
+
+    /// @notice Generic function to broadcast encoded messages to all satellite registries
+    /// @param encodedMessage The fully encoded function call to broadcast
+    function _broadcastToAllChains(bytes memory encodedMessage) private {
         for (uint256 i = 0; i < _activeChains.length; i++) {
-            // Encode the function call for the Registry contract on the target chain
-            bytes memory message = abi.encodeWithSignature("updateZRC20Token(address,bool,string)", address_, active);
-            // Send the cross-chain message to each active chain's Registry
-            _sendCrossChainMessage(_activeChains[i], message);
+            _sendCrossChainMessage(_activeChains[i], encodedMessage);
         }
     }
 
