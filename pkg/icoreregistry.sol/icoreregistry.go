@@ -31,7 +31,7 @@ var (
 
 // ICoreRegistryMetaData contains all meta data concerning the ICoreRegistry contract.
 var ICoreRegistryMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"chainActivation\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"registry\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"activation\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"getActiveChains\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\",\"internalType\":\"uint256[]\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractInfo\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20AddressByForeignAsset\",\"inputs\":[{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20TokenInfo\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"registerContract\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressString\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"registerZRC20Token\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setContractActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateZRC20Token\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"addressString\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressString\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"address_\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ChainAlreadyActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ChainNonActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ContractAlreadyRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressString\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ContractNotFound\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidContractType\",\"inputs\":[{\"name\":\"message\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZRC20AlreadyRegistered\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20SymbolAlreadyInUse\",\"inputs\":[{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"chainActivation\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"registry\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"activation\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"getActiveChains\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\",\"internalType\":\"uint256[]\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractInfo\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20AddressByForeignAsset\",\"inputs\":[{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20TokenInfo\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"registerContract\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"registerZRC20Token\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setContractActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateZRC20Token\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"bytes\",\"indexed\":true,\"internalType\":\"bytes\"},{\"name\":\"address_\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ChainAlreadyActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ChainNonActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ContractAlreadyRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]},{\"type\":\"error\",\"name\":\"ContractNotFound\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidContractType\",\"inputs\":[{\"name\":\"message\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZRC20AlreadyRegistered\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20SymbolAlreadyInUse\",\"inputs\":[{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
 }
 
 // ICoreRegistryABI is the input ABI used to generate the binding from.
@@ -318,10 +318,10 @@ func (_ICoreRegistry *ICoreRegistryCallerSession) GetContractInfo(chainId *big.I
 	return _ICoreRegistry.Contract.GetContractInfo(&_ICoreRegistry.CallOpts, chainId, contractType)
 }
 
-// GetZRC20AddressByForeignAsset is a free data retrieval call binding the contract method 0x8b5555e8.
+// GetZRC20AddressByForeignAsset is a free data retrieval call binding the contract method 0xaa808c06.
 //
-// Solidity: function getZRC20AddressByForeignAsset(uint256 originChainId, string originAddress) view returns(address)
-func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20AddressByForeignAsset(opts *bind.CallOpts, originChainId *big.Int, originAddress string) (common.Address, error) {
+// Solidity: function getZRC20AddressByForeignAsset(uint256 originChainId, bytes originAddress) view returns(address)
+func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20AddressByForeignAsset(opts *bind.CallOpts, originChainId *big.Int, originAddress []byte) (common.Address, error) {
 	var out []interface{}
 	err := _ICoreRegistry.contract.Call(opts, &out, "getZRC20AddressByForeignAsset", originChainId, originAddress)
 
@@ -335,28 +335,28 @@ func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20AddressByForeignAsset(opts *b
 
 }
 
-// GetZRC20AddressByForeignAsset is a free data retrieval call binding the contract method 0x8b5555e8.
+// GetZRC20AddressByForeignAsset is a free data retrieval call binding the contract method 0xaa808c06.
 //
-// Solidity: function getZRC20AddressByForeignAsset(uint256 originChainId, string originAddress) view returns(address)
-func (_ICoreRegistry *ICoreRegistrySession) GetZRC20AddressByForeignAsset(originChainId *big.Int, originAddress string) (common.Address, error) {
+// Solidity: function getZRC20AddressByForeignAsset(uint256 originChainId, bytes originAddress) view returns(address)
+func (_ICoreRegistry *ICoreRegistrySession) GetZRC20AddressByForeignAsset(originChainId *big.Int, originAddress []byte) (common.Address, error) {
 	return _ICoreRegistry.Contract.GetZRC20AddressByForeignAsset(&_ICoreRegistry.CallOpts, originChainId, originAddress)
 }
 
-// GetZRC20AddressByForeignAsset is a free data retrieval call binding the contract method 0x8b5555e8.
+// GetZRC20AddressByForeignAsset is a free data retrieval call binding the contract method 0xaa808c06.
 //
-// Solidity: function getZRC20AddressByForeignAsset(uint256 originChainId, string originAddress) view returns(address)
-func (_ICoreRegistry *ICoreRegistryCallerSession) GetZRC20AddressByForeignAsset(originChainId *big.Int, originAddress string) (common.Address, error) {
+// Solidity: function getZRC20AddressByForeignAsset(uint256 originChainId, bytes originAddress) view returns(address)
+func (_ICoreRegistry *ICoreRegistryCallerSession) GetZRC20AddressByForeignAsset(originChainId *big.Int, originAddress []byte) (common.Address, error) {
 	return _ICoreRegistry.Contract.GetZRC20AddressByForeignAsset(&_ICoreRegistry.CallOpts, originChainId, originAddress)
 }
 
 // GetZRC20TokenInfo is a free data retrieval call binding the contract method 0xe9d6c5ba.
 //
-// Solidity: function getZRC20TokenInfo(address address_) view returns(bool active, string symbol, uint256 originChainId, string originAddress, string coinType, uint8 decimals)
+// Solidity: function getZRC20TokenInfo(address address_) view returns(bool active, string symbol, uint256 originChainId, bytes originAddress, string coinType, uint8 decimals)
 func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20TokenInfo(opts *bind.CallOpts, address_ common.Address) (struct {
 	Active        bool
 	Symbol        string
 	OriginChainId *big.Int
-	OriginAddress string
+	OriginAddress []byte
 	CoinType      string
 	Decimals      uint8
 }, error) {
@@ -367,7 +367,7 @@ func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20TokenInfo(opts *bind.CallOpts
 		Active        bool
 		Symbol        string
 		OriginChainId *big.Int
-		OriginAddress string
+		OriginAddress []byte
 		CoinType      string
 		Decimals      uint8
 	})
@@ -378,7 +378,7 @@ func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20TokenInfo(opts *bind.CallOpts
 	outstruct.Active = *abi.ConvertType(out[0], new(bool)).(*bool)
 	outstruct.Symbol = *abi.ConvertType(out[1], new(string)).(*string)
 	outstruct.OriginChainId = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
-	outstruct.OriginAddress = *abi.ConvertType(out[3], new(string)).(*string)
+	outstruct.OriginAddress = *abi.ConvertType(out[3], new([]byte)).(*[]byte)
 	outstruct.CoinType = *abi.ConvertType(out[4], new(string)).(*string)
 	outstruct.Decimals = *abi.ConvertType(out[5], new(uint8)).(*uint8)
 
@@ -388,12 +388,12 @@ func (_ICoreRegistry *ICoreRegistryCaller) GetZRC20TokenInfo(opts *bind.CallOpts
 
 // GetZRC20TokenInfo is a free data retrieval call binding the contract method 0xe9d6c5ba.
 //
-// Solidity: function getZRC20TokenInfo(address address_) view returns(bool active, string symbol, uint256 originChainId, string originAddress, string coinType, uint8 decimals)
+// Solidity: function getZRC20TokenInfo(address address_) view returns(bool active, string symbol, uint256 originChainId, bytes originAddress, string coinType, uint8 decimals)
 func (_ICoreRegistry *ICoreRegistrySession) GetZRC20TokenInfo(address_ common.Address) (struct {
 	Active        bool
 	Symbol        string
 	OriginChainId *big.Int
-	OriginAddress string
+	OriginAddress []byte
 	CoinType      string
 	Decimals      uint8
 }, error) {
@@ -402,12 +402,12 @@ func (_ICoreRegistry *ICoreRegistrySession) GetZRC20TokenInfo(address_ common.Ad
 
 // GetZRC20TokenInfo is a free data retrieval call binding the contract method 0xe9d6c5ba.
 //
-// Solidity: function getZRC20TokenInfo(address address_) view returns(bool active, string symbol, uint256 originChainId, string originAddress, string coinType, uint8 decimals)
+// Solidity: function getZRC20TokenInfo(address address_) view returns(bool active, string symbol, uint256 originChainId, bytes originAddress, string coinType, uint8 decimals)
 func (_ICoreRegistry *ICoreRegistryCallerSession) GetZRC20TokenInfo(address_ common.Address) (struct {
 	Active        bool
 	Symbol        string
 	OriginChainId *big.Int
-	OriginAddress string
+	OriginAddress []byte
 	CoinType      string
 	Decimals      uint8
 }, error) {
@@ -435,45 +435,45 @@ func (_ICoreRegistry *ICoreRegistryTransactorSession) ChainActivation(chainId *b
 	return _ICoreRegistry.Contract.ChainActivation(&_ICoreRegistry.TransactOpts, chainId, registry, activation)
 }
 
-// RegisterContract is a paid mutator transaction binding the contract method 0x7fda8d46.
+// RegisterContract is a paid mutator transaction binding the contract method 0xb8aa5c7d.
 //
-// Solidity: function registerContract(uint256 chainId, address address_, string contractType, string addressString) returns()
-func (_ICoreRegistry *ICoreRegistryTransactor) RegisterContract(opts *bind.TransactOpts, chainId *big.Int, address_ common.Address, contractType string, addressString string) (*types.Transaction, error) {
-	return _ICoreRegistry.contract.Transact(opts, "registerContract", chainId, address_, contractType, addressString)
+// Solidity: function registerContract(uint256 chainId, address address_, string contractType, bytes addressBytes) returns()
+func (_ICoreRegistry *ICoreRegistryTransactor) RegisterContract(opts *bind.TransactOpts, chainId *big.Int, address_ common.Address, contractType string, addressBytes []byte) (*types.Transaction, error) {
+	return _ICoreRegistry.contract.Transact(opts, "registerContract", chainId, address_, contractType, addressBytes)
 }
 
-// RegisterContract is a paid mutator transaction binding the contract method 0x7fda8d46.
+// RegisterContract is a paid mutator transaction binding the contract method 0xb8aa5c7d.
 //
-// Solidity: function registerContract(uint256 chainId, address address_, string contractType, string addressString) returns()
-func (_ICoreRegistry *ICoreRegistrySession) RegisterContract(chainId *big.Int, address_ common.Address, contractType string, addressString string) (*types.Transaction, error) {
-	return _ICoreRegistry.Contract.RegisterContract(&_ICoreRegistry.TransactOpts, chainId, address_, contractType, addressString)
+// Solidity: function registerContract(uint256 chainId, address address_, string contractType, bytes addressBytes) returns()
+func (_ICoreRegistry *ICoreRegistrySession) RegisterContract(chainId *big.Int, address_ common.Address, contractType string, addressBytes []byte) (*types.Transaction, error) {
+	return _ICoreRegistry.Contract.RegisterContract(&_ICoreRegistry.TransactOpts, chainId, address_, contractType, addressBytes)
 }
 
-// RegisterContract is a paid mutator transaction binding the contract method 0x7fda8d46.
+// RegisterContract is a paid mutator transaction binding the contract method 0xb8aa5c7d.
 //
-// Solidity: function registerContract(uint256 chainId, address address_, string contractType, string addressString) returns()
-func (_ICoreRegistry *ICoreRegistryTransactorSession) RegisterContract(chainId *big.Int, address_ common.Address, contractType string, addressString string) (*types.Transaction, error) {
-	return _ICoreRegistry.Contract.RegisterContract(&_ICoreRegistry.TransactOpts, chainId, address_, contractType, addressString)
+// Solidity: function registerContract(uint256 chainId, address address_, string contractType, bytes addressBytes) returns()
+func (_ICoreRegistry *ICoreRegistryTransactorSession) RegisterContract(chainId *big.Int, address_ common.Address, contractType string, addressBytes []byte) (*types.Transaction, error) {
+	return _ICoreRegistry.Contract.RegisterContract(&_ICoreRegistry.TransactOpts, chainId, address_, contractType, addressBytes)
 }
 
-// RegisterZRC20Token is a paid mutator transaction binding the contract method 0x3314beec.
+// RegisterZRC20Token is a paid mutator transaction binding the contract method 0x6e9e2d3f.
 //
-// Solidity: function registerZRC20Token(address address_, string symbol, uint256 originChainId, string originAddress, string coinType, uint8 decimals) returns()
-func (_ICoreRegistry *ICoreRegistryTransactor) RegisterZRC20Token(opts *bind.TransactOpts, address_ common.Address, symbol string, originChainId *big.Int, originAddress string, coinType string, decimals uint8) (*types.Transaction, error) {
+// Solidity: function registerZRC20Token(address address_, string symbol, uint256 originChainId, bytes originAddress, string coinType, uint8 decimals) returns()
+func (_ICoreRegistry *ICoreRegistryTransactor) RegisterZRC20Token(opts *bind.TransactOpts, address_ common.Address, symbol string, originChainId *big.Int, originAddress []byte, coinType string, decimals uint8) (*types.Transaction, error) {
 	return _ICoreRegistry.contract.Transact(opts, "registerZRC20Token", address_, symbol, originChainId, originAddress, coinType, decimals)
 }
 
-// RegisterZRC20Token is a paid mutator transaction binding the contract method 0x3314beec.
+// RegisterZRC20Token is a paid mutator transaction binding the contract method 0x6e9e2d3f.
 //
-// Solidity: function registerZRC20Token(address address_, string symbol, uint256 originChainId, string originAddress, string coinType, uint8 decimals) returns()
-func (_ICoreRegistry *ICoreRegistrySession) RegisterZRC20Token(address_ common.Address, symbol string, originChainId *big.Int, originAddress string, coinType string, decimals uint8) (*types.Transaction, error) {
+// Solidity: function registerZRC20Token(address address_, string symbol, uint256 originChainId, bytes originAddress, string coinType, uint8 decimals) returns()
+func (_ICoreRegistry *ICoreRegistrySession) RegisterZRC20Token(address_ common.Address, symbol string, originChainId *big.Int, originAddress []byte, coinType string, decimals uint8) (*types.Transaction, error) {
 	return _ICoreRegistry.Contract.RegisterZRC20Token(&_ICoreRegistry.TransactOpts, address_, symbol, originChainId, originAddress, coinType, decimals)
 }
 
-// RegisterZRC20Token is a paid mutator transaction binding the contract method 0x3314beec.
+// RegisterZRC20Token is a paid mutator transaction binding the contract method 0x6e9e2d3f.
 //
-// Solidity: function registerZRC20Token(address address_, string symbol, uint256 originChainId, string originAddress, string coinType, uint8 decimals) returns()
-func (_ICoreRegistry *ICoreRegistryTransactorSession) RegisterZRC20Token(address_ common.Address, symbol string, originChainId *big.Int, originAddress string, coinType string, decimals uint8) (*types.Transaction, error) {
+// Solidity: function registerZRC20Token(address address_, string symbol, uint256 originChainId, bytes originAddress, string coinType, uint8 decimals) returns()
+func (_ICoreRegistry *ICoreRegistryTransactorSession) RegisterZRC20Token(address_ common.Address, symbol string, originChainId *big.Int, originAddress []byte, coinType string, decimals uint8) (*types.Transaction, error) {
 	return _ICoreRegistry.Contract.RegisterZRC20Token(&_ICoreRegistry.TransactOpts, address_, symbol, originChainId, originAddress, coinType, decimals)
 }
 
@@ -774,15 +774,15 @@ func (it *ICoreRegistryContractRegisteredIterator) Close() error {
 
 // ICoreRegistryContractRegistered represents a ContractRegistered event raised by the ICoreRegistry contract.
 type ICoreRegistryContractRegistered struct {
-	ChainId       *big.Int
-	ContractType  common.Hash
-	AddressString string
-	Raw           types.Log // Blockchain specific contextual infos
+	ChainId      *big.Int
+	ContractType common.Hash
+	AddressBytes []byte
+	Raw          types.Log // Blockchain specific contextual infos
 }
 
-// FilterContractRegistered is a free log retrieval operation binding the contract event 0x9e39e5ce8ea4a42505aee332c3993de850b3e27b483b409b451bd6f4272211f8.
+// FilterContractRegistered is a free log retrieval operation binding the contract event 0x20319e67335097991b9d6add94a71632118372c1a0b5650654f069668dce2581.
 //
-// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString)
+// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes)
 func (_ICoreRegistry *ICoreRegistryFilterer) FilterContractRegistered(opts *bind.FilterOpts, chainId []*big.Int, contractType []string) (*ICoreRegistryContractRegisteredIterator, error) {
 
 	var chainIdRule []interface{}
@@ -801,9 +801,9 @@ func (_ICoreRegistry *ICoreRegistryFilterer) FilterContractRegistered(opts *bind
 	return &ICoreRegistryContractRegisteredIterator{contract: _ICoreRegistry.contract, event: "ContractRegistered", logs: logs, sub: sub}, nil
 }
 
-// WatchContractRegistered is a free log subscription operation binding the contract event 0x9e39e5ce8ea4a42505aee332c3993de850b3e27b483b409b451bd6f4272211f8.
+// WatchContractRegistered is a free log subscription operation binding the contract event 0x20319e67335097991b9d6add94a71632118372c1a0b5650654f069668dce2581.
 //
-// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString)
+// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes)
 func (_ICoreRegistry *ICoreRegistryFilterer) WatchContractRegistered(opts *bind.WatchOpts, sink chan<- *ICoreRegistryContractRegistered, chainId []*big.Int, contractType []string) (event.Subscription, error) {
 
 	var chainIdRule []interface{}
@@ -847,9 +847,9 @@ func (_ICoreRegistry *ICoreRegistryFilterer) WatchContractRegistered(opts *bind.
 	}), nil
 }
 
-// ParseContractRegistered is a log parse operation binding the contract event 0x9e39e5ce8ea4a42505aee332c3993de850b3e27b483b409b451bd6f4272211f8.
+// ParseContractRegistered is a log parse operation binding the contract event 0x20319e67335097991b9d6add94a71632118372c1a0b5650654f069668dce2581.
 //
-// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString)
+// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes)
 func (_ICoreRegistry *ICoreRegistryFilterer) ParseContractRegistered(log types.Log) (*ICoreRegistryContractRegistered, error) {
 	event := new(ICoreRegistryContractRegistered)
 	if err := _ICoreRegistry.contract.UnpackLog(event, "ContractRegistered", log); err != nil {
@@ -928,13 +928,13 @@ func (it *ICoreRegistryContractStatusChangedIterator) Close() error {
 
 // ICoreRegistryContractStatusChanged represents a ContractStatusChanged event raised by the ICoreRegistry contract.
 type ICoreRegistryContractStatusChanged struct {
-	AddressString string
-	Raw           types.Log // Blockchain specific contextual infos
+	AddressBytes []byte
+	Raw          types.Log // Blockchain specific contextual infos
 }
 
-// FilterContractStatusChanged is a free log retrieval operation binding the contract event 0x3d0c547c02b11c55056d674bcd10861feaf3f00c82211c29ab6cb42e0cb6b681.
+// FilterContractStatusChanged is a free log retrieval operation binding the contract event 0x6db122b2555e642c944e09ae6d733a3f7600404765f612912f72b3c921c0b88c.
 //
-// Solidity: event ContractStatusChanged(string addressString)
+// Solidity: event ContractStatusChanged(bytes addressBytes)
 func (_ICoreRegistry *ICoreRegistryFilterer) FilterContractStatusChanged(opts *bind.FilterOpts) (*ICoreRegistryContractStatusChangedIterator, error) {
 
 	logs, sub, err := _ICoreRegistry.contract.FilterLogs(opts, "ContractStatusChanged")
@@ -944,9 +944,9 @@ func (_ICoreRegistry *ICoreRegistryFilterer) FilterContractStatusChanged(opts *b
 	return &ICoreRegistryContractStatusChangedIterator{contract: _ICoreRegistry.contract, event: "ContractStatusChanged", logs: logs, sub: sub}, nil
 }
 
-// WatchContractStatusChanged is a free log subscription operation binding the contract event 0x3d0c547c02b11c55056d674bcd10861feaf3f00c82211c29ab6cb42e0cb6b681.
+// WatchContractStatusChanged is a free log subscription operation binding the contract event 0x6db122b2555e642c944e09ae6d733a3f7600404765f612912f72b3c921c0b88c.
 //
-// Solidity: event ContractStatusChanged(string addressString)
+// Solidity: event ContractStatusChanged(bytes addressBytes)
 func (_ICoreRegistry *ICoreRegistryFilterer) WatchContractStatusChanged(opts *bind.WatchOpts, sink chan<- *ICoreRegistryContractStatusChanged) (event.Subscription, error) {
 
 	logs, sub, err := _ICoreRegistry.contract.WatchLogs(opts, "ContractStatusChanged")
@@ -981,9 +981,9 @@ func (_ICoreRegistry *ICoreRegistryFilterer) WatchContractStatusChanged(opts *bi
 	}), nil
 }
 
-// ParseContractStatusChanged is a log parse operation binding the contract event 0x3d0c547c02b11c55056d674bcd10861feaf3f00c82211c29ab6cb42e0cb6b681.
+// ParseContractStatusChanged is a log parse operation binding the contract event 0x6db122b2555e642c944e09ae6d733a3f7600404765f612912f72b3c921c0b88c.
 //
-// Solidity: event ContractStatusChanged(string addressString)
+// Solidity: event ContractStatusChanged(bytes addressBytes)
 func (_ICoreRegistry *ICoreRegistryFilterer) ParseContractStatusChanged(log types.Log) (*ICoreRegistryContractStatusChanged, error) {
 	event := new(ICoreRegistryContractStatusChanged)
 	if err := _ICoreRegistry.contract.UnpackLog(event, "ContractStatusChanged", log); err != nil {
@@ -1363,10 +1363,10 @@ type ICoreRegistryZRC20TokenRegistered struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterZRC20TokenRegistered is a free log retrieval operation binding the contract event 0xe9dcf3d203869edc7fe2e7c997245467ee1c5980b4ec106617cc2d2bf968be74.
+// FilterZRC20TokenRegistered is a free log retrieval operation binding the contract event 0xa9edd2fd29fc8cab6015c2725afa5bc5f3b8d709a02d9e89990ef20fd781e367.
 //
-// Solidity: event ZRC20TokenRegistered(string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
-func (_ICoreRegistry *ICoreRegistryFilterer) FilterZRC20TokenRegistered(opts *bind.FilterOpts, originAddress []string, address_ []common.Address) (*ICoreRegistryZRC20TokenRegisteredIterator, error) {
+// Solidity: event ZRC20TokenRegistered(bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
+func (_ICoreRegistry *ICoreRegistryFilterer) FilterZRC20TokenRegistered(opts *bind.FilterOpts, originAddress [][]byte, address_ []common.Address) (*ICoreRegistryZRC20TokenRegisteredIterator, error) {
 
 	var originAddressRule []interface{}
 	for _, originAddressItem := range originAddress {
@@ -1384,10 +1384,10 @@ func (_ICoreRegistry *ICoreRegistryFilterer) FilterZRC20TokenRegistered(opts *bi
 	return &ICoreRegistryZRC20TokenRegisteredIterator{contract: _ICoreRegistry.contract, event: "ZRC20TokenRegistered", logs: logs, sub: sub}, nil
 }
 
-// WatchZRC20TokenRegistered is a free log subscription operation binding the contract event 0xe9dcf3d203869edc7fe2e7c997245467ee1c5980b4ec106617cc2d2bf968be74.
+// WatchZRC20TokenRegistered is a free log subscription operation binding the contract event 0xa9edd2fd29fc8cab6015c2725afa5bc5f3b8d709a02d9e89990ef20fd781e367.
 //
-// Solidity: event ZRC20TokenRegistered(string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
-func (_ICoreRegistry *ICoreRegistryFilterer) WatchZRC20TokenRegistered(opts *bind.WatchOpts, sink chan<- *ICoreRegistryZRC20TokenRegistered, originAddress []string, address_ []common.Address) (event.Subscription, error) {
+// Solidity: event ZRC20TokenRegistered(bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
+func (_ICoreRegistry *ICoreRegistryFilterer) WatchZRC20TokenRegistered(opts *bind.WatchOpts, sink chan<- *ICoreRegistryZRC20TokenRegistered, originAddress [][]byte, address_ []common.Address) (event.Subscription, error) {
 
 	var originAddressRule []interface{}
 	for _, originAddressItem := range originAddress {
@@ -1430,9 +1430,9 @@ func (_ICoreRegistry *ICoreRegistryFilterer) WatchZRC20TokenRegistered(opts *bin
 	}), nil
 }
 
-// ParseZRC20TokenRegistered is a log parse operation binding the contract event 0xe9dcf3d203869edc7fe2e7c997245467ee1c5980b4ec106617cc2d2bf968be74.
+// ParseZRC20TokenRegistered is a log parse operation binding the contract event 0xa9edd2fd29fc8cab6015c2725afa5bc5f3b8d709a02d9e89990ef20fd781e367.
 //
-// Solidity: event ZRC20TokenRegistered(string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
+// Solidity: event ZRC20TokenRegistered(bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
 func (_ICoreRegistry *ICoreRegistryFilterer) ParseZRC20TokenRegistered(log types.Log) (*ICoreRegistryZRC20TokenRegistered, error) {
 	event := new(ICoreRegistryZRC20TokenRegistered)
 	if err := _ICoreRegistry.contract.UnpackLog(event, "ZRC20TokenRegistered", log); err != nil {

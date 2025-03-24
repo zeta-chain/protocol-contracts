@@ -7,8 +7,8 @@ interface ICoreRegistryEvents {
     /// @notice Emitted when a new contract address is registered.
     /// @param chainId The ID of the chain where the contract is deployed.
     /// @param contractType The type of the contract (e.g. "connector", "tss", "gateway")
-    /// @param addressString The string representation of the registered address
-    event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString);
+    /// @param addressBytes The bytes representation of the registered address
+    event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes);
 
     /// @notice Emitted when a ZRC20 token is registered.
     /// @param originAddress The address of the asset on its native chain.
@@ -17,7 +17,7 @@ interface ICoreRegistryEvents {
     /// @param originChainId The ID of the foreign chain where the original asset exists.
     /// @param symbol The symbol of the token.
     event ZRC20TokenRegistered(
-        string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol
+        bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol
     );
 
     /// @notice Emitted when a ZRC20 token is updated.
@@ -30,8 +30,8 @@ interface ICoreRegistryEvents {
     event ChainStatusChanged(uint256 indexed chainId);
 
     /// @notice Emitted when a contract status has changed
-    /// @param addressString The string representation of the registered address.
-    event ContractStatusChanged(string addressString);
+    /// @param addressBytes The bytes representation of the registered address.
+    event ContractStatusChanged(bytes addressBytes);
 
     /// @notice Emitted when a chain metadata is set
     /// @param chainId The ID of the chain.
@@ -68,8 +68,8 @@ interface ICoreRegistryErrors {
     /// @notice Error thrown when a contract is already registered.
     /// @param chainId The ID of the chain.
     /// @param contractType The type of the contract.
-    /// @param addressString The address of the contract.
-    error ContractAlreadyRegistered(uint256 chainId, string contractType, string addressString);
+    /// @param addressBytes The address of the contract.
+    error ContractAlreadyRegistered(uint256 chainId, string contractType, bytes addressBytes);
 
     /// @notice Error thrown when a contract is not found in the registry.
     /// @param chainId The ID of the chain,
@@ -105,9 +105,8 @@ struct ContractInfo {
     bool active;
     /// @notice The address of the contract (for EVM chains).
     address address_;
-    // TODO: use bytes instead of string
-    /// @notice String representation of the address (needed for non-EVM chains).
-    string addressString;
+    /// @notice Bytes representation of the address (needed for non-EVM chains).
+    bytes addressBytes;
     /// @notice The type of the contract (e.g. "connector", "gateway", "tss").
     string contractType;
     /// @notice Additional contract-specific configuration and metadata.
@@ -122,7 +121,7 @@ struct ZRC20Info {
     /// @notice The address of the ZRC20 token on ZetaChain.
     address address_;
     /// @notice The address or identifier of the asset on its native chain.
-    string originAddress;
+    bytes originAddress;
     /// @notice The ID of the foreign chain where the original asset exists.
     uint256 originChainId;
     /// @notice The symbol of the token.
@@ -159,12 +158,12 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
     /// @param chainId The ID of the chain where the contract is deployed.
     /// @param address_ The address of the contract.
     /// @param contractType The type of the contract (e.g., "connector", "gateway").
-    /// @param addressString The string representation of the non-EVM address.
+    /// @param addressBytes The bytes representation of the non-EVM address.
     function registerContract(
         uint256 chainId,
         address address_,
         string calldata contractType,
-        string calldata addressString
+        bytes calldata addressBytes
     )
         external;
 
@@ -196,7 +195,7 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
         address address_,
         string calldata symbol,
         uint256 originChainId,
-        string calldata originAddress,
+        bytes calldata originAddress,
         string calldata coinType,
         uint8 decimals
     )
@@ -259,7 +258,7 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
             bool active,
             string memory symbol,
             uint256 originChainId,
-            string memory originAddress,
+            bytes memory originAddress,
             string memory coinType,
             uint8 decimals
         );
@@ -270,7 +269,7 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
     /// @return The address of the corresponding ZRC20 token on ZetaChain.
     function getZRC20AddressByForeignAsset(
         uint256 originChainId,
-        string calldata originAddress
+        bytes calldata originAddress
     )
         external
         view

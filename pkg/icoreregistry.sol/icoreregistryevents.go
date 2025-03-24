@@ -31,7 +31,7 @@ var (
 
 // ICoreRegistryEventsMetaData contains all meta data concerning the ICoreRegistryEvents contract.
 var ICoreRegistryEventsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"addressString\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressString\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"address_\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"bytes\",\"indexed\":true,\"internalType\":\"bytes\"},{\"name\":\"address_\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false}]",
 }
 
 // ICoreRegistryEventsABI is the input ABI used to generate the binding from.
@@ -393,15 +393,15 @@ func (it *ICoreRegistryEventsContractRegisteredIterator) Close() error {
 
 // ICoreRegistryEventsContractRegistered represents a ContractRegistered event raised by the ICoreRegistryEvents contract.
 type ICoreRegistryEventsContractRegistered struct {
-	ChainId       *big.Int
-	ContractType  common.Hash
-	AddressString string
-	Raw           types.Log // Blockchain specific contextual infos
+	ChainId      *big.Int
+	ContractType common.Hash
+	AddressBytes []byte
+	Raw          types.Log // Blockchain specific contextual infos
 }
 
-// FilterContractRegistered is a free log retrieval operation binding the contract event 0x9e39e5ce8ea4a42505aee332c3993de850b3e27b483b409b451bd6f4272211f8.
+// FilterContractRegistered is a free log retrieval operation binding the contract event 0x20319e67335097991b9d6add94a71632118372c1a0b5650654f069668dce2581.
 //
-// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString)
+// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterContractRegistered(opts *bind.FilterOpts, chainId []*big.Int, contractType []string) (*ICoreRegistryEventsContractRegisteredIterator, error) {
 
 	var chainIdRule []interface{}
@@ -420,9 +420,9 @@ func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterContractRegistere
 	return &ICoreRegistryEventsContractRegisteredIterator{contract: _ICoreRegistryEvents.contract, event: "ContractRegistered", logs: logs, sub: sub}, nil
 }
 
-// WatchContractRegistered is a free log subscription operation binding the contract event 0x9e39e5ce8ea4a42505aee332c3993de850b3e27b483b409b451bd6f4272211f8.
+// WatchContractRegistered is a free log subscription operation binding the contract event 0x20319e67335097991b9d6add94a71632118372c1a0b5650654f069668dce2581.
 //
-// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString)
+// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchContractRegistered(opts *bind.WatchOpts, sink chan<- *ICoreRegistryEventsContractRegistered, chainId []*big.Int, contractType []string) (event.Subscription, error) {
 
 	var chainIdRule []interface{}
@@ -466,9 +466,9 @@ func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchContractRegistered
 	}), nil
 }
 
-// ParseContractRegistered is a log parse operation binding the contract event 0x9e39e5ce8ea4a42505aee332c3993de850b3e27b483b409b451bd6f4272211f8.
+// ParseContractRegistered is a log parse operation binding the contract event 0x20319e67335097991b9d6add94a71632118372c1a0b5650654f069668dce2581.
 //
-// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString)
+// Solidity: event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) ParseContractRegistered(log types.Log) (*ICoreRegistryEventsContractRegistered, error) {
 	event := new(ICoreRegistryEventsContractRegistered)
 	if err := _ICoreRegistryEvents.contract.UnpackLog(event, "ContractRegistered", log); err != nil {
@@ -547,13 +547,13 @@ func (it *ICoreRegistryEventsContractStatusChangedIterator) Close() error {
 
 // ICoreRegistryEventsContractStatusChanged represents a ContractStatusChanged event raised by the ICoreRegistryEvents contract.
 type ICoreRegistryEventsContractStatusChanged struct {
-	AddressString string
-	Raw           types.Log // Blockchain specific contextual infos
+	AddressBytes []byte
+	Raw          types.Log // Blockchain specific contextual infos
 }
 
-// FilterContractStatusChanged is a free log retrieval operation binding the contract event 0x3d0c547c02b11c55056d674bcd10861feaf3f00c82211c29ab6cb42e0cb6b681.
+// FilterContractStatusChanged is a free log retrieval operation binding the contract event 0x6db122b2555e642c944e09ae6d733a3f7600404765f612912f72b3c921c0b88c.
 //
-// Solidity: event ContractStatusChanged(string addressString)
+// Solidity: event ContractStatusChanged(bytes addressBytes)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterContractStatusChanged(opts *bind.FilterOpts) (*ICoreRegistryEventsContractStatusChangedIterator, error) {
 
 	logs, sub, err := _ICoreRegistryEvents.contract.FilterLogs(opts, "ContractStatusChanged")
@@ -563,9 +563,9 @@ func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterContractStatusCha
 	return &ICoreRegistryEventsContractStatusChangedIterator{contract: _ICoreRegistryEvents.contract, event: "ContractStatusChanged", logs: logs, sub: sub}, nil
 }
 
-// WatchContractStatusChanged is a free log subscription operation binding the contract event 0x3d0c547c02b11c55056d674bcd10861feaf3f00c82211c29ab6cb42e0cb6b681.
+// WatchContractStatusChanged is a free log subscription operation binding the contract event 0x6db122b2555e642c944e09ae6d733a3f7600404765f612912f72b3c921c0b88c.
 //
-// Solidity: event ContractStatusChanged(string addressString)
+// Solidity: event ContractStatusChanged(bytes addressBytes)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchContractStatusChanged(opts *bind.WatchOpts, sink chan<- *ICoreRegistryEventsContractStatusChanged) (event.Subscription, error) {
 
 	logs, sub, err := _ICoreRegistryEvents.contract.WatchLogs(opts, "ContractStatusChanged")
@@ -600,9 +600,9 @@ func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchContractStatusChan
 	}), nil
 }
 
-// ParseContractStatusChanged is a log parse operation binding the contract event 0x3d0c547c02b11c55056d674bcd10861feaf3f00c82211c29ab6cb42e0cb6b681.
+// ParseContractStatusChanged is a log parse operation binding the contract event 0x6db122b2555e642c944e09ae6d733a3f7600404765f612912f72b3c921c0b88c.
 //
-// Solidity: event ContractStatusChanged(string addressString)
+// Solidity: event ContractStatusChanged(bytes addressBytes)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) ParseContractStatusChanged(log types.Log) (*ICoreRegistryEventsContractStatusChanged, error) {
 	event := new(ICoreRegistryEventsContractStatusChanged)
 	if err := _ICoreRegistryEvents.contract.UnpackLog(event, "ContractStatusChanged", log); err != nil {
@@ -982,10 +982,10 @@ type ICoreRegistryEventsZRC20TokenRegistered struct {
 	Raw           types.Log // Blockchain specific contextual infos
 }
 
-// FilterZRC20TokenRegistered is a free log retrieval operation binding the contract event 0xe9dcf3d203869edc7fe2e7c997245467ee1c5980b4ec106617cc2d2bf968be74.
+// FilterZRC20TokenRegistered is a free log retrieval operation binding the contract event 0xa9edd2fd29fc8cab6015c2725afa5bc5f3b8d709a02d9e89990ef20fd781e367.
 //
-// Solidity: event ZRC20TokenRegistered(string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
-func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterZRC20TokenRegistered(opts *bind.FilterOpts, originAddress []string, address_ []common.Address) (*ICoreRegistryEventsZRC20TokenRegisteredIterator, error) {
+// Solidity: event ZRC20TokenRegistered(bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
+func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterZRC20TokenRegistered(opts *bind.FilterOpts, originAddress [][]byte, address_ []common.Address) (*ICoreRegistryEventsZRC20TokenRegisteredIterator, error) {
 
 	var originAddressRule []interface{}
 	for _, originAddressItem := range originAddress {
@@ -1003,10 +1003,10 @@ func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) FilterZRC20TokenRegiste
 	return &ICoreRegistryEventsZRC20TokenRegisteredIterator{contract: _ICoreRegistryEvents.contract, event: "ZRC20TokenRegistered", logs: logs, sub: sub}, nil
 }
 
-// WatchZRC20TokenRegistered is a free log subscription operation binding the contract event 0xe9dcf3d203869edc7fe2e7c997245467ee1c5980b4ec106617cc2d2bf968be74.
+// WatchZRC20TokenRegistered is a free log subscription operation binding the contract event 0xa9edd2fd29fc8cab6015c2725afa5bc5f3b8d709a02d9e89990ef20fd781e367.
 //
-// Solidity: event ZRC20TokenRegistered(string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
-func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchZRC20TokenRegistered(opts *bind.WatchOpts, sink chan<- *ICoreRegistryEventsZRC20TokenRegistered, originAddress []string, address_ []common.Address) (event.Subscription, error) {
+// Solidity: event ZRC20TokenRegistered(bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
+func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchZRC20TokenRegistered(opts *bind.WatchOpts, sink chan<- *ICoreRegistryEventsZRC20TokenRegistered, originAddress [][]byte, address_ []common.Address) (event.Subscription, error) {
 
 	var originAddressRule []interface{}
 	for _, originAddressItem := range originAddress {
@@ -1049,9 +1049,9 @@ func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) WatchZRC20TokenRegister
 	}), nil
 }
 
-// ParseZRC20TokenRegistered is a log parse operation binding the contract event 0xe9dcf3d203869edc7fe2e7c997245467ee1c5980b4ec106617cc2d2bf968be74.
+// ParseZRC20TokenRegistered is a log parse operation binding the contract event 0xa9edd2fd29fc8cab6015c2725afa5bc5f3b8d709a02d9e89990ef20fd781e367.
 //
-// Solidity: event ZRC20TokenRegistered(string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
+// Solidity: event ZRC20TokenRegistered(bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol)
 func (_ICoreRegistryEvents *ICoreRegistryEventsFilterer) ParseZRC20TokenRegistered(log types.Log) (*ICoreRegistryEventsZRC20TokenRegistered, error) {
 	event := new(ICoreRegistryEventsZRC20TokenRegistered)
 	if err := _ICoreRegistryEvents.contract.UnpackLog(event, "ZRC20TokenRegistered", log); err != nil {

@@ -39,7 +39,7 @@ contract CoreRegistry is
     /// @notice Maps token symbol to ZRC20 address.
     mapping(string => address) private _zrc20SymbolToAddress;
     /// @notice Maps origin chain ID and origin address to ZRC20 token address.
-    mapping(uint256 => mapping(string => address)) private _originAssetToZRC20;
+    mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -144,12 +144,12 @@ contract CoreRegistry is
     /// @param chainId The ID of the chain where the contract is deployed.
     /// @param address_ The address of the contract.
     /// @param contractType The type of the contract (e.g., "connector", "gateway").
-    /// @param addressString The string representation of the non-EVM address.
+    /// @param addressBytes The bytes representation of the non-EVM address.
     function registerContract(
         uint256 chainId,
         address address_,
         string calldata contractType,
-        string calldata addressString
+        bytes calldata addressBytes
     )
         external
         override
@@ -159,25 +159,25 @@ contract CoreRegistry is
         // Validate inputs
         if (!_chains[chainId].active) revert ChainNonActive(chainId);
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-        if (address_ == address(0) && bytes(addressString).length == 0) {
+        if (address_ == address(0) && bytes(addressBytes).length == 0) {
             revert ZeroAddress();
         }
 
         // Check if contract already exists in the registry
-        if (bytes(_contracts[chainId][contractType].addressString).length > 0) {
-            revert ContractAlreadyRegistered(chainId, contractType, addressString);
+        if (bytes(_contracts[chainId][contractType].addressBytes).length > 0) {
+            revert ContractAlreadyRegistered(chainId, contractType, addressBytes);
         }
 
         // Store contract info in the storage.
         _contracts[chainId][contractType].active = true;
         _contracts[chainId][contractType].address_ = address_;
-        _contracts[chainId][contractType].addressString = addressString;
+        _contracts[chainId][contractType].addressBytes = addressBytes;
         _contracts[chainId][contractType].contractType = contractType;
 
         // Broadcast update to satellite registries
-        _broadcastContractRegistration(chainId, address_, contractType, addressString);
+        _broadcastContractRegistration(chainId, address_, contractType, addressBytes);
 
-        emit ContractRegistered(chainId, contractType, addressString);
+        emit ContractRegistered(chainId, contractType, addressBytes);
     }
 
     /// @notice Updates contract configuration.
@@ -202,7 +202,7 @@ contract CoreRegistry is
 
         // Check if contract exists in the registry
         if (
-            bytes(_contracts[chainId][contractType].addressString).length == 0
+            bytes(_contracts[chainId][contractType].addressBytes).length == 0
                 && _contracts[chainId][contractType].active
         ) {
             revert ContractNotFound(chainId, contractType);
@@ -237,7 +237,7 @@ contract CoreRegistry is
 
         // Check if contract exists in the registry
         if (
-            bytes(_contracts[chainId][contractType].addressString).length == 0
+            bytes(_contracts[chainId][contractType].addressBytes).length == 0
                 && _contracts[chainId][contractType].active
         ) {
             revert ContractNotFound(chainId, contractType);
@@ -249,7 +249,7 @@ contract CoreRegistry is
         // Broadcast update to satellite registries
         _broadcastContractStatusUpdate(chainId, contractType, active);
 
-        emit ContractStatusChanged(_contracts[chainId][contractType].addressString);
+        emit ContractStatusChanged(_contracts[chainId][contractType].addressBytes);
     }
 
     /// @notice Registers a new ZRC20 token in the registry.
@@ -263,7 +263,7 @@ contract CoreRegistry is
         address address_,
         string calldata symbol,
         uint256 originChainId,
-        string calldata originAddress,
+        bytes calldata originAddress,
         string calldata coinType,
         uint8 decimals
     )
@@ -384,7 +384,7 @@ contract CoreRegistry is
             bool active,
             string memory symbol,
             uint256 originChainId,
-            string memory originAddress,
+            bytes memory originAddress,
             string memory coinType,
             uint8 decimals
         )
@@ -404,7 +404,7 @@ contract CoreRegistry is
     /// @return The address of the corresponding ZRC20 token on ZetaChain.
     function getZRC20AddressByForeignAsset(
         uint256 originChainId,
-        string calldata originAddress
+        bytes calldata originAddress
     )
         external
         view
@@ -443,17 +443,17 @@ contract CoreRegistry is
     /// @param chainId The ID of the chain where the contract is deployed
     /// @notice address_ The address of the contract
     /// @notice contractType The type of the contract
-    /// @notice addressString The string representation of the non-EVM address
+    /// @notice addressBytes The bytes representation of the non-EVM address
     function _broadcastContractRegistration(
         uint256 chainId,
         address address_,
         string calldata contractType,
-        string calldata addressString
+        bytes calldata addressBytes
     )
         private
     {
         bytes memory message = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,string)", chainId, address_, contractType, addressString
+            "registerContract(uint256,address,string,bytes)", chainId, address_, contractType, addressBytes
         );
         _broadcastToAllChains(message);
     }
@@ -500,7 +500,7 @@ contract CoreRegistry is
         address address_,
         string calldata symbol,
         uint256 originChainId,
-        string calldata originAddress,
+        bytes calldata originAddress,
         string calldata coinType,
         uint8 decimals
     )
@@ -508,7 +508,7 @@ contract CoreRegistry is
     {
         // Encode the function call for the Registry contract on the target chain
         bytes memory message = abi.encodeWithSignature(
-            "registerZRC20Token(address,string,uint256,string,string,uint8)",
+            "registerZRC20Token(address,string,uint256,bytes,string,uint8)",
             address_,
             symbol,
             originChainId,
