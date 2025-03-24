@@ -1,6 +1,12 @@
 
 
 # Contents
+- [ICoreRegistryEvents](ICoreRegistry.sol/interface.ICoreRegistryEvents.md)
+- [ICoreRegistryErrors](ICoreRegistry.sol/interface.ICoreRegistryErrors.md)
+- [ChainInfo](ICoreRegistry.sol/struct.ChainInfo.md)
+- [ContractInfo](ICoreRegistry.sol/struct.ContractInfo.md)
+- [ZRC20Info](ICoreRegistry.sol/struct.ZRC20Info.md)
+- [ICoreRegistry](ICoreRegistry.sol/interface.ICoreRegistry.md)
 - [IGatewayZEVMEvents](IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
 - [IGatewayZEVMErrors](IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md)
 - [IGatewayZEVM](IGatewayZEVM.sol/interface.IGatewayZEVM.md)
@@ -11,9 +17,6 @@
 - [IZRC20Metadata](IZRC20.sol/interface.IZRC20Metadata.md)
 - [ZRC20Events](IZRC20.sol/interface.ZRC20Events.md)
 - [CoinType](IZRC20.sol/enum.CoinType.md)
-- [IZetaRegistryEvents](IZetaRegistry.sol/interface.IZetaRegistryEvents.md)
-- [IZetaRegistryErrors](IZetaRegistry.sol/interface.IZetaRegistryErrors.md)
-- [IZetaRegistry](IZetaRegistry.sol/interface.IZetaRegistry.md)
 - [zContext](UniversalContract.sol/struct.zContext.md)
 - [zContract](UniversalContract.sol/interface.zContract.md)
 - [MessageContext](UniversalContract.sol/struct.MessageContext.md)
