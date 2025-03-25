@@ -137,6 +137,9 @@ contract CoreRegistry is
         // Updates chain metadata
         _chains[chainId].metadata[key] = value;
 
+        // Broadcast update to satellite registries
+        _broadcastChainMetadataUpdate(chainId, key, value);
+
         emit NewChainMetadata(chainId, key, value);
     }
 
