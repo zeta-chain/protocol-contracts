@@ -50,17 +50,17 @@ export namespace ContractRegisteredEvent {
   export type InputTuple = [
     chainId: BigNumberish,
     contractType: string,
-    addressString: string
+    addressBytes: BytesLike
   ];
   export type OutputTuple = [
     chainId: bigint,
     contractType: string,
-    addressString: string
+    addressBytes: string
   ];
   export interface OutputObject {
     chainId: bigint;
     contractType: string;
-    addressString: string;
+    addressBytes: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -69,10 +69,10 @@ export namespace ContractRegisteredEvent {
 }
 
 export namespace ContractStatusChangedEvent {
-  export type InputTuple = [addressString: string];
-  export type OutputTuple = [addressString: string];
+  export type InputTuple = [addressBytes: BytesLike];
+  export type OutputTuple = [addressBytes: string];
   export interface OutputObject {
-    addressString: string;
+    addressBytes: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -125,7 +125,7 @@ export namespace NewContractConfigurationEvent {
 
 export namespace ZRC20TokenRegisteredEvent {
   export type InputTuple = [
-    originAddress: string,
+    originAddress: BytesLike,
     address_: AddressLike,
     decimals: BigNumberish,
     originChainId: BigNumberish,
@@ -273,7 +273,7 @@ export interface ICoreRegistryEvents extends BaseContract {
       ChainStatusChangedEvent.OutputObject
     >;
 
-    "ContractRegistered(uint256,string,string)": TypedContractEvent<
+    "ContractRegistered(uint256,string,bytes)": TypedContractEvent<
       ContractRegisteredEvent.InputTuple,
       ContractRegisteredEvent.OutputTuple,
       ContractRegisteredEvent.OutputObject
@@ -284,7 +284,7 @@ export interface ICoreRegistryEvents extends BaseContract {
       ContractRegisteredEvent.OutputObject
     >;
 
-    "ContractStatusChanged(string)": TypedContractEvent<
+    "ContractStatusChanged(bytes)": TypedContractEvent<
       ContractStatusChangedEvent.InputTuple,
       ContractStatusChangedEvent.OutputTuple,
       ContractStatusChangedEvent.OutputObject
@@ -317,7 +317,7 @@ export interface ICoreRegistryEvents extends BaseContract {
       NewContractConfigurationEvent.OutputObject
     >;
 
-    "ZRC20TokenRegistered(string,address,uint8,uint256,string)": TypedContractEvent<
+    "ZRC20TokenRegistered(bytes,address,uint8,uint256,string)": TypedContractEvent<
       ZRC20TokenRegisteredEvent.InputTuple,
       ZRC20TokenRegisteredEvent.OutputTuple,
       ZRC20TokenRegisteredEvent.OutputObject

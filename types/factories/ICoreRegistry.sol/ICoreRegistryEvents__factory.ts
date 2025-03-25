@@ -39,10 +39,10 @@ const _abi = [
         internalType: "string",
       },
       {
-        name: "addressString",
-        type: "string",
+        name: "addressBytes",
+        type: "bytes",
         indexed: false,
-        internalType: "string",
+        internalType: "bytes",
       },
     ],
     anonymous: false,
@@ -52,10 +52,10 @@ const _abi = [
     name: "ContractStatusChanged",
     inputs: [
       {
-        name: "addressString",
-        type: "string",
+        name: "addressBytes",
+        type: "bytes",
         indexed: false,
-        internalType: "string",
+        internalType: "bytes",
       },
     ],
     anonymous: false,
@@ -122,9 +122,9 @@ const _abi = [
     inputs: [
       {
         name: "originAddress",
-        type: "string",
+        type: "bytes",
         indexed: true,
-        internalType: "string",
+        internalType: "bytes",
       },
       {
         name: "address_",

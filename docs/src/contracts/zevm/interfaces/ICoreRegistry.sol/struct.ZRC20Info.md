@@ -8,7 +8,7 @@ Structure that contains information about a ZRC20 token.
 struct ZRC20Info {
     bool active;
     address address_;
-    string originAddress;
+    bytes originAddress;
     uint256 originChainId;
     string symbol;
     string coinType;

@@ -52,7 +52,7 @@ function registerContract(
     uint256 chainId,
     address address_,
     string calldata contractType,
-    string calldata addressString
+    bytes calldata addressBytes
 )
     external;
 ```
@@ -63,7 +63,7 @@ function registerContract(
 |`chainId`|`uint256`|The ID of the chain where the contract is deployed.|
 |`address_`|`address`|The address of the contract.|
 |`contractType`|`string`|The type of the contract (e.g., "connector", "gateway").|
-|`addressString`|`string`|The string representation of the non-EVM address.|
+|`addressBytes`|`bytes`|The bytes representation of the non-EVM address.|
 
 
 ### updateContractConfiguration
@@ -107,7 +107,7 @@ function registerZRC20Token(
     address address_,
     string calldata symbol,
     uint256 originChainId,
-    string calldata originAddress,
+    bytes calldata originAddress,
     string calldata coinType,
     uint8 decimals
 )
@@ -120,7 +120,7 @@ function registerZRC20Token(
 |`address_`|`address`|The address of the ZRC20 token on ZetaChain.|
 |`symbol`|`string`|The symbol of the token.|
 |`originChainId`|`uint256`|The ID of the foreign chain where the original asset exists.|
-|`originAddress`|`string`|The address or identifier of the asset on its native chain.|
+|`originAddress`|`bytes`|The address or identifier of the asset on its native chain.|
 |`coinType`|`string`||
 |`decimals`|`uint8`||
 
@@ -235,7 +235,7 @@ function getZRC20TokenInfo(address address_)
         bool active,
         string memory symbol,
         uint256 originChainId,
-        string memory originAddress,
+        bytes memory originAddress,
         string memory coinType,
         uint8 decimals
     );
@@ -253,7 +253,7 @@ function getZRC20TokenInfo(address address_)
 |`active`|`bool`|Whether the token is active.|
 |`symbol`|`string`|The symbol of the token|
 |`originChainId`|`uint256`|The ID of the foreign chain where the original asset exists.|
-|`originAddress`|`string`|The address or identifier of the asset on its native chain.|
+|`originAddress`|`bytes`|The address or identifier of the asset on its native chain.|
 |`coinType`|`string`|The type of the original coin.|
 |`decimals`|`uint8`|The number of decimals the token uses.|
 
@@ -266,7 +266,7 @@ Gets the ZRC20 token address for a specific asset on a foreign chain.
 ```solidity
 function getZRC20AddressByForeignAsset(
     uint256 originChainId,
-    string calldata originAddress
+    bytes calldata originAddress
 )
     external
     view
@@ -277,7 +277,7 @@ function getZRC20AddressByForeignAsset(
 |Name|Type|Description|
 |----|----|-----------|
 |`originChainId`|`uint256`|The ID of the foreign chain.|
-|`originAddress`|`string`|The address or identifier of the asset on its native chain.|
+|`originAddress`|`bytes`|The address or identifier of the asset on its native chain.|
 
 **Returns**
 

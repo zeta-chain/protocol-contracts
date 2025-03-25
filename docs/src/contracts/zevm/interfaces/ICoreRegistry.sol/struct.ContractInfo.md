@@ -8,7 +8,7 @@ Structure that contains information about a contract registered in the system.
 struct ContractInfo {
     bool active;
     address address_;
-    string addressString;
+    bytes addressBytes;
     string contractType;
     mapping(string => bytes) configuration;
 }

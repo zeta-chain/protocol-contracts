@@ -10,7 +10,7 @@ Emitted when a new contract address is registered.
 
 
 ```solidity
-event ContractRegistered(uint256 indexed chainId, string indexed contractType, string addressString);
+event ContractRegistered(uint256 indexed chainId, string indexed contractType, bytes addressBytes);
 ```
 
 **Parameters**
@@ -19,7 +19,7 @@ event ContractRegistered(uint256 indexed chainId, string indexed contractType, s
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain where the contract is deployed.|
 |`contractType`|`string`|The type of the contract (e.g. "connector", "tss", "gateway")|
-|`addressString`|`string`|The string representation of the registered address|
+|`addressBytes`|`bytes`|The bytes representation of the registered address|
 
 ### ZRC20TokenRegistered
 Emitted when a ZRC20 token is registered.
@@ -27,7 +27,7 @@ Emitted when a ZRC20 token is registered.
 
 ```solidity
 event ZRC20TokenRegistered(
-    string indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol
+    bytes indexed originAddress, address indexed address_, uint8 decimals, uint256 originChainId, string symbol
 );
 ```
 
@@ -35,7 +35,7 @@ event ZRC20TokenRegistered(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`originAddress`|`string`|The address of the asset on its native chain.|
+|`originAddress`|`bytes`|The address of the asset on its native chain.|
 |`address_`|`address`|The address of the ZRC20 token on ZetaChain.|
 |`decimals`|`uint8`|The number of decimals the token uses.|
 |`originChainId`|`uint256`|The ID of the foreign chain where the original asset exists.|
@@ -75,14 +75,14 @@ Emitted when a contract status has changed
 
 
 ```solidity
-event ContractStatusChanged(string addressString);
+event ContractStatusChanged(bytes addressBytes);
 ```
 
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`addressString`|`string`|The string representation of the registered address.|
+|`addressBytes`|`bytes`|The bytes representation of the registered address.|
 
 ### NewChainMetadata
 Emitted when a chain metadata is set

@@ -132,7 +132,7 @@ export interface CoreRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getZRC20AddressByForeignAsset",
-    values: [BigNumberish, string]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getZRC20TokenInfo",
@@ -158,11 +158,11 @@ export interface CoreRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "registerContract",
-    values: [BigNumberish, AddressLike, string, string]
+    values: [BigNumberish, AddressLike, string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "registerZRC20Token",
-    values: [AddressLike, string, BigNumberish, string, string, BigNumberish]
+    values: [AddressLike, string, BigNumberish, BytesLike, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -323,17 +323,17 @@ export namespace ContractRegisteredEvent {
   export type InputTuple = [
     chainId: BigNumberish,
     contractType: string,
-    addressString: string
+    addressBytes: BytesLike
   ];
   export type OutputTuple = [
     chainId: bigint,
     contractType: string,
-    addressString: string
+    addressBytes: string
   ];
   export interface OutputObject {
     chainId: bigint;
     contractType: string;
-    addressString: string;
+    addressBytes: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -342,10 +342,10 @@ export namespace ContractRegisteredEvent {
 }
 
 export namespace ContractStatusChangedEvent {
-  export type InputTuple = [addressString: string];
-  export type OutputTuple = [addressString: string];
+  export type InputTuple = [addressBytes: BytesLike];
+  export type OutputTuple = [addressBytes: string];
   export interface OutputObject {
-    addressString: string;
+    addressBytes: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -504,7 +504,7 @@ export namespace UpgradedEvent {
 
 export namespace ZRC20TokenRegisteredEvent {
   export type InputTuple = [
-    originAddress: string,
+    originAddress: BytesLike,
     address_: AddressLike,
     decimals: BigNumberish,
     originChainId: BigNumberish,
@@ -629,7 +629,7 @@ export interface CoreRegistry extends BaseContract {
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
   getZRC20AddressByForeignAsset: TypedContractMethod<
-    [originChainId: BigNumberish, originAddress: string],
+    [originChainId: BigNumberish, originAddress: BytesLike],
     [string],
     "view"
   >;
@@ -682,7 +682,7 @@ export interface CoreRegistry extends BaseContract {
       chainId: BigNumberish,
       address_: AddressLike,
       contractType: string,
-      addressString: string
+      addressBytes: BytesLike
     ],
     [void],
     "nonpayable"
@@ -693,7 +693,7 @@ export interface CoreRegistry extends BaseContract {
       address_: AddressLike,
       symbol: string,
       originChainId: BigNumberish,
-      originAddress: string,
+      originAddress: BytesLike,
       coinType: string,
       decimals: BigNumberish
     ],
@@ -818,7 +818,7 @@ export interface CoreRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "getZRC20AddressByForeignAsset"
   ): TypedContractMethod<
-    [originChainId: BigNumberish, originAddress: string],
+    [originChainId: BigNumberish, originAddress: BytesLike],
     [string],
     "view"
   >;
@@ -879,7 +879,7 @@ export interface CoreRegistry extends BaseContract {
       chainId: BigNumberish,
       address_: AddressLike,
       contractType: string,
-      addressString: string
+      addressBytes: BytesLike
     ],
     [void],
     "nonpayable"
@@ -891,7 +891,7 @@ export interface CoreRegistry extends BaseContract {
       address_: AddressLike,
       symbol: string,
       originChainId: BigNumberish,
-      originAddress: string,
+      originAddress: BytesLike,
       coinType: string,
       decimals: BigNumberish
     ],
@@ -1070,7 +1070,7 @@ export interface CoreRegistry extends BaseContract {
       ChainStatusChangedEvent.OutputObject
     >;
 
-    "ContractRegistered(uint256,string,string)": TypedContractEvent<
+    "ContractRegistered(uint256,string,bytes)": TypedContractEvent<
       ContractRegisteredEvent.InputTuple,
       ContractRegisteredEvent.OutputTuple,
       ContractRegisteredEvent.OutputObject
@@ -1081,7 +1081,7 @@ export interface CoreRegistry extends BaseContract {
       ContractRegisteredEvent.OutputObject
     >;
 
-    "ContractStatusChanged(string)": TypedContractEvent<
+    "ContractStatusChanged(bytes)": TypedContractEvent<
       ContractStatusChangedEvent.InputTuple,
       ContractStatusChangedEvent.OutputTuple,
       ContractStatusChangedEvent.OutputObject
@@ -1191,7 +1191,7 @@ export interface CoreRegistry extends BaseContract {
       UpgradedEvent.OutputObject
     >;
 
-    "ZRC20TokenRegistered(string,address,uint8,uint256,string)": TypedContractEvent<
+    "ZRC20TokenRegistered(bytes,address,uint8,uint256,string)": TypedContractEvent<
       ZRC20TokenRegisteredEvent.InputTuple,
       ZRC20TokenRegisteredEvent.OutputTuple,
       ZRC20TokenRegisteredEvent.OutputObject

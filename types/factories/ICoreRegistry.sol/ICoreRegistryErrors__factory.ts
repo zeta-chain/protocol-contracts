@@ -46,9 +46,9 @@ const _abi = [
         internalType: "string",
       },
       {
-        name: "addressString",
-        type: "string",
-        internalType: "string",
+        name: "addressBytes",
+        type: "bytes",
+        internalType: "bytes",
       },
     ],
   },

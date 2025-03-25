@@ -60,7 +60,7 @@ Error thrown when a contract is already registered.
 
 
 ```solidity
-error ContractAlreadyRegistered(uint256 chainId, string contractType, string addressString);
+error ContractAlreadyRegistered(uint256 chainId, string contractType, bytes addressBytes);
 ```
 
 **Parameters**
@@ -69,7 +69,7 @@ error ContractAlreadyRegistered(uint256 chainId, string contractType, string add
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain.|
 |`contractType`|`string`|The type of the contract.|
-|`addressString`|`string`|The address of the contract.|
+|`addressBytes`|`bytes`|The address of the contract.|
 
 ### ContractNotFound
 Error thrown when a contract is not found in the registry.
