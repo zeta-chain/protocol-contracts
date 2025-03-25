@@ -527,7 +527,7 @@ contract CoreRegistry is
     /// @param active Whether the token should be active
     function _broadcastZRC20Update(address address_, bool active) private {
         // Encode the function call for the Registry contract on the target chain
-        bytes memory message = abi.encodeWithSignature("updateZRC20Token(address,bool,string)", address_, active);
+        bytes memory message = abi.encodeWithSignature("updateZRC20Token(address,bool)", address_, active);
         _broadcastToAllChains(message);
     }
 
