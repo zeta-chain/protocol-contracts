@@ -119,14 +119,14 @@ contract GatewayZEVMUpgradeTest is
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed();
+            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
         }
 
         if (!IZRC20(zrc20).transferFrom(msg.sender, address(this), amount)) {
-            revert ZRC20TransferFailed();
+            revert ZRC20TransferFailed(zrc20, msg.sender, address(this), amount);
         }
 
-        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed();
+        if (!IZRC20(zrc20).burn(amount)) revert ZRC20BurnFailed(zrc20, amount);
 
         return gasFee;
     }
@@ -135,10 +135,12 @@ contract GatewayZEVMUpgradeTest is
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
     function _transferZETA(uint256 amount, address to) private {
-        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) revert FailedZetaSent();
+        if (!IWETH9(zetaToken).transferFrom(msg.sender, address(this), amount)) {
+            revert FailedZetaSent(address(this), amount);
+        }
         IWETH9(zetaToken).withdraw(amount);
         (bool sent,) = to.call{ value: amount }("");
-        if (!sent) revert FailedZetaSent();
+        if (!sent) revert FailedZetaSent(to, amount);
     }
 
     /// @notice Withdraw ZRC20 tokens to an external chain.
@@ -158,7 +160,8 @@ contract GatewayZEVMUpgradeTest is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
-        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit WithdrawnV2(
@@ -197,7 +200,8 @@ contract GatewayZEVMUpgradeTest is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = message.length + revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
         emit Withdrawn(
@@ -236,7 +240,8 @@ contract GatewayZEVMUpgradeTest is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = message.length + revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit Withdrawn(
@@ -269,7 +274,8 @@ contract GatewayZEVMUpgradeTest is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
-        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -305,7 +311,8 @@ contract GatewayZEVMUpgradeTest is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = message.length + revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -344,7 +351,8 @@ contract GatewayZEVMUpgradeTest is
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZetaAmount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = message.length + revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -370,7 +378,8 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = message.length + revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
@@ -393,7 +402,8 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (gasLimit == 0) revert InsufficientGasLimit();
-        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
+        uint256 messageSize = message.length + revertOptions.revertMessage.length;
+        if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
         _call(receiver, zrc20, message, CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }), revertOptions);
     }
@@ -411,7 +421,7 @@ contract GatewayZEVMUpgradeTest is
 
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
         if (!IZRC20(gasZRC20).transferFrom(msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed();
+            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
         }
 
         emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
@@ -427,7 +437,7 @@ contract GatewayZEVMUpgradeTest is
 
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed(zrc20, target, amount);
     }
 
     /// @notice Execute a user-specified contract on ZEVM.
@@ -473,7 +483,7 @@ contract GatewayZEVMUpgradeTest is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed(zrc20, target, amount);
         UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
@@ -528,7 +538,7 @@ contract GatewayZEVMUpgradeTest is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
-        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed();
+        if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed(zrc20, target, amount);
         Revertable(target).onRevert(revertContext);
     }
 }

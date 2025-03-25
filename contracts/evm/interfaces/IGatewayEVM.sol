@@ -91,7 +91,9 @@ interface IGatewayEVMErrors {
     error ZeroAddress();
 
     /// @notice Error for failed token approval.
-    error ApprovalFailed();
+    /// @param token The address of the token for which approval failed.
+    /// @param spender The address that was supposed to be approved to spend the tokens.
+    error ApprovalFailed(address token, address spender);
 
     /// @notice Error for already initialized custody.
     error CustodyInitialized();
@@ -100,7 +102,8 @@ interface IGatewayEVMErrors {
     error ConnectorInitialized();
 
     /// @notice Error when trying to transfer not whitelisted token to custody.
-    error NotWhitelistedInCustody();
+    /// @param token The address of the token that is not whitelisted in custody.
+    error NotWhitelistedInCustody(address token);
 
     /// @notice Error when trying to call onCall method using arbitrary call.
     error NotAllowedToCallOnCall();
@@ -109,7 +112,9 @@ interface IGatewayEVMErrors {
     error NotAllowedToCallOnRevert();
 
     /// @notice Error indicating payload size exceeded in external functions.
-    error PayloadSizeExceeded();
+    /// @param provided The size of the payload that was provided.
+    /// @param maximum The maximum allowed payload size.
+    error PayloadSizeExceeded(uint256 provided, uint256 maximum);
 }
 
 /// @title IGatewayEVM

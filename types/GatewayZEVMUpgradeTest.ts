@@ -56,16 +56,16 @@ export type RevertOptionsStructOutput = [
 };
 
 export type MessageContextStruct = {
-  origin: BytesLike;
-  sender: AddressLike;
+  sender: BytesLike;
+  senderEVM: AddressLike;
   chainID: BigNumberish;
 };
 
 export type MessageContextStructOutput = [
-  origin: string,
   sender: string,
+  senderEVM: string,
   chainID: bigint
-] & { origin: string; sender: string; chainID: bigint };
+] & { sender: string; senderEVM: string; chainID: bigint };
 
 export type RevertContextStruct = {
   sender: AddressLike;

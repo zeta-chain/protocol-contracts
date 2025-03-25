@@ -780,7 +780,18 @@ const _abi = [
   {
     type: "error",
     name: "ApprovalFailed",
-    inputs: [],
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "spender",
+        type: "address",
+        internalType: "address",
+      },
+    ],
   },
   {
     type: "error",
@@ -825,12 +836,29 @@ const _abi = [
   {
     type: "error",
     name: "NotWhitelistedInCustody",
-    inputs: [],
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        internalType: "address",
+      },
+    ],
   },
   {
     type: "error",
     name: "PayloadSizeExceeded",
-    inputs: [],
+    inputs: [
+      {
+        name: "provided",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "maximum",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",
