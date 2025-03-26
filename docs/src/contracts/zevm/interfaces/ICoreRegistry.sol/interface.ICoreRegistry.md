@@ -8,13 +8,13 @@ Primary interface for the CoreRegistry contract, the central registry for ZetaCh
 
 
 ## Functions
-### chainActivation
+### changeChainStatus
 
 Changes status of the chain to activated/deactivated.
 
 
 ```solidity
-function chainActivation(uint256 chainId, bytes calldata registry, bool activation) external;
+function changeChainStatus(uint256 chainId, bytes calldata registry, bool activation) external;
 ```
 **Parameters**
 

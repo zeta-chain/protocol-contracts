@@ -27,12 +27,12 @@ Error thrown when a zero address is provided where a non-zero address is require
 error ZeroAddress();
 ```
 
-### ChainAlreadyActive
+### ChainActive
 Error thrown when a chain is already active.
 
 
 ```solidity
-error ChainAlreadyActive(uint256 chainId);
+error ChainActive(uint256 chainId);
 ```
 
 **Parameters**

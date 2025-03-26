@@ -11,7 +11,7 @@ import type {
 const _abi = [
   {
     type: "function",
-    name: "chainActivation",
+    name: "changeChainStatus",
     inputs: [
       {
         name: "chainId",
@@ -363,6 +363,18 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
       },
+      {
+        name: "oldStatus",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
+      {
+        name: "newStatus",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
     ],
     anonymous: false,
   },
@@ -518,7 +530,7 @@ const _abi = [
   },
   {
     type: "error",
-    name: "ChainAlreadyActive",
+    name: "ChainActive",
     inputs: [
       {
         name: "chainId",

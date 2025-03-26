@@ -19,6 +19,18 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
       },
+      {
+        name: "oldStatus",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
+      {
+        name: "newStatus",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
     ],
     anonymous: false,
   },

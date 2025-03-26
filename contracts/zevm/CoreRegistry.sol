@@ -83,20 +83,20 @@ contract CoreRegistry is
 
     /// @notice Changes status of the chain to activated/deactivated.
     /// @param chainId The ID of the chain to activate.
+    /// @param registry Address of the Registry contract on the connected chain.
     /// @param activation Whether activate or deactivate the chain
-    function chainActivation(
+    function changeChainStatus(
         uint256 chainId,
         bytes calldata registry,
         bool activation
     )
         external
-        override
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
         if (registry.length == 0) revert ZeroAddress();
         // In the case chain is already activated
-        if (_chains[chainId].active && activation) revert ChainAlreadyActive(chainId);
+        if (_chains[chainId].active && activation) revert ChainActive(chainId);
         // In the case chain is inactive
         if (!_chains[chainId].active && !activation) revert ChainNonActive(chainId);
 
@@ -114,10 +114,10 @@ contract CoreRegistry is
         // Broadcast update to satellite registries
         _broadcastChainActivation(chainId, activation);
 
-        emit ChainStatusChanged(chainId);
+        emit ChainStatusChanged(chainId, !activation, activation);
     }
 
-    /// @notice Updates chain metadata.
+    /// @notice Updates chain metadata, only for the active chains.
     /// @param chainId The ID of the chain.
     /// @param key The metadata key to update.
     /// @param value The new value for the metadata.
@@ -127,7 +127,6 @@ contract CoreRegistry is
         bytes calldata value
     )
         external
-        override
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
@@ -155,16 +154,13 @@ contract CoreRegistry is
         bytes calldata addressBytes
     )
         external
-        override
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
         // Validate inputs
         if (!_chains[chainId].active) revert ChainNonActive(chainId);
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-        if (address_ == address(0) && bytes(addressBytes).length == 0) {
-            revert ZeroAddress();
-        }
+        if (bytes(addressBytes).length == 0) revert ZeroAddress();
 
         // Check if contract already exists in the registry
         if (bytes(_contracts[chainId][contractType].addressBytes).length > 0) {
@@ -195,7 +191,6 @@ contract CoreRegistry is
         bytes calldata value
     )
         external
-        override
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
@@ -230,7 +225,6 @@ contract CoreRegistry is
         bool active
     )
         external
-        override
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
@@ -239,10 +233,7 @@ contract CoreRegistry is
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
 
         // Check if contract exists in the registry
-        if (
-            bytes(_contracts[chainId][contractType].addressBytes).length == 0
-                && _contracts[chainId][contractType].active
-        ) {
+        if (bytes(_contracts[chainId][contractType].addressBytes).length == 0) {
             revert ContractNotFound(chainId, contractType);
         }
 
@@ -271,7 +262,6 @@ contract CoreRegistry is
         uint8 decimals
     )
         external
-        override
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
@@ -305,15 +295,7 @@ contract CoreRegistry is
     }
 
     /// @notice Updates ZRC20 token active status.
-    function updateZRC20Token(
-        address address_,
-        bool active
-    )
-        external
-        override
-        onlyRole(REGISTRY_MANAGER_ROLE)
-        whenNotPaused
-    {
+    function updateZRC20Token(address address_, bool active) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused {
         // Validate inputs
         if (address_ == address(0)) revert ZeroAddress();
         if (_zrc20Tokens[address_].address_ == address(0)) revert InvalidContractType("ZRC20 not registered");
@@ -331,7 +313,7 @@ contract CoreRegistry is
     /// @param chainId The ID of the chain
     /// @param key The metadata key to retrieve
     /// @return The value of the requested metadata
-    function getChainMetadata(uint256 chainId, string calldata key) external view override returns (bytes memory) {
+    function getChainMetadata(uint256 chainId, string calldata key) external view returns (bytes memory) {
         return _chains[chainId].metadata[key];
     }
 
@@ -346,7 +328,6 @@ contract CoreRegistry is
     )
         external
         view
-        override
         returns (bool active, address address_)
     {
         active = _contracts[chainId][contractType].active;
@@ -365,7 +346,6 @@ contract CoreRegistry is
     )
         external
         view
-        override
         returns (bytes memory)
     {
         return _contracts[chainId][contractType].configuration[key];
@@ -382,7 +362,6 @@ contract CoreRegistry is
     function getZRC20TokenInfo(address address_)
         external
         view
-        override
         returns (
             bool active,
             string memory symbol,
@@ -411,7 +390,6 @@ contract CoreRegistry is
     )
         external
         view
-        override
         returns (address)
     {
         return _originAssetToZRC20[originChainId][originAddress];
@@ -419,7 +397,7 @@ contract CoreRegistry is
 
     /// @notice Gets all active chains in the registry.
     /// @return Array of chain IDs for all active chains.
-    function getActiveChains() external view override returns (uint256[] memory) {
+    function getActiveChains() external view returns (uint256[] memory) {
         return _activeChains;
     }
 

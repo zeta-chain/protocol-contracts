@@ -27,7 +27,9 @@ interface ICoreRegistryEvents {
 
     /// @notice Emitted when a chain status has changed
     /// @param chainId The ID of the chain.
-    event ChainStatusChanged(uint256 indexed chainId);
+    /// @param oldStatus The new chain status (is active or not)
+    /// @param newStatus The old chain status (is active or not)
+    event ChainStatusChanged(uint256 indexed chainId, bool oldStatus, bool newStatus);
 
     /// @notice Emitted when a contract status has changed
     /// @param addressBytes The bytes representation of the registered address.
@@ -59,7 +61,7 @@ interface ICoreRegistryErrors {
 
     /// @notice Error thrown when a chain is already active.
     /// @param chainId The ID of the chain that is already active.
-    error ChainAlreadyActive(uint256 chainId);
+    error ChainActive(uint256 chainId);
 
     /// @notice Error thrown when a chain is not active.
     /// @param chainId The ID of the chain that is not active.
@@ -142,7 +144,7 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
     /// @notice Changes status of the chain to activated/deactivated.
     /// @param chainId The ID of the chain to activate.
     /// @param activation Whether activate or deactivate a chain
-    function chainActivation(uint256 chainId, bytes calldata registry, bool activation) external;
+    function changeChainStatus(uint256 chainId, bytes calldata registry, bool activation) external;
 
     /// @notice Updates chain metadata.
     /// @param chainId The ID of the chain.

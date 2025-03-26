@@ -11,7 +11,7 @@ import type {
 const _abi = [
   {
     type: "error",
-    name: "ChainAlreadyActive",
+    name: "ChainActive",
     inputs: [
       {
         name: "chainId",

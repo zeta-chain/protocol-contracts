@@ -35,10 +35,20 @@ export interface ICoreRegistryEventsInterface extends Interface {
 }
 
 export namespace ChainStatusChangedEvent {
-  export type InputTuple = [chainId: BigNumberish];
-  export type OutputTuple = [chainId: bigint];
+  export type InputTuple = [
+    chainId: BigNumberish,
+    oldStatus: boolean,
+    newStatus: boolean
+  ];
+  export type OutputTuple = [
+    chainId: bigint,
+    oldStatus: boolean,
+    newStatus: boolean
+  ];
   export interface OutputObject {
     chainId: bigint;
+    oldStatus: boolean;
+    newStatus: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -262,7 +272,7 @@ export interface ICoreRegistryEvents extends BaseContract {
   >;
 
   filters: {
-    "ChainStatusChanged(uint256)": TypedContractEvent<
+    "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject

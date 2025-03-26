@@ -61,7 +61,7 @@ Emitted when a chain status has changed
 
 
 ```solidity
-event ChainStatusChanged(uint256 indexed chainId);
+event ChainStatusChanged(uint256 indexed chainId, bool oldStatus, bool newStatus);
 ```
 
 **Parameters**
@@ -69,6 +69,8 @@ event ChainStatusChanged(uint256 indexed chainId);
 |Name|Type|Description|
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain.|
+|`oldStatus`|`bool`|The new chain status (is active or not)|
+|`newStatus`|`bool`|The old chain status (is active or not)|
 
 ### ContractStatusChanged
 Emitted when a contract status has changed

@@ -163,19 +163,18 @@ Unpause contract.
 function unpause() external onlyRole(PAUSER_ROLE);
 ```
 
-### chainActivation
+### changeChainStatus
 
 Changes status of the chain to activated/deactivated.
 
 
 ```solidity
-function chainActivation(
+function changeChainStatus(
     uint256 chainId,
     bytes calldata registry,
     bool activation
 )
     external
-    override
     onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
@@ -184,13 +183,13 @@ function chainActivation(
 |Name|Type|Description|
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain to activate.|
-|`registry`|`bytes`||
+|`registry`|`bytes`|Address of the Registry contract on the connected chain.|
 |`activation`|`bool`|Whether activate or deactivate the chain|
 
 
 ### updateChainMetadata
 
-Updates chain metadata.
+Updates chain metadata, only for the active chains.
 
 
 ```solidity
@@ -200,7 +199,6 @@ function updateChainMetadata(
     bytes calldata value
 )
     external
-    override
     onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
@@ -226,7 +224,6 @@ function registerContract(
     bytes calldata addressBytes
 )
     external
-    override
     onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
@@ -253,7 +250,6 @@ function updateContractConfiguration(
     bytes calldata value
 )
     external
-    override
     onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
@@ -279,7 +275,6 @@ function setContractActive(
     bool active
 )
     external
-    override
     onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
@@ -307,7 +302,6 @@ function registerZRC20Token(
     uint8 decimals
 )
     external
-    override
     onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
@@ -329,14 +323,7 @@ Updates ZRC20 token active status.
 
 
 ```solidity
-function updateZRC20Token(
-    address address_,
-    bool active
-)
-    external
-    override
-    onlyRole(REGISTRY_MANAGER_ROLE)
-    whenNotPaused;
+function updateZRC20Token(address address_, bool active) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused;
 ```
 
 ### getChainMetadata
@@ -345,7 +332,7 @@ Gets chain-specific metadata
 
 
 ```solidity
-function getChainMetadata(uint256 chainId, string calldata key) external view override returns (bytes memory);
+function getChainMetadata(uint256 chainId, string calldata key) external view returns (bytes memory);
 ```
 **Parameters**
 
@@ -373,7 +360,6 @@ function getContractInfo(
 )
     external
     view
-    override
     returns (bool active, address address_);
 ```
 **Parameters**
@@ -404,7 +390,6 @@ function getContractConfiguration(
 )
     external
     view
-    override
     returns (bytes memory);
 ```
 **Parameters**
@@ -431,7 +416,6 @@ Gets information about a specific ZRC20 token
 function getZRC20TokenInfo(address address_)
     external
     view
-    override
     returns (
         bool active,
         string memory symbol,
@@ -471,7 +455,6 @@ function getZRC20AddressByForeignAsset(
 )
     external
     view
-    override
     returns (address);
 ```
 **Parameters**
@@ -494,7 +477,7 @@ Gets all active chains in the registry.
 
 
 ```solidity
-function getActiveChains() external view override returns (uint256[] memory);
+function getActiveChains() external view returns (uint256[] memory);
 ```
 **Returns**
 

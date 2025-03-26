@@ -32,7 +32,7 @@ export interface CoreRegistryInterface extends Interface {
       | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "_activeChains"
-      | "chainActivation"
+      | "changeChainStatus"
       | "gatewayZEVM"
       | "getActiveChains"
       | "getChainMetadata"
@@ -103,7 +103,7 @@ export interface CoreRegistryInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "chainActivation",
+    functionFragment: "changeChainStatus",
     values: [BigNumberish, BytesLike, boolean]
   ): string;
   encodeFunctionData(
@@ -223,7 +223,7 @@ export interface CoreRegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "chainActivation",
+    functionFragment: "changeChainStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -308,10 +308,20 @@ export interface CoreRegistryInterface extends Interface {
 }
 
 export namespace ChainStatusChangedEvent {
-  export type InputTuple = [chainId: BigNumberish];
-  export type OutputTuple = [chainId: bigint];
+  export type InputTuple = [
+    chainId: BigNumberish,
+    oldStatus: boolean,
+    newStatus: boolean
+  ];
+  export type OutputTuple = [
+    chainId: bigint,
+    oldStatus: boolean,
+    newStatus: boolean
+  ];
   export interface OutputObject {
     chainId: bigint;
+    oldStatus: boolean;
+    newStatus: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -598,7 +608,7 @@ export interface CoreRegistry extends BaseContract {
 
   _activeChains: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
-  chainActivation: TypedContractMethod<
+  changeChainStatus: TypedContractMethod<
     [chainId: BigNumberish, registry: BytesLike, activation: boolean],
     [void],
     "nonpayable"
@@ -779,7 +789,7 @@ export interface CoreRegistry extends BaseContract {
     nameOrSignature: "_activeChains"
   ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
   getFunction(
-    nameOrSignature: "chainActivation"
+    nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
     [chainId: BigNumberish, registry: BytesLike, activation: boolean],
     [void],
@@ -1059,7 +1069,7 @@ export interface CoreRegistry extends BaseContract {
   >;
 
   filters: {
-    "ChainStatusChanged(uint256)": TypedContractEvent<
+    "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject

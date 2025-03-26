@@ -26,7 +26,7 @@ import type {
 export interface ICoreRegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "chainActivation"
+      | "changeChainStatus"
       | "getActiveChains"
       | "getChainMetadata"
       | "getContractConfiguration"
@@ -53,7 +53,7 @@ export interface ICoreRegistryInterface extends Interface {
   ): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "chainActivation",
+    functionFragment: "changeChainStatus",
     values: [BigNumberish, BytesLike, boolean]
   ): string;
   encodeFunctionData(
@@ -106,7 +106,7 @@ export interface ICoreRegistryInterface extends Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "chainActivation",
+    functionFragment: "changeChainStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -160,10 +160,20 @@ export interface ICoreRegistryInterface extends Interface {
 }
 
 export namespace ChainStatusChangedEvent {
-  export type InputTuple = [chainId: BigNumberish];
-  export type OutputTuple = [chainId: bigint];
+  export type InputTuple = [
+    chainId: BigNumberish,
+    oldStatus: boolean,
+    newStatus: boolean
+  ];
+  export type OutputTuple = [
+    chainId: bigint,
+    oldStatus: boolean,
+    newStatus: boolean
+  ];
   export interface OutputObject {
     chainId: bigint;
+    oldStatus: boolean;
+    newStatus: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -332,7 +342,7 @@ export interface ICoreRegistry extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  chainActivation: TypedContractMethod<
+  changeChainStatus: TypedContractMethod<
     [chainId: BigNumberish, registry: BytesLike, activation: boolean],
     [void],
     "nonpayable"
@@ -437,7 +447,7 @@ export interface ICoreRegistry extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "chainActivation"
+    nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
     [chainId: BigNumberish, registry: BytesLike, activation: boolean],
     [void],
@@ -601,7 +611,7 @@ export interface ICoreRegistry extends BaseContract {
   >;
 
   filters: {
-    "ChainStatusChanged(uint256)": TypedContractEvent<
+    "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject
