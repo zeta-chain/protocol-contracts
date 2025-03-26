@@ -3,6 +3,7 @@
 /* eslint-disable */
 export * as erc20 from "./ERC20";
 export * as errorsSol from "./Errors.sol";
+export * as iCoreRegistrySol from "./ICoreRegistry.sol";
 export * as ierc20CustodySol from "./IERC20Custody.sol";
 export * as ierc721Sol from "./IERC721.sol";
 export * as iGatewayEvmSol from "./IGatewayEVM.sol";
@@ -38,6 +39,7 @@ export { Address__factory } from "./Address__factory";
 export { BeaconProxy__factory } from "./BeaconProxy__factory";
 export { ConnectorErrors__factory } from "./ConnectorErrors__factory";
 export { ContextUpgradeable__factory } from "./ContextUpgradeable__factory";
+export { CoreRegistry__factory } from "./CoreRegistry__factory";
 export { ERC165Upgradeable__factory } from "./ERC165Upgradeable__factory";
 export { ERC1967Proxy__factory } from "./ERC1967Proxy__factory";
 export { ERC1967Utils__factory } from "./ERC1967Utils__factory";
