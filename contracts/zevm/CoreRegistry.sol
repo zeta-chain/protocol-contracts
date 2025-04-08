@@ -199,10 +199,7 @@ contract CoreRegistry is
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
 
         // Check if contract exists in the registry
-        if (
-            bytes(_contracts[chainId][contractType].addressBytes).length == 0
-                && _contracts[chainId][contractType].active
-        ) {
+        if (!_contracts[chainId][contractType].active) {
             revert ContractNotFound(chainId, contractType);
         }
 
@@ -406,7 +403,7 @@ contract CoreRegistry is
     /// @param activation Whether the chain is being activated or deactivated
     function _broadcastChainActivation(uint256 chainId, bool activation) internal {
         // Encode the function call for the Registry contract on the target chain
-        bytes memory message = abi.encodeWithSignature("updateChainActivation(uint256,bool)", chainId, activation);
+        bytes memory message = abi.encodeWithSignature("changeChainStatus(uint256,bytes,bool)", chainId, activation);
         _broadcastToAllChains(message);
     }
 
