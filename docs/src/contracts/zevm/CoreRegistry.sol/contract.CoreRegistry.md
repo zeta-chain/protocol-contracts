@@ -4,8 +4,6 @@
 **Inherits:**
 Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, [ICoreRegistry](/contracts/zevm/interfaces/ICoreRegistry.sol/interface.ICoreRegistry.md)
 
-CoreRegistry
-
 Central registry for ZetaChain, managing chain info, ZRC20 data, and contract addresses across all chains.
 
 *The contract doesn't hold any funds and should never have active allowances.*

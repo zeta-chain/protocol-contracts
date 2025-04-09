@@ -9,7 +9,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
-/// @notice CoreRegistry
+/// @title CoreRegistry
 /// @notice Central registry for ZetaChain, managing chain info, ZRC20 data, and contract addresses across all chains.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract CoreRegistry is
