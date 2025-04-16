@@ -153,7 +153,7 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike, AddressLike]
+    values: [AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "onCall",
@@ -676,7 +676,7 @@ export interface Registry extends BaseContract {
   >;
 
   initialize: TypedContractMethod<
-    [admin_: AddressLike, gatewayEVM_: AddressLike],
+    [admin_: AddressLike, gatewayEVM_: AddressLike, coreRegistry_: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -871,7 +871,7 @@ export interface Registry extends BaseContract {
   getFunction(
     nameOrSignature: "initialize"
   ): TypedContractMethod<
-    [admin_: AddressLike, gatewayEVM_: AddressLike],
+    [admin_: AddressLike, gatewayEVM_: AddressLike, coreRegistry_: AddressLike],
     [void],
     "nonpayable"
   >;

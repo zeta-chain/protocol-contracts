@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/Registry.sol)
 
 **Inherits:**
-Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, [IRegistry](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistry.md)
+Initializable, UUPSUpgradeable, AccessControlUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, [IRegistry](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistry.md)
 
 Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 
@@ -101,6 +101,15 @@ mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 
 
 ## Functions
+### onlyRegistry
+
+*Only protocol address allowed modifier.*
+
+
+```solidity
+modifier onlyRegistry();
+```
+
 ### constructor
 
 **Note:**
@@ -117,7 +126,7 @@ Initialize the Registry contract
 
 
 ```solidity
-function initialize(address admin_, address gatewayEVM_) public initializer;
+function initialize(address admin_, address gatewayEVM_, address coreRegistry_) public initializer;
 ```
 **Parameters**
 
@@ -125,6 +134,7 @@ function initialize(address admin_, address gatewayEVM_) public initializer;
 |----|----|-----------|
 |`admin_`|`address`|Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions|
 |`gatewayEVM_`|`address`|Address of the GatewayEVM contract for cross-chain messaging|
+|`coreRegistry_`|`address`||
 
 
 ### _authorizeUpgrade
@@ -191,7 +201,7 @@ Changes status of the chain to activated/deactivated
 
 
 ```solidity
-function changeChainStatus(uint256 chainId, bool active) external onlyRole(RELAY_ROLE) whenNotPaused;
+function changeChainStatus(uint256 chainId, bool active) external onlyRegistry whenNotPaused;
 ```
 **Parameters**
 
@@ -215,7 +225,7 @@ function updateChainMetadata(
     bytes calldata value
 )
     external
-    onlyRole(RELAY_ROLE)
+    onlyRegistry
     whenNotPaused;
 ```
 **Parameters**
@@ -242,7 +252,7 @@ function registerContract(
     bytes calldata addressBytes
 )
     external
-    onlyRole(RELAY_ROLE)
+    onlyRegistry
     whenNotPaused;
 ```
 **Parameters**
@@ -270,7 +280,7 @@ function updateContractConfiguration(
     bytes calldata value
 )
     external
-    onlyRole(RELAY_ROLE)
+    onlyRegistry
     whenNotPaused;
 ```
 **Parameters**
@@ -291,7 +301,7 @@ Sets a contract's active status
 
 
 ```solidity
-function setContractActive(uint256 chainId, string calldata contractType, bool active) external onlyRole(RELAY_ROLE);
+function setContractActive(uint256 chainId, string calldata contractType, bool active) external onlyRegistry;
 ```
 **Parameters**
 
@@ -319,7 +329,7 @@ function registerZRC20Token(
     uint8 decimals
 )
     external
-    onlyRole(RELAY_ROLE)
+    onlyRegistry
     whenNotPaused;
 ```
 **Parameters**
@@ -342,7 +352,7 @@ Updates ZRC20 token active status
 
 
 ```solidity
-function updateZRC20Token(address address_, bool active) external onlyRole(RELAY_ROLE) whenNotPaused;
+function updateZRC20Token(address address_, bool active) external onlyRegistry whenNotPaused;
 ```
 **Parameters**
 
