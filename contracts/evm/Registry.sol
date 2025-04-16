@@ -8,11 +8,19 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 /// @title Registry
 /// @notice Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 /// @dev This contract is deployed on every connected chain and maintains a synchronized view of the registry.
-contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, IRegistry {
+contract Registry is
+    Initializable,
+    UUPSUpgradeable,
+    AccessControlUpgradeable,
+    ReentrancyGuardUpgradeable,
+    PausableUpgradeable,
+    IRegistry
+{
     /// @notice New role identifier for pauser role
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Identifier for the relay role (granted to GatewayEVM)
@@ -35,6 +43,14 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @notice Maps origin chain ID and origin address to ZRC20 token address
     mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 
+    /// @dev Only protocol address allowed modifier.
+    modifier onlyRegistry() {
+        if (msg.sender != address(this)) {
+            revert InvalidSender();
+        }
+        _;
+    }
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -43,20 +59,22 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @notice Initialize the Registry contract
     /// @param admin_ Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions
     /// @param gatewayEVM_ Address of the GatewayEVM contract for cross-chain messaging
-    function initialize(address admin_, address gatewayEVM_) public initializer {
-        if (admin_ == address(0) || gatewayEVM_ == address(0)) {
+    function initialize(address admin_, address gatewayEVM_, address coreRegistry_) public initializer {
+        if (admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0)) {
             revert ZeroAddress();
         }
 
         __UUPSUpgradeable_init();
         __AccessControl_init_unchained();
         __Pausable_init_unchained();
+        __ReentrancyGuard_init_unchained();
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
         _grantRole(RELAY_ROLE, gatewayEVM_);
 
         gatewayEVM = IGatewayEVM(gatewayEVM_);
+        coreRegistry = coreRegistry_;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be admin.
@@ -104,7 +122,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @dev Only callable through onCall from CoreRegistry
     /// @param chainId The ID of the chain to activate
     /// @param active Whether to activate or deactivate the chain
-    function changeChainStatus(uint256 chainId, bool active) external onlyRole(RELAY_ROLE) whenNotPaused {
+    function changeChainStatus(uint256 chainId, bool active) external onlyRegistry whenNotPaused {
         // Update the chain info
         _chains[chainId].active = active;
 
@@ -140,7 +158,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         bytes calldata value
     )
         external
-        onlyRole(RELAY_ROLE)
+        onlyRegistry
         whenNotPaused
     {
         // Updates chain metadata
@@ -162,7 +180,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         bytes calldata addressBytes
     )
         external
-        onlyRole(RELAY_ROLE)
+        onlyRegistry
         whenNotPaused
     {
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
@@ -190,7 +208,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         bytes calldata value
     )
         external
-        onlyRole(RELAY_ROLE)
+        onlyRegistry
         whenNotPaused
     {
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
@@ -206,14 +224,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @param chainId The ID of the chain where the contract is deployed
     /// @param contractType The type of the contract
     /// @param active Whether the contract should be active
-    function setContractActive(
-        uint256 chainId,
-        string calldata contractType,
-        bool active
-    )
-        external
-        onlyRole(RELAY_ROLE)
-    {
+    function setContractActive(uint256 chainId, string calldata contractType, bool active) external onlyRegistry {
         if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
 
         // Update the active status
@@ -239,7 +250,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         uint8 decimals
     )
         external
-        onlyRole(RELAY_ROLE)
+        onlyRegistry
         whenNotPaused
     {
         if (address_ == address(0)) revert ZeroAddress();
@@ -267,7 +278,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @dev Only callable through onCall from CoreRegistry
     /// @param address_ The address of the ZRC20 token
     /// @param active Whether the token should be active
-    function updateZRC20Token(address address_, bool active) external onlyRole(RELAY_ROLE) whenNotPaused {
+    function updateZRC20Token(address address_, bool active) external onlyRegistry whenNotPaused {
         if (address_ == address(0)) revert ZeroAddress();
 
         // Update token status
