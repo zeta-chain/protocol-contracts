@@ -17,7 +17,7 @@ const _abi = [
       {
         name: "",
         type: "address",
-        internalType: "contract GatewayZEVM",
+        internalType: "contract IGatewayZEVM",
       },
     ],
     stateMutability: "view",

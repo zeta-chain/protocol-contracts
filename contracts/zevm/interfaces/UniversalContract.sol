@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import { RevertContext } from "../../../contracts/Revert.sol";
-import "../GatewayZEVM.sol";
+import "../interfaces/IGatewayZEVM.sol";
 
 /// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
 /// MessageContext should be used
@@ -44,7 +44,7 @@ struct MessageContext {
 /// and execute logic based on the provided context, token, and message payload.
 abstract contract UniversalContract {
     /// @notice Reference to the ZetaChain Gateway contract
-    GatewayZEVM public immutable gateway;
+    IGatewayZEVM public immutable gateway;
 
     /// @notice Error thrown when a function is called by an unauthorized address
     error Unauthorized();
@@ -57,7 +57,7 @@ abstract contract UniversalContract {
 
     /// @notice Constructor to initialize the contract with the gateway address
     constructor(address payable gatewayAddress) {
-        gateway = GatewayZEVM(gatewayAddress);
+        gateway = IGatewayZEVM(gatewayAddress);
     }
 
     /// @notice Function to handle cross-chain calls

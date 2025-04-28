@@ -13,7 +13,7 @@ Reference to the ZetaChain Gateway contract
 
 
 ```solidity
-GatewayZEVM public immutable gateway;
+IGatewayZEVM public immutable gateway;
 ```
 
 
