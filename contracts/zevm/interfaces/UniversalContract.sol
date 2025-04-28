@@ -2,6 +2,7 @@
 pragma solidity 0.8.26;
 
 import { RevertContext } from "../../../contracts/Revert.sol";
+import "../GatewayZEVM.sol";
 
 /// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
 /// MessageContext should be used
@@ -38,9 +39,34 @@ struct MessageContext {
 }
 
 /// @title UniversalContract
-/// @notice Interface for contracts that can receive cross-chain calls on ZetaChain.
-/// @dev Contracts implementing this interface can handle incoming cross-chain messages
+/// @notice Abstract contract for contracts that can receive cross-chain calls on ZetaChain.
+/// @dev Contracts extending this abstract contract can handle incoming cross-chain messages
 /// and execute logic based on the provided context, token, and message payload.
-interface UniversalContract {
-    function onCall(MessageContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
+abstract contract UniversalContract {
+    /// @notice Reference to the ZetaChain Gateway contract
+    GatewayZEVM public immutable gateway;
+
+    /// @notice Error thrown when a function is called by an unauthorized address
+    error Unauthorized();
+
+    /// @notice Restricts function access to only the gateway contract
+    modifier onlyGateway() {
+        if (msg.sender != address(gateway)) revert Unauthorized();
+        _;
+    }
+
+    /// @notice Constructor to initialize the contract with the gateway address
+    constructor(address payable gatewayAddress) {
+        gateway = GatewayZEVM(gatewayAddress);
+    }
+
+    /// @notice Function to handle cross-chain calls
+    function onCall(
+        MessageContext calldata context,
+        address zrc20,
+        uint256 amount,
+        bytes calldata message
+    )
+        external
+        virtual;
 }

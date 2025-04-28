@@ -123,7 +123,7 @@ This guide covers all steps required to deploy the contracts, including environm
       - [zContext](protocol/contracts/zevm/interfaces/UniversalContract.sol/struct.zContext.md)
       - [zContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/interface.zContract.md)
       - [MessageContext](protocol/contracts/zevm/interfaces/UniversalContract.sol/struct.MessageContext.md)
-      - [UniversalContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/interface.UniversalContract.md)
+      - [UniversalContract](protocol/contracts/zevm/interfaces/UniversalContract.sol/abstract.UniversalContract.md)
     - [❱ legacy](protocol/contracts/zevm/legacy/README.md)
       - [ZetaInterfaces](protocol/contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaInterfaces.md)
       - [ZetaReceiver](protocol/contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaReceiver.md)

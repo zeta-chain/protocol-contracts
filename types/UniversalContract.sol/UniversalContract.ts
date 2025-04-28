@@ -34,13 +34,15 @@ export type MessageContextStructOutput = [
 ] & { sender: string; senderEVM: string; chainID: bigint };
 
 export interface UniversalContractInterface extends Interface {
-  getFunction(nameOrSignature: "onCall"): FunctionFragment;
+  getFunction(nameOrSignature: "gateway" | "onCall"): FunctionFragment;
 
+  encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onCall",
     values: [MessageContextStruct, AddressLike, BigNumberish, BytesLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
 }
 
@@ -87,6 +89,8 @@ export interface UniversalContract extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  gateway: TypedContractMethod<[], [string], "view">;
+
   onCall: TypedContractMethod<
     [
       context: MessageContextStruct,
@@ -102,6 +106,9 @@ export interface UniversalContract extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "gateway"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "onCall"
   ): TypedContractMethod<

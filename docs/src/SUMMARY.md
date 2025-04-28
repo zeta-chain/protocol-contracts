@@ -47,7 +47,7 @@
       - [zContext](contracts/zevm/interfaces/UniversalContract.sol/struct.zContext.md)
       - [zContract](contracts/zevm/interfaces/UniversalContract.sol/interface.zContract.md)
       - [MessageContext](contracts/zevm/interfaces/UniversalContract.sol/struct.MessageContext.md)
-      - [UniversalContract](contracts/zevm/interfaces/UniversalContract.sol/interface.UniversalContract.md)
+      - [UniversalContract](contracts/zevm/interfaces/UniversalContract.sol/abstract.UniversalContract.md)
     - [❱ legacy](contracts/zevm/legacy/README.md)
       - [ZetaInterfaces](contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaInterfaces.md)
       - [ZetaReceiver](contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaReceiver.md)

@@ -26,6 +26,10 @@ contract TestUniversalContract is UniversalContract, Revertable, Abortable {
     /// @param abortContext Abort context.
     event ContextDataAbort(AbortContext abortContext);
 
+    /// @notice Constructor that initializes the UniversalContract with gateway address
+    /// @param gatewayAddress The address of the ZetaChain Gateway contract
+    constructor(address payable gatewayAddress) UniversalContract(gatewayAddress) { }
+
     /// @notice Handles a cross-chain call.
     /// @param context The context of the cross-chain call.
     //// @param zrc20 The address of the ZRC20 token.
