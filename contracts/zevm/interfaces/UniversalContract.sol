@@ -50,6 +50,10 @@ abstract contract UniversalContract {
     error Unauthorized();
 
     /// @notice Restricts function access to only the gateway contract
+    /// @dev Used on functions that process cross-chain messages to ensure they're only called through the Gateway,
+    /// where message validation occurs.
+    /// Important for security in functions like `onCall()` and `onRevert()` that handle incoming cross-chain
+    /// operations.
     modifier onlyGateway() {
         if (msg.sender != address(gateway)) revert Unauthorized();
         _;

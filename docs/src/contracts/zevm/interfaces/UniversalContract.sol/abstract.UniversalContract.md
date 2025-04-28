@@ -22,6 +22,11 @@ IGatewayZEVM public immutable gateway;
 
 Restricts function access to only the gateway contract
 
+*Used on functions that process cross-chain messages to ensure they're only called through the Gateway,
+where message validation occurs.
+Important for security in functions like `onCall()` and `onRevert()` that handle incoming cross-chain
+operations.*
+
 
 ```solidity
 modifier onlyGateway();
