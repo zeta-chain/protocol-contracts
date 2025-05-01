@@ -5,5 +5,19 @@
     "chain_id": 7001,
     "chain_name": "zeta_testnet",
     "type": "gateway"
+  },
+  {
+    "address": "0x7E032E349853178C233a2560d9Ea434ac82228e0",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0xd0214D4f724D2d252444574863064E70e16Cc67E",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV3Router"
   }
 ]

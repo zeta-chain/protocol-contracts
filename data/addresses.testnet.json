@@ -1,5 +1,3 @@
-
-
 [
   {
     "address": "0x0000ecb8cdd25a18f12daa23f6422e07fbf8b9e1",
@@ -84,6 +82,27 @@
     "chain_name": "zeta_testnet",
     "address": "0x2ca7d64A7EFE2D62A725E2B35Cf7230D6677FfEe",
     "type": "uniswapV2Router02"
+  },
+  {
+    "address": "0x7E032E349853178C233a2560d9Ea434ac82228e0",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0x7E032E349853178C233a2560d9Ea434ac82228e0",
+    "category": "messaging",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV3Factory"
+  },
+  {
+    "address": "0xd0214D4f724D2d252444574863064E70e16Cc67E",
+    "category": "omnichain",
+    "chain_id": 7001,
+    "chain_name": "zeta_testnet",
+    "type": "uniswapV3Router"
   },
   {
     "category": "omnichain",
