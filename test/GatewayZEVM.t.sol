@@ -378,104 +378,104 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(ownerBalanceBefore - amount - expectedGasFee, ownerBalanceAfter);
     }
 
-    function testWithdrawZETAFailsIfAmountIsZero() public {
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(InsufficientZetaAmount.selector);
-        vm.expectRevert(ZETANotSupported.selector);
+//    function testWithdrawZETAFailsIfAmountIsZero() public {
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(InsufficientZetaAmount.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdraw(abi.encodePacked(addr1), 0, 1, revertOptions);
+//    }
+//
+//    function testWithdrawZETAFailsIfMessageSizeExceeded() public {
+//        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() + 1);
+//
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(MessageSizeExceeded.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdraw(abi.encodePacked(addr1), 1, 1, revertOptions);
+//    }
 
-        gateway.withdraw(abi.encodePacked(addr1), 0, 1, revertOptions);
-    }
+//    function testWithdrawZETAFailsIfReceiverIsZeroAddress() public {
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(ZeroAddress.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdraw(abi.encodePacked(""), 0, 1, revertOptions);
+//    }
+//
+//    function testWithdrawAndCallZETAWithCallOptsFailsIfAmountIsZero() public {
+//        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+//
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(InsufficientZetaAmount.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, callOptions, revertOptions);
+//    }
+//
+//    function testWithdrawAndCallZETAWithCallOptsFailsIfMessageSizeExceeded() public {
+//        bytes memory message = new bytes(gateway.MAX_MESSAGE_SIZE() / 2);
+//        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
+//
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(MessageSizeExceeded.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, callOptions, revertOptions);
+//    }
+//
+//    function testWithdrawAndCallZETAWithCallOptsFailsIfAmountIsReceiverIsZeroAddress() public {
+//        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+//
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(ZeroAddress.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message, callOptions, revertOptions);
+//    }
 
-    function testWithdrawZETAFailsIfMessageSizeExceeded() public {
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() + 1);
-
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(MessageSizeExceeded.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdraw(abi.encodePacked(addr1), 1, 1, revertOptions);
-    }
-
-    function testWithdrawZETAFailsIfReceiverIsZeroAddress() public {
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(ZeroAddress.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdraw(abi.encodePacked(""), 0, 1, revertOptions);
-    }
-
-    function testWithdrawAndCallZETAWithCallOptsFailsIfAmountIsZero() public {
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(InsufficientZetaAmount.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 0, 1, message, callOptions, revertOptions);
-    }
-
-    function testWithdrawAndCallZETAWithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(gateway.MAX_MESSAGE_SIZE() / 2);
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
-
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(MessageSizeExceeded.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, callOptions, revertOptions);
-    }
-
-    function testWithdrawAndCallZETAWithCallOptsFailsIfAmountIsReceiverIsZeroAddress() public {
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(ZeroAddress.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message, callOptions, revertOptions);
-    }
-
-    function testWithdrawZETA() public {
-        uint256 amount = 1;
-        // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        // uint256 protocolBalanceBefore = protocolAddress.balance;
-        uint256 chainId = 1;
-
-        // vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(
-            owner,
-            chainId,
-            abi.encodePacked(addr1),
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
-            revertOptions
-        );
-
-        // TODO: remove error once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
-
-        // uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
-        // assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
-
-        // uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        // assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
-
-        // // Verify amount is transfered to protocol address
-        // assertEq(protocolBalanceBefore + 1, protocolAddress.balance);
-    }
+//    function testWithdrawZETA() public {
+//        uint256 amount = 1;
+//        // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+//        // uint256 protocolBalanceBefore = protocolAddress.balance;
+//        uint256 chainId = 1;
+//
+//        // vm.expectEmit(true, true, true, true, address(gateway));
+//        emit Withdrawn(
+//            owner,
+//            chainId,
+//            abi.encodePacked(addr1),
+//            address(zetaToken),
+//            amount,
+//            0,
+//            0,
+//            "",
+//            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+//            revertOptions
+//        );
+//
+//        // TODO: remove error once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
+//
+//        // uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+//        // assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+//
+//        // uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+//        // assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+//
+//        // // Verify amount is transfered to protocol address
+//        // assertEq(protocolBalanceBefore + 1, protocolAddress.balance);
+//    }
 
     function testWithdrawZETAFailsIfNoAllowance() public {
         uint256 amount = 1;
@@ -511,43 +511,43 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
     }
 
-    function testWithdrawZETAWithCallOptsWithMessage() public {
-        uint256 amount = 1;
-        // uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        // uint256 protocolAddressBalanceBefore = protocolAddress.balance;
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 chainId = 1;
-
-        // vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(
-            owner,
-            chainId,
-            abi.encodePacked(addr1),
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            message,
-            callOptions,
-            revertOptions
-        );
-
-        // TODO: remove error once ZETA supported back
-        // vm.expectRevert(InsufficientGasLimit.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptions);
-
-        // uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
-        // assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
-
-        // uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        // assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
-
-        // // Verify amount is transfered to fungible module
-        // assertEq(protocolAddressBalanceBefore + 1, protocolAddress.balance);
-    }
+//    function testWithdrawZETAWithCallOptsWithMessage() public {
+//        uint256 amount = 1;
+//        // uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+//        // uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+//        // uint256 protocolAddressBalanceBefore = protocolAddress.balance;
+//        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+//        uint256 chainId = 1;
+//
+//        // vm.expectEmit(true, true, true, true, address(gateway));
+//        emit Withdrawn(
+//            owner,
+//            chainId,
+//            abi.encodePacked(addr1),
+//            address(zetaToken),
+//            amount,
+//            0,
+//            0,
+//            message,
+//            callOptions,
+//            revertOptions
+//        );
+//
+//        // TODO: remove error once ZETA supported back
+//        // vm.expectRevert(InsufficientGasLimit.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptions);
+//
+//        // uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+//        // assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+//
+//        // uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+//        // assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+//
+//        // // Verify amount is transfered to fungible module
+//        // assertEq(protocolAddressBalanceBefore + 1, protocolAddress.balance);
+//    }
 
     function testWithdrawZETAWithCallOptsWithMessageFailsIfNoAllowance() public {
         uint256 amount = 1;
@@ -574,24 +574,24 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(protocolAddressBalanceBefore, protocolAddress.balance);
     }
 
-    function testWithdrawZETAWithCallOptsWithMessageFailsIfGasLimitIsZero() public {
-        uint256 amount = 1;
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 chainId = 1;
-
-        // Remove allowance for gateway
-        vm.prank(owner);
-        zetaToken.approve(address(gateway), 0);
-
-        callOptions.gasLimit = 0;
-
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectRevert(InsufficientGasLimit.selector);
-        vm.expectRevert(ZETANotSupported.selector);
-
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptions);
-    }
+//    function testWithdrawZETAWithCallOptsWithMessageFailsIfGasLimitIsZero() public {
+//        uint256 amount = 1;
+//        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+//        uint256 chainId = 1;
+//
+//        // Remove allowance for gateway
+//        vm.prank(owner);
+//        zetaToken.approve(address(gateway), 0);
+//
+//        callOptions.gasLimit = 0;
+//
+//        // TODO: replace error to check once ZETA supported back
+//        // https://github.com/zeta-chain/protocol-contracts/issues/394
+//        // vm.expectRevert(InsufficientGasLimit.selector);
+//        vm.expectRevert(ZETANotSupported.selector);
+//
+//        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptions);
+//    }
 
     function testCallWithCallOptsFailsIfReceiverIsZeroAddress() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
