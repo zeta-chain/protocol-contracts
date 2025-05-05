@@ -61,7 +61,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway = GatewayZEVM(proxy);
 
         protocolAddress = gateway.PROTOCOL_ADDRESS();
-        testUniversalContract = new TestUniversalContract();
+        testUniversalContract = new TestUniversalContract(payable(address(gateway)));
 
         vm.startPrank(protocolAddress);
         systemContract = new SystemContract(address(0), address(0), address(0));
@@ -700,7 +700,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         protocolAddress = gateway.PROTOCOL_ADDRESS();
 
-        testUniversalContract = new TestUniversalContract();
+        testUniversalContract = new TestUniversalContract(payable(address(gateway)));
 
         vm.startPrank(protocolAddress);
         systemContract = new SystemContract(address(0), address(0), address(0));
