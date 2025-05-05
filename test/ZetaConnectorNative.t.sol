@@ -238,9 +238,7 @@ contract ZetaConnectorNativeTest is
         vm.expectEmit(true, true, true, true, address(zetaConnector));
         emit WithdrawnAndCalled(address(receiver), amount, message);
         vm.prank(tssAddress);
-        zetaConnector.withdrawAndCall(
-            MessageContext({ sender: sender }), address(receiver), amount, message
-        );
+        zetaConnector.withdrawAndCall(MessageContext({ sender: sender }), address(receiver), amount, message);
 
         // Verify that the no tokens were transferred to the destination address
         uint256 balanceAfter = zetaToken.balanceOf(destination);

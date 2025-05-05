@@ -3,9 +3,9 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import "../zeta/IZetaNonNative.sol";
 import "./ZetaConnector.base.sol";
 import "./ZetaInterfaces.sol";
-import "../zeta/IZetaNonNative.sol";
 
 /**
  * @dev Non ETH implementation of ZetaConnector.
