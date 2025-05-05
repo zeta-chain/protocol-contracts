@@ -151,14 +151,14 @@ contract GatewayEVMZEVMTest is
             address(zrc20),
             abi.encodePacked(receiverEVM),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
             revertOptions
         );
         gatewayZEVM.call(
             abi.encodePacked(receiverEVM),
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
             revertOptions
         );
 
@@ -208,7 +208,7 @@ contract GatewayEVMZEVMTest is
 
         // Encode the function call data and call on zevm
         bytes memory message = abi.encodeWithSelector(receiverEVM.receivePayable.selector, str, num, flag);
-        uint256 expectedGasFee = 1;
+        uint256 expectedGasFee = 100_000;
         vm.expectEmit(true, true, true, true, address(gatewayZEVM));
         emit WithdrawnAndCalled(
             ownerZEVM,
@@ -280,6 +280,6 @@ contract GatewayEVMZEVMTest is
         // Check the balance after withdrawal
         uint256 senderBalanceAfterWithdrawal = IZRC20(zrc20).balanceOf(address(senderZEVM));
         // Expected gas fee 1
-        assertEq(senderBalanceAfterWithdrawal, senderBalanceBeforeWithdrawal - 500_000 - 1);
+        assertEq(senderBalanceAfterWithdrawal, senderBalanceBeforeWithdrawal - 500_000 - 100_000);
     }
 }
