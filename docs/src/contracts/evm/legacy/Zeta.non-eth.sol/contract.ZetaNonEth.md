@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/Zeta.non-eth.sol)
 
 **Inherits:**
-[ZetaNonEthInterface](/contracts/evm/legacy/IZetaNonNative.sol/interface.ZetaNonEthInterface.md), ERC20Burnable, [ZetaErrors](/contracts/evm/legacy/ZetaErrors.sol/interface.ZetaErrors.md)
+[ZetaNonEthInterface](/contracts/evm/zeta/IZetaNonNative.solnterface.ZetaNonEthInterface.md), ERC20Burnable, [ZetaErrors](/contracts/evm/zeta/ZetaErrors.solnterface.ZetaErrors.md)
 
 
 ## State Variables
