@@ -71,11 +71,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         vm.deal(protocolAddress, 1_000_000_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
-        zrc20.deposit(owner, 100_000);
+        zrc20.deposit(owner, 100_000_000);
         vm.stopPrank();
 
         vm.startPrank(owner);
-        zrc20.approve(address(gateway), 100_000);
+        zrc20.approve(address(gateway), 100_000_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
         vm.stopPrank();
@@ -269,7 +269,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 expectedGasFee = 1;
+        uint256 expectedGasFee = 100_000;
         uint256 gasLimit = 100_000;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
@@ -350,7 +350,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 expectedGasFee = 1;
+        uint256 expectedGasFee = 100_000;
         uint256 gasLimit = 100_000;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
@@ -365,6 +365,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
+
         gateway.withdrawAndCall(
             abi.encodePacked(addr1),
             amount,
