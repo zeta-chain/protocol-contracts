@@ -39,9 +39,9 @@ contract SenderZEVM {
             onRevertGasLimit: 0
         });
 
-        CallOptions memory callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: false });
+        CallOptions memory callOptions = CallOptions({ gasLimit: 100_000, isArbitraryCall: false });
 
-        IZRC20(zrc20).approve(gateway, 1);
+        IZRC20(zrc20).approve(gateway, 100_000);
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).call(receiver, zrc20, message, callOptions, revertOptions);
@@ -69,7 +69,7 @@ contract SenderZEVM {
         bytes memory message = abi.encodeWithSignature("receivePayable(string,uint256,bool)", str, num, flag);
 
         // Approve gateway to withdraw
-        if (!IZRC20(zrc20).approve(gateway, amount + 2)) revert ApprovalFailed();
+        if (!IZRC20(zrc20).approve(gateway, amount + 100_000)) revert ApprovalFailed();
 
         RevertOptions memory revertOptions = RevertOptions({
             revertAddress: address(0x321),
@@ -79,7 +79,7 @@ contract SenderZEVM {
             onRevertGasLimit: 0
         });
 
-        CallOptions memory callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: false });
+        CallOptions memory callOptions = CallOptions({ gasLimit: 100_000, isArbitraryCall: false });
 
         // Pass encoded call to gateway
         IGatewayZEVM(gateway).withdrawAndCall(receiver, amount, zrc20, message, callOptions, revertOptions);
