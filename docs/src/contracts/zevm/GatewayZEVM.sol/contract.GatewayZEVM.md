@@ -46,6 +46,15 @@ uint256 public constant MAX_MESSAGE_SIZE = 2048;
 ```
 
 
+### MIN_GAS_LIMIT
+Minimum gas limit for a call.
+
+
+```solidity
+uint256 public constant MIN_GAS_LIMIT = 100_000;
+```
+
+
 ## Functions
 ### onlyProtocol
 
