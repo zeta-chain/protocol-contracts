@@ -318,7 +318,7 @@ contract GatewayZEVM is
 
         // if (receiver.length == 0) revert ZeroAddress();
         // if (amount == 0) revert InsufficientZetaAmount();
-        // if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        // if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         // if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
 
         // _transferZETA(amount, PROTOCOL_ADDRESS);
