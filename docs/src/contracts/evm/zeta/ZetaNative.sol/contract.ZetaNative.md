@@ -1,5 +1,5 @@
-# ZetaEth
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/contracts/evm/legacy/Zeta.eth.sol)
+# ZetaNative
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/zeta/ZetaNative.sol)
 
 **Inherits:**
 ERC20

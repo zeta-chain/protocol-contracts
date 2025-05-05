@@ -278,7 +278,14 @@ Withdraw ZETA tokens to an external chain.
 
 
 ```solidity
-function withdraw(bytes memory, uint256, uint256, RevertOptions calldata) external view whenNotPaused;
+function withdraw(
+    bytes memory receiver,
+    uint256 amount,
+    uint256 chainId,
+    RevertOptions calldata revertOptions
+)
+    external
+    whenNotPaused;
 ```
 
 ### withdrawAndCall
@@ -288,15 +295,14 @@ Withdraw ZETA tokens and call a smart contract on an external chain.
 
 ```solidity
 function withdrawAndCall(
-    bytes memory,
-    uint256,
-    uint256,
-    bytes calldata,
-    CallOptions calldata,
-    RevertOptions calldata
+    bytes memory receiver,
+    uint256 amount,
+    uint256 chainId,
+    bytes calldata message,
+    CallOptions calldata callOptions,
+    RevertOptions calldata revertOptions
 )
     external
-    view
     whenNotPaused;
 ```
 
@@ -488,6 +494,31 @@ function depositAndRevert(
 |Name|Type|Description|
 |----|----|-----------|
 |`zrc20`|`address`|The address of the ZRC20 token.|
+|`amount`|`uint256`|The amount of tokens to revert.|
+|`target`|`address`|The target contract to call.|
+|`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
+
+
+### depositAndRevert
+
+Deposit ZETA and revert a user-specified contract on ZEVM.
+
+
+```solidity
+function depositAndRevert(
+    uint256 amount,
+    address target,
+    RevertContext calldata revertContext
+)
+    external
+    nonReentrant
+    onlyProtocol
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
 |`amount`|`uint256`|The amount of tokens to revert.|
 |`target`|`address`|The target contract to call.|
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
