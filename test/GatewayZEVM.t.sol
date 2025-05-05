@@ -351,7 +351,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 expectedGasFee = 1;
-        uint256 gasLimit = 200_000;
+        uint256 gasLimit = 100_000;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
             owner,
