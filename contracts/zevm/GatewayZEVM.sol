@@ -145,8 +145,8 @@ contract GatewayZEVM is
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
         (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
 
-        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
+        if (!_safeBurn(gasZRC20, gasFee)) {
+            revert ZRC20BurnFailed(gasZRC20, gasFee);
         }
 
         if (!_safeTransferFrom(zrc20, msg.sender, address(this), amount)) {
