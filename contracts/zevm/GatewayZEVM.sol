@@ -493,6 +493,28 @@ contract GatewayZEVM is
         Revertable(target).onRevert(revertContext);
     }
 
+    /// @notice Deposit ZETA and revert a user-specified contract on ZEVM.
+    /// @param amount The amount of tokens to revert.
+    /// @param target The target contract to call.
+    /// @param revertContext Revert context to pass to onRevert.
+    function depositAndRevert(
+        uint256 amount,
+        address target,
+        RevertContext calldata revertContext
+    )
+        external
+        nonReentrant
+        onlyProtocol
+        whenNotPaused
+    {
+        if (target == address(0)) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        _transferZETA(amount, target);
+        Revertable(target).onRevert(revertContext);
+    }
+
     /// @notice Call onAbort on a user-specified contract on ZEVM.
     /// this function doesn't deposit the asset to the target contract. This operation is done directly by the protocol.
     /// the assets are deposited to the target contract even if onAbort reverts.
