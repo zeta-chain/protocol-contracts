@@ -125,7 +125,7 @@ contract GatewayEVMZEVMTest is
 
         vm.deal(tssAddress, 1 ether);
 
-        callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: false });
+        callOptions = CallOptions({ gasLimit: 100_000, isArbitraryCall: false });
 
         revertOptions = RevertOptions({
             revertAddress: address(0x321),
@@ -219,7 +219,7 @@ contract GatewayEVMZEVMTest is
             expectedGasFee,
             zrc20.PROTOCOL_FLAT_FEE(),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
             revertOptions
         );
         vm.prank(ownerZEVM);
@@ -228,7 +228,7 @@ contract GatewayEVMZEVMTest is
             500_000,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
             revertOptions
         );
 
