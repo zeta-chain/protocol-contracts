@@ -88,7 +88,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             onRevertGasLimit: 0
         });
 
-        callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: true });
+        callOptions = CallOptions({ gasLimit: 100_000, isArbitraryCall: true });
     }
 
     function testWithdrawZRC20() public {
@@ -197,7 +197,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             1,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: false }),
             revertOptions
         );
     }
@@ -235,7 +235,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             0,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: false }),
             revertOptions
         );
     }
@@ -255,7 +255,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             amount,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: false }),
             revertOptions
         );
 
@@ -270,7 +270,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 expectedGasFee = 1;
-        uint256 gasLimit = 1;
+        uint256 gasLimit = 100_000;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
             owner,
@@ -351,7 +351,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         uint256 expectedGasFee = 1;
-        uint256 gasLimit = 1;
+        uint256 gasLimit = 200_000;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
             owner,
@@ -613,7 +613,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             1,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: false }),
             revertOptions
         );
     }
