@@ -104,7 +104,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Verify chain not active initially
         uint256[] memory chains = registry.getActiveChains();
-        assertEq(chains.length, 0);
+        assertEq(chains.length, 1);
 
         // Activate chain
         vm.prank(registryManager);
@@ -114,8 +114,8 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Verify chain is now active
         chains = registry.getActiveChains();
-        assertEq(chains.length, 1);
-        assertEq(chains[0], chainId);
+        assertEq(chains.length, 2);
+        assertEq(chains[1], chainId);
     }
 
     function testActivateChainUnauthorized() public {
@@ -161,7 +161,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Verify chain is active
         uint256[] memory chains = registry.getActiveChains();
-        assertEq(chains.length, 1);
+        assertEq(chains.length, 2);
 
         // Deactivate chain
         vm.prank(registryManager);
@@ -171,7 +171,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Verify chain is no longer active
         chains = registry.getActiveChains();
-        assertEq(chains.length, 0);
+        assertEq(chains.length, 1);
     }
 
     function testUpdateChainMetadata() public {

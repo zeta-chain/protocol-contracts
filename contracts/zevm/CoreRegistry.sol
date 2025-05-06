@@ -65,6 +65,11 @@ contract CoreRegistry is
         _grantRole(PAUSER_ROLE, admin_);
 
         gatewayZEVM = IGatewayZEVM(gatewayZEVM_);
+
+        // Add ZetaChain to the list of supported networks
+        _chains[block.chainid].active = true;
+        _chains[block.chainid].registry = abi.encodePacked(address(this));
+        _activeChains.push(block.chainid);
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be admin.
@@ -509,7 +514,8 @@ contract CoreRegistry is
     /// @notice Generic function to broadcast encoded messages to all satellite registries
     /// @param encodedMessage The fully encoded function call to broadcast
     function _broadcastToAllChains(bytes memory encodedMessage) private {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
+        // Starts from 1 because ZetaChain is on the index 0
+        for (uint256 i = 1; i < _activeChains.length; i++) {
             _sendCrossChainMessage(_activeChains[i], encodedMessage);
         }
     }
