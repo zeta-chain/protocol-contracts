@@ -51,7 +51,6 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         bytes32 internalSendHash
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
@@ -75,7 +74,6 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         bytes32 internalSendHash
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
@@ -104,7 +102,6 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
         RevertContext calldata revertContext
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused

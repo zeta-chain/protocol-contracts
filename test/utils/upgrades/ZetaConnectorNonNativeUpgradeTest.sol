@@ -55,7 +55,6 @@ contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
         bytes32 internalSendHash
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
@@ -79,7 +78,6 @@ contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
         bytes32 internalSendHash
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
@@ -108,7 +106,6 @@ contract ZetaConnectorNonNativeUpgradeTest is ZetaConnectorBase {
         RevertContext calldata revertContext
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
