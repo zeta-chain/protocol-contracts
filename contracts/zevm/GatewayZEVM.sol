@@ -32,6 +32,7 @@ contract GatewayZEVM is
 
     /// @notice The constant address of the protocol
     address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+
     /// @notice The address of the Zeta token.
     address public zetaToken;
 
@@ -40,6 +41,9 @@ contract GatewayZEVM is
 
     /// @notice Max size of message + revertOptions revert message.
     uint256 public constant MAX_MESSAGE_SIZE = 2048;
+
+    /// @notice Minimum gas limit for a call.
+    uint256 public constant MIN_GAS_LIMIT = 100_000;
 
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
@@ -234,7 +238,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
-        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
@@ -335,7 +339,7 @@ contract GatewayZEVM is
         external
         whenNotPaused
     {
-        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }

@@ -125,7 +125,7 @@ contract GatewayEVMZEVMTest is
 
         vm.deal(tssAddress, 1 ether);
 
-        callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: false });
+        callOptions = CallOptions({ gasLimit: 100_000, isArbitraryCall: false });
 
         revertOptions = RevertOptions({
             revertAddress: address(0x321),
@@ -151,14 +151,14 @@ contract GatewayEVMZEVMTest is
             address(zrc20),
             abi.encodePacked(receiverEVM),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
             revertOptions
         );
         gatewayZEVM.call(
             abi.encodePacked(receiverEVM),
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: true }),
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
             revertOptions
         );
 
