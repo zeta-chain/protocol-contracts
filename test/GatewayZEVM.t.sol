@@ -47,6 +47,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         RevertOptions revertOptions
     );
 
+    uint256 constant MIN_GAS_LIMIT = 100_000;
+
     function setUp() public {
         owner = address(this);
         addr1 = address(0x1234);
@@ -71,11 +73,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         vm.deal(protocolAddress, 1_000_000_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
-        zrc20.deposit(owner, 100_000);
+        zrc20.deposit(owner, 100_000_000);
         vm.stopPrank();
 
         vm.startPrank(owner);
-        zrc20.approve(address(gateway), 100_000);
+        zrc20.approve(address(gateway), 100_000_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
         vm.stopPrank();
@@ -88,7 +90,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             onRevertGasLimit: 0
         });
 
-        callOptions = CallOptions({ gasLimit: 1, isArbitraryCall: true });
+        callOptions = CallOptions({ gasLimit: MIN_GAS_LIMIT, isArbitraryCall: true });
     }
 
     function testWithdrawZRC20() public {
@@ -197,7 +199,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             1,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: MIN_GAS_LIMIT, isArbitraryCall: false }),
             revertOptions
         );
     }
@@ -227,6 +229,19 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         );
     }
 
+    function testWithdrawAndCallZRC20FailsIfGasLimitIsBelowMin() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        vm.expectRevert(InsufficientGasLimit.selector);
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            1,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: MIN_GAS_LIMIT - 1, isArbitraryCall: false }),
+            revertOptions
+        );
+    }
+
     function testWithdrawAndCallZRC20FailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(InsufficientZRC20Amount.selector);
@@ -235,7 +250,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             0,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: MIN_GAS_LIMIT, isArbitraryCall: false }),
             revertOptions
         );
     }
@@ -255,7 +270,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             amount,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: MIN_GAS_LIMIT, isArbitraryCall: false }),
             revertOptions
         );
 
@@ -269,8 +284,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 expectedGasFee = 1;
-        uint256 gasLimit = 1;
+        uint256 expectedGasFee = MIN_GAS_LIMIT;
+        uint256 gasLimit = MIN_GAS_LIMIT;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
             owner,
@@ -350,8 +365,8 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 expectedGasFee = 1;
-        uint256 gasLimit = 1;
+        uint256 expectedGasFee = MIN_GAS_LIMIT;
+        uint256 gasLimit = MIN_GAS_LIMIT;
         vm.expectEmit(true, true, true, true, address(gateway));
         emit WithdrawnAndCalled(
             owner,
@@ -365,6 +380,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
+
         gateway.withdrawAndCall(
             abi.encodePacked(addr1),
             amount,
@@ -613,7 +629,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             1,
             address(zrc20),
             message,
-            CallOptions({ gasLimit: 1, isArbitraryCall: false }),
+            CallOptions({ gasLimit: MIN_GAS_LIMIT, isArbitraryCall: false }),
             revertOptions
         );
     }
@@ -621,6 +637,13 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     function testCallWithCallOptsFailsIfGasLimitIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         callOptions.gasLimit = 0;
+        vm.expectRevert(InsufficientGasLimit.selector);
+        gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptions);
+    }
+
+    function testCallWithCallOptsFailsIfGasLimitIsBelowMin() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        callOptions.gasLimit = MIN_GAS_LIMIT - 1;
         vm.expectRevert(InsufficientGasLimit.selector);
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptions);
     }
@@ -685,6 +708,8 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+    uint256 constant MIN_GAS_LIMIT = 100_000;
+
     function setUp() public {
         owner = address(this);
         addr1 = address(0x1234);
@@ -710,11 +735,11 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.deal(protocolAddress, 1_000_000_000);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
-        zrc20.deposit(owner, 100_000);
+        zrc20.deposit(owner, MIN_GAS_LIMIT);
         vm.stopPrank();
 
         vm.startPrank(owner);
-        zrc20.approve(address(gateway), 100_000);
+        zrc20.approve(address(gateway), MIN_GAS_LIMIT);
         zetaToken.deposit{ value: 10 }();
         zetaToken.approve(address(gateway), 10);
         vm.stopPrank();
