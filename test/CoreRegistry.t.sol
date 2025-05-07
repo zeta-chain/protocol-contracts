@@ -8,6 +8,7 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 import { CoreRegistry } from "../contracts/zevm/CoreRegistry.sol";
 import "../contracts/zevm/interfaces/ICoreRegistry.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import "../contracts/zevm/ZRC20.sol";
 
 // Mock GatewayZEVM
 contract MockGatewayZEVM {
@@ -22,7 +23,7 @@ contract MockGatewayZEVM {
         CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
-        external
+    external
     {
         emit CallEmitted(receiver, zrc20, message, callOptions, revertOptions);
     }
@@ -32,6 +33,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     address payable proxy;
     CoreRegistry registry;
     MockGatewayZEVM mockGateway;
+    ZRC20 gasZRC20;
 
     address admin;
     address registryManager;
@@ -51,6 +53,8 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
             )
         );
         registry = CoreRegistry(proxy);
+
+        gasZRC20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(1), address(mockGateway));
     }
 
     function testInitialize() public view {
@@ -110,7 +114,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
         emit ChainStatusChanged(chainId, false, true);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Verify chain is now active
         chains = registry.getActiveChains();
@@ -124,7 +128,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         vm.prank(user);
         vm.expectRevert();
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
     }
 
     function testActivateAlreadyActiveChain() public {
@@ -133,12 +137,12 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Try to activate chain
         vm.prank(registryManager);
         vm.expectRevert(abi.encodeWithSelector(ChainActive.selector, chainId));
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
     }
 
     function testDeactivateNonActiveChain() public {
@@ -148,7 +152,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Try to deactivate non-active chain
         vm.prank(registryManager);
         vm.expectRevert(abi.encodeWithSelector(ChainNonActive.selector, chainId));
-        registry.changeChainStatus(chainId, registryAddress, false);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, false);
     }
 
     function testDeactivateChain() public {
@@ -157,7 +161,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Verify chain is active
         uint256[] memory chains = registry.getActiveChains();
@@ -167,7 +171,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
         emit ChainStatusChanged(chainId, true, false);
-        registry.changeChainStatus(chainId, registryAddress, false);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, false);
 
         // Verify chain is no longer active
         chains = registry.getActiveChains();
@@ -182,7 +186,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Update metadata
         vm.prank(registryManager);
@@ -213,7 +217,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Try to update metadata as unauthorized user
         vm.prank(user);
@@ -230,7 +234,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Registry contract
         vm.prank(registryManager);
@@ -264,7 +268,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Try to register contract with empty type
         vm.prank(registryManager);
@@ -281,7 +285,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Try to register contract with empty address bytes
         vm.prank(registryManager);
@@ -298,7 +302,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Register contract
         vm.prank(registryManager);
@@ -321,7 +325,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Register contract
         vm.prank(registryManager);
@@ -347,7 +351,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Try to update config for non-existent contract
         vm.prank(registryManager);
@@ -364,7 +368,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Register contract
         vm.prank(registryManager);
@@ -402,7 +406,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Activate chain
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Try to set status for non-existent contract
         vm.prank(registryManager);
@@ -586,7 +590,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Try to activate chain while paused
         vm.prank(registryManager);
         vm.expectRevert();
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Unpause
         vm.prank(admin);
@@ -594,6 +598,6 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Now it should work
         vm.prank(registryManager);
-        registry.changeChainStatus(chainId, registryAddress, true);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
     }
 }

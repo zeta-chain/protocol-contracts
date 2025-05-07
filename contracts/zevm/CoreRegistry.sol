@@ -3,6 +3,7 @@ pragma solidity 0.8.26;
 
 import "./interfaces/ICoreRegistry.sol";
 import "./interfaces/IGatewayZEVM.sol";
+import "./interfaces/IZRC20.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -88,10 +89,12 @@ contract CoreRegistry is
 
     /// @notice Changes status of the chain to activated/deactivated.
     /// @param chainId The ID of the chain to activate.
+    /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
     /// @param registry Address of the Registry contract on the connected chain.
     /// @param activation Whether activate or deactivate the chain
     function changeChainStatus(
         uint256 chainId,
+        address gasZRC20,
         bytes calldata registry,
         bool activation
     )
@@ -99,7 +102,7 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        if (registry.length == 0) revert ZeroAddress();
+        if (registry.length == 0 || gasZRC20 == address(0)) revert ZeroAddress();
         // In the case chain is already activated
         if (_chains[chainId].active && activation) revert ChainActive(chainId);
         // In the case chain is inactive
@@ -107,6 +110,7 @@ contract CoreRegistry is
 
         // Update the chain info
         _chains[chainId].active = activation;
+        _chains[chainId].gasZRC20 = gasZRC20;
         _chains[chainId].registry = registry;
 
         // Update active chains array
@@ -408,7 +412,7 @@ contract CoreRegistry is
     /// @param activation Whether the chain is being activated or deactivated
     function _broadcastChainActivation(uint256 chainId, bool activation) internal {
         // Encode the function call for the Registry contract on the target chain
-        bytes memory message = abi.encodeWithSignature("changeChainStatus(uint256,bytes,bool)", chainId, activation);
+        bytes memory message = abi.encodeWithSignature("changeChainStatus(uint256,address,bytes,bool)", chainId, activation);
         _broadcastToAllChains(message);
     }
 
@@ -514,9 +518,10 @@ contract CoreRegistry is
     /// @notice Generic function to broadcast encoded messages to all satellite registries
     /// @param encodedMessage The fully encoded function call to broadcast
     function _broadcastToAllChains(bytes memory encodedMessage) private {
-        // Starts from 1 because ZetaChain is on the index 0
-        for (uint256 i = 1; i < _activeChains.length; i++) {
-            _sendCrossChainMessage(_activeChains[i], encodedMessage);
+        for (uint256 i = 0; i < _activeChains.length; i++) {
+            if (_activeChains[i] != block.chainid) {
+                _sendCrossChainMessage(_activeChains[i], encodedMessage);
+            }
         }
     }
 
@@ -528,13 +533,16 @@ contract CoreRegistry is
         CallOptions memory callOptions = CallOptions({ gasLimit: CROSS_CHAIN_GAS_LIMIT, isArbitraryCall: true });
 
         // Prepare revert options
-        // TODO: fill with info
         RevertOptions memory revertOptions;
+
+        // Approve gas token amount for cctx
+        address gasZRC20 = _chains[targetChainId].gasZRC20;
+        (, uint256 gasFee) = IZRC20(gasZRC20).withdrawGasFeeWithGasLimit(CROSS_CHAIN_GAS_LIMIT);
+        IZRC20(gasZRC20).approve(address(gatewayZEVM), gasFee);
 
         gatewayZEVM.call(
             _chains[targetChainId].registry,
-            // TODO: Add ZRC20 contract address
-            address(1),
+            gasZRC20,
             message,
             callOptions,
             revertOptions

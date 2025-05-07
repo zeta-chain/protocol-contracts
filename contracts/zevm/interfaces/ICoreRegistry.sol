@@ -94,6 +94,8 @@ struct ChainInfo {
     bool active;
     /// @notice The unique identifier of the chain.
     uint256 chainId;
+    /// @notice The address of the ZRC20 token that represents gas token for the chain.
+    address gasZRC20;
     /// @notice The registry address on the target chain
     bytes registry;
     /// @notice Additional chain-specific metadata stored as key-value pairs.
@@ -143,8 +145,9 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
 
     /// @notice Changes status of the chain to activated/deactivated.
     /// @param chainId The ID of the chain to activate.
+    /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
     /// @param activation Whether activate or deactivate a chain
-    function changeChainStatus(uint256 chainId, bytes calldata registry, bool activation) external;
+    function changeChainStatus(uint256 chainId, address gasZRC20, bytes calldata registry, bool activation) external;
 
     /// @notice Updates chain metadata.
     /// @param chainId The ID of the chain.
