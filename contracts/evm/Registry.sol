@@ -120,25 +120,28 @@ contract Registry is
 
     /// @notice Changes status of the chain to activated/deactivated
     /// @dev Only callable through onCall from CoreRegistry
-    /// @param chainId The ID of the chain to activate
-    /// @param active Whether to activate or deactivate the chain
-    function changeChainStatus(uint256 chainId, bool active) external onlyRegistry whenNotPaused {
+    /// @param chainId The ID of the chain being activated/deactivated.
+    /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
+    /// @param registry Address of the Registry contract on the connected chain.
+    /// @param active Whether activate or deactivate the chain
+    function changeChainStatus(
+        uint256 chainId,
+        address gasZRC20,
+        bytes calldata registry,
+        bool active
+    )
+        external
+        onlyRegistry
+        whenNotPaused
+    {
         // Update the chain info
+        _chains[chainId].gasZRC20 = gasZRC20;
+        _chains[chainId].registry = registry;
         _chains[chainId].active = active;
 
         // Update active chains array
         if (active) {
-            // Add to active chains if not already present
-            bool exists = false;
-            for (uint256 i = 0; i < _activeChains.length; i++) {
-                if (_activeChains[i] == chainId) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                _activeChains.push(chainId);
-            }
+            _activeChains.push(chainId);
         } else {
             // Remove from active chains
             _removeFromActiveChains(chainId);

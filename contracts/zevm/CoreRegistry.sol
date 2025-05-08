@@ -121,7 +121,7 @@ contract CoreRegistry is
         }
 
         // Broadcast update to satellite registries
-        _broadcastChainActivation(chainId, activation);
+        _broadcastChainActivation(chainId, gasZRC20, registry, activation);
 
         emit ChainStatusChanged(chainId, !activation, activation);
     }
@@ -408,11 +408,22 @@ contract CoreRegistry is
     }
 
     /// @notice Broadcast chain activation update to all satellite registries.
-    /// @param chainId The ID of the chain being activated/deactivated
-    /// @param activation Whether the chain is being activated or deactivated
-    function _broadcastChainActivation(uint256 chainId, bool activation) internal {
+    /// @param chainId The ID of the chain being activated/deactivated.
+    /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
+    /// @param registry Address of the Registry contract on the connected chain.
+    /// @param activation Whether activate or deactivate the chain
+    function _broadcastChainActivation(
+        uint256 chainId,
+        address gasZRC20,
+        bytes calldata registry,
+        bool activation
+    )
+        internal
+    {
         // Encode the function call for the Registry contract on the target chain
-        bytes memory message = abi.encodeWithSignature("changeChainStatus(uint256,address,bytes,bool)", chainId, activation);
+        bytes memory message = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registry, activation
+        );
         _broadcastToAllChains(message);
     }
 
@@ -540,13 +551,7 @@ contract CoreRegistry is
         (, uint256 gasFee) = IZRC20(gasZRC20).withdrawGasFeeWithGasLimit(CROSS_CHAIN_GAS_LIMIT);
         IZRC20(gasZRC20).approve(address(gatewayZEVM), gasFee);
 
-        gatewayZEVM.call(
-            _chains[targetChainId].registry,
-            gasZRC20,
-            message,
-            callOptions,
-            revertOptions
-        );
+        gatewayZEVM.call(_chains[targetChainId].registry, gasZRC20, message, callOptions, revertOptions);
     }
 
     /// @notice Removes a chain ID from the active chains array.

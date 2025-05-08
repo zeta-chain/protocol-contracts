@@ -6,9 +6,10 @@ import "forge-std/Vm.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import { CoreRegistry } from "../contracts/zevm/CoreRegistry.sol";
+
+import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/ICoreRegistry.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import "../contracts/zevm/ZRC20.sol";
 
 // Mock GatewayZEVM
 contract MockGatewayZEVM {
@@ -23,7 +24,7 @@ contract MockGatewayZEVM {
         CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
-    external
+        external
     {
         emit CallEmitted(receiver, zrc20, message, callOptions, revertOptions);
     }

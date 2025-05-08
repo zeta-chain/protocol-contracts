@@ -70,6 +70,8 @@ struct ChainInfo {
     bool active;
     /// @notice The unique identifier of the chain.
     uint256 chainId;
+    /// @notice The address of the ZRC20 token that represents gas token for the chain.
+    address gasZRC20;
     /// @notice The registry address on the target chain
     bytes registry;
     /// @notice Additional chain-specific metadata stored as key-value pairs.

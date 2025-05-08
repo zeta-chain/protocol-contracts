@@ -151,11 +151,11 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     function testChangeStatusDirectCallFails() public {
         vm.prank(user);
         vm.expectRevert();
-        registry.changeChainStatus(chainId, true);
+        registry.changeChainStatus(chainId, address(1), registryAddress, true);
 
         vm.prank(admin);
         vm.expectRevert();
-        registry.changeChainStatus(chainId, true);
+        registry.changeChainStatus(chainId, address(1), registryAddress, true);
     }
 
     function testUpdateChainMetadata() public {
