@@ -127,14 +127,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         // Get the gas fee information from the contract
         (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFeeWithGasLimit(10);
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                GasFeeTransferFailed.selector,
-                gasZRC20,
-                protocolAddress, // The PROTOCOL_ADDRESS constant
-                gasFee
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(GasFeeTransferFailed.selector, gasZRC20, address(gateway), gasFee));
 
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
     }
