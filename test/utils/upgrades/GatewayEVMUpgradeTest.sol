@@ -388,18 +388,13 @@ contract GatewayEVMUpgradeTest is
     /// @param amount Amount of tokens to transfer.
     function _transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
-            // TODO: remove error and comment out code once ZETA supported back
-            // https://github.com/zeta-chain/protocol-contracts/issues/394
-            // ZETA token is currently not supported for deposit
-            revert ZETANotSupported();
-
-            // // transfer to connector
-            // // transfer amount to gateway
-            // IERC20(token).safeTransferFrom(from, address(this), amount);
-            // // approve connector to handle tokens depending on connector version (eg. lock or burn)
-            // if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
-            // // send tokens to connector
-            // ZetaConnectorBase(zetaConnector).receiveTokens(amount);
+            // transfer to connector
+            // transfer amount to gateway
+            IERC20(token).safeTransferFrom(from, address(this), amount);
+            // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
+            // send tokens to connector
+            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
         } else {
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);
