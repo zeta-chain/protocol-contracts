@@ -66,7 +66,6 @@ function withdraw(
     bytes32 internalSendHash
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -96,7 +95,6 @@ function withdrawAndCall(
     bytes32 internalSendHash
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -128,7 +126,6 @@ function withdrawAndRevert(
     RevertContext calldata revertContext
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;

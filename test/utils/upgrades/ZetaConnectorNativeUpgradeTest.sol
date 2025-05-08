@@ -32,15 +32,7 @@ contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @dev This function can only be called by the TSS address.
-    function withdraw(
-        address to,
-        uint256 amount
-    )
-        external
-        nonReentrant
-        onlyRole(WITHDRAWER_ROLE)
-        whenNotPaused
-    {
+    function withdraw(address to, uint256 amount) external nonReentrant onlyRole(WITHDRAWER_ROLE) whenNotPaused {
         IERC20(zetaToken).safeTransfer(to, amount);
         emit WithdrawnV2(to, amount);
     }
