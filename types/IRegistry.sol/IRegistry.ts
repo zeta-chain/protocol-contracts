@@ -53,19 +53,10 @@ export namespace ChainMetadataUpdatedEvent {
 }
 
 export namespace ChainStatusChangedEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    previousState: boolean,
-    newState: boolean
-  ];
-  export type OutputTuple = [
-    chainId: bigint,
-    previousState: boolean,
-    newState: boolean
-  ];
+  export type InputTuple = [chainId: BigNumberish, newState: boolean];
+  export type OutputTuple = [chainId: bigint, newState: boolean];
   export interface OutputObject {
     chainId: bigint;
-    previousState: boolean;
     newState: boolean;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -283,7 +274,7 @@ export interface IRegistry extends BaseContract {
       ChainMetadataUpdatedEvent.OutputObject
     >;
 
-    "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
+    "ChainStatusChanged(uint256,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject

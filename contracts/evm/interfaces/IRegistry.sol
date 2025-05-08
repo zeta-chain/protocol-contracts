@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 /// @title IRegistryEvents
 interface IRegistryEvents {
     /// @notice Emitted when a chain's status is changed
-    event ChainStatusChanged(uint256 indexed chainId, bool previousState, bool newState);
+    event ChainStatusChanged(uint256 indexed chainId, bool newState);
 
     /// @notice Emitted when new chain metadata is set
     event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value);

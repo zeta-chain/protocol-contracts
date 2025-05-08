@@ -130,7 +130,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
-        emit ChainStatusChanged(chainId, false, true);
+        emit ChainStatusChanged(chainId, true);
         registry.onCall(context, activateData);
 
         uint256[] memory chains = registry.getActiveChains();
@@ -141,7 +141,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
-        emit ChainStatusChanged(chainId, true, false);
+        emit ChainStatusChanged(chainId, false);
         registry.onCall(context, deactivateData);
 
         chains = registry.getActiveChains();

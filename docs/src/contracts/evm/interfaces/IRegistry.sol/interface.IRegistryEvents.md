@@ -8,7 +8,7 @@ Emitted when a chain's status is changed
 
 
 ```solidity
-event ChainStatusChanged(uint256 indexed chainId, bool previousState, bool newState);
+event ChainStatusChanged(uint256 indexed chainId, bool newState);
 ```
 
 ### ChainMetadataUpdated

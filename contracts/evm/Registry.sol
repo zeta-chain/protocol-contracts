@@ -138,7 +138,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
             _removeFromActiveChains(chainId);
         }
 
-        emit ChainStatusChanged(chainId, !active, active);
+        emit ChainStatusChanged(chainId, active);
     }
 
     /// @notice Updates chain metadata, only for the active chains

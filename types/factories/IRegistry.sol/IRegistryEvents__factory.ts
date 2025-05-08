@@ -45,12 +45,6 @@ const _abi = [
         internalType: "uint256",
       },
       {
-        name: "previousState",
-        type: "bool",
-        indexed: false,
-        internalType: "bool",
-      },
-      {
         name: "newState",
         type: "bool",
         indexed: false,
