@@ -2,8 +2,7 @@
 
 # Contents
 - [ConnectorErrors](ConnectorErrors.sol/interface.ConnectorErrors.md)
-- [ZetaEth](Zeta.eth.sol/contract.ZetaEth.md)
-- [ZetaNonEth](Zeta.non-eth.sol/contract.ZetaNonEth.md)
+- [IZetaNonNative](IZetaNonNative.sol/interface.IZetaNonNative.md)
 - [ZetaConnectorBase](ZetaConnector.base.sol/contract.ZetaConnectorBase.md)
 - [ZetaConnectorEth](ZetaConnector.eth.sol/contract.ZetaConnectorEth.md)
 - [ZetaConnectorNonEth](ZetaConnector.non-eth.sol/contract.ZetaConnectorNonEth.md)
@@ -13,4 +12,5 @@
 - [ZetaReceiver](ZetaInterfaces.sol/interface.ZetaReceiver.md)
 - [ZetaTokenConsumer](ZetaInterfaces.sol/interface.ZetaTokenConsumer.md)
 - [ZetaCommonErrors](ZetaInterfaces.sol/interface.ZetaCommonErrors.md)
-- [ZetaNonEthInterface](ZetaNonEthInterface.sol/interface.ZetaNonEthInterface.md)
+- [ZetaNative](ZetaNative.sol/contract.ZetaNative.md)
+- [ZetaNonNative](ZetaNonNative.sol/contract.ZetaNonNative.md)
