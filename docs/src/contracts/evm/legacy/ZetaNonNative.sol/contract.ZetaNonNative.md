@@ -1,8 +1,8 @@
-# ZetaNonEth
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/contracts/evm/legacy/Zeta.non-eth.sol)
+# ZetaNonNative
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/ZetaNonNative.sol)
 
 **Inherits:**
-[ZetaNonEthInterface](/contracts/evm/legacy/IZetaNonNative.sol/interface.ZetaNonEthInterface.md), ERC20Burnable, [ZetaErrors](/contracts/evm/legacy/ZetaErrors.sol/interface.ZetaErrors.md)
+[IZetaNonNative](/contracts/evm/legacy/IZetaNonNative.sol/interface.IZetaNonNative.md), ERC20Burnable, [ZetaErrors](/contracts/evm/legacy/ZetaErrors.sol/interface.ZetaErrors.md)
 
 
 ## State Variables
@@ -68,7 +68,7 @@ function mint(address mintee, uint256 value, bytes32 internalSendHash) external 
 
 
 ```solidity
-function burnFrom(address account, uint256 amount) public override(ZetaNonEthInterface, ERC20Burnable);
+function burnFrom(address account, uint256 amount) public override(IZetaNonNative, ERC20Burnable);
 ```
 
 ## Events

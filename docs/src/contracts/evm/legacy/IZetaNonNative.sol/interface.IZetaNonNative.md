@@ -1,10 +1,10 @@
-# ZetaNonEthInterface
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/contracts/evm/legacy/ZetaNonEthInterface.sol)
+# IZetaNonNative
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/IZetaNonNative.sol)
 
 **Inherits:**
 IERC20
 
-*ZetaNonEthInterface is a mintable / burnable version of IERC20*
+*IZetaNonNative is a mintable / burnable version of IERC20*
 
 
 ## Functions
