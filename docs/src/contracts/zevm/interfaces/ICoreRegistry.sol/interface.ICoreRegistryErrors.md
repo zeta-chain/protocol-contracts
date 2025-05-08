@@ -114,3 +114,11 @@ error ZRC20SymbolAlreadyInUse(string symbol);
 |----|----|-----------|
 |`symbol`|`string`|The symbol that is already in use.|
 
+### TransferFailed
+Error thrown when a ZRC20 token transfer failed.
+
+
+```solidity
+error TransferFailed();
+```
+

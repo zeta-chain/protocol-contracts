@@ -556,6 +556,9 @@ contract CoreRegistry is
         // Approve gas token amount for cctx
         address gasZRC20 = _chains[targetChainId].gasZRC20;
         (, uint256 gasFee) = IZRC20(gasZRC20).withdrawGasFeeWithGasLimit(CROSS_CHAIN_GAS_LIMIT);
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, address(this), gasFee)) {
+            revert TransferFailed();
+        }
         IZRC20(gasZRC20).approve(address(gatewayZEVM), gasFee);
 
         gatewayZEVM.call(_chains[targetChainId].registry, gasZRC20, message, callOptions, revertOptions);

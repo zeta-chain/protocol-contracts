@@ -85,6 +85,9 @@ interface ICoreRegistryErrors {
     /// @notice Error thrown when a ZRC20 token symbol is already in use.
     /// @param symbol The symbol that is already in use.
     error ZRC20SymbolAlreadyInUse(string symbol);
+
+    /// @notice Error thrown when a ZRC20 token transfer failed.
+    error TransferFailed();
 }
 
 /// @title ChainInfo

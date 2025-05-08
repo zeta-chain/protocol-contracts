@@ -81,6 +81,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "TransferFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ZRC20AlreadyRegistered",
     inputs: [
       {
