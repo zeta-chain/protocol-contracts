@@ -86,12 +86,12 @@ event ContractStatusChanged(bytes addressBytes);
 |----|----|-----------|
 |`addressBytes`|`bytes`|The bytes representation of the registered address.|
 
-### NewChainMetadata
+### ChainMetadataUpdated
 Emitted when a chain metadata is set
 
 
 ```solidity
-event NewChainMetadata(uint256 indexed chainId, string key, bytes value);
+event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value);
 ```
 
 **Parameters**

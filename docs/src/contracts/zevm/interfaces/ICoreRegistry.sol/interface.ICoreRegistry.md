@@ -126,13 +126,13 @@ function registerZRC20Token(
 |`decimals`|`uint8`||
 
 
-### updateZRC20Token
+### setZRC20TokenActive
 
 Updates ZRC20 token information.
 
 
 ```solidity
-function updateZRC20Token(address address_, bool active) external;
+function setZRC20TokenActive(address address_, bool active) external;
 ```
 **Parameters**
 

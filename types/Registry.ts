@@ -34,7 +34,7 @@ export interface RegistryInterface extends Interface {
       | "PAUSER_ROLE"
       | "RELAY_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
-      | "_activeChains"
+      | "activeChains"
       | "changeChainStatus"
       | "coreRegistry"
       | "gatewayEVM"
@@ -57,22 +57,22 @@ export interface RegistryInterface extends Interface {
       | "renounceRole"
       | "revokeRole"
       | "setContractActive"
+      | "setZRC20TokenActive"
       | "supportsInterface"
       | "unpause"
       | "updateChainMetadata"
       | "updateContractConfiguration"
-      | "updateZRC20Token"
       | "upgradeToAndCall"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "ChainMetadataUpdated"
       | "ChainStatusChanged"
+      | "ContractConfigurationUpdated"
       | "ContractRegistered"
       | "ContractStatusChanged"
       | "Initialized"
-      | "NewChainMetadata"
-      | "NewContractConfiguration"
       | "Paused"
       | "RoleAdminChanged"
       | "RoleGranted"
@@ -100,7 +100,7 @@ export interface RegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "_activeChains",
+    functionFragment: "activeChains",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -186,6 +186,10 @@ export interface RegistryInterface extends Interface {
     values: [BigNumberish, string, boolean]
   ): string;
   encodeFunctionData(
+    functionFragment: "setZRC20TokenActive",
+    values: [AddressLike, boolean]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
@@ -197,10 +201,6 @@ export interface RegistryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "updateContractConfiguration",
     values: [BigNumberish, string, string, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "updateZRC20Token",
-    values: [AddressLike, boolean]
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
@@ -221,7 +221,7 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "_activeChains",
+    functionFragment: "activeChains",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -289,6 +289,10 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setZRC20TokenActive",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
@@ -302,13 +306,27 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateZRC20Token",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+}
+
+export namespace ChainMetadataUpdatedEvent {
+  export type InputTuple = [
+    chainId: BigNumberish,
+    key: string,
+    value: BytesLike
+  ];
+  export type OutputTuple = [chainId: bigint, key: string, value: string];
+  export interface OutputObject {
+    chainId: bigint;
+    key: string;
+    value: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ChainStatusChangedEvent {
@@ -326,6 +344,31 @@ export namespace ChainStatusChangedEvent {
     chainId: bigint;
     previousState: boolean;
     newState: boolean;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ContractConfigurationUpdatedEvent {
+  export type InputTuple = [
+    chainId: BigNumberish,
+    contractType: string,
+    key: string,
+    value: BytesLike
+  ];
+  export type OutputTuple = [
+    chainId: bigint,
+    contractType: string,
+    key: string,
+    value: string
+  ];
+  export interface OutputObject {
+    chainId: bigint;
+    contractType: string;
+    key: string;
+    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -372,49 +415,6 @@ export namespace InitializedEvent {
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewChainMetadataEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [chainId: bigint, key: string, value: string];
-  export interface OutputObject {
-    chainId: bigint;
-    key: string;
-    value: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewContractConfigurationEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    contractType: string,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [
-    chainId: bigint,
-    contractType: string,
-    key: string,
-    value: string
-  ];
-  export interface OutputObject {
-    chainId: bigint;
-    contractType: string;
-    key: string;
-    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -608,7 +608,7 @@ export interface Registry extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
-  _activeChains: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
+  activeChains: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   changeChainStatus: TypedContractMethod<
     [
@@ -740,6 +740,12 @@ export interface Registry extends BaseContract {
     "nonpayable"
   >;
 
+  setZRC20TokenActive: TypedContractMethod<
+    [address_: AddressLike, active: boolean],
+    [void],
+    "nonpayable"
+  >;
+
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
@@ -761,12 +767,6 @@ export interface Registry extends BaseContract {
       key: string,
       value: BytesLike
     ],
-    [void],
-    "nonpayable"
-  >;
-
-  updateZRC20Token: TypedContractMethod<
-    [address_: AddressLike, active: boolean],
     [void],
     "nonpayable"
   >;
@@ -794,7 +794,7 @@ export interface Registry extends BaseContract {
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "_activeChains"
+    nameOrSignature: "activeChains"
   ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "changeChainStatus"
@@ -949,6 +949,13 @@ export interface Registry extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setZRC20TokenActive"
+  ): TypedContractMethod<
+    [address_: AddressLike, active: boolean],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
@@ -974,13 +981,6 @@ export interface Registry extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "updateZRC20Token"
-  ): TypedContractMethod<
-    [address_: AddressLike, active: boolean],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "upgradeToAndCall"
   ): TypedContractMethod<
     [newImplementation: AddressLike, data: BytesLike],
@@ -989,11 +989,25 @@ export interface Registry extends BaseContract {
   >;
 
   getEvent(
+    key: "ChainMetadataUpdated"
+  ): TypedContractEvent<
+    ChainMetadataUpdatedEvent.InputTuple,
+    ChainMetadataUpdatedEvent.OutputTuple,
+    ChainMetadataUpdatedEvent.OutputObject
+  >;
+  getEvent(
     key: "ChainStatusChanged"
   ): TypedContractEvent<
     ChainStatusChangedEvent.InputTuple,
     ChainStatusChangedEvent.OutputTuple,
     ChainStatusChangedEvent.OutputObject
+  >;
+  getEvent(
+    key: "ContractConfigurationUpdated"
+  ): TypedContractEvent<
+    ContractConfigurationUpdatedEvent.InputTuple,
+    ContractConfigurationUpdatedEvent.OutputTuple,
+    ContractConfigurationUpdatedEvent.OutputObject
   >;
   getEvent(
     key: "ContractRegistered"
@@ -1015,20 +1029,6 @@ export interface Registry extends BaseContract {
     InitializedEvent.InputTuple,
     InitializedEvent.OutputTuple,
     InitializedEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewChainMetadata"
-  ): TypedContractEvent<
-    NewChainMetadataEvent.InputTuple,
-    NewChainMetadataEvent.OutputTuple,
-    NewChainMetadataEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewContractConfiguration"
-  ): TypedContractEvent<
-    NewContractConfigurationEvent.InputTuple,
-    NewContractConfigurationEvent.OutputTuple,
-    NewContractConfigurationEvent.OutputObject
   >;
   getEvent(
     key: "Paused"
@@ -1088,6 +1088,17 @@ export interface Registry extends BaseContract {
   >;
 
   filters: {
+    "ChainMetadataUpdated(uint256,string,bytes)": TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+    ChainMetadataUpdated: TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+
     "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
@@ -1097,6 +1108,17 @@ export interface Registry extends BaseContract {
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject
+    >;
+
+    "ContractConfigurationUpdated(uint256,string,string,bytes)": TypedContractEvent<
+      ContractConfigurationUpdatedEvent.InputTuple,
+      ContractConfigurationUpdatedEvent.OutputTuple,
+      ContractConfigurationUpdatedEvent.OutputObject
+    >;
+    ContractConfigurationUpdated: TypedContractEvent<
+      ContractConfigurationUpdatedEvent.InputTuple,
+      ContractConfigurationUpdatedEvent.OutputTuple,
+      ContractConfigurationUpdatedEvent.OutputObject
     >;
 
     "ContractRegistered(uint256,string,bytes)": TypedContractEvent<
@@ -1130,28 +1152,6 @@ export interface Registry extends BaseContract {
       InitializedEvent.InputTuple,
       InitializedEvent.OutputTuple,
       InitializedEvent.OutputObject
-    >;
-
-    "NewChainMetadata(uint256,string,bytes)": TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
-    >;
-    NewChainMetadata: TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
-    >;
-
-    "NewContractConfiguration(uint256,string,string,bytes)": TypedContractEvent<
-      NewContractConfigurationEvent.InputTuple,
-      NewContractConfigurationEvent.OutputTuple,
-      NewContractConfigurationEvent.OutputObject
-    >;
-    NewContractConfiguration: TypedContractEvent<
-      NewContractConfigurationEvent.InputTuple,
-      NewContractConfigurationEvent.OutputTuple,
-      NewContractConfigurationEvent.OutputObject
     >;
 
     "Paused(address)": TypedContractEvent<

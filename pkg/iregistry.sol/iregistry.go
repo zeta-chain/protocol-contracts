@@ -31,7 +31,7 @@ var (
 
 // IRegistryMetaData contains all meta data concerning the IRegistry contract.
 var IRegistryMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"previousState\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"},{\"name\":\"newState\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ChainActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ChainNonActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ContractAlreadyRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]},{\"type\":\"error\",\"name\":\"ContractNotFound\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidContractType\",\"inputs\":[{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidSender\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"NotAuthorized\",\"inputs\":[{\"name\":\"caller\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"NotGateway\",\"inputs\":[{\"name\":\"caller\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20AlreadyRegistered\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20SymbolAlreadyInUse\",\"inputs\":[{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"event\",\"name\":\"ChainMetadataUpdated\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"previousState\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"},{\"name\":\"newState\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractConfigurationUpdated\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"},{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ChainActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ChainNonActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ContractAlreadyRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]},{\"type\":\"error\",\"name\":\"ContractNotFound\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidContractType\",\"inputs\":[{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidSender\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"NotAuthorized\",\"inputs\":[{\"name\":\"caller\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"NotGateway\",\"inputs\":[{\"name\":\"caller\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20AlreadyRegistered\",\"inputs\":[{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20SymbolAlreadyInUse\",\"inputs\":[{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
 }
 
 // IRegistryABI is the input ABI used to generate the binding from.
@@ -180,6 +180,152 @@ func (_IRegistry *IRegistryTransactorRaw) Transact(opts *bind.TransactOpts, meth
 	return _IRegistry.Contract.contract.Transact(opts, method, params...)
 }
 
+// IRegistryChainMetadataUpdatedIterator is returned from FilterChainMetadataUpdated and is used to iterate over the raw logs and unpacked data for ChainMetadataUpdated events raised by the IRegistry contract.
+type IRegistryChainMetadataUpdatedIterator struct {
+	Event *IRegistryChainMetadataUpdated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IRegistryChainMetadataUpdatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IRegistryChainMetadataUpdated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IRegistryChainMetadataUpdated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IRegistryChainMetadataUpdatedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IRegistryChainMetadataUpdatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IRegistryChainMetadataUpdated represents a ChainMetadataUpdated event raised by the IRegistry contract.
+type IRegistryChainMetadataUpdated struct {
+	ChainId *big.Int
+	Key     string
+	Value   []byte
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterChainMetadataUpdated is a free log retrieval operation binding the contract event 0x40c66d0452b5a398a7ebd687f5c3b020e21aa673375087ff6eb7ad214cfee634.
+//
+// Solidity: event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value)
+func (_IRegistry *IRegistryFilterer) FilterChainMetadataUpdated(opts *bind.FilterOpts, chainId []*big.Int) (*IRegistryChainMetadataUpdatedIterator, error) {
+
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
+
+	logs, sub, err := _IRegistry.contract.FilterLogs(opts, "ChainMetadataUpdated", chainIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IRegistryChainMetadataUpdatedIterator{contract: _IRegistry.contract, event: "ChainMetadataUpdated", logs: logs, sub: sub}, nil
+}
+
+// WatchChainMetadataUpdated is a free log subscription operation binding the contract event 0x40c66d0452b5a398a7ebd687f5c3b020e21aa673375087ff6eb7ad214cfee634.
+//
+// Solidity: event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value)
+func (_IRegistry *IRegistryFilterer) WatchChainMetadataUpdated(opts *bind.WatchOpts, sink chan<- *IRegistryChainMetadataUpdated, chainId []*big.Int) (event.Subscription, error) {
+
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
+
+	logs, sub, err := _IRegistry.contract.WatchLogs(opts, "ChainMetadataUpdated", chainIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IRegistryChainMetadataUpdated)
+				if err := _IRegistry.contract.UnpackLog(event, "ChainMetadataUpdated", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseChainMetadataUpdated is a log parse operation binding the contract event 0x40c66d0452b5a398a7ebd687f5c3b020e21aa673375087ff6eb7ad214cfee634.
+//
+// Solidity: event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value)
+func (_IRegistry *IRegistryFilterer) ParseChainMetadataUpdated(log types.Log) (*IRegistryChainMetadataUpdated, error) {
+	event := new(IRegistryChainMetadataUpdated)
+	if err := _IRegistry.contract.UnpackLog(event, "ChainMetadataUpdated", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
 // IRegistryChainStatusChangedIterator is returned from FilterChainStatusChanged and is used to iterate over the raw logs and unpacked data for ChainStatusChanged events raised by the IRegistry contract.
 type IRegistryChainStatusChangedIterator struct {
 	Event *IRegistryChainStatusChanged // Event containing the contract specifics and raw log
@@ -320,6 +466,153 @@ func (_IRegistry *IRegistryFilterer) WatchChainStatusChanged(opts *bind.WatchOpt
 func (_IRegistry *IRegistryFilterer) ParseChainStatusChanged(log types.Log) (*IRegistryChainStatusChanged, error) {
 	event := new(IRegistryChainStatusChanged)
 	if err := _IRegistry.contract.UnpackLog(event, "ChainStatusChanged", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// IRegistryContractConfigurationUpdatedIterator is returned from FilterContractConfigurationUpdated and is used to iterate over the raw logs and unpacked data for ContractConfigurationUpdated events raised by the IRegistry contract.
+type IRegistryContractConfigurationUpdatedIterator struct {
+	Event *IRegistryContractConfigurationUpdated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *IRegistryContractConfigurationUpdatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(IRegistryContractConfigurationUpdated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(IRegistryContractConfigurationUpdated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *IRegistryContractConfigurationUpdatedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *IRegistryContractConfigurationUpdatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// IRegistryContractConfigurationUpdated represents a ContractConfigurationUpdated event raised by the IRegistry contract.
+type IRegistryContractConfigurationUpdated struct {
+	ChainId      *big.Int
+	ContractType string
+	Key          string
+	Value        []byte
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterContractConfigurationUpdated is a free log retrieval operation binding the contract event 0xaea6b6dd1ea232db3e0fc64d54fd642518ed2932043ff697ac7c8a83d651c7c5.
+//
+// Solidity: event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value)
+func (_IRegistry *IRegistryFilterer) FilterContractConfigurationUpdated(opts *bind.FilterOpts, chainId []*big.Int) (*IRegistryContractConfigurationUpdatedIterator, error) {
+
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
+
+	logs, sub, err := _IRegistry.contract.FilterLogs(opts, "ContractConfigurationUpdated", chainIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return &IRegistryContractConfigurationUpdatedIterator{contract: _IRegistry.contract, event: "ContractConfigurationUpdated", logs: logs, sub: sub}, nil
+}
+
+// WatchContractConfigurationUpdated is a free log subscription operation binding the contract event 0xaea6b6dd1ea232db3e0fc64d54fd642518ed2932043ff697ac7c8a83d651c7c5.
+//
+// Solidity: event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value)
+func (_IRegistry *IRegistryFilterer) WatchContractConfigurationUpdated(opts *bind.WatchOpts, sink chan<- *IRegistryContractConfigurationUpdated, chainId []*big.Int) (event.Subscription, error) {
+
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
+
+	logs, sub, err := _IRegistry.contract.WatchLogs(opts, "ContractConfigurationUpdated", chainIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(IRegistryContractConfigurationUpdated)
+				if err := _IRegistry.contract.UnpackLog(event, "ContractConfigurationUpdated", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseContractConfigurationUpdated is a log parse operation binding the contract event 0xaea6b6dd1ea232db3e0fc64d54fd642518ed2932043ff697ac7c8a83d651c7c5.
+//
+// Solidity: event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value)
+func (_IRegistry *IRegistryFilterer) ParseContractConfigurationUpdated(log types.Log) (*IRegistryContractConfigurationUpdated, error) {
+	event := new(IRegistryContractConfigurationUpdated)
+	if err := _IRegistry.contract.UnpackLog(event, "ContractConfigurationUpdated", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -600,299 +893,6 @@ func (_IRegistry *IRegistryFilterer) WatchContractStatusChanged(opts *bind.Watch
 func (_IRegistry *IRegistryFilterer) ParseContractStatusChanged(log types.Log) (*IRegistryContractStatusChanged, error) {
 	event := new(IRegistryContractStatusChanged)
 	if err := _IRegistry.contract.UnpackLog(event, "ContractStatusChanged", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// IRegistryNewChainMetadataIterator is returned from FilterNewChainMetadata and is used to iterate over the raw logs and unpacked data for NewChainMetadata events raised by the IRegistry contract.
-type IRegistryNewChainMetadataIterator struct {
-	Event *IRegistryNewChainMetadata // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *IRegistryNewChainMetadataIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IRegistryNewChainMetadata)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IRegistryNewChainMetadata)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *IRegistryNewChainMetadataIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IRegistryNewChainMetadataIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// IRegistryNewChainMetadata represents a NewChainMetadata event raised by the IRegistry contract.
-type IRegistryNewChainMetadata struct {
-	ChainId *big.Int
-	Key     string
-	Value   []byte
-	Raw     types.Log // Blockchain specific contextual infos
-}
-
-// FilterNewChainMetadata is a free log retrieval operation binding the contract event 0xa274ec62326b7df2ece1add0babcb0f90b87b6d4a7e144f8d0b9b9057c039dc1.
-//
-// Solidity: event NewChainMetadata(uint256 indexed chainId, string key, bytes value)
-func (_IRegistry *IRegistryFilterer) FilterNewChainMetadata(opts *bind.FilterOpts, chainId []*big.Int) (*IRegistryNewChainMetadataIterator, error) {
-
-	var chainIdRule []interface{}
-	for _, chainIdItem := range chainId {
-		chainIdRule = append(chainIdRule, chainIdItem)
-	}
-
-	logs, sub, err := _IRegistry.contract.FilterLogs(opts, "NewChainMetadata", chainIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IRegistryNewChainMetadataIterator{contract: _IRegistry.contract, event: "NewChainMetadata", logs: logs, sub: sub}, nil
-}
-
-// WatchNewChainMetadata is a free log subscription operation binding the contract event 0xa274ec62326b7df2ece1add0babcb0f90b87b6d4a7e144f8d0b9b9057c039dc1.
-//
-// Solidity: event NewChainMetadata(uint256 indexed chainId, string key, bytes value)
-func (_IRegistry *IRegistryFilterer) WatchNewChainMetadata(opts *bind.WatchOpts, sink chan<- *IRegistryNewChainMetadata, chainId []*big.Int) (event.Subscription, error) {
-
-	var chainIdRule []interface{}
-	for _, chainIdItem := range chainId {
-		chainIdRule = append(chainIdRule, chainIdItem)
-	}
-
-	logs, sub, err := _IRegistry.contract.WatchLogs(opts, "NewChainMetadata", chainIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IRegistryNewChainMetadata)
-				if err := _IRegistry.contract.UnpackLog(event, "NewChainMetadata", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseNewChainMetadata is a log parse operation binding the contract event 0xa274ec62326b7df2ece1add0babcb0f90b87b6d4a7e144f8d0b9b9057c039dc1.
-//
-// Solidity: event NewChainMetadata(uint256 indexed chainId, string key, bytes value)
-func (_IRegistry *IRegistryFilterer) ParseNewChainMetadata(log types.Log) (*IRegistryNewChainMetadata, error) {
-	event := new(IRegistryNewChainMetadata)
-	if err := _IRegistry.contract.UnpackLog(event, "NewChainMetadata", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// IRegistryNewContractConfigurationIterator is returned from FilterNewContractConfiguration and is used to iterate over the raw logs and unpacked data for NewContractConfiguration events raised by the IRegistry contract.
-type IRegistryNewContractConfigurationIterator struct {
-	Event *IRegistryNewContractConfiguration // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *IRegistryNewContractConfigurationIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IRegistryNewContractConfiguration)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IRegistryNewContractConfiguration)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *IRegistryNewContractConfigurationIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IRegistryNewContractConfigurationIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// IRegistryNewContractConfiguration represents a NewContractConfiguration event raised by the IRegistry contract.
-type IRegistryNewContractConfiguration struct {
-	ChainId      *big.Int
-	ContractType string
-	Key          string
-	Value        []byte
-	Raw          types.Log // Blockchain specific contextual infos
-}
-
-// FilterNewContractConfiguration is a free log retrieval operation binding the contract event 0x9453d408be9167c029f60b137dddf03dd0d2ff9f51d834c1b2238f335bd96f9b.
-//
-// Solidity: event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value)
-func (_IRegistry *IRegistryFilterer) FilterNewContractConfiguration(opts *bind.FilterOpts, chainId []*big.Int) (*IRegistryNewContractConfigurationIterator, error) {
-
-	var chainIdRule []interface{}
-	for _, chainIdItem := range chainId {
-		chainIdRule = append(chainIdRule, chainIdItem)
-	}
-
-	logs, sub, err := _IRegistry.contract.FilterLogs(opts, "NewContractConfiguration", chainIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IRegistryNewContractConfigurationIterator{contract: _IRegistry.contract, event: "NewContractConfiguration", logs: logs, sub: sub}, nil
-}
-
-// WatchNewContractConfiguration is a free log subscription operation binding the contract event 0x9453d408be9167c029f60b137dddf03dd0d2ff9f51d834c1b2238f335bd96f9b.
-//
-// Solidity: event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value)
-func (_IRegistry *IRegistryFilterer) WatchNewContractConfiguration(opts *bind.WatchOpts, sink chan<- *IRegistryNewContractConfiguration, chainId []*big.Int) (event.Subscription, error) {
-
-	var chainIdRule []interface{}
-	for _, chainIdItem := range chainId {
-		chainIdRule = append(chainIdRule, chainIdItem)
-	}
-
-	logs, sub, err := _IRegistry.contract.WatchLogs(opts, "NewContractConfiguration", chainIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IRegistryNewContractConfiguration)
-				if err := _IRegistry.contract.UnpackLog(event, "NewContractConfiguration", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseNewContractConfiguration is a log parse operation binding the contract event 0x9453d408be9167c029f60b137dddf03dd0d2ff9f51d834c1b2238f335bd96f9b.
-//
-// Solidity: event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value)
-func (_IRegistry *IRegistryFilterer) ParseNewContractConfiguration(log types.Log) (*IRegistryNewContractConfiguration, error) {
-	event := new(IRegistryNewContractConfiguration)
-	if err := _IRegistry.contract.UnpackLog(event, "NewContractConfiguration", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

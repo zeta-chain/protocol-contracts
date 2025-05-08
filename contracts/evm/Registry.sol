@@ -8,19 +8,11 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 /// @title Registry
 /// @notice Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 /// @dev This contract is deployed on every connected chain and maintains a synchronized view of the registry.
-contract Registry is
-    Initializable,
-    UUPSUpgradeable,
-    AccessControlUpgradeable,
-    ReentrancyGuardUpgradeable,
-    PausableUpgradeable,
-    IRegistry
-{
+contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, IRegistry {
     /// @notice New role identifier for pauser role
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Identifier for the relay role (granted to GatewayEVM)
@@ -31,7 +23,7 @@ contract Registry is
     /// @notice Represents the address of the CoreRegistry contract on the ZetaChain
     address public coreRegistry;
     /// @notice Active chains in the registry
-    uint256[] public _activeChains;
+    uint256[] public activeChains;
     /// @notice Maps chain IDs to their information
     mapping(uint256 => ChainInfo) private _chains;
     /// @notice Maps chain ID -> contract type -> ContractInfo
@@ -43,7 +35,7 @@ contract Registry is
     /// @notice Maps origin chain ID and origin address to ZRC20 token address
     mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 
-    /// @dev Only protocol address allowed modifier.
+    /// @dev Only registry address allowed modifier.
     modifier onlyRegistry() {
         if (msg.sender != address(this)) {
             revert InvalidSender();
@@ -67,7 +59,6 @@ contract Registry is
         __UUPSUpgradeable_init();
         __AccessControl_init_unchained();
         __Pausable_init_unchained();
-        __ReentrancyGuard_init_unchained();
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
@@ -87,7 +78,7 @@ contract Registry is
     }
 
     /// @notice Unpause contract.
-    function unpause() external onlyRole(PAUSER_ROLE) {
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
 
@@ -141,7 +132,7 @@ contract Registry is
 
         // Update active chains array
         if (active) {
-            _activeChains.push(chainId);
+            activeChains.push(chainId);
         } else {
             // Remove from active chains
             _removeFromActiveChains(chainId);
@@ -167,7 +158,7 @@ contract Registry is
         // Updates chain metadata
         _chains[chainId].metadata[key] = value;
 
-        emit NewChainMetadata(chainId, key, value);
+        emit ChainMetadataUpdated(chainId, key, value);
     }
 
     /// @notice Registers a new contract address for a specific chain
@@ -219,7 +210,7 @@ contract Registry is
         // Store new configuration in the storage
         _contracts[chainId][contractType].configuration[key] = value;
 
-        emit NewContractConfiguration(chainId, contractType, key, value);
+        emit ContractConfigurationUpdated(chainId, contractType, key, value);
     }
 
     /// @notice Sets a contract's active status
@@ -281,7 +272,7 @@ contract Registry is
     /// @dev Only callable through onCall from CoreRegistry
     /// @param address_ The address of the ZRC20 token
     /// @param active Whether the token should be active
-    function updateZRC20Token(address address_, bool active) external onlyRegistry whenNotPaused {
+    function setZRC20TokenActive(address address_, bool active) external onlyRegistry whenNotPaused {
         if (address_ == address(0)) revert ZeroAddress();
 
         // Update token status
@@ -379,17 +370,17 @@ contract Registry is
     /// @notice Gets all active chains in the registry
     /// @return Array of chain IDs for all active chains
     function getActiveChains() external view returns (uint256[] memory) {
-        return _activeChains;
+        return activeChains;
     }
 
     /// @notice Removes a chain ID from the active chains array
     /// @param chainId The ID of the chain to remove
     function _removeFromActiveChains(uint256 chainId) private {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            if (_activeChains[i] == chainId) {
+        for (uint256 i = 0; i < activeChains.length; i++) {
+            if (activeChains[i] == chainId) {
                 // Swap with the last element and pop
-                _activeChains[i] = _activeChains[_activeChains.length - 1];
-                _activeChains.pop();
+                activeChains[i] = activeChains[activeChains.length - 1];
+                activeChains.pop();
                 break;
             }
         }

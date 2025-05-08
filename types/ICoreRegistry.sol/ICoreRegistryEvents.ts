@@ -24,14 +24,32 @@ import type {
 export interface ICoreRegistryEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
+      | "ChainMetadataUpdated"
       | "ChainStatusChanged"
       | "ContractRegistered"
       | "ContractStatusChanged"
-      | "NewChainMetadata"
       | "NewContractConfiguration"
       | "ZRC20TokenRegistered"
       | "ZRC20TokenUpdated"
   ): EventFragment;
+}
+
+export namespace ChainMetadataUpdatedEvent {
+  export type InputTuple = [
+    chainId: BigNumberish,
+    key: string,
+    value: BytesLike
+  ];
+  export type OutputTuple = [chainId: bigint, key: string, value: string];
+  export interface OutputObject {
+    chainId: bigint;
+    key: string;
+    value: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ChainStatusChangedEvent {
@@ -83,24 +101,6 @@ export namespace ContractStatusChangedEvent {
   export type OutputTuple = [addressBytes: string];
   export interface OutputObject {
     addressBytes: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewChainMetadataEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [chainId: bigint, key: string, value: string];
-  export interface OutputObject {
-    chainId: bigint;
-    key: string;
-    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -222,6 +222,13 @@ export interface ICoreRegistryEvents extends BaseContract {
   ): T;
 
   getEvent(
+    key: "ChainMetadataUpdated"
+  ): TypedContractEvent<
+    ChainMetadataUpdatedEvent.InputTuple,
+    ChainMetadataUpdatedEvent.OutputTuple,
+    ChainMetadataUpdatedEvent.OutputObject
+  >;
+  getEvent(
     key: "ChainStatusChanged"
   ): TypedContractEvent<
     ChainStatusChangedEvent.InputTuple,
@@ -241,13 +248,6 @@ export interface ICoreRegistryEvents extends BaseContract {
     ContractStatusChangedEvent.InputTuple,
     ContractStatusChangedEvent.OutputTuple,
     ContractStatusChangedEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewChainMetadata"
-  ): TypedContractEvent<
-    NewChainMetadataEvent.InputTuple,
-    NewChainMetadataEvent.OutputTuple,
-    NewChainMetadataEvent.OutputObject
   >;
   getEvent(
     key: "NewContractConfiguration"
@@ -272,6 +272,17 @@ export interface ICoreRegistryEvents extends BaseContract {
   >;
 
   filters: {
+    "ChainMetadataUpdated(uint256,string,bytes)": TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+    ChainMetadataUpdated: TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+
     "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
@@ -303,17 +314,6 @@ export interface ICoreRegistryEvents extends BaseContract {
       ContractStatusChangedEvent.InputTuple,
       ContractStatusChangedEvent.OutputTuple,
       ContractStatusChangedEvent.OutputObject
-    >;
-
-    "NewChainMetadata(uint256,string,bytes)": TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
-    >;
-    NewChainMetadata: TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
     >;
 
     "NewContractConfiguration(uint256,string,string,bytes)": TypedContractEvent<

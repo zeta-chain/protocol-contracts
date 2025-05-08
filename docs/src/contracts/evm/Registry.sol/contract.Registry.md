@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/Registry.sol)
 
 **Inherits:**
-Initializable, UUPSUpgradeable, AccessControlUpgradeable, ReentrancyGuardUpgradeable, PausableUpgradeable, [IRegistry](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistry.md)
+Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, [IRegistry](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistry.md)
 
 Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 
@@ -46,12 +46,12 @@ address public coreRegistry;
 ```
 
 
-### _activeChains
+### activeChains
 Active chains in the registry
 
 
 ```solidity
-uint256[] public _activeChains;
+uint256[] public activeChains;
 ```
 
 
@@ -103,7 +103,7 @@ mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 ## Functions
 ### onlyRegistry
 
-*Only protocol address allowed modifier.*
+*Only registry address allowed modifier.*
 
 
 ```solidity
@@ -167,7 +167,7 @@ Unpause contract.
 
 
 ```solidity
-function unpause() external onlyRole(PAUSER_ROLE);
+function unpause() external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
 
 ### onCall
@@ -354,7 +354,7 @@ function registerZRC20Token(
 |`decimals`|`uint8`|The number of decimals the token uses|
 
 
-### updateZRC20Token
+### setZRC20TokenActive
 
 Updates ZRC20 token active status
 
@@ -362,7 +362,7 @@ Updates ZRC20 token active status
 
 
 ```solidity
-function updateZRC20Token(address address_, bool active) external onlyRegistry whenNotPaused;
+function setZRC20TokenActive(address address_, bool active) external onlyRegistry whenNotPaused;
 ```
 **Parameters**
 

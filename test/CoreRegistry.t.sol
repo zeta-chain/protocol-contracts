@@ -192,7 +192,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Update metadata
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
-        emit NewChainMetadata(chainId, key, value);
+        emit ChainMetadataUpdated(chainId, key, value);
         registry.updateChainMetadata(chainId, key, value);
 
         // Verify metadata
@@ -527,7 +527,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         registry.registerZRC20Token(zrc20Address2, symbol, originChainId, originAddress2, coinType, decimals);
     }
 
-    function testUpdateZRC20TokenStatus() public {
+    function testSetZRC20TokenActive() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "TKN";
         uint256 originChainId = 101;
@@ -547,7 +547,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
         emit ZRC20TokenUpdated(zrc20Address, false);
-        registry.updateZRC20Token(zrc20Address, false);
+        registry.setZRC20TokenActive(zrc20Address, false);
 
         // Verify status
         (active,,,,,) = registry.getZRC20TokenInfo(zrc20Address);
@@ -557,7 +557,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
         emit ZRC20TokenUpdated(zrc20Address, true);
-        registry.updateZRC20Token(zrc20Address, true);
+        registry.setZRC20TokenActive(zrc20Address, true);
 
         // Verify status
         (active,,,,,) = registry.getZRC20TokenInfo(zrc20Address);
@@ -569,15 +569,15 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         vm.prank(registryManager);
         vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, "ZRC20 not registered"));
-        registry.updateZRC20Token(zrc20Address, false);
+        registry.setZRC20TokenActive(zrc20Address, false);
     }
 
-    function testUpdateZRC20TokenWithZeroAddress() public {
+    function testSetZRC20TokenActiveWithZeroAddress() public {
         address zrc20Address = address(0);
 
         vm.prank(registryManager);
         vm.expectRevert(ZeroAddress.selector);
-        registry.updateZRC20Token(zrc20Address, false);
+        registry.setZRC20TokenActive(zrc20Address, false);
     }
 
     function testWhenPaused() public {

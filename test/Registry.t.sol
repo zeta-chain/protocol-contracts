@@ -171,7 +171,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
-        emit NewChainMetadata(chainId, key, value);
+        emit ChainMetadataUpdated(chainId, key, value);
         registry.onCall(context, updateData);
 
         bytes memory storedValue = registry.getChainMetadata(chainId, key);
@@ -250,7 +250,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
-        emit NewContractConfiguration(chainId, contractType, key, value);
+        emit ContractConfigurationUpdated(chainId, contractType, key, value);
         registry.onCall(context, updateData);
 
         bytes memory storedValue = registry.getContractConfiguration(chainId, contractType, key);
@@ -441,7 +441,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         registry.onCall(context, registerData);
     }
 
-    function testUpdateZRC20Token() public {
+    function testSetZRC20TokenActive() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "TKN";
         uint256 originChainId = 101;
@@ -466,7 +466,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         (bool active,,,,,) = registry.getZRC20TokenInfo(zrc20Address);
         assertTrue(active);
 
-        bytes memory deactivateData = abi.encodeWithSignature("updateZRC20Token(address,bool)", zrc20Address, false);
+        bytes memory deactivateData = abi.encodeWithSignature("setZRC20TokenActive(address,bool)", zrc20Address, false);
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
@@ -476,7 +476,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         (active,,,,,) = registry.getZRC20TokenInfo(zrc20Address);
         assertFalse(active);
 
-        bytes memory activateData = abi.encodeWithSignature("updateZRC20Token(address,bool)", zrc20Address, true);
+        bytes memory activateData = abi.encodeWithSignature("setZRC20TokenActive(address,bool)", zrc20Address, true);
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
@@ -487,10 +487,10 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         assertTrue(active);
     }
 
-    function testUpdateZRC20TokenWithZeroAddress() public {
+    function testSetZRC20TokenActiveWithZeroAddress() public {
         address zrc20Address = address(0);
 
-        bytes memory updateData = abi.encodeWithSignature("updateZRC20Token(address,bool)", zrc20Address, false);
+        bytes memory updateData = abi.encodeWithSignature("setZRC20TokenActive(address,bool)", zrc20Address, false);
 
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));

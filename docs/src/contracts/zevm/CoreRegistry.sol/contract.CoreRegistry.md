@@ -46,12 +46,12 @@ IGatewayZEVM public gatewayZEVM;
 ```
 
 
-### _activeChains
+### activeChains
 Active chains in the registry
 
 
 ```solidity
-uint256[] public _activeChains;
+uint256[] public activeChains;
 ```
 
 
@@ -158,7 +158,7 @@ Unpause contract.
 
 
 ```solidity
-function unpause() external onlyRole(PAUSER_ROLE);
+function unpause() external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
 
 ### changeChainStatus
@@ -317,13 +317,13 @@ function registerZRC20Token(
 |`decimals`|`uint8`|The number of decimals the token uses.|
 
 
-### updateZRC20Token
+### setZRC20TokenActive
 
 Updates ZRC20 token active status.
 
 
 ```solidity
-function updateZRC20Token(address address_, bool active) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused;
+function setZRC20TokenActive(address address_, bool active) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused;
 ```
 
 ### getChainMetadata

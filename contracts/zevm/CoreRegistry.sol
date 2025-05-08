@@ -30,7 +30,7 @@ contract CoreRegistry is
     /// @notice Instance of the GatewayZEVM contract for cross-chain communication
     IGatewayZEVM public gatewayZEVM;
     /// @notice Active chains in the registry
-    uint256[] public _activeChains;
+    uint256[] public activeChains;
     /// @notice Maps chain IDs to their information.
     mapping(uint256 => ChainInfo) private _chains;
     /// @notice Maps chain ID -> contract type -> ContractInfo
@@ -70,7 +70,7 @@ contract CoreRegistry is
         // Add ZetaChain to the list of supported networks
         _chains[block.chainid].active = true;
         _chains[block.chainid].registry = abi.encodePacked(address(this));
-        _activeChains.push(block.chainid);
+        activeChains.push(block.chainid);
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be admin.
@@ -83,7 +83,7 @@ contract CoreRegistry is
     }
 
     /// @notice Unpause contract.
-    function unpause() external onlyRole(PAUSER_ROLE) {
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
 
@@ -115,7 +115,7 @@ contract CoreRegistry is
 
         // Update active chains array
         if (activation) {
-            _activeChains.push(chainId);
+            activeChains.push(chainId);
         } else {
             _removeFromActiveChains(chainId);
         }
@@ -148,7 +148,7 @@ contract CoreRegistry is
         // Broadcast update to satellite registries
         _broadcastChainMetadataUpdate(chainId, key, value);
 
-        emit NewChainMetadata(chainId, key, value);
+        emit ChainMetadataUpdated(chainId, key, value);
     }
 
     /// @notice Registers a new contract address for a specific chain.
@@ -301,7 +301,14 @@ contract CoreRegistry is
     }
 
     /// @notice Updates ZRC20 token active status.
-    function updateZRC20Token(address address_, bool active) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused {
+    function setZRC20TokenActive(
+        address address_,
+        bool active
+    )
+        external
+        onlyRole(REGISTRY_MANAGER_ROLE)
+        whenNotPaused
+    {
         // Validate inputs
         if (address_ == address(0)) revert ZeroAddress();
         if (_zrc20Tokens[address_].address_ == address(0)) revert InvalidContractType("ZRC20 not registered");
@@ -404,7 +411,7 @@ contract CoreRegistry is
     /// @notice Gets all active chains in the registry.
     /// @return Array of chain IDs for all active chains.
     function getActiveChains() external view returns (uint256[] memory) {
-        return _activeChains;
+        return activeChains;
     }
 
     /// @notice Broadcast chain activation update to all satellite registries.
@@ -522,16 +529,16 @@ contract CoreRegistry is
     /// @param active Whether the token should be active
     function _broadcastZRC20Update(address address_, bool active) private {
         // Encode the function call for the Registry contract on the target chain
-        bytes memory message = abi.encodeWithSignature("updateZRC20Token(address,bool)", address_, active);
+        bytes memory message = abi.encodeWithSignature("setZRC20TokenActive(address,bool)", address_, active);
         _broadcastToAllChains(message);
     }
 
     /// @notice Generic function to broadcast encoded messages to all satellite registries
     /// @param encodedMessage The fully encoded function call to broadcast
     function _broadcastToAllChains(bytes memory encodedMessage) private {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            if (_activeChains[i] != block.chainid) {
-                _sendCrossChainMessage(_activeChains[i], encodedMessage);
+        for (uint256 i = 0; i < activeChains.length; i++) {
+            if (activeChains[i] != block.chainid) {
+                _sendCrossChainMessage(activeChains[i], encodedMessage);
             }
         }
     }
@@ -557,11 +564,11 @@ contract CoreRegistry is
     /// @notice Removes a chain ID from the active chains array.
     /// @param chainId The ID of the chain to remove.
     function _removeFromActiveChains(uint256 chainId) private {
-        for (uint256 i = 0; i < _activeChains.length; i++) {
-            if (_activeChains[i] == chainId) {
+        for (uint256 i = 0; i < activeChains.length; i++) {
+            if (activeChains[i] == chainId) {
                 // Swap with the last element and pop
-                _activeChains[i] = _activeChains[_activeChains.length - 1];
-                _activeChains.pop();
+                activeChains[i] = activeChains[activeChains.length - 1];
+                activeChains.pop();
                 break;
             }
         }

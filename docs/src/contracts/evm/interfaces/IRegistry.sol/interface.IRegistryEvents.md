@@ -11,12 +11,12 @@ Emitted when a chain's status is changed
 event ChainStatusChanged(uint256 indexed chainId, bool previousState, bool newState);
 ```
 
-### NewChainMetadata
+### ChainMetadataUpdated
 Emitted when new chain metadata is set
 
 
 ```solidity
-event NewChainMetadata(uint256 indexed chainId, string key, bytes value);
+event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value);
 ```
 
 ### ContractRegistered
@@ -27,12 +27,12 @@ Emitted when a contract is registered
 event ContractRegistered(uint256 indexed chainId, string contractType, bytes addressBytes);
 ```
 
-### NewContractConfiguration
+### ContractConfigurationUpdated
 Emitted when contract configuration is updated
 
 
 ```solidity
-event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value);
+event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value);
 ```
 
 ### ContractStatusChanged

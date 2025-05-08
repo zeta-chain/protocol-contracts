@@ -36,17 +36,17 @@ export interface ICoreRegistryInterface extends Interface {
       | "registerContract"
       | "registerZRC20Token"
       | "setContractActive"
+      | "setZRC20TokenActive"
       | "updateChainMetadata"
       | "updateContractConfiguration"
-      | "updateZRC20Token"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "ChainMetadataUpdated"
       | "ChainStatusChanged"
       | "ContractRegistered"
       | "ContractStatusChanged"
-      | "NewChainMetadata"
       | "NewContractConfiguration"
       | "ZRC20TokenRegistered"
       | "ZRC20TokenUpdated"
@@ -93,16 +93,16 @@ export interface ICoreRegistryInterface extends Interface {
     values: [BigNumberish, string, boolean]
   ): string;
   encodeFunctionData(
+    functionFragment: "setZRC20TokenActive",
+    values: [AddressLike, boolean]
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateChainMetadata",
     values: [BigNumberish, string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "updateContractConfiguration",
     values: [BigNumberish, string, string, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "updateZRC20Token",
-    values: [AddressLike, boolean]
   ): string;
 
   decodeFunctionResult(
@@ -146,6 +146,10 @@ export interface ICoreRegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setZRC20TokenActive",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "updateChainMetadata",
     data: BytesLike
   ): Result;
@@ -153,10 +157,24 @@ export interface ICoreRegistryInterface extends Interface {
     functionFragment: "updateContractConfiguration",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "updateZRC20Token",
-    data: BytesLike
-  ): Result;
+}
+
+export namespace ChainMetadataUpdatedEvent {
+  export type InputTuple = [
+    chainId: BigNumberish,
+    key: string,
+    value: BytesLike
+  ];
+  export type OutputTuple = [chainId: bigint, key: string, value: string];
+  export interface OutputObject {
+    chainId: bigint;
+    key: string;
+    value: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ChainStatusChangedEvent {
@@ -208,24 +226,6 @@ export namespace ContractStatusChangedEvent {
   export type OutputTuple = [addressBytes: string];
   export interface OutputObject {
     addressBytes: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewChainMetadataEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [chainId: bigint, key: string, value: string];
-  export interface OutputObject {
-    chainId: bigint;
-    key: string;
-    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -424,6 +424,12 @@ export interface ICoreRegistry extends BaseContract {
     "nonpayable"
   >;
 
+  setZRC20TokenActive: TypedContractMethod<
+    [address_: AddressLike, active: boolean],
+    [void],
+    "nonpayable"
+  >;
+
   updateChainMetadata: TypedContractMethod<
     [chainId: BigNumberish, key: string, value: BytesLike],
     [void],
@@ -437,12 +443,6 @@ export interface ICoreRegistry extends BaseContract {
       key: string,
       value: BytesLike
     ],
-    [void],
-    "nonpayable"
-  >;
-
-  updateZRC20Token: TypedContractMethod<
-    [address_: AddressLike, active: boolean],
     [void],
     "nonpayable"
   >;
@@ -544,6 +544,13 @@ export interface ICoreRegistry extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setZRC20TokenActive"
+  ): TypedContractMethod<
+    [address_: AddressLike, active: boolean],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "updateChainMetadata"
   ): TypedContractMethod<
     [chainId: BigNumberish, key: string, value: BytesLike],
@@ -562,14 +569,14 @@ export interface ICoreRegistry extends BaseContract {
     [void],
     "nonpayable"
   >;
-  getFunction(
-    nameOrSignature: "updateZRC20Token"
-  ): TypedContractMethod<
-    [address_: AddressLike, active: boolean],
-    [void],
-    "nonpayable"
-  >;
 
+  getEvent(
+    key: "ChainMetadataUpdated"
+  ): TypedContractEvent<
+    ChainMetadataUpdatedEvent.InputTuple,
+    ChainMetadataUpdatedEvent.OutputTuple,
+    ChainMetadataUpdatedEvent.OutputObject
+  >;
   getEvent(
     key: "ChainStatusChanged"
   ): TypedContractEvent<
@@ -590,13 +597,6 @@ export interface ICoreRegistry extends BaseContract {
     ContractStatusChangedEvent.InputTuple,
     ContractStatusChangedEvent.OutputTuple,
     ContractStatusChangedEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewChainMetadata"
-  ): TypedContractEvent<
-    NewChainMetadataEvent.InputTuple,
-    NewChainMetadataEvent.OutputTuple,
-    NewChainMetadataEvent.OutputObject
   >;
   getEvent(
     key: "NewContractConfiguration"
@@ -621,6 +621,17 @@ export interface ICoreRegistry extends BaseContract {
   >;
 
   filters: {
+    "ChainMetadataUpdated(uint256,string,bytes)": TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+    ChainMetadataUpdated: TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+
     "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
@@ -652,17 +663,6 @@ export interface ICoreRegistry extends BaseContract {
       ContractStatusChangedEvent.InputTuple,
       ContractStatusChangedEvent.OutputTuple,
       ContractStatusChangedEvent.OutputObject
-    >;
-
-    "NewChainMetadata(uint256,string,bytes)": TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
-    >;
-    NewChainMetadata: TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
     >;
 
     "NewContractConfiguration(uint256,string,string,bytes)": TypedContractEvent<

@@ -24,14 +24,32 @@ import type {
 export interface IRegistryEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
+      | "ChainMetadataUpdated"
       | "ChainStatusChanged"
+      | "ContractConfigurationUpdated"
       | "ContractRegistered"
       | "ContractStatusChanged"
-      | "NewChainMetadata"
-      | "NewContractConfiguration"
       | "ZRC20TokenRegistered"
       | "ZRC20TokenUpdated"
   ): EventFragment;
+}
+
+export namespace ChainMetadataUpdatedEvent {
+  export type InputTuple = [
+    chainId: BigNumberish,
+    key: string,
+    value: BytesLike
+  ];
+  export type OutputTuple = [chainId: bigint, key: string, value: string];
+  export interface OutputObject {
+    chainId: bigint;
+    key: string;
+    value: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ChainStatusChangedEvent {
@@ -49,6 +67,31 @@ export namespace ChainStatusChangedEvent {
     chainId: bigint;
     previousState: boolean;
     newState: boolean;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ContractConfigurationUpdatedEvent {
+  export type InputTuple = [
+    chainId: BigNumberish,
+    contractType: string,
+    key: string,
+    value: BytesLike
+  ];
+  export type OutputTuple = [
+    chainId: bigint,
+    contractType: string,
+    key: string,
+    value: string
+  ];
+  export interface OutputObject {
+    chainId: bigint;
+    contractType: string;
+    key: string;
+    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -83,49 +126,6 @@ export namespace ContractStatusChangedEvent {
   export type OutputTuple = [addressBytes: string];
   export interface OutputObject {
     addressBytes: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewChainMetadataEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [chainId: bigint, key: string, value: string];
-  export interface OutputObject {
-    chainId: bigint;
-    key: string;
-    value: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewContractConfigurationEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    contractType: string,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [
-    chainId: bigint,
-    contractType: string,
-    key: string,
-    value: string
-  ];
-  export interface OutputObject {
-    chainId: bigint;
-    contractType: string;
-    key: string;
-    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -222,11 +222,25 @@ export interface IRegistryEvents extends BaseContract {
   ): T;
 
   getEvent(
+    key: "ChainMetadataUpdated"
+  ): TypedContractEvent<
+    ChainMetadataUpdatedEvent.InputTuple,
+    ChainMetadataUpdatedEvent.OutputTuple,
+    ChainMetadataUpdatedEvent.OutputObject
+  >;
+  getEvent(
     key: "ChainStatusChanged"
   ): TypedContractEvent<
     ChainStatusChangedEvent.InputTuple,
     ChainStatusChangedEvent.OutputTuple,
     ChainStatusChangedEvent.OutputObject
+  >;
+  getEvent(
+    key: "ContractConfigurationUpdated"
+  ): TypedContractEvent<
+    ContractConfigurationUpdatedEvent.InputTuple,
+    ContractConfigurationUpdatedEvent.OutputTuple,
+    ContractConfigurationUpdatedEvent.OutputObject
   >;
   getEvent(
     key: "ContractRegistered"
@@ -241,20 +255,6 @@ export interface IRegistryEvents extends BaseContract {
     ContractStatusChangedEvent.InputTuple,
     ContractStatusChangedEvent.OutputTuple,
     ContractStatusChangedEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewChainMetadata"
-  ): TypedContractEvent<
-    NewChainMetadataEvent.InputTuple,
-    NewChainMetadataEvent.OutputTuple,
-    NewChainMetadataEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewContractConfiguration"
-  ): TypedContractEvent<
-    NewContractConfigurationEvent.InputTuple,
-    NewContractConfigurationEvent.OutputTuple,
-    NewContractConfigurationEvent.OutputObject
   >;
   getEvent(
     key: "ZRC20TokenRegistered"
@@ -272,6 +272,17 @@ export interface IRegistryEvents extends BaseContract {
   >;
 
   filters: {
+    "ChainMetadataUpdated(uint256,string,bytes)": TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+    ChainMetadataUpdated: TypedContractEvent<
+      ChainMetadataUpdatedEvent.InputTuple,
+      ChainMetadataUpdatedEvent.OutputTuple,
+      ChainMetadataUpdatedEvent.OutputObject
+    >;
+
     "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
@@ -281,6 +292,17 @@ export interface IRegistryEvents extends BaseContract {
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject
+    >;
+
+    "ContractConfigurationUpdated(uint256,string,string,bytes)": TypedContractEvent<
+      ContractConfigurationUpdatedEvent.InputTuple,
+      ContractConfigurationUpdatedEvent.OutputTuple,
+      ContractConfigurationUpdatedEvent.OutputObject
+    >;
+    ContractConfigurationUpdated: TypedContractEvent<
+      ContractConfigurationUpdatedEvent.InputTuple,
+      ContractConfigurationUpdatedEvent.OutputTuple,
+      ContractConfigurationUpdatedEvent.OutputObject
     >;
 
     "ContractRegistered(uint256,string,bytes)": TypedContractEvent<
@@ -303,28 +325,6 @@ export interface IRegistryEvents extends BaseContract {
       ContractStatusChangedEvent.InputTuple,
       ContractStatusChangedEvent.OutputTuple,
       ContractStatusChangedEvent.OutputObject
-    >;
-
-    "NewChainMetadata(uint256,string,bytes)": TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
-    >;
-    NewChainMetadata: TypedContractEvent<
-      NewChainMetadataEvent.InputTuple,
-      NewChainMetadataEvent.OutputTuple,
-      NewChainMetadataEvent.OutputObject
-    >;
-
-    "NewContractConfiguration(uint256,string,string,bytes)": TypedContractEvent<
-      NewContractConfigurationEvent.InputTuple,
-      NewContractConfigurationEvent.OutputTuple,
-      NewContractConfigurationEvent.OutputObject
-    >;
-    NewContractConfiguration: TypedContractEvent<
-      NewContractConfigurationEvent.InputTuple,
-      NewContractConfigurationEvent.OutputTuple,
-      NewContractConfigurationEvent.OutputObject
     >;
 
     "ZRC20TokenRegistered(bytes,address,uint8,uint256,string)": TypedContractEvent<

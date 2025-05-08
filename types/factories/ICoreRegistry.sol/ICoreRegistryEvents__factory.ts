@@ -11,6 +11,31 @@ import type {
 const _abi = [
   {
     type: "event",
+    name: "ChainMetadataUpdated",
+    inputs: [
+      {
+        name: "chainId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "key",
+        type: "string",
+        indexed: false,
+        internalType: "string",
+      },
+      {
+        name: "value",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "ChainStatusChanged",
     inputs: [
       {
@@ -65,31 +90,6 @@ const _abi = [
     inputs: [
       {
         name: "addressBytes",
-        type: "bytes",
-        indexed: false,
-        internalType: "bytes",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
-    name: "NewChainMetadata",
-    inputs: [
-      {
-        name: "chainId",
-        type: "uint256",
-        indexed: true,
-        internalType: "uint256",
-      },
-      {
-        name: "key",
-        type: "string",
-        indexed: false,
-        internalType: "string",
-      },
-      {
-        name: "value",
         type: "bytes",
         indexed: false,
         internalType: "bytes",

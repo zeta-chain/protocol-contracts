@@ -291,6 +291,24 @@ const _abi = [
   },
   {
     type: "function",
+    name: "setZRC20TokenActive",
+    inputs: [
+      {
+        name: "address_",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "active",
+        type: "bool",
+        internalType: "bool",
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
     name: "updateChainMetadata",
     inputs: [
       {
@@ -341,22 +359,29 @@ const _abi = [
     stateMutability: "nonpayable",
   },
   {
-    type: "function",
-    name: "updateZRC20Token",
+    type: "event",
+    name: "ChainMetadataUpdated",
     inputs: [
       {
-        name: "address_",
-        type: "address",
-        internalType: "address",
+        name: "chainId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
       },
       {
-        name: "active",
-        type: "bool",
-        internalType: "bool",
+        name: "key",
+        type: "string",
+        indexed: false,
+        internalType: "string",
+      },
+      {
+        name: "value",
+        type: "bytes",
+        indexed: false,
+        internalType: "bytes",
       },
     ],
-    outputs: [],
-    stateMutability: "nonpayable",
+    anonymous: false,
   },
   {
     type: "event",
@@ -414,31 +439,6 @@ const _abi = [
     inputs: [
       {
         name: "addressBytes",
-        type: "bytes",
-        indexed: false,
-        internalType: "bytes",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
-    name: "NewChainMetadata",
-    inputs: [
-      {
-        name: "chainId",
-        type: "uint256",
-        indexed: true,
-        internalType: "uint256",
-      },
-      {
-        name: "key",
-        type: "string",
-        indexed: false,
-        internalType: "string",
-      },
-      {
-        name: "value",
         type: "bytes",
         indexed: false,
         internalType: "bytes",

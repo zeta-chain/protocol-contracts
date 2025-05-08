@@ -39,7 +39,7 @@ interface ICoreRegistryEvents {
     /// @param chainId The ID of the chain.
     /// @param key The metadata key to update.
     /// @param value The new value for the metadata.
-    event NewChainMetadata(uint256 indexed chainId, string key, bytes value);
+    event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value);
 
     /// @notice Emitted when a new contract configuration is updated
     /// @param chainId The ID of the chain where the contract is deployed.
@@ -209,7 +209,7 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
     /// @notice Updates ZRC20 token information.
     /// @param address_ The address of the ZRC20 token.
     /// @param active Whether the token should be active.
-    function updateZRC20Token(address address_, bool active) external;
+    function setZRC20TokenActive(address address_, bool active) external;
 
     //--------------------------------------------------------------------------
     // Registry Query Functions

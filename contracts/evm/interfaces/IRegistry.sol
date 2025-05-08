@@ -7,13 +7,13 @@ interface IRegistryEvents {
     event ChainStatusChanged(uint256 indexed chainId, bool previousState, bool newState);
 
     /// @notice Emitted when new chain metadata is set
-    event NewChainMetadata(uint256 indexed chainId, string key, bytes value);
+    event ChainMetadataUpdated(uint256 indexed chainId, string key, bytes value);
 
     /// @notice Emitted when a contract is registered
     event ContractRegistered(uint256 indexed chainId, string contractType, bytes addressBytes);
 
     /// @notice Emitted when contract configuration is updated
-    event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value);
+    event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value);
 
     /// @notice Emitted when a contract's status is changed
     event ContractStatusChanged(bytes addressBytes);
