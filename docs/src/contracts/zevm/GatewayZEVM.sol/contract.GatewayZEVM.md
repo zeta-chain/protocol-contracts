@@ -508,6 +508,31 @@ function depositAndRevert(
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
+### depositAndRevert
+
+Deposit ZETA and revert a user-specified contract on ZEVM.
+
+
+```solidity
+function depositAndRevert(
+    uint256 amount,
+    address target,
+    RevertContext calldata revertContext
+)
+    external
+    nonReentrant
+    onlyProtocol
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`amount`|`uint256`|The amount of tokens to revert.|
+|`target`|`address`|The target contract to call.|
+|`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
+
+
 ### executeAbort
 
 Call onAbort on a user-specified contract on ZEVM.

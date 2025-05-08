@@ -1116,4 +1116,80 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.expectRevert(ZeroAddress.selector);
         gateway.executeAbort(address(0), abortContext);
     }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfTargetIsZeroAddress() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.depositAndRevert(1, address(0), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfAmountIsZero() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(InsufficientZetaAmount.selector);
+        gateway.depositAndRevert(0, address(testUniversalContract), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContract() public {
+        uint256 amount = 1;
+        uint256 protocolBalanceBefore = zetaToken.balanceOf(protocolAddress);
+        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 destinationBalanceBefore = address(testUniversalContract).balance;
+
+        vm.expectEmit(true, true, true, true, address(testUniversalContract));
+        emit ContextDataRevert(revertContext);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+
+        uint256 protocolBalanceAfter = zetaToken.balanceOf(protocolAddress);
+        assertEq(protocolBalanceBefore - amount, protocolBalanceAfter);
+
+        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+
+        // Verify amount is transferred to destination
+        assertEq(destinationBalanceBefore + amount, address(testUniversalContract).balance);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfSenderIsNotProtocol() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(CallerIsNotProtocol.selector);
+        vm.prank(owner);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfTargetIsProtocol() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(InvalidTarget.selector);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, protocolAddress, revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfTargetIsGateway() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(InvalidTarget.selector);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(gateway), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractWhenPaused() public {
+        uint256 amount = 1;
+
+        vm.prank(owner);
+        gateway.pause();
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+
+        vm.prank(owner);
+        gateway.unpause();
+
+        vm.expectEmit(true, true, true, true, address(testUniversalContract));
+        emit ContextDataRevert(revertContext);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+    }
 }
