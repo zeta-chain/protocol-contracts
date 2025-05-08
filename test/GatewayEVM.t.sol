@@ -514,16 +514,13 @@ contract GatewayEVMInboundTest is
         uint256 amount = 100_000;
         zeta.approve(address(gateway), amount);
 
-        // TODO: replace error to check once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // vm.expectEmit(true, true, true, true, address(gateway));
-        vm.expectRevert(ZETANotSupported.selector);
-
+        vm.expectEmit(true, true, true, true, address(gateway));
         emit Deposited(owner, destination, amount, address(zeta), "", revertOptions);
+
         gateway.deposit(destination, amount, address(zeta), revertOptions);
 
-        // uint256 ownerAmountAfter = zeta.balanceOf(owner);
-        // assertEq(ownerAmount - amount, ownerAmountAfter);
+        uint256 ownerAmountAfter = zeta.balanceOf(owner);
+        assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
     function testRevertDepositERC20ToCustodyIfAmountIs0() public {
