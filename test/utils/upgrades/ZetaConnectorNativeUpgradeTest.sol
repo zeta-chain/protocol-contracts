@@ -31,15 +31,12 @@ contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
     /// @notice Withdraw tokens to a specified address.
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
-    //// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
     function withdraw(
         address to,
-        uint256 amount,
-        bytes32 /*internalSendHash*/
+        uint256 amount
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
@@ -53,17 +50,14 @@ contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
-    //// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
     function withdrawAndCall(
         MessageContext calldata messageContext,
         address to,
         uint256 amount,
-        bytes calldata data,
-        bytes32 /*internalSendHash*/
+        bytes calldata data
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused
@@ -81,18 +75,15 @@ contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
     /// @param to The address to withdraw tokens to.
     /// @param amount The amount of tokens to withdraw.
     /// @param data The calldata to pass to the contract call.
-    //// @param internalSendHash A hash used for internal tracking of the transaction.
     /// @dev This function can only be called by the TSS address.
     /// @param revertContext Revert context to pass to onRevert.
     function withdrawAndRevert(
         address to,
         uint256 amount,
         bytes calldata data,
-        bytes32, /*internalSendHash*/
         RevertContext calldata revertContext
     )
         external
-        override
         nonReentrant
         onlyRole(WITHDRAWER_ROLE)
         whenNotPaused

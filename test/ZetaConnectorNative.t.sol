@@ -71,7 +71,7 @@ contract ZetaConnectorNativeTest is
         custody = ERC20Custody(proxy);
         proxy = Upgrades.deployUUPSProxy(
             "ZetaConnectorNative.sol",
-            abi.encodeCall(ZetaConnectorNative.initialize, (address(gateway), address(zetaToken), tssAddress, owner))
+            abi.encodeCall(ZetaConnectorBase.initialize, (address(gateway), address(zetaToken), tssAddress, owner))
         );
         zetaConnector = ZetaConnectorNative(proxy);
 
