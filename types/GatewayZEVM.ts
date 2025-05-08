@@ -813,26 +813,26 @@ export interface GatewayZEVM extends BaseContract {
 
   "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
-      arg0: BytesLike,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: RevertOptionsStruct
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
-    "view"
+    "nonpayable"
   >;
 
   "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
-      arg0: BytesLike,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      arg4: CallOptionsStruct,
-      arg5: RevertOptionsStruct
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
-    "view"
+    "nonpayable"
   >;
 
   "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
@@ -1032,27 +1032,27 @@ export interface GatewayZEVM extends BaseContract {
     nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
-      arg0: BytesLike,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: RevertOptionsStruct
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
-    "view"
+    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
-      arg0: BytesLike,
-      arg1: BigNumberish,
-      arg2: BigNumberish,
-      arg3: BytesLike,
-      arg4: CallOptionsStruct,
-      arg5: RevertOptionsStruct
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
     ],
     [void],
-    "view"
+    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
