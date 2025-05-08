@@ -104,7 +104,7 @@ export interface CoreRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "changeChainStatus",
-    values: [BigNumberish, BytesLike, boolean]
+    values: [BigNumberish, AddressLike, BytesLike, boolean]
   ): string;
   encodeFunctionData(
     functionFragment: "gatewayZEVM",
@@ -609,7 +609,12 @@ export interface CoreRegistry extends BaseContract {
   _activeChains: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   changeChainStatus: TypedContractMethod<
-    [chainId: BigNumberish, registry: BytesLike, activation: boolean],
+    [
+      chainId: BigNumberish,
+      gasZRC20: AddressLike,
+      registry: BytesLike,
+      activation: boolean
+    ],
     [void],
     "nonpayable"
   >;
@@ -791,7 +796,12 @@ export interface CoreRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
-    [chainId: BigNumberish, registry: BytesLike, activation: boolean],
+    [
+      chainId: BigNumberish,
+      gasZRC20: AddressLike,
+      registry: BytesLike,
+      activation: boolean
+    ],
     [void],
     "nonpayable"
   >;

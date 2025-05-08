@@ -105,7 +105,7 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "changeChainStatus",
-    values: [BigNumberish, boolean]
+    values: [BigNumberish, AddressLike, BytesLike, boolean]
   ): string;
   encodeFunctionData(
     functionFragment: "coreRegistry",
@@ -611,7 +611,12 @@ export interface Registry extends BaseContract {
   _activeChains: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
 
   changeChainStatus: TypedContractMethod<
-    [chainId: BigNumberish, active: boolean],
+    [
+      chainId: BigNumberish,
+      gasZRC20: AddressLike,
+      registry: BytesLike,
+      active: boolean
+    ],
     [void],
     "nonpayable"
   >;
@@ -794,7 +799,12 @@ export interface Registry extends BaseContract {
   getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
-    [chainId: BigNumberish, active: boolean],
+    [
+      chainId: BigNumberish,
+      gasZRC20: AddressLike,
+      registry: BytesLike,
+      active: boolean
+    ],
     [void],
     "nonpayable"
   >;

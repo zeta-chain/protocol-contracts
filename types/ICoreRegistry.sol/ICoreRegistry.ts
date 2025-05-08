@@ -54,7 +54,7 @@ export interface ICoreRegistryInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "changeChainStatus",
-    values: [BigNumberish, BytesLike, boolean]
+    values: [BigNumberish, AddressLike, BytesLike, boolean]
   ): string;
   encodeFunctionData(
     functionFragment: "getActiveChains",
@@ -343,7 +343,12 @@ export interface ICoreRegistry extends BaseContract {
   ): Promise<this>;
 
   changeChainStatus: TypedContractMethod<
-    [chainId: BigNumberish, registry: BytesLike, activation: boolean],
+    [
+      chainId: BigNumberish,
+      gasZRC20: AddressLike,
+      registry: BytesLike,
+      activation: boolean
+    ],
     [void],
     "nonpayable"
   >;
@@ -449,7 +454,12 @@ export interface ICoreRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
-    [chainId: BigNumberish, registry: BytesLike, activation: boolean],
+    [
+      chainId: BigNumberish,
+      gasZRC20: AddressLike,
+      registry: BytesLike,
+      activation: boolean
+    ],
     [void],
     "nonpayable"
   >;

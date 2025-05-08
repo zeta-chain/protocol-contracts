@@ -169,6 +169,7 @@ Changes status of the chain to activated/deactivated.
 ```solidity
 function changeChainStatus(
     uint256 chainId,
+    address gasZRC20,
     bytes calldata registry,
     bool activation
 )
@@ -181,6 +182,7 @@ function changeChainStatus(
 |Name|Type|Description|
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain to activate.|
+|`gasZRC20`|`address`|The address of the ZRC20 token that represents gas token for the chain.|
 |`registry`|`bytes`|Address of the Registry contract on the connected chain.|
 |`activation`|`bool`|Whether activate or deactivate the chain|
 
@@ -490,14 +492,22 @@ Broadcast chain activation update to all satellite registries.
 
 
 ```solidity
-function _broadcastChainActivation(uint256 chainId, bool activation) internal;
+function _broadcastChainActivation(
+    uint256 chainId,
+    address gasZRC20,
+    bytes calldata registry,
+    bool activation
+)
+    internal;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`chainId`|`uint256`|The ID of the chain being activated/deactivated|
-|`activation`|`bool`|Whether the chain is being activated or deactivated|
+|`chainId`|`uint256`|The ID of the chain being activated/deactivated.|
+|`gasZRC20`|`address`|The address of the ZRC20 token that represents gas token for the chain.|
+|`registry`|`bytes`|Address of the Registry contract on the connected chain.|
+|`activation`|`bool`|Whether activate or deactivate the chain|
 
 
 ### _broadcastChainMetadataUpdate

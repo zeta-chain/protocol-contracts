@@ -19,6 +19,11 @@ const _abi = [
         internalType: "uint256",
       },
       {
+        name: "gasZRC20",
+        type: "address",
+        internalType: "address",
+      },
+      {
         name: "registry",
         type: "bytes",
         internalType: "bytes",

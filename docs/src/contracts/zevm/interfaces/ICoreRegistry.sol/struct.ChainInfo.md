@@ -8,6 +8,7 @@ Structure that contains information about a chain.
 struct ChainInfo {
     bool active;
     uint256 chainId;
+    address gasZRC20;
     bytes registry;
     mapping(string => bytes) metadata;
 }

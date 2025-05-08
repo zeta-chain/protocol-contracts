@@ -14,13 +14,14 @@ Changes status of the chain to activated/deactivated.
 
 
 ```solidity
-function changeChainStatus(uint256 chainId, bytes calldata registry, bool activation) external;
+function changeChainStatus(uint256 chainId, address gasZRC20, bytes calldata registry, bool activation) external;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain to activate.|
+|`gasZRC20`|`address`|The address of the ZRC20 token that represents gas token for the chain.|
 |`registry`|`bytes`||
 |`activation`|`bool`|Whether activate or deactivate a chain|
 
