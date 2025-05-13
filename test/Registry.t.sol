@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-// TODO: use remappings.txt
-import "../dependencies/forge-std-1.9.2/src/Test.sol";
-import "../dependencies/forge-std-1.9.2/src/Vm.sol";
-import { Upgrades } from "../dependencies/openzeppelin-foundry-upgrades-0.3.2/src/Upgrades.sol";
+import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import { Registry } from "../contracts/evm/Registry.sol";
 import "../contracts/evm/interfaces/IGatewayEVM.sol";
@@ -31,6 +30,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
 
     // Helper variables for tests
     uint256 chainId = 101;
+    address gasZRC20 = address(0xcbaa);
     bytes registryAddress = abi.encodePacked(address(0x9876));
     address contractAddress = address(0xAA55);
     string contractType = "connector";
@@ -125,7 +125,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testChangeChainStatus() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
 
         vm.prank(address(mockGateway));
@@ -137,7 +139,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         assertEq(chains.length, 1);
         assertEq(chains[0], chainId);
 
-        bytes memory deactivateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, false);
+        bytes memory deactivateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, false
+        );
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
@@ -159,7 +163,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testUpdateChainMetadata() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -179,7 +185,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testRegisterContract() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -199,7 +207,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testRegisterContractWithEmptyType() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -215,7 +225,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testRegisterContractWithEmptyAddress() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -231,7 +243,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testUpdateContractConfiguration() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -258,7 +272,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testUpdateContractConfigurationWithInvalidType() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -276,7 +292,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testSetContractActive() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -314,7 +332,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
     }
 
     function testSetContractActiveWithInvalidType() public {
-        bytes memory activateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId, true);
+        bytes memory activateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId, gasZRC20, registryAddress, true
+        );
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
@@ -500,14 +520,18 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
 
     function testMultipleActiveChains() public {
         uint256 chainId1 = 101;
-        bytes memory activateData1 = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId1, true);
+        bytes memory activateData1 = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId1, gasZRC20, registryAddress, true
+        );
 
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData1);
 
         uint256 chainId2 = 102;
-        bytes memory activateData2 = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId2, true);
+        bytes memory activateData2 = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId2, gasZRC20, registryAddress, true
+        );
 
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData2);
@@ -515,7 +539,9 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         uint256[] memory chains = registry.getActiveChains();
         assertEq(chains.length, 2);
 
-        bytes memory deactivateData = abi.encodeWithSignature("changeChainStatus(uint256,bool)", chainId1, false);
+        bytes memory deactivateData = abi.encodeWithSignature(
+            "changeChainStatus(uint256,address,bytes,bool)", chainId1, gasZRC20, registryAddress, false
+        );
 
         vm.prank(address(mockGateway));
         registry.onCall(context, deactivateData);

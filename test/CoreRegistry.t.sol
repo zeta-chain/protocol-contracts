@@ -1,17 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-// TODO: update dependencies
-import "../dependencies/forge-std-1.9.2/src/Test.sol";
-import "../dependencies/forge-std-1.9.2/src/Vm.sol";
-import { Upgrades } from "../dependencies/openzeppelin-foundry-upgrades-0.3.2/src/Upgrades.sol";
+import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
+import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import { CoreRegistry } from "../contracts/zevm/CoreRegistry.sol";
 
+import { SystemContract } from "../contracts/zevm/SystemContract.sol";
 import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/ICoreRegistry.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import {SystemContract} from "../contracts/zevm/SystemContract.sol";
 
 // Mock GatewayZEVM
 contract MockGatewayZEVM {
@@ -64,7 +63,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         protocolAddress = mockGateway.PROTOCOL_ADDRESS();
 
         vm.startPrank(protocolAddress);
-        systemContract = new SystemContract(address (0), address(0), address(0));
+        systemContract = new SystemContract(address(0), address(0), address(0));
         gasZRC20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(mockGateway));
         systemContract.setGasCoinZRC20(1, address(gasZRC20));
         systemContract.setGasPrice(1, 1);
