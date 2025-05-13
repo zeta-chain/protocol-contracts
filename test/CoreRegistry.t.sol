@@ -1,18 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "forge-std/Test.sol";
-import "forge-std/Vm.sol";
-import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
+// TODO: update dependencies
+import "../dependencies/forge-std-1.9.2/src/Test.sol";
+import "../dependencies/forge-std-1.9.2/src/Vm.sol";
+import { Upgrades } from "../dependencies/openzeppelin-foundry-upgrades-0.3.2/src/Upgrades.sol";
 
 import { CoreRegistry } from "../contracts/zevm/CoreRegistry.sol";
 
 import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/ICoreRegistry.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import {SystemContract} from "../contracts/zevm/SystemContract.sol";
 
 // Mock GatewayZEVM
 contract MockGatewayZEVM {
+    address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+
     event CallEmitted(
         bytes receiver, address zrc20, bytes message, CallOptions callOptions, RevertOptions revertOptions
     );
@@ -35,10 +39,12 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     CoreRegistry registry;
     MockGatewayZEVM mockGateway;
     ZRC20 gasZRC20;
+    SystemContract systemContract;
 
     address admin;
     address registryManager;
     address user;
+    address protocolAddress;
 
     function setUp() public {
         admin = address(0xABCD);
@@ -55,7 +61,20 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         );
         registry = CoreRegistry(proxy);
 
-        gasZRC20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(1), address(mockGateway));
+        protocolAddress = mockGateway.PROTOCOL_ADDRESS();
+
+        vm.startPrank(protocolAddress);
+        systemContract = new SystemContract(address (0), address(0), address(0));
+        gasZRC20 = new ZRC20("TOKEN", "TKN", 18, 1, CoinType.Gas, 0, address(systemContract), address(mockGateway));
+        systemContract.setGasCoinZRC20(1, address(gasZRC20));
+        systemContract.setGasPrice(1, 1);
+        vm.deal(protocolAddress, 1_000_000_000);
+        gasZRC20.deposit(registryManager, 100_000_000);
+        vm.stopPrank();
+
+        vm.startPrank(registryManager);
+        gasZRC20.approve(address(registry), 100_000_000);
+        vm.stopPrank();
     }
 
     function testInitialize() public view {
@@ -88,7 +107,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         registry.pause();
         assertTrue(registry.paused());
 
-        vm.prank(registryManager);
+        vm.prank(admin);
         registry.unpause();
         assertFalse(registry.paused());
     }
@@ -104,7 +123,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testActivateChain() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
 
         // Verify chain not active initially
@@ -124,7 +143,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testActivateChainUnauthorized() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
 
         vm.prank(user);
@@ -133,7 +152,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testActivateAlreadyActiveChain() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
 
         // Activate chain
@@ -147,7 +166,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testDeactivateNonActiveChain() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
 
         // Try to deactivate non-active chain
@@ -157,7 +176,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testDeactivateChain() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
 
         // Activate chain
@@ -180,7 +199,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testUpdateChainMetadata() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         string memory key = "blockTime";
         bytes memory value = abi.encode(5);
@@ -201,7 +220,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testUpdateMetadataForNonActiveChain() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         string memory key = "blockTime";
         bytes memory value = abi.encode(5);
 
@@ -211,7 +230,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testUpdateMetadataUnauthorized() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         string memory key = "blockTime";
         bytes memory value = abi.encode(5);
@@ -227,7 +246,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testRegisterContract() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         address contractAddress = address(0xAA55);
         string memory contractType = "connector";
@@ -250,7 +269,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testRegisterContractForNonActiveChain() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         address contractAddress = address(0xAA55);
         string memory contractType = "connector";
         bytes memory addressBytes = abi.encodePacked(contractAddress);
@@ -261,7 +280,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testRegisterContractWithEmptyType() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         address contractAddress = address(0xAA55);
         string memory contractType = "";
@@ -278,7 +297,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testRegisterContractWithEmptyAddress() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         address contractAddress = address(0xAA55);
         string memory contractType = "connector";
@@ -295,7 +314,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testRegisterContractTwice() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         address contractAddress = address(0xAA55);
         string memory contractType = "connector";
@@ -316,7 +335,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testUpdateContractConfig() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         address contractAddress = address(0xAA55);
         string memory contractType = "connector";
@@ -344,7 +363,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testUpdateConfigForNonExistentContract() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         string memory contractType = "nonexistent";
         string memory key = "gasLimit";
@@ -361,7 +380,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testSetContractActive() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         address contractAddress = address(0xAA55);
         string memory contractType = "connector";
@@ -401,7 +420,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testSetStatusForNonExistenContract() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
         string memory contractType = "nonexistent";
 
@@ -418,7 +437,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     function testRegisterZRC20Token() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "TKN";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress = abi.encodePacked(address(0x1357));
         string memory coinType = "ERC20";
         uint8 decimals = 18;
@@ -453,7 +472,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     function testRegisterZRC20TokenWithEmptyAddress() public {
         address zrc20Address = address(0);
         string memory symbol = "TKN";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress = abi.encodePacked(address(0x1357));
         string memory coinType = "ERC20";
         uint8 decimals = 18;
@@ -466,7 +485,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     function testRegisterZRC20TokenWithEmptySymbol() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress = abi.encodePacked(address(0x1357));
         string memory coinType = "ERC20";
         uint8 decimals = 18;
@@ -479,7 +498,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     function testRegisterZRC20TokenWithEmptyOriginAddress() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "TKN";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress = bytes("");
         string memory coinType = "ERC20";
         uint8 decimals = 18;
@@ -492,7 +511,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     function testRegisterZRC20TokenTwice() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "TKN";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress = abi.encodePacked(address(0x1357));
         string memory coinType = "ERC20";
         uint8 decimals = 18;
@@ -511,7 +530,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         address zrc20Address1 = address(0xDDDD);
         address zrc20Address2 = address(0xCCCC);
         string memory symbol = "TKN";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress1 = abi.encodePacked(address(0x1357));
         bytes memory originAddress2 = abi.encodePacked(address(0xAAAA));
         string memory coinType = "ERC20";
@@ -530,7 +549,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     function testSetZRC20TokenActive() public {
         address zrc20Address = address(0xDDDD);
         string memory symbol = "TKN";
-        uint256 originChainId = 101;
+        uint256 originChainId = 1;
         bytes memory originAddress = abi.encodePacked(address(0x1357));
         string memory coinType = "ERC20";
         uint8 decimals = 18;
@@ -581,7 +600,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
     }
 
     function testWhenPaused() public {
-        uint256 chainId = 101;
+        uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
 
         // Pause the contract
