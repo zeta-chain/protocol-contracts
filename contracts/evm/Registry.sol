@@ -36,6 +36,9 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 
     /// @dev Only registry address allowed modifier.
+    /// @notice Restricts function calls to only be made by this contract itself
+    /// @dev This is used to ensure functions receiving cross-chain messages can only be called through
+    /// the onCall function using a self-call pattern, preventing direct external calls to these functions
     modifier onlyRegistry() {
         if (msg.sender != address(this)) {
             revert InvalidSender();
@@ -112,6 +115,10 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
             revert InvalidSender();
         }
 
+        // Execute a self-call with the encoded function data
+        // This allows us to reuse existing function signatures and validation logic
+        // By using a self-call pattern combined with onlyRegistry modifier, these functions
+        // can only be called through this onCall entry point
         (bool success, bytes memory result) = address(this).call(data);
         if (!success) {
             // Extract the error message from the revert

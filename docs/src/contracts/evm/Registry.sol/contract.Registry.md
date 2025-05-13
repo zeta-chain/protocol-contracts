@@ -103,7 +103,12 @@ mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 ## Functions
 ### onlyRegistry
 
+Restricts function calls to only be made by this contract itself
+
 *Only registry address allowed modifier.*
+
+*This is used to ensure functions receiving cross-chain messages can only be called through
+the onCall function using a self-call pattern, preventing direct external calls to these functions*
 
 
 ```solidity
