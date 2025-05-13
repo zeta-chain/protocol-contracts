@@ -50,9 +50,11 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
 
     /// @notice Initialize the Registry contract
     /// @param admin_ Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions
+    /// @param pauserAddress_ Address with PAUSER_ROLE, authorized for pausing actions
     /// @param gatewayEVM_ Address of the GatewayEVM contract for cross-chain messaging
-    function initialize(address admin_, address gatewayEVM_, address coreRegistry_) public initializer {
-        if (admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0)) {
+    /// @param coreRegistry_ Address of the CoreRegistry contract deployed on ZetaChain
+    function initialize(address admin_, address pauserAddress_, address gatewayEVM_, address coreRegistry_) public initializer {
+        if (admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0) || pauserAddress_ == address(0)) {
             revert ZeroAddress();
         }
 
@@ -62,6 +64,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
+        _grantRole(PAUSER_ROLE, pauserAddress_);
         _grantRole(RELAY_ROLE, gatewayEVM_);
 
         gatewayEVM = IGatewayEVM(gatewayEVM_);
