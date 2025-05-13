@@ -53,8 +53,19 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @param pauserAddress_ Address with PAUSER_ROLE, authorized for pausing actions
     /// @param gatewayEVM_ Address of the GatewayEVM contract for cross-chain messaging
     /// @param coreRegistry_ Address of the CoreRegistry contract deployed on ZetaChain
-    function initialize(address admin_, address pauserAddress_, address gatewayEVM_, address coreRegistry_) public initializer {
-        if (admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0) || pauserAddress_ == address(0)) {
+    function initialize(
+        address admin_,
+        address pauserAddress_,
+        address gatewayEVM_,
+        address coreRegistry_
+    )
+        public
+        initializer
+    {
+        if (
+            admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0)
+                || pauserAddress_ == address(0)
+        ) {
             revert ZeroAddress();
         }
 

@@ -126,15 +126,23 @@ Initialize the Registry contract
 
 
 ```solidity
-function initialize(address admin_, address gatewayEVM_, address coreRegistry_) public initializer;
+function initialize(
+    address admin_,
+    address pauserAddress_,
+    address gatewayEVM_,
+    address coreRegistry_
+)
+    public
+    initializer;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`admin_`|`address`|Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions|
+|`pauserAddress_`|`address`|Address with PAUSER_ROLE, authorized for pausing actions|
 |`gatewayEVM_`|`address`|Address of the GatewayEVM contract for cross-chain messaging|
-|`coreRegistry_`|`address`||
+|`coreRegistry_`|`address`|Address of the CoreRegistry contract deployed on ZetaChain|
 
 
 ### _authorizeUpgrade
