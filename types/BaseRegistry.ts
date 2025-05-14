@@ -23,20 +23,13 @@ import type {
   TypedContractMethod,
 } from "./common";
 
-export type MessageContextStruct = { sender: AddressLike };
-
-export type MessageContextStructOutput = [sender: string] & { sender: string };
-
-export interface RegistryInterface extends Interface {
+export interface BaseRegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
-      | "GATEWAY_ROLE"
       | "PAUSER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "changeChainStatus"
-      | "coreRegistry"
-      | "gatewayEVM"
       | "getActiveChains"
       | "getChainMetadata"
       | "getContractConfiguration"
@@ -46,8 +39,6 @@ export interface RegistryInterface extends Interface {
       | "getZRC20TokenInfo"
       | "grantRole"
       | "hasRole"
-      | "initialize"
-      | "onCall"
       | "pause"
       | "paused"
       | "proxiableUUID"
@@ -87,10 +78,6 @@ export interface RegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "GATEWAY_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
@@ -101,14 +88,6 @@ export interface RegistryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "changeChainStatus",
     values: [BigNumberish, AddressLike, BytesLike, boolean]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "coreRegistry",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "gatewayEVM",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getActiveChains",
@@ -145,14 +124,6 @@ export interface RegistryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "hasRole",
     values: [BytesLike, AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "initialize",
-    values: [AddressLike, AddressLike, AddressLike, AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "onCall",
-    values: [MessageContextStruct, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
@@ -207,10 +178,6 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "GATEWAY_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
@@ -222,11 +189,6 @@ export interface RegistryInterface extends Interface {
     functionFragment: "changeChainStatus",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "coreRegistry",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "gatewayEVM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getActiveChains",
     data: BytesLike
@@ -257,8 +219,6 @@ export interface RegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
@@ -542,11 +502,11 @@ export namespace ZRC20TokenUpdatedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface Registry extends BaseContract {
-  connect(runner?: ContractRunner | null): Registry;
+export interface BaseRegistry extends BaseContract {
+  connect(runner?: ContractRunner | null): BaseRegistry;
   waitForDeployment(): Promise<this>;
 
-  interface: RegistryInterface;
+  interface: BaseRegistryInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -587,8 +547,6 @@ export interface Registry extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
-  GATEWAY_ROLE: TypedContractMethod<[], [string], "view">;
-
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
@@ -603,10 +561,6 @@ export interface Registry extends BaseContract {
     [void],
     "nonpayable"
   >;
-
-  coreRegistry: TypedContractMethod<[], [string], "view">;
-
-  gatewayEVM: TypedContractMethod<[], [string], "view">;
 
   getActiveChains: TypedContractMethod<[], [bigint[]], "view">;
 
@@ -661,23 +615,6 @@ export interface Registry extends BaseContract {
     [role: BytesLike, account: AddressLike],
     [boolean],
     "view"
-  >;
-
-  initialize: TypedContractMethod<
-    [
-      admin_: AddressLike,
-      pauserAddress_: AddressLike,
-      gatewayEVM_: AddressLike,
-      coreRegistry_: AddressLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  onCall: TypedContractMethod<
-    [context: MessageContextStruct, data: BytesLike],
-    [string],
-    "nonpayable"
   >;
 
   pause: TypedContractMethod<[], [void], "nonpayable">;
@@ -768,9 +705,6 @@ export interface Registry extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "GATEWAY_ROLE"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -788,12 +722,6 @@ export interface Registry extends BaseContract {
     [void],
     "nonpayable"
   >;
-  getFunction(
-    nameOrSignature: "coreRegistry"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "gatewayEVM"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getActiveChains"
   ): TypedContractMethod<[], [bigint[]], "view">;
@@ -857,25 +785,6 @@ export interface Registry extends BaseContract {
     [role: BytesLike, account: AddressLike],
     [boolean],
     "view"
-  >;
-  getFunction(
-    nameOrSignature: "initialize"
-  ): TypedContractMethod<
-    [
-      admin_: AddressLike,
-      pauserAddress_: AddressLike,
-      gatewayEVM_: AddressLike,
-      coreRegistry_: AddressLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "onCall"
-  ): TypedContractMethod<
-    [context: MessageContextStruct, data: BytesLike],
-    [string],
-    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "pause"

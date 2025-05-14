@@ -31,7 +31,6 @@ export interface CoreRegistryInterface extends Interface {
       | "PAUSER_ROLE"
       | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
-      | "activeChains"
       | "changeChainStatus"
       | "gatewayZEVM"
       | "getActiveChains"
@@ -64,10 +63,10 @@ export interface CoreRegistryInterface extends Interface {
     nameOrSignatureOrTopic:
       | "ChainMetadataUpdated"
       | "ChainStatusChanged"
+      | "ContractConfigurationUpdated"
       | "ContractRegistered"
       | "ContractStatusChanged"
       | "Initialized"
-      | "NewContractConfiguration"
       | "Paused"
       | "RoleAdminChanged"
       | "RoleGranted"
@@ -97,10 +96,6 @@ export interface CoreRegistryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "activeChains",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "changeChainStatus",
@@ -219,10 +214,6 @@ export interface CoreRegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "activeChains",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "changeChainStatus",
     data: BytesLike
   ): Result;
@@ -326,20 +317,36 @@ export namespace ChainMetadataUpdatedEvent {
 }
 
 export namespace ChainStatusChangedEvent {
+  export type InputTuple = [chainId: BigNumberish, newStatus: boolean];
+  export type OutputTuple = [chainId: bigint, newStatus: boolean];
+  export interface OutputObject {
+    chainId: bigint;
+    newStatus: boolean;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace ContractConfigurationUpdatedEvent {
   export type InputTuple = [
     chainId: BigNumberish,
-    oldStatus: boolean,
-    newStatus: boolean
+    contractType: string,
+    key: string,
+    value: BytesLike
   ];
   export type OutputTuple = [
     chainId: bigint,
-    oldStatus: boolean,
-    newStatus: boolean
+    contractType: string,
+    key: string,
+    value: string
   ];
   export interface OutputObject {
     chainId: bigint;
-    oldStatus: boolean;
-    newStatus: boolean;
+    contractType: string;
+    key: string;
+    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -386,31 +393,6 @@ export namespace InitializedEvent {
   export type OutputTuple = [version: bigint];
   export interface OutputObject {
     version: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace NewContractConfigurationEvent {
-  export type InputTuple = [
-    chainId: BigNumberish,
-    contractType: string,
-    key: string,
-    value: BytesLike
-  ];
-  export type OutputTuple = [
-    chainId: bigint,
-    contractType: string,
-    key: string,
-    value: string
-  ];
-  export interface OutputObject {
-    chainId: bigint;
-    contractType: string;
-    key: string;
-    value: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -606,8 +588,6 @@ export interface CoreRegistry extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
-  activeChains: TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
-
   changeChainStatus: TypedContractMethod<
     [
       chainId: BigNumberish,
@@ -785,9 +765,6 @@ export interface CoreRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "activeChains"
-  ): TypedContractMethod<[arg0: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
@@ -984,6 +961,13 @@ export interface CoreRegistry extends BaseContract {
     ChainStatusChangedEvent.OutputObject
   >;
   getEvent(
+    key: "ContractConfigurationUpdated"
+  ): TypedContractEvent<
+    ContractConfigurationUpdatedEvent.InputTuple,
+    ContractConfigurationUpdatedEvent.OutputTuple,
+    ContractConfigurationUpdatedEvent.OutputObject
+  >;
+  getEvent(
     key: "ContractRegistered"
   ): TypedContractEvent<
     ContractRegisteredEvent.InputTuple,
@@ -1003,13 +987,6 @@ export interface CoreRegistry extends BaseContract {
     InitializedEvent.InputTuple,
     InitializedEvent.OutputTuple,
     InitializedEvent.OutputObject
-  >;
-  getEvent(
-    key: "NewContractConfiguration"
-  ): TypedContractEvent<
-    NewContractConfigurationEvent.InputTuple,
-    NewContractConfigurationEvent.OutputTuple,
-    NewContractConfigurationEvent.OutputObject
   >;
   getEvent(
     key: "Paused"
@@ -1080,7 +1057,7 @@ export interface CoreRegistry extends BaseContract {
       ChainMetadataUpdatedEvent.OutputObject
     >;
 
-    "ChainStatusChanged(uint256,bool,bool)": TypedContractEvent<
+    "ChainStatusChanged(uint256,bool)": TypedContractEvent<
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject
@@ -1089,6 +1066,17 @@ export interface CoreRegistry extends BaseContract {
       ChainStatusChangedEvent.InputTuple,
       ChainStatusChangedEvent.OutputTuple,
       ChainStatusChangedEvent.OutputObject
+    >;
+
+    "ContractConfigurationUpdated(uint256,string,string,bytes)": TypedContractEvent<
+      ContractConfigurationUpdatedEvent.InputTuple,
+      ContractConfigurationUpdatedEvent.OutputTuple,
+      ContractConfigurationUpdatedEvent.OutputObject
+    >;
+    ContractConfigurationUpdated: TypedContractEvent<
+      ContractConfigurationUpdatedEvent.InputTuple,
+      ContractConfigurationUpdatedEvent.OutputTuple,
+      ContractConfigurationUpdatedEvent.OutputObject
     >;
 
     "ContractRegistered(uint256,string,bytes)": TypedContractEvent<
@@ -1122,17 +1110,6 @@ export interface CoreRegistry extends BaseContract {
       InitializedEvent.InputTuple,
       InitializedEvent.OutputTuple,
       InitializedEvent.OutputObject
-    >;
-
-    "NewContractConfiguration(uint256,string,string,bytes)": TypedContractEvent<
-      NewContractConfigurationEvent.InputTuple,
-      NewContractConfigurationEvent.OutputTuple,
-      NewContractConfigurationEvent.OutputObject
-    >;
-    NewContractConfiguration: TypedContractEvent<
-      NewContractConfigurationEvent.InputTuple,
-      NewContractConfigurationEvent.OutputTuple,
-      NewContractConfigurationEvent.OutputObject
     >;
 
     "Paused(address)": TypedContractEvent<

@@ -3,6 +3,7 @@
 /* eslint-disable */
 export * as erc20 from "./ERC20";
 export * as errorsSol from "./Errors.sol";
+export * as iBaseRegistrySol from "./IBaseRegistry.sol";
 export * as iCoreRegistrySol from "./ICoreRegistry.sol";
 export * as ierc20CustodySol from "./IERC20Custody.sol";
 export * as ierc721Sol from "./IERC721.sol";
@@ -37,6 +38,7 @@ export * as legacy from "./legacy";
 export * as utils from "./utils";
 export { AccessControlUpgradeable__factory } from "./AccessControlUpgradeable__factory";
 export { Address__factory } from "./Address__factory";
+export { BaseRegistry__factory } from "./BaseRegistry__factory";
 export { BeaconProxy__factory } from "./BeaconProxy__factory";
 export { ConnectorErrors__factory } from "./ConnectorErrors__factory";
 export { ContextUpgradeable__factory } from "./ContextUpgradeable__factory";
