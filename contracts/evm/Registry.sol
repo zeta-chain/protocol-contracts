@@ -15,8 +15,8 @@ import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, IRegistry {
     /// @notice New role identifier for pauser role
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    /// @notice Identifier for the relay role (granted to GatewayEVM)
-    bytes32 public constant RELAY_ROLE = keccak256("RELAY_ROLE");
+    /// @notice Identifier for the gateway role
+    bytes32 public constant GATEWAY_ROLE = keccak256("GATEWAY_ROLE");
 
     /// @notice GatewayEVM contract that will call this contract with messages from CoreRegistry
     IGatewayEVM public gatewayEVM;
@@ -79,7 +79,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
         _grantRole(PAUSER_ROLE, pauserAddress_);
-        _grantRole(RELAY_ROLE, gatewayEVM_);
+        _grantRole(GATEWAY_ROLE, gatewayEVM_);
 
         gatewayEVM = IGatewayEVM(gatewayEVM_);
         coreRegistry = coreRegistry_;
@@ -107,7 +107,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         bytes calldata data
     )
         external
-        onlyRole(RELAY_ROLE)
+        onlyRole(GATEWAY_ROLE)
         whenNotPaused
         returns (bytes memory)
     {

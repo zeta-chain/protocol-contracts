@@ -58,7 +58,7 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         assertTrue(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin));
         assertTrue(registry.hasRole(registry.PAUSER_ROLE(), admin));
         assertTrue(registry.hasRole(registry.PAUSER_ROLE(), pauser));
-        assertTrue(registry.hasRole(registry.RELAY_ROLE(), address(mockGateway)));
+        assertTrue(registry.hasRole(registry.GATEWAY_ROLE(), address(mockGateway)));
         assertEq(address(registry.gatewayEVM()), address(mockGateway));
         assertEq(registry.coreRegistry(), coreRegistry);
     }

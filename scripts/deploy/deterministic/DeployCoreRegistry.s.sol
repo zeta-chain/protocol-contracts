@@ -58,7 +58,9 @@ contract DeployCoreRegistry is Script {
         CoreRegistry registry = CoreRegistry(address(registryProxy));
 
         // Verify initial configuration
-        (bool active, address gatewayAddress) = registry.getContractInfo(block.chainid, "gatewayZEVM");
+        require(registry.gatewayZEVM() == gatewayZEVM, "gatewayZEVM not set correctly");
+        require(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin), "admin role not set correctly");
+        require(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), registryManager), "registry manager role not set correctly");
 
         vm.stopBroadcast();
 

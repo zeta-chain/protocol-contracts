@@ -19,12 +19,12 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
-### RELAY_ROLE
-Identifier for the relay role (granted to GatewayEVM)
+### GATEWAY_ROLE
+Identifier for the gateway role
 
 
 ```solidity
-bytes32 public constant RELAY_ROLE = keccak256("RELAY_ROLE");
+bytes32 public constant GATEWAY_ROLE = keccak256("GATEWAY_ROLE");
 ```
 
 
@@ -194,7 +194,7 @@ function onCall(
     bytes calldata data
 )
     external
-    onlyRole(RELAY_ROLE)
+    onlyRole(GATEWAY_ROLE)
     whenNotPaused
     returns (bytes memory);
 ```

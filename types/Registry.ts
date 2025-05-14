@@ -31,8 +31,8 @@ export interface RegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
+      | "GATEWAY_ROLE"
       | "PAUSER_ROLE"
-      | "RELAY_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "activeChains"
       | "changeChainStatus"
@@ -88,11 +88,11 @@ export interface RegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "PAUSER_ROLE",
+    functionFragment: "GATEWAY_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "RELAY_ROLE",
+    functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -212,10 +212,13 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "GATEWAY_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "RELAY_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
@@ -593,9 +596,9 @@ export interface Registry extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
-  PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
+  GATEWAY_ROLE: TypedContractMethod<[], [string], "view">;
 
-  RELAY_ROLE: TypedContractMethod<[], [string], "view">;
+  PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
@@ -781,10 +784,10 @@ export interface Registry extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "PAUSER_ROLE"
+    nameOrSignature: "GATEWAY_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "RELAY_ROLE"
+    nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"

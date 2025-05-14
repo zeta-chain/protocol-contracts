@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Script.sol";
-import "contracts/zevm/Registry.sol";
+import "contracts/evm/Registry.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 contract DeployRegistry is Script {
@@ -61,7 +61,7 @@ contract DeployRegistry is Script {
         require(registry.gatewayEVM() == gatewayEVM, "gatewayEVM not set correctly");
         require(registry.coreRegistry() == coreRegistry, "coreRegistry not set correctly");
         require(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin), "admin role not set correctly");
-        require(registry.hasRole(registry.RELAY_ROLE(), gatewayEVM), "relay role not set correctly");
+        require(registry.hasRole(registry.GATEWAY_ROLE(), gatewayEVM), "gateway role not set correctly");
 
         vm.stopBroadcast();
 
