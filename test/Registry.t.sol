@@ -198,18 +198,17 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
 
-        bytes memory registerData = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,bytes)", chainId, contractAddress, contractType, addressBytes
-        );
+        bytes memory registerData =
+            abi.encodeWithSignature("registerContract(uint256,string,bytes)", chainId, contractType, addressBytes);
 
         vm.prank(address(mockGateway));
         vm.expectEmit(true, true, true, true);
         emit ContractRegistered(chainId, contractType, addressBytes);
         registry.onCall(context, registerData);
 
-        (bool active, address storedAddress) = registry.getContractInfo(chainId, contractType);
+        (bool active, bytes memory storedAddress) = registry.getContractInfo(chainId, contractType);
         assertTrue(active);
-        assertEq(storedAddress, contractAddress);
+        assertEq(storedAddress, addressBytes);
     }
 
     function testRegisterContractWithEmptyType() public {
@@ -221,9 +220,8 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         registry.onCall(context, activateData);
 
         string memory emptyType = "";
-        bytes memory registerData = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,bytes)", chainId, contractAddress, emptyType, addressBytes
-        );
+        bytes memory registerData =
+            abi.encodeWithSignature("registerContract(uint256,string,bytes)", chainId, emptyType, addressBytes);
 
         vm.prank(address(mockGateway));
         vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, emptyType));
@@ -239,9 +237,8 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         registry.onCall(context, activateData);
 
         bytes memory emptyAddressBytes = bytes("");
-        bytes memory registerData = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,bytes)", chainId, contractAddress, contractType, emptyAddressBytes
-        );
+        bytes memory registerData =
+            abi.encodeWithSignature("registerContract(uint256,string,bytes)", chainId, contractType, emptyAddressBytes);
 
         vm.prank(address(mockGateway));
         vm.expectRevert(ZeroAddress.selector);
@@ -256,9 +253,8 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
 
-        bytes memory registerData = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,bytes)", chainId, contractAddress, contractType, addressBytes
-        );
+        bytes memory registerData =
+            abi.encodeWithSignature("registerContract(uint256,string,bytes)", chainId, contractType, addressBytes);
         vm.prank(address(mockGateway));
         registry.onCall(context, registerData);
 
@@ -305,9 +301,8 @@ contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
         vm.prank(address(mockGateway));
         registry.onCall(context, activateData);
 
-        bytes memory registerData = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,bytes)", chainId, contractAddress, contractType, addressBytes
-        );
+        bytes memory registerData =
+            abi.encodeWithSignature("registerContract(uint256,string,bytes)", chainId, contractType, addressBytes);
         vm.prank(address(mockGateway));
         registry.onCall(context, registerData);
 

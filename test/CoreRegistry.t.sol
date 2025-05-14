@@ -259,12 +259,12 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
         emit ContractRegistered(chainId, contractType, addressBytes);
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
 
         // Verify contract info
-        (bool active, address storedAddress) = registry.getContractInfo(chainId, contractType);
+        (bool active, bytes memory storedAddress) = registry.getContractInfo(chainId, contractType);
         assertTrue(active);
-        assertEq(storedAddress, contractAddress);
+        assertEq(storedAddress, addressBytes);
     }
 
     function testRegisterContractForNonActiveChain() public {
@@ -275,7 +275,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         vm.prank(registryManager);
         vm.expectRevert(abi.encodeWithSelector(ChainNonActive.selector, chainId));
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
     }
 
     function testRegisterContractWithEmptyType() public {
@@ -292,13 +292,12 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Try to register contract with empty type
         vm.prank(registryManager);
         vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, contractType));
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
     }
 
     function testRegisterContractWithEmptyAddress() public {
         uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
-        address contractAddress = address(0xAA55);
         string memory contractType = "connector";
         bytes memory addressBytes = bytes("");
 
@@ -309,7 +308,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Try to register contract with empty address bytes
         vm.prank(registryManager);
         vm.expectRevert(ZeroAddress.selector);
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
     }
 
     function testRegisterContractTwice() public {
@@ -325,12 +324,12 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Register contract
         vm.prank(registryManager);
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
 
         // Try to register again
         vm.prank(registryManager);
         vm.expectRevert(abi.encodeWithSelector(ContractAlreadyRegistered.selector, chainId, contractType, addressBytes));
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
     }
 
     function testUpdateContractConfig() public {
@@ -348,7 +347,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Register contract
         vm.prank(registryManager);
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
 
         // Update contract config
         vm.prank(registryManager);
@@ -391,7 +390,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
 
         // Register contract
         vm.prank(registryManager);
-        registry.registerContract(chainId, contractAddress, contractType, addressBytes);
+        registry.registerContract(chainId, contractType, addressBytes);
 
         // Check initial status
         (bool active,) = registry.getContractInfo(chainId, contractType);

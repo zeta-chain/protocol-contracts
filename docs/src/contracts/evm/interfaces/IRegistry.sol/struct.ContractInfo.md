@@ -7,7 +7,6 @@ Structure that contains information about a contract registered in the system.
 ```solidity
 struct ContractInfo {
     bool active;
-    address address_;
     bytes addressBytes;
     string contractType;
     mapping(string => bytes) configuration;

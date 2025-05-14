@@ -83,8 +83,6 @@ struct ChainInfo {
 struct ContractInfo {
     /// @notice Whether the contract is active.
     bool active;
-    /// @notice The address of the contract (for EVM chains).
-    address address_;
     /// @notice Bytes representation of the address (needed for non-EVM chains).
     bytes addressBytes;
     /// @notice The type of the contract (e.g. "connector", "gateway", "tss").

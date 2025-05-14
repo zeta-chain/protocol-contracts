@@ -270,7 +270,6 @@ Registers a new contract address for a specific chain
 ```solidity
 function registerContract(
     uint256 chainId,
-    address address_,
     string calldata contractType,
     bytes calldata addressBytes
 )
@@ -283,9 +282,8 @@ function registerContract(
 |Name|Type|Description|
 |----|----|-----------|
 |`chainId`|`uint256`|The ID of the chain where the contract is deployed|
-|`address_`|`address`|The address of the contract|
 |`contractType`|`string`|The type of the contract (e.g., "connector", "gateway")|
-|`addressBytes`|`bytes`|The bytes representation of the non-EVM address|
+|`addressBytes`|`bytes`|The address of the contract|
 
 
 ### updateContractConfiguration
@@ -419,7 +417,7 @@ function getContractInfo(
 )
     external
     view
-    returns (bool active, address address_);
+    returns (bool active, bytes memory addressBytes);
 ```
 **Parameters**
 
@@ -433,7 +431,7 @@ function getContractInfo(
 |Name|Type|Description|
 |----|----|-----------|
 |`active`|`bool`|Whether the contract is active|
-|`address_`|`address`|The address of the contract|
+|`addressBytes`|`bytes`|The address of the contract|
 
 
 ### getContractConfiguration

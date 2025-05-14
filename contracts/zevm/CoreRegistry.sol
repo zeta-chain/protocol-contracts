@@ -153,12 +153,10 @@ contract CoreRegistry is
 
     /// @notice Registers a new contract address for a specific chain.
     /// @param chainId The ID of the chain where the contract is deployed.
-    /// @param address_ The address of the contract.
     /// @param contractType The type of the contract (e.g., "connector", "gateway").
     /// @param addressBytes The bytes representation of the non-EVM address.
     function registerContract(
         uint256 chainId,
-        address address_,
         string calldata contractType,
         bytes calldata addressBytes
     )
@@ -178,12 +176,11 @@ contract CoreRegistry is
 
         // Store contract info in the storage.
         _contracts[chainId][contractType].active = true;
-        _contracts[chainId][contractType].address_ = address_;
         _contracts[chainId][contractType].addressBytes = addressBytes;
         _contracts[chainId][contractType].contractType = contractType;
 
         // Broadcast update to satellite registries
-        _broadcastContractRegistration(chainId, address_, contractType, addressBytes);
+        _broadcastContractRegistration(chainId, contractType, addressBytes);
 
         emit ContractRegistered(chainId, contractType, addressBytes);
     }
@@ -334,17 +331,17 @@ contract CoreRegistry is
     /// @param chainId The ID of the chain where the contract is deployed
     /// @param contractType The type of the contract
     /// @return active Whether the contract is active
-    /// @return address_ The address of the contract
+    /// @return addressBytes The address of the contract
     function getContractInfo(
         uint256 chainId,
         string calldata contractType
     )
         external
         view
-        returns (bool active, address address_)
+        returns (bool active, bytes memory addressBytes)
     {
         active = _contracts[chainId][contractType].active;
-        address_ = _contracts[chainId][contractType].address_;
+        addressBytes = _contracts[chainId][contractType].addressBytes;
     }
 
     /// @notice Gets contract-specific configuration
@@ -446,20 +443,17 @@ contract CoreRegistry is
 
     /// @notice Broadcast contract registration to all satellite registries
     /// @param chainId The ID of the chain where the contract is deployed
-    /// @notice address_ The address of the contract
     /// @notice contractType The type of the contract
     /// @notice addressBytes The bytes representation of the non-EVM address
     function _broadcastContractRegistration(
         uint256 chainId,
-        address address_,
         string calldata contractType,
         bytes calldata addressBytes
     )
         private
     {
-        bytes memory message = abi.encodeWithSignature(
-            "registerContract(uint256,address,string,bytes)", chainId, address_, contractType, addressBytes
-        );
+        bytes memory message =
+            abi.encodeWithSignature("registerContract(uint256,string,bytes)", chainId, contractType, addressBytes);
         _broadcastToAllChains(message);
     }
 

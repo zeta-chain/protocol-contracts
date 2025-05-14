@@ -110,9 +110,7 @@ struct ChainInfo {
 struct ContractInfo {
     /// @notice Whether the contract is active.
     bool active;
-    /// @notice The address of the contract (for EVM chains).
-    address address_;
-    /// @notice Bytes representation of the address (needed for non-EVM chains).
+    /// @notice The contract address in bytes representation.
     bytes addressBytes;
     /// @notice The type of the contract (e.g. "connector", "gateway", "tss").
     string contractType;
@@ -164,16 +162,9 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
 
     /// @notice Registers a new contract address for a specific chain.
     /// @param chainId The ID of the chain where the contract is deployed.
-    /// @param address_ The address of the contract.
     /// @param contractType The type of the contract (e.g., "connector", "gateway").
     /// @param addressBytes The bytes representation of the non-EVM address.
-    function registerContract(
-        uint256 chainId,
-        address address_,
-        string calldata contractType,
-        bytes calldata addressBytes
-    )
-        external;
+    function registerContract(uint256 chainId, string calldata contractType, bytes calldata addressBytes) external;
 
     /// @notice Updates contract configuration.
     /// @param chainId The ID of the chain where the contract is deployed.
@@ -228,14 +219,14 @@ interface ICoreRegistry is ICoreRegistryErrors, ICoreRegistryEvents {
     /// @param chainId The ID of the chain where the contract is deployed.
     /// @param contractType The type of the contract.
     /// @return active Whether the contract is active.
-    /// @return address_ The address of the contract.
+    /// @return addressBytes The address of the contract.
     function getContractInfo(
         uint256 chainId,
         string calldata contractType
     )
         external
         view
-        returns (bool active, address address_);
+        returns (bool active, bytes memory addressBytes);
 
     /// @notice Gets contract-specific configuration.
     /// @param chainId The ID of the chain where the contract is deployed.

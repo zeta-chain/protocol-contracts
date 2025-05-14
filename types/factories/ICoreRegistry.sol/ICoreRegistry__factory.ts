@@ -125,9 +125,9 @@ const _abi = [
         internalType: "bool",
       },
       {
-        name: "address_",
-        type: "address",
-        internalType: "address",
+        name: "addressBytes",
+        type: "bytes",
+        internalType: "bytes",
       },
     ],
     stateMutability: "view",
@@ -208,11 +208,6 @@ const _abi = [
         name: "chainId",
         type: "uint256",
         internalType: "uint256",
-      },
-      {
-        name: "address_",
-        type: "address",
-        internalType: "address",
       },
       {
         name: "contractType",

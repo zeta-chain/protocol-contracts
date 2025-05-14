@@ -82,7 +82,7 @@ export interface ICoreRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "registerContract",
-    values: [BigNumberish, AddressLike, string, BytesLike]
+    values: [BigNumberish, string, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "registerZRC20Token",
@@ -369,7 +369,7 @@ export interface ICoreRegistry extends BaseContract {
 
   getContractInfo: TypedContractMethod<
     [chainId: BigNumberish, contractType: string],
-    [[boolean, string] & { active: boolean; address_: string }],
+    [[boolean, string] & { active: boolean; addressBytes: string }],
     "view"
   >;
 
@@ -395,12 +395,7 @@ export interface ICoreRegistry extends BaseContract {
   >;
 
   registerContract: TypedContractMethod<
-    [
-      chainId: BigNumberish,
-      address_: AddressLike,
-      contractType: string,
-      addressBytes: BytesLike
-    ],
+    [chainId: BigNumberish, contractType: string, addressBytes: BytesLike],
     [void],
     "nonpayable"
   >;
@@ -484,7 +479,7 @@ export interface ICoreRegistry extends BaseContract {
     nameOrSignature: "getContractInfo"
   ): TypedContractMethod<
     [chainId: BigNumberish, contractType: string],
-    [[boolean, string] & { active: boolean; address_: string }],
+    [[boolean, string] & { active: boolean; addressBytes: string }],
     "view"
   >;
   getFunction(
@@ -513,12 +508,7 @@ export interface ICoreRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "registerContract"
   ): TypedContractMethod<
-    [
-      chainId: BigNumberish,
-      address_: AddressLike,
-      contractType: string,
-      addressBytes: BytesLike
-    ],
+    [chainId: BigNumberish, contractType: string, addressBytes: BytesLike],
     [void],
     "nonpayable"
   >;
