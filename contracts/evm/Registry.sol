@@ -1,39 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
+import "../helpers/BaseRegistry.sol";
 import "./interfaces/IGatewayEVM.sol";
-import "./interfaces/IRegistry.sol";
-
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 /// @title Registry
 /// @notice Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 /// @dev This contract is deployed on every connected chain and maintains a synchronized view of the registry.
-contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, PausableUpgradeable, IRegistry {
-    /// @notice New role identifier for pauser role
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+contract Registry is BaseRegistry {
     /// @notice Identifier for the gateway role
     bytes32 public constant GATEWAY_ROLE = keccak256("GATEWAY_ROLE");
-
     /// @notice GatewayEVM contract that will call this contract with messages from CoreRegistry
     IGatewayEVM public gatewayEVM;
     /// @notice Represents the address of the CoreRegistry contract on the ZetaChain
     address public coreRegistry;
-    /// @notice Active chains in the registry
-    uint256[] public activeChains;
-    /// @notice Maps chain IDs to their information
-    mapping(uint256 => ChainInfo) private _chains;
-    /// @notice Maps chain ID -> contract type -> ContractInfo
-    mapping(uint256 => mapping(string => ContractInfo)) private _contracts;
-    /// @notice Maps ZRC20 token address to their information
-    mapping(address => ZRC20Info) private _zrc20Tokens;
-    /// @notice Maps token symbol to ZRC20 address
-    mapping(string => address) private _zrc20SymbolToAddress;
-    /// @notice Maps origin chain ID and origin address to ZRC20 token address
-    mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
 
     /// @dev Only registry address allowed modifier.
     /// @notice Restricts function calls to only be made by this contract itself
@@ -44,11 +24,6 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
             revert InvalidSender();
         }
         _;
-    }
-
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
     }
 
     /// @notice Initialize the Registry contract
@@ -83,20 +58,6 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
 
         gatewayEVM = IGatewayEVM(gatewayEVM_);
         coreRegistry = coreRegistry_;
-    }
-
-    /// @dev Authorizes the upgrade of the contract, sender must be admin.
-    /// @param newImplementation Address of the new implementation,
-    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
-
-    /// @notice Pause contract.
-    function pause() external onlyRole(PAUSER_ROLE) {
-        _pause();
-    }
-
-    /// @notice Unpause contract.
-    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        _unpause();
     }
 
     /// @notice onCall is called by the GatewayEVM when a cross-chain message is received
@@ -135,31 +96,19 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @param chainId The ID of the chain being activated/deactivated.
     /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
     /// @param registry Address of the Registry contract on the connected chain.
-    /// @param active Whether activate or deactivate the chain
+    /// @param activation Whether activate or deactivate the chain
     function changeChainStatus(
         uint256 chainId,
         address gasZRC20,
         bytes calldata registry,
-        bool active
+        bool activation
     )
         external
         onlyRegistry
         whenNotPaused
     {
-        // Update the chain info
-        _chains[chainId].gasZRC20 = gasZRC20;
-        _chains[chainId].registry = registry;
-        _chains[chainId].active = active;
-
-        // Update active chains array
-        if (active) {
-            activeChains.push(chainId);
-        } else {
-            // Remove from active chains
-            _removeFromActiveChains(chainId);
-        }
-
-        emit ChainStatusChanged(chainId, active);
+        _changeChainStatus(chainId, gasZRC20, registry, activation);
+        emit ChainStatusChanged(chainId, activation);
     }
 
     /// @notice Updates chain metadata, only for the active chains
@@ -176,9 +125,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         onlyRegistry
         whenNotPaused
     {
-        // Updates chain metadata
-        _chains[chainId].metadata[key] = value;
-
+        _updateChainMetadata(chainId, key, value);
         emit ChainMetadataUpdated(chainId, key, value);
     }
 
@@ -196,14 +143,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         onlyRegistry
         whenNotPaused
     {
-        if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-        if (bytes(addressBytes).length == 0) revert ZeroAddress();
-
-        // Store contract info in the storage
-        _contracts[chainId][contractType].active = true;
-        _contracts[chainId][contractType].addressBytes = addressBytes;
-        _contracts[chainId][contractType].contractType = contractType;
-
+        _registerContract(chainId, contractType, addressBytes);
         emit ContractRegistered(chainId, contractType, addressBytes);
     }
 
@@ -223,11 +163,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         onlyRegistry
         whenNotPaused
     {
-        if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-
-        // Store new configuration in the storage
-        _contracts[chainId][contractType].configuration[key] = value;
-
+        _updateContractConfiguration(chainId, contractType, key, value);
         emit ContractConfigurationUpdated(chainId, contractType, key, value);
     }
 
@@ -237,11 +173,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @param contractType The type of the contract
     /// @param active Whether the contract should be active
     function setContractActive(uint256 chainId, string calldata contractType, bool active) external onlyRegistry {
-        if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-
-        // Update the active status
-        _contracts[chainId][contractType].active = active;
-
+        _setContractActive(chainId, contractType, active);
         emit ContractStatusChanged(_contracts[chainId][contractType].addressBytes);
     }
 
@@ -265,24 +197,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
         onlyRegistry
         whenNotPaused
     {
-        if (address_ == address(0)) revert ZeroAddress();
-        if (bytes(symbol).length == 0) revert InvalidContractType("Symbol cannot be empty");
-        if (bytes(originAddress).length == 0) revert InvalidContractType("Origin address cannot be empty");
-
-        // Register the ZRC20 token info
-        _zrc20Tokens[address_].active = true;
-        _zrc20Tokens[address_].address_ = address_;
-        _zrc20Tokens[address_].originAddress = originAddress;
-        _zrc20Tokens[address_].originChainId = originChainId;
-        _zrc20Tokens[address_].symbol = symbol;
-        _zrc20Tokens[address_].decimals = decimals;
-        _zrc20Tokens[address_].coinType = coinType;
-
-        // Map foreign asset to ZRC20
-        _originAssetToZRC20[originChainId][originAddress] = address_;
-        // Map symbol to address
-        _zrc20SymbolToAddress[symbol] = address_;
-
+        _registerZRC20Token(address_, symbol, originChainId, originAddress, coinType, decimals);
         emit ZRC20TokenRegistered(originAddress, address_, decimals, originChainId, symbol);
     }
 
@@ -291,116 +206,7 @@ contract Registry is Initializable, UUPSUpgradeable, AccessControlUpgradeable, P
     /// @param address_ The address of the ZRC20 token
     /// @param active Whether the token should be active
     function setZRC20TokenActive(address address_, bool active) external onlyRegistry whenNotPaused {
-        if (address_ == address(0)) revert ZeroAddress();
-
-        // Update token status
-        _zrc20Tokens[address_].active = active;
-
+        _setZRC20TokenActive(address_, active);
         emit ZRC20TokenUpdated(address_, active);
-    }
-
-    /// @notice Gets chain-specific metadata
-    /// @param chainId The ID of the chain
-    /// @param key The metadata key to retrieve
-    /// @return The value of the requested metadata
-    function getChainMetadata(uint256 chainId, string calldata key) external view returns (bytes memory) {
-        return _chains[chainId].metadata[key];
-    }
-
-    /// @notice Gets information about a specific contract
-    /// @param chainId The ID of the chain where the contract is deployed
-    /// @param contractType The type of the contract
-    /// @return active Whether the contract is active
-    /// @return addressBytes The address of the contract
-    function getContractInfo(
-        uint256 chainId,
-        string calldata contractType
-    )
-        external
-        view
-        returns (bool active, bytes memory addressBytes)
-    {
-        active = _contracts[chainId][contractType].active;
-        addressBytes = _contracts[chainId][contractType].addressBytes;
-    }
-
-    /// @notice Gets contract-specific configuration
-    /// @param chainId The ID of the chain where the contract is deployed
-    /// @param contractType The type of the contract
-    /// @param key The configuration key to retrieve
-    /// @return The value of the requested configuration
-    function getContractConfiguration(
-        uint256 chainId,
-        string calldata contractType,
-        string calldata key
-    )
-        external
-        view
-        returns (bytes memory)
-    {
-        return _contracts[chainId][contractType].configuration[key];
-    }
-
-    /// @notice Gets information about a specific ZRC20 token
-    /// @param address_ The address of the ZRC20 token
-    /// @return active Whether the token is active
-    /// @return symbol The symbol of the token
-    /// @return originChainId The ID of the foreign chain where the original asset exists
-    /// @return originAddress The address or identifier of the asset on its native chain
-    /// @return coinType The type of the original coin
-    /// @return decimals The number of decimals the token uses
-    function getZRC20TokenInfo(address address_)
-        external
-        view
-        returns (
-            bool active,
-            string memory symbol,
-            uint256 originChainId,
-            bytes memory originAddress,
-            string memory coinType,
-            uint8 decimals
-        )
-    {
-        ZRC20Info memory info = _zrc20Tokens[address_];
-        active = info.active;
-        symbol = info.symbol;
-        originChainId = info.originChainId;
-        originAddress = info.originAddress;
-        coinType = info.coinType;
-        decimals = info.decimals;
-    }
-
-    /// @notice Gets the ZRC20 token address for a specific asset on a foreign chain
-    /// @param originChainId The ID of the foreign chain
-    /// @param originAddress The address or identifier of the asset on its native chain
-    /// @return The address of the corresponding ZRC20 token on ZetaChain
-    function getZRC20AddressByForeignAsset(
-        uint256 originChainId,
-        bytes calldata originAddress
-    )
-        external
-        view
-        returns (address)
-    {
-        return _originAssetToZRC20[originChainId][originAddress];
-    }
-
-    /// @notice Gets all active chains in the registry
-    /// @return Array of chain IDs for all active chains
-    function getActiveChains() external view returns (uint256[] memory) {
-        return activeChains;
-    }
-
-    /// @notice Removes a chain ID from the active chains array
-    /// @param chainId The ID of the chain to remove
-    function _removeFromActiveChains(uint256 chainId) private {
-        for (uint256 i = 0; i < activeChains.length; i++) {
-            if (activeChains[i] == chainId) {
-                // Swap with the last element and pop
-                activeChains[i] = activeChains[activeChains.length - 1];
-                activeChains.pop();
-                break;
-            }
-        }
     }
 }

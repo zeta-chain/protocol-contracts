@@ -1,51 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./interfaces/ICoreRegistry.sol";
+import "../helpers/BaseRegistry.sol";
 import "./interfaces/IGatewayZEVM.sol";
 import "./interfaces/IZRC20.sol";
-
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 /// @title CoreRegistry
 /// @notice Central registry for ZetaChain, managing chain info, ZRC20 data, and contract addresses across all chains.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
-contract CoreRegistry is
-    Initializable,
-    UUPSUpgradeable,
-    AccessControlUpgradeable,
-    PausableUpgradeable,
-    ICoreRegistry
-{
+contract CoreRegistry is BaseRegistry {
     /// @notice New role identifier for registry manager role.
     bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
-    /// @notice New role identifier for pauser role.
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Cross-chain message gas limit
     uint256 public constant CROSS_CHAIN_GAS_LIMIT = 300_000;
-
     /// @notice Instance of the GatewayZEVM contract for cross-chain communication
     IGatewayZEVM public gatewayZEVM;
-    /// @notice Active chains in the registry
-    uint256[] public activeChains;
-    /// @notice Maps chain IDs to their information.
-    mapping(uint256 => ChainInfo) private _chains;
-    /// @notice Maps chain ID -> contract type -> ContractInfo
-    mapping(uint256 => mapping(string => ContractInfo)) private _contracts;
-    /// @notice Maps ZRC20 token address to their information
-    mapping(address => ZRC20Info) private _zrc20Tokens;
-    /// @notice Maps token symbol to ZRC20 address.
-    mapping(string => address) private _zrc20SymbolToAddress;
-    /// @notice Maps origin chain ID and origin address to ZRC20 token address.
-    mapping(uint256 => mapping(bytes => address)) private _originAssetToZRC20;
-
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();
-    }
 
     /// @notice Initialize the CoreRegistry contract.
     /// @param admin_ Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions.
@@ -70,21 +39,7 @@ contract CoreRegistry is
         // Add ZetaChain to the list of supported networks
         _chains[block.chainid].active = true;
         _chains[block.chainid].registry = abi.encodePacked(address(this));
-        activeChains.push(block.chainid);
-    }
-
-    /// @dev Authorizes the upgrade of the contract, sender must be admin.
-    /// @param newImplementation Address of the new implementation,
-    function _authorizeUpgrade(address newImplementation) internal override onlyRole(DEFAULT_ADMIN_ROLE) { }
-
-    /// @notice Pause contract.
-    function pause() external onlyRole(PAUSER_ROLE) {
-        _pause();
-    }
-
-    /// @notice Unpause contract.
-    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
-        _unpause();
+        _activeChains.push(block.chainid);
     }
 
     /// @notice Changes status of the chain to activated/deactivated.
@@ -102,28 +57,11 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        if (registry.length == 0 || gasZRC20 == address(0)) revert ZeroAddress();
-        // In the case chain is already activated
-        if (_chains[chainId].active && activation) revert ChainActive(chainId);
-        // In the case chain is inactive
-        if (!_chains[chainId].active && !activation) revert ChainNonActive(chainId);
-
-        // Update the chain info
-        _chains[chainId].active = activation;
-        _chains[chainId].gasZRC20 = gasZRC20;
-        _chains[chainId].registry = registry;
-
-        // Update active chains array
-        if (activation) {
-            activeChains.push(chainId);
-        } else {
-            _removeFromActiveChains(chainId);
-        }
-
+        // Change state on ZetaChain
+        _changeChainStatus(chainId, gasZRC20, registry, activation);
         // Broadcast update to satellite registries
         _broadcastChainActivation(chainId, gasZRC20, registry, activation);
-
-        emit ChainStatusChanged(chainId, !activation, activation);
+        emit ChainStatusChanged(chainId, activation);
     }
 
     /// @notice Updates chain metadata, only for the active chains.
@@ -139,15 +77,10 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        // Check if the chain is active
-        if (!_chains[chainId].active) revert ChainNonActive(chainId);
-
-        // Updates chain metadata
-        _chains[chainId].metadata[key] = value;
-
+        // Change state on ZetaChain
+        _updateChainMetadata(chainId, key, value);
         // Broadcast update to satellite registries
         _broadcastChainMetadataUpdate(chainId, key, value);
-
         emit ChainMetadataUpdated(chainId, key, value);
     }
 
@@ -164,24 +97,10 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        // Validate inputs
-        if (!_chains[chainId].active) revert ChainNonActive(chainId);
-        if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-        if (bytes(addressBytes).length == 0) revert ZeroAddress();
-
-        // Check if contract already exists in the registry
-        if (bytes(_contracts[chainId][contractType].addressBytes).length > 0) {
-            revert ContractAlreadyRegistered(chainId, contractType, addressBytes);
-        }
-
-        // Store contract info in the storage.
-        _contracts[chainId][contractType].active = true;
-        _contracts[chainId][contractType].addressBytes = addressBytes;
-        _contracts[chainId][contractType].contractType = contractType;
-
+        // Change state on ZetaChain
+        _registerContract(chainId, contractType, addressBytes);
         // Broadcast update to satellite registries
         _broadcastContractRegistration(chainId, contractType, addressBytes);
-
         emit ContractRegistered(chainId, contractType, addressBytes);
     }
 
@@ -200,22 +119,11 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        // Validate inputs
-        if (!_chains[chainId].active) revert ChainNonActive(chainId);
-        if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-
-        // Check if contract exists in the registry
-        if (!_contracts[chainId][contractType].active) {
-            revert ContractNotFound(chainId, contractType);
-        }
-
-        // Store new configuration in the storage.
-        _contracts[chainId][contractType].configuration[key] = value;
-
+        // Change state on ZetaChain
+        _updateContractConfiguration(chainId, contractType, key, value);
         // Broadcast update to satellite registries
         _broadcastContractConfigUpdate(chainId, contractType, key, value);
-
-        emit NewContractConfiguration(chainId, contractType, key, value);
+        emit ContractConfigurationUpdated(chainId, contractType, key, value);
     }
 
     /// @notice Sets a contract's active status
@@ -231,21 +139,10 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        // Validate inputs
-        if (!_chains[chainId].active) revert ChainNonActive(chainId);
-        if (bytes(contractType).length == 0) revert InvalidContractType(contractType);
-
-        // Check if contract exists in the registry
-        if (bytes(_contracts[chainId][contractType].addressBytes).length == 0) {
-            revert ContractNotFound(chainId, contractType);
-        }
-
-        // Update the active status
-        _contracts[chainId][contractType].active = active;
-
+        // Change state on ZetaChain
+        _setContractActive(chainId, contractType, active);
         // Broadcast update to satellite registries
         _broadcastContractStatusUpdate(chainId, contractType, active);
-
         emit ContractStatusChanged(_contracts[chainId][contractType].addressBytes);
     }
 
@@ -268,32 +165,10 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        // Validate inputs
-        if (address_ == address(0)) revert ZeroAddress();
-        if (bytes(symbol).length == 0) revert InvalidContractType("Symbol cannot be empty");
-        if (bytes(originAddress).length == 0) revert InvalidContractType("Origin address cannot be empty");
-
-        // Check if token already registered
-        if (_zrc20Tokens[address_].address_ != address(0)) revert ZRC20AlreadyRegistered(address_);
-        if (_zrc20SymbolToAddress[symbol] != address(0)) revert ZRC20SymbolAlreadyInUse(symbol);
-
-        // Register the ZRC20 token info.
-        _zrc20Tokens[address_].active = true;
-        _zrc20Tokens[address_].address_ = address_;
-        _zrc20Tokens[address_].originAddress = originAddress;
-        _zrc20Tokens[address_].originChainId = originChainId;
-        _zrc20Tokens[address_].symbol = symbol;
-        _zrc20Tokens[address_].decimals = decimals;
-        _zrc20Tokens[address_].coinType = coinType;
-
-        // Map foreign asset to ZRC20
-        _originAssetToZRC20[originChainId][originAddress] = address_;
-        // Map symbol to address
-        _zrc20SymbolToAddress[symbol] = address_;
-
+        // Change state on ZetaChain
+        _registerZRC20Token(address_, symbol, originChainId, originAddress, coinType, decimals);
         // Broadcast update to satellite registries
         _broadcastZRC20Registration(address_, symbol, originChainId, originAddress, coinType, decimals);
-
         emit ZRC20TokenRegistered(originAddress, address_, decimals, originChainId, symbol);
     }
 
@@ -306,109 +181,11 @@ contract CoreRegistry is
         onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
-        // Validate inputs
-        if (address_ == address(0)) revert ZeroAddress();
-        if (_zrc20Tokens[address_].address_ == address(0)) revert InvalidContractType("ZRC20 not registered");
-
-        // Update token status.
-        _zrc20Tokens[address_].active = active;
-
+        // Change state on ZetaChain
+        _setZRC20TokenActive(address_, active);
         // Broadcast update to satellite registries
         _broadcastZRC20Update(address_, active);
-
         emit ZRC20TokenUpdated(address_, active);
-    }
-
-    /// @notice Gets chain-specific metadata
-    /// @param chainId The ID of the chain
-    /// @param key The metadata key to retrieve
-    /// @return The value of the requested metadata
-    function getChainMetadata(uint256 chainId, string calldata key) external view returns (bytes memory) {
-        return _chains[chainId].metadata[key];
-    }
-
-    /// @notice Gets information about a specific contract
-    /// @param chainId The ID of the chain where the contract is deployed
-    /// @param contractType The type of the contract
-    /// @return active Whether the contract is active
-    /// @return addressBytes The address of the contract
-    function getContractInfo(
-        uint256 chainId,
-        string calldata contractType
-    )
-        external
-        view
-        returns (bool active, bytes memory addressBytes)
-    {
-        active = _contracts[chainId][contractType].active;
-        addressBytes = _contracts[chainId][contractType].addressBytes;
-    }
-
-    /// @notice Gets contract-specific configuration
-    /// @param chainId The ID of the chain where the contract is deployed
-    /// @param contractType The type of the contract
-    /// @param key The configuration key to retrieve
-    /// @return The value of the requested configuration
-    function getContractConfiguration(
-        uint256 chainId,
-        string calldata contractType,
-        string calldata key
-    )
-        external
-        view
-        returns (bytes memory)
-    {
-        return _contracts[chainId][contractType].configuration[key];
-    }
-
-    /// @notice Gets information about a specific ZRC20 token
-    /// @param address_ The address of the ZRC20 token
-    /// @return active Whether the token is active
-    /// @return symbol The symbol of the token
-    /// @return originChainId The ID of the foreign chain where the original asset exists
-    /// @return originAddress The address or identifier of the asset on its native chain
-    /// @return coinType The type of the original coin
-    /// @return decimals The number of decimals the token uses
-    function getZRC20TokenInfo(address address_)
-        external
-        view
-        returns (
-            bool active,
-            string memory symbol,
-            uint256 originChainId,
-            bytes memory originAddress,
-            string memory coinType,
-            uint8 decimals
-        )
-    {
-        ZRC20Info memory info = _zrc20Tokens[address_];
-        active = info.active;
-        symbol = info.symbol;
-        originChainId = info.originChainId;
-        originAddress = info.originAddress;
-        coinType = info.coinType;
-        decimals = info.decimals;
-    }
-
-    /// @notice Gets the ZRC20 token address for a specific asset on a foreign chain.
-    /// @param originChainId The ID of the foreign chain
-    /// @param originAddress The address or identifier of the asset on its native chain.
-    /// @return The address of the corresponding ZRC20 token on ZetaChain.
-    function getZRC20AddressByForeignAsset(
-        uint256 originChainId,
-        bytes calldata originAddress
-    )
-        external
-        view
-        returns (address)
-    {
-        return _originAssetToZRC20[originChainId][originAddress];
-    }
-
-    /// @notice Gets all active chains in the registry.
-    /// @return Array of chain IDs for all active chains.
-    function getActiveChains() external view returns (uint256[] memory) {
-        return activeChains;
     }
 
     /// @notice Broadcast chain activation update to all satellite registries.
@@ -530,9 +307,9 @@ contract CoreRegistry is
     /// @notice Generic function to broadcast encoded messages to all satellite registries
     /// @param encodedMessage The fully encoded function call to broadcast
     function _broadcastToAllChains(bytes memory encodedMessage) private {
-        for (uint256 i = 0; i < activeChains.length; i++) {
-            if (activeChains[i] != block.chainid) {
-                _sendCrossChainMessage(activeChains[i], encodedMessage);
+        for (uint256 i = 0; i < _activeChains.length; i++) {
+            if (_activeChains[i] != block.chainid) {
+                _sendCrossChainMessage(_activeChains[i], encodedMessage);
             }
         }
     }
@@ -556,18 +333,5 @@ contract CoreRegistry is
         IZRC20(gasZRC20).approve(address(gatewayZEVM), gasFee);
 
         gatewayZEVM.call(_chains[targetChainId].registry, gasZRC20, message, callOptions, revertOptions);
-    }
-
-    /// @notice Removes a chain ID from the active chains array.
-    /// @param chainId The ID of the chain to remove.
-    function _removeFromActiveChains(uint256 chainId) private {
-        for (uint256 i = 0; i < activeChains.length; i++) {
-            if (activeChains[i] == chainId) {
-                // Swap with the last element and pop
-                activeChains[i] = activeChains[activeChains.length - 1];
-                activeChains.pop();
-                break;
-            }
-        }
     }
 }

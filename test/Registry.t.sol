@@ -7,7 +7,7 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import { Registry } from "../contracts/evm/Registry.sol";
 import "../contracts/evm/interfaces/IGatewayEVM.sol";
-import "../contracts/evm/interfaces/IRegistry.sol";
+import "../contracts/helpers/interfaces/IBaseRegistry.sol";
 
 // Mock GatewayEVM
 contract MockGatewayEVM {
@@ -19,7 +19,7 @@ contract MockGatewayEVM {
     }
 }
 
-contract RegistryTest is Test, IRegistryErrors, IRegistryEvents {
+contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
     address payable proxy;
     Registry registry;
     MockGatewayEVM mockGateway;

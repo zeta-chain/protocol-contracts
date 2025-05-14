@@ -7,9 +7,9 @@ import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import { CoreRegistry } from "../contracts/zevm/CoreRegistry.sol";
 
+import "../contracts/helpers/interfaces/IBaseRegistry.sol";
 import { SystemContract } from "../contracts/zevm/SystemContract.sol";
 import "../contracts/zevm/ZRC20.sol";
-import "../contracts/zevm/interfaces/ICoreRegistry.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 
 // Mock GatewayZEVM
@@ -33,7 +33,7 @@ contract MockGatewayZEVM {
     }
 }
 
-contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
+contract CoreRegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
     address payable proxy;
     CoreRegistry registry;
     MockGatewayZEVM mockGateway;
@@ -132,7 +132,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Activate chain
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
-        emit ChainStatusChanged(chainId, false, true);
+        emit ChainStatusChanged(chainId, true);
         registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
 
         // Verify chain is now active
@@ -189,7 +189,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Deactivate chain
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
-        emit ChainStatusChanged(chainId, true, false);
+        emit ChainStatusChanged(chainId, false);
         registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, false);
 
         // Verify chain is no longer active
@@ -352,7 +352,7 @@ contract CoreRegistryTest is Test, ICoreRegistryErrors, ICoreRegistryEvents {
         // Update contract config
         vm.prank(registryManager);
         vm.expectEmit(true, true, true, true);
-        emit NewContractConfiguration(chainId, contractType, key, value);
+        emit ContractConfigurationUpdated(chainId, contractType, key, value);
         registry.updateContractConfiguration(chainId, contractType, key, value);
 
         // Verify config
