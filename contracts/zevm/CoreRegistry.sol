@@ -319,7 +319,7 @@ contract CoreRegistry is BaseRegistry {
     /// @param message The encoded function call to execute on the target chain.
     function _sendCrossChainMessage(uint256 targetChainId, bytes memory message) private {
         // Prepare call options
-        CallOptions memory callOptions = CallOptions({ gasLimit: CROSS_CHAIN_GAS_LIMIT, isArbitraryCall: true });
+        CallOptions memory callOptions = CallOptions({ gasLimit: CROSS_CHAIN_GAS_LIMIT, isArbitraryCall: false });
 
         // Prepare revert options
         RevertOptions memory revertOptions;
