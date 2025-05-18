@@ -2,7 +2,7 @@
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/Registry.sol)
 
 **Inherits:**
-[BaseRegistry](/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md)
+[BaseRegistry](/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md), [IRegistry](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistry.md)
 
 Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 
@@ -275,5 +275,73 @@ function setZRC20TokenActive(address address_, bool active) external onlyRegistr
 |----|----|-----------|
 |`address_`|`address`|The address of the ZRC20 token|
 |`active`|`bool`|Whether the token should be active|
+
+
+### bootstrapChains
+
+Bootstrap the registry with chain data
+
+*This function can only be called only by an admin*
+
+
+```solidity
+function bootstrapChains(
+    ChainBootstrapData[] calldata chains,
+    ChainMetadataEntry[] calldata metadataEntries
+)
+    external
+    onlyRole(DEFAULT_ADMIN_ROLE)
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chains`|`ChainBootstrapData[]`|Array of chain data structures to bootstrap|
+|`metadataEntries`|`ChainMetadataEntry[]`|Array of chain metadata entries|
+
+
+### bootstrapContracts
+
+Bootstrap the registry with contract data
+
+*This function can only be called once and only by an admin*
+
+
+```solidity
+function bootstrapContracts(
+    ContractBootstrapData[] calldata contracts,
+    ContractConfigEntry[] calldata configEntries
+)
+    external
+    onlyRole(DEFAULT_ADMIN_ROLE)
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`contracts`|`ContractBootstrapData[]`|Array of contract data structures to bootstrap|
+|`configEntries`|`ContractConfigEntry[]`|Array of contract configuration entries|
+
+
+### bootstrapZRC20Tokens
+
+Bootstrap the registry with ZRC20 token data
+
+*This function can only be called once and only by an admin*
+
+
+```solidity
+function bootstrapZRC20Tokens(ZRC20BootstrapData[] calldata tokens)
+    external
+    onlyRole(DEFAULT_ADMIN_ROLE)
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`tokens`|`ZRC20BootstrapData[]`|Array of ZRC20 token data structures to bootstrap|
 
 

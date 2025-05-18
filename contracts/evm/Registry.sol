@@ -3,11 +3,12 @@ pragma solidity 0.8.26;
 
 import "../helpers/BaseRegistry.sol";
 import "./interfaces/IGatewayEVM.sol";
+import "./interfaces/IRegistry.sol";
 
 /// @title Registry
 /// @notice Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 /// @dev This contract is deployed on every connected chain and maintains a synchronized view of the registry.
-contract Registry is BaseRegistry {
+contract Registry is BaseRegistry, IRegistry {
     /// @notice Identifier for the gateway role
     bytes32 public constant GATEWAY_ROLE = keccak256("GATEWAY_ROLE");
     /// @notice GatewayEVM contract that will call this contract with messages from CoreRegistry
@@ -208,5 +209,79 @@ contract Registry is BaseRegistry {
     function setZRC20TokenActive(address address_, bool active) external onlyRegistry whenNotPaused {
         _setZRC20TokenActive(address_, active);
         emit ZRC20TokenUpdated(address_, active);
+    }
+
+    /// @notice Bootstrap the registry with chain data
+    /// @dev This function can only be called only by an admin
+    /// @param chains Array of chain data structures to bootstrap
+    /// @param metadataEntries Array of chain metadata entries
+    function bootstrapChains(
+        ChainBootstrapData[] calldata chains,
+        ChainMetadataEntry[] calldata metadataEntries
+    )
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        whenNotPaused
+    {
+        // Process chain data
+        for (uint256 i = 0; i < chains.length; i++) {
+            ChainBootstrapData calldata chainData = chains[i];
+            _changeChainStatus(chainData.chainId, chainData.gasZRC20, chainData.registry, true);
+        }
+
+        // Process metadata entries
+        for (uint256 i = 0; i < metadataEntries.length; i++) {
+            ChainMetadataEntry calldata metadata = metadataEntries[i];
+            _updateChainMetadata(metadata.chainId, metadata.key, metadata.value);
+        }
+    }
+
+    /// @notice Bootstrap the registry with contract data
+    /// @dev This function can only be called once and only by an admin
+    /// @param contracts Array of contract data structures to bootstrap
+    /// @param configEntries Array of contract configuration entries
+    function bootstrapContracts(
+        ContractBootstrapData[] calldata contracts,
+        ContractConfigEntry[] calldata configEntries
+    )
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        whenNotPaused
+    {
+        // Process contract data
+        for (uint256 i = 0; i < contracts.length; i++) {
+            ContractBootstrapData calldata contractData = contracts[i];
+            _registerContract(contractData.chainId, contractData.contractType, contractData.addressBytes);
+        }
+
+        // Process configuration entries
+        for (uint256 i = 0; i < configEntries.length; i++) {
+            ContractConfigEntry calldata configuration = configEntries[i];
+            _updateContractConfiguration(
+                configuration.chainId, configuration.contractType, configuration.key, configuration.value
+            );
+        }
+    }
+
+    /// @notice Bootstrap the registry with ZRC20 token data
+    /// @dev This function can only be called once and only by an admin
+    /// @param tokens Array of ZRC20 token data structures to bootstrap
+    function bootstrapZRC20Tokens(ZRC20BootstrapData[] calldata tokens)
+        external
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        whenNotPaused
+    {
+        // Process ZRC20 token data
+        for (uint256 i = 0; i < tokens.length; i++) {
+            ZRC20BootstrapData calldata tokenData = tokens[i];
+            _registerZRC20Token(
+                tokenData.address_,
+                tokenData.symbol,
+                tokenData.originChainId,
+                tokenData.originAddress,
+                tokenData.coinType,
+                tokenData.decimals
+            );
+        }
     }
 }

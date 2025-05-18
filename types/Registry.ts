@@ -27,6 +27,88 @@ export type MessageContextStruct = { sender: AddressLike };
 
 export type MessageContextStructOutput = [sender: string] & { sender: string };
 
+export declare namespace IRegistry {
+  export type ChainBootstrapDataStruct = {
+    chainId: BigNumberish;
+    gasZRC20: AddressLike;
+    registry: BytesLike;
+    active: boolean;
+  };
+
+  export type ChainBootstrapDataStructOutput = [
+    chainId: bigint,
+    gasZRC20: string,
+    registry: string,
+    active: boolean
+  ] & { chainId: bigint; gasZRC20: string; registry: string; active: boolean };
+
+  export type ChainMetadataEntryStruct = {
+    chainId: BigNumberish;
+    key: string;
+    value: BytesLike;
+  };
+
+  export type ChainMetadataEntryStructOutput = [
+    chainId: bigint,
+    key: string,
+    value: string
+  ] & { chainId: bigint; key: string; value: string };
+
+  export type ContractBootstrapDataStruct = {
+    chainId: BigNumberish;
+    contractType: string;
+    addressBytes: BytesLike;
+  };
+
+  export type ContractBootstrapDataStructOutput = [
+    chainId: bigint,
+    contractType: string,
+    addressBytes: string
+  ] & { chainId: bigint; contractType: string; addressBytes: string };
+
+  export type ContractConfigEntryStruct = {
+    chainId: BigNumberish;
+    contractType: string;
+    key: string;
+    value: BytesLike;
+  };
+
+  export type ContractConfigEntryStructOutput = [
+    chainId: bigint,
+    contractType: string,
+    key: string,
+    value: string
+  ] & { chainId: bigint; contractType: string; key: string; value: string };
+
+  export type ZRC20BootstrapDataStruct = {
+    address_: AddressLike;
+    symbol: string;
+    originChainId: BigNumberish;
+    originAddress: BytesLike;
+    coinType: string;
+    decimals: BigNumberish;
+    active: boolean;
+  };
+
+  export type ZRC20BootstrapDataStructOutput = [
+    address_: string,
+    symbol: string,
+    originChainId: bigint,
+    originAddress: string,
+    coinType: string,
+    decimals: bigint,
+    active: boolean
+  ] & {
+    address_: string;
+    symbol: string;
+    originChainId: bigint;
+    originAddress: string;
+    coinType: string;
+    decimals: bigint;
+    active: boolean;
+  };
+}
+
 export interface RegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -34,6 +116,9 @@ export interface RegistryInterface extends Interface {
       | "GATEWAY_ROLE"
       | "PAUSER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
+      | "bootstrapChains"
+      | "bootstrapContracts"
+      | "bootstrapZRC20Tokens"
       | "changeChainStatus"
       | "coreRegistry"
       | "gatewayEVM"
@@ -97,6 +182,24 @@ export interface RegistryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bootstrapChains",
+    values: [
+      IRegistry.ChainBootstrapDataStruct[],
+      IRegistry.ChainMetadataEntryStruct[]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bootstrapContracts",
+    values: [
+      IRegistry.ContractBootstrapDataStruct[],
+      IRegistry.ContractConfigEntryStruct[]
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bootstrapZRC20Tokens",
+    values: [IRegistry.ZRC20BootstrapDataStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "changeChainStatus",
@@ -216,6 +319,18 @@ export interface RegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bootstrapChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bootstrapContracts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bootstrapZRC20Tokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -593,6 +708,30 @@ export interface Registry extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
+  bootstrapChains: TypedContractMethod<
+    [
+      chains: IRegistry.ChainBootstrapDataStruct[],
+      metadataEntries: IRegistry.ChainMetadataEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  bootstrapContracts: TypedContractMethod<
+    [
+      contracts: IRegistry.ContractBootstrapDataStruct[],
+      configEntries: IRegistry.ContractConfigEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  bootstrapZRC20Tokens: TypedContractMethod<
+    [tokens: IRegistry.ZRC20BootstrapDataStruct[]],
+    [void],
+    "nonpayable"
+  >;
+
   changeChainStatus: TypedContractMethod<
     [
       chainId: BigNumberish,
@@ -776,6 +915,33 @@ export interface Registry extends BaseContract {
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "bootstrapChains"
+  ): TypedContractMethod<
+    [
+      chains: IRegistry.ChainBootstrapDataStruct[],
+      metadataEntries: IRegistry.ChainMetadataEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "bootstrapContracts"
+  ): TypedContractMethod<
+    [
+      contracts: IRegistry.ContractBootstrapDataStruct[],
+      configEntries: IRegistry.ContractConfigEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "bootstrapZRC20Tokens"
+  ): TypedContractMethod<
+    [tokens: IRegistry.ZRC20BootstrapDataStruct[]],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
