@@ -286,7 +286,7 @@ Bootstrap the registry with chain data
 
 ```solidity
 function bootstrapChains(
-    ChainBootstrapData[] calldata chains,
+    ChainInfoDTO[] calldata chains,
     ChainMetadataEntry[] calldata metadataEntries
 )
     external
@@ -297,7 +297,7 @@ function bootstrapChains(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`chains`|`ChainBootstrapData[]`|Array of chain data structures to bootstrap|
+|`chains`|`ChainInfoDTO[]`|Array of chain data structures to bootstrap|
 |`metadataEntries`|`ChainMetadataEntry[]`|Array of chain metadata entries|
 
 
@@ -310,7 +310,7 @@ Bootstrap the registry with contract data
 
 ```solidity
 function bootstrapContracts(
-    ContractBootstrapData[] calldata contracts,
+    ContractInfoDTO[] calldata contracts,
     ContractConfigEntry[] calldata configEntries
 )
     external
@@ -321,7 +321,7 @@ function bootstrapContracts(
 
 |Name|Type|Description|
 |----|----|-----------|
-|`contracts`|`ContractBootstrapData[]`|Array of contract data structures to bootstrap|
+|`contracts`|`ContractInfoDTO[]`|Array of contract data structures to bootstrap|
 |`configEntries`|`ContractConfigEntry[]`|Array of contract configuration entries|
 
 
@@ -333,15 +333,12 @@ Bootstrap the registry with ZRC20 token data
 
 
 ```solidity
-function bootstrapZRC20Tokens(ZRC20BootstrapData[] calldata tokens)
-    external
-    onlyRole(DEFAULT_ADMIN_ROLE)
-    whenNotPaused;
+function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(DEFAULT_ADMIN_ROLE) whenNotPaused;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`tokens`|`ZRC20BootstrapData[]`|Array of ZRC20 token data structures to bootstrap|
+|`tokens`|`ZRC20Info[]`|Array of ZRC20 token data structures to bootstrap|
 
 

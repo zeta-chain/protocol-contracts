@@ -216,7 +216,7 @@ contract Registry is BaseRegistry, IRegistry {
     /// @param chains Array of chain data structures to bootstrap
     /// @param metadataEntries Array of chain metadata entries
     function bootstrapChains(
-        ChainBootstrapData[] calldata chains,
+        ChainInfoDTO[] calldata chains,
         ChainMetadataEntry[] calldata metadataEntries
     )
         external
@@ -225,7 +225,7 @@ contract Registry is BaseRegistry, IRegistry {
     {
         // Process chain data
         for (uint256 i = 0; i < chains.length; i++) {
-            ChainBootstrapData calldata chainData = chains[i];
+            ChainInfoDTO calldata chainData = chains[i];
             _changeChainStatus(chainData.chainId, chainData.gasZRC20, chainData.registry, chainData.active);
         }
 
@@ -241,7 +241,7 @@ contract Registry is BaseRegistry, IRegistry {
     /// @param contracts Array of contract data structures to bootstrap
     /// @param configEntries Array of contract configuration entries
     function bootstrapContracts(
-        ContractBootstrapData[] calldata contracts,
+        ContractInfoDTO[] calldata contracts,
         ContractConfigEntry[] calldata configEntries
     )
         external
@@ -250,7 +250,7 @@ contract Registry is BaseRegistry, IRegistry {
     {
         // Process contract data
         for (uint256 i = 0; i < contracts.length; i++) {
-            ContractBootstrapData calldata contractData = contracts[i];
+            ContractInfoDTO calldata contractData = contracts[i];
             _registerContract(contractData.chainId, contractData.contractType, contractData.addressBytes);
         }
 
@@ -266,14 +266,10 @@ contract Registry is BaseRegistry, IRegistry {
     /// @notice Bootstrap the registry with ZRC20 token data
     /// @dev This function can only be called once and only by an admin
     /// @param tokens Array of ZRC20 token data structures to bootstrap
-    function bootstrapZRC20Tokens(ZRC20BootstrapData[] calldata tokens)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        whenNotPaused
-    {
+    function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(DEFAULT_ADMIN_ROLE) whenNotPaused {
         // Process ZRC20 token data
         for (uint256 i = 0; i < tokens.length; i++) {
-            ZRC20BootstrapData calldata tokenData = tokens[i];
+            ZRC20Info calldata tokenData = tokens[i];
             _registerZRC20Token(
                 tokenData.address_,
                 tokenData.symbol,
