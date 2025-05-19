@@ -283,7 +283,7 @@ function setZRC20TokenActive(address address_, bool active) external onlyRegistr
 
 Bootstrap the registry with chain data
 
-*This function can only be called only by an admin*
+*This function can only be called by an address with the REGISTRY_MANAGER_ROLE.*
 
 
 ```solidity
@@ -307,7 +307,7 @@ function bootstrapChains(
 
 Bootstrap the registry with contract data
 
-*This function can only be called once and only by an admin*
+*This function can only be called by an address with the REGISTRY_MANAGER_ROLE.*
 
 
 ```solidity
@@ -331,7 +331,7 @@ function bootstrapContracts(
 
 Bootstrap the registry with ZRC20 token data
 
-*This function can only be called once and only by an admin*
+*This function can only be called by an address with the REGISTRY_MANAGER_ROLE.*
 
 
 ```solidity

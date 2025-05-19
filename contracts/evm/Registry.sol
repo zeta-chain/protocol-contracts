@@ -215,7 +215,7 @@ contract Registry is BaseRegistry, IRegistry {
     }
 
     /// @notice Bootstrap the registry with chain data
-    /// @dev This function can only be called only by an admin
+    /// @dev This function can only be called by an address with the REGISTRY_MANAGER_ROLE.
     /// @param chains Array of chain data structures to bootstrap
     /// @param metadataEntries Array of chain metadata entries
     function bootstrapChains(
@@ -240,7 +240,7 @@ contract Registry is BaseRegistry, IRegistry {
     }
 
     /// @notice Bootstrap the registry with contract data
-    /// @dev This function can only be called once and only by an admin
+    /// @dev This function can only be called by an address with the REGISTRY_MANAGER_ROLE.
     /// @param contracts Array of contract data structures to bootstrap
     /// @param configEntries Array of contract configuration entries
     function bootstrapContracts(
@@ -267,7 +267,7 @@ contract Registry is BaseRegistry, IRegistry {
     }
 
     /// @notice Bootstrap the registry with ZRC20 token data
-    /// @dev This function can only be called once and only by an admin
+    /// @dev This function can only be called by an address with the REGISTRY_MANAGER_ROLE.
     /// @param tokens Array of ZRC20 token data structures to bootstrap
     function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused {
         // Process ZRC20 token data
