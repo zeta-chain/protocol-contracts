@@ -17,6 +17,8 @@ abstract contract BaseRegistry is
 {
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @notice New role identifier for registry manager role.
+    bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
 
     /// @notice Active chains in the registry.
     uint256[] internal _activeChains;

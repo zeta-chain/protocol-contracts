@@ -30,11 +30,13 @@ contract Registry is BaseRegistry, IRegistry {
     /// @notice Initialize the Registry contract
     /// @param admin_ Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions
     /// @param pauserAddress_ Address with PAUSER_ROLE, authorized for pausing actions
+    /// @param registryManager_ Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
     /// @param gatewayEVM_ Address of the GatewayEVM contract for cross-chain messaging
     /// @param coreRegistry_ Address of the CoreRegistry contract deployed on ZetaChain
     function initialize(
         address admin_,
         address pauserAddress_,
+        address registryManager_,
         address gatewayEVM_,
         address coreRegistry_
     )
@@ -43,7 +45,7 @@ contract Registry is BaseRegistry, IRegistry {
     {
         if (
             admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0)
-                || pauserAddress_ == address(0)
+                || pauserAddress_ == address(0) || registryManager_ == address(0)
         ) {
             revert ZeroAddress();
         }
@@ -55,6 +57,7 @@ contract Registry is BaseRegistry, IRegistry {
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
         _grantRole(PAUSER_ROLE, pauserAddress_);
+        _grantRole(REGISTRY_MANAGER_ROLE, registryManager_);
         _grantRole(GATEWAY_ROLE, gatewayEVM_);
 
         gatewayEVM = IGatewayEVM(gatewayEVM_);
@@ -220,7 +223,7 @@ contract Registry is BaseRegistry, IRegistry {
         ChainMetadataEntry[] calldata metadataEntries
     )
         external
-        onlyRole(DEFAULT_ADMIN_ROLE)
+        onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
         // Process chain data
@@ -245,7 +248,7 @@ contract Registry is BaseRegistry, IRegistry {
         ContractConfigEntry[] calldata configEntries
     )
         external
-        onlyRole(DEFAULT_ADMIN_ROLE)
+        onlyRole(REGISTRY_MANAGER_ROLE)
         whenNotPaused
     {
         // Process contract data
@@ -266,7 +269,7 @@ contract Registry is BaseRegistry, IRegistry {
     /// @notice Bootstrap the registry with ZRC20 token data
     /// @dev This function can only be called once and only by an admin
     /// @param tokens Array of ZRC20 token data structures to bootstrap
-    function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(DEFAULT_ADMIN_ROLE) whenNotPaused {
+    function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused {
         // Process ZRC20 token data
         for (uint256 i = 0; i < tokens.length; i++) {
             ZRC20Info calldata tokenData = tokens[i];

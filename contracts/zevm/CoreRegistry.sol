@@ -9,8 +9,6 @@ import "./interfaces/IZRC20.sol";
 /// @notice Central registry for ZetaChain, managing chain info, ZRC20 data, and contract addresses across all chains.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract CoreRegistry is BaseRegistry {
-    /// @notice New role identifier for registry manager role.
-    bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
     /// @notice Cross-chain message gas limit
     uint256 public constant CROSS_CHAIN_GAS_LIMIT = 300_000;
     /// @notice Instance of the GatewayZEVM contract for cross-chain communication
