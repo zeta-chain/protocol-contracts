@@ -2,6 +2,7 @@
 
 # Contents
 - [evm](/contracts/evm)
+- [helpers](/contracts/helpers)
 - [zevm](/contracts/zevm)
 - [INotSupportedMethods](Errors.sol/interface.INotSupportedMethods.md)
 - [RevertOptions](Revert.sol/struct.RevertOptions.md)
