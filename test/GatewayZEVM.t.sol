@@ -127,14 +127,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         // Get the gas fee information from the contract
         (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFeeWithGasLimit(10);
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                GasFeeTransferFailed.selector,
-                gasZRC20,
-                protocolAddress, // The PROTOCOL_ADDRESS constant
-                gasFee
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(GasFeeTransferFailed.selector, gasZRC20, address(gateway), gasFee));
 
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
     }
@@ -1148,5 +1141,57 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.prank(protocolAddress);
         vm.expectRevert(ZeroAddress.selector);
         gateway.executeAbort(address(0), abortContext);
+    }
+
+    function testBurnGasFeeForZRC20Withdrawal() public {
+        uint256 amount = 1;
+
+        vm.prank(protocolAddress);
+        zrc20.updateGasLimit(50_000);
+
+        (, uint256 gasFee) = zrc20.withdrawGasFeeWithGasLimit(50_000);
+
+        uint256 initialTotalSupply = zrc20.totalSupply();
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptions);
+
+        uint256 finalTotalSupply = zrc20.totalSupply();
+        uint256 expectedBurnAmount = amount + gasFee;
+        assertEq(initialTotalSupply - expectedBurnAmount, finalTotalSupply, "ZRC20 tokens were not burned correctly");
+    }
+
+    function testBurnGasFeeForZRC20WithdrawAndCall() public {
+        uint256 amount = 1;
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+
+        vm.startPrank(protocolAddress);
+        zrc20.updateGasLimit(MIN_GAS_LIMIT);
+
+        (, uint256 gasFee) = zrc20.withdrawGasFeeWithGasLimit(MIN_GAS_LIMIT);
+
+        zrc20.deposit(owner, amount + gasFee);
+        vm.stopPrank();
+
+        vm.startPrank(owner);
+        zrc20.approve(address(gateway), amount + gasFee);
+        vm.stopPrank();
+
+        uint256 initialTotalSupply = zrc20.totalSupply();
+
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            amount,
+            address(zrc20),
+            message,
+            CallOptions({ gasLimit: MIN_GAS_LIMIT, isArbitraryCall: true }),
+            revertOptions
+        );
+
+        uint256 finalTotalSupply = zrc20.totalSupply();
+        uint256 expectedBurnAmount = amount + gasFee;
+        assertEq(
+            initialTotalSupply - expectedBurnAmount,
+            finalTotalSupply,
+            "ZRC20 tokens were not burned correctly for withdrawAndCall"
+        );
     }
 }
