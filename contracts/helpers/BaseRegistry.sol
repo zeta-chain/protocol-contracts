@@ -316,7 +316,9 @@ abstract contract BaseRegistry is
     /// @notice Returns information for all chains (active and inactive) in the registry.
     /// @return chainsInfo Array of ChainInfoDTO structs containing information about all chains.
     function getAllChains() external view returns (ChainInfoDTO[] memory chainsInfo) {
-        for (uint256 i = 0; i < _allChains.length; i++) {
+        uint256 length = _allChains.length;
+        chainsInfo = new ChainInfoDTO[](length);
+        for (uint256 i = 0; i < length; i++) {
             uint256 chainId = _allChains[i];
             chainsInfo[i] = ChainInfoDTO({
                 active: _chains[chainId].active,
@@ -330,7 +332,9 @@ abstract contract BaseRegistry is
     /// @notice Returns information for all contracts in the registry.
     /// @return contractsInfo Array of ContractInfoDTO structs containing information about all contracts.
     function getAllContracts() external view returns (ContractInfoDTO[] memory contractsInfo) {
-        for (uint256 i = 0; i < _allContracts.length; i++) {
+        uint256 length = _allChains.length;
+        contractsInfo = new ContractInfoDTO[](length);
+        for (uint256 i = 0; i < length; i++) {
             ContractIdentifier memory identifier = _allContracts[i];
             uint256 chainId = identifier.chainId;
             string memory contractType = identifier.contractType;
@@ -347,7 +351,9 @@ abstract contract BaseRegistry is
     /// @notice Returns information for all ZRC20 tokens in the registry.
     /// @return tokensInfo Array of ZRC20Info structs containing information about all ZRC20 tokens.
     function getAllZRC20Tokens() external view returns (ZRC20Info[] memory tokensInfo) {
-        for (uint256 i = 0; i < _allZRC20Addresses.length; i++) {
+        uint256 length = _allZRC20Addresses.length;
+        tokensInfo = new ZRC20Info[](length);
+        for (uint256 i = 0; i < length; i++) {
             address addr = _allZRC20Addresses[i];
             tokensInfo[i] = _zrc20Tokens[addr];
         }

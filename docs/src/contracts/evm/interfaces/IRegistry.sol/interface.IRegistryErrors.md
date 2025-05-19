@@ -1,5 +1,5 @@
 # IRegistryErrors
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/contracts/evm/interfaces/IRegistry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/v2/contracts/evm/interfaces/IRegistry.sol)
 
 
 ## Errors
