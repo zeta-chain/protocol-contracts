@@ -40,6 +40,7 @@ contract CoreRegistry is BaseRegistry {
         _chains[block.chainid].active = true;
         _chains[block.chainid].registry = abi.encodePacked(address(this));
         _activeChains.push(block.chainid);
+        _allChains.push(block.chainid);
     }
 
     /// @notice Changes status of the chain to activated/deactivated.

@@ -332,7 +332,7 @@ abstract contract BaseRegistry is
     /// @notice Returns information for all contracts in the registry.
     /// @return contractsInfo Array of ContractInfoDTO structs containing information about all contracts.
     function getAllContracts() external view returns (ContractInfoDTO[] memory contractsInfo) {
-        uint256 length = _allChains.length;
+        uint256 length = _allContracts.length;
         contractsInfo = new ContractInfoDTO[](length);
         for (uint256 i = 0; i < length; i++) {
             ContractIdentifier memory identifier = _allContracts[i];
