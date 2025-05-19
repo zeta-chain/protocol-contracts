@@ -24,6 +24,33 @@ uint256[] internal _activeChains;
 ```
 
 
+### _allChains
+Array of all chain IDs in the registry (active and inactive).
+
+
+```solidity
+uint256[] internal _allChains;
+```
+
+
+### _allContracts
+Array to store all contracts as chainId and contractType pairs.
+
+
+```solidity
+ContractIdentifier[] internal _allContracts;
+```
+
+
+### _allZRC20Addresses
+Array of all ZRC20 token addresses.
+
+
+```solidity
+address[] internal _allZRC20Addresses;
+```
+
+
 ### _chains
 Maps chain IDs to their information.
 
@@ -401,6 +428,51 @@ function getActiveChains() external view returns (uint256[] memory);
 |Name|Type|Description|
 |----|----|-----------|
 |`<none>`|`uint256[]`|Array of chain IDs for all active chains.|
+
+
+### getAllChains
+
+Returns information for all chains (active and inactive) in the registry.
+
+
+```solidity
+function getAllChains() external view returns (ChainInfoDTO[] memory chainsInfo);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chainsInfo`|`ChainInfoDTO[]`|Array of ChainInfoDTO structs containing information about all chains.|
+
+
+### getAllContracts
+
+Returns information for all contracts in the registry.
+
+
+```solidity
+function getAllContracts() external view returns (ContractInfoDTO[] memory contractsInfo);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`contractsInfo`|`ContractInfoDTO[]`|Array of ContractInfoDTO structs containing information about all contracts.|
+
+
+### getAllZRC20Tokens
+
+Returns information for all ZRC20 tokens in the registry.
+
+
+```solidity
+function getAllZRC20Tokens() external view returns (ZRC20Info[] memory tokensInfo);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`tokensInfo`|`ZRC20Info[]`|Array of ZRC20Info structs containing information about all ZRC20 tokens.|
 
 
 ### _removeFromActiveChains

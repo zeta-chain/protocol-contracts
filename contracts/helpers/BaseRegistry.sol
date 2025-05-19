@@ -20,6 +20,12 @@ abstract contract BaseRegistry is
 
     /// @notice Active chains in the registry.
     uint256[] internal _activeChains;
+    /// @notice Array of all chain IDs in the registry (active and inactive).
+    uint256[] internal _allChains;
+    /// @notice Array to store all contracts as chainId and contractType pairs.
+    ContractIdentifier[] internal _allContracts;
+    /// @notice Array of all ZRC20 token addresses.
+    address[] internal _allZRC20Addresses;
     /// @notice Maps chain IDs to their information.
     mapping(uint256 => ChainInfo) internal _chains;
     /// @notice Maps chain ID -> contract type -> ContractInfo
@@ -61,6 +67,10 @@ abstract contract BaseRegistry is
         if (_chains[chainId].active && activation) revert ChainActive(chainId);
         // In the case chain is inactive
         if (!_chains[chainId].active && !activation) revert ChainNonActive(chainId);
+        // Check does chain already exist.
+        if (bytes(_chains[chainId].registry).length == 0) {
+            _allChains.push(chainId);
+        }
 
         // Update the chain info
         _chains[chainId].active = activation;
@@ -106,6 +116,9 @@ abstract contract BaseRegistry is
         _contracts[chainId][contractType].active = true;
         _contracts[chainId][contractType].addressBytes = addressBytes;
         _contracts[chainId][contractType].contractType = contractType;
+
+        // Add contract identifier to all contracts array.
+        _allContracts.push(ContractIdentifier({ chainId: chainId, contractType: contractType }));
 
         emit ContractRegistered(chainId, contractType, addressBytes);
     }
@@ -193,6 +206,9 @@ abstract contract BaseRegistry is
         _originAssetToZRC20[originChainId][originAddress] = address_;
         // Map symbol to address
         _zrc20SymbolToAddress[symbol] = address_;
+
+        // Add to allZRC20 array.
+        _allZRC20Addresses.push(address_);
     }
 
     /// @notice Updates ZRC20 token active status.
@@ -295,6 +311,46 @@ abstract contract BaseRegistry is
     /// @return Array of chain IDs for all active chains.
     function getActiveChains() external view returns (uint256[] memory) {
         return _activeChains;
+    }
+
+    /// @notice Returns information for all chains (active and inactive) in the registry.
+    /// @return chainsInfo Array of ChainInfoDTO structs containing information about all chains.
+    function getAllChains() external view returns (ChainInfoDTO[] memory chainsInfo) {
+        for (uint256 i = 0; i < _allChains.length; i++) {
+            uint256 chainId = _allChains[i];
+            chainsInfo[i] = ChainInfoDTO({
+                active: _chains[chainId].active,
+                chainId: chainId,
+                gasZRC20: _chains[chainId].gasZRC20,
+                registry: _chains[chainId].registry
+            });
+        }
+    }
+
+    /// @notice Returns information for all contracts in the registry.
+    /// @return contractsInfo Array of ContractInfoDTO structs containing information about all contracts.
+    function getAllContracts() external view returns (ContractInfoDTO[] memory contractsInfo) {
+        for (uint256 i = 0; i < _allContracts.length; i++) {
+            ContractIdentifier memory identifier = _allContracts[i];
+            uint256 chainId = identifier.chainId;
+            string memory contractType = identifier.contractType;
+
+            contractsInfo[i] = ContractInfoDTO({
+                active: _contracts[chainId][contractType].active,
+                addressBytes: _contracts[chainId][contractType].addressBytes,
+                contractType: contractType,
+                chainId: chainId
+            });
+        }
+    }
+
+    /// @notice Returns information for all ZRC20 tokens in the registry.
+    /// @return tokensInfo Array of ZRC20Info structs containing information about all ZRC20 tokens.
+    function getAllZRC20Tokens() external view returns (ZRC20Info[] memory tokensInfo) {
+        for (uint256 i = 0; i < _allZRC20Addresses.length; i++) {
+            address addr = _allZRC20Addresses[i];
+            tokensInfo[i] = _zrc20Tokens[addr];
+        }
     }
 
     /// @notice Removes a chain ID from the active chains array.

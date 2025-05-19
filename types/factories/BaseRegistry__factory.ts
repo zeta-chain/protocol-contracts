@@ -88,6 +88,126 @@ const _abi = [
   },
   {
     type: "function",
+    name: "getAllChains",
+    inputs: [],
+    outputs: [
+      {
+        name: "chainsInfo",
+        type: "tuple[]",
+        internalType: "struct ChainInfoDTO[]",
+        components: [
+          {
+            name: "active",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "chainId",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "gasZRC20",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "registry",
+            type: "bytes",
+            internalType: "bytes",
+          },
+        ],
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getAllContracts",
+    inputs: [],
+    outputs: [
+      {
+        name: "contractsInfo",
+        type: "tuple[]",
+        internalType: "struct ContractInfoDTO[]",
+        components: [
+          {
+            name: "active",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "addressBytes",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "contractType",
+            type: "string",
+            internalType: "string",
+          },
+          {
+            name: "chainId",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getAllZRC20Tokens",
+    inputs: [],
+    outputs: [
+      {
+        name: "tokensInfo",
+        type: "tuple[]",
+        internalType: "struct ZRC20Info[]",
+        components: [
+          {
+            name: "active",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "address_",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "originAddress",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "originChainId",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "symbol",
+            type: "string",
+            internalType: "string",
+          },
+          {
+            name: "coinType",
+            type: "string",
+            internalType: "string",
+          },
+          {
+            name: "decimals",
+            type: "uint8",
+            internalType: "uint8",
+          },
+        ],
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "getChainMetadata",
     inputs: [
       {

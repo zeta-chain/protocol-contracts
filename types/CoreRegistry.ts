@@ -23,6 +23,67 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type ChainInfoDTOStruct = {
+  active: boolean;
+  chainId: BigNumberish;
+  gasZRC20: AddressLike;
+  registry: BytesLike;
+};
+
+export type ChainInfoDTOStructOutput = [
+  active: boolean,
+  chainId: bigint,
+  gasZRC20: string,
+  registry: string
+] & { active: boolean; chainId: bigint; gasZRC20: string; registry: string };
+
+export type ContractInfoDTOStruct = {
+  active: boolean;
+  addressBytes: BytesLike;
+  contractType: string;
+  chainId: BigNumberish;
+};
+
+export type ContractInfoDTOStructOutput = [
+  active: boolean,
+  addressBytes: string,
+  contractType: string,
+  chainId: bigint
+] & {
+  active: boolean;
+  addressBytes: string;
+  contractType: string;
+  chainId: bigint;
+};
+
+export type ZRC20InfoStruct = {
+  active: boolean;
+  address_: AddressLike;
+  originAddress: BytesLike;
+  originChainId: BigNumberish;
+  symbol: string;
+  coinType: string;
+  decimals: BigNumberish;
+};
+
+export type ZRC20InfoStructOutput = [
+  active: boolean,
+  address_: string,
+  originAddress: string,
+  originChainId: bigint,
+  symbol: string,
+  coinType: string,
+  decimals: bigint
+] & {
+  active: boolean;
+  address_: string;
+  originAddress: string;
+  originChainId: bigint;
+  symbol: string;
+  coinType: string;
+  decimals: bigint;
+};
+
 export interface CoreRegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
@@ -34,6 +95,9 @@ export interface CoreRegistryInterface extends Interface {
       | "changeChainStatus"
       | "gatewayZEVM"
       | "getActiveChains"
+      | "getAllChains"
+      | "getAllContracts"
+      | "getAllZRC20Tokens"
       | "getChainMetadata"
       | "getContractConfiguration"
       | "getContractInfo"
@@ -107,6 +171,18 @@ export interface CoreRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getActiveChains",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllChains",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllContracts",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllZRC20Tokens",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -223,6 +299,18 @@ export interface CoreRegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getActiveChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllContracts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllZRC20Tokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -603,6 +691,16 @@ export interface CoreRegistry extends BaseContract {
 
   getActiveChains: TypedContractMethod<[], [bigint[]], "view">;
 
+  getAllChains: TypedContractMethod<[], [ChainInfoDTOStructOutput[]], "view">;
+
+  getAllContracts: TypedContractMethod<
+    [],
+    [ContractInfoDTOStructOutput[]],
+    "view"
+  >;
+
+  getAllZRC20Tokens: TypedContractMethod<[], [ZRC20InfoStructOutput[]], "view">;
+
   getChainMetadata: TypedContractMethod<
     [chainId: BigNumberish, key: string],
     [string],
@@ -783,6 +881,15 @@ export interface CoreRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "getActiveChains"
   ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllChains"
+  ): TypedContractMethod<[], [ChainInfoDTOStructOutput[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllContracts"
+  ): TypedContractMethod<[], [ContractInfoDTOStructOutput[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllZRC20Tokens"
+  ): TypedContractMethod<[], [ZRC20InfoStructOutput[]], "view">;
   getFunction(
     nameOrSignature: "getChainMetadata"
   ): TypedContractMethod<

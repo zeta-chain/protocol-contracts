@@ -226,7 +226,7 @@ contract Registry is BaseRegistry, IRegistry {
         // Process chain data
         for (uint256 i = 0; i < chains.length; i++) {
             ChainBootstrapData calldata chainData = chains[i];
-            _changeChainStatus(chainData.chainId, chainData.gasZRC20, chainData.registry, true);
+            _changeChainStatus(chainData.chainId, chainData.gasZRC20, chainData.registry, chainData.active);
         }
 
         // Process metadata entries

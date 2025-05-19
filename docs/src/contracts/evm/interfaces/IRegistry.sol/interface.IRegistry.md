@@ -9,10 +9,39 @@ Structure for chain data used during bootstrapping
 
 ```solidity
 struct ChainBootstrapData {
+    bool active;
     uint256 chainId;
     address gasZRC20;
     bytes registry;
+}
+```
+
+### ContractBootstrapData
+Structure for contract data used during bootstrapping
+
+
+```solidity
+struct ContractBootstrapData {
     bool active;
+    bytes addressBytes;
+    string contractType;
+    uint256 chainId;
+}
+```
+
+### ZRC20BootstrapData
+Structure for ZRC20 token data used during bootstrapping
+
+
+```solidity
+struct ZRC20BootstrapData {
+    bool active;
+    address address_;
+    bytes originAddress;
+    uint256 originChainId;
+    string symbol;
+    string coinType;
+    uint8 decimals;
 }
 ```
 
@@ -28,18 +57,6 @@ struct ChainMetadataEntry {
 }
 ```
 
-### ContractBootstrapData
-Structure for contract data used during bootstrapping
-
-
-```solidity
-struct ContractBootstrapData {
-    uint256 chainId;
-    string contractType;
-    bytes addressBytes;
-}
-```
-
 ### ContractConfigEntry
 Structure for contract configuration entries used during bootstrapping
 
@@ -50,22 +67,6 @@ struct ContractConfigEntry {
     string contractType;
     string key;
     bytes value;
-}
-```
-
-### ZRC20BootstrapData
-Structure for ZRC20 token data used during bootstrapping
-
-
-```solidity
-struct ZRC20BootstrapData {
-    address address_;
-    string symbol;
-    uint256 originChainId;
-    bytes originAddress;
-    string coinType;
-    uint8 decimals;
-    bool active;
 }
 ```
 
