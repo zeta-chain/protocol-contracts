@@ -394,7 +394,7 @@ contract GatewayEVMUpgradeTest is
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
             // send tokens to connector
-            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).deposit(amount);
         } else {
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);
@@ -413,7 +413,7 @@ contract GatewayEVMUpgradeTest is
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
             // send tokens to connector
-            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).deposit(amount);
         } else {
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);

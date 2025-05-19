@@ -144,13 +144,13 @@ function withdrawAndRevert(
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
-### receiveTokens
+### deposit
 
 Handle received tokens and burn them.
 
 
 ```solidity
-function receiveTokens(uint256 amount) external override whenNotPaused;
+function deposit(uint256 amount) external override whenNotPaused;
 ```
 **Parameters**
 

@@ -49,6 +49,7 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
       | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "WITHDRAWER_ROLE"
+      | "deposit"
       | "gateway"
       | "getRoleAdmin"
       | "grantRole"
@@ -57,7 +58,6 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
       | "pause"
       | "paused"
       | "proxiableUUID"
-      | "receiveTokens"
       | "renounceRole"
       | "revokeRole"
       | "supportsInterface"
@@ -104,6 +104,10 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
     functionFragment: "WITHDRAWER_ROLE",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "deposit",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -126,10 +130,6 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "receiveTokens",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -199,6 +199,7 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
     functionFragment: "WITHDRAWER_ROLE",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
@@ -211,10 +212,6 @@ export interface ZetaConnectorNativeUpgradeTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "receiveTokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -492,6 +489,8 @@ export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  deposit: TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+
   gateway: TypedContractMethod<[], [string], "view">;
 
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
@@ -524,12 +523,6 @@ export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
   paused: TypedContractMethod<[], [boolean], "view">;
 
   proxiableUUID: TypedContractMethod<[], [string], "view">;
-
-  receiveTokens: TypedContractMethod<
-    [amount: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
 
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
@@ -617,6 +610,9 @@ export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
     nameOrSignature: "WITHDRAWER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "deposit"
+  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "gateway"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -657,9 +653,6 @@ export interface ZetaConnectorNativeUpgradeTest extends BaseContract {
   getFunction(
     nameOrSignature: "proxiableUUID"
   ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "receiveTokens"
-  ): TypedContractMethod<[amount: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<
