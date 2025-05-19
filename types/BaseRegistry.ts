@@ -89,6 +89,7 @@ export interface BaseRegistryInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "changeChainStatus"
       | "getActiveChains"
@@ -143,6 +144,10 @@ export interface BaseRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -255,6 +260,10 @@ export interface BaseRegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -637,6 +646,8 @@ export interface BaseRegistry extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  REGISTRY_MANAGER_ROLE: TypedContractMethod<[], [string], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   changeChainStatus: TypedContractMethod<
@@ -804,6 +815,9 @@ export interface BaseRegistry extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "REGISTRY_MANAGER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"

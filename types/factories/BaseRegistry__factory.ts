@@ -34,6 +34,19 @@ const _abi = [
   },
   {
     type: "function",
+    name: "REGISTRY_MANAGER_ROLE",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "bytes32",
+        internalType: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "UPGRADE_INTERFACE_VERSION",
     inputs: [],
     outputs: [

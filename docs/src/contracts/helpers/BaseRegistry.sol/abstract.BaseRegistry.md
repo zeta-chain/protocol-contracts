@@ -15,6 +15,15 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
+### REGISTRY_MANAGER_ROLE
+New role identifier for registry manager role.
+
+
+```solidity
+bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
+```
+
+
 ### _activeChains
 Active chains in the registry.
 

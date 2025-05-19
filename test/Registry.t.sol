@@ -49,7 +49,10 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
 
         proxy = payable(
             Upgrades.deployUUPSProxy(
-                "Registry.sol", abi.encodeCall(Registry.initialize, (admin, pauser, registryManager, address(mockGateway), coreRegistry))
+                "Registry.sol",
+                abi.encodeCall(
+                    Registry.initialize, (admin, pauser, registryManager, address(mockGateway), coreRegistry)
+                )
             )
         );
 

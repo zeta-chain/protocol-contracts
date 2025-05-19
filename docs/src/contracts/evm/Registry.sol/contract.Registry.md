@@ -61,6 +61,7 @@ Initialize the Registry contract
 function initialize(
     address admin_,
     address pauserAddress_,
+    address registryManager_,
     address gatewayEVM_,
     address coreRegistry_
 )
@@ -73,6 +74,7 @@ function initialize(
 |----|----|-----------|
 |`admin_`|`address`|Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions|
 |`pauserAddress_`|`address`|Address with PAUSER_ROLE, authorized for pausing actions|
+|`registryManager_`|`address`|Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.|
 |`gatewayEVM_`|`address`|Address of the GatewayEVM contract for cross-chain messaging|
 |`coreRegistry_`|`address`|Address of the CoreRegistry contract deployed on ZetaChain|
 
@@ -290,7 +292,7 @@ function bootstrapChains(
     ChainMetadataEntry[] calldata metadataEntries
 )
     external
-    onlyRole(DEFAULT_ADMIN_ROLE)
+    onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
 **Parameters**
@@ -314,7 +316,7 @@ function bootstrapContracts(
     ContractConfigEntry[] calldata configEntries
 )
     external
-    onlyRole(DEFAULT_ADMIN_ROLE)
+    onlyRole(REGISTRY_MANAGER_ROLE)
     whenNotPaused;
 ```
 **Parameters**
@@ -333,7 +335,7 @@ Bootstrap the registry with ZRC20 token data
 
 
 ```solidity
-function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(DEFAULT_ADMIN_ROLE) whenNotPaused;
+function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused;
 ```
 **Parameters**
 

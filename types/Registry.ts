@@ -122,6 +122,7 @@ export interface RegistryInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "GATEWAY_ROLE"
       | "PAUSER_ROLE"
+      | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "bootstrapChains"
       | "bootstrapContracts"
@@ -187,6 +188,10 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -267,7 +272,7 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike, AddressLike, AddressLike, AddressLike]
+    values: [AddressLike, AddressLike, AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "onCall",
@@ -331,6 +336,10 @@ export interface RegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -734,6 +743,8 @@ export interface Registry extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  REGISTRY_MANAGER_ROLE: TypedContractMethod<[], [string], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   bootstrapChains: TypedContractMethod<
@@ -844,6 +855,7 @@ export interface Registry extends BaseContract {
     [
       admin_: AddressLike,
       pauserAddress_: AddressLike,
+      registryManager_: AddressLike,
       gatewayEVM_: AddressLike,
       coreRegistry_: AddressLike
     ],
@@ -949,6 +961,9 @@ export interface Registry extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "REGISTRY_MANAGER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
@@ -1073,6 +1088,7 @@ export interface Registry extends BaseContract {
     [
       admin_: AddressLike,
       pauserAddress_: AddressLike,
+      registryManager_: AddressLike,
       gatewayEVM_: AddressLike,
       coreRegistry_: AddressLike
     ],
