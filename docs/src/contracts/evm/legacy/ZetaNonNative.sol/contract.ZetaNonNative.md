@@ -1,8 +1,8 @@
 # ZetaNonNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/ZetaNonNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/contracts/evm/legacy/ZetaNonNative.sol)
 
 **Inherits:**
-[IZetaNonNative](/contracts/evm/legacy/IZetaNonNative.sol/interface.IZetaNonNative.md), ERC20Burnable, [ZetaErrors](/contracts/evm/legacy/ZetaErrors.sol/interface.ZetaErrors.md)
+[IZetaNonNative](/contracts/evm/legacy/IZetaNonEthInterface.sol/interface.IZetaNonNative.md), ERC20Burnable, [ZetaErrors](/contracts/evm/legacy/ZetaErrors.sol/interface.ZetaErrors.md)
 
 
 ## State Variables

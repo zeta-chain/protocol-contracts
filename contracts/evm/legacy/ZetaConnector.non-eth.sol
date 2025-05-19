@@ -3,7 +3,7 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "./IZetaNonNative.sol";
+import "./IZetaNonEthInterface.sol";
 import "./ZetaConnector.base.sol";
 import "./ZetaInterfaces.sol";
 
@@ -28,7 +28,7 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
     { }
 
     function getLockedAmount() external view returns (uint256) {
-        return IZetaNonNative(zetaToken).balanceOf(address(this));
+        return IZetaNonEthInterface(zetaToken).balanceOf(address(this));
     }
 
     function setMaxSupply(uint256 maxSupply_) external onlyTssAddress {
@@ -41,7 +41,7 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
      * This call burn the token and emit an event with all the data needed by the protocol
      */
     function send(ZetaInterfaces.SendInput calldata input) external override whenNotPaused {
-        IZetaNonNative(zetaToken).burnFrom(msg.sender, input.zetaValueAndGas);
+        IZetaNonEthInterface(zetaToken).burnFrom(msg.sender, input.zetaValueAndGas);
 
         emit ZetaSent(
             tx.origin,
@@ -73,8 +73,8 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
         override
         onlyTssAddress
     {
-        if (zetaValue + IZetaNonNative(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply(maxSupply);
-        IZetaNonNative(zetaToken).mint(destinationAddress, zetaValue, internalSendHash);
+        if (zetaValue + IZetaNonEthInterface(zetaToken).totalSupply() > maxSupply) revert ExceedsMaxSupply(maxSupply);
+        IZetaNonEthInterface(zetaToken).mint(destinationAddress, zetaValue, internalSendHash);
 
         if (message.length > 0) {
             ZetaReceiver(destinationAddress).onZetaMessage(
@@ -105,10 +105,10 @@ contract ZetaConnectorNonEth is ZetaConnectorBase {
         whenNotPaused
         onlyTssAddress
     {
-        if (remainingZetaValue + IZetaNonNative(zetaToken).totalSupply() > maxSupply) {
+        if (remainingZetaValue + IZetaNonEthInterface(zetaToken).totalSupply() > maxSupply) {
             revert ExceedsMaxSupply(maxSupply);
         }
-        IZetaNonNative(zetaToken).mint(zetaTxSenderAddress, remainingZetaValue, internalSendHash);
+        IZetaNonEthInterface(zetaToken).mint(zetaTxSenderAddress, remainingZetaValue, internalSendHash);
 
         if (message.length > 0) {
             ZetaReceiver(zetaTxSenderAddress).onZetaRevert(
