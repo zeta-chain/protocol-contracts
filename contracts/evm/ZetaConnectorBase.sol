@@ -114,5 +114,5 @@ abstract contract ZetaConnectorBase is
 
     /// @notice Handle received tokens.
     /// @param amount The amount of tokens received.
-    function receiveTokens(uint256 amount) external virtual;
+    function deposit(uint256 amount) external virtual;
 }

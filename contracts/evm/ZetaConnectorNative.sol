@@ -74,7 +74,7 @@ contract ZetaConnectorNative is ZetaConnectorBase {
 
     /// @notice Handle received tokens.
     /// @param amount The amount of tokens received.
-    function receiveTokens(uint256 amount) external override whenNotPaused {
+    function deposit(uint256 amount) external override whenNotPaused {
         IERC20(zetaToken).safeTransferFrom(msg.sender, address(this), amount);
     }
 }
