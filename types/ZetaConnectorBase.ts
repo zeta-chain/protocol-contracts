@@ -23,10 +23,6 @@ import type {
   TypedContractMethod,
 } from "./common";
 
-export type MessageContextStruct = { sender: AddressLike };
-
-export type MessageContextStructOutput = [sender: string] & { sender: string };
-
 export type RevertContextStruct = {
   sender: AddressLike;
   asset: AddressLike;
@@ -65,9 +61,6 @@ export interface ZetaConnectorBaseInterface extends Interface {
       | "unpause"
       | "updateTSSAddress"
       | "upgradeToAndCall"
-      | "withdraw"
-      | "withdrawAndCall"
-      | "withdrawAndRevert"
       | "zetaToken"
   ): FunctionFragment;
 
@@ -155,30 +148,6 @@ export interface ZetaConnectorBaseInterface extends Interface {
     functionFragment: "upgradeToAndCall",
     values: [AddressLike, BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [AddressLike, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAndCall",
-    values: [
-      MessageContextStruct,
-      AddressLike,
-      BigNumberish,
-      BytesLike,
-      BytesLike
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAndRevert",
-    values: [
-      AddressLike,
-      BigNumberish,
-      BytesLike,
-      BytesLike,
-      RevertContextStruct
-    ]
-  ): string;
   encodeFunctionData(functionFragment: "zetaToken", values?: undefined): string;
 
   decodeFunctionResult(
@@ -233,15 +202,6 @@ export interface ZetaConnectorBaseInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawAndCall",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
@@ -551,36 +511,6 @@ export interface ZetaConnectorBase extends BaseContract {
     "payable"
   >;
 
-  withdraw: TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
-  withdrawAndCall: TypedContractMethod<
-    [
-      messageContext: MessageContextStruct,
-      to: AddressLike,
-      amount: BigNumberish,
-      data: BytesLike,
-      internalSendHash: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  withdrawAndRevert: TypedContractMethod<
-    [
-      to: AddressLike,
-      amount: BigNumberish,
-      data: BytesLike,
-      internalSendHash: BytesLike,
-      revertContext: RevertContextStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
   zetaToken: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -678,39 +608,6 @@ export interface ZetaConnectorBase extends BaseContract {
     [newImplementation: AddressLike, data: BytesLike],
     [void],
     "payable"
-  >;
-  getFunction(
-    nameOrSignature: "withdraw"
-  ): TypedContractMethod<
-    [to: AddressLike, amount: BigNumberish, internalSendHash: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndCall"
-  ): TypedContractMethod<
-    [
-      messageContext: MessageContextStruct,
-      to: AddressLike,
-      amount: BigNumberish,
-      data: BytesLike,
-      internalSendHash: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndRevert"
-  ): TypedContractMethod<
-    [
-      to: AddressLike,
-      amount: BigNumberish,
-      data: BytesLike,
-      internalSendHash: BytesLike,
-      revertContext: RevertContextStruct
-    ],
-    [void],
-    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "zetaToken"
