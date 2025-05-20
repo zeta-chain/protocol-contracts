@@ -132,13 +132,13 @@ Unpause contract.
 function unpause() external onlyRole(PAUSER_ROLE);
 ```
 
-### receiveTokens
+### deposit
 
 Handle received tokens.
 
 
 ```solidity
-function receiveTokens(uint256 amount) external virtual;
+function deposit(uint256 amount) external virtual;
 ```
 **Parameters**
 

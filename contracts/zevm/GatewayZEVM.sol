@@ -180,6 +180,7 @@ contract GatewayZEVM is
     }
 
     // TODO: Factorize common validation checks across withdraw functions.
+    // https://github.com/zeta-chain/protocol-contracts/issues/506
     // Current duplicate validations:
     // - Receiver zero-length check
     // - Amount zero check
