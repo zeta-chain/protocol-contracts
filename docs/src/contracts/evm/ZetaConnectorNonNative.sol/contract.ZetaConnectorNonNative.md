@@ -66,7 +66,6 @@ function withdraw(
     bytes32 internalSendHash
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -96,7 +95,6 @@ function withdrawAndCall(
     bytes32 internalSendHash
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -128,7 +126,6 @@ function withdrawAndRevert(
     RevertContext calldata revertContext
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -144,13 +141,13 @@ function withdrawAndRevert(
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
-### receiveTokens
+### deposit
 
 Handle received tokens and burn them.
 
 
 ```solidity
-function receiveTokens(uint256 amount) external override whenNotPaused;
+function deposit(uint256 amount) external override whenNotPaused;
 ```
 **Parameters**
 

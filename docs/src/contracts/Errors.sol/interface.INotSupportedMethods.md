@@ -5,12 +5,6 @@ Interface for contracts that with non supported methods.
 
 
 ## Errors
-### ZETANotSupported
-
-```solidity
-error ZETANotSupported();
-```
-
 ### CallOnRevertNotSupported
 
 ```solidity
