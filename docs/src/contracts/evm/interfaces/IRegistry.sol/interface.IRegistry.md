@@ -1,7 +1,30 @@
 # IRegistry
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/interfaces/IRegistry.sol)
 
-**Inherits:**
-[IRegistryErrors](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistryErrors.md), [IRegistryEvents](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistryEvents.md)
 
+## Structs
+### ChainMetadataEntry
+Structure for metadata entries used during bootstrapping
+
+
+```solidity
+struct ChainMetadataEntry {
+    uint256 chainId;
+    string key;
+    bytes value;
+}
+```
+
+### ContractConfigEntry
+Structure for contract configuration entries used during bootstrapping
+
+
+```solidity
+struct ContractConfigEntry {
+    uint256 chainId;
+    string contractType;
+    string key;
+    bytes value;
+}
+```
 

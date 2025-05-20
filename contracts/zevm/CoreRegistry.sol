@@ -9,8 +9,6 @@ import "./interfaces/IZRC20.sol";
 /// @notice Central registry for ZetaChain, managing chain info, ZRC20 data, and contract addresses across all chains.
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract CoreRegistry is BaseRegistry {
-    /// @notice New role identifier for registry manager role.
-    bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
     /// @notice Cross-chain message gas limit
     uint256 public constant CROSS_CHAIN_GAS_LIMIT = 300_000;
     /// @notice Instance of the GatewayZEVM contract for cross-chain communication
@@ -40,6 +38,7 @@ contract CoreRegistry is BaseRegistry {
         _chains[block.chainid].active = true;
         _chains[block.chainid].registry = abi.encodePacked(address(this));
         _activeChains.push(block.chainid);
+        _allChains.push(block.chainid);
     }
 
     /// @notice Changes status of the chain to activated/deactivated.
@@ -319,7 +318,7 @@ contract CoreRegistry is BaseRegistry {
     /// @param message The encoded function call to execute on the target chain.
     function _sendCrossChainMessage(uint256 targetChainId, bytes memory message) private {
         // Prepare call options
-        CallOptions memory callOptions = CallOptions({ gasLimit: CROSS_CHAIN_GAS_LIMIT, isArbitraryCall: true });
+        CallOptions memory callOptions = CallOptions({ gasLimit: CROSS_CHAIN_GAS_LIMIT, isArbitraryCall: false });
 
         // Prepare revert options
         RevertOptions memory revertOptions;

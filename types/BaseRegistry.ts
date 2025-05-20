@@ -23,14 +23,79 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type ChainInfoDTOStruct = {
+  active: boolean;
+  chainId: BigNumberish;
+  gasZRC20: AddressLike;
+  registry: BytesLike;
+};
+
+export type ChainInfoDTOStructOutput = [
+  active: boolean,
+  chainId: bigint,
+  gasZRC20: string,
+  registry: string
+] & { active: boolean; chainId: bigint; gasZRC20: string; registry: string };
+
+export type ContractInfoDTOStruct = {
+  active: boolean;
+  addressBytes: BytesLike;
+  contractType: string;
+  chainId: BigNumberish;
+};
+
+export type ContractInfoDTOStructOutput = [
+  active: boolean,
+  addressBytes: string,
+  contractType: string,
+  chainId: bigint
+] & {
+  active: boolean;
+  addressBytes: string;
+  contractType: string;
+  chainId: bigint;
+};
+
+export type ZRC20InfoStruct = {
+  active: boolean;
+  address_: AddressLike;
+  originAddress: BytesLike;
+  originChainId: BigNumberish;
+  symbol: string;
+  coinType: string;
+  decimals: BigNumberish;
+};
+
+export type ZRC20InfoStructOutput = [
+  active: boolean,
+  address_: string,
+  originAddress: string,
+  originChainId: bigint,
+  symbol: string,
+  coinType: string,
+  decimals: bigint
+] & {
+  active: boolean;
+  address_: string;
+  originAddress: string;
+  originChainId: bigint;
+  symbol: string;
+  coinType: string;
+  decimals: bigint;
+};
+
 export interface BaseRegistryInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
+      | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "changeChainStatus"
       | "getActiveChains"
+      | "getAllChains"
+      | "getAllContracts"
+      | "getAllZRC20Tokens"
       | "getChainMetadata"
       | "getContractConfiguration"
       | "getContractInfo"
@@ -82,6 +147,10 @@ export interface BaseRegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
@@ -91,6 +160,18 @@ export interface BaseRegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getActiveChains",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllChains",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllContracts",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllZRC20Tokens",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -182,6 +263,10 @@ export interface BaseRegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
   ): Result;
@@ -191,6 +276,18 @@ export interface BaseRegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getActiveChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllContracts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllZRC20Tokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -549,6 +646,8 @@ export interface BaseRegistry extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  REGISTRY_MANAGER_ROLE: TypedContractMethod<[], [string], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   changeChainStatus: TypedContractMethod<
@@ -563,6 +662,16 @@ export interface BaseRegistry extends BaseContract {
   >;
 
   getActiveChains: TypedContractMethod<[], [bigint[]], "view">;
+
+  getAllChains: TypedContractMethod<[], [ChainInfoDTOStructOutput[]], "view">;
+
+  getAllContracts: TypedContractMethod<
+    [],
+    [ContractInfoDTOStructOutput[]],
+    "view"
+  >;
+
+  getAllZRC20Tokens: TypedContractMethod<[], [ZRC20InfoStructOutput[]], "view">;
 
   getChainMetadata: TypedContractMethod<
     [chainId: BigNumberish, key: string],
@@ -708,6 +817,9 @@ export interface BaseRegistry extends BaseContract {
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "REGISTRY_MANAGER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -725,6 +837,15 @@ export interface BaseRegistry extends BaseContract {
   getFunction(
     nameOrSignature: "getActiveChains"
   ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllChains"
+  ): TypedContractMethod<[], [ChainInfoDTOStructOutput[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllContracts"
+  ): TypedContractMethod<[], [ContractInfoDTOStructOutput[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllZRC20Tokens"
+  ): TypedContractMethod<[], [ZRC20InfoStructOutput[]], "view">;
   getFunction(
     nameOrSignature: "getChainMetadata"
   ): TypedContractMethod<
