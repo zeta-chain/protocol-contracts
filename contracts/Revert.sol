@@ -12,7 +12,7 @@ struct RevertOptions {
     bool callOnRevert;
     address abortAddress;
     bytes revertMessage;
-    uint256 onRevertGasLimit;
+    uint64 onRevertGasLimit;
 }
 
 /// @notice Struct containing revert context passed to onRevert.

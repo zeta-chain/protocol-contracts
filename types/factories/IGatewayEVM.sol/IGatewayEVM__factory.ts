@@ -50,8 +50,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
@@ -105,8 +105,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
@@ -150,58 +150,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: "payable",
-  },
-  {
-    type: "function",
-    name: "depositAndCall",
-    inputs: [
-      {
-        name: "receiver",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "payload",
-        type: "bytes",
-        internalType: "bytes",
-      },
-      {
-        name: "revertOptions",
-        type: "tuple",
-        internalType: "struct RevertOptions",
-        components: [
-          {
-            name: "revertAddress",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "callOnRevert",
-            type: "bool",
-            internalType: "bool",
-          },
-          {
-            name: "abortAddress",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "revertMessage",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
@@ -260,14 +210,64 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
     ],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "depositAndCall",
+    inputs: [
+      {
+        name: "receiver",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "payload",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "onRevertGasLimit",
+            type: "uint64",
+            internalType: "uint64",
+          },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
   },
   {
     type: "function",
@@ -495,8 +495,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
@@ -565,8 +565,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
@@ -635,8 +635,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
+            type: "uint64",
+            internalType: "uint64",
           },
         ],
       },
