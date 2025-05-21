@@ -168,6 +168,8 @@ function _safeDeposit(address zrc20, address target, uint256 amount) private ret
 
 ### _burnProtocolFees
 
+Helper function to burn gas fees.
+
 
 ```solidity
 function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256);

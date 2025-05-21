@@ -1110,6 +1110,82 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.executeAbort(address(0), abortContext);
     }
 
+    function testDepositZETAAndRevertUniversalContractFailsIfTargetIsZeroAddress() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.depositAndRevert(1, address(0), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfAmountIsZero() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(InsufficientZetaAmount.selector);
+        gateway.depositAndRevert(0, address(testUniversalContract), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContract() public {
+        uint256 amount = 1;
+        uint256 protocolBalanceBefore = zetaToken.balanceOf(protocolAddress);
+        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 destinationBalanceBefore = address(testUniversalContract).balance;
+
+        vm.expectEmit(true, true, true, true, address(testUniversalContract));
+        emit ContextDataRevert(revertContext);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+
+        uint256 protocolBalanceAfter = zetaToken.balanceOf(protocolAddress);
+        assertEq(protocolBalanceBefore - amount, protocolBalanceAfter);
+
+        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+
+        // Verify amount is transferred to destination
+        assertEq(destinationBalanceBefore + amount, address(testUniversalContract).balance);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfSenderIsNotProtocol() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(CallerIsNotProtocol.selector);
+        vm.prank(owner);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfTargetIsProtocol() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(InvalidTarget.selector);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, protocolAddress, revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractFailsIfTargetIsGateway() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(InvalidTarget.selector);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(gateway), revertContext);
+    }
+
+    function testDepositZETAAndRevertUniversalContractWhenPaused() public {
+        uint256 amount = 1;
+
+        vm.prank(owner);
+        gateway.pause();
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+
+        vm.prank(owner);
+        gateway.unpause();
+
+        vm.expectEmit(true, true, true, true, address(testUniversalContract));
+        emit ContextDataRevert(revertContext);
+        vm.prank(protocolAddress);
+        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+    }
+
     function testBurnGasFeeForZRC20Withdrawal() public {
         uint256 amount = 1;
 
@@ -1159,6 +1235,82 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
             initialTotalSupply - expectedBurnAmount,
             finalTotalSupply,
             "ZRC20 tokens were not burned correctly for withdrawAndCall"
+        );
+    }
+
+    function testBurnGasFeeForDifferentZRC20Withdrawal() public {
+        vm.startPrank(protocolAddress);
+        ZRC20 secondZRC20 =
+            new ZRC20("SECOND", "SEC", 18, 1, CoinType.ERC20, 100_000, address(systemContract), address(gateway));
+        secondZRC20.deposit(owner, 100);
+        vm.stopPrank();
+
+        vm.startPrank(owner);
+        secondZRC20.approve(address(gateway), 100);
+        zrc20.approve(address(gateway), 100_000);
+        vm.stopPrank();
+
+        uint256 amount = 1;
+
+        (address gasZRC20, uint256 gasFee) = secondZRC20.withdrawGasFeeWithGasLimit(100_000);
+        assertEq(gasZRC20, address(zrc20));
+
+        uint256 initialGasZRC20Supply = zrc20.totalSupply();
+        uint256 initialSecondZRC20Supply = secondZRC20.totalSupply();
+
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(secondZRC20), revertOptions);
+
+        uint256 finalGasZRC20Supply = zrc20.totalSupply();
+        uint256 finalSecondZRC20Supply = secondZRC20.totalSupply();
+
+        assertEq(initialGasZRC20Supply - gasFee, finalGasZRC20Supply, "Gas fee not burned correctly from gas ZRC20");
+
+        assertEq(
+            initialSecondZRC20Supply - amount,
+            finalSecondZRC20Supply,
+            "Withdrawal amount not burned correctly from second ZRC20"
+        );
+    }
+
+    function testBurnGasFeeForDifferentZRC20WithdrawAndCall() public {
+        vm.startPrank(protocolAddress);
+        ZRC20 secondZRC20 =
+            new ZRC20("SECOND", "SEC", 18, 1, CoinType.ERC20, 100_000, address(systemContract), address(gateway));
+        secondZRC20.deposit(owner, 100);
+        vm.stopPrank();
+
+        vm.startPrank(owner);
+        secondZRC20.approve(address(gateway), 100);
+        zrc20.approve(address(gateway), 100_000);
+        vm.stopPrank();
+
+        uint256 amount = 1;
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+
+        (address gasZRC20, uint256 gasFee) = secondZRC20.withdrawGasFeeWithGasLimit(100_000);
+        assertEq(gasZRC20, address(zrc20));
+
+        uint256 initialGasZRC20Supply = zrc20.totalSupply();
+        uint256 initialSecondZRC20Supply = secondZRC20.totalSupply();
+
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1),
+            amount,
+            address(secondZRC20),
+            message,
+            CallOptions({ gasLimit: 100_000, isArbitraryCall: true }),
+            revertOptions
+        );
+
+        uint256 finalGasZRC20Supply = zrc20.totalSupply();
+        uint256 finalSecondZRC20Supply = secondZRC20.totalSupply();
+
+        assertEq(initialGasZRC20Supply - gasFee, finalGasZRC20Supply, "Gas fee not burned correctly from gas ZRC20");
+
+        assertEq(
+            initialSecondZRC20Supply - amount,
+            finalSecondZRC20Supply,
+            "Withdrawal amount not burned correctly from second ZRC20"
         );
     }
 

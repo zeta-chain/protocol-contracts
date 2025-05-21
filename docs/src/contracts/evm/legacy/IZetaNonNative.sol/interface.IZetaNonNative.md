@@ -1,5 +1,5 @@
 # IZetaNonNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/contracts/evm/legacy/IZetaNonNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/contracts/evm/legacy/IZetaNonNative.sol)
 
 **Inherits:**
 IERC20

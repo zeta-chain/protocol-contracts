@@ -132,7 +132,7 @@ contract GatewayZEVM is
         }
     }
 
-    // @notice Helper function to burn gas fees.
+    /// @notice Helper function to burn gas fees.
     /// @param zrc20 The address of the ZRC20 token.
     /// @param gasLimit Gas limit.
     function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256) {
