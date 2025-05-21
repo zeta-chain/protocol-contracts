@@ -1161,4 +1161,26 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
             "ZRC20 tokens were not burned correctly for withdrawAndCall"
         );
     }
+
+    function testBurnProtocolFeesFailsWithInsufficientAllowance() public {
+        uint256 amount = 1;
+
+        vm.startPrank(owner);
+        zrc20.approve(address(gateway), amount);
+        vm.stopPrank();
+
+        vm.prank(protocolAddress);
+        zrc20.updateGasLimit(200_000);
+
+        (address gasZRC20, uint256 gasFee) = zrc20.withdrawGasFeeWithGasLimit(200_000);
+
+        vm.expectRevert(abi.encodeWithSelector(GasFeeTransferFailed.selector, gasZRC20, address(gateway), gasFee));
+        gateway.call(
+            abi.encodePacked(addr1),
+            address(zrc20),
+            abi.encodeWithSignature("hello()"),
+            CallOptions({ gasLimit: 200_000, isArbitraryCall: true }),
+            revertOptions
+        );
+    }
 }
