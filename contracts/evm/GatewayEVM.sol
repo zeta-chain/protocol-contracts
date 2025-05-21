@@ -371,7 +371,17 @@ contract GatewayEVM is
     /// @param to Address to reset the approval for.
     /// @return True if the approval reset was successful, false otherwise.
     function _resetApproval(address token, address to) private returns (bool) {
-        return IERC20(token).approve(to, 0);
+        // Try standard zero-approval first
+        try IERC20(token).approve(to, 0) {
+            return true;
+        } catch {
+            // Fallback for tokens like BNB on ETH that explicitly reject zero-value approvals
+            try IERC20(token).approve(to, 1) {
+                return true;
+            } catch {
+                return false;
+            }
+        }
     }
 
     /// @dev Transfers tokens from the sender to the asset handler.
