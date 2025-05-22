@@ -116,6 +116,26 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
     }
 
+    function testWithdrawZRC20FailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 1;
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceededZEVM.selector,
+                revertOptionsExcessiveGas.onRevertGasLimit,
+                gateway.MAX_REVERT_GAS_LIMIT()
+            )
+        );
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptionsExcessiveGas);
+    }
+
     function testWithdrawZRC20FailsIfNoBalanceForGasFee() public {
         uint256 amount = 1;
         uint256 ownerBalance = zrc20.balanceOf(owner);
@@ -219,6 +239,28 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             message,
             CallOptions({ gasLimit: 0, isArbitraryCall: false }),
             revertOptions
+        );
+    }
+
+    function testWithdrawAndCallZRC20FailsIfRevertGasLimitExceeded() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceededZEVM.selector,
+                revertOptionsExcessiveGas.onRevertGasLimit,
+                gateway.MAX_REVERT_GAS_LIMIT()
+            )
+        );
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1), 1, address(zrc20), message, callOptions, revertOptionsExcessiveGas
         );
     }
 
@@ -407,6 +449,27 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(abi.encodePacked(""), 0, 1, revertOptions);
     }
 
+    function testWithdrawZETAFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 1;
+        uint256 chainId = 1;
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceededZEVM.selector,
+                revertOptionsExcessiveGas.onRevertGasLimit,
+                gateway.MAX_REVERT_GAS_LIMIT()
+            )
+        );
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptionsExcessiveGas);
+    }
+
     function testWithdrawAndCallZETAWithCallOptsFailsIfAmountIsZero() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
 
@@ -430,6 +493,30 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectRevert(ZeroAddress.selector);
         gateway.withdrawAndCall(abi.encodePacked(""), 1, 1, message, callOptions, revertOptions);
+    }
+
+    function testWithdrawAndCallZETAFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 1;
+        uint256 chainId = 1;
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceededZEVM.selector,
+                revertOptionsExcessiveGas.onRevertGasLimit,
+                gateway.MAX_REVERT_GAS_LIMIT()
+            )
+        );
+        gateway.withdrawAndCall(
+            abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptionsExcessiveGas
+        );
     }
 
     function testWithdrawZETA() public {
@@ -573,6 +660,26 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(ZeroAddress.selector);
         gateway.call(abi.encodePacked(""), address(zrc20), message, callOptions, revertOptions);
+    }
+
+    function testCallFailsIfRevertGasLimitExceeded() public {
+        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceededZEVM.selector,
+                revertOptionsExcessiveGas.onRevertGasLimit,
+                gateway.MAX_REVERT_GAS_LIMIT()
+            )
+        );
+        gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptionsExcessiveGas);
     }
 
     function testCallWithCallOptsFailsIfMessageSizeExceeded() public {

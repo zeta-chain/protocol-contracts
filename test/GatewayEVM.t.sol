@@ -497,6 +497,26 @@ contract GatewayEVMInboundTest is
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
+    function testDepositERC20ToCustodyFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        token.approve(address(gateway), amount);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(abi.encodeWithSelector(
+            RevertGasLimitExceededEVM.selector,
+            revertOptionsExcessiveGas.onRevertGasLimit,
+            gateway.MAX_REVERT_GAS_LIMIT()
+        ));
+        gateway.deposit(destination, amount, address(token), revertOptionsExcessiveGas);
+    }
+
     function testDepositERC20ToCustodyFailsIfPayloadSizeExceeded() public {
         uint256 amount = 100_000;
         token.approve(address(gateway), amount);
@@ -604,6 +624,27 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
+    function testDepositAndCallERC20ToCustodyFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        token.approve(address(gateway), amount);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(abi.encodeWithSelector(
+            RevertGasLimitExceededEVM.selector,
+            revertOptionsExcessiveGas.onRevertGasLimit,
+            gateway.MAX_REVERT_GAS_LIMIT()
+        ));
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptionsExcessiveGas);
+    }
+
     function testDepositERC20ToCustodyWithPayload() public {
         uint256 amount = 100_000;
         uint256 custodyBalanceBefore = token.balanceOf(address(custody));
@@ -655,6 +696,24 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + amount, tssBalanceAfter);
     }
 
+    function testDepositEthToTssFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(abi.encodeWithSelector(
+            RevertGasLimitExceededEVM.selector,
+            revertOptionsExcessiveGas.onRevertGasLimit,
+            gateway.MAX_REVERT_GAS_LIMIT()
+        ));
+        gateway.deposit{ value: amount }(destination, revertOptionsExcessiveGas);
+    }
+
     function testDepositEthToTssWithPayloadFailsIfPayloadSizeExceeded() public {
         uint256 amount = 100_000;
         bytes memory payload = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2);
@@ -666,6 +725,26 @@ contract GatewayEVMInboundTest is
         vm.expectRevert(abi.encodeWithSelector(PayloadSizeExceeded.selector, payloadSize, maxSize));
 
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
+    }
+
+    function testDepositAndCallEthFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(abi.encodeWithSelector(
+            RevertGasLimitExceededEVM.selector,
+            revertOptionsExcessiveGas.onRevertGasLimit,
+            gateway.MAX_REVERT_GAS_LIMIT()
+        ));
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptionsExcessiveGas);
     }
 
     function testRevertDepositEthToTssWithPayloadIfAmountIs0() public {
@@ -717,5 +796,24 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(ZeroAddress.selector);
         gateway.call(address(0), payload, revertOptions);
+    }
+
+    function testCallFailsIfRevertGasLimitExceeded() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+        });
+
+        vm.expectRevert(abi.encodeWithSelector(
+            RevertGasLimitExceededEVM.selector,
+            revertOptionsExcessiveGas.onRevertGasLimit,
+            gateway.MAX_REVERT_GAS_LIMIT()
+        ));
+        gateway.call(destination, payload, revertOptionsExcessiveGas);
     }
 }
