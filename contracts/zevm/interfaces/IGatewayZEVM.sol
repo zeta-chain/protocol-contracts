@@ -132,6 +132,11 @@ interface IGatewayZEVMErrors {
     /// @param provided The size of the message that was provided.
     /// @param maximum The maximum allowed message size.
     error MessageSizeExceeded(uint256 provided, uint256 maximum);
+
+    /// @notice Error indicating revert gas limit exceeds maximum allowed
+    /// @param provided The gas limit provided for revert operation.
+    /// @param maximum The maximum allowed gas limit for revert operation.
+    error RevertGasLimitExceededZEVM(uint256 provided, uint256 maximum);
 }
 
 /// @title IGatewayZEVM

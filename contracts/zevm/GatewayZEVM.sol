@@ -45,6 +45,9 @@ contract GatewayZEVM is
     /// @notice Minimum gas limit for a call.
     uint256 public constant MIN_GAS_LIMIT = 100_000;
 
+    /// @notice Maximum allowed gas limit for revert operations.
+    uint256 public constant MAX_REVERT_GAS_LIMIT = 2_000_000;
+
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
         if (msg.sender != PROTOCOL_ADDRESS) {
@@ -206,6 +209,9 @@ contract GatewayZEVM is
         if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
@@ -246,6 +252,9 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit WithdrawnAndCalled(
@@ -279,6 +288,9 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
         if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
@@ -320,6 +332,9 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit WithdrawnAndCalled(
@@ -346,6 +361,9 @@ contract GatewayZEVM is
         if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
