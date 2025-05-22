@@ -382,22 +382,20 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     }
 
     function testExecuteWithNonReturnApprovalToken() public {
-        // TODO: there is an issue trying to read value from void approves (like USDT) not just in the _resetApproval()
-        //        NonReturnApprovalToken nonReturnToken = new NonReturnApprovalToken("USDT", "USDT");
-        //        nonReturnToken.mint(owner, 1_000_000);
-        //
-        //        vm.startPrank(owner);
-        //        custody.whitelist(address(nonReturnToken));
-        //        vm.stopPrank();
-        //
-        //        uint256 amount = 100_000;
-        //        nonReturnToken.transfer(address(custody), amount);
-        //
-        //        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
-        //
-        //        vm.prank(address(custody));
-        //        gateway.executeWithERC20(arbitraryCallMessageContext, address(nonReturnToken), address(receiver),
-        // amount, data);
+        NonReturnApprovalToken nonReturnToken = new NonReturnApprovalToken("USDT", "USDT");
+        nonReturnToken.mint(owner, 1_000_000);
+
+        vm.startPrank(owner);
+        custody.whitelist(address(nonReturnToken));
+        vm.stopPrank();
+
+        uint256 amount = 100_000;
+        nonReturnToken.transfer(address(custody), amount);
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.prank(address(custody));
+        gateway.executeWithERC20(arbitraryCallMessageContext, address(nonReturnToken), address(receiver), amount, data);
     }
 
     function testRevertWithERC20FailsIfNotCustodyOrConnector() public {
