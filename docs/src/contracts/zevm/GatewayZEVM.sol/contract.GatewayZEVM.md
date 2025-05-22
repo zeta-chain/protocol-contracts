@@ -55,6 +55,15 @@ uint256 public constant MIN_GAS_LIMIT = 100_000;
 ```
 
 
+### MAX_REVERT_GAS_LIMIT
+Maximum allowed gas limit for revert operations.
+
+
+```solidity
+uint256 public constant MAX_REVERT_GAS_LIMIT = 2_000_000;
+```
+
+
 ## Functions
 ### onlyProtocol
 

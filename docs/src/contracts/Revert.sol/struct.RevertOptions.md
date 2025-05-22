@@ -10,7 +10,7 @@ struct RevertOptions {
     bool callOnRevert;
     address abortAddress;
     bytes revertMessage;
-    uint64 onRevertGasLimit;
+    uint256 onRevertGasLimit;
 }
 ```
 
@@ -22,5 +22,5 @@ struct RevertOptions {
 |`callOnRevert`|`bool`|Flag if onRevert hook should be called.|
 |`abortAddress`|`address`|Address to receive funds if aborted.|
 |`revertMessage`|`bytes`|Arbitrary data sent back in onRevert.|
-|`onRevertGasLimit`|`uint64`|Gas limit for revert tx, unused on GatewayZEVM methods|
+|`onRevertGasLimit`|`uint256`|Gas limit for revert tx, unused on GatewayZEVM methods|
 

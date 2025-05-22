@@ -111,6 +111,7 @@ export interface GatewayZEVMInterface extends Interface {
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "MAX_MESSAGE_SIZE"
+      | "MAX_REVERT_GAS_LIMIT"
       | "MIN_GAS_LIMIT"
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
@@ -136,10 +137,10 @@ export interface GatewayZEVMInterface extends Interface {
       | "supportsInterface"
       | "unpause"
       | "upgradeToAndCall"
-      | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))"
-      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))"
-      | "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
-      | "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
+      | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
+      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
       | "zetaToken"
   ): FunctionFragment;
 
@@ -163,6 +164,10 @@ export interface GatewayZEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "MAX_MESSAGE_SIZE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_REVERT_GAS_LIMIT",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -275,30 +280,30 @@ export interface GatewayZEVMInterface extends Interface {
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     values: [BytesLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     values: [BytesLike, BigNumberish, BigNumberish, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       BigNumberish,
-      AddressLike,
+      BigNumberish,
       BytesLike,
       CallOptionsStruct,
       RevertOptionsStruct
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       BigNumberish,
-      BigNumberish,
+      AddressLike,
       BytesLike,
       CallOptionsStruct,
       RevertOptionsStruct
@@ -312,6 +317,10 @@ export interface GatewayZEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "MAX_MESSAGE_SIZE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_REVERT_GAS_LIMIT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -385,19 +394,19 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
@@ -673,6 +682,8 @@ export interface GatewayZEVM extends BaseContract {
 
   MAX_MESSAGE_SIZE: TypedContractMethod<[], [bigint], "view">;
 
+  MAX_REVERT_GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
+
   MIN_GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
@@ -819,7 +830,7 @@ export interface GatewayZEVM extends BaseContract {
     "payable"
   >;
 
-  "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
@@ -830,7 +841,7 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
@@ -841,11 +852,11 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
-      zrc20: AddressLike,
+      chainId: BigNumberish,
       message: BytesLike,
       callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct
@@ -854,11 +865,11 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
-      chainId: BigNumberish,
+      zrc20: AddressLike,
       message: BytesLike,
       callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct
@@ -878,6 +889,9 @@ export interface GatewayZEVM extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "MAX_MESSAGE_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "MAX_REVERT_GAS_LIMIT"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "MIN_GAS_LIMIT"
@@ -1047,7 +1061,7 @@ export interface GatewayZEVM extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -1059,7 +1073,7 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -1071,12 +1085,12 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
-      zrc20: AddressLike,
+      chainId: BigNumberish,
       message: BytesLike,
       callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct
@@ -1085,12 +1099,12 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
-      chainId: BigNumberish,
+      zrc20: AddressLike,
       message: BytesLike,
       callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct

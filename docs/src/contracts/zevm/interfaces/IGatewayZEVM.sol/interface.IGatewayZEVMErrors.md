@@ -163,3 +163,18 @@ error MessageSizeExceeded(uint256 provided, uint256 maximum);
 |`provided`|`uint256`|The size of the message that was provided.|
 |`maximum`|`uint256`|The maximum allowed message size.|
 
+### RevertGasLimitExceededZEVM
+Error indicating revert gas limit exceeds maximum allowed
+
+
+```solidity
+error RevertGasLimitExceededZEVM(uint256 provided, uint256 maximum);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`provided`|`uint256`|The gas limit provided for revert operation.|
+|`maximum`|`uint256`|The maximum allowed gas limit for revert operation.|
+

@@ -59,8 +59,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
         ],
       },
@@ -129,8 +129,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
         ],
       },
@@ -199,8 +199,8 @@ const _abi = [
           },
           {
             name: "onRevertGasLimit",
-            type: "uint64",
-            internalType: "uint64",
+            type: "uint256",
+            internalType: "uint256",
           },
         ],
       },

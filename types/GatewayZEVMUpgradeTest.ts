@@ -89,8 +89,8 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
-      | "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
-      | "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint64))"
+      | "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))"
       | "deposit"
       | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
@@ -109,12 +109,12 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
       | "supportsInterface"
       | "unpause"
       | "upgradeToAndCall"
-      | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))"
-      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))"
-      | "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
-      | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint64))"
-      | "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
-      | "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint64))"
+      | "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
+      | "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
+      | "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
       | "zetaToken"
   ): FunctionFragment;
 
@@ -154,7 +154,7 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       AddressLike,
@@ -164,7 +164,7 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       AddressLike,
@@ -249,36 +249,26 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     values: [AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     values: [BytesLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     values: [BytesLike, BigNumberish, BigNumberish, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       BigNumberish,
       AddressLike,
       BytesLike,
-      CallOptionsStruct,
+      BigNumberish,
       RevertOptionsStruct
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint64))",
-    values: [
-      BytesLike,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      RevertOptionsStruct
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       BigNumberish,
@@ -289,13 +279,23 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
+    values: [
+      BytesLike,
+      BigNumberish,
+      BigNumberish,
+      BytesLike,
+      RevertOptionsStruct
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     values: [
       BytesLike,
       BigNumberish,
       AddressLike,
       BytesLike,
-      BigNumberish,
+      CallOptionsStruct,
       RevertOptionsStruct
     ]
   ): string;
@@ -322,11 +322,11 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
@@ -375,27 +375,27 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint64))",
+    functionFragment: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "zetaToken", data: BytesLike): Result;
@@ -720,7 +720,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
-  "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       zrc20: AddressLike,
@@ -732,7 +732,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       zrc20: AddressLike,
@@ -854,7 +854,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "payable"
   >;
 
-  "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
@@ -865,7 +865,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
@@ -876,51 +876,51 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
 
-  "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))": TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      zrc20: AddressLike,
-      message: BytesLike,
-      callOptions: CallOptionsStruct,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint64))": TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      chainId: BigNumberish,
-      message: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))": TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      chainId: BigNumberish,
-      message: BytesLike,
-      callOptions: CallOptionsStruct,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint64))": TypedContractMethod<
+  "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [
       receiver: BytesLike,
       amount: BigNumberish,
       zrc20: AddressLike,
       message: BytesLike,
       gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct
     ],
     [void],
@@ -949,7 +949,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
+    nameOrSignature: "call(bytes,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -962,7 +962,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint64))"
+    nameOrSignature: "call(bytes,address,bytes,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -1099,7 +1099,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdraw(bytes,uint256,address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -1111,7 +1111,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdraw(bytes,uint256,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -1123,48 +1123,7 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
-  ): TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      zrc20: AddressLike,
-      message: BytesLike,
-      callOptions: CallOptionsStruct,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint64))"
-  ): TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      chainId: BigNumberish,
-      message: BytesLike,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint64))"
-  ): TypedContractMethod<
-    [
-      receiver: BytesLike,
-      amount: BigNumberish,
-      chainId: BigNumberish,
-      message: BytesLike,
-      callOptions: CallOptionsStruct,
-      revertOptions: RevertOptionsStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint64))"
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,uint256,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [
       receiver: BytesLike,
@@ -1172,6 +1131,47 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
       zrc20: AddressLike,
       message: BytesLike,
       gasLimit: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,uint256,bytes,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      chainId: BigNumberish,
+      message: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "withdrawAndCall(bytes,uint256,address,bytes,(uint256,bool),(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: BytesLike,
+      amount: BigNumberish,
+      zrc20: AddressLike,
+      message: BytesLike,
+      callOptions: CallOptionsStruct,
       revertOptions: RevertOptionsStruct
     ],
     [void],
