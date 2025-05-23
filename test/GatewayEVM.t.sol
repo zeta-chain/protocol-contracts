@@ -1,26 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "forge-std/Test.sol";
-import "forge-std/Vm.sol";
+import "../contracts/evm/ERC20Custody.sol";
+import "../contracts/evm/GatewayEVM.sol";
 
+import "../contracts/evm/ZetaConnectorNonNative.sol";
+
+import "../contracts/evm/interfaces/IERC20Custody.sol";
+import "../contracts/evm/interfaces/IGatewayEVM.sol";
+
+import "./mocks/NonReturnApprovalToken.sol";
+import "./mocks/RevertOnZeroApprovalToken.sol";
+import "./utils/IReceiverEVM.sol";
 import "./utils/ReceiverEVM.sol";
-
 import "./utils/TestERC20.sol";
+
+import "./utils/Zeta.non-eth.sol";
 import "./utils/upgrades/GatewayEVMUpgradeTest.sol";
 
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
-
-import "../contracts/evm/ERC20Custody.sol";
-import "../contracts/evm/GatewayEVM.sol";
-import "../contracts/evm/ZetaConnectorNonNative.sol";
-import "../contracts/evm/interfaces/IERC20Custody.sol";
-import "../contracts/evm/interfaces/IGatewayEVM.sol";
-import "./utils/IReceiverEVM.sol";
-import "./utils/Zeta.non-eth.sol";
 
 contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiverEVMEvents, IERC20CustodyEvents {
     using SafeERC20 for IERC20;
@@ -322,6 +325,77 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, ASSET_HANDLER_ROLE));
         gateway.executeWithERC20(arbitraryCallMessageContext, address(token), destination, amount, data);
+    }
+
+    function testExecuteWithERC20Token() public {
+        uint256 amount = 100_000;
+
+        bytes memory data =
+            abi.encodeWithSignature("receiveERC20(uint256,address,address)", amount, address(token), destination);
+
+        vm.startPrank(owner);
+        token.transfer(address(gateway), amount);
+        vm.stopPrank();
+
+        uint256 gatewayBalanceBefore = token.balanceOf(address(gateway));
+        uint256 destinationBalanceBefore = token.balanceOf(destination);
+        assertEq(gatewayBalanceBefore, amount);
+        assertEq(destinationBalanceBefore, 0);
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedERC20(address(gateway), amount, address(token), destination);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit ExecutedWithERC20(address(token), address(receiver), amount, data);
+
+        vm.prank(address(custody));
+        gateway.executeWithERC20(arbitraryCallMessageContext, address(token), address(receiver), amount, data);
+
+        uint256 gatewayBalanceAfter = token.balanceOf(address(gateway));
+        uint256 destinationBalanceAfter = token.balanceOf(destination);
+
+        assertEq(gatewayBalanceAfter, 0);
+        assertEq(destinationBalanceAfter, amount);
+    }
+
+    function testExecuteWithTokenRevertingOnZeroApproval() public {
+        RevertOnZeroApprovalToken revertingToken = new RevertOnZeroApprovalToken("BNB", "BNB");
+        revertingToken.mint(owner, 1_000_000);
+
+        vm.startPrank(owner);
+        custody.whitelist(address(revertingToken));
+        vm.stopPrank();
+
+        uint256 amount = 100_000;
+        revertingToken.transfer(address(custody), amount);
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedNoParams(address(gateway));
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit ExecutedWithERC20(address(revertingToken), address(receiver), amount, data);
+
+        vm.prank(address(custody));
+        gateway.executeWithERC20(arbitraryCallMessageContext, address(revertingToken), address(receiver), amount, data);
+    }
+
+    function testExecuteWithNonReturnApprovalToken() public {
+        NonReturnApprovalToken nonReturnToken = new NonReturnApprovalToken("USDT", "USDT");
+        nonReturnToken.mint(owner, 1_000_000);
+
+        vm.startPrank(owner);
+        custody.whitelist(address(nonReturnToken));
+        vm.stopPrank();
+
+        uint256 amount = 100_000;
+        nonReturnToken.transfer(address(custody), amount);
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.prank(address(custody));
+        gateway.executeWithERC20(arbitraryCallMessageContext, address(nonReturnToken), address(receiver), amount, data);
     }
 
     function testRevertWithERC20FailsIfNotCustodyOrConnector() public {
