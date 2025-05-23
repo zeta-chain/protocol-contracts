@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { CallOptions, IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
 import { INotSupportedMethods } from "../../contracts/Errors.sol";
-import { AbortContext, Abortable, RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { MessageContext, UniversalContract } from "./interfaces/UniversalContract.sol";
@@ -44,9 +44,6 @@ contract GatewayZEVM is
 
     /// @notice Minimum gas limit for a call.
     uint256 public constant MIN_GAS_LIMIT = 100_000;
-
-    /// @notice Maximum allowed gas limit for revert operations.
-    uint256 public constant MAX_REVERT_GAS_LIMIT = 2_000_000;
 
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
@@ -223,7 +220,7 @@ contract GatewayZEVM is
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
@@ -266,7 +263,7 @@ contract GatewayZEVM is
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
@@ -303,7 +300,7 @@ contract GatewayZEVM is
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
@@ -346,7 +343,7 @@ contract GatewayZEVM is
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
@@ -376,7 +373,7 @@ contract GatewayZEVM is
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededZEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _call(receiver, zrc20, message, callOptions, revertOptions);

@@ -506,14 +506,14 @@ contract GatewayEVMInboundTest is
             callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
-            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
         });
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceededEVM.selector,
+                RevertGasLimitExceeded.selector,
                 revertOptionsExcessiveGas.onRevertGasLimit,
-                gateway.MAX_REVERT_GAS_LIMIT()
+                MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.deposit(destination, amount, address(token), revertOptionsExcessiveGas);
@@ -636,14 +636,14 @@ contract GatewayEVMInboundTest is
             callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
-            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
         });
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceededEVM.selector,
+                RevertGasLimitExceeded.selector,
                 revertOptionsExcessiveGas.onRevertGasLimit,
-                gateway.MAX_REVERT_GAS_LIMIT()
+                MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptionsExcessiveGas);
@@ -707,14 +707,14 @@ contract GatewayEVMInboundTest is
             callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
-            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
         });
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceededEVM.selector,
+                RevertGasLimitExceeded.selector,
                 revertOptionsExcessiveGas.onRevertGasLimit,
-                gateway.MAX_REVERT_GAS_LIMIT()
+                MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.deposit{ value: amount }(destination, revertOptionsExcessiveGas);
@@ -742,14 +742,14 @@ contract GatewayEVMInboundTest is
             callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
-            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
         });
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceededEVM.selector,
+                RevertGasLimitExceeded.selector,
                 revertOptionsExcessiveGas.onRevertGasLimit,
-                gateway.MAX_REVERT_GAS_LIMIT()
+                MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptionsExcessiveGas);
@@ -814,14 +814,14 @@ contract GatewayEVMInboundTest is
             callOnRevert: false,
             abortAddress: address(0x321),
             revertMessage: "",
-            onRevertGasLimit: gateway.MAX_REVERT_GAS_LIMIT() + 1
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
         });
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceededEVM.selector,
+                RevertGasLimitExceeded.selector,
                 revertOptionsExcessiveGas.onRevertGasLimit,
-                gateway.MAX_REVERT_GAS_LIMIT()
+                MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.call(destination, payload, revertOptionsExcessiveGas);

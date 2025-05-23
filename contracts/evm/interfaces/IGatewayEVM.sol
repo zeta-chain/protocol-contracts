@@ -115,11 +115,6 @@ interface IGatewayEVMErrors {
     /// @param provided The size of the payload that was provided.
     /// @param maximum The maximum allowed payload size.
     error PayloadSizeExceeded(uint256 provided, uint256 maximum);
-
-    /// @notice Error indicating revert gas limit exceeds maximum allowed
-    /// @param provided The gas limit provided for revert operation.
-    /// @param maximum The maximum allowed gas limit for revert operation.
-    error RevertGasLimitExceededEVM(uint256 provided, uint256 maximum);
 }
 
 /// @title IGatewayEVM

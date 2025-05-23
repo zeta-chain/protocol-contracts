@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import { INotSupportedMethods } from "../../contracts/Errors.sol";
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import { RevertContext, RevertOptions, Revertable, MAX_REVERT_GAS_LIMIT, RevertGasLimitExceeded } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { Callable, IGatewayEVM, MessageContext } from "./interfaces/IGatewayEVM.sol";
@@ -46,8 +46,6 @@ contract GatewayEVM is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
     uint256 public constant MAX_PAYLOAD_SIZE = 1024;
-    /// @notice Maximum allowed gas limit for revert operations.
-    uint256 public constant MAX_REVERT_GAS_LIMIT = 2_000_000;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -242,7 +240,7 @@ contract GatewayEVM is
             revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
@@ -272,7 +270,7 @@ contract GatewayEVM is
             revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
@@ -299,7 +297,7 @@ contract GatewayEVM is
             revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
@@ -331,7 +329,7 @@ contract GatewayEVM is
             revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
@@ -356,7 +354,7 @@ contract GatewayEVM is
         uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
         if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceededEVM(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         emit Called(msg.sender, receiver, payload, revertOptions);
