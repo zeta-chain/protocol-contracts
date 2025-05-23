@@ -1,5 +1,5 @@
 # IZetaRegistry
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/contracts/zevm/interfaces/IZetaRegistry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/v2/contracts/zevm/interfaces/IZetaRegistry.sol)
 
 **Inherits:**
 [IZetaRegistryEvents](/contracts/zevm/interfaces/IZetaRegistry.sol/interface.IZetaRegistryEvents.md), [IZetaRegistryErrors](/contracts/zevm/interfaces/IZetaRegistry.sol/interface.IZetaRegistryErrors.md)
