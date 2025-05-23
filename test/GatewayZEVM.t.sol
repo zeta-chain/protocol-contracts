@@ -128,9 +128,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), revertOptionsExcessiveGas);
@@ -254,9 +252,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.withdrawAndCall(
@@ -462,9 +458,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptionsExcessiveGas);
@@ -509,9 +503,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.withdrawAndCall(
@@ -674,9 +666,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.call(abi.encodePacked(addr1), address(zrc20), message, callOptions, revertOptionsExcessiveGas);

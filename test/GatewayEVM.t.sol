@@ -511,9 +511,7 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.deposit(destination, amount, address(token), revertOptionsExcessiveGas);
@@ -641,9 +639,7 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptionsExcessiveGas);
@@ -712,9 +708,7 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.deposit{ value: amount }(destination, revertOptionsExcessiveGas);
@@ -747,9 +741,7 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptionsExcessiveGas);
@@ -819,9 +811,7 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                RevertGasLimitExceeded.selector,
-                revertOptionsExcessiveGas.onRevertGasLimit,
-                MAX_REVERT_GAS_LIMIT
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
         gateway.call(destination, payload, revertOptionsExcessiveGas);

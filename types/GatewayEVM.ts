@@ -69,7 +69,6 @@ export interface GatewayEVMInterface extends Interface {
       | "ASSET_HANDLER_ROLE"
       | "DEFAULT_ADMIN_ROLE"
       | "MAX_PAYLOAD_SIZE"
-      | "MAX_REVERT_GAS_LIMIT"
       | "PAUSER_ROLE"
       | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
@@ -131,10 +130,6 @@ export interface GatewayEVMInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "MAX_PAYLOAD_SIZE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MAX_REVERT_GAS_LIMIT",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -272,10 +267,6 @@ export interface GatewayEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "MAX_PAYLOAD_SIZE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "MAX_REVERT_GAS_LIMIT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -691,8 +682,6 @@ export interface GatewayEVM extends BaseContract {
 
   MAX_PAYLOAD_SIZE: TypedContractMethod<[], [bigint], "view">;
 
-  MAX_REVERT_GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
-
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   TSS_ROLE: TypedContractMethod<[], [string], "view">;
@@ -882,9 +871,6 @@ export interface GatewayEVM extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "MAX_PAYLOAD_SIZE"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "MAX_REVERT_GAS_LIMIT"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "PAUSER_ROLE"

@@ -94,22 +94,6 @@ const _abi = [
   },
   {
     type: "error",
-    name: "RevertGasLimitExceededEVM",
-    inputs: [
-      {
-        name: "provided",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "maximum",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-  },
-  {
-    type: "error",
     name: "ZeroAddress",
     inputs: [],
   },
