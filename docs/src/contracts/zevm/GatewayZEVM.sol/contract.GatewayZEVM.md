@@ -175,6 +175,22 @@ function _safeBurn(address zrc20, uint256 amount) private returns (bool);
 function _safeDeposit(address zrc20, address target, uint256 amount) private returns (bool);
 ```
 
+### _burnProtocolFees
+
+Helper function to burn gas fees.
+
+
+```solidity
+function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`zrc20`|`address`|The address of the ZRC20 token.|
+|`gasLimit`|`uint256`|Gas limit.|
+
+
 ### _withdrawZRC20
 
 *Private function to withdraw ZRC20 tokens.*
