@@ -91,7 +91,7 @@ function initialize(
 )
     public
     virtual
-    initializer;
+    onlyInitializing;
 ```
 
 ### _authorizeUpgrade

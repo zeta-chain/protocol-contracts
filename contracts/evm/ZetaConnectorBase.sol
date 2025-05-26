@@ -63,7 +63,7 @@ abstract contract ZetaConnectorBase is
     )
         public
         virtual
-        initializer
+        onlyInitializing
     {
         if (gateway_ == address(0) || zetaToken_ == address(0) || tssAddress_ == address(0) || admin_ == address(0)) {
             revert ZeroAddress();

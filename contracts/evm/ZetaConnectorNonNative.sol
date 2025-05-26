@@ -17,6 +17,7 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     /// @notice Max supply for minting.
     uint256 public maxSupply;
 
+    /// @notice Initializer for ZetaConnectorNonNative.
     function initialize(
         address gateway_,
         address zetaToken_,
