@@ -86,9 +86,11 @@ contract ERC20Custody is
 
         _revokeRole(WITHDRAWER_ROLE, tssAddress);
         _revokeRole(WHITELISTER_ROLE, tssAddress);
+        _revokeRole(PAUSER_ROLE, tssAddress);
 
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(WHITELISTER_ROLE, newTSSAddress);
+        _grantRole(PAUSER_ROLE, newTSSAddress);
 
         emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
 
