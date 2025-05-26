@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { CallOptions, IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
 import { INotSupportedMethods } from "../../contracts/Errors.sol";
-import { AbortContext, Abortable, RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { MessageContext, UniversalContract } from "./interfaces/UniversalContract.sol";
@@ -132,6 +132,23 @@ contract GatewayZEVM is
         }
     }
 
+    /// @notice Helper function to burn gas fees.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param gasLimit Gas limit.
+    function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256) {
+        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
+
+        if (!_safeTransferFrom(gasZRC20, msg.sender, address(this), gasFee)) {
+            revert GasFeeTransferFailed(gasZRC20, address(this), gasFee);
+        }
+
+        if (!_safeBurn(gasZRC20, gasFee)) {
+            revert ZRC20BurnFailed(gasZRC20, gasFee);
+        }
+
+        return gasFee;
+    }
+
     /// @dev Private function to withdraw ZRC20 tokens.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
@@ -147,11 +164,7 @@ contract GatewayZEVM is
     /// @param gasLimit Gas limit.
     /// @return The gas fee for the withdrawal.
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
-
-        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
-        }
+        uint256 gasFee = _burnProtocolFees(zrc20, gasLimit);
 
         if (!_safeTransferFrom(zrc20, msg.sender, address(this), amount)) {
             revert ZRC20TransferFailed(zrc20, msg.sender, address(this), amount);
@@ -206,6 +219,9 @@ contract GatewayZEVM is
         if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
         emit Withdrawn(
@@ -246,6 +262,9 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit WithdrawnAndCalled(
@@ -279,6 +298,9 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZetaAmount();
         if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
@@ -320,6 +342,9 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit WithdrawnAndCalled(
@@ -347,6 +372,9 @@ contract GatewayZEVM is
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
@@ -362,11 +390,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
 
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
-        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
-        }
-
+        _burnProtocolFees(zrc20, callOptions.gasLimit);
         emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
     }
 
