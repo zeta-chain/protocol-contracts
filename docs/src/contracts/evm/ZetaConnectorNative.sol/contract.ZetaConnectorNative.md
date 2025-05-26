@@ -10,6 +10,23 @@ Implementation of ZetaConnectorBase for native token handling.
 
 
 ## Functions
+### initialize
+
+Initializer for ZetaConnectorNative.
+
+
+```solidity
+function initialize(
+    address gateway_,
+    address zetaToken_,
+    address tssAddress_,
+    address admin_
+)
+    public
+    override
+    initializer;
+```
+
 ### withdraw
 
 Withdraw tokens to a specified address.
