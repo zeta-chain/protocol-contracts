@@ -1,5 +1,5 @@
 # MessageContext
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/zevm/interfaces/UniversalContract.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/interfaces/UniversalContract.sol)
 
 Provides contextual information when executing a cross-chain call on ZetaChain.
 

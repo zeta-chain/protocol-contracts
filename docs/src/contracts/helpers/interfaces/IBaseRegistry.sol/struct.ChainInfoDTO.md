@@ -1,5 +1,5 @@
 # ChainInfoDTO
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/helpers/interfaces/IBaseRegistry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/helpers/interfaces/IBaseRegistry.sol)
 
 Structure that contains information about a chain, used for data retrieving.
 

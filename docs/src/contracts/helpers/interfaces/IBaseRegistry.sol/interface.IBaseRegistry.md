@@ -1,5 +1,5 @@
 # IBaseRegistry
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/helpers/interfaces/IBaseRegistry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/helpers/interfaces/IBaseRegistry.sol)
 
 **Inherits:**
 [IBaseRegistryErrors](/contracts/helpers/interfaces/IBaseRegistry.sol/interface.IBaseRegistryErrors.md), [IBaseRegistryEvents](/contracts/helpers/interfaces/IBaseRegistry.sol/interface.IBaseRegistryEvents.md)
