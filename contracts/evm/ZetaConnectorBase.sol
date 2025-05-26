@@ -48,6 +48,11 @@ abstract contract ZetaConnectorBase is
     /// @notice New role identifier for tss role.
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
     /// @notice Initializer for ZetaConnectors.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
     function initialize(
