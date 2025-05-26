@@ -65,6 +65,16 @@ bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
 
 ## Functions
+### constructor
+
+**Note:**
+oz-upgrades-unsafe-allow: constructor
+
+
+```solidity
+constructor();
+```
+
 ### initialize
 
 Initializer for ZetaConnectors.
