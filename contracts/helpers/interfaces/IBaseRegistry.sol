@@ -48,6 +48,39 @@ struct ZRC20Info {
     uint8 decimals;
 }
 
+/// @title ChainInfoDTO
+/// @notice Structure that contains information about a chain, used for data retrieving.
+struct ChainInfoDTO {
+    /// @notice Whether the chain is active in the ecosystem.
+    bool active;
+    /// @notice The unique identifier of the chain.
+    uint256 chainId;
+    /// @notice The address of the ZRC20 token that represents gas token for the chain.
+    address gasZRC20;
+    /// @notice The registry address deployed on the chain.
+    bytes registry;
+}
+
+/// @title ContractInfoDTO
+/// @notice Structure that contains information about a contract registered in the system, used for data retrieving.
+struct ContractInfoDTO {
+    /// @notice Whether the contract is active.
+    bool active;
+    /// @notice The contract address in bytes representation.
+    bytes addressBytes;
+    /// @notice The type of the contract (e.g. "connector", "gateway", "tss").
+    string contractType;
+    /// @notice Represents id of the chain where contract is deployed.
+    uint256 chainId;
+}
+
+/// @title ContractIdentifier
+/// @notice Each entry consists of: chainId (uint256) and contractType (string)
+struct ContractIdentifier {
+    uint256 chainId;
+    string contractType;
+}
+
 /// @title IBaseRegistryEvents
 /// @notice Interface for the events emitted by the BaseRegistry contract.
 interface IBaseRegistryEvents {
@@ -279,4 +312,16 @@ interface IBaseRegistry is IBaseRegistryErrors, IBaseRegistryEvents {
     /// @notice Gets all active chains in the registry.
     /// @return Array of chain IDs for all active chains.
     function getActiveChains() external view returns (uint256[] memory);
+
+    /// @notice Returns information for all chains (active and inactive) in the registry.
+    /// @return chainsInfo Array of ChainInfoDTO structs containing information about all chains.
+    function getAllChains() external view returns (ChainInfoDTO[] memory);
+
+    /// @notice Returns information for all contracts in the registry.
+    /// @return contractsInfo Array of ContractInfoDTO structs containing information about all contracts.
+    function getAllContracts() external view returns (ContractInfoDTO[] memory);
+
+    /// @notice Gets all active chains in the registry.
+    /// @return tokensInfo Array of ZRC20Info structs containing information about all ZRC20 tokens.
+    function getAllZRC20Tokens() external view returns (ZRC20Info[] memory);
 }

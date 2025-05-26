@@ -4,13 +4,11 @@
 export * as erc20 from "./ERC20";
 export * as errorsSol from "./Errors.sol";
 export * as iBaseRegistrySol from "./IBaseRegistry.sol";
-export * as iCoreRegistrySol from "./ICoreRegistry.sol";
 export * as ierc20CustodySol from "./IERC20Custody.sol";
 export * as ierc721Sol from "./IERC721.sol";
 export * as iGatewayEvmSol from "./IGatewayEVM.sol";
 export * as iGatewayZevmSol from "./IGatewayZEVM.sol";
 export * as iReceiverEvmSol from "./IReceiverEVM.sol";
-export * as iRegistrySol from "./IRegistry.sol";
 export * as iwzetaSol from "./IWZETA.sol";
 export * as izrc20Sol from "./IZRC20.sol";
 export * as iZetaConnectorSol from "./IZetaConnector.sol";

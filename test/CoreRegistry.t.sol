@@ -11,6 +11,7 @@ import "../contracts/helpers/interfaces/IBaseRegistry.sol";
 import { SystemContract } from "../contracts/zevm/SystemContract.sol";
 import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { console } from "../dependencies/forge-std-1.9.2/src/console.sol";
 
 // Mock GatewayZEVM
 contract MockGatewayZEVM {
@@ -617,5 +618,163 @@ contract CoreRegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         // Now it should work
         vm.prank(registryManager);
         registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
+    }
+
+    function testGetAllChains() public {
+        uint256 chainId1 = 1;
+        uint256 chainId2 = 2;
+        bytes memory registryAddress1 = abi.encodePacked(address(0x9876));
+        bytes memory registryAddress2 = abi.encodePacked(address(0x8765));
+
+        vm.startPrank(registryManager);
+        registry.changeChainStatus(chainId1, address(gasZRC20), registryAddress1, true);
+        registry.changeChainStatus(chainId2, address(gasZRC20), registryAddress2, true);
+        vm.stopPrank();
+
+        ChainInfoDTO[] memory chains = registry.getAllChains();
+        assertEq(chains.length, 3);
+        assertEq(chains[0].chainId, block.chainid);
+        assertTrue(chains[0].active);
+
+        assertEq(chains[1].chainId, chainId1);
+        assertTrue(chains[1].active);
+        assertEq(chains[1].gasZRC20, address(gasZRC20));
+        assertEq(keccak256(chains[1].registry), keccak256(registryAddress1));
+
+        assertEq(chains[2].chainId, chainId2);
+        assertTrue(chains[2].active);
+        assertEq(chains[2].gasZRC20, address(gasZRC20));
+        assertEq(keccak256(chains[2].registry), keccak256(registryAddress2));
+
+        vm.prank(registryManager);
+        registry.changeChainStatus(chainId1, address(gasZRC20), registryAddress1, false);
+
+        chains = registry.getAllChains();
+        assertEq(chains.length, 3);
+
+        bool foundInactive = false;
+        for (uint256 i = 0; i < chains.length; i++) {
+            if (chains[i].chainId == chainId1) {
+                assertFalse(chains[i].active);
+                foundInactive = true;
+                break;
+            }
+        }
+        assertTrue(foundInactive, "Failed to find inactive chain");
+    }
+
+    function testGetAllContracts() public {
+        uint256 chainId = 1;
+        bytes memory registryAddress = abi.encodePacked(address(0x9876));
+        vm.prank(registryManager);
+        registry.changeChainStatus(chainId, address(gasZRC20), registryAddress, true);
+
+        string memory contractType1 = "connector";
+        string memory contractType2 = "gateway";
+        string memory contractType3 = "tss";
+        bytes memory addressBytes1 = abi.encodePacked(address(0xAA55));
+        bytes memory addressBytes2 = abi.encodePacked(address(0xBB66));
+        bytes memory addressBytes3 = abi.encodePacked(address(0xCC77));
+        vm.startPrank(registryManager);
+        registry.registerContract(chainId, contractType1, addressBytes1);
+        registry.registerContract(chainId, contractType2, addressBytes2);
+        registry.registerContract(chainId, contractType3, addressBytes3);
+        vm.stopPrank();
+
+        ContractInfoDTO[] memory contracts = registry.getAllContracts();
+        assertEq(contracts.length, 3);
+
+        bool foundConnector = false;
+        bool foundGateway = false;
+        bool foundTss = false;
+
+        for (uint256 i = 0; i < contracts.length; i++) {
+            console.log("Contract type:", contracts[i].contractType);
+            console.log("Chain ID:", contracts[i].chainId);
+
+            if (keccak256(bytes(contracts[i].contractType)) == keccak256(bytes(contractType1))) {
+                assertEq(contracts[i].chainId, chainId);
+                assertTrue(contracts[i].active);
+                assertEq(keccak256(contracts[i].addressBytes), keccak256(addressBytes1));
+                foundConnector = true;
+            } else if (keccak256(bytes(contracts[i].contractType)) == keccak256(bytes(contractType2))) {
+                assertEq(contracts[i].chainId, chainId);
+                assertTrue(contracts[i].active);
+                assertEq(keccak256(contracts[i].addressBytes), keccak256(addressBytes2));
+                foundGateway = true;
+            } else if (keccak256(bytes(contracts[i].contractType)) == keccak256(bytes(contractType3))) {
+                assertEq(contracts[i].chainId, chainId);
+                assertTrue(contracts[i].active);
+                assertEq(keccak256(contracts[i].addressBytes), keccak256(addressBytes3));
+                foundTss = true;
+            }
+        }
+
+        assertTrue(foundConnector, "Failed to find connector contract");
+        assertTrue(foundGateway, "Failed to find gateway contract");
+        assertTrue(foundTss, "Failed to find tss contract");
+
+        vm.prank(registryManager);
+        registry.setContractActive(chainId, contractType2, false);
+
+        contracts = registry.getAllContracts();
+        assertEq(contracts.length, 3);
+
+        bool foundInactiveGateway = false;
+        for (uint256 i = 0; i < contracts.length; i++) {
+            if (keccak256(bytes(contracts[i].contractType)) == keccak256(bytes(contractType2))) {
+                assertFalse(contracts[i].active);
+                foundInactiveGateway = true;
+                break;
+            }
+        }
+        assertTrue(foundInactiveGateway, "Failed to find inactive gateway contract");
+    }
+
+    function testGetAllZRC20Tokens() public {
+        address zrc20Address1 = address(0xDDDD);
+        address zrc20Address2 = address(0xEEEE);
+        string memory symbol1 = "TKN1";
+        string memory symbol2 = "TKN2";
+        uint256 originChainId = 1;
+        bytes memory originAddress1 = abi.encodePacked(address(0x1111));
+        bytes memory originAddress2 = abi.encodePacked(address(0x2222));
+        string memory coinType = "ERC20";
+        uint8 decimals = 18;
+
+        vm.startPrank(registryManager);
+        registry.registerZRC20Token(zrc20Address1, symbol1, originChainId, originAddress1, coinType, decimals);
+        registry.registerZRC20Token(zrc20Address2, symbol2, originChainId, originAddress2, coinType, decimals);
+        vm.stopPrank();
+
+        ZRC20Info[] memory tokens = registry.getAllZRC20Tokens();
+        assertEq(tokens.length, 2);
+
+        bool foundToken1 = false;
+        for (uint256 i = 0; i < tokens.length; i++) {
+            if (tokens[i].address_ == zrc20Address1) {
+                assertTrue(tokens[i].active);
+                assertEq(tokens[i].symbol, symbol1);
+                foundToken1 = true;
+                break;
+            }
+        }
+        assertTrue(foundToken1, "Failed to find token 1");
+
+        vm.prank(registryManager);
+        registry.setZRC20TokenActive(zrc20Address2, false);
+        tokens = registry.getAllZRC20Tokens();
+        assertEq(tokens.length, 2);
+
+        bool inactiveToken2Found = false;
+        for (uint256 i = 0; i < tokens.length; i++) {
+            if (tokens[i].address_ == zrc20Address2) {
+                assertFalse(tokens[i].active);
+                inactiveToken2Found = true;
+                break;
+            }
+        }
+
+        assertTrue(inactiveToken2Found, "Failed to find inactive token");
     }
 }
