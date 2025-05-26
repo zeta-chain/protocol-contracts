@@ -22,6 +22,8 @@ uint256 public maxSupply;
 ## Functions
 ### initialize
 
+Initializer for ZetaConnectorNonNative.
+
 
 ```solidity
 function initialize(
