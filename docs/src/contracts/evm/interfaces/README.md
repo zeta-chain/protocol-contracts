@@ -9,5 +9,6 @@
 - [IGatewayEVM](IGatewayEVM.sol/interface.IGatewayEVM.md)
 - [MessageContext](IGatewayEVM.sol/struct.MessageContext.md)
 - [Callable](IGatewayEVM.sol/interface.Callable.md)
+- [IRegistry](IRegistry.sol/interface.IRegistry.md)
 - [IZetaConnectorEvents](IZetaConnector.sol/interface.IZetaConnectorEvents.md)
 - [IZetaNonEthNew](IZetaNonEthNew.sol/interface.IZetaNonEthNew.md)

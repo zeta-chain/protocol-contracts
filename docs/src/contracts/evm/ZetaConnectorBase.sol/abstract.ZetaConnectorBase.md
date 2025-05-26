@@ -65,6 +65,16 @@ bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
 
 
 ## Functions
+### constructor
+
+**Note:**
+oz-upgrades-unsafe-allow: constructor
+
+
+```solidity
+constructor();
+```
+
 ### initialize
 
 Initializer for ZetaConnectors.
@@ -81,7 +91,7 @@ function initialize(
 )
     public
     virtual
-    initializer;
+    onlyInitializing;
 ```
 
 ### _authorizeUpgrade
@@ -132,84 +142,13 @@ Unpause contract.
 function unpause() external onlyRole(PAUSER_ROLE);
 ```
 
-### withdraw
-
-Withdraw tokens to a specified address.
-
-
-```solidity
-function withdraw(address to, uint256 amount, bytes32 internalSendHash) external virtual;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`to`|`address`|The address to withdraw tokens to.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`internalSendHash`|`bytes32`|A hash used for internal tracking of the transaction.|
-
-
-### withdrawAndCall
-
-Withdraw tokens and call a contract through Gateway.
-
-
-```solidity
-function withdrawAndCall(
-    MessageContext calldata messageContext,
-    address to,
-    uint256 amount,
-    bytes calldata data,
-    bytes32 internalSendHash
-)
-    external
-    virtual;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`messageContext`|`MessageContext`|Message context containing sender.|
-|`to`|`address`|The address to withdraw tokens to.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`data`|`bytes`|The calldata to pass to the contract call.|
-|`internalSendHash`|`bytes32`|A hash used for internal tracking of the transaction.|
-
-
-### withdrawAndRevert
-
-Withdraw tokens and call a contract with a revert callback through Gateway.
-
-
-```solidity
-function withdrawAndRevert(
-    address to,
-    uint256 amount,
-    bytes calldata data,
-    bytes32 internalSendHash,
-    RevertContext calldata revertContext
-)
-    external
-    virtual;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`to`|`address`|The address to withdraw tokens to.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`data`|`bytes`|The calldata to pass to the contract call.|
-|`internalSendHash`|`bytes32`|A hash used for internal tracking of the transaction.|
-|`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
-
-
-### receiveTokens
+### deposit
 
 Handle received tokens.
 
 
 ```solidity
-function receiveTokens(uint256 amount) external virtual;
+function deposit(uint256 amount) external virtual;
 ```
 **Parameters**
 
