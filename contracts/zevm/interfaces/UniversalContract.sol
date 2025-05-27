@@ -3,6 +3,7 @@ pragma solidity 0.8.26;
 
 import { RevertContext } from "../../../contracts/Revert.sol";
 import "../interfaces/IGatewayZEVM.sol";
+import "./ICoreRegistry.sol";
 
 /// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
 /// MessageContext should be used
@@ -43,6 +44,9 @@ struct MessageContext {
 /// @dev Contracts extending this abstract contract can handle incoming cross-chain messages
 /// and execute logic based on the provided context, token, and message payload.
 abstract contract UniversalContract {
+    // TODO: replace with real CoreRegistry address that will be deployed across all envs
+    /// @notice Reference to the ZetaChain Registry contract
+    ICoreRegistry public constant registry = ICoreRegistry(0x7c591652f159496b14e15616F0948a6d63b585E8);
     /// @notice Reference to the ZetaChain Gateway contract
     IGatewayZEVM public immutable gateway;
 
@@ -59,9 +63,11 @@ abstract contract UniversalContract {
         _;
     }
 
-    /// @notice Constructor to initialize the contract with the gateway address
-    constructor(address payable gatewayAddress) {
-        gateway = IGatewayZEVM(gatewayAddress);
+    /// @notice Initializes the contract by retrieving the gateway address from the registry
+    /// @dev Fetches the gateway contract address for the current chain from the registry.
+    /// If the gateway is not active or not found, the gateway will remain uninitialized (address(0)).
+    constructor() {
+        gateway = IGatewayZEVM(registry.gatewayZEVM());
     }
 
     /// @notice Function to handle cross-chain calls

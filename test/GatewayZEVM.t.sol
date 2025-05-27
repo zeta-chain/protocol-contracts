@@ -62,8 +62,12 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         );
         gateway = GatewayZEVM(proxy);
 
+        // TODO: replace with real CoreRegistry address that will be deployed across all envs
+        address expectedRegistryAddress = 0x7c591652f159496b14e15616F0948a6d63b585E8;
+        vm.mockCall(expectedRegistryAddress, abi.encodeWithSignature("gatewayZEVM()"), abi.encode(address(gateway)));
+
         protocolAddress = gateway.PROTOCOL_ADDRESS();
-        testUniversalContract = new TestUniversalContract(payable(address(gateway)));
+        testUniversalContract = new TestUniversalContract();
 
         vm.startPrank(protocolAddress);
         systemContract = new SystemContract(address(0), address(0), address(0));
@@ -780,9 +784,13 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         );
         gateway = GatewayZEVM(proxy);
 
+        // TODO: replace with real CoreRegistry address that will be deployed across all envs
+        address expectedRegistryAddress = 0x7c591652f159496b14e15616F0948a6d63b585E8;
+        vm.mockCall(expectedRegistryAddress, abi.encodeWithSignature("gatewayZEVM()"), abi.encode(address(gateway)));
+
         protocolAddress = gateway.PROTOCOL_ADDRESS();
 
-        testUniversalContract = new TestUniversalContract(payable(address(gateway)));
+        testUniversalContract = new TestUniversalContract();
 
         vm.startPrank(protocolAddress);
         systemContract = new SystemContract(address(0), address(0), address(0));
