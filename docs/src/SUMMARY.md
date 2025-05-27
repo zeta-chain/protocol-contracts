@@ -48,6 +48,7 @@
     - [BaseRegistry](contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md)
   - [❱ zevm](contracts/zevm/README.md)
     - [❱ interfaces](contracts/zevm/interfaces/README.md)
+      - [ICoreRegistry](contracts/zevm/interfaces/ICoreRegistry.sol/interface.ICoreRegistry.md)
       - [IGatewayZEVMEvents](contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
       - [IGatewayZEVMErrors](contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md)
       - [IGatewayZEVM](contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md)

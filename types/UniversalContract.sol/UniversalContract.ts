@@ -34,16 +34,20 @@ export type MessageContextStructOutput = [
 ] & { sender: string; senderEVM: string; chainID: bigint };
 
 export interface UniversalContractInterface extends Interface {
-  getFunction(nameOrSignature: "gateway" | "onCall"): FunctionFragment;
+  getFunction(
+    nameOrSignature: "gateway" | "onCall" | "registry"
+  ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onCall",
     values: [MessageContextStruct, AddressLike, BigNumberish, BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: "registry", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
 }
 
 export interface UniversalContract extends BaseContract {
@@ -102,6 +106,8 @@ export interface UniversalContract extends BaseContract {
     "nonpayable"
   >;
 
+  registry: TypedContractMethod<[], [string], "view">;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -121,6 +127,9 @@ export interface UniversalContract extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "registry"
+  ): TypedContractMethod<[], [string], "view">;
 
   filters: {};
 }

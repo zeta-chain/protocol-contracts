@@ -124,6 +124,7 @@ This guide covers all steps required to deploy the contracts, including environm
     - [BaseRegistry](protocol/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md)
   - [❱ zevm](protocol/contracts/zevm/README.md)
     - [❱ interfaces](protocol/contracts/zevm/interfaces/README.md)
+      - [ICoreRegistry](protocol/contracts/zevm/interfaces/ICoreRegistry.sol/interface.ICoreRegistry.md)
       - [IGatewayZEVMEvents](protocol/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
       - [IGatewayZEVMErrors](protocol/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md)
       - [IGatewayZEVM](protocol/contracts/zevm/interfaces/IGatewayZEVM.sol/interface.IGatewayZEVM.md)

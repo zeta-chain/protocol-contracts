@@ -8,6 +8,15 @@ and execute logic based on the provided context, token, and message payload.*
 
 
 ## State Variables
+### registry
+Reference to the ZetaChain Registry contract
+
+
+```solidity
+ICoreRegistry public constant registry = ICoreRegistry(0x7c591652f159496b14e15616F0948a6d63b585E8);
+```
+
+
 ### gateway
 Reference to the ZetaChain Gateway contract
 
@@ -34,11 +43,14 @@ modifier onlyGateway();
 
 ### constructor
 
-Constructor to initialize the contract with the gateway address
+Initializes the contract by retrieving the gateway address from the registry
+
+*Fetches the gateway contract address for the current chain from the registry.
+If the gateway is not active or not found, the gateway will remain uninitialized (address(0)).*
 
 
 ```solidity
-constructor(address payable gatewayAddress);
+constructor();
 ```
 
 ### onCall

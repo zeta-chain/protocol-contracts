@@ -68,6 +68,19 @@ const _abi = [
     stateMutability: "nonpayable",
   },
   {
+    type: "function",
+    name: "registry",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "contract ICoreRegistry",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
     type: "error",
     name: "Unauthorized",
     inputs: [],
