@@ -1,5 +1,5 @@
 # CoreRegistry
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/zevm/CoreRegistry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/CoreRegistry.sol)
 
 **Inherits:**
 [BaseRegistry](/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md)

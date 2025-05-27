@@ -1,5 +1,5 @@
 # UniversalContract
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/v2/v2/v2/v2/v2/v2/v2/contracts/zevm/interfaces/UniversalContract.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/interfaces/UniversalContract.sol)
 
 Interface for contracts that can receive cross-chain calls on ZetaChain.
 
