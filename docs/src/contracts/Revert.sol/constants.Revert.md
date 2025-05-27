@@ -1,5 +1,5 @@
 # Constants
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/Revert.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/Revert.sol)
 
 ### MAX_REVERT_GAS_LIMIT
 
