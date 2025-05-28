@@ -166,10 +166,10 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawZRC20FailsIfMessageSizeExceeded() public {
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() + 1);
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() + 1);
 
         uint256 messageSize = revertOptions.revertMessage.length;
-        uint256 maxSize = gateway.MAX_MESSAGE_SIZE();
+        uint256 maxSize = gateway.getMaxMessageSize();
 
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
 
@@ -216,11 +216,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZRC20FailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(gateway.MAX_MESSAGE_SIZE() / 2);
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
+        bytes memory message = new bytes(gateway.getMaxMessageSize() / 2);
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() / 2 + 1);
 
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
-        uint256 maxSize = gateway.MAX_MESSAGE_SIZE();
+        uint256 maxSize = gateway.getMaxMessageSize();
 
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
 
@@ -350,11 +350,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZRC20WithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(gateway.MAX_MESSAGE_SIZE() / 2);
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
+        bytes memory message = new bytes(gateway.getMaxMessageSize() / 2);
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() / 2 + 1);
 
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
-        uint256 maxSize = gateway.MAX_MESSAGE_SIZE();
+        uint256 maxSize = gateway.getMaxMessageSize();
 
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
 
@@ -431,10 +431,10 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawZETAFailsIfMessageSizeExceeded() public {
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() + 1);
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() + 1);
 
         uint256 messageSize = revertOptions.revertMessage.length;
-        uint256 maxSize = gateway.MAX_MESSAGE_SIZE();
+        uint256 maxSize = gateway.getMaxMessageSize();
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
 
         gateway.withdraw(abi.encodePacked(addr1), 1, 1, revertOptions);
@@ -472,11 +472,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testWithdrawAndCallZETAWithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(gateway.MAX_MESSAGE_SIZE() / 2);
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
+        bytes memory message = new bytes(gateway.getMaxMessageSize() / 2);
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() / 2 + 1);
 
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
-        uint256 maxSize = gateway.MAX_MESSAGE_SIZE();
+        uint256 maxSize = gateway.getMaxMessageSize();
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
 
         gateway.withdrawAndCall(abi.encodePacked(addr1), 1, 1, message, callOptions, revertOptions);
@@ -673,11 +673,11 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
     }
 
     function testCallWithCallOptsFailsIfMessageSizeExceeded() public {
-        bytes memory message = new bytes(gateway.MAX_MESSAGE_SIZE() / 2);
-        revertOptions.revertMessage = new bytes(gateway.MAX_MESSAGE_SIZE() / 2 + 1);
+        bytes memory message = new bytes(gateway.getMaxMessageSize() / 2);
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() / 2 + 1);
 
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
-        uint256 maxSize = gateway.MAX_MESSAGE_SIZE();
+        uint256 maxSize = gateway.getMaxMessageSize();
 
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
 
