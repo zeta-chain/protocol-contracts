@@ -142,6 +142,8 @@ This guide covers all steps required to deploy the contracts, including environm
       - [ZetaInterfaces](protocol/contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaInterfaces.md)
       - [ZetaReceiver](protocol/contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaReceiver.md)
       - [ZetaConnectorZEVM](protocol/contracts/zevm/legacy/ZetaConnectorZEVM.sol/contract.ZetaConnectorZEVM.md)
+    - [❱ libraries](protocol/contracts/zevm/libraries/README.md)
+      - [GatewayZEVMValidations](protocol/contracts/zevm/libraries/GatewayZEVMValidations.sol/library.GatewayZEVMValidations.md)
     - [CoreRegistry](protocol/contracts/zevm/CoreRegistry.sol/contract.CoreRegistry.md)
     - [GatewayZEVM](protocol/contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md)
     - [SystemContractErrors](protocol/contracts/zevm/SystemContract.sol/interface.SystemContractErrors.md)

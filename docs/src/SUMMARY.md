@@ -66,6 +66,8 @@
       - [ZetaInterfaces](contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaInterfaces.md)
       - [ZetaReceiver](contracts/zevm/legacy/ZetaConnectorZEVM.sol/interface.ZetaReceiver.md)
       - [ZetaConnectorZEVM](contracts/zevm/legacy/ZetaConnectorZEVM.sol/contract.ZetaConnectorZEVM.md)
+    - [❱ libraries](contracts/zevm/libraries/README.md)
+      - [GatewayZEVMValidations](contracts/zevm/libraries/GatewayZEVMValidations.sol/library.GatewayZEVMValidations.md)
     - [CoreRegistry](contracts/zevm/CoreRegistry.sol/contract.CoreRegistry.md)
     - [GatewayZEVM](contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md)
     - [SystemContractErrors](contracts/zevm/SystemContract.sol/interface.SystemContractErrors.md)

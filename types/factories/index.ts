@@ -50,6 +50,7 @@ export { GatewayEVM__factory } from "./GatewayEVM__factory";
 export { GatewayEVMUpgradeTest__factory } from "./GatewayEVMUpgradeTest__factory";
 export { GatewayZEVM__factory } from "./GatewayZEVM__factory";
 export { GatewayZEVMUpgradeTest__factory } from "./GatewayZEVMUpgradeTest__factory";
+export { GatewayZEVMValidations__factory } from "./GatewayZEVMValidations__factory";
 export { IAccessControl__factory } from "./IAccessControl__factory";
 export { IBeacon__factory } from "./IBeacon__factory";
 export { IERC165__factory } from "./IERC165__factory";
