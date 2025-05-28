@@ -11,6 +11,19 @@ import type {
 const _abi = [
   {
     type: "function",
+    name: "gateway",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "contract IGatewayZEVM",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "onCall",
     inputs: [
       {
@@ -53,6 +66,24 @@ const _abi = [
     ],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "registry",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "contract ICoreRegistry",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "error",
+    name: "Unauthorized",
+    inputs: [],
   },
 ] as const;
 

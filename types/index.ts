@@ -84,6 +84,7 @@ export type { GatewayZEVMUpgradeTest } from "./GatewayZEVMUpgradeTest";
 export type { GatewayZEVMValidations } from "./GatewayZEVMValidations";
 export type { IAccessControl } from "./IAccessControl";
 export type { IBeacon } from "./IBeacon";
+export type { ICoreRegistry } from "./ICoreRegistry";
 export type { IERC165 } from "./IERC165";
 export type { IERC1967 } from "./IERC1967";
 export type { IERC20 } from "./IERC20";
@@ -168,6 +169,7 @@ export { IBaseRegistryErrors__factory } from "./factories/IBaseRegistry.sol/IBas
 export type { IBaseRegistryEvents } from "./IBaseRegistry.sol/IBaseRegistryEvents";
 export { IBaseRegistryEvents__factory } from "./factories/IBaseRegistry.sol/IBaseRegistryEvents__factory";
 export { IBeacon__factory } from "./factories/IBeacon__factory";
+export { ICoreRegistry__factory } from "./factories/ICoreRegistry__factory";
 export { IERC165__factory } from "./factories/IERC165__factory";
 export { IERC1967__factory } from "./factories/IERC1967__factory";
 export type { IERC20Custody } from "./IERC20Custody.sol/IERC20Custody";

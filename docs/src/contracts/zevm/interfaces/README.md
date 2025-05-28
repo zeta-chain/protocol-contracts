@@ -1,6 +1,7 @@
 
 
 # Contents
+- [ICoreRegistry](ICoreRegistry.sol/interface.ICoreRegistry.md)
 - [IGatewayZEVMEvents](IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
 - [IGatewayZEVMErrors](IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md)
 - [IGatewayZEVM](IGatewayZEVM.sol/interface.IGatewayZEVM.md)
@@ -14,4 +15,4 @@
 - [zContext](UniversalContract.sol/struct.zContext.md)
 - [zContract](UniversalContract.sol/interface.zContract.md)
 - [MessageContext](UniversalContract.sol/struct.MessageContext.md)
-- [UniversalContract](UniversalContract.sol/interface.UniversalContract.md)
+- [UniversalContract](UniversalContract.sol/abstract.UniversalContract.md)

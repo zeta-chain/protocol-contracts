@@ -38,7 +38,7 @@ type MessageContext struct {
 
 // UniversalContractMetaData contains all meta data concerning the UniversalContract contract.
 var UniversalContractMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"onCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structMessageContext\",\"components\":[{\"name\":\"sender\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"senderEVM\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"gateway\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"contractIGatewayZEVM\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"onCall\",\"inputs\":[{\"name\":\"context\",\"type\":\"tuple\",\"internalType\":\"structMessageContext\",\"components\":[{\"name\":\"sender\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"senderEVM\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"chainID\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"name\":\"zrc20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"amount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"message\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"registry\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"contractICoreRegistry\"}],\"stateMutability\":\"view\"},{\"type\":\"error\",\"name\":\"Unauthorized\",\"inputs\":[]}]",
 }
 
 // UniversalContractABI is the input ABI used to generate the binding from.
@@ -185,6 +185,68 @@ func (_UniversalContract *UniversalContractTransactorRaw) Transfer(opts *bind.Tr
 // Transact invokes the (paid) contract method with params as input values.
 func (_UniversalContract *UniversalContractTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	return _UniversalContract.Contract.contract.Transact(opts, method, params...)
+}
+
+// Gateway is a free data retrieval call binding the contract method 0x116191b6.
+//
+// Solidity: function gateway() view returns(address)
+func (_UniversalContract *UniversalContractCaller) Gateway(opts *bind.CallOpts) (common.Address, error) {
+	var out []interface{}
+	err := _UniversalContract.contract.Call(opts, &out, "gateway")
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// Gateway is a free data retrieval call binding the contract method 0x116191b6.
+//
+// Solidity: function gateway() view returns(address)
+func (_UniversalContract *UniversalContractSession) Gateway() (common.Address, error) {
+	return _UniversalContract.Contract.Gateway(&_UniversalContract.CallOpts)
+}
+
+// Gateway is a free data retrieval call binding the contract method 0x116191b6.
+//
+// Solidity: function gateway() view returns(address)
+func (_UniversalContract *UniversalContractCallerSession) Gateway() (common.Address, error) {
+	return _UniversalContract.Contract.Gateway(&_UniversalContract.CallOpts)
+}
+
+// Registry is a free data retrieval call binding the contract method 0x7b103999.
+//
+// Solidity: function registry() view returns(address)
+func (_UniversalContract *UniversalContractCaller) Registry(opts *bind.CallOpts) (common.Address, error) {
+	var out []interface{}
+	err := _UniversalContract.contract.Call(opts, &out, "registry")
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// Registry is a free data retrieval call binding the contract method 0x7b103999.
+//
+// Solidity: function registry() view returns(address)
+func (_UniversalContract *UniversalContractSession) Registry() (common.Address, error) {
+	return _UniversalContract.Contract.Registry(&_UniversalContract.CallOpts)
+}
+
+// Registry is a free data retrieval call binding the contract method 0x7b103999.
+//
+// Solidity: function registry() view returns(address)
+func (_UniversalContract *UniversalContractCallerSession) Registry() (common.Address, error) {
+	return _UniversalContract.Contract.Registry(&_UniversalContract.CallOpts)
 }
 
 // OnCall is a paid mutator transaction binding the contract method 0x5bcfd616.
