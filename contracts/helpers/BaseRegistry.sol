@@ -189,7 +189,6 @@ abstract contract BaseRegistry is
         // Validate inputs
         if (address_ == address(0)) revert ZeroAddress();
         if (bytes(symbol).length == 0) revert InvalidContractType("Symbol cannot be empty");
-        if (bytes(originAddress).length == 0) revert InvalidContractType("Origin address cannot be empty");
 
         // Check if token already registered
         if (_zrc20Tokens[address_].address_ != address(0)) revert ZRC20AlreadyRegistered(address_);

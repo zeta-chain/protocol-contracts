@@ -467,7 +467,8 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
 
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
-        vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, "Origin address cannot be empty"));
+        vm.expectEmit(true, true, true, true);
+        emit ZRC20TokenRegistered(originAddress, zrc20Address, decimals, originChainId, symbol);
         registry.onCall(context, registerData);
     }
 
