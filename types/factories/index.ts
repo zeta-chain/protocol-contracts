@@ -52,6 +52,7 @@ export { GatewayZEVM__factory } from "./GatewayZEVM__factory";
 export { GatewayZEVMUpgradeTest__factory } from "./GatewayZEVMUpgradeTest__factory";
 export { IAccessControl__factory } from "./IAccessControl__factory";
 export { IBeacon__factory } from "./IBeacon__factory";
+export { ICoreRegistry__factory } from "./ICoreRegistry__factory";
 export { IERC165__factory } from "./IERC165__factory";
 export { IERC1967__factory } from "./IERC1967__factory";
 export { IERC20__factory } from "./IERC20__factory";
