@@ -12,7 +12,7 @@ Maximum message size constant
 
 
 ```solidity
-uint256 internal constant MAX_MESSAGE_SIZE = 2048;
+uint256 public constant MAX_MESSAGE_SIZE = 2048;
 ```
 
 
@@ -21,7 +21,7 @@ Minimum gas limit constant
 
 
 ```solidity
-uint256 internal constant MIN_GAS_LIMIT = 100_000;
+uint256 public constant MIN_GAS_LIMIT = 100_000;
 ```
 
 
@@ -56,28 +56,13 @@ function validateReceiver(bytes memory receiver) internal pure;
 |`receiver`|`bytes`|The receiver bytes to validate|
 
 
-### validateZRC20Amount
+### validateAmount
 
-*Validates that ZRC20 amount is not zero*
-
-
-```solidity
-function validateZRC20Amount(uint256 amount) internal pure;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`amount`|`uint256`|The amount to validate|
-
-
-### validateZetaAmount
-
-*Validates that ZETA amount is not zero*
+*Validates that amount is not zero*
 
 
 ```solidity
-function validateZetaAmount(uint256 amount) internal pure;
+function validateAmount(uint256 amount) internal pure;
 ```
 **Parameters**
 
@@ -107,7 +92,7 @@ function validateGasLimit(uint256 gasLimit) internal pure;
 
 
 ```solidity
-function validateTarget(address target, address protocolAddress, address contractAddress) internal pure;
+function validateTarget(address target, address protocolAddress, address contractAddress) private pure;
 ```
 **Parameters**
 
@@ -222,56 +207,6 @@ function validateWithdrawalAndCallParams(
 |`revertOptions`|`RevertOptions`|The revert options|
 
 
-### validateZetaWithdrawalParams
-
-*Validates ZETA withdrawal parameters*
-
-
-```solidity
-function validateZetaWithdrawalParams(
-    bytes memory receiver,
-    uint256 amount,
-    RevertOptions calldata revertOptions
-)
-    internal
-    pure;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address|
-|`amount`|`uint256`|The amount to withdraw|
-|`revertOptions`|`RevertOptions`|The revert options|
-
-
-### validateZetaWithdrawalAndCallParams
-
-*Validates ZETA withdrawal and call parameters*
-
-
-```solidity
-function validateZetaWithdrawalAndCallParams(
-    bytes memory receiver,
-    uint256 amount,
-    bytes calldata message,
-    CallOptions calldata callOptions,
-    RevertOptions calldata revertOptions
-)
-    internal
-    pure;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`receiver`|`bytes`|The receiver address|
-|`amount`|`uint256`|The amount to withdraw|
-|`message`|`bytes`|The message to send|
-|`callOptions`|`CallOptions`|The call options|
-|`revertOptions`|`RevertOptions`|The revert options|
-
-
 ### validateDepositParams
 
 *Validates deposit parameters*
@@ -341,11 +276,11 @@ function validateZetaDepositAndCallParams(
 
 
 ## Errors
-### ZeroAddress
-Error indicating a zero address was provided.
+### EmptyAddress
+Error indicating a empty address was provided.
 
 
 ```solidity
-error ZeroAddress();
+error EmptyAddress();
 ```
 

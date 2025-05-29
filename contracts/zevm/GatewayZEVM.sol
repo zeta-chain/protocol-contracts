@@ -300,9 +300,7 @@ contract GatewayZEVM is
         external
         whenNotPaused
     {
-        GatewayZEVMValidations.validateWithdrawalAndCallParams(
-            receiver, amount, message, callOptions, revertOptions
-        );
+        GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, amount, message, callOptions, revertOptions);
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit WithdrawnAndCalled(
