@@ -31,8 +31,8 @@ var (
 
 // GatewayZEVMValidationsMetaData contains all meta data concerning the GatewayZEVMValidations contract.
 var GatewayZEVMValidationsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"MAX_MESSAGE_SIZE\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"MIN_GAS_LIMIT\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"error\",\"name\":\"EmptyAddress\",\"inputs\":[]}]",
-	Bin: "0x609b6037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe7300000000000000000000000000000000000000003014608060405260043610603d5760003560e01c80637ce1ffeb14604257806397d340f514605d575b600080fd5b604b620186a081565b60405190815260200160405180910390f35b604b6108008156fea2646970667358221220e96b63b3395af1fcdb1da412bdd2dee128b09af1a935c94cca1eafa3cd39ef9364736f6c634300081a0033",
+	ABI: "[{\"type\":\"error\",\"name\":\"EmptyAddress\",\"inputs\":[]}]",
+	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220343399f7e31fa3352f637ee7cea69b2b47f8aff72498c5a0936020ac4197010d64736f6c634300081a0033",
 }
 
 // GatewayZEVMValidationsABI is the input ABI used to generate the binding from.
@@ -200,66 +200,4 @@ func (_GatewayZEVMValidations *GatewayZEVMValidationsTransactorRaw) Transfer(opt
 // Transact invokes the (paid) contract method with params as input values.
 func (_GatewayZEVMValidations *GatewayZEVMValidationsTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	return _GatewayZEVMValidations.Contract.contract.Transact(opts, method, params...)
-}
-
-// MAXMESSAGESIZE is a free data retrieval call binding the contract method 0x97d340f5.
-//
-// Solidity: function MAX_MESSAGE_SIZE() view returns(uint256)
-func (_GatewayZEVMValidations *GatewayZEVMValidationsCaller) MAXMESSAGESIZE(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _GatewayZEVMValidations.contract.Call(opts, &out, "MAX_MESSAGE_SIZE")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// MAXMESSAGESIZE is a free data retrieval call binding the contract method 0x97d340f5.
-//
-// Solidity: function MAX_MESSAGE_SIZE() view returns(uint256)
-func (_GatewayZEVMValidations *GatewayZEVMValidationsSession) MAXMESSAGESIZE() (*big.Int, error) {
-	return _GatewayZEVMValidations.Contract.MAXMESSAGESIZE(&_GatewayZEVMValidations.CallOpts)
-}
-
-// MAXMESSAGESIZE is a free data retrieval call binding the contract method 0x97d340f5.
-//
-// Solidity: function MAX_MESSAGE_SIZE() view returns(uint256)
-func (_GatewayZEVMValidations *GatewayZEVMValidationsCallerSession) MAXMESSAGESIZE() (*big.Int, error) {
-	return _GatewayZEVMValidations.Contract.MAXMESSAGESIZE(&_GatewayZEVMValidations.CallOpts)
-}
-
-// MINGASLIMIT is a free data retrieval call binding the contract method 0x7ce1ffeb.
-//
-// Solidity: function MIN_GAS_LIMIT() view returns(uint256)
-func (_GatewayZEVMValidations *GatewayZEVMValidationsCaller) MINGASLIMIT(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _GatewayZEVMValidations.contract.Call(opts, &out, "MIN_GAS_LIMIT")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// MINGASLIMIT is a free data retrieval call binding the contract method 0x7ce1ffeb.
-//
-// Solidity: function MIN_GAS_LIMIT() view returns(uint256)
-func (_GatewayZEVMValidations *GatewayZEVMValidationsSession) MINGASLIMIT() (*big.Int, error) {
-	return _GatewayZEVMValidations.Contract.MINGASLIMIT(&_GatewayZEVMValidations.CallOpts)
-}
-
-// MINGASLIMIT is a free data retrieval call binding the contract method 0x7ce1ffeb.
-//
-// Solidity: function MIN_GAS_LIMIT() view returns(uint256)
-func (_GatewayZEVMValidations *GatewayZEVMValidationsCallerSession) MINGASLIMIT() (*big.Int, error) {
-	return _GatewayZEVMValidations.Contract.MINGASLIMIT(&_GatewayZEVMValidations.CallOpts)
 }

@@ -12,7 +12,7 @@ Maximum message size constant
 
 
 ```solidity
-uint256 public constant MAX_MESSAGE_SIZE = 2048;
+uint256 internal constant MAX_MESSAGE_SIZE = 2048;
 ```
 
 
@@ -21,7 +21,7 @@ Minimum gas limit constant
 
 
 ```solidity
-uint256 public constant MIN_GAS_LIMIT = 100_000;
+uint256 internal constant MIN_GAS_LIMIT = 100_000;
 ```
 
 

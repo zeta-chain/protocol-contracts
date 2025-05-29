@@ -3,9 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
-  BytesLike,
   FunctionFragment,
-  Result,
   Interface,
   ContractRunner,
   ContractMethod,
@@ -16,32 +14,9 @@ import type {
   TypedDeferredTopicFilter,
   TypedEventLog,
   TypedListener,
-  TypedContractMethod,
 } from "./common";
 
-export interface GatewayZEVMValidationsInterface extends Interface {
-  getFunction(
-    nameOrSignature: "MAX_MESSAGE_SIZE" | "MIN_GAS_LIMIT"
-  ): FunctionFragment;
-
-  encodeFunctionData(
-    functionFragment: "MAX_MESSAGE_SIZE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MIN_GAS_LIMIT",
-    values?: undefined
-  ): string;
-
-  decodeFunctionResult(
-    functionFragment: "MAX_MESSAGE_SIZE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "MIN_GAS_LIMIT",
-    data: BytesLike
-  ): Result;
-}
+export interface GatewayZEVMValidationsInterface extends Interface {}
 
 export interface GatewayZEVMValidations extends BaseContract {
   connect(runner?: ContractRunner | null): GatewayZEVMValidations;
@@ -86,20 +61,9 @@ export interface GatewayZEVMValidations extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  MAX_MESSAGE_SIZE: TypedContractMethod<[], [bigint], "view">;
-
-  MIN_GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
-
-  getFunction(
-    nameOrSignature: "MAX_MESSAGE_SIZE"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "MIN_GAS_LIMIT"
-  ): TypedContractMethod<[], [bigint], "view">;
 
   filters: {};
 }

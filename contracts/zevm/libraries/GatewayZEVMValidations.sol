@@ -12,10 +12,10 @@ library GatewayZEVMValidations {
     error EmptyAddress();
 
     /// @notice Maximum message size constant
-    uint256 public constant MAX_MESSAGE_SIZE = 2048;
+    uint256 internal constant MAX_MESSAGE_SIZE = 2048;
 
     /// @notice Minimum gas limit constant
-    uint256 public constant MIN_GAS_LIMIT = 100_000;
+    uint256 internal constant MIN_GAS_LIMIT = 100_000;
 
     /// @dev Validates that an address is not zero
     /// @param addr The address to validate
