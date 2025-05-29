@@ -31,8 +31,8 @@ var (
 
 // StringsMetaData contains all meta data concerning the Strings contract.
 var StringsMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"error\",\"name\":\"StringsInsufficientHexLength\",\"inputs\":[{\"name\":\"value\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"length\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"StringsInvalidAddressFormat\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"StringsInvalidChar\",\"inputs\":[]}]",
-	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220d3c2bbde9a42577bb762b66815a25c309b6297ffa8ef4d6951511b62004bb6d764736f6c634300081a0033",
+	ABI: "[{\"type\":\"error\",\"name\":\"StringsInsufficientHexLength\",\"inputs\":[{\"name\":\"value\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"length\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]}]",
+	Bin: "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212208cd79336a0bf35aeba049c46cd2688681aad972474dd75eaa1e033500b02247664736f6c634300081a0033",
 }
 
 // StringsABI is the input ABI used to generate the binding from.
