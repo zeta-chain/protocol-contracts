@@ -8,37 +8,31 @@ import "../interfaces/IGatewayZEVM.sol";
 /// @notice Library containing validation functions for GatewayZEVM contract
 /// @dev This library provides common validation logic used across GatewayZEVM contract
 library GatewayZEVMValidations {
-    /// @notice Error indicating a zero address was provided.
-    error ZeroAddress();
+    /// @notice Error indicating a empty address was provided.
+    error EmptyAddress();
 
     /// @notice Maximum message size constant
-    uint256 internal constant MAX_MESSAGE_SIZE = 2048;
+    uint256 public constant MAX_MESSAGE_SIZE = 2048;
 
     /// @notice Minimum gas limit constant
-    uint256 internal constant MIN_GAS_LIMIT = 100_000;
+    uint256 public constant MIN_GAS_LIMIT = 100_000;
 
     /// @dev Validates that an address is not zero
     /// @param addr The address to validate
     function validateNonZeroAddress(address addr) internal pure {
-        if (addr == address(0)) revert ZeroAddress();
+        if (addr == address(0)) revert EmptyAddress();
     }
 
     /// @dev Validates that receiver bytes are not empty
     /// @param receiver The receiver bytes to validate
     function validateReceiver(bytes memory receiver) internal pure {
-        if (receiver.length == 0) revert ZeroAddress();
+        if (receiver.length == 0) revert EmptyAddress();
     }
 
-    /// @dev Validates that ZRC20 amount is not zero
+    /// @dev Validates that amount is not zero
     /// @param amount The amount to validate
-    function validateZRC20Amount(uint256 amount) internal pure {
-        if (amount == 0) revert IGatewayZEVMErrors.InsufficientZRC20Amount();
-    }
-
-    /// @dev Validates that ZETA amount is not zero
-    /// @param amount The amount to validate
-    function validateZetaAmount(uint256 amount) internal pure {
-        if (amount == 0) revert IGatewayZEVMErrors.InsufficientZetaAmount();
+    function validateAmount(uint256 amount) internal pure {
+        if (amount == 0) revert IGatewayZEVMErrors.InsufficientAmount();
     }
 
     /// @dev Validates that gas limit meets minimum requirement
@@ -51,7 +45,7 @@ library GatewayZEVMValidations {
     /// @param target The target address to validate
     /// @param protocolAddress The protocol address to check against
     /// @param contractAddress The contract address to check against
-    function validateTarget(address target, address protocolAddress, address contractAddress) internal pure {
+    function validateTarget(address target, address protocolAddress, address contractAddress) private pure {
         if (target == protocolAddress || target == contractAddress) revert IGatewayZEVMErrors.InvalidTarget();
     }
 
@@ -108,7 +102,7 @@ library GatewayZEVMValidations {
         pure
     {
         validateReceiver(receiver);
-        validateZRC20Amount(amount);
+        validateAmount(amount);
         validateRevertOptions(revertOptions);
     }
 
@@ -129,45 +123,7 @@ library GatewayZEVMValidations {
         pure
     {
         validateReceiver(receiver);
-        validateZRC20Amount(amount);
-        validateCallAndRevertOptions(callOptions, revertOptions, message.length);
-    }
-
-    /// @dev Validates ZETA withdrawal parameters
-    /// @param receiver The receiver address
-    /// @param amount The amount to withdraw
-    /// @param revertOptions The revert options
-    function validateZetaWithdrawalParams(
-        bytes memory receiver,
-        uint256 amount,
-        RevertOptions calldata revertOptions
-    )
-        internal
-        pure
-    {
-        validateReceiver(receiver);
-        validateZetaAmount(amount);
-        validateRevertOptions(revertOptions);
-    }
-
-    /// @dev Validates ZETA withdrawal and call parameters
-    /// @param receiver The receiver address
-    /// @param amount The amount to withdraw
-    /// @param message The message to send
-    /// @param callOptions The call options
-    /// @param revertOptions The revert options
-    function validateZetaWithdrawalAndCallParams(
-        bytes memory receiver,
-        uint256 amount,
-        bytes calldata message,
-        CallOptions calldata callOptions,
-        RevertOptions calldata revertOptions
-    )
-        internal
-        pure
-    {
-        validateReceiver(receiver);
-        validateZetaAmount(amount);
+        validateAmount(amount);
         validateCallAndRevertOptions(callOptions, revertOptions, message.length);
     }
 
@@ -189,7 +145,7 @@ library GatewayZEVMValidations {
     {
         validateNonZeroAddress(zrc20);
         validateNonZeroAddress(target);
-        validateZRC20Amount(amount);
+        validateAmount(amount);
         validateTarget(target, protocolAddress, contractAddress);
     }
 
@@ -216,7 +172,7 @@ library GatewayZEVMValidations {
         pure
     {
         validateNonZeroAddress(target);
-        validateZetaAmount(amount);
+        validateAmount(amount);
         validateTarget(target, protocolAddress, contractAddress);
     }
 }

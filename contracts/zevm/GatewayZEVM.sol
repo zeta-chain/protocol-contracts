@@ -56,7 +56,7 @@ contract GatewayZEVM is
     /// @dev Using admin to authorize upgrades and pause.
     function initialize(address zetaToken_, address admin_) public initializer {
         if (zetaToken_ == address(0) || admin_ == address(0)) {
-            revert GatewayZEVMValidations.ZeroAddress();
+            revert GatewayZEVMValidations.EmptyAddress();
         }
         __UUPSUpgradeable_init();
         __AccessControl_init();
@@ -265,7 +265,7 @@ contract GatewayZEVM is
         external
         whenNotPaused
     {
-        GatewayZEVMValidations.validateZetaWithdrawalParams(receiver, amount, revertOptions);
+        GatewayZEVMValidations.validateWithdrawalParams(receiver, amount, revertOptions);
 
         _transferZETA(amount, PROTOCOL_ADDRESS);
         emit Withdrawn(
@@ -300,7 +300,7 @@ contract GatewayZEVM is
         external
         whenNotPaused
     {
-        GatewayZEVMValidations.validateZetaWithdrawalAndCallParams(
+        GatewayZEVMValidations.validateWithdrawalAndCallParams(
             receiver, amount, message, callOptions, revertOptions
         );
 
