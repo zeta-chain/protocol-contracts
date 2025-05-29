@@ -45,7 +45,7 @@ library GatewayZEVMValidations {
     /// @param target The target address to validate
     /// @param protocolAddress The protocol address to check against
     /// @param contractAddress The contract address to check against
-    function validateTarget(address target, address protocolAddress, address contractAddress) internal pure {
+    function validateTarget(address target, address protocolAddress, address contractAddress) private pure {
         if (target == protocolAddress || target == contractAddress) revert IGatewayZEVMErrors.InvalidTarget();
     }
 
