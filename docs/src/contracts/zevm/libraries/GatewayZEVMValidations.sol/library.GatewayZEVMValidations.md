@@ -92,7 +92,7 @@ function validateGasLimit(uint256 gasLimit) internal pure;
 
 
 ```solidity
-function validateTarget(address target, address protocolAddress, address contractAddress) private pure;
+function validateTarget(address target, address protocolAddress, address contractAddress) internal pure;
 ```
 **Parameters**
 
