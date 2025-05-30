@@ -8,64 +8,63 @@ import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy
 contract DeployRegistry is Script {
     function run() external {
         address admin = vm.envAddress("REGISTRY_ADMIN_ADDRESS");
+        address pauserAddress = vm.envAddress("PAUSER_ADDRESS");
+        address registryManager = vm.envAddress("REGISTRY_MANAGER_ADDRESS");
         address gatewayEVM = vm.envAddress("GATEWAY_EVM_ADDRESS");
         address coreRegistry = vm.envAddress("CORE_REGISTRY_ADDRESS");
 
-        address expectedImplAddress;
-        address expectedProxyAddress;
-
-        bytes32 implSalt = keccak256("Registry");
-        bytes32 proxySalt = keccak256("RegistryProxy");
-
-        // Add this specific check to ensure contract is not deployed at deterministic address with wrong params
         require(admin != address(0), "Environment variable REGISTRY_ADMIN_ADDRESS is not set");
+        require(pauserAddress != address(0), "Environment variable PAUSER_ADDRESS is not set");
+        require(registryManager != address(0), "Environment variable REGISTRY_MANAGER_ADDRESS is not set");
         require(gatewayEVM != address(0), "Environment variable GATEWAY_EVM_ADDRESS is not set");
         require(coreRegistry != address(0), "Environment variable CORE_REGISTRY_ADDRESS is not set");
 
+        bytes32 implSalt = keccak256("RegistryV1");
+        bytes32 proxySalt = keccak256("RegistryProxyV1");
+
         vm.startBroadcast();
 
-        // Compute expected implementation address
-        expectedImplAddress = vm.computeCreate2Address(
-            implSalt,
-            hashInitCode(type(Registry).creationCode)
-        );
-
-        // Deploy the implementation contract using CREATE2
+        // Deploy implementation and compute its address
         Registry registryImpl = new Registry{salt: implSalt}();
-        require(address(registryImpl) != address(0), "registryImpl deployment failed");
-        require(expectedImplAddress == address(registryImpl), "impl address doesn't match expected address");
 
-        // Compute expected proxy address
-        expectedProxyAddress = vm.computeCreate2Address(
-            proxySalt,
-            hashInitCode(
-                type(ERC1967Proxy).creationCode,
-                abi.encode(
-                    address(registryImpl),
-                    abi.encodeWithSelector(Registry.initialize.selector, admin, gatewayEVM, coreRegistry)
-                )
-            )
+        // Prepare initialization data with all required parameters
+        bytes memory initData = abi.encodeWithSelector(
+            Registry.initialize.selector,
+            admin,
+            pauserAddress,
+            registryManager,
+            gatewayEVM,
+            coreRegistry
         );
 
-        // Deploy the proxy contract using CREATE2
+        // Deploy proxy
         ERC1967Proxy registryProxy = new ERC1967Proxy{salt: proxySalt}(
             address(registryImpl),
-            abi.encodeWithSelector(Registry.initialize.selector, admin, gatewayEVM, coreRegistry)
+            initData
         );
-        require(address(registryProxy) != address(0), "registryProxy deployment failed");
-        require(expectedProxyAddress == address(registryProxy), "proxy address doesn't match expected address");
 
+        // Create registry instance
         Registry registry = Registry(address(registryProxy));
 
-        // Verify initial configuration
-        require(registry.gatewayEVM() == gatewayEVM, "gatewayEVM not set correctly");
-        require(registry.coreRegistry() == coreRegistry, "coreRegistry not set correctly");
-        require(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin), "admin role not set correctly");
-        require(registry.hasRole(registry.GATEWAY_ROLE(), gatewayEVM), "gateway role not set correctly");
+        // Split verification into separate helper function to reduce stack pressure
+        verifyDeployment(registry, admin, gatewayEVM, coreRegistry);
 
         vm.stopBroadcast();
 
         console.log("Registry Implementation deployed at: %s", address(registryImpl));
         console.log("Registry Proxy deployed at: %s", address(registryProxy));
+    }
+
+    function verifyDeployment(
+        Registry registry,
+        address admin,
+        address gatewayEVM,
+        address coreRegistry
+    ) internal view {
+        // Verify initial configuration
+        require(address(registry.gatewayEVM()) == gatewayEVM, "gatewayEVM not set correctly");
+        require(registry.coreRegistry() == coreRegistry, "coreRegistry not set correctly");
+        require(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin), "admin role not set correctly");
+        require(registry.hasRole(registry.GATEWAY_ROLE(), gatewayEVM), "gateway role not set correctly");
     }
 }

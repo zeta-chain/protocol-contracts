@@ -1,5 +1,5 @@
 # ZetaConnectorBase
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/ZetaConnector.base.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/legacy/ZetaConnector.base.sol)
 
 **Inherits:**
 [ConnectorErrors](/contracts/evm/legacy/ConnectorErrors.sol/interface.ConnectorErrors.md), Pausable

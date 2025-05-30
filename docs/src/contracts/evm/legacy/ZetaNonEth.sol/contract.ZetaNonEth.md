@@ -1,5 +1,5 @@
 # ZetaNonEth
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/ZetaNonEth.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/legacy/ZetaNonEth.sol)
 
 **Inherits:**
 [IZetaNonEthInterface](/contracts/evm/legacy/IZetaNonEthInterface.sol/interface.IZetaNonEthInterface.md), ERC20Burnable, [ZetaErrors](/contracts/evm/legacy/ZetaErrors.sol/interface.ZetaErrors.md)

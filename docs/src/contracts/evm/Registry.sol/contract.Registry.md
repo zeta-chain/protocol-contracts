@@ -1,8 +1,8 @@
 # Registry
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/Registry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/Registry.sol)
 
 **Inherits:**
-[BaseRegistry](/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md)
+[BaseRegistry](/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md), [IRegistry](/contracts/evm/interfaces/IRegistry.sol/interface.IRegistry.md)
 
 Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 
@@ -61,6 +61,7 @@ Initialize the Registry contract
 function initialize(
     address admin_,
     address pauserAddress_,
+    address registryManager_,
     address gatewayEVM_,
     address coreRegistry_
 )
@@ -73,6 +74,7 @@ function initialize(
 |----|----|-----------|
 |`admin_`|`address`|Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions|
 |`pauserAddress_`|`address`|Address with PAUSER_ROLE, authorized for pausing actions|
+|`registryManager_`|`address`|Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.|
 |`gatewayEVM_`|`address`|Address of the GatewayEVM contract for cross-chain messaging|
 |`coreRegistry_`|`address`|Address of the CoreRegistry contract deployed on ZetaChain|
 
@@ -275,5 +277,70 @@ function setZRC20TokenActive(address address_, bool active) external onlyRegistr
 |----|----|-----------|
 |`address_`|`address`|The address of the ZRC20 token|
 |`active`|`bool`|Whether the token should be active|
+
+
+### bootstrapChains
+
+Bootstrap the registry with chain data
+
+*This function can only be called by an address with the REGISTRY_MANAGER_ROLE.*
+
+
+```solidity
+function bootstrapChains(
+    ChainInfoDTO[] calldata chains,
+    ChainMetadataEntry[] calldata metadataEntries
+)
+    external
+    onlyRole(REGISTRY_MANAGER_ROLE)
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chains`|`ChainInfoDTO[]`|Array of chain data structures to bootstrap|
+|`metadataEntries`|`ChainMetadataEntry[]`|Array of chain metadata entries|
+
+
+### bootstrapContracts
+
+Bootstrap the registry with contract data
+
+*This function can only be called by an address with the REGISTRY_MANAGER_ROLE.*
+
+
+```solidity
+function bootstrapContracts(
+    ContractInfoDTO[] calldata contracts,
+    ContractConfigEntry[] calldata configEntries
+)
+    external
+    onlyRole(REGISTRY_MANAGER_ROLE)
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`contracts`|`ContractInfoDTO[]`|Array of contract data structures to bootstrap|
+|`configEntries`|`ContractConfigEntry[]`|Array of contract configuration entries|
+
+
+### bootstrapZRC20Tokens
+
+Bootstrap the registry with ZRC20 token data
+
+*This function can only be called by an address with the REGISTRY_MANAGER_ROLE.*
+
+
+```solidity
+function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`tokens`|`ZRC20Info[]`|Array of ZRC20 token data structures to bootstrap|
 
 

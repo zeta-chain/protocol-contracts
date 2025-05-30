@@ -58,7 +58,7 @@ contract DeployCoreRegistry is Script {
         CoreRegistry registry = CoreRegistry(address(registryProxy));
 
         // Verify initial configuration
-        require(registry.gatewayZEVM() == gatewayZEVM, "gatewayZEVM not set correctly");
+        require(address(registry.gatewayZEVM()) == gatewayZEVM, "gatewayZEVM not set correctly");
         require(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin), "admin role not set correctly");
         require(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), registryManager), "registry manager role not set correctly");
 

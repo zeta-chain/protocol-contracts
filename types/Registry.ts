@@ -23,9 +23,98 @@ import type {
   TypedContractMethod,
 } from "./common";
 
+export type ChainInfoDTOStruct = {
+  active: boolean;
+  chainId: BigNumberish;
+  gasZRC20: AddressLike;
+  registry: BytesLike;
+};
+
+export type ChainInfoDTOStructOutput = [
+  active: boolean,
+  chainId: bigint,
+  gasZRC20: string,
+  registry: string
+] & { active: boolean; chainId: bigint; gasZRC20: string; registry: string };
+
+export type ContractInfoDTOStruct = {
+  active: boolean;
+  addressBytes: BytesLike;
+  contractType: string;
+  chainId: BigNumberish;
+};
+
+export type ContractInfoDTOStructOutput = [
+  active: boolean,
+  addressBytes: string,
+  contractType: string,
+  chainId: bigint
+] & {
+  active: boolean;
+  addressBytes: string;
+  contractType: string;
+  chainId: bigint;
+};
+
+export type ZRC20InfoStruct = {
+  active: boolean;
+  address_: AddressLike;
+  originAddress: BytesLike;
+  originChainId: BigNumberish;
+  symbol: string;
+  coinType: string;
+  decimals: BigNumberish;
+};
+
+export type ZRC20InfoStructOutput = [
+  active: boolean,
+  address_: string,
+  originAddress: string,
+  originChainId: bigint,
+  symbol: string,
+  coinType: string,
+  decimals: bigint
+] & {
+  active: boolean;
+  address_: string;
+  originAddress: string;
+  originChainId: bigint;
+  symbol: string;
+  coinType: string;
+  decimals: bigint;
+};
+
 export type MessageContextStruct = { sender: AddressLike };
 
 export type MessageContextStructOutput = [sender: string] & { sender: string };
+
+export declare namespace IRegistry {
+  export type ChainMetadataEntryStruct = {
+    chainId: BigNumberish;
+    key: string;
+    value: BytesLike;
+  };
+
+  export type ChainMetadataEntryStructOutput = [
+    chainId: bigint,
+    key: string,
+    value: string
+  ] & { chainId: bigint; key: string; value: string };
+
+  export type ContractConfigEntryStruct = {
+    chainId: BigNumberish;
+    contractType: string;
+    key: string;
+    value: BytesLike;
+  };
+
+  export type ContractConfigEntryStructOutput = [
+    chainId: bigint,
+    contractType: string,
+    key: string,
+    value: string
+  ] & { chainId: bigint; contractType: string; key: string; value: string };
+}
 
 export interface RegistryInterface extends Interface {
   getFunction(
@@ -33,11 +122,18 @@ export interface RegistryInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "GATEWAY_ROLE"
       | "PAUSER_ROLE"
+      | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
+      | "bootstrapChains"
+      | "bootstrapContracts"
+      | "bootstrapZRC20Tokens"
       | "changeChainStatus"
       | "coreRegistry"
       | "gatewayEVM"
       | "getActiveChains"
+      | "getAllChains"
+      | "getAllContracts"
+      | "getAllZRC20Tokens"
       | "getChainMetadata"
       | "getContractConfiguration"
       | "getContractInfo"
@@ -95,8 +191,24 @@ export interface RegistryInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bootstrapChains",
+    values: [ChainInfoDTOStruct[], IRegistry.ChainMetadataEntryStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bootstrapContracts",
+    values: [ContractInfoDTOStruct[], IRegistry.ContractConfigEntryStruct[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "bootstrapZRC20Tokens",
+    values: [ZRC20InfoStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "changeChainStatus",
@@ -112,6 +224,18 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getActiveChains",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllChains",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllContracts",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllZRC20Tokens",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -148,7 +272,7 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike, AddressLike, AddressLike, AddressLike]
+    values: [AddressLike, AddressLike, AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "onCall",
@@ -215,7 +339,23 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "REGISTRY_MANAGER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bootstrapChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bootstrapContracts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "bootstrapZRC20Tokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -229,6 +369,18 @@ export interface RegistryInterface extends Interface {
   decodeFunctionResult(functionFragment: "gatewayEVM", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getActiveChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllChains",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllContracts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllZRC20Tokens",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -591,7 +743,33 @@ export interface Registry extends BaseContract {
 
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
+  REGISTRY_MANAGER_ROLE: TypedContractMethod<[], [string], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
+
+  bootstrapChains: TypedContractMethod<
+    [
+      chains: ChainInfoDTOStruct[],
+      metadataEntries: IRegistry.ChainMetadataEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  bootstrapContracts: TypedContractMethod<
+    [
+      contracts: ContractInfoDTOStruct[],
+      configEntries: IRegistry.ContractConfigEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  bootstrapZRC20Tokens: TypedContractMethod<
+    [tokens: ZRC20InfoStruct[]],
+    [void],
+    "nonpayable"
+  >;
 
   changeChainStatus: TypedContractMethod<
     [
@@ -609,6 +787,16 @@ export interface Registry extends BaseContract {
   gatewayEVM: TypedContractMethod<[], [string], "view">;
 
   getActiveChains: TypedContractMethod<[], [bigint[]], "view">;
+
+  getAllChains: TypedContractMethod<[], [ChainInfoDTOStructOutput[]], "view">;
+
+  getAllContracts: TypedContractMethod<
+    [],
+    [ContractInfoDTOStructOutput[]],
+    "view"
+  >;
+
+  getAllZRC20Tokens: TypedContractMethod<[], [ZRC20InfoStructOutput[]], "view">;
 
   getChainMetadata: TypedContractMethod<
     [chainId: BigNumberish, key: string],
@@ -667,6 +855,7 @@ export interface Registry extends BaseContract {
     [
       admin_: AddressLike,
       pauserAddress_: AddressLike,
+      registryManager_: AddressLike,
       gatewayEVM_: AddressLike,
       coreRegistry_: AddressLike
     ],
@@ -774,8 +963,34 @@ export interface Registry extends BaseContract {
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "REGISTRY_MANAGER_ROLE"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "bootstrapChains"
+  ): TypedContractMethod<
+    [
+      chains: ChainInfoDTOStruct[],
+      metadataEntries: IRegistry.ChainMetadataEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "bootstrapContracts"
+  ): TypedContractMethod<
+    [
+      contracts: ContractInfoDTOStruct[],
+      configEntries: IRegistry.ContractConfigEntryStruct[]
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "bootstrapZRC20Tokens"
+  ): TypedContractMethod<[tokens: ZRC20InfoStruct[]], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
@@ -797,6 +1012,15 @@ export interface Registry extends BaseContract {
   getFunction(
     nameOrSignature: "getActiveChains"
   ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllChains"
+  ): TypedContractMethod<[], [ChainInfoDTOStructOutput[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllContracts"
+  ): TypedContractMethod<[], [ContractInfoDTOStructOutput[]], "view">;
+  getFunction(
+    nameOrSignature: "getAllZRC20Tokens"
+  ): TypedContractMethod<[], [ZRC20InfoStructOutput[]], "view">;
   getFunction(
     nameOrSignature: "getChainMetadata"
   ): TypedContractMethod<
@@ -864,6 +1088,7 @@ export interface Registry extends BaseContract {
     [
       admin_: AddressLike,
       pauserAddress_: AddressLike,
+      registryManager_: AddressLike,
       gatewayEVM_: AddressLike,
       coreRegistry_: AddressLike
     ],

@@ -1,5 +1,5 @@
 # CoreRegistry
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/zevm/CoreRegistry.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/CoreRegistry.sol)
 
 **Inherits:**
 [BaseRegistry](/contracts/helpers/BaseRegistry.sol/abstract.BaseRegistry.md)
@@ -10,15 +10,6 @@ Central registry for ZetaChain, managing chain info, ZRC20 data, and contract ad
 
 
 ## State Variables
-### REGISTRY_MANAGER_ROLE
-New role identifier for registry manager role.
-
-
-```solidity
-bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
-```
-
-
 ### CROSS_CHAIN_GAS_LIMIT
 Cross-chain message gas limit
 

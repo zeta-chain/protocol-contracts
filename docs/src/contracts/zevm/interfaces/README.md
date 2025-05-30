@@ -1,11 +1,6 @@
 
 
 # Contents
-- [ICoreRegistryEvents](ICoreRegistry.sol/interface.ICoreRegistryEvents.md)
-- [ICoreRegistryErrors](ICoreRegistry.sol/interface.ICoreRegistryErrors.md)
-- [ChainInfo](ICoreRegistry.sol/struct.ChainInfo.md)
-- [ContractInfo](ICoreRegistry.sol/struct.ContractInfo.md)
-- [ZRC20Info](ICoreRegistry.sol/struct.ZRC20Info.md)
 - [ICoreRegistry](ICoreRegistry.sol/interface.ICoreRegistry.md)
 - [IGatewayZEVMEvents](IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
 - [IGatewayZEVMErrors](IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md)
@@ -20,4 +15,4 @@
 - [zContext](UniversalContract.sol/struct.zContext.md)
 - [zContract](UniversalContract.sol/interface.zContract.md)
 - [MessageContext](UniversalContract.sol/struct.MessageContext.md)
-- [UniversalContract](UniversalContract.sol/interface.UniversalContract.md)
+- [UniversalContract](UniversalContract.sol/abstract.UniversalContract.md)

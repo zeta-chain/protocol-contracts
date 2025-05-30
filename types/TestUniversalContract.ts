@@ -76,7 +76,7 @@ export type RevertContextStructOutput = [
 
 export interface TestUniversalContractInterface extends Interface {
   getFunction(
-    nameOrSignature: "onAbort" | "onCall" | "onRevert"
+    nameOrSignature: "gateway" | "onAbort" | "onCall" | "onRevert" | "registry"
   ): FunctionFragment;
 
   getEvent(
@@ -86,6 +86,7 @@ export interface TestUniversalContractInterface extends Interface {
       | "ContextDataRevert"
   ): EventFragment;
 
+  encodeFunctionData(functionFragment: "gateway", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onAbort",
     values: [AbortContextStruct]
@@ -98,10 +99,13 @@ export interface TestUniversalContractInterface extends Interface {
     functionFragment: "onRevert",
     values: [RevertContextStruct]
   ): string;
+  encodeFunctionData(functionFragment: "registry", values?: undefined): string;
 
+  decodeFunctionResult(functionFragment: "gateway", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onAbort", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onCall", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "onRevert", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
 }
 
 export namespace ContextDataEvent {
@@ -199,6 +203,8 @@ export interface TestUniversalContract extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  gateway: TypedContractMethod<[], [string], "view">;
+
   onAbort: TypedContractMethod<
     [abortContext: AbortContextStruct],
     [void],
@@ -222,10 +228,15 @@ export interface TestUniversalContract extends BaseContract {
     "nonpayable"
   >;
 
+  registry: TypedContractMethod<[], [string], "view">;
+
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "gateway"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "onAbort"
   ): TypedContractMethod<
@@ -252,6 +263,9 @@ export interface TestUniversalContract extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "registry"
+  ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
     key: "ContextData"

@@ -1,5 +1,5 @@
 # IZetaNonEthInterface
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/legacy/IZetaNonEthInterface.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/legacy/IZetaNonEthInterface.sol)
 
 **Inherits:**
 IERC20

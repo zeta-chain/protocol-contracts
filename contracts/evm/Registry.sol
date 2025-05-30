@@ -3,11 +3,12 @@ pragma solidity 0.8.26;
 
 import "../helpers/BaseRegistry.sol";
 import "./interfaces/IGatewayEVM.sol";
+import "./interfaces/IRegistry.sol";
 
 /// @title Registry
 /// @notice Satellite registry contract for connected chains, receiving updates from CoreRegistry.
 /// @dev This contract is deployed on every connected chain and maintains a synchronized view of the registry.
-contract Registry is BaseRegistry {
+contract Registry is BaseRegistry, IRegistry {
     /// @notice Identifier for the gateway role
     bytes32 public constant GATEWAY_ROLE = keccak256("GATEWAY_ROLE");
     /// @notice GatewayEVM contract that will call this contract with messages from CoreRegistry
@@ -29,11 +30,13 @@ contract Registry is BaseRegistry {
     /// @notice Initialize the Registry contract
     /// @param admin_ Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions
     /// @param pauserAddress_ Address with PAUSER_ROLE, authorized for pausing actions
+    /// @param registryManager_ Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
     /// @param gatewayEVM_ Address of the GatewayEVM contract for cross-chain messaging
     /// @param coreRegistry_ Address of the CoreRegistry contract deployed on ZetaChain
     function initialize(
         address admin_,
         address pauserAddress_,
+        address registryManager_,
         address gatewayEVM_,
         address coreRegistry_
     )
@@ -42,7 +45,7 @@ contract Registry is BaseRegistry {
     {
         if (
             admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0)
-                || pauserAddress_ == address(0)
+                || pauserAddress_ == address(0) || registryManager_ == address(0)
         ) {
             revert ZeroAddress();
         }
@@ -54,6 +57,7 @@ contract Registry is BaseRegistry {
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
         _grantRole(PAUSER_ROLE, pauserAddress_);
+        _grantRole(REGISTRY_MANAGER_ROLE, registryManager_);
         _grantRole(GATEWAY_ROLE, gatewayEVM_);
 
         gatewayEVM = IGatewayEVM(gatewayEVM_);
@@ -208,5 +212,75 @@ contract Registry is BaseRegistry {
     function setZRC20TokenActive(address address_, bool active) external onlyRegistry whenNotPaused {
         _setZRC20TokenActive(address_, active);
         emit ZRC20TokenUpdated(address_, active);
+    }
+
+    /// @notice Bootstrap the registry with chain data
+    /// @dev This function can only be called by an address with the REGISTRY_MANAGER_ROLE.
+    /// @param chains Array of chain data structures to bootstrap
+    /// @param metadataEntries Array of chain metadata entries
+    function bootstrapChains(
+        ChainInfoDTO[] calldata chains,
+        ChainMetadataEntry[] calldata metadataEntries
+    )
+        external
+        onlyRole(REGISTRY_MANAGER_ROLE)
+        whenNotPaused
+    {
+        // Process chain data
+        for (uint256 i = 0; i < chains.length; i++) {
+            ChainInfoDTO calldata chainData = chains[i];
+            _changeChainStatus(chainData.chainId, chainData.gasZRC20, chainData.registry, chainData.active);
+        }
+
+        // Process metadata entries
+        for (uint256 i = 0; i < metadataEntries.length; i++) {
+            ChainMetadataEntry calldata metadata = metadataEntries[i];
+            _updateChainMetadata(metadata.chainId, metadata.key, metadata.value);
+        }
+    }
+
+    /// @notice Bootstrap the registry with contract data
+    /// @dev This function can only be called by an address with the REGISTRY_MANAGER_ROLE.
+    /// @param contracts Array of contract data structures to bootstrap
+    /// @param configEntries Array of contract configuration entries
+    function bootstrapContracts(
+        ContractInfoDTO[] calldata contracts,
+        ContractConfigEntry[] calldata configEntries
+    )
+        external
+        onlyRole(REGISTRY_MANAGER_ROLE)
+        whenNotPaused
+    {
+        // Process contract data
+        for (uint256 i = 0; i < contracts.length; i++) {
+            ContractInfoDTO calldata contractData = contracts[i];
+            _registerContract(contractData.chainId, contractData.contractType, contractData.addressBytes);
+        }
+
+        // Process configuration entries
+        for (uint256 i = 0; i < configEntries.length; i++) {
+            ContractConfigEntry calldata configuration = configEntries[i];
+            _updateContractConfiguration(
+                configuration.chainId, configuration.contractType, configuration.key, configuration.value
+            );
+        }
+    }
+
+    /// @notice Bootstrap the registry with ZRC20 token data
+    /// @dev This function can only be called by an address with the REGISTRY_MANAGER_ROLE.
+    /// @param tokens Array of ZRC20 token data structures to bootstrap
+    function bootstrapZRC20Tokens(ZRC20Info[] calldata tokens) external onlyRole(REGISTRY_MANAGER_ROLE) whenNotPaused {
+        // Process ZRC20 token data
+        for (uint256 i = 0; i < tokens.length; i++) {
+            ZRC20Info calldata tokenData = tokens[i];
+            _registerZRC20Token(
+                tokenData.address_,
+                tokenData.symbol,
+                tokenData.originChainId,
+                tokenData.originAddress,
+                tokenData.coinType,
+                tokenData.decimals
+            );
+        }
     }
 }

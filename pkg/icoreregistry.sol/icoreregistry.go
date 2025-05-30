@@ -29,9 +29,36 @@ var (
 	_ = abi.ConvertType
 )
 
+// ChainInfoDTO is an auto generated low-level Go binding around an user-defined struct.
+type ChainInfoDTO struct {
+	Active   bool
+	ChainId  *big.Int
+	GasZRC20 common.Address
+	Registry []byte
+}
+
+// ContractInfoDTO is an auto generated low-level Go binding around an user-defined struct.
+type ContractInfoDTO struct {
+	Active       bool
+	AddressBytes []byte
+	ContractType string
+	ChainId      *big.Int
+}
+
+// ZRC20Info is an auto generated low-level Go binding around an user-defined struct.
+type ZRC20Info struct {
+	Active        bool
+	Address       common.Address
+	OriginAddress []byte
+	OriginChainId *big.Int
+	Symbol        string
+	CoinType      string
+	Decimals      uint8
+}
+
 // ICoreRegistryMetaData contains all meta data concerning the ICoreRegistry contract.
 var ICoreRegistryMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"function\",\"name\":\"changeChainStatus\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"gasZRC20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"registry\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"activation\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"getActiveChains\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\",\"internalType\":\"uint256[]\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractInfo\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20AddressByForeignAsset\",\"inputs\":[{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20TokenInfo\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"registerContract\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"registerZRC20Token\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setContractActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setZRC20TokenActive\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"ChainMetadataUpdated\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"oldStatus\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"},{\"name\":\"newStatus\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"bytes\",\"indexed\":true,\"internalType\":\"bytes\"},{\"name\":\"address_\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ChainActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ChainNonActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ContractAlreadyRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]},{\"type\":\"error\",\"name\":\"ContractNotFound\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidContractType\",\"inputs\":[{\"name\":\"message\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"TransferFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20AlreadyRegistered\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20SymbolAlreadyInUse\",\"inputs\":[{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
+	ABI: "[{\"type\":\"function\",\"name\":\"changeChainStatus\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"gasZRC20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"registry\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"activation\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"gatewayZEVM\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"getActiveChains\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\",\"internalType\":\"uint256[]\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getAllChains\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"tuple[]\",\"internalType\":\"structChainInfoDTO[]\",\"components\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"gasZRC20\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"registry\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getAllContracts\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"tuple[]\",\"internalType\":\"structContractInfoDTO[]\",\"components\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getAllZRC20Tokens\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"tuple[]\",\"internalType\":\"structZRC20Info[]\",\"components\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}]}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getContractInfo\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20AddressByForeignAsset\",\"inputs\":[{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"getZRC20TokenInfo\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}],\"outputs\":[{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"registerContract\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"registerZRC20Token\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"originAddress\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"coinType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"internalType\":\"uint8\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setContractActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"setZRC20TokenActive\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"internalType\":\"bool\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateChainMetadata\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"updateContractConfiguration\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"event\",\"name\":\"ChainMetadataUpdated\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ChainStatusChanged\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"newStatus\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractConfigurationUpdated\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"key\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"},{\"name\":\"value\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"indexed\":true,\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ContractStatusChanged\",\"inputs\":[{\"name\":\"addressBytes\",\"type\":\"bytes\",\"indexed\":false,\"internalType\":\"bytes\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenRegistered\",\"inputs\":[{\"name\":\"originAddress\",\"type\":\"bytes\",\"indexed\":true,\"internalType\":\"bytes\"},{\"name\":\"address_\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"decimals\",\"type\":\"uint8\",\"indexed\":false,\"internalType\":\"uint8\"},{\"name\":\"originChainId\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"symbol\",\"type\":\"string\",\"indexed\":false,\"internalType\":\"string\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ZRC20TokenUpdated\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"indexed\":false,\"internalType\":\"address\"},{\"name\":\"active\",\"type\":\"bool\",\"indexed\":false,\"internalType\":\"bool\"}],\"anonymous\":false},{\"type\":\"error\",\"name\":\"ChainActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ChainNonActive\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"}]},{\"type\":\"error\",\"name\":\"ContractAlreadyRegistered\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"},{\"name\":\"addressBytes\",\"type\":\"bytes\",\"internalType\":\"bytes\"}]},{\"type\":\"error\",\"name\":\"ContractNotFound\",\"inputs\":[{\"name\":\"chainId\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"contractType\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidContractType\",\"inputs\":[{\"name\":\"message\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"InvalidSender\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"TransferFailed\",\"inputs\":[]},{\"type\":\"error\",\"name\":\"ZRC20AlreadyRegistered\",\"inputs\":[{\"name\":\"address_\",\"type\":\"address\",\"internalType\":\"address\"}]},{\"type\":\"error\",\"name\":\"ZRC20SymbolAlreadyInUse\",\"inputs\":[{\"name\":\"symbol\",\"type\":\"string\",\"internalType\":\"string\"}]},{\"type\":\"error\",\"name\":\"ZeroAddress\",\"inputs\":[]}]",
 }
 
 // ICoreRegistryABI is the input ABI used to generate the binding from.
@@ -209,6 +236,99 @@ func (_ICoreRegistry *ICoreRegistrySession) GetActiveChains() ([]*big.Int, error
 // Solidity: function getActiveChains() view returns(uint256[])
 func (_ICoreRegistry *ICoreRegistryCallerSession) GetActiveChains() ([]*big.Int, error) {
 	return _ICoreRegistry.Contract.GetActiveChains(&_ICoreRegistry.CallOpts)
+}
+
+// GetAllChains is a free data retrieval call binding the contract method 0x9ca220dd.
+//
+// Solidity: function getAllChains() view returns((bool,uint256,address,bytes)[])
+func (_ICoreRegistry *ICoreRegistryCaller) GetAllChains(opts *bind.CallOpts) ([]ChainInfoDTO, error) {
+	var out []interface{}
+	err := _ICoreRegistry.contract.Call(opts, &out, "getAllChains")
+
+	if err != nil {
+		return *new([]ChainInfoDTO), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]ChainInfoDTO)).(*[]ChainInfoDTO)
+
+	return out0, err
+
+}
+
+// GetAllChains is a free data retrieval call binding the contract method 0x9ca220dd.
+//
+// Solidity: function getAllChains() view returns((bool,uint256,address,bytes)[])
+func (_ICoreRegistry *ICoreRegistrySession) GetAllChains() ([]ChainInfoDTO, error) {
+	return _ICoreRegistry.Contract.GetAllChains(&_ICoreRegistry.CallOpts)
+}
+
+// GetAllChains is a free data retrieval call binding the contract method 0x9ca220dd.
+//
+// Solidity: function getAllChains() view returns((bool,uint256,address,bytes)[])
+func (_ICoreRegistry *ICoreRegistryCallerSession) GetAllChains() ([]ChainInfoDTO, error) {
+	return _ICoreRegistry.Contract.GetAllChains(&_ICoreRegistry.CallOpts)
+}
+
+// GetAllContracts is a free data retrieval call binding the contract method 0x18d3ce96.
+//
+// Solidity: function getAllContracts() view returns((bool,bytes,string,uint256)[])
+func (_ICoreRegistry *ICoreRegistryCaller) GetAllContracts(opts *bind.CallOpts) ([]ContractInfoDTO, error) {
+	var out []interface{}
+	err := _ICoreRegistry.contract.Call(opts, &out, "getAllContracts")
+
+	if err != nil {
+		return *new([]ContractInfoDTO), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]ContractInfoDTO)).(*[]ContractInfoDTO)
+
+	return out0, err
+
+}
+
+// GetAllContracts is a free data retrieval call binding the contract method 0x18d3ce96.
+//
+// Solidity: function getAllContracts() view returns((bool,bytes,string,uint256)[])
+func (_ICoreRegistry *ICoreRegistrySession) GetAllContracts() ([]ContractInfoDTO, error) {
+	return _ICoreRegistry.Contract.GetAllContracts(&_ICoreRegistry.CallOpts)
+}
+
+// GetAllContracts is a free data retrieval call binding the contract method 0x18d3ce96.
+//
+// Solidity: function getAllContracts() view returns((bool,bytes,string,uint256)[])
+func (_ICoreRegistry *ICoreRegistryCallerSession) GetAllContracts() ([]ContractInfoDTO, error) {
+	return _ICoreRegistry.Contract.GetAllContracts(&_ICoreRegistry.CallOpts)
+}
+
+// GetAllZRC20Tokens is a free data retrieval call binding the contract method 0xc1bd469f.
+//
+// Solidity: function getAllZRC20Tokens() view returns((bool,address,bytes,uint256,string,string,uint8)[])
+func (_ICoreRegistry *ICoreRegistryCaller) GetAllZRC20Tokens(opts *bind.CallOpts) ([]ZRC20Info, error) {
+	var out []interface{}
+	err := _ICoreRegistry.contract.Call(opts, &out, "getAllZRC20Tokens")
+
+	if err != nil {
+		return *new([]ZRC20Info), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]ZRC20Info)).(*[]ZRC20Info)
+
+	return out0, err
+
+}
+
+// GetAllZRC20Tokens is a free data retrieval call binding the contract method 0xc1bd469f.
+//
+// Solidity: function getAllZRC20Tokens() view returns((bool,address,bytes,uint256,string,string,uint8)[])
+func (_ICoreRegistry *ICoreRegistrySession) GetAllZRC20Tokens() ([]ZRC20Info, error) {
+	return _ICoreRegistry.Contract.GetAllZRC20Tokens(&_ICoreRegistry.CallOpts)
+}
+
+// GetAllZRC20Tokens is a free data retrieval call binding the contract method 0xc1bd469f.
+//
+// Solidity: function getAllZRC20Tokens() view returns((bool,address,bytes,uint256,string,string,uint8)[])
+func (_ICoreRegistry *ICoreRegistryCallerSession) GetAllZRC20Tokens() ([]ZRC20Info, error) {
+	return _ICoreRegistry.Contract.GetAllZRC20Tokens(&_ICoreRegistry.CallOpts)
 }
 
 // GetChainMetadata is a free data retrieval call binding the contract method 0x7066b18d.
@@ -433,6 +553,27 @@ func (_ICoreRegistry *ICoreRegistrySession) ChangeChainStatus(chainId *big.Int, 
 // Solidity: function changeChainStatus(uint256 chainId, address gasZRC20, bytes registry, bool activation) returns()
 func (_ICoreRegistry *ICoreRegistryTransactorSession) ChangeChainStatus(chainId *big.Int, gasZRC20 common.Address, registry []byte, activation bool) (*types.Transaction, error) {
 	return _ICoreRegistry.Contract.ChangeChainStatus(&_ICoreRegistry.TransactOpts, chainId, gasZRC20, registry, activation)
+}
+
+// GatewayZEVM is a paid mutator transaction binding the contract method 0xcc5ad8b6.
+//
+// Solidity: function gatewayZEVM() returns(address)
+func (_ICoreRegistry *ICoreRegistryTransactor) GatewayZEVM(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _ICoreRegistry.contract.Transact(opts, "gatewayZEVM")
+}
+
+// GatewayZEVM is a paid mutator transaction binding the contract method 0xcc5ad8b6.
+//
+// Solidity: function gatewayZEVM() returns(address)
+func (_ICoreRegistry *ICoreRegistrySession) GatewayZEVM() (*types.Transaction, error) {
+	return _ICoreRegistry.Contract.GatewayZEVM(&_ICoreRegistry.TransactOpts)
+}
+
+// GatewayZEVM is a paid mutator transaction binding the contract method 0xcc5ad8b6.
+//
+// Solidity: function gatewayZEVM() returns(address)
+func (_ICoreRegistry *ICoreRegistryTransactorSession) GatewayZEVM() (*types.Transaction, error) {
+	return _ICoreRegistry.Contract.GatewayZEVM(&_ICoreRegistry.TransactOpts)
 }
 
 // RegisterContract is a paid mutator transaction binding the contract method 0x631d62e4.
@@ -777,14 +918,13 @@ func (it *ICoreRegistryChainStatusChangedIterator) Close() error {
 // ICoreRegistryChainStatusChanged represents a ChainStatusChanged event raised by the ICoreRegistry contract.
 type ICoreRegistryChainStatusChanged struct {
 	ChainId   *big.Int
-	OldStatus bool
 	NewStatus bool
 	Raw       types.Log // Blockchain specific contextual infos
 }
 
-// FilterChainStatusChanged is a free log retrieval operation binding the contract event 0x8ec58cc2d2754b6fd6c4941a30811cb0dbcdad24de12c2aae8a1e9e48e1d04e7.
+// FilterChainStatusChanged is a free log retrieval operation binding the contract event 0xc98ceea113f96d4762d49d2885a10d7d0d16d07243bb17df97e53e9035e1415e.
 //
-// Solidity: event ChainStatusChanged(uint256 indexed chainId, bool oldStatus, bool newStatus)
+// Solidity: event ChainStatusChanged(uint256 indexed chainId, bool newStatus)
 func (_ICoreRegistry *ICoreRegistryFilterer) FilterChainStatusChanged(opts *bind.FilterOpts, chainId []*big.Int) (*ICoreRegistryChainStatusChangedIterator, error) {
 
 	var chainIdRule []interface{}
@@ -799,9 +939,9 @@ func (_ICoreRegistry *ICoreRegistryFilterer) FilterChainStatusChanged(opts *bind
 	return &ICoreRegistryChainStatusChangedIterator{contract: _ICoreRegistry.contract, event: "ChainStatusChanged", logs: logs, sub: sub}, nil
 }
 
-// WatchChainStatusChanged is a free log subscription operation binding the contract event 0x8ec58cc2d2754b6fd6c4941a30811cb0dbcdad24de12c2aae8a1e9e48e1d04e7.
+// WatchChainStatusChanged is a free log subscription operation binding the contract event 0xc98ceea113f96d4762d49d2885a10d7d0d16d07243bb17df97e53e9035e1415e.
 //
-// Solidity: event ChainStatusChanged(uint256 indexed chainId, bool oldStatus, bool newStatus)
+// Solidity: event ChainStatusChanged(uint256 indexed chainId, bool newStatus)
 func (_ICoreRegistry *ICoreRegistryFilterer) WatchChainStatusChanged(opts *bind.WatchOpts, sink chan<- *ICoreRegistryChainStatusChanged, chainId []*big.Int) (event.Subscription, error) {
 
 	var chainIdRule []interface{}
@@ -841,12 +981,159 @@ func (_ICoreRegistry *ICoreRegistryFilterer) WatchChainStatusChanged(opts *bind.
 	}), nil
 }
 
-// ParseChainStatusChanged is a log parse operation binding the contract event 0x8ec58cc2d2754b6fd6c4941a30811cb0dbcdad24de12c2aae8a1e9e48e1d04e7.
+// ParseChainStatusChanged is a log parse operation binding the contract event 0xc98ceea113f96d4762d49d2885a10d7d0d16d07243bb17df97e53e9035e1415e.
 //
-// Solidity: event ChainStatusChanged(uint256 indexed chainId, bool oldStatus, bool newStatus)
+// Solidity: event ChainStatusChanged(uint256 indexed chainId, bool newStatus)
 func (_ICoreRegistry *ICoreRegistryFilterer) ParseChainStatusChanged(log types.Log) (*ICoreRegistryChainStatusChanged, error) {
 	event := new(ICoreRegistryChainStatusChanged)
 	if err := _ICoreRegistry.contract.UnpackLog(event, "ChainStatusChanged", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ICoreRegistryContractConfigurationUpdatedIterator is returned from FilterContractConfigurationUpdated and is used to iterate over the raw logs and unpacked data for ContractConfigurationUpdated events raised by the ICoreRegistry contract.
+type ICoreRegistryContractConfigurationUpdatedIterator struct {
+	Event *ICoreRegistryContractConfigurationUpdated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ICoreRegistryContractConfigurationUpdatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ICoreRegistryContractConfigurationUpdated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ICoreRegistryContractConfigurationUpdated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ICoreRegistryContractConfigurationUpdatedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ICoreRegistryContractConfigurationUpdatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ICoreRegistryContractConfigurationUpdated represents a ContractConfigurationUpdated event raised by the ICoreRegistry contract.
+type ICoreRegistryContractConfigurationUpdated struct {
+	ChainId      *big.Int
+	ContractType string
+	Key          string
+	Value        []byte
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterContractConfigurationUpdated is a free log retrieval operation binding the contract event 0xaea6b6dd1ea232db3e0fc64d54fd642518ed2932043ff697ac7c8a83d651c7c5.
+//
+// Solidity: event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value)
+func (_ICoreRegistry *ICoreRegistryFilterer) FilterContractConfigurationUpdated(opts *bind.FilterOpts, chainId []*big.Int) (*ICoreRegistryContractConfigurationUpdatedIterator, error) {
+
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
+
+	logs, sub, err := _ICoreRegistry.contract.FilterLogs(opts, "ContractConfigurationUpdated", chainIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ICoreRegistryContractConfigurationUpdatedIterator{contract: _ICoreRegistry.contract, event: "ContractConfigurationUpdated", logs: logs, sub: sub}, nil
+}
+
+// WatchContractConfigurationUpdated is a free log subscription operation binding the contract event 0xaea6b6dd1ea232db3e0fc64d54fd642518ed2932043ff697ac7c8a83d651c7c5.
+//
+// Solidity: event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value)
+func (_ICoreRegistry *ICoreRegistryFilterer) WatchContractConfigurationUpdated(opts *bind.WatchOpts, sink chan<- *ICoreRegistryContractConfigurationUpdated, chainId []*big.Int) (event.Subscription, error) {
+
+	var chainIdRule []interface{}
+	for _, chainIdItem := range chainId {
+		chainIdRule = append(chainIdRule, chainIdItem)
+	}
+
+	logs, sub, err := _ICoreRegistry.contract.WatchLogs(opts, "ContractConfigurationUpdated", chainIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ICoreRegistryContractConfigurationUpdated)
+				if err := _ICoreRegistry.contract.UnpackLog(event, "ContractConfigurationUpdated", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseContractConfigurationUpdated is a log parse operation binding the contract event 0xaea6b6dd1ea232db3e0fc64d54fd642518ed2932043ff697ac7c8a83d651c7c5.
+//
+// Solidity: event ContractConfigurationUpdated(uint256 indexed chainId, string contractType, string key, bytes value)
+func (_ICoreRegistry *ICoreRegistryFilterer) ParseContractConfigurationUpdated(log types.Log) (*ICoreRegistryContractConfigurationUpdated, error) {
+	event := new(ICoreRegistryContractConfigurationUpdated)
+	if err := _ICoreRegistry.contract.UnpackLog(event, "ContractConfigurationUpdated", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -1135,153 +1422,6 @@ func (_ICoreRegistry *ICoreRegistryFilterer) WatchContractStatusChanged(opts *bi
 func (_ICoreRegistry *ICoreRegistryFilterer) ParseContractStatusChanged(log types.Log) (*ICoreRegistryContractStatusChanged, error) {
 	event := new(ICoreRegistryContractStatusChanged)
 	if err := _ICoreRegistry.contract.UnpackLog(event, "ContractStatusChanged", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// ICoreRegistryNewContractConfigurationIterator is returned from FilterNewContractConfiguration and is used to iterate over the raw logs and unpacked data for NewContractConfiguration events raised by the ICoreRegistry contract.
-type ICoreRegistryNewContractConfigurationIterator struct {
-	Event *ICoreRegistryNewContractConfiguration // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *ICoreRegistryNewContractConfigurationIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(ICoreRegistryNewContractConfiguration)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(ICoreRegistryNewContractConfiguration)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *ICoreRegistryNewContractConfigurationIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *ICoreRegistryNewContractConfigurationIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// ICoreRegistryNewContractConfiguration represents a NewContractConfiguration event raised by the ICoreRegistry contract.
-type ICoreRegistryNewContractConfiguration struct {
-	ChainId      *big.Int
-	ContractType string
-	Key          string
-	Value        []byte
-	Raw          types.Log // Blockchain specific contextual infos
-}
-
-// FilterNewContractConfiguration is a free log retrieval operation binding the contract event 0x9453d408be9167c029f60b137dddf03dd0d2ff9f51d834c1b2238f335bd96f9b.
-//
-// Solidity: event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value)
-func (_ICoreRegistry *ICoreRegistryFilterer) FilterNewContractConfiguration(opts *bind.FilterOpts, chainId []*big.Int) (*ICoreRegistryNewContractConfigurationIterator, error) {
-
-	var chainIdRule []interface{}
-	for _, chainIdItem := range chainId {
-		chainIdRule = append(chainIdRule, chainIdItem)
-	}
-
-	logs, sub, err := _ICoreRegistry.contract.FilterLogs(opts, "NewContractConfiguration", chainIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return &ICoreRegistryNewContractConfigurationIterator{contract: _ICoreRegistry.contract, event: "NewContractConfiguration", logs: logs, sub: sub}, nil
-}
-
-// WatchNewContractConfiguration is a free log subscription operation binding the contract event 0x9453d408be9167c029f60b137dddf03dd0d2ff9f51d834c1b2238f335bd96f9b.
-//
-// Solidity: event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value)
-func (_ICoreRegistry *ICoreRegistryFilterer) WatchNewContractConfiguration(opts *bind.WatchOpts, sink chan<- *ICoreRegistryNewContractConfiguration, chainId []*big.Int) (event.Subscription, error) {
-
-	var chainIdRule []interface{}
-	for _, chainIdItem := range chainId {
-		chainIdRule = append(chainIdRule, chainIdItem)
-	}
-
-	logs, sub, err := _ICoreRegistry.contract.WatchLogs(opts, "NewContractConfiguration", chainIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(ICoreRegistryNewContractConfiguration)
-				if err := _ICoreRegistry.contract.UnpackLog(event, "NewContractConfiguration", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseNewContractConfiguration is a log parse operation binding the contract event 0x9453d408be9167c029f60b137dddf03dd0d2ff9f51d834c1b2238f335bd96f9b.
-//
-// Solidity: event NewContractConfiguration(uint256 indexed chainId, string contractType, string key, bytes value)
-func (_ICoreRegistry *ICoreRegistryFilterer) ParseNewContractConfiguration(log types.Log) (*ICoreRegistryNewContractConfiguration, error) {
-	event := new(ICoreRegistryNewContractConfiguration)
-	if err := _ICoreRegistry.contract.UnpackLog(event, "NewContractConfiguration", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
