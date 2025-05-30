@@ -159,7 +159,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
+        if (amount == 0) revert InsufficientAmount();
         uint256 messageSize = revertOptions.revertMessage.length;
         if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
@@ -198,7 +198,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
+        if (amount == 0) revert InsufficientAmount();
         if (gasLimit == 0) revert InsufficientGasLimit();
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
         if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
@@ -238,7 +238,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
+        if (amount == 0) revert InsufficientAmount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
         if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
@@ -273,7 +273,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
+        if (amount == 0) revert InsufficientAmount();
         uint256 messageSize = revertOptions.revertMessage.length;
         if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
@@ -310,7 +310,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
+        if (amount == 0) revert InsufficientAmount();
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
         if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
 
@@ -349,7 +349,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (receiver.length == 0) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
+        if (amount == 0) revert InsufficientAmount();
         if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
         uint256 messageSize = message.length + revertOptions.revertMessage.length;
         if (messageSize > MAX_MESSAGE_SIZE) revert MessageSizeExceeded(messageSize, MAX_MESSAGE_SIZE);
@@ -433,7 +433,7 @@ contract GatewayZEVMUpgradeTest is
     /// @param target The target address to receive the deposited tokens.
     function deposit(address zrc20, uint256 amount, address target) external onlyProtocol whenNotPaused {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
+        if (amount == 0) revert InsufficientAmount();
 
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
@@ -480,7 +480,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
+        if (amount == 0) revert InsufficientAmount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed(zrc20, target, amount);
@@ -503,7 +503,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
+        if (amount == 0) revert InsufficientAmount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         _transferZETA(amount, target);
@@ -535,7 +535,7 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
     {
         if (zrc20 == address(0) || target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZRC20Amount();
+        if (amount == 0) revert InsufficientAmount();
         if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
 
         if (!IZRC20(zrc20).deposit(target, amount)) revert ZRC20DepositFailed(zrc20, target, amount);

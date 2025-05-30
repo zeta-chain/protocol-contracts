@@ -81,11 +81,8 @@ interface IGatewayZEVMErrors {
     /// @param amount The amount of tokens that failed to withdraw.
     error WithdrawalFailed(address token, address recipient, uint256 amount);
 
-    /// @notice Error indicating an insufficient ZRC20 token amount.
-    error InsufficientZRC20Amount();
-
-    /// @notice Error indicating an insufficient zeta amount.
-    error InsufficientZetaAmount();
+    /// @notice Error indicating an insufficient token amount.
+    error InsufficientAmount();
 
     /// @notice Error indicating a failure to burn ZRC20 tokens.
     /// @param zrc20 The address of the ZRC20 token that failed to burn.

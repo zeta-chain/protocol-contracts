@@ -3,6 +3,7 @@
 # Contents
 - [interfaces](/contracts/zevm/interfaces)
 - [legacy](/contracts/zevm/legacy)
+- [libraries](/contracts/zevm/libraries)
 - [CoreRegistry](CoreRegistry.sol/contract.CoreRegistry.md)
 - [GatewayZEVM](GatewayZEVM.sol/contract.GatewayZEVM.md)
 - [SystemContractErrors](SystemContract.sol/interface.SystemContractErrors.md)
