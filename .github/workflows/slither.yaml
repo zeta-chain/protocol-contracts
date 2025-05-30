@@ -49,7 +49,7 @@ jobs:
         run: forge build
 
       - name: Run Slither
-        uses: crytic/slither-action@d86660fe7e45835a0ec7b7aeb768d271fb421ea0 # tmp fix until: https://github.com/crytic/slither-action/pull/93
+        uses: crytic/slither-action@main
         id: slither
         continue-on-error: true
         with:

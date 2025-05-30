@@ -1,5 +1,5 @@
 # ZetaConnectorNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/ZetaConnectorNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/ZetaConnectorNative.sol)
 
 **Inherits:**
 [ZetaConnectorBase](/contracts/evm/ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
@@ -11,6 +11,8 @@ Implementation of ZetaConnectorBase for native token handling.
 
 ## Functions
 ### initialize
+
+Initializer for ZetaConnectorNative.
 
 
 ```solidity
@@ -33,16 +35,7 @@ Withdraw tokens to a specified address.
 
 
 ```solidity
-function withdraw(
-    address to,
-    uint256 amount,
-    bytes32
-)
-    external
-    override
-    nonReentrant
-    onlyRole(WITHDRAWER_ROLE)
-    whenNotPaused;
+function withdraw(address to, uint256 amount) external nonReentrant onlyRole(WITHDRAWER_ROLE) whenNotPaused;
 ```
 **Parameters**
 
@@ -50,7 +43,6 @@ function withdraw(
 |----|----|-----------|
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
-|`<none>`|`bytes32`||
 
 
 ### withdrawAndCall
@@ -65,11 +57,9 @@ function withdrawAndCall(
     MessageContext calldata messageContext,
     address to,
     uint256 amount,
-    bytes calldata data,
-    bytes32
+    bytes calldata data
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -82,7 +72,6 @@ function withdrawAndCall(
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
 |`data`|`bytes`|The calldata to pass to the contract call.|
-|`<none>`|`bytes32`||
 
 
 ### withdrawAndRevert
@@ -97,11 +86,9 @@ function withdrawAndRevert(
     address to,
     uint256 amount,
     bytes calldata data,
-    bytes32,
     RevertContext calldata revertContext
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -113,17 +100,16 @@ function withdrawAndRevert(
 |`to`|`address`|The address to withdraw tokens to.|
 |`amount`|`uint256`|The amount of tokens to withdraw.|
 |`data`|`bytes`|The calldata to pass to the contract call.|
-|`<none>`|`bytes32`||
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
-### receiveTokens
+### deposit
 
 Handle received tokens.
 
 
 ```solidity
-function receiveTokens(uint256 amount) external override whenNotPaused;
+function deposit(uint256 amount) external override whenNotPaused;
 ```
 **Parameters**
 

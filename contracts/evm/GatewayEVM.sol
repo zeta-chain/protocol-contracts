@@ -2,7 +2,13 @@
 pragma solidity 0.8.26;
 
 import { INotSupportedMethods } from "../../contracts/Errors.sol";
-import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import {
+    MAX_REVERT_GAS_LIMIT,
+    RevertContext,
+    RevertGasLimitExceeded,
+    RevertOptions,
+    Revertable
+} from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { Callable, IGatewayEVM, MessageContext } from "./interfaces/IGatewayEVM.sol";
@@ -180,7 +186,8 @@ contract GatewayEVM is
         if (to == address(0)) revert ZeroAddress();
         // Approve the target contract to spend the tokens
         if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
-        if (!IERC20(token).approve(to, amount)) revert ApprovalFailed(token, to);
+        // Approve token to spender
+        _safeApprove(token, to, amount);
         // Execute the call on the target contract
         // if sender is provided in messageContext call is authenticated and target is Callable.onCall
         // otherwise, call is arbitrary
@@ -239,6 +246,9 @@ contract GatewayEVM is
         if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
             revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -266,6 +276,9 @@ contract GatewayEVM is
         if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
             revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -289,6 +302,9 @@ contract GatewayEVM is
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
             revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
@@ -319,6 +335,9 @@ contract GatewayEVM is
         if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
             revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
         }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -341,6 +360,9 @@ contract GatewayEVM is
         if (receiver == address(0)) revert ZeroAddress();
         uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
         if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
@@ -365,13 +387,51 @@ contract GatewayEVM is
         zetaConnector = zetaConnector_;
     }
 
-    /// @dev Resets the approval of a token for a specified address.
+    /// @notice Resets the approval of a token for a specified address.
     /// This is used to ensure that the approval is set to zero before setting it to a new value.
     /// @param token Address of the ERC20 token.
     /// @param to Address to reset the approval for.
-    /// @return True if the approval reset was successful, false otherwise.
+    /// @return True if the approval reset was successful or if the token reverts on zero approval.
     function _resetApproval(address token, address to) private returns (bool) {
-        return IERC20(token).approve(to, 0);
+        // Use low-level call to handle tokens that don't return boolean values
+        (bool success, bytes memory returnData) = token.call(abi.encodeWithSelector(IERC20.approve.selector, to, 0));
+        if (!success) {
+            // If the call failed, it might be because the token reverts on zero approval
+            // In this case, we consider it successful since the goal is to reset approval
+            return true;
+        }
+
+        // If there's return data, check if it's true (for standard ERC20 tokens)
+        // If there's no return data, assume success (for non-standard tokens like USDT)
+        if (returnData.length > 0) {
+            bool approved = abi.decode(returnData, (bool));
+            return approved;
+        }
+
+        return true;
+    }
+
+    /// @notice Approve a token for spending, handling tokens that don't return boolean value.
+    /// @dev Custom safe approve handling since current SafeERC implementation expects return value.
+    /// @param spender Address to approve.
+    /// @param amount Amount to approve.
+    function _safeApprove(address token, address spender, uint256 amount) private {
+        // Use low-level call in order to handle also the tokens that don't return value.
+        (bool success, bytes memory returnData) =
+            token.call(abi.encodeWithSelector(IERC20.approve.selector, spender, amount));
+        // Check if the call was successful.
+        if (!success) {
+            revert ApprovalFailed(token, spender);
+        }
+
+        // If there's return data, it should be true (for standard ERC20 tokens)
+        // If there's no return data, assume success (for non-standard tokens)
+        if (returnData.length > 0) {
+            bool approved = abi.decode(returnData, (bool));
+            if (!approved) {
+                revert ApprovalFailed(token, spender);
+            }
+        }
     }
 
     /// @dev Transfers tokens from the sender to the asset handler.
@@ -382,18 +442,12 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to transfer.
     function _transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
-            // TODO: remove error and comment out code once ZETA supported back
-            // https://github.com/zeta-chain/protocol-contracts/issues/394
-            // ZETA token is currently not supported for deposit
-            revert ZETANotSupported();
-
-            // // transfer to connector
-            // // transfer amount to gateway
-            // IERC20(token).safeTransferFrom(from, address(this), amount);
-            // // approve connector to handle tokens depending on connector version (eg. lock or burn)
-            // if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed();
-            // // send tokens to connector
-            // ZetaConnectorBase(zetaConnector).receiveTokens(amount);
+            // transfer amount to gateway
+            IERC20(token).safeTransferFrom(from, address(this), amount);
+            // approve connector to handle tokens depending on connector version (eg. lock or burn)
+            if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
+            // send tokens to connector
+            ZetaConnectorBase(zetaConnector).deposit(amount);
         } else {
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);
@@ -408,11 +462,10 @@ contract GatewayEVM is
     /// @param amount Amount of tokens to transfer.
     function _transferToAssetHandler(address token, uint256 amount) private {
         if (token == zetaToken) {
-            // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
             // send tokens to connector
-            ZetaConnectorBase(zetaConnector).receiveTokens(amount);
+            ZetaConnectorBase(zetaConnector).deposit(amount);
         } else {
             // transfer to custody
             if (!IERC20Custody(custody).whitelisted(token)) revert NotWhitelistedInCustody(token);

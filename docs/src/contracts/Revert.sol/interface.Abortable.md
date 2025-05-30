@@ -1,5 +1,5 @@
 # Abortable
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/Revert.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/Revert.sol)
 
 Interface for contracts that support abortable calls.
 

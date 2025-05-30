@@ -1,5 +1,5 @@
 # ZetaConnectorNonNative
-[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/v2/contracts/evm/ZetaConnectorNonNative.sol)
+[Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/ZetaConnectorNonNative.sol)
 
 **Inherits:**
 [ZetaConnectorBase](/contracts/evm/ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
@@ -21,6 +21,8 @@ uint256 public maxSupply;
 
 ## Functions
 ### initialize
+
+Initializer for ZetaConnectorNonNative.
 
 
 ```solidity
@@ -66,7 +68,6 @@ function withdraw(
     bytes32 internalSendHash
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -96,7 +97,6 @@ function withdrawAndCall(
     bytes32 internalSendHash
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -128,7 +128,6 @@ function withdrawAndRevert(
     RevertContext calldata revertContext
 )
     external
-    override
     nonReentrant
     onlyRole(WITHDRAWER_ROLE)
     whenNotPaused;
@@ -144,13 +143,13 @@ function withdrawAndRevert(
 |`revertContext`|`RevertContext`|Revert context to pass to onRevert.|
 
 
-### receiveTokens
+### deposit
 
 Handle received tokens and burn them.
 
 
 ```solidity
-function receiveTokens(uint256 amount) external override whenNotPaused;
+function deposit(uint256 amount) external override whenNotPaused;
 ```
 **Parameters**
 

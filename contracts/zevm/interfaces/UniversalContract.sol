@@ -2,6 +2,8 @@
 pragma solidity 0.8.26;
 
 import { RevertContext } from "../../../contracts/Revert.sol";
+import "../interfaces/IGatewayZEVM.sol";
+import "./ICoreRegistry.sol";
 
 /// @custom:deprecated should be removed once v2 SystemContract is not used anymore.
 /// MessageContext should be used
@@ -38,9 +40,43 @@ struct MessageContext {
 }
 
 /// @title UniversalContract
-/// @notice Interface for contracts that can receive cross-chain calls on ZetaChain.
-/// @dev Contracts implementing this interface can handle incoming cross-chain messages
+/// @notice Abstract contract for contracts that can receive cross-chain calls on ZetaChain.
+/// @dev Contracts extending this abstract contract can handle incoming cross-chain messages
 /// and execute logic based on the provided context, token, and message payload.
-interface UniversalContract {
-    function onCall(MessageContext calldata context, address zrc20, uint256 amount, bytes calldata message) external;
+abstract contract UniversalContract {
+    // TODO: replace with real CoreRegistry address that will be deployed across all envs
+    /// @notice Reference to the ZetaChain Registry contract
+    ICoreRegistry public constant registry = ICoreRegistry(0x7c591652f159496b14e15616F0948a6d63b585E8);
+    /// @notice Reference to the ZetaChain Gateway contract
+    IGatewayZEVM public immutable gateway;
+
+    /// @notice Error thrown when a function is called by an unauthorized address
+    error Unauthorized();
+
+    /// @notice Restricts function access to only the gateway contract
+    /// @dev Used on functions that process cross-chain messages to ensure they're only called through the Gateway,
+    /// where message validation occurs.
+    /// Important for security in functions like `onCall()` and `onRevert()` that handle incoming cross-chain
+    /// operations.
+    modifier onlyGateway() {
+        if (msg.sender != address(gateway)) revert Unauthorized();
+        _;
+    }
+
+    /// @notice Initializes the contract by retrieving the gateway address from the registry
+    /// @dev Fetches the gateway contract address for the current chain from the registry.
+    /// If the gateway is not active or not found, the gateway will remain uninitialized (address(0)).
+    constructor() {
+        gateway = IGatewayZEVM(registry.gatewayZEVM());
+    }
+
+    /// @notice Function to handle cross-chain calls
+    function onCall(
+        MessageContext calldata context,
+        address zrc20,
+        uint256 amount,
+        bytes calldata message
+    )
+        external
+        virtual;
 }

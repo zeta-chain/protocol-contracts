@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 import { CallOptions, IGatewayZEVM } from "./interfaces/IGatewayZEVM.sol";
 
 import { INotSupportedMethods } from "../../contracts/Errors.sol";
-import { AbortContext, Abortable, RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
+import "../../contracts/Revert.sol";
 import "./interfaces/IWZETA.sol";
 import { IZRC20 } from "./interfaces/IZRC20.sol";
 import { MessageContext, UniversalContract } from "./interfaces/UniversalContract.sol";
@@ -32,6 +32,7 @@ contract GatewayZEVM is
 
     /// @notice The constant address of the protocol
     address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
+
     /// @notice The address of the Zeta token.
     address public zetaToken;
 
@@ -40,6 +41,9 @@ contract GatewayZEVM is
 
     /// @notice Max size of message + revertOptions revert message.
     uint256 public constant MAX_MESSAGE_SIZE = 2048;
+
+    /// @notice Minimum gas limit for a call.
+    uint256 public constant MIN_GAS_LIMIT = 100_000;
 
     /// @dev Only protocol address allowed modifier.
     modifier onlyProtocol() {
@@ -128,6 +132,23 @@ contract GatewayZEVM is
         }
     }
 
+    /// @notice Helper function to burn gas fees.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param gasLimit Gas limit.
+    function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256) {
+        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
+
+        if (!_safeTransferFrom(gasZRC20, msg.sender, address(this), gasFee)) {
+            revert GasFeeTransferFailed(gasZRC20, address(this), gasFee);
+        }
+
+        if (!_safeBurn(gasZRC20, gasFee)) {
+            revert ZRC20BurnFailed(gasZRC20, gasFee);
+        }
+
+        return gasFee;
+    }
+
     /// @dev Private function to withdraw ZRC20 tokens.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
@@ -143,11 +164,7 @@ contract GatewayZEVM is
     /// @param gasLimit Gas limit.
     /// @return The gas fee for the withdrawal.
     function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLimit) private returns (uint256) {
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(gasLimit);
-
-        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
-        }
+        uint256 gasFee = _burnProtocolFees(zrc20, gasLimit);
 
         if (!_safeTransferFrom(zrc20, msg.sender, address(this), amount)) {
             revert ZRC20TransferFailed(zrc20, msg.sender, address(this), amount);
@@ -175,6 +192,14 @@ contract GatewayZEVM is
         }
     }
 
+    // TODO: Factorize common validation checks across withdraw functions.
+    // https://github.com/zeta-chain/protocol-contracts/issues/506
+    // Current duplicate validations:
+    // - Receiver zero-length check
+    // - Amount zero check
+    // - Message size validation
+    // - Gas limit validation (for withdrawAndCall functions)
+
     /// @notice Withdraw ZRC20 tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
@@ -193,6 +218,9 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
@@ -230,9 +258,12 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
         if (amount == 0) revert InsufficientZRC20Amount();
-        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
@@ -255,37 +286,36 @@ contract GatewayZEVM is
     //// @param amount The amount of tokens to withdraw.
     //// @param revertOptions Revert options.
     function withdraw(
-        bytes memory, /*receiver*/
-        uint256, /*amount*/
-        uint256, /*chainId*/
-        RevertOptions calldata /*revertOptions*/
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        RevertOptions calldata revertOptions
     )
         external
-        view
         whenNotPaused
     {
-        // TODO: remove error and comment out code once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // ZETA is not currently supported for withdraws
-        revert ZETANotSupported();
+        if (receiver.length == 0) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+        if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
+            revert MessageSizeExceeded(revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
-        // if (receiver.length == 0) revert ZeroAddress();
-        // if (amount == 0) revert InsufficientZetaAmount();
-        // if (revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
-
-        // _transferZETA(amount, PROTOCOL_ADDRESS);
-        // emit Withdrawn(
-        //     msg.sender,
-        //     chainId,
-        //     receiver,
-        //     address(zetaToken),
-        //     amount,
-        //     0,
-        //     0,
-        //     "",
-        //     CallOptions({ gasLimit: 0, isArbitraryCall: true }),
-        //     revertOptions
-        // );
+        _transferZETA(amount, PROTOCOL_ADDRESS);
+        emit Withdrawn(
+            msg.sender,
+            chainId,
+            receiver,
+            address(zetaToken),
+            amount,
+            0,
+            0,
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
     }
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
@@ -296,31 +326,30 @@ contract GatewayZEVM is
     //// @param callOptions Call options including gas limit and arbirtrary call flag.
     //// @param revertOptions Revert options.
     function withdrawAndCall(
-        bytes memory, /*receiver*/
-        uint256, /*amount*/
-        uint256, /*chainId*/
-        bytes calldata, /*message*/
-        CallOptions calldata, /*callOptions*/
-        RevertOptions calldata /*revertOptions*/
+        bytes memory receiver,
+        uint256 amount,
+        uint256 chainId,
+        bytes calldata message,
+        CallOptions calldata callOptions,
+        RevertOptions calldata revertOptions
     )
         external
-        view
         whenNotPaused
     {
-        // TODO: remove error and comment out code once ZETA supported back
-        // https://github.com/zeta-chain/protocol-contracts/issues/394
-        // ZETA is not currently supported for withdraws
-        revert ZETANotSupported();
+        if (receiver.length == 0) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+        if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
+        if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
+            revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
-        // if (receiver.length == 0) revert ZeroAddress();
-        // if (amount == 0) revert InsufficientZetaAmount();
-        // if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
-        // if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
-
-        // _transferZETA(amount, PROTOCOL_ADDRESS);
-        // emit WithdrawnAndCalled(
-        //     msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, callOptions, revertOptions
-        // );
+        _transferZETA(amount, PROTOCOL_ADDRESS);
+        emit WithdrawnAndCalled(
+            msg.sender, chainId, receiver, address(zetaToken), amount, 0, 0, message, callOptions, revertOptions
+        );
     }
 
     /// @notice Call a smart contract on an external chain without asset transfer.
@@ -339,9 +368,12 @@ contract GatewayZEVM is
         external
         whenNotPaused
     {
-        if (callOptions.gasLimit == 0) revert InsufficientGasLimit();
+        if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) {
             revert MessageSizeExceeded(message.length + revertOptions.revertMessage.length, MAX_MESSAGE_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
         _call(receiver, zrc20, message, callOptions, revertOptions);
@@ -358,11 +390,7 @@ contract GatewayZEVM is
     {
         if (receiver.length == 0) revert ZeroAddress();
 
-        (address gasZRC20, uint256 gasFee) = IZRC20(zrc20).withdrawGasFeeWithGasLimit(callOptions.gasLimit);
-        if (!_safeTransferFrom(gasZRC20, msg.sender, PROTOCOL_ADDRESS, gasFee)) {
-            revert GasFeeTransferFailed(gasZRC20, PROTOCOL_ADDRESS, gasFee);
-        }
-
+        _burnProtocolFees(zrc20, callOptions.gasLimit);
         emit Called(msg.sender, zrc20, receiver, message, callOptions, revertOptions);
     }
 
@@ -498,6 +526,28 @@ contract GatewayZEVM is
             revert ZRC20DepositFailed(zrc20, target, amount);
         }
 
+        Revertable(target).onRevert(revertContext);
+    }
+
+    /// @notice Deposit ZETA and revert a user-specified contract on ZEVM.
+    /// @param amount The amount of tokens to revert.
+    /// @param target The target contract to call.
+    /// @param revertContext Revert context to pass to onRevert.
+    function depositAndRevert(
+        uint256 amount,
+        address target,
+        RevertContext calldata revertContext
+    )
+        external
+        nonReentrant
+        onlyProtocol
+        whenNotPaused
+    {
+        if (target == address(0)) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        _transferZETA(amount, target);
         Revertable(target).onRevert(revertContext);
     }
 
