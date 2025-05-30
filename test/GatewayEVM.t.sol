@@ -103,7 +103,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         bool oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
         assertTrue(oldTSSAddressHasTSSRole);
 
-
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(gateway));
         emit UpdatedGatewayTSSAddress(tssAddress, newTSSAddress);
