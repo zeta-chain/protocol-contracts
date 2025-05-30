@@ -71,9 +71,8 @@ contract GatewayEVM is
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, tssAddress_);
-        tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
+        tssAddress = tssAddress_;
 
         zetaToken = zetaToken_;
     }
@@ -88,10 +87,7 @@ contract GatewayEVM is
         if (newTSSAddress == address(0)) revert ZeroAddress();
 
         _revokeRole(TSS_ROLE, tssAddress);
-        _revokeRole(PAUSER_ROLE, tssAddress);
-
         _grantRole(TSS_ROLE, newTSSAddress);
-        _grantRole(PAUSER_ROLE, newTSSAddress);
 
         emit UpdatedGatewayTSSAddress(tssAddress, newTSSAddress);
 

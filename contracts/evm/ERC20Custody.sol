@@ -59,7 +59,6 @@ contract ERC20Custody is
         tssAddress = tssAddress_;
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, tssAddress_);
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(WHITELISTER_ROLE, admin_);
         _grantRole(WHITELISTER_ROLE, tssAddress_);
@@ -86,11 +85,9 @@ contract ERC20Custody is
 
         _revokeRole(WITHDRAWER_ROLE, tssAddress);
         _revokeRole(WHITELISTER_ROLE, tssAddress);
-        _revokeRole(PAUSER_ROLE, tssAddress);
 
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(WHITELISTER_ROLE, newTSSAddress);
-        _grantRole(PAUSER_ROLE, newTSSAddress);
 
         emit UpdatedCustodyTSSAddress(tssAddress, newTSSAddress);
 
