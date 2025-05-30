@@ -296,7 +296,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.unpause();
 
-        vm.prank(tssAddress);
+        vm.prank(owner);
         gateway.pause();
 
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");

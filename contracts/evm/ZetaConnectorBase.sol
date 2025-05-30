@@ -82,7 +82,6 @@ abstract contract ZetaConnectorBase is
         _grantRole(WITHDRAWER_ROLE, tssAddress_);
         _grantRole(TSS_ROLE, tssAddress_);
         _grantRole(PAUSER_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, tssAddress_);
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
@@ -96,11 +95,9 @@ abstract contract ZetaConnectorBase is
 
         _revokeRole(WITHDRAWER_ROLE, tssAddress);
         _revokeRole(TSS_ROLE, tssAddress);
-        _revokeRole(PAUSER_ROLE, tssAddress);
 
         _grantRole(WITHDRAWER_ROLE, newTSSAddress);
         _grantRole(TSS_ROLE, newTSSAddress);
-        _grantRole(PAUSER_ROLE, newTSSAddress);
 
         emit UpdatedZetaConnectorTSSAddress(tssAddress, newTSSAddress);
 
