@@ -100,13 +100,9 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         bool newTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, newTSSAddress);
         assertFalse(newTSSAddressHasTSSRole);
-        bool newTSSAddressHasPauserRole = gateway.hasRole(PAUSER_ROLE, newTSSAddress);
-        assertFalse(newTSSAddressHasPauserRole);
-
         bool oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
         assertTrue(oldTSSAddressHasTSSRole);
-        bool oldTSSAddressHasPauserRole = gateway.hasRole(PAUSER_ROLE, tssAddress);
-        assertTrue(oldTSSAddressHasPauserRole);
+
 
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(gateway));
@@ -118,11 +114,6 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         assertTrue(newTSSAddressHasTSSRole);
         oldTSSAddressHasTSSRole = gateway.hasRole(TSS_ROLE, tssAddress);
         assertFalse(oldTSSAddressHasTSSRole);
-
-        newTSSAddressHasPauserRole = gateway.hasRole(PAUSER_ROLE, newTSSAddress);
-        assertTrue(newTSSAddressHasPauserRole);
-        oldTSSAddressHasPauserRole = gateway.hasRole(PAUSER_ROLE, tssAddress);
-        assertFalse(oldTSSAddressHasPauserRole);
     }
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
@@ -306,7 +297,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.unpause();
 
-        vm.prank(tssAddress);
+        vm.prank(owner);
         gateway.pause();
 
         bytes memory data = abi.encodeWithSignature("receiveNoParams()");

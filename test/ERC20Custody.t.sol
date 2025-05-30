@@ -100,15 +100,11 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         assertFalse(newTSSAddressWithdrawerRole);
         bool newTSSAddressWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, newTSSAddress);
         assertFalse(newTSSAddressWhitelisterRole);
-        bool newTSSAddressHasPauserRole = custody.hasRole(PAUSER_ROLE, newTSSAddress);
-        assertFalse(newTSSAddressHasPauserRole);
 
         bool oldTSSAddressHasWithdrawerRole = custody.hasRole(WITHDRAWER_ROLE, tssAddress);
         assertTrue(oldTSSAddressHasWithdrawerRole);
         bool oldTSSAddressHasWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, tssAddress);
         assertTrue(oldTSSAddressHasWhitelisterRole);
-        bool oldTSSAddressHasPauserRole = custody.hasRole(PAUSER_ROLE, tssAddress);
-        assertTrue(oldTSSAddressHasPauserRole);
 
         vm.startPrank(owner);
         vm.expectEmit(true, true, true, true, address(custody));
@@ -125,11 +121,6 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         assertFalse(oldTSSAddressHasWithdrawerRole);
         oldTSSAddressHasWhitelisterRole = custody.hasRole(WHITELISTER_ROLE, tssAddress);
         assertFalse(oldTSSAddressHasWhitelisterRole);
-
-        newTSSAddressHasPauserRole = custody.hasRole(PAUSER_ROLE, newTSSAddress);
-        assertTrue(newTSSAddressHasPauserRole);
-        oldTSSAddressHasPauserRole = custody.hasRole(PAUSER_ROLE, tssAddress);
-        assertFalse(oldTSSAddressHasPauserRole);
     }
 
     function testTSSUpgradeFailsIfSenderIsNotTSSUpdater() public {
@@ -241,7 +232,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.unpause();
 
-        vm.prank(tssAddress);
+        vm.prank(owner);
         custody.pause();
 
         uint256 amount = 100_000;
