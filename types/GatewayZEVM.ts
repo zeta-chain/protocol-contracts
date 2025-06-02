@@ -116,7 +116,8 @@ export interface GatewayZEVMInterface extends Interface {
       | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
-      | "deposit"
+      | "deposit(uint256,address)"
+      | "deposit(address,uint256,address)"
       | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
       | "depositAndRevert(uint256,address,(address,address,uint256,bytes))"
@@ -192,7 +193,11 @@ export interface GatewayZEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit",
+    functionFragment: "deposit(uint256,address)",
+    values: [BigNumberish, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address,uint256,address)",
     values: [AddressLike, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
@@ -331,7 +336,14 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(uint256,address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address,uint256,address)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
     data: BytesLike
@@ -693,7 +705,13 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  deposit: TypedContractMethod<
+  "deposit(uint256,address)": TypedContractMethod<
+    [amount: BigNumberish, target: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  "deposit(address,uint256,address)": TypedContractMethod<
     [zrc20: AddressLike, amount: BigNumberish, target: AddressLike],
     [void],
     "nonpayable"
@@ -905,7 +923,14 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deposit"
+    nameOrSignature: "deposit(uint256,address)"
+  ): TypedContractMethod<
+    [amount: BigNumberish, target: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "deposit(address,uint256,address)"
   ): TypedContractMethod<
     [zrc20: AddressLike, amount: BigNumberish, target: AddressLike],
     [void],
