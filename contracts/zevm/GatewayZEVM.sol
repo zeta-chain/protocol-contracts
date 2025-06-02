@@ -409,6 +409,18 @@ contract GatewayZEVM is
         }
     }
 
+    /// @notice Deposit ZETA tokens.
+    /// @param amount The amount of ZETA tokens to transfer.
+    /// @param target The target address to receive the tokens.
+    function deposit(uint256 amount, address target) external onlyProtocol whenNotPaused {
+        if (target == address(0)) revert ZeroAddress();
+        if (amount == 0) revert InsufficientZetaAmount();
+
+        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
+
+        _transferZETA(amount, target);
+    }
+
     /// @notice Execute a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
     /// @param zrc20 The address of the ZRC20 token.
