@@ -37,24 +37,6 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
-### MAX_MESSAGE_SIZE
-Max size of message + revertOptions revert message.
-
-
-```solidity
-uint256 public constant MAX_MESSAGE_SIZE = 2048;
-```
-
-
-### MIN_GAS_LIMIT
-Minimum gas limit for a call.
-
-
-```solidity
-uint256 public constant MIN_GAS_LIMIT = 100_000;
-```
-
-
 ## Functions
 ### onlyProtocol
 
@@ -590,12 +572,48 @@ function executeAbort(
 |`abortContext`|`AbortContext`|Abort context to pass to onAbort.|
 
 
-## Errors
-### ZeroAddress
-Error indicating a zero address was provided.
+### getMaxMessageSize
+
+Returns the maximum message size.
 
 
 ```solidity
-error ZeroAddress();
+function getMaxMessageSize() external pure returns (uint256);
 ```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint256`|The maximum message size.|
+
+
+### getMinGasLimit
+
+Returns the minimum gas limit allowed.
+
+
+```solidity
+function getMinGasLimit() external pure returns (uint256);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint256`|The minimum gas limit.|
+
+
+### getMaxRevertGasLimit
+
+Returns the maximum revert gas limit allowed.
+
+
+```solidity
+function getMaxRevertGasLimit() external pure returns (uint256);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint256`|The maximum revert gas limit.|
+
 

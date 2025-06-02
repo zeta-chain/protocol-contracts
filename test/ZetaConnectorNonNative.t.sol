@@ -120,7 +120,7 @@ contract ZetaConnectorNonNativeTest is
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         zetaConnector.unpause();
 
-        vm.prank(tssAddress);
+        vm.prank(owner);
         zetaConnector.pause();
 
         vm.expectRevert(EnforcedPause.selector);

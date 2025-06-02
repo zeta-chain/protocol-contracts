@@ -21,20 +21,12 @@ error WithdrawalFailed(address token, address recipient, uint256 amount);
 |`recipient`|`address`|The address that was supposed to receive the tokens.|
 |`amount`|`uint256`|The amount of tokens that failed to withdraw.|
 
-### InsufficientZRC20Amount
-Error indicating an insufficient ZRC20 token amount.
+### InsufficientAmount
+Error indicating an insufficient token amount.
 
 
 ```solidity
-error InsufficientZRC20Amount();
-```
-
-### InsufficientZetaAmount
-Error indicating an insufficient zeta amount.
-
-
-```solidity
-error InsufficientZetaAmount();
+error InsufficientAmount();
 ```
 
 ### ZRC20BurnFailed
