@@ -358,11 +358,8 @@ contract GatewayZEVM is
     /// @notice Deposit ZETA tokens.
     /// @param amount The amount of ZETA tokens to transfer.
     /// @param target The target address to receive the tokens.
-    function deposit(uint256 amount, address target) external onlyProtocol whenNotPaused {
-        if (target == address(0)) revert ZeroAddress();
-        if (amount == 0) revert InsufficientZetaAmount();
-
-        if (target == PROTOCOL_ADDRESS || target == address(this)) revert InvalidTarget();
+    function deposit(uint256 amount, address target) external nonReentrant onlyProtocol whenNotPaused {
+        GatewayZEVMValidations.validateZetaDepositParams(amount, target, PROTOCOL_ADDRESS, address(this));
 
         _transferZETA(amount, target);
     }
@@ -431,7 +428,7 @@ contract GatewayZEVM is
         onlyProtocol
         whenNotPaused
     {
-        GatewayZEVMValidations.validateZetaDepositAndCallParams(amount, target, PROTOCOL_ADDRESS, address(this));
+        GatewayZEVMValidations.validateZetaDepositParams(amount, target, PROTOCOL_ADDRESS, address(this));
 
         _transferZETA(amount, target);
         UniversalContract(target).onCall(context, zetaToken, amount, message);
@@ -491,7 +488,7 @@ contract GatewayZEVM is
         onlyProtocol
         whenNotPaused
     {
-        GatewayZEVMValidations.validateZetaDepositAndCallParams(amount, target, PROTOCOL_ADDRESS, address(this));
+        GatewayZEVMValidations.validateZetaDepositParams(amount, target, PROTOCOL_ADDRESS, address(this));
 
         _transferZETA(amount, target);
         Revertable(target).onRevert(revertContext);
