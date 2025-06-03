@@ -377,7 +377,7 @@ Deposit ZETA tokens.
 
 
 ```solidity
-function deposit(uint256 amount, address target) external onlyProtocol whenNotPaused;
+function deposit(uint256 amount, address target) external nonReentrant onlyProtocol whenNotPaused;
 ```
 **Parameters**
 
