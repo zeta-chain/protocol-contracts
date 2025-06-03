@@ -162,7 +162,7 @@ library GatewayZEVMValidations {
     /// @param target The target address
     /// @param protocolAddress The protocol address
     /// @param contractAddress The contract address
-    function validateZetaDepositAndCallParams(
+    function validateZetaDepositParams(
         uint256 amount,
         address target,
         address protocolAddress,

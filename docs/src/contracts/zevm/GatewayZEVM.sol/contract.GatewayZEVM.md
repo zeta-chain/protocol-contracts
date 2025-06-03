@@ -371,6 +371,22 @@ function deposit(address zrc20, uint256 amount, address target) external onlyPro
 |`target`|`address`|The target address to receive the deposited tokens.|
 
 
+### deposit
+
+Deposit ZETA tokens.
+
+
+```solidity
+function deposit(uint256 amount, address target) external nonReentrant onlyProtocol whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`amount`|`uint256`|The amount of ZETA tokens to transfer.|
+|`target`|`address`|The target address to receive the tokens.|
+
+
 ### execute
 
 Execute a user-specified contract on ZEVM.

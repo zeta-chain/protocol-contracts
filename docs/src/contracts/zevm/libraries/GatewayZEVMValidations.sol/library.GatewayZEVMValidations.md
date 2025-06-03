@@ -250,13 +250,13 @@ function validateExecuteParams(address zrc20, address target) internal pure;
 |`target`|`address`|The target address|
 
 
-### validateZetaDepositAndCallParams
+### validateZetaDepositParams
 
 *Validates ZETA deposit and call parameters*
 
 
 ```solidity
-function validateZetaDepositAndCallParams(
+function validateZetaDepositParams(
     uint256 amount,
     address target,
     address protocolAddress,

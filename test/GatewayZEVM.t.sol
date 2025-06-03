@@ -909,6 +909,90 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         gateway.deposit(address(zrc20), amount, protocolAddress);
     }
 
+    function testDepositZETAFailsIfAmountIsZero() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(InsufficientAmount.selector);
+        gateway.deposit(0, addr1);
+    }
+
+    function testDepositZETAFailsIfTargetIsZeroAddress() public {
+        vm.prank(protocolAddress);
+        vm.expectRevert(EmptyAddress.selector);
+        gateway.deposit(1, address(0));
+    }
+
+    function testDepositZETAFailsIfSenderIsNotProtocol() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(CallerIsNotProtocol.selector);
+        vm.prank(owner);
+        gateway.deposit(amount, addr1);
+    }
+
+    function testDepositZETAFailsIfTargetIsProtocol() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(InvalidTarget.selector);
+        vm.prank(protocolAddress);
+        gateway.deposit(amount, protocolAddress);
+    }
+
+    function testDepositZETAFailsIfTargetIsGateway() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(InvalidTarget.selector);
+        vm.prank(protocolAddress);
+        gateway.deposit(amount, address(gateway));
+    }
+
+    function testDepositZETAFailsWhenPaused() public {
+        uint256 amount = 1;
+
+        vm.prank(owner);
+        gateway.pause();
+
+        vm.expectRevert(EnforcedPause.selector);
+        vm.prank(protocolAddress);
+        gateway.deposit(amount, addr1);
+    }
+
+    function testDepositZETAFailsIfInsufficientProtocolBalance() public {
+        uint256 amount = 1000;
+
+        vm.expectRevert();
+        vm.prank(protocolAddress);
+        gateway.deposit(amount, addr1);
+    }
+
+    function testDepositZETAFailsIfInsufficientAllowance() public {
+        uint256 amount = 1;
+
+        vm.prank(protocolAddress);
+        zetaToken.approve(address(gateway), 0);
+
+        vm.expectRevert();
+        vm.prank(protocolAddress);
+        gateway.deposit(amount, addr1);
+    }
+
+    function testDepositZETA() public {
+        uint256 amount = 1;
+        uint256 protocolZetaBalanceBefore = zetaToken.balanceOf(protocolAddress);
+        uint256 gatewayZetaBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 targetBalanceBefore = addr1.balance;
+
+        vm.prank(protocolAddress);
+        gateway.deposit(amount, addr1);
+
+        uint256 protocolZetaBalanceAfter = zetaToken.balanceOf(protocolAddress);
+        uint256 gatewayZetaBalanceAfter = zetaToken.balanceOf(address(gateway));
+        uint256 targetBalanceAfter = addr1.balance;
+
+        assertEq(protocolZetaBalanceBefore - amount, protocolZetaBalanceAfter);
+        assertEq(gatewayZetaBalanceBefore, gatewayZetaBalanceAfter);
+        assertEq(targetBalanceBefore + amount, targetBalanceAfter);
+    }
+
     function testExecuteFailsIfZRC20IsZeroAddress() public {
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
