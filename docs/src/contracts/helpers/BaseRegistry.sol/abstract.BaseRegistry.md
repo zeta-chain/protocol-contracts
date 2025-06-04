@@ -24,6 +24,24 @@ bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE
 ```
 
 
+### admin
+Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions.
+
+
+```solidity
+address public admin;
+```
+
+
+### registryManager
+Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
+
+
+```solidity
+address public registryManager;
+```
+
+
 ### _activeChains
 Active chains in the registry.
 

@@ -124,6 +124,7 @@ export interface RegistryInterface extends Interface {
       | "PAUSER_ROLE"
       | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
+      | "admin"
       | "bootstrapChains"
       | "bootstrapContracts"
       | "bootstrapZRC20Tokens"
@@ -149,6 +150,7 @@ export interface RegistryInterface extends Interface {
       | "proxiableUUID"
       | "registerContract"
       | "registerZRC20Token"
+      | "registryManager"
       | "renounceRole"
       | "revokeRole"
       | "setContractActive"
@@ -198,6 +200,7 @@ export interface RegistryInterface extends Interface {
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "admin", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "bootstrapChains",
     values: [ChainInfoDTOStruct[], IRegistry.ChainMetadataEntryStruct[]]
@@ -272,7 +275,7 @@ export interface RegistryInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [AddressLike, AddressLike, AddressLike, AddressLike, AddressLike]
+    values: [AddressLike, AddressLike, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "onCall",
@@ -291,6 +294,10 @@ export interface RegistryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "registerZRC20Token",
     values: [AddressLike, string, BigNumberish, BytesLike, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "registryManager",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -346,6 +353,7 @@ export interface RegistryInterface extends Interface {
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "bootstrapChains",
     data: BytesLike
@@ -423,6 +431,10 @@ export interface RegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "registerZRC20Token",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "registryManager",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -747,6 +759,8 @@ export interface Registry extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
+  admin: TypedContractMethod<[], [string], "view">;
+
   bootstrapChains: TypedContractMethod<
     [
       chains: ChainInfoDTOStruct[],
@@ -854,7 +868,6 @@ export interface Registry extends BaseContract {
   initialize: TypedContractMethod<
     [
       admin_: AddressLike,
-      pauserAddress_: AddressLike,
       registryManager_: AddressLike,
       gatewayEVM_: AddressLike,
       coreRegistry_: AddressLike
@@ -893,6 +906,8 @@ export interface Registry extends BaseContract {
     [void],
     "nonpayable"
   >;
+
+  registryManager: TypedContractMethod<[], [string], "view">;
 
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
@@ -967,6 +982,9 @@ export interface Registry extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "admin"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "bootstrapChains"
@@ -1087,7 +1105,6 @@ export interface Registry extends BaseContract {
   ): TypedContractMethod<
     [
       admin_: AddressLike,
-      pauserAddress_: AddressLike,
       registryManager_: AddressLike,
       gatewayEVM_: AddressLike,
       coreRegistry_: AddressLike
@@ -1132,6 +1149,9 @@ export interface Registry extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "registryManager"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<

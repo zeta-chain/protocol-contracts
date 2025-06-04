@@ -91,6 +91,7 @@ export interface BaseRegistryInterface extends Interface {
       | "PAUSER_ROLE"
       | "REGISTRY_MANAGER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
+      | "admin"
       | "changeChainStatus"
       | "getActiveChains"
       | "getAllChains"
@@ -109,6 +110,7 @@ export interface BaseRegistryInterface extends Interface {
       | "proxiableUUID"
       | "registerContract"
       | "registerZRC20Token"
+      | "registryManager"
       | "renounceRole"
       | "revokeRole"
       | "setContractActive"
@@ -154,6 +156,7 @@ export interface BaseRegistryInterface extends Interface {
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "admin", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "changeChainStatus",
     values: [BigNumberish, AddressLike, BytesLike, boolean]
@@ -221,6 +224,10 @@ export interface BaseRegistryInterface extends Interface {
     values: [AddressLike, string, BigNumberish, BytesLike, string, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "registryManager",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "renounceRole",
     values: [BytesLike, AddressLike]
   ): string;
@@ -270,6 +277,7 @@ export interface BaseRegistryInterface extends Interface {
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "changeChainStatus",
     data: BytesLike
@@ -328,6 +336,10 @@ export interface BaseRegistryInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "registerZRC20Token",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "registryManager",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -650,6 +662,8 @@ export interface BaseRegistry extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
+  admin: TypedContractMethod<[], [string], "view">;
+
   changeChainStatus: TypedContractMethod<
     [
       chainId: BigNumberish,
@@ -751,6 +765,8 @@ export interface BaseRegistry extends BaseContract {
     "nonpayable"
   >;
 
+  registryManager: TypedContractMethod<[], [string], "view">;
+
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
     [void],
@@ -821,6 +837,9 @@ export interface BaseRegistry extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "admin"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "changeChainStatus"
@@ -937,6 +956,9 @@ export interface BaseRegistry extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "registryManager"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<
