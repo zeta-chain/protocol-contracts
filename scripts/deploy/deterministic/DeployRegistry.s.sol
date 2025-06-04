@@ -17,8 +17,8 @@ contract DeployRegistry is Script {
         require(gatewayEVM != address(0), "Environment variable GATEWAY_EVM_ADDRESS is not set");
         require(coreRegistry != address(0), "Environment variable CORE_REGISTRY_ADDRESS is not set");
 
-        bytes32 implSalt = keccak256("RegistryV1");
-        bytes32 proxySalt = keccak256("RegistryProxyV1");
+        bytes32 implSalt = keccak256("DeployRegistry");
+        bytes32 proxySalt = keccak256("DeployRegistryProxy");
 
         vm.startBroadcast();
 
