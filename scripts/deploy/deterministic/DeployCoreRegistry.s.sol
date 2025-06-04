@@ -14,8 +14,8 @@ contract DeployCoreRegistry is Script {
         address expectedImplAddress;
         address expectedProxyAddress;
 
-        bytes32 implSalt = keccak256("CoreRegistryV0");
-        bytes32 proxySalt = keccak256("CoreRegistryV0Proxy");
+        bytes32 implSalt = keccak256("V0CoreRegistry");
+        bytes32 proxySalt = keccak256("V0CoreRegistryProxy");
 
         // Add this specific check to ensure contract is not deployed at deterministic address with wrong admin
         require(admin != address(0), "Environment variable REGISTRY_ADMIN_ADDRESS is not set");

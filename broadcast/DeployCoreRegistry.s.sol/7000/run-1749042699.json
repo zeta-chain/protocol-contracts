@@ -71,7 +71,7 @@
       "effectiveGasPrice": "0x25a01c500",
       "from": "0x24c19e84efee3228b10dfe2b54adc29ef5aba057",
       "to": "0x4e59b44847b379578588920ca78fbf26c0b4956c",
-      "contractAddress": "0xc665a61c998e526b02ecaf55dec09a736d37d07a"
+      "contractAddress": null
     },
     {
       "status": "0x1",
@@ -163,13 +163,13 @@
       "effectiveGasPrice": "0x25a01c500",
       "from": "0x24c19e84efee3228b10dfe2b54adc29ef5aba057",
       "to": "0x4e59b44847b379578588920ca78fbf26c0b4956c",
-      "contractAddress": "0xef5dcded50b393005c1450cdc7ff45de1b2189e1"
+      "contractAddress": null
     }
   ],
   "libraries": [],
   "pending": [],
   "returns": {},
-  "timestamp": 1749042826,
+  "timestamp": 1749042699,
   "chain": 7000,
   "commit": "e9800bc"
 }
