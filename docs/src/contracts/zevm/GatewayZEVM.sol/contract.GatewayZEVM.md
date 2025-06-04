@@ -37,24 +37,6 @@ bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 ```
 
 
-### MAX_MESSAGE_SIZE
-Max size of message + revertOptions revert message.
-
-
-```solidity
-uint256 public constant MAX_MESSAGE_SIZE = 2048;
-```
-
-
-### MIN_GAS_LIMIT
-Minimum gas limit for a call.
-
-
-```solidity
-uint256 public constant MIN_GAS_LIMIT = 100_000;
-```
-
-
 ## Functions
 ### onlyProtocol
 
@@ -389,6 +371,22 @@ function deposit(address zrc20, uint256 amount, address target) external onlyPro
 |`target`|`address`|The target address to receive the deposited tokens.|
 
 
+### deposit
+
+Deposit ZETA tokens.
+
+
+```solidity
+function deposit(uint256 amount, address target) external nonReentrant onlyProtocol whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`amount`|`uint256`|The amount of ZETA tokens to transfer.|
+|`target`|`address`|The target address to receive the tokens.|
+
+
 ### execute
 
 Execute a user-specified contract on ZEVM.
@@ -574,12 +572,48 @@ function executeAbort(
 |`abortContext`|`AbortContext`|Abort context to pass to onAbort.|
 
 
-## Errors
-### ZeroAddress
-Error indicating a zero address was provided.
+### getMaxMessageSize
+
+Returns the maximum message size.
 
 
 ```solidity
-error ZeroAddress();
+function getMaxMessageSize() external pure returns (uint256);
 ```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint256`|The maximum message size.|
+
+
+### getMinGasLimit
+
+Returns the minimum gas limit allowed.
+
+
+```solidity
+function getMinGasLimit() external pure returns (uint256);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint256`|The minimum gas limit.|
+
+
+### getMaxRevertGasLimit
+
+Returns the maximum revert gas limit allowed.
+
+
+```solidity
+function getMaxRevertGasLimit() external pure returns (uint256);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint256`|The maximum revert gas limit.|
+
 

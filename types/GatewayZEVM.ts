@@ -110,13 +110,12 @@ export interface GatewayZEVMInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
-      | "MAX_MESSAGE_SIZE"
-      | "MIN_GAS_LIMIT"
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
-      | "deposit"
+      | "deposit(uint256,address)"
+      | "deposit(address,uint256,address)"
       | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
       | "depositAndRevert(uint256,address,(address,address,uint256,bytes))"
@@ -124,6 +123,9 @@ export interface GatewayZEVMInterface extends Interface {
       | "execute"
       | "executeAbort"
       | "executeRevert"
+      | "getMaxMessageSize"
+      | "getMaxRevertGasLimit"
+      | "getMinGasLimit"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -162,14 +164,6 @@ export interface GatewayZEVMInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MAX_MESSAGE_SIZE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MIN_GAS_LIMIT",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
@@ -192,7 +186,11 @@ export interface GatewayZEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit",
+    functionFragment: "deposit(uint256,address)",
+    values: [BigNumberish, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "deposit(address,uint256,address)",
     values: [AddressLike, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
@@ -234,6 +232,18 @@ export interface GatewayZEVMInterface extends Interface {
   encodeFunctionData(
     functionFragment: "executeRevert",
     values: [AddressLike, RevertContextStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMaxMessageSize",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMaxRevertGasLimit",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getMinGasLimit",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
@@ -311,14 +321,6 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MAX_MESSAGE_SIZE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "MIN_GAS_LIMIT",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
@@ -331,7 +333,14 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(uint256,address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deposit(address,uint256,address)",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
     data: BytesLike
@@ -355,6 +364,18 @@ export interface GatewayZEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "executeRevert",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMaxMessageSize",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMaxRevertGasLimit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getMinGasLimit",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -671,10 +692,6 @@ export interface GatewayZEVM extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
-  MAX_MESSAGE_SIZE: TypedContractMethod<[], [bigint], "view">;
-
-  MIN_GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
-
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
@@ -693,7 +710,13 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  deposit: TypedContractMethod<
+  "deposit(uint256,address)": TypedContractMethod<
+    [amount: BigNumberish, target: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  "deposit(address,uint256,address)": TypedContractMethod<
     [zrc20: AddressLike, amount: BigNumberish, target: AddressLike],
     [void],
     "nonpayable"
@@ -766,6 +789,12 @@ export interface GatewayZEVM extends BaseContract {
     [void],
     "nonpayable"
   >;
+
+  getMaxMessageSize: TypedContractMethod<[], [bigint], "view">;
+
+  getMaxRevertGasLimit: TypedContractMethod<[], [bigint], "view">;
+
+  getMinGasLimit: TypedContractMethod<[], [bigint], "view">;
 
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
@@ -877,12 +906,6 @@ export interface GatewayZEVM extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "MAX_MESSAGE_SIZE"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "MIN_GAS_LIMIT"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -905,7 +928,14 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deposit"
+    nameOrSignature: "deposit(uint256,address)"
+  ): TypedContractMethod<
+    [amount: BigNumberish, target: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "deposit(address,uint256,address)"
   ): TypedContractMethod<
     [zrc20: AddressLike, amount: BigNumberish, target: AddressLike],
     [void],
@@ -986,6 +1016,15 @@ export interface GatewayZEVM extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "getMaxMessageSize"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getMaxRevertGasLimit"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getMinGasLimit"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;

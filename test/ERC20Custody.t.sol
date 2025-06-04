@@ -232,7 +232,7 @@ contract ERC20CustodyTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiv
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, foo, PAUSER_ROLE));
         gateway.unpause();
 
-        vm.prank(tssAddress);
+        vm.prank(owner);
         custody.pause();
 
         uint256 amount = 100_000;
