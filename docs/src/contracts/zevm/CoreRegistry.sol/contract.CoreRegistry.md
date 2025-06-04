@@ -15,7 +15,7 @@ Cross-chain message gas limit
 
 
 ```solidity
-uint256 public constant CROSS_CHAIN_GAS_LIMIT = 300_000;
+uint256 public constant CROSS_CHAIN_GAS_LIMIT = 500_000;
 ```
 
 
