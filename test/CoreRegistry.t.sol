@@ -503,7 +503,8 @@ contract CoreRegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         uint8 decimals = 18;
 
         vm.prank(registryManager);
-        vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, "Origin address cannot be empty"));
+        vm.expectEmit(true, true, true, true);
+        emit ZRC20TokenRegistered(originAddress, zrc20Address, decimals, originChainId, symbol);
         registry.registerZRC20Token(zrc20Address, symbol, originChainId, originAddress, coinType, decimals);
     }
 
