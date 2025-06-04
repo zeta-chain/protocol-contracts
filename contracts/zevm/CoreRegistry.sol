@@ -10,7 +10,7 @@ import "./interfaces/IZRC20.sol";
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract CoreRegistry is BaseRegistry {
     /// @notice Cross-chain message gas limit
-    uint256 public constant CROSS_CHAIN_GAS_LIMIT = 300_000;
+    uint256 public constant CROSS_CHAIN_GAS_LIMIT = 500_000;
     /// @notice Instance of the GatewayZEVM contract for cross-chain communication
     IGatewayZEVM public gatewayZEVM;
 
