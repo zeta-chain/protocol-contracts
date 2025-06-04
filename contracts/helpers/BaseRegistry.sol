@@ -20,6 +20,10 @@ abstract contract BaseRegistry is
     /// @notice New role identifier for registry manager role.
     bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
 
+    /// @notice Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions.
+    address public admin;
+    /// @notice Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
+    address public registryManager;
     /// @notice Active chains in the registry.
     uint256[] internal _activeChains;
     /// @notice Array of all chain IDs in the registry (active and inactive).

@@ -29,13 +29,11 @@ contract Registry is BaseRegistry, IRegistry {
 
     /// @notice Initialize the Registry contract
     /// @param admin_ Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions
-    /// @param pauserAddress_ Address with PAUSER_ROLE, authorized for pausing actions
     /// @param registryManager_ Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
     /// @param gatewayEVM_ Address of the GatewayEVM contract for cross-chain messaging
     /// @param coreRegistry_ Address of the CoreRegistry contract deployed on ZetaChain
     function initialize(
         address admin_,
-        address pauserAddress_,
         address registryManager_,
         address gatewayEVM_,
         address coreRegistry_
@@ -45,7 +43,7 @@ contract Registry is BaseRegistry, IRegistry {
     {
         if (
             admin_ == address(0) || gatewayEVM_ == address(0) || coreRegistry_ == address(0)
-                || pauserAddress_ == address(0) || registryManager_ == address(0)
+                || registryManager_ == address(0)
         ) {
             revert ZeroAddress();
         }
@@ -55,11 +53,13 @@ contract Registry is BaseRegistry, IRegistry {
         __Pausable_init_unchained();
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, admin_);
-        _grantRole(PAUSER_ROLE, pauserAddress_);
         _grantRole(REGISTRY_MANAGER_ROLE, registryManager_);
+        _grantRole(PAUSER_ROLE, registryManager_);
+        _grantRole(PAUSER_ROLE, admin_);
         _grantRole(GATEWAY_ROLE, gatewayEVM_);
 
+        admin = admin_;
+        registryManager = registryManager_;
         gatewayEVM = IGatewayEVM(gatewayEVM_);
         coreRegistry = coreRegistry_;
     }

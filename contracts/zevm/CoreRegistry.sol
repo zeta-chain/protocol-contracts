@@ -32,6 +32,8 @@ contract CoreRegistry is BaseRegistry {
         _grantRole(PAUSER_ROLE, registryManager_);
         _grantRole(PAUSER_ROLE, admin_);
 
+        admin = admin_;
+        registryManager = registryManager_;
         gatewayZEVM = IGatewayZEVM(gatewayZEVM_);
 
         // Add ZetaChain to the list of supported networks
