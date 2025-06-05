@@ -7,7 +7,7 @@ import "contracts/zevm/CoreRegistry.sol";
 contract DeployCoreRegistryImpl is Script {
     function run() external {
         address expectedImplAddress;
-        bytes32 implSalt = keccak256("CoreRegistry");
+        bytes32 implSalt = keccak256("DeployCoreRegistryV1");
 
         vm.startBroadcast();
 
