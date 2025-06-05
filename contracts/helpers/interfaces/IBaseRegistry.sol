@@ -170,6 +170,16 @@ interface IBaseRegistryErrors {
     /// @notice Error thrown when a ZRC20 token symbol is already in use.
     /// @param symbol The symbol that is already in use.
     error ZRC20SymbolAlreadyInUse(string symbol);
+
+    /// @notice Emitted when admin address is changed.
+    /// @param oldAdmin The previous admin address.
+    /// @param newAdmin The new admin address.
+    event AdminChanged(address oldAdmin, address newAdmin);
+
+    /// @notice Emitted when registry manager address is changed.
+    /// @param oldRegistryManager The previous registry manager address.
+    /// @param newRegistryManager The new registry manager address.
+    event RegistryManagerChanged(address oldRegistryManager, address newRegistryManager);
 }
 
 /// @title ICoreRegistry

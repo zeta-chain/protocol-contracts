@@ -62,6 +62,40 @@ abstract contract BaseRegistry is
         _unpause();
     }
 
+    /// @notice Changes the admin address and transfers DEFAULT_ADMIN_ROLE and PAUSER_ROLE.
+    /// @dev Only callable by current admin.
+    /// @param newAdmin The address of the new admin.
+    function changeAdmin(address newAdmin) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newAdmin == address(0)) revert ZeroAddress();
+
+        _grantRole(DEFAULT_ADMIN_ROLE, newAdmin);
+        _grantRole(PAUSER_ROLE, newAdmin);
+
+        _revokeRole(DEFAULT_ADMIN_ROLE, admin);
+        _revokeRole(PAUSER_ROLE, admin);
+
+        emit AdminChanged(admin, newAdmin);
+
+        admin = newAdmin;
+    }
+
+    /// @notice Changes the registry manager address and transfers REGISTRY_MANAGER_ROLE and PAUSER_ROLE.
+    /// @dev Only callable by admin.
+    /// @param newRegistryManager The address of the new registry manager.
+    function changeRegistryManager(address newRegistryManager) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newRegistryManager == address(0)) revert ZeroAddress();
+
+        _grantRole(REGISTRY_MANAGER_ROLE, newRegistryManager);
+        _grantRole(PAUSER_ROLE, newRegistryManager);
+
+        _revokeRole(REGISTRY_MANAGER_ROLE, registryManager);
+        _revokeRole(PAUSER_ROLE, registryManager);
+
+        emit RegistryManagerChanged(registryManager, newRegistryManager);
+
+        registryManager = newRegistryManager;
+    }
+
     /// @notice Changes status of the chain to activated/deactivated.
     /// @param chainId The ID of the chain to activate.
     /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
