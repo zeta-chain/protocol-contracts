@@ -10,44 +10,6 @@ import type {
 
 const _abi = [
   {
-    type: "event",
-    name: "AdminChanged",
-    inputs: [
-      {
-        name: "oldAdmin",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-      {
-        name: "newAdmin",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: "event",
-    name: "RegistryManagerChanged",
-    inputs: [
-      {
-        name: "oldRegistryManager",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-      {
-        name: "newRegistryManager",
-        type: "address",
-        indexed: false,
-        internalType: "address",
-      },
-    ],
-    anonymous: false,
-  },
-  {
     type: "error",
     name: "ChainActive",
     inputs: [

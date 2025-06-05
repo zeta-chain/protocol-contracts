@@ -5,8 +5,6 @@ import type {
   BaseContract,
   FunctionFragment,
   Interface,
-  EventFragment,
-  AddressLike,
   ContractRunner,
   ContractMethod,
   Listener,
@@ -15,47 +13,10 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
-  TypedLogDescription,
   TypedListener,
 } from "../common";
 
-export interface IBaseRegistryErrorsInterface extends Interface {
-  getEvent(
-    nameOrSignatureOrTopic: "AdminChanged" | "RegistryManagerChanged"
-  ): EventFragment;
-}
-
-export namespace AdminChangedEvent {
-  export type InputTuple = [oldAdmin: AddressLike, newAdmin: AddressLike];
-  export type OutputTuple = [oldAdmin: string, newAdmin: string];
-  export interface OutputObject {
-    oldAdmin: string;
-    newAdmin: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace RegistryManagerChangedEvent {
-  export type InputTuple = [
-    oldRegistryManager: AddressLike,
-    newRegistryManager: AddressLike
-  ];
-  export type OutputTuple = [
-    oldRegistryManager: string,
-    newRegistryManager: string
-  ];
-  export interface OutputObject {
-    oldRegistryManager: string;
-    newRegistryManager: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
+export interface IBaseRegistryErrorsInterface extends Interface {}
 
 export interface IBaseRegistryErrors extends BaseContract {
   connect(runner?: ContractRunner | null): IBaseRegistryErrors;
@@ -104,42 +65,5 @@ export interface IBaseRegistryErrors extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
-  getEvent(
-    key: "AdminChanged"
-  ): TypedContractEvent<
-    AdminChangedEvent.InputTuple,
-    AdminChangedEvent.OutputTuple,
-    AdminChangedEvent.OutputObject
-  >;
-  getEvent(
-    key: "RegistryManagerChanged"
-  ): TypedContractEvent<
-    RegistryManagerChangedEvent.InputTuple,
-    RegistryManagerChangedEvent.OutputTuple,
-    RegistryManagerChangedEvent.OutputObject
-  >;
-
-  filters: {
-    "AdminChanged(address,address)": TypedContractEvent<
-      AdminChangedEvent.InputTuple,
-      AdminChangedEvent.OutputTuple,
-      AdminChangedEvent.OutputObject
-    >;
-    AdminChanged: TypedContractEvent<
-      AdminChangedEvent.InputTuple,
-      AdminChangedEvent.OutputTuple,
-      AdminChangedEvent.OutputObject
-    >;
-
-    "RegistryManagerChanged(address,address)": TypedContractEvent<
-      RegistryManagerChangedEvent.InputTuple,
-      RegistryManagerChangedEvent.OutputTuple,
-      RegistryManagerChangedEvent.OutputObject
-    >;
-    RegistryManagerChanged: TypedContractEvent<
-      RegistryManagerChangedEvent.InputTuple,
-      RegistryManagerChangedEvent.OutputTuple,
-      RegistryManagerChangedEvent.OutputObject
-    >;
-  };
+  filters: {};
 }

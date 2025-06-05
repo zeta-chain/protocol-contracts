@@ -4,37 +4,6 @@
 Interface for the errors used by the BaseRegistry contract.
 
 
-## Events
-### AdminChanged
-Emitted when admin address is changed.
-
-
-```solidity
-event AdminChanged(address oldAdmin, address newAdmin);
-```
-
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`oldAdmin`|`address`|The previous admin address.|
-|`newAdmin`|`address`|The new admin address.|
-
-### RegistryManagerChanged
-Emitted when registry manager address is changed.
-
-
-```solidity
-event RegistryManagerChanged(address oldRegistryManager, address newRegistryManager);
-```
-
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`oldRegistryManager`|`address`|The previous registry manager address.|
-|`newRegistryManager`|`address`|The new registry manager address.|
-
 ## Errors
 ### ZeroAddress
 Error thrown when a zero address is provided where a non-zero address is required.
