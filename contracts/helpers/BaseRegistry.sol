@@ -68,13 +68,12 @@ abstract contract BaseRegistry is
     /// @param registry Address of the Registry contract on the connected chain.
     /// @param activation Whether activate or deactivate the chain
     function _changeChainStatus(uint256 chainId, address gasZRC20, bytes calldata registry, bool activation) internal {
-        if (registry.length == 0) revert ZeroAddress();
         // In the case chain is already activated
         if (_chains[chainId].active && activation) revert ChainActive(chainId);
         // In the case chain is inactive
         if (!_chains[chainId].active && !activation) revert ChainNonActive(chainId);
         // Check does chain already exist.
-        if (bytes(_chains[chainId].registry).length == 0) {
+        if (_chains[chainId].gasZRC20 == address(0) && chainId != block.chainid) {
             _allChains.push(chainId);
         }
 

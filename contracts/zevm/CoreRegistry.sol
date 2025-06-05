@@ -309,9 +309,10 @@ contract CoreRegistry is BaseRegistry {
     /// @param encodedMessage The fully encoded function call to broadcast
     function _broadcastToAllChains(bytes memory encodedMessage) private {
         for (uint256 i = 0; i < _activeChains.length; i++) {
-            if (_activeChains[i] != block.chainid) {
-                _sendCrossChainMessage(_activeChains[i], encodedMessage);
+            if (_activeChains[i] == block.chainid || _chains[_activeChains[i]].registry.length == 0) {
+                continue;
             }
+            _sendCrossChainMessage(_activeChains[i], encodedMessage);
         }
     }
 
