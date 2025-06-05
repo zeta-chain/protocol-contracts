@@ -128,7 +128,9 @@ export interface RegistryInterface extends Interface {
       | "bootstrapChains"
       | "bootstrapContracts"
       | "bootstrapZRC20Tokens"
+      | "changeAdmin"
       | "changeChainStatus"
+      | "changeRegistryManager"
       | "coreRegistry"
       | "gatewayEVM"
       | "getActiveChains"
@@ -164,6 +166,7 @@ export interface RegistryInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "AdminChanged"
       | "ChainMetadataUpdated"
       | "ChainStatusChanged"
       | "ContractConfigurationUpdated"
@@ -171,6 +174,7 @@ export interface RegistryInterface extends Interface {
       | "ContractStatusChanged"
       | "Initialized"
       | "Paused"
+      | "RegistryManagerChanged"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
@@ -214,8 +218,16 @@ export interface RegistryInterface extends Interface {
     values: [ZRC20InfoStruct[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "changeAdmin",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "changeChainStatus",
     values: [BigNumberish, AddressLike, BytesLike, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "changeRegistryManager",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "coreRegistry",
@@ -367,7 +379,15 @@ export interface RegistryInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "changeAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "changeChainStatus",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "changeRegistryManager",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -467,6 +487,19 @@ export interface RegistryInterface extends Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+}
+
+export namespace AdminChangedEvent {
+  export type InputTuple = [oldAdmin: AddressLike, newAdmin: AddressLike];
+  export type OutputTuple = [oldAdmin: string, newAdmin: string];
+  export interface OutputObject {
+    oldAdmin: string;
+    newAdmin: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ChainMetadataUpdatedEvent {
@@ -576,6 +609,25 @@ export namespace PausedEvent {
   export type OutputTuple = [account: string];
   export interface OutputObject {
     account: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RegistryManagerChangedEvent {
+  export type InputTuple = [
+    oldRegistryManager: AddressLike,
+    newRegistryManager: AddressLike
+  ];
+  export type OutputTuple = [
+    oldRegistryManager: string,
+    newRegistryManager: string
+  ];
+  export interface OutputObject {
+    oldRegistryManager: string;
+    newRegistryManager: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -785,6 +837,12 @@ export interface Registry extends BaseContract {
     "nonpayable"
   >;
 
+  changeAdmin: TypedContractMethod<
+    [newAdmin: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   changeChainStatus: TypedContractMethod<
     [
       chainId: BigNumberish,
@@ -792,6 +850,12 @@ export interface Registry extends BaseContract {
       registry: BytesLike,
       activation: boolean
     ],
+    [void],
+    "nonpayable"
+  >;
+
+  changeRegistryManager: TypedContractMethod<
+    [newRegistryManager: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -1010,6 +1074,9 @@ export interface Registry extends BaseContract {
     nameOrSignature: "bootstrapZRC20Tokens"
   ): TypedContractMethod<[tokens: ZRC20InfoStruct[]], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "changeAdmin"
+  ): TypedContractMethod<[newAdmin: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "changeChainStatus"
   ): TypedContractMethod<
     [
@@ -1018,6 +1085,13 @@ export interface Registry extends BaseContract {
       registry: BytesLike,
       activation: boolean
     ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "changeRegistryManager"
+  ): TypedContractMethod<
+    [newRegistryManager: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -1214,6 +1288,13 @@ export interface Registry extends BaseContract {
   >;
 
   getEvent(
+    key: "AdminChanged"
+  ): TypedContractEvent<
+    AdminChangedEvent.InputTuple,
+    AdminChangedEvent.OutputTuple,
+    AdminChangedEvent.OutputObject
+  >;
+  getEvent(
     key: "ChainMetadataUpdated"
   ): TypedContractEvent<
     ChainMetadataUpdatedEvent.InputTuple,
@@ -1261,6 +1342,13 @@ export interface Registry extends BaseContract {
     PausedEvent.InputTuple,
     PausedEvent.OutputTuple,
     PausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "RegistryManagerChanged"
+  ): TypedContractEvent<
+    RegistryManagerChangedEvent.InputTuple,
+    RegistryManagerChangedEvent.OutputTuple,
+    RegistryManagerChangedEvent.OutputObject
   >;
   getEvent(
     key: "RoleAdminChanged"
@@ -1313,6 +1401,17 @@ export interface Registry extends BaseContract {
   >;
 
   filters: {
+    "AdminChanged(address,address)": TypedContractEvent<
+      AdminChangedEvent.InputTuple,
+      AdminChangedEvent.OutputTuple,
+      AdminChangedEvent.OutputObject
+    >;
+    AdminChanged: TypedContractEvent<
+      AdminChangedEvent.InputTuple,
+      AdminChangedEvent.OutputTuple,
+      AdminChangedEvent.OutputObject
+    >;
+
     "ChainMetadataUpdated(uint256,string,bytes)": TypedContractEvent<
       ChainMetadataUpdatedEvent.InputTuple,
       ChainMetadataUpdatedEvent.OutputTuple,
@@ -1388,6 +1487,17 @@ export interface Registry extends BaseContract {
       PausedEvent.InputTuple,
       PausedEvent.OutputTuple,
       PausedEvent.OutputObject
+    >;
+
+    "RegistryManagerChanged(address,address)": TypedContractEvent<
+      RegistryManagerChangedEvent.InputTuple,
+      RegistryManagerChangedEvent.OutputTuple,
+      RegistryManagerChangedEvent.OutputObject
+    >;
+    RegistryManagerChanged: TypedContractEvent<
+      RegistryManagerChangedEvent.InputTuple,
+      RegistryManagerChangedEvent.OutputTuple,
+      RegistryManagerChangedEvent.OutputObject
     >;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)": TypedContractEvent<
