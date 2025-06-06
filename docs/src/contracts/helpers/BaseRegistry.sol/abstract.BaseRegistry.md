@@ -24,6 +24,24 @@ bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE
 ```
 
 
+### admin
+Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions.
+
+
+```solidity
+address public admin;
+```
+
+
+### registryManager
+Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
+
+
+```solidity
+address public registryManager;
+```
+
+
 ### _activeChains
 Active chains in the registry.
 
@@ -148,6 +166,40 @@ Unpause contract.
 ```solidity
 function unpause() external onlyRole(DEFAULT_ADMIN_ROLE);
 ```
+
+### changeAdmin
+
+Changes the admin address and transfers DEFAULT_ADMIN_ROLE and PAUSER_ROLE.
+
+*Only callable by current admin.*
+
+
+```solidity
+function changeAdmin(address newAdmin) external onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newAdmin`|`address`|The address of the new admin.|
+
+
+### changeRegistryManager
+
+Changes the registry manager address and transfers REGISTRY_MANAGER_ROLE and PAUSER_ROLE.
+
+*Only callable by admin.*
+
+
+```solidity
+function changeRegistryManager(address newRegistryManager) external onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newRegistryManager`|`address`|The address of the new registry manager.|
+
 
 ### _changeChainStatus
 

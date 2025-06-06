@@ -24,14 +24,29 @@ import type {
 export interface IBaseRegistryEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
+      | "AdminChanged"
       | "ChainMetadataUpdated"
       | "ChainStatusChanged"
       | "ContractConfigurationUpdated"
       | "ContractRegistered"
       | "ContractStatusChanged"
+      | "RegistryManagerChanged"
       | "ZRC20TokenRegistered"
       | "ZRC20TokenUpdated"
   ): EventFragment;
+}
+
+export namespace AdminChangedEvent {
+  export type InputTuple = [oldAdmin: AddressLike, newAdmin: AddressLike];
+  export type OutputTuple = [oldAdmin: string, newAdmin: string];
+  export interface OutputObject {
+    oldAdmin: string;
+    newAdmin: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace ChainMetadataUpdatedEvent {
@@ -117,6 +132,25 @@ export namespace ContractStatusChangedEvent {
   export type OutputTuple = [addressBytes: string];
   export interface OutputObject {
     addressBytes: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace RegistryManagerChangedEvent {
+  export type InputTuple = [
+    oldRegistryManager: AddressLike,
+    newRegistryManager: AddressLike
+  ];
+  export type OutputTuple = [
+    oldRegistryManager: string,
+    newRegistryManager: string
+  ];
+  export interface OutputObject {
+    oldRegistryManager: string;
+    newRegistryManager: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -213,6 +247,13 @@ export interface IBaseRegistryEvents extends BaseContract {
   ): T;
 
   getEvent(
+    key: "AdminChanged"
+  ): TypedContractEvent<
+    AdminChangedEvent.InputTuple,
+    AdminChangedEvent.OutputTuple,
+    AdminChangedEvent.OutputObject
+  >;
+  getEvent(
     key: "ChainMetadataUpdated"
   ): TypedContractEvent<
     ChainMetadataUpdatedEvent.InputTuple,
@@ -248,6 +289,13 @@ export interface IBaseRegistryEvents extends BaseContract {
     ContractStatusChangedEvent.OutputObject
   >;
   getEvent(
+    key: "RegistryManagerChanged"
+  ): TypedContractEvent<
+    RegistryManagerChangedEvent.InputTuple,
+    RegistryManagerChangedEvent.OutputTuple,
+    RegistryManagerChangedEvent.OutputObject
+  >;
+  getEvent(
     key: "ZRC20TokenRegistered"
   ): TypedContractEvent<
     ZRC20TokenRegisteredEvent.InputTuple,
@@ -263,6 +311,17 @@ export interface IBaseRegistryEvents extends BaseContract {
   >;
 
   filters: {
+    "AdminChanged(address,address)": TypedContractEvent<
+      AdminChangedEvent.InputTuple,
+      AdminChangedEvent.OutputTuple,
+      AdminChangedEvent.OutputObject
+    >;
+    AdminChanged: TypedContractEvent<
+      AdminChangedEvent.InputTuple,
+      AdminChangedEvent.OutputTuple,
+      AdminChangedEvent.OutputObject
+    >;
+
     "ChainMetadataUpdated(uint256,string,bytes)": TypedContractEvent<
       ChainMetadataUpdatedEvent.InputTuple,
       ChainMetadataUpdatedEvent.OutputTuple,
@@ -316,6 +375,17 @@ export interface IBaseRegistryEvents extends BaseContract {
       ContractStatusChangedEvent.InputTuple,
       ContractStatusChangedEvent.OutputTuple,
       ContractStatusChangedEvent.OutputObject
+    >;
+
+    "RegistryManagerChanged(address,address)": TypedContractEvent<
+      RegistryManagerChangedEvent.InputTuple,
+      RegistryManagerChangedEvent.OutputTuple,
+      RegistryManagerChangedEvent.OutputObject
+    >;
+    RegistryManagerChanged: TypedContractEvent<
+      RegistryManagerChangedEvent.InputTuple,
+      RegistryManagerChangedEvent.OutputTuple,
+      RegistryManagerChangedEvent.OutputObject
     >;
 
     "ZRC20TokenRegistered(bytes,address,uint8,uint256,string)": TypedContractEvent<

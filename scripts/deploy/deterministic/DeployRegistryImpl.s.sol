@@ -2,12 +2,12 @@
 pragma solidity 0.8.26;
 
 import "forge-std/Script.sol";
-import "contracts/zevm/Registry.sol";
+import "contracts/evm/Registry.sol";
 
 contract DeployRegistryImpl is Script {
     function run() external {
         address expectedImplAddress;
-        bytes32 implSalt = keccak256("Registry");
+        bytes32 implSalt = keccak256("DeployRegistryV1");
 
         vm.startBroadcast();
 

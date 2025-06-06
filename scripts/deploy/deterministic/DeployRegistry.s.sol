@@ -8,19 +8,17 @@ import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy
 contract DeployRegistry is Script {
     function run() external {
         address admin = vm.envAddress("REGISTRY_ADMIN_ADDRESS");
-        address pauserAddress = vm.envAddress("PAUSER_ADDRESS");
         address registryManager = vm.envAddress("REGISTRY_MANAGER_ADDRESS");
         address gatewayEVM = vm.envAddress("GATEWAY_EVM_ADDRESS");
         address coreRegistry = vm.envAddress("CORE_REGISTRY_ADDRESS");
 
         require(admin != address(0), "Environment variable REGISTRY_ADMIN_ADDRESS is not set");
-        require(pauserAddress != address(0), "Environment variable PAUSER_ADDRESS is not set");
         require(registryManager != address(0), "Environment variable REGISTRY_MANAGER_ADDRESS is not set");
         require(gatewayEVM != address(0), "Environment variable GATEWAY_EVM_ADDRESS is not set");
         require(coreRegistry != address(0), "Environment variable CORE_REGISTRY_ADDRESS is not set");
 
-        bytes32 implSalt = keccak256("RegistryV1");
-        bytes32 proxySalt = keccak256("RegistryProxyV1");
+        bytes32 implSalt = keccak256("DeployRegistry");
+        bytes32 proxySalt = keccak256("DeployRegistryProxy");
 
         vm.startBroadcast();
 
@@ -31,7 +29,6 @@ contract DeployRegistry is Script {
         bytes memory initData = abi.encodeWithSelector(
             Registry.initialize.selector,
             admin,
-            pauserAddress,
             registryManager,
             gatewayEVM,
             coreRegistry

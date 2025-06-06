@@ -20,6 +20,10 @@ abstract contract BaseRegistry is
     /// @notice New role identifier for registry manager role.
     bytes32 public constant REGISTRY_MANAGER_ROLE = keccak256("REGISTRY_MANAGER_ROLE");
 
+    /// @notice Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions.
+    address public admin;
+    /// @notice Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.
+    address public registryManager;
     /// @notice Active chains in the registry.
     uint256[] internal _activeChains;
     /// @notice Array of all chain IDs in the registry (active and inactive).
@@ -58,19 +62,52 @@ abstract contract BaseRegistry is
         _unpause();
     }
 
+    /// @notice Changes the admin address and transfers DEFAULT_ADMIN_ROLE and PAUSER_ROLE.
+    /// @dev Only callable by current admin.
+    /// @param newAdmin The address of the new admin.
+    function changeAdmin(address newAdmin) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newAdmin == address(0)) revert ZeroAddress();
+
+        _grantRole(DEFAULT_ADMIN_ROLE, newAdmin);
+        _grantRole(PAUSER_ROLE, newAdmin);
+
+        _revokeRole(DEFAULT_ADMIN_ROLE, admin);
+        _revokeRole(PAUSER_ROLE, admin);
+
+        emit AdminChanged(admin, newAdmin);
+
+        admin = newAdmin;
+    }
+
+    /// @notice Changes the registry manager address and transfers REGISTRY_MANAGER_ROLE and PAUSER_ROLE.
+    /// @dev Only callable by admin.
+    /// @param newRegistryManager The address of the new registry manager.
+    function changeRegistryManager(address newRegistryManager) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newRegistryManager == address(0)) revert ZeroAddress();
+
+        _grantRole(REGISTRY_MANAGER_ROLE, newRegistryManager);
+        _grantRole(PAUSER_ROLE, newRegistryManager);
+
+        _revokeRole(REGISTRY_MANAGER_ROLE, registryManager);
+        _revokeRole(PAUSER_ROLE, registryManager);
+
+        emit RegistryManagerChanged(registryManager, newRegistryManager);
+
+        registryManager = newRegistryManager;
+    }
+
     /// @notice Changes status of the chain to activated/deactivated.
     /// @param chainId The ID of the chain to activate.
     /// @param gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
     /// @param registry Address of the Registry contract on the connected chain.
     /// @param activation Whether activate or deactivate the chain
     function _changeChainStatus(uint256 chainId, address gasZRC20, bytes calldata registry, bool activation) internal {
-        if (registry.length == 0) revert ZeroAddress();
         // In the case chain is already activated
         if (_chains[chainId].active && activation) revert ChainActive(chainId);
         // In the case chain is inactive
         if (!_chains[chainId].active && !activation) revert ChainNonActive(chainId);
         // Check does chain already exist.
-        if (bytes(_chains[chainId].registry).length == 0) {
+        if (_chains[chainId].gasZRC20 == address(0) && chainId != block.chainid) {
             _allChains.push(chainId);
         }
 
@@ -189,7 +226,6 @@ abstract contract BaseRegistry is
         // Validate inputs
         if (address_ == address(0)) revert ZeroAddress();
         if (bytes(symbol).length == 0) revert InvalidContractType("Symbol cannot be empty");
-        if (bytes(originAddress).length == 0) revert InvalidContractType("Origin address cannot be empty");
 
         // Check if token already registered
         if (_zrc20Tokens[address_].address_ != address(0)) revert ZRC20AlreadyRegistered(address_);

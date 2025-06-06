@@ -25,7 +25,6 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
     MockGatewayEVM mockGateway;
 
     address admin;
-    address pauser;
     address registryManager;
     address coreRegistry;
     address user;
@@ -42,7 +41,6 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         admin = address(0xABCD);
         coreRegistry = address(0x1234);
         user = address(0x5678);
-        pauser = address(0xbbbb);
         registryManager = address(0x3333);
 
         mockGateway = new MockGatewayEVM();
@@ -50,9 +48,7 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         proxy = payable(
             Upgrades.deployUUPSProxy(
                 "Registry.sol",
-                abi.encodeCall(
-                    Registry.initialize, (admin, pauser, registryManager, address(mockGateway), coreRegistry)
-                )
+                abi.encodeCall(Registry.initialize, (admin, registryManager, address(mockGateway), coreRegistry))
             )
         );
 
@@ -62,7 +58,7 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
     function testInitialize() public view {
         assertTrue(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin));
         assertTrue(registry.hasRole(registry.PAUSER_ROLE(), admin));
-        assertTrue(registry.hasRole(registry.PAUSER_ROLE(), pauser));
+        assertTrue(registry.hasRole(registry.PAUSER_ROLE(), registryManager));
         assertTrue(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), registryManager));
         assertTrue(registry.hasRole(registry.GATEWAY_ROLE(), address(mockGateway)));
         assertEq(address(registry.gatewayEVM()), address(mockGateway));
@@ -75,19 +71,16 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         Registry uninitializedRegistry = Registry(uninitializedProxy);
 
         vm.expectRevert(ZeroAddress.selector);
-        uninitializedRegistry.initialize(address(0), pauser, registryManager, address(mockGateway), coreRegistry);
+        uninitializedRegistry.initialize(address(0), registryManager, address(mockGateway), coreRegistry);
 
         vm.expectRevert(ZeroAddress.selector);
-        uninitializedRegistry.initialize(admin, pauser, registryManager, address(0), coreRegistry);
+        uninitializedRegistry.initialize(admin, address(0), address(mockGateway), coreRegistry);
 
         vm.expectRevert(ZeroAddress.selector);
-        uninitializedRegistry.initialize(admin, pauser, registryManager, address(mockGateway), address(0));
+        uninitializedRegistry.initialize(admin, registryManager, address(0), coreRegistry);
 
         vm.expectRevert(ZeroAddress.selector);
-        uninitializedRegistry.initialize(admin, address(0), registryManager, address(mockGateway), coreRegistry);
-
-        vm.expectRevert(ZeroAddress.selector);
-        uninitializedRegistry.initialize(admin, pauser, address(0), address(mockGateway), coreRegistry);
+        uninitializedRegistry.initialize(admin, registryManager, address(mockGateway), address(0));
     }
 
     function testPause() public {
@@ -467,7 +460,8 @@ contract RegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
 
         MessageContext memory context = MessageContext({ sender: coreRegistry });
         vm.prank(address(mockGateway));
-        vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, "Origin address cannot be empty"));
+        vm.expectEmit(true, true, true, true);
+        emit ZRC20TokenRegistered(originAddress, zrc20Address, decimals, originChainId, symbol);
         registry.onCall(context, registerData);
     }
 

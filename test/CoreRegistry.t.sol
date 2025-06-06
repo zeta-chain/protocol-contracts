@@ -122,6 +122,80 @@ contract CoreRegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         registry.unpause();
     }
 
+    function testChangeAdmin() public {
+        address newAdmin = address(0x9999);
+        assertTrue(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin));
+        assertTrue(registry.hasRole(registry.PAUSER_ROLE(), admin));
+        assertFalse(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), newAdmin));
+        assertFalse(registry.hasRole(registry.PAUSER_ROLE(), newAdmin));
+        assertEq(registry.admin(), admin);
+
+        vm.prank(admin);
+        vm.expectEmit(true, true, true, true);
+        emit AdminChanged(admin, newAdmin);
+        registry.changeAdmin(newAdmin);
+
+        assertFalse(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), admin));
+        assertFalse(registry.hasRole(registry.PAUSER_ROLE(), admin));
+        assertTrue(registry.hasRole(registry.DEFAULT_ADMIN_ROLE(), newAdmin));
+        assertTrue(registry.hasRole(registry.PAUSER_ROLE(), newAdmin));
+        assertEq(registry.admin(), newAdmin);
+    }
+
+    function testChangeAdminWithZeroAddress() public {
+        vm.prank(admin);
+        vm.expectRevert(ZeroAddress.selector);
+        registry.changeAdmin(address(0));
+    }
+
+    function testChangeAdminUnauthorized() public {
+        address newAdmin = address(0x9999);
+        vm.prank(registryManager);
+        vm.expectRevert();
+        registry.changeAdmin(newAdmin);
+
+        vm.prank(user);
+        vm.expectRevert();
+        registry.changeAdmin(newAdmin);
+    }
+
+    function testChangeRegistryManager() public {
+        address newRegistryManager = address(0x7777);
+        assertTrue(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), registryManager));
+        assertTrue(registry.hasRole(registry.PAUSER_ROLE(), registryManager));
+        assertFalse(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), newRegistryManager));
+        assertFalse(registry.hasRole(registry.PAUSER_ROLE(), newRegistryManager));
+        assertEq(registry.registryManager(), registryManager);
+
+        vm.prank(admin);
+        vm.expectEmit(true, true, true, true);
+        emit RegistryManagerChanged(registryManager, newRegistryManager);
+        registry.changeRegistryManager(newRegistryManager);
+
+        assertFalse(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), registryManager));
+        assertFalse(registry.hasRole(registry.PAUSER_ROLE(), registryManager));
+        assertTrue(registry.hasRole(registry.REGISTRY_MANAGER_ROLE(), newRegistryManager));
+        assertTrue(registry.hasRole(registry.PAUSER_ROLE(), newRegistryManager));
+        assertEq(registry.registryManager(), newRegistryManager);
+    }
+
+    function testChangeRegistryManagerWithZeroAddress() public {
+        vm.prank(admin);
+        vm.expectRevert(ZeroAddress.selector);
+        registry.changeRegistryManager(address(0));
+    }
+
+    function testChangeRegistryManagerUnauthorized() public {
+        address newRegistryManager = address(0x7777);
+        vm.prank(registryManager);
+        vm.expectRevert();
+        registry.changeRegistryManager(newRegistryManager);
+
+        vm.prank(user);
+        vm.expectRevert();
+        registry.changeRegistryManager(newRegistryManager);
+    }
+
     function testActivateChain() public {
         uint256 chainId = 1;
         bytes memory registryAddress = abi.encodePacked(address(0x9876));
@@ -503,7 +577,8 @@ contract CoreRegistryTest is Test, IBaseRegistryErrors, IBaseRegistryEvents {
         uint8 decimals = 18;
 
         vm.prank(registryManager);
-        vm.expectRevert(abi.encodeWithSelector(InvalidContractType.selector, "Origin address cannot be empty"));
+        vm.expectEmit(true, true, true, true);
+        emit ZRC20TokenRegistered(originAddress, zrc20Address, decimals, originChainId, symbol);
         registry.registerZRC20Token(zrc20Address, symbol, originChainId, originAddress, coinType, decimals);
     }
 

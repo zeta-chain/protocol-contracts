@@ -10,7 +10,7 @@ import "./interfaces/IZRC20.sol";
 /// @dev The contract doesn't hold any funds and should never have active allowances.
 contract CoreRegistry is BaseRegistry {
     /// @notice Cross-chain message gas limit
-    uint256 public constant CROSS_CHAIN_GAS_LIMIT = 300_000;
+    uint256 public constant CROSS_CHAIN_GAS_LIMIT = 500_000;
     /// @notice Instance of the GatewayZEVM contract for cross-chain communication
     IGatewayZEVM public gatewayZEVM;
 
@@ -32,6 +32,8 @@ contract CoreRegistry is BaseRegistry {
         _grantRole(PAUSER_ROLE, registryManager_);
         _grantRole(PAUSER_ROLE, admin_);
 
+        admin = admin_;
+        registryManager = registryManager_;
         gatewayZEVM = IGatewayZEVM(gatewayZEVM_);
 
         // Add ZetaChain to the list of supported networks
@@ -307,9 +309,10 @@ contract CoreRegistry is BaseRegistry {
     /// @param encodedMessage The fully encoded function call to broadcast
     function _broadcastToAllChains(bytes memory encodedMessage) private {
         for (uint256 i = 0; i < _activeChains.length; i++) {
-            if (_activeChains[i] != block.chainid) {
-                _sendCrossChainMessage(_activeChains[i], encodedMessage);
+            if (_activeChains[i] == block.chainid || _chains[_activeChains[i]].registry.length == 0) {
+                continue;
             }
+            _sendCrossChainMessage(_activeChains[i], encodedMessage);
         }
     }
 

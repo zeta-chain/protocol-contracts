@@ -118,3 +118,33 @@ event ZRC20TokenUpdated(address address_, bool active);
 |`address_`|`address`|The address of the ZRC20 token.|
 |`active`|`bool`|Whether the token should be active.|
 
+### AdminChanged
+Emitted when admin address is changed.
+
+
+```solidity
+event AdminChanged(address oldAdmin, address newAdmin);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`oldAdmin`|`address`|The previous admin address.|
+|`newAdmin`|`address`|The new admin address.|
+
+### RegistryManagerChanged
+Emitted when registry manager address is changed.
+
+
+```solidity
+event RegistryManagerChanged(address oldRegistryManager, address newRegistryManager);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`oldRegistryManager`|`address`|The previous registry manager address.|
+|`newRegistryManager`|`address`|The new registry manager address.|
+

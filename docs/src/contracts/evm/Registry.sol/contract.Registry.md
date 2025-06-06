@@ -60,7 +60,6 @@ Initialize the Registry contract
 ```solidity
 function initialize(
     address admin_,
-    address pauserAddress_,
     address registryManager_,
     address gatewayEVM_,
     address coreRegistry_
@@ -73,7 +72,6 @@ function initialize(
 |Name|Type|Description|
 |----|----|-----------|
 |`admin_`|`address`|Address with DEFAULT_ADMIN_ROLE, authorized for upgrades and pausing actions|
-|`pauserAddress_`|`address`|Address with PAUSER_ROLE, authorized for pausing actions|
 |`registryManager_`|`address`|Address with REGISTRY_MANAGER_ROLE, authorized for all registry write actions.|
 |`gatewayEVM_`|`address`|Address of the GatewayEVM contract for cross-chain messaging|
 |`coreRegistry_`|`address`|Address of the CoreRegistry contract deployed on ZetaChain|
