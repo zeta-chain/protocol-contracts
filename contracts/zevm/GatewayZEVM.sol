@@ -12,11 +12,11 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
+import { ICoreRegistry } from "./interfaces/ICoreRegistry.sol";
+import { ISystem } from "./interfaces/ISystem.sol";
 import { GatewayZEVMValidations } from "./libraries/GatewayZEVMValidations.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
-import {ISystem} from "./interfaces/ISystem.sol";
-import {ICoreRegistry} from "./interfaces/ICoreRegistry.sol";
 
 /// @title GatewayZEVM
 /// @notice The GatewayZEVM contract is the endpoint to call smart contracts on omnichain.
@@ -178,7 +178,7 @@ contract GatewayZEVM is
     /// @return gasFee The gas fee for the withdrawal.
     function _burnZETAProtocolFees(uint256 chainId, uint256 gasLimit) private returns (uint256 gasFee) {
         // get the gas ZRC20 token address for the external chain
-        (address gasZRC20, ) = ICoreRegistry(REGISTRY).getChainInfo(chainId);
+        (address gasZRC20,) = ICoreRegistry(REGISTRY).getChainInfo(chainId);
         // get the current gas price for the external chain
         uint256 gasPrice = ISystem(IZRC20(gasZRC20).SYSTEM_CONTRACT_ADDRESS()).gasPriceByChainId(chainId);
         if (gasPrice == 0) {
@@ -189,7 +189,8 @@ contract GatewayZEVM is
             gasLimit = abi.decode(ICoreRegistry(REGISTRY).getChainMetadata(chainId, "gasLimit"), (uint256));
         }
         // get the protocol flat fee for the external chain
-        uint256 protocolFlatFee = abi.decode(ICoreRegistry(REGISTRY).getChainMetadata(chainId, "protocolFlatFee"), (uint256));
+        uint256 protocolFlatFee =
+            abi.decode(ICoreRegistry(REGISTRY).getChainMetadata(chainId, "protocolFlatFee"), (uint256));
         // calculate gas fee
         gasFee = gasPrice * gasLimit + protocolFlatFee;
         // burn protocol fees

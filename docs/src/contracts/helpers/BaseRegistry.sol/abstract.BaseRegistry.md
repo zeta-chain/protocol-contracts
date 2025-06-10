@@ -331,6 +331,28 @@ Updates ZRC20 token active status.
 function _setZRC20TokenActive(address address_, bool active) internal;
 ```
 
+### getChainInfo
+
+Gets information about a specific chain.
+
+
+```solidity
+function getChainInfo(uint256 chainId) external view returns (address gasZRC20, bytes memory registry);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chainId`|`uint256`|The ID of the chain.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`gasZRC20`|`address`|The address of the ZRC20 token that represents gas token for the chain.|
+|`registry`|`bytes`|The registry address deployed on the chain.|
+
+
 ### getChainMetadata
 
 Gets chain-specific metadata

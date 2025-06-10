@@ -155,3 +155,11 @@ error MessageSizeExceeded(uint256 provided, uint256 maximum);
 |`provided`|`uint256`|The size of the message that was provided.|
 |`maximum`|`uint256`|The maximum allowed message size.|
 
+### ZeroGasPrice
+Error indicating an invalid gas price.
+
+
+```solidity
+error ZeroGasPrice();
+```
+

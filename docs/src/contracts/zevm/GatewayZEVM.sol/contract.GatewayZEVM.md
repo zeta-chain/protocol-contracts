@@ -19,6 +19,15 @@ address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6
 ```
 
 
+### REGISTRY
+The constant address of the registry contract
+
+
+```solidity
+address public constant REGISTRY = 0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394;
+```
+
+
 ### zetaToken
 The address of the Zeta token.
 
@@ -154,7 +163,23 @@ Helper function to burn gas fees.
 
 
 ```solidity
-function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256);
+function _burnProtocolFees(address gasZRC20, uint256 gasFee) private;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`gasZRC20`|`address`|The address of the gas ZRC20 token.|
+|`gasFee`|`uint256`|The amount of gasZRC20 that should be burned.|
+
+
+### _burnZRC20ProtocolFees
+
+Helper function to burn gas fees for ZRC20s withdrawals.
+
+
+```solidity
+function _burnZRC20ProtocolFees(address zrc20, uint256 gasLimit) private returns (uint256);
 ```
 **Parameters**
 
@@ -162,28 +187,6 @@ function _burnProtocolFees(address zrc20, uint256 gasLimit) private returns (uin
 |----|----|-----------|
 |`zrc20`|`address`|The address of the ZRC20 token.|
 |`gasLimit`|`uint256`|Gas limit.|
-
-
-### _withdrawZRC20
-
-*Private function to withdraw ZRC20 tokens.*
-
-
-```solidity
-function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256);
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
-|`zrc20`|`address`|The address of the ZRC20 token.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`<none>`|`uint256`|The gas fee for the withdrawal.|
 
 
 ### _withdrawZRC20WithGasLimit
@@ -207,6 +210,28 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 |Name|Type|Description|
 |----|----|-----------|
 |`<none>`|`uint256`|The gas fee for the withdrawal.|
+
+
+### _burnZETAProtocolFees
+
+*Helper function to burn gas fees for ZETA withdrawals.*
+
+
+```solidity
+function _burnZETAProtocolFees(uint256 chainId, uint256 gasLimit) private returns (uint256 gasFee);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chainId`|`uint256`|Chain id of the external chain.|
+|`gasLimit`|`uint256`|Gas limit.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`gasFee`|`uint256`|The gas fee for the withdrawal.|
 
 
 ### _transferZETA
