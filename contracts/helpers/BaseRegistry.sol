@@ -259,6 +259,15 @@ abstract contract BaseRegistry is
         _zrc20Tokens[address_].active = active;
     }
 
+    /// @notice Gets information about a specific chain.
+    /// @param chainId The ID of the chain.
+    /// @return gasZRC20 The address of the ZRC20 token that represents gas token for the chain.
+    /// @return registry The registry address deployed on the chain.
+    function getChainInfo(uint256 chainId) external view returns (address gasZRC20, bytes memory registry) {
+        gasZRC20 = _chains[chainId].gasZRC20;
+        registry = _chains[chainId].registry;
+    }
+
     /// @notice Gets chain-specific metadata
     /// @param chainId The ID of the chain
     /// @param key The metadata key to retrieve
