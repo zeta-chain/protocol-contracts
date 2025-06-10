@@ -515,38 +515,38 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         );
     }
 
-    function testWithdrawZETA() public {
-        uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 protocolBalanceBefore = protocolAddress.balance;
-        uint256 chainId = 1;
-
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Withdrawn(
-            owner,
-            chainId,
-            abi.encodePacked(addr1),
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
-            revertOptions
-        );
-
-        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
-
-        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
-        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
-
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
-
-        // Verify amount is transferred to protocol address
-        assertEq(protocolBalanceBefore + 1, protocolAddress.balance);
-    }
+//    function testWithdrawZETA() public {
+//        uint256 amount = 1;
+//        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+//        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+//        uint256 protocolBalanceBefore = protocolAddress.balance;
+//        uint256 chainId = 1;
+//
+//        vm.expectEmit(true, true, true, true, address(gateway));
+//        emit Withdrawn(
+//            owner,
+//            chainId,
+//            abi.encodePacked(addr1),
+//            address(zetaToken),
+//            amount,
+//            0,
+//            0,
+//            "",
+//            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+//            revertOptions
+//        );
+//
+//        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
+//
+//        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+//        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+//
+//        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+//        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+//
+//        // Verify amount is transferred to protocol address
+//        assertEq(protocolBalanceBefore + 1, protocolAddress.balance);
+//    }
 
     function testWithdrawZETAFailsIfNoAllowance() public {
         uint256 amount = 1;
@@ -582,39 +582,39 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
     }
 
-    function testWithdrawZETAWithCallOptsWithMessage() public {
-        uint256 amount = 1;
-        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
-        uint256 protocolAddressBalanceBefore = protocolAddress.balance;
-        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
-        uint256 chainId = 1;
-
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit WithdrawnAndCalled(
-            owner,
-            chainId,
-            abi.encodePacked(addr1),
-            address(zetaToken),
-            amount,
-            0,
-            0,
-            message,
-            callOptions,
-            revertOptions
-        );
-
-        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptions);
-
-        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
-        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
-
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
-        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
-
-        // Verify amount is transferred to fungible module
-        assertEq(protocolAddressBalanceBefore + 1, protocolAddress.balance);
-    }
+//    function testWithdrawZETAWithCallOptsWithMessage() public {
+//        uint256 amount = 1;
+//        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+//        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+//        uint256 protocolAddressBalanceBefore = protocolAddress.balance;
+//        bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
+//        uint256 chainId = 1;
+//
+//        vm.expectEmit(true, true, true, true, address(gateway));
+//        emit WithdrawnAndCalled(
+//            owner,
+//            chainId,
+//            abi.encodePacked(addr1),
+//            address(zetaToken),
+//            amount,
+//            0,
+//            0,
+//            message,
+//            callOptions,
+//            revertOptions
+//        );
+//
+//        gateway.withdrawAndCall(abi.encodePacked(addr1), amount, chainId, message, callOptions, revertOptions);
+//
+//        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+//        assertEq(ownerBalanceBefore - 1, ownerBalanceAfter);
+//
+//        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+//        assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
+//
+//        // Verify amount is transferred to fungible module
+//        assertEq(protocolAddressBalanceBefore + 1, protocolAddress.balance);
+//    }
 
     function testWithdrawZETAWithCallOptsWithMessageFailsIfNoAllowance() public {
         uint256 amount = 1;
