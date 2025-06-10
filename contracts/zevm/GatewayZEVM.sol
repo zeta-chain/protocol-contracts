@@ -143,15 +143,6 @@ contract GatewayZEVM is
         return gasFee;
     }
 
-    /// @dev Private function to withdraw ZRC20 tokens.
-    /// @param amount The amount of tokens to withdraw.
-    /// @param zrc20 The address of the ZRC20 token.
-    /// @return The gas fee for the withdrawal.
-    function _withdrawZRC20(uint256 amount, address zrc20) private returns (uint256) {
-        // Use gas limit from zrc20
-        return _withdrawZRC20WithGasLimit(amount, zrc20, IZRC20(zrc20).GAS_LIMIT());
-    }
-
     /// @dev Private function to withdraw ZRC20 tokens with gas limit.
     /// @param amount The amount of tokens to withdraw.
     /// @param zrc20 The address of the ZRC20 token.
@@ -202,7 +193,7 @@ contract GatewayZEVM is
     {
         GatewayZEVMValidations.validateWithdrawalParams(receiver, amount, revertOptions);
 
-        uint256 gasFee = _withdrawZRC20(amount, zrc20);
+        uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, IZRC20(zrc20).GAS_LIMIT());
         emit Withdrawn(
             msg.sender,
             0,
