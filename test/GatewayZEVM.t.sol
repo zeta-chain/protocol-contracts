@@ -16,7 +16,6 @@ import "../contracts/zevm/GatewayZEVM.sol";
 import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
 import "../contracts/zevm/interfaces/IZRC20.sol";
-import { Core } from "../dependencies/openzeppelin-foundry-upgrades-0.3.2/src/internal/Core.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors {
