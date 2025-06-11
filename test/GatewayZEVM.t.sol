@@ -576,6 +576,134 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(ownerGasBalanceBefore - gasFee, ownerGasBalanceAfter);
     }
 
+    function testWithdrawZETAWithDefaultGasLimit() public {
+        uint256 amount = 1;
+        uint256 chainId = 1;
+        bytes memory registryAddress = abi.encodePacked(address(0x9876));
+
+        // Activate chain
+        vm.prank(owner);
+        coreRegistry.changeChainStatus(chainId, address(zrc20), registryAddress, true);
+
+        // Set protocolFlatFee
+        string memory key = "protocolFlatFee";
+        bytes memory protocolFlatFeeValue = abi.encode(5);
+        vm.prank(owner);
+        coreRegistry.updateChainMetadata(chainId, key, protocolFlatFeeValue);
+
+        uint256 DEFAULT_GAS_LIMIT = 100_000;
+        uint256 expectedGasFee =
+            DEFAULT_GAS_LIMIT * systemContract.gasPriceByChainId(chainId) + abi.decode(protocolFlatFeeValue, (uint256));
+
+        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        uint256 ownerGasBalanceBefore = zrc20.balanceOf(owner);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawn(
+            owner,
+            chainId,
+            abi.encodePacked(addr1),
+            address(zetaToken),
+            amount,
+            expectedGasFee,
+            abi.decode(protocolFlatFeeValue, (uint256)),
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
+
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
+
+        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+        assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
+
+        uint256 ownerGasBalanceAfter = zrc20.balanceOf(owner);
+        assertEq(ownerGasBalanceBefore - expectedGasFee, ownerGasBalanceAfter);
+    }
+
+    function testWithdrawZETAWithDefaultProtocolFlatFee() public {
+        uint256 amount = 1;
+        uint256 chainId = 1;
+        bytes memory registryAddress = abi.encodePacked(address(0x9876));
+
+        // Activate chain
+        vm.prank(owner);
+        coreRegistry.changeChainStatus(chainId, address(zrc20), registryAddress, true);
+
+        // Set gasLimit
+        string memory key = "gasLimit";
+        bytes memory gasLimitValue = abi.encode(150_000);
+        vm.prank(owner);
+        coreRegistry.updateChainMetadata(chainId, key, gasLimitValue);
+
+        uint256 expectedGasFee = abi.decode(gasLimitValue, (uint256)) * systemContract.gasPriceByChainId(chainId);
+        uint256 expectedProtocolFlatFee = 0;
+
+        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        uint256 ownerGasBalanceBefore = zrc20.balanceOf(owner);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawn(
+            owner,
+            chainId,
+            abi.encodePacked(addr1),
+            address(zetaToken),
+            amount,
+            expectedGasFee,
+            expectedProtocolFlatFee,
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
+
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
+
+        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+        assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
+
+        uint256 ownerGasBalanceAfter = zrc20.balanceOf(owner);
+        assertEq(ownerGasBalanceBefore - expectedGasFee, ownerGasBalanceAfter);
+    }
+
+    function testWithdrawZETAWithBothDefaultValuesFromRegistry() public {
+        uint256 amount = 1;
+        uint256 chainId = 1;
+        bytes memory registryAddress = abi.encodePacked(address(0x9876));
+
+        // Activate chain
+        vm.prank(owner);
+        coreRegistry.changeChainStatus(chainId, address(zrc20), registryAddress, true);
+
+        uint256 DEFAULT_GAS_LIMIT = 100_000;
+        uint256 expectedGasFee = DEFAULT_GAS_LIMIT * systemContract.gasPriceByChainId(chainId);
+        uint256 expectedProtocolFlatFee = 0;
+
+        uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
+        uint256 ownerGasBalanceBefore = zrc20.balanceOf(owner);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawn(
+            owner,
+            chainId,
+            abi.encodePacked(addr1),
+            address(zetaToken),
+            amount,
+            expectedGasFee,
+            expectedProtocolFlatFee,
+            "",
+            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            revertOptions
+        );
+
+        gateway.withdraw(abi.encodePacked(addr1), amount, chainId, revertOptions);
+
+        uint256 ownerBalanceAfter = zetaToken.balanceOf(owner);
+        assertEq(ownerBalanceBefore - amount, ownerBalanceAfter);
+
+        uint256 ownerGasBalanceAfter = zrc20.balanceOf(owner);
+        assertEq(ownerGasBalanceBefore - expectedGasFee, ownerGasBalanceAfter);
+    }
+
     function testWithdrawZETAFailsIfNoAllowance() public {
         uint256 amount = 1;
         uint256 ownerBalanceBefore = zetaToken.balanceOf(owner);
