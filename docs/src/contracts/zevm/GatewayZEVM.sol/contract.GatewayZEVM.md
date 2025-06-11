@@ -212,6 +212,48 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 |`<none>`|`uint256`|The gas fee for the withdrawal.|
 
 
+### _getGasLimitFromRegistry
+
+*Helper function to get gas limit for the external chain.*
+
+
+```solidity
+function _getGasLimitFromRegistry(uint256 chainId) private view returns (uint256 gasLimit);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chainId`|`uint256`|Chain id of the external chain.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`gasLimit`|`uint256`|The gas limit.|
+
+
+### _getProtocolFlatFeeFromRegistry
+
+*Helper function to get protocol flat fee for the external chain.*
+
+
+```solidity
+function _getProtocolFlatFeeFromRegistry(uint256 chainId) private view returns (uint256 protocolFlatFee);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`chainId`|`uint256`|Chain id of the external chain.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`protocolFlatFee`|`uint256`|The protocol flat fee.|
+
+
 ### _burnZETAProtocolFees
 
 *Helper function to burn gas fees for ZETA withdrawals.*
@@ -230,14 +272,14 @@ function _burnZETAProtocolFees(
 |Name|Type|Description|
 |----|----|-----------|
 |`chainId`|`uint256`|Chain id of the external chain.|
-|`gasLimit`|`uint256`|Gas limit.|
+|`gasLimit`|`uint256`|The gas limit.|
 
 **Returns**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`gasFee`|`uint256`|The gas fee for the withdrawal.|
-|`protocolFlatFee`|`uint256`||
+|`protocolFlatFee`|`uint256`|The protocol flat fee.|
 
 
 ### _transferZETA
