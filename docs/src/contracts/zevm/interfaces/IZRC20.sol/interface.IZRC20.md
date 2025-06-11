@@ -100,6 +100,15 @@ function PROTOCOL_FLAT_FEE() external view returns (uint256);
 function GAS_LIMIT() external view returns (uint256);
 ```
 
+### SYSTEM_CONTRACT_ADDRESS
+
+*Name is in upper case to maintain compatibility with ZRC20.sol v1*
+
+
+```solidity
+function SYSTEM_CONTRACT_ADDRESS() external view returns (address);
+```
+
 ### setName
 
 

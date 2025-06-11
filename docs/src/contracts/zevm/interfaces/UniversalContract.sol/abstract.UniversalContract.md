@@ -13,7 +13,7 @@ Reference to the ZetaChain Registry contract
 
 
 ```solidity
-ICoreRegistry public constant registry = ICoreRegistry(0x7c591652f159496b14e15616F0948a6d63b585E8);
+ICoreRegistry public constant registry = ICoreRegistry(0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394);
 ```
 
 

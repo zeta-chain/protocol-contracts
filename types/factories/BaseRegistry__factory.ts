@@ -260,6 +260,30 @@ const _abi = [
   },
   {
     type: "function",
+    name: "getChainInfo",
+    inputs: [
+      {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+    outputs: [
+      {
+        name: "gasZRC20",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "registry",
+        type: "bytes",
+        internalType: "bytes",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "getChainMetadata",
     inputs: [
       {

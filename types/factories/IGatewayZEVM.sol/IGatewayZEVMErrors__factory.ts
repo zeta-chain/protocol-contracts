@@ -171,6 +171,11 @@ const _abi = [
       },
     ],
   },
+  {
+    type: "error",
+    name: "ZeroGasPrice",
+    inputs: [],
+  },
 ] as const;
 
 export class IGatewayZEVMErrors__factory {

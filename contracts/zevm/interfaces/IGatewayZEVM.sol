@@ -129,6 +129,9 @@ interface IGatewayZEVMErrors {
     /// @param provided The size of the message that was provided.
     /// @param maximum The maximum allowed message size.
     error MessageSizeExceeded(uint256 provided, uint256 maximum);
+
+    /// @notice Error indicating an invalid gas price.
+    error ZeroGasPrice();
 }
 
 /// @title IGatewayZEVM
