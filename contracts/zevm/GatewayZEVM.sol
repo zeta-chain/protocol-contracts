@@ -35,7 +35,7 @@ contract GatewayZEVM is
     /// @notice The constant address of the protocol
     address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
 
-    /// @notice The constant address of the registry contract
+    /// @notice The constant address of the registry contract on ZetaChain
     address public constant REGISTRY = 0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394;
 
     /// @notice The address of the Zeta token.
