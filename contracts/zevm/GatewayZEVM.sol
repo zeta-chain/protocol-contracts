@@ -172,10 +172,46 @@ contract GatewayZEVM is
         return gasFee;
     }
 
+    /// @dev Helper function to get gas limit for the external chain.
+    /// @param chainId Chain id of the external chain.
+    /// @return gasLimit The gas limit.
+    function _getGasLimitFromRegistry(uint256 chainId) private view returns (uint256 gasLimit) {
+        // default gas limit for ZETA transfer
+        uint256 DEFAULT_GAS_LIMIT = 100_000;
+        // fetch gasLimit for the external chain
+        try ICoreRegistry(REGISTRY).getChainMetadata(chainId, "gasLimit") returns (bytes memory _gasLimit) {
+            if (_gasLimit.length > 0) {
+                gasLimit = abi.decode(_gasLimit, (uint256));
+            } else {
+                gasLimit = DEFAULT_GAS_LIMIT;
+            }
+        } catch {
+            gasLimit = DEFAULT_GAS_LIMIT;
+        }
+    }
+
+    /// @dev Helper function to get protocol flat fee for the external chain.
+    /// @param chainId Chain id of the external chain.
+    /// @return protocolFlatFee The protocol flat fee.
+    function _getProtocolFlatFeeFromRegistry(uint256 chainId) private view returns (uint256 protocolFlatFee) {
+        // fetch protocolFlatFee for the external chain
+        try ICoreRegistry(REGISTRY).getChainMetadata(chainId, "protocolFlatFee") returns (bytes memory _protocolFlatFee)
+        {
+            if (_protocolFlatFee.length > 0) {
+                protocolFlatFee = abi.decode(_protocolFlatFee, (uint256));
+            } else {
+                protocolFlatFee = 0;
+            }
+        } catch {
+            protocolFlatFee = 0;
+        }
+    }
+
     /// @dev Helper function to burn gas fees for ZETA withdrawals.
     /// @param chainId Chain id of the external chain.
-    /// @param gasLimit Gas limit.
+    /// @param gasLimit The gas limit.
     /// @return gasFee The gas fee for the withdrawal.
+    /// @return protocolFlatFee The protocol flat fee.
     function _burnZETAProtocolFees(
         uint256 chainId,
         uint256 gasLimit
@@ -183,8 +219,6 @@ contract GatewayZEVM is
         private
         returns (uint256 gasFee, uint256 protocolFlatFee)
     {
-        // default gas limit for ZETA transfer
-        uint256 DEFAULT_GAS_LIMIT = 100_000;
         // get the gas ZRC20 token address for the external chain
         (address gasZRC20,) = ICoreRegistry(REGISTRY).getChainInfo(chainId);
         // get the current gas price for the external chain
@@ -194,19 +228,10 @@ contract GatewayZEVM is
         }
         // if its not WaC, get the gasLimit for ZETA transfer to the external chain
         if (gasLimit == 0) {
-            try ICoreRegistry(REGISTRY).getChainMetadata(chainId, "gasLimit") returns (bytes memory _gasLimit) {
-                gasLimit = abi.decode(_gasLimit, (uint256));
-            } catch {
-                gasLimit = DEFAULT_GAS_LIMIT;
-            }
+            gasLimit = _getGasLimitFromRegistry(chainId);
         }
         // get the protocol flat fee for the external chain
-        try ICoreRegistry(REGISTRY).getChainMetadata(chainId, "protocolFlatFee") returns (bytes memory _protocolFlatFee)
-        {
-            protocolFlatFee = abi.decode(_protocolFlatFee, (uint256));
-        } catch {
-            protocolFlatFee = 0;
-        }
+        protocolFlatFee = _getProtocolFlatFeeFromRegistry(chainId);
         // calculate gas fee
         gasFee = gasPrice * gasLimit + protocolFlatFee;
         // burn protocol fees
@@ -298,6 +323,7 @@ contract GatewayZEVM is
     /// @notice Withdraw ZETA tokens to an external chain.
     //// @param receiver The receiver address on the external chain.
     //// @param amount The amount of tokens to withdraw.
+    //// @param chainId Chain id of the external chain.
     //// @param revertOptions Revert options.
     function withdraw(
         bytes memory receiver,
