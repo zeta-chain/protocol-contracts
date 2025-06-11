@@ -20,7 +20,7 @@ address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6
 
 
 ### REGISTRY
-The constant address of the registry contract
+The constant address of the registry contract on ZetaChain
 
 
 ```solidity
@@ -212,13 +212,13 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 |`<none>`|`uint256`|The gas fee for the withdrawal.|
 
 
-### _getGasLimitFromRegistry
+### _getGasLimitForZETATransfer
 
-*Helper function to get gas limit for the external chain.*
+*Helper function to get gas limit for the ZETA transfer to the external chain.*
 
 
 ```solidity
-function _getGasLimitFromRegistry(uint256 chainId) private view returns (uint256 gasLimit);
+function _getGasLimitForZETATransfer(uint256 chainId) private view returns (uint256 gasLimit);
 ```
 **Parameters**
 
@@ -254,13 +254,13 @@ function _getProtocolFlatFeeFromRegistry(uint256 chainId) private view returns (
 |`protocolFlatFee`|`uint256`|The protocol flat fee.|
 
 
-### _burnZETAProtocolFees
+### _computeAndPayFeesForZETAWithdrawals
 
 *Helper function to burn gas fees for ZETA withdrawals.*
 
 
 ```solidity
-function _burnZETAProtocolFees(
+function _computeAndPayFeesForZETAWithdrawals(
     uint256 chainId,
     uint256 gasLimit
 )
