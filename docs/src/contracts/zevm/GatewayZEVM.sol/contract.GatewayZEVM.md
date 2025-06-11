@@ -218,7 +218,12 @@ function _withdrawZRC20WithGasLimit(uint256 amount, address zrc20, uint256 gasLi
 
 
 ```solidity
-function _burnZETAProtocolFees(uint256 chainId, uint256 gasLimit) private returns (uint256 gasFee);
+function _burnZETAProtocolFees(
+    uint256 chainId,
+    uint256 gasLimit
+)
+    private
+    returns (uint256 gasFee, uint256 protocolFlatFee);
 ```
 **Parameters**
 
@@ -232,6 +237,7 @@ function _burnZETAProtocolFees(uint256 chainId, uint256 gasLimit) private return
 |Name|Type|Description|
 |----|----|-----------|
 |`gasFee`|`uint256`|The gas fee for the withdrawal.|
+|`protocolFlatFee`|`uint256`||
 
 
 ### _transferZETA
