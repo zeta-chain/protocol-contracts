@@ -355,13 +355,13 @@ contract GatewayZEVM is
         }
     }
 
-    /// @notice Deposit ZETA tokens.
-    /// @param amount The amount of ZETA tokens to transfer.
-    /// @param target The target address to receive the tokens.
-    function deposit(uint256 amount, address target) external nonReentrant onlyProtocol whenNotPaused {
-        GatewayZEVMValidations.validateZetaDepositParams(amount, target, PROTOCOL_ADDRESS, address(this));
+    /// @notice Deposit native ZETA.
+    /// @param target The target address to receive the ZETA.
+    function deposit(address target) external payable nonReentrant onlyProtocol whenNotPaused {
+        GatewayZEVMValidations.validateZetaDepositParams(msg.value, target, PROTOCOL_ADDRESS, address(this));
 
-        _transferZETA(amount, target);
+        (bool sent,) = target.call{ value: msg.value }("");
+        if (!sent) revert FailedZetaSent(target, msg.value);
     }
 
     /// @notice Execute a user-specified contract on ZEVM.
@@ -412,26 +412,24 @@ contract GatewayZEVM is
         UniversalContract(target).onCall(context, zrc20, amount, message);
     }
 
-    /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
+    /// @notice Deposit native ZETA and call a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
-    /// @param amount The amount of tokens to transfer.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
     function depositAndCall(
         MessageContext calldata context,
-        uint256 amount,
         address target,
         bytes calldata message
     )
         external
+        payable
         nonReentrant
         onlyProtocol
         whenNotPaused
     {
-        GatewayZEVMValidations.validateZetaDepositParams(amount, target, PROTOCOL_ADDRESS, address(this));
+        GatewayZEVMValidations.validateZetaDepositParams(msg.value, target, PROTOCOL_ADDRESS, address(this));
 
-        _transferZETA(amount, target);
-        UniversalContract(target).onCall(context, zetaToken, amount, message);
+        UniversalContract(target).onCall{ value: msg.value }(context, zetaToken, msg.value, message);
     }
 
     /// @notice Revert a user-specified contract on ZEVM.
@@ -474,24 +472,22 @@ contract GatewayZEVM is
         Revertable(target).onRevert(revertContext);
     }
 
-    /// @notice Deposit ZETA and revert a user-specified contract on ZEVM.
-    /// @param amount The amount of tokens to revert.
+    /// @notice Deposit native ZETA and revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
     /// @param revertContext Revert context to pass to onRevert.
     function depositAndRevert(
-        uint256 amount,
         address target,
         RevertContext calldata revertContext
     )
         external
+        payable
         nonReentrant
         onlyProtocol
         whenNotPaused
     {
-        GatewayZEVMValidations.validateZetaDepositParams(amount, target, PROTOCOL_ADDRESS, address(this));
+        GatewayZEVMValidations.validateZetaDepositParams(msg.value, target, PROTOCOL_ADDRESS, address(this));
 
-        _transferZETA(amount, target);
-        Revertable(target).onRevert(revertContext);
+        Revertable(target).onRevert{ value: msg.value }(revertContext);
     }
 
     /// @notice Call onAbort on a user-specified contract on ZEVM.
