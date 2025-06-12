@@ -218,7 +218,7 @@ contract GatewayZEVMUpgradeTest is
         GatewayZEVMValidations.validateWithdrawalParams(receiver, amount, revertOptions);
 
         uint256 gasFee = _withdrawZRC20(amount, zrc20);
-        emit Withdrawn(
+        emit WithdrawnV2(
             msg.sender,
             0,
             receiver,
