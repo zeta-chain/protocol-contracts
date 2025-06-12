@@ -39,6 +39,7 @@ contract TestUniversalContract is UniversalContract, Revertable, Abortable {
         bytes calldata message
     )
         external
+        payable
         override
     {
         string memory decodedMessage;
@@ -50,7 +51,7 @@ contract TestUniversalContract is UniversalContract, Revertable, Abortable {
 
     /// @notice Handles a cross-chain call revert.
     /// @param revertContext Revert context.
-    function onRevert(RevertContext calldata revertContext) external override {
+    function onRevert(RevertContext calldata revertContext) external payable override {
         emit ContextDataRevert(revertContext);
     }
 

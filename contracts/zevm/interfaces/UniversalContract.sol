@@ -78,5 +78,6 @@ abstract contract UniversalContract {
         bytes calldata message
     )
         external
+        payable
         virtual;
 }
