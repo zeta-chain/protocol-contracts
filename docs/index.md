@@ -170,7 +170,6 @@
   * [Functions](#functions-6)
     + [burnFrom](#burnfrom)
     + [mint](#mint)
-- [Contents](#contents)
 - [ConnectorErrors](#connectorerrors)
   * [Errors](#errors-3)
     + [CallerIsNotPauser](#callerisnotpauser)
@@ -183,7 +182,6 @@
   * [Functions](#functions-7)
     + [burnFrom](#burnfrom-1)
     + [mint](#mint-1)
-- [Contents](#contents-1)
 - [ZetaConnectorBase](#zetaconnectorbase)
   * [State Variables](#state-variables-3)
     + [zetaToken](#zetatoken-2)
@@ -284,7 +282,6 @@
     + [TSSAddressUpdated](#tssaddressupdated-1)
     + [TSSAddressUpdaterUpdated](#tssaddressupdaterupdated-1)
     + [ConnectorAddressUpdated](#connectoraddressupdated)
-- [Contents](#contents-2)
 - [Registry](#registry)
   * [State Variables](#state-variables-6)
     + [GATEWAY_ROLE](#gateway_role)
@@ -430,9 +427,6 @@
 - [ContractInfo](#contractinfo)
 - [ContractInfoDTO](#contractinfodto)
 - [ZRC20Info](#zrc20info)
-- [Contents](#contents-3)
-- [Contents](#contents-4)
-- [Contents](#contents-5)
 - [Constants](#constants)
     + [MAX_REVERT_GAS_LIMIT](#max_revert_gas_limit)
 - [RevertGasLimitExceeded](#revertgaslimitexceeded)
@@ -559,7 +553,6 @@
     + [UpdatedGateway](#updatedgateway)
     + [UpdatedGasLimit](#updatedgaslimit)
     + [UpdatedProtocolFlatFee](#updatedprotocolflatfee)
-- [Contents](#contents-6)
 - [UniversalContract](#universalcontract)
   * [State Variables](#state-variables-11)
     + [registry](#registry)
@@ -575,7 +568,6 @@
     + [onCrossChainCall](#oncrosschaincall)
 - [MessageContext](#messagecontext-1)
 - [zContext](#zcontext)
-- [Contents](#contents-7)
 - [ZetaConnectorZEVM](#zetaconnectorzevm)
   * [State Variables](#state-variables-12)
     + [wzeta](#wzeta)
@@ -628,8 +620,6 @@
     + [validateZetaDepositParams](#validatezetadepositparams)
   * [Errors](#errors-12)
     + [EmptyAddress](#emptyaddress)
-- [Contents](#contents-8)
-- [Contents](#contents-9)
 - [SystemContract](#systemcontract)
   * [State Variables](#state-variables-14)
     + [gasPriceByChainId](#gaspricebychainid-1)
@@ -3120,22 +3110,6 @@ function mint(address mintee, uint256 value, bytes32 internalSendHash) external;
 
 
 
-
-
-# Contents
-- [IERC20CustodyEvents](IERC20Custody.sol/interface.IERC20CustodyEvents.md)
-- [IERC20CustodyErrors](IERC20Custody.sol/interface.IERC20CustodyErrors.md)
-- [IERC20Custody](IERC20Custody.sol/interface.IERC20Custody.md)
-- [IGatewayEVMEvents](IGatewayEVM.sol/interface.IGatewayEVMEvents.md)
-- [IGatewayEVMErrors](IGatewayEVM.sol/interface.IGatewayEVMErrors.md)
-- [IGatewayEVM](IGatewayEVM.sol/interface.IGatewayEVM.md)
-- [MessageContext](IGatewayEVM.sol/struct.MessageContext.md)
-- [Callable](IGatewayEVM.sol/interface.Callable.md)
-- [IRegistry](IRegistry.sol/interface.IRegistry.md)
-- [IZetaConnectorEvents](IZetaConnector.sol/interface.IZetaConnectorEvents.md)
-- [IZetaNonEthNew](IZetaNonEthNew.sol/interface.IZetaNonEthNew.md)
-
-
 # ConnectorErrors
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/evm/legacy/ConnectorErrors.sol)
 
@@ -3202,24 +3176,6 @@ function burnFrom(address account, uint256 amount) external;
 function mint(address mintee, uint256 value, bytes32 internalSendHash) external;
 ```
 
-
-
-
-
-# Contents
-- [ConnectorErrors](ConnectorErrors.sol/interface.ConnectorErrors.md)
-- [IZetaNonEthInterface](IZetaNonEthInterface.sol/interface.IZetaNonEthInterface.md)
-- [ZetaConnectorBase](ZetaConnector.base.sol/contract.ZetaConnectorBase.md)
-- [ZetaConnectorEth](ZetaConnector.eth.sol/contract.ZetaConnectorEth.md)
-- [ZetaConnectorNonEth](ZetaConnector.non-eth.sol/contract.ZetaConnectorNonEth.md)
-- [ZetaErrors](ZetaErrors.sol/interface.ZetaErrors.md)
-- [ZetaEth](ZetaEth.sol/contract.ZetaEth.md)
-- [ZetaInterfaces](ZetaInterfaces.sol/interface.ZetaInterfaces.md)
-- [ZetaConnector](ZetaInterfaces.sol/interface.ZetaConnector.md)
-- [ZetaReceiver](ZetaInterfaces.sol/interface.ZetaReceiver.md)
-- [ZetaTokenConsumer](ZetaInterfaces.sol/interface.ZetaTokenConsumer.md)
-- [ZetaCommonErrors](ZetaInterfaces.sol/interface.ZetaCommonErrors.md)
-- [ZetaNonEth](ZetaNonEth.sol/contract.ZetaNonEth.md)
 
 
 # ZetaConnectorBase
@@ -4024,19 +3980,6 @@ event TSSAddressUpdaterUpdated(address callerAddress, address newTssUpdaterAddre
 event ConnectorAddressUpdated(address callerAddress, address newConnectorAddress);
 ```
 
-
-
-
-
-# Contents
-- [interfaces](/contracts/evm/interfaces)
-- [legacy](/contracts/evm/legacy)
-- [ERC20Custody](ERC20Custody.sol/contract.ERC20Custody.md)
-- [GatewayEVM](GatewayEVM.sol/contract.GatewayEVM.md)
-- [Registry](Registry.sol/contract.Registry.md)
-- [ZetaConnectorBase](ZetaConnectorBase.sol/abstract.ZetaConnectorBase.md)
-- [ZetaConnectorNative](ZetaConnectorNative.sol/contract.ZetaConnectorNative.md)
-- [ZetaConnectorNonNative](ZetaConnectorNonNative.sol/contract.ZetaConnectorNonNative.md)
 
 
 # Registry
@@ -6141,43 +6084,6 @@ struct ZRC20Info {
 
 
 
-
-
-# Contents
-- [ChainInfo](IBaseRegistry.sol/struct.ChainInfo.md)
-- [ContractInfo](IBaseRegistry.sol/struct.ContractInfo.md)
-- [ZRC20Info](IBaseRegistry.sol/struct.ZRC20Info.md)
-- [ChainInfoDTO](IBaseRegistry.sol/struct.ChainInfoDTO.md)
-- [ContractInfoDTO](IBaseRegistry.sol/struct.ContractInfoDTO.md)
-- [ContractIdentifier](IBaseRegistry.sol/struct.ContractIdentifier.md)
-- [IBaseRegistryEvents](IBaseRegistry.sol/interface.IBaseRegistryEvents.md)
-- [IBaseRegistryErrors](IBaseRegistry.sol/interface.IBaseRegistryErrors.md)
-- [IBaseRegistry](IBaseRegistry.sol/interface.IBaseRegistry.md)
-
-
-
-
-# Contents
-- [interfaces](/contracts/helpers/interfaces)
-- [BaseRegistry](BaseRegistry.sol/abstract.BaseRegistry.md)
-
-
-
-
-# Contents
-- [evm](/contracts/evm)
-- [helpers](/contracts/helpers)
-- [zevm](/contracts/zevm)
-- [INotSupportedMethods](Errors.sol/interface.INotSupportedMethods.md)
-- [RevertGasLimitExceeded](Revert.sol/error.RevertGasLimitExceeded.md)
-- [RevertOptions](Revert.sol/struct.RevertOptions.md)
-- [RevertContext](Revert.sol/struct.RevertContext.md)
-- [AbortContext](Revert.sol/struct.AbortContext.md)
-- [Revertable](Revert.sol/interface.Revertable.md)
-- [Abortable](Revert.sol/interface.Abortable.md)
-- [Revert constants](Revert.sol/constants.Revert.md)
-
-
 # Constants
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/Revert.sol)
 
@@ -7679,26 +7585,6 @@ event UpdatedProtocolFlatFee(uint256 protocolFlatFee);
 
 
 
-
-
-# Contents
-- [ICoreRegistry](ICoreRegistry.sol/interface.ICoreRegistry.md)
-- [IGatewayZEVMEvents](IGatewayZEVM.sol/interface.IGatewayZEVMEvents.md)
-- [IGatewayZEVMErrors](IGatewayZEVM.sol/interface.IGatewayZEVMErrors.md)
-- [IGatewayZEVM](IGatewayZEVM.sol/interface.IGatewayZEVM.md)
-- [CallOptions](IGatewayZEVM.sol/struct.CallOptions.md)
-- [ISystem](ISystem.sol/interface.ISystem.md)
-- [IWETH9](IWZETA.sol/interface.IWETH9.md)
-- [IZRC20](IZRC20.sol/interface.IZRC20.md)
-- [IZRC20Metadata](IZRC20.sol/interface.IZRC20Metadata.md)
-- [ZRC20Events](IZRC20.sol/interface.ZRC20Events.md)
-- [CoinType](IZRC20.sol/enum.CoinType.md)
-- [zContext](UniversalContract.sol/struct.zContext.md)
-- [zContract](UniversalContract.sol/interface.zContract.md)
-- [MessageContext](UniversalContract.sol/struct.MessageContext.md)
-- [UniversalContract](UniversalContract.sol/abstract.UniversalContract.md)
-
-
 # UniversalContract
 [Git Source](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/interfaces/UniversalContract.sol)
 
@@ -7833,14 +7719,6 @@ struct zContext {
 }
 ```
 
-
-
-
-
-# Contents
-- [ZetaInterfaces](ZetaConnectorZEVM.sol/interface.ZetaInterfaces.md)
-- [ZetaReceiver](ZetaConnectorZEVM.sol/interface.ZetaReceiver.md)
-- [ZetaConnectorZEVM](ZetaConnectorZEVM.sol/contract.ZetaConnectorZEVM.md)
 
 
 # ZetaConnectorZEVM
@@ -8405,27 +8283,6 @@ Error indicating a empty address was provided.
 error EmptyAddress();
 ```
 
-
-
-
-
-# Contents
-- [GatewayZEVMValidations](GatewayZEVMValidations.sol/library.GatewayZEVMValidations.md)
-
-
-
-
-# Contents
-- [interfaces](/contracts/zevm/interfaces)
-- [legacy](/contracts/zevm/legacy)
-- [libraries](/contracts/zevm/libraries)
-- [CoreRegistry](CoreRegistry.sol/contract.CoreRegistry.md)
-- [GatewayZEVM](GatewayZEVM.sol/contract.GatewayZEVM.md)
-- [SystemContractErrors](SystemContract.sol/interface.SystemContractErrors.md)
-- [SystemContract](SystemContract.sol/contract.SystemContract.md)
-- [WETH9](WZETA.sol/contract.WETH9.md)
-- [ZRC20Errors](ZRC20.sol/interface.ZRC20Errors.md)
-- [ZRC20](ZRC20.sol/contract.ZRC20.md)
 
 
 # SystemContract

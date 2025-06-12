@@ -37,6 +37,10 @@ done
 
 # Then process all other files
 find docs/src/contracts -type f -name "*.md" -print0 | sort -z | while IFS= read -r -d '' file; do
+    # Skip README.MD files
+    if [[ "$(basename "$file")" == "README.md" ]]; then
+        continue
+    fi
     # echo -e "\n# $(basename "$file" .md)\n" >> other_docs.md
     echo -e "\n" >> other_docs.md
     cat "$file" >> other_docs.md
