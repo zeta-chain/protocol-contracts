@@ -56,4 +56,11 @@ npx markdown-toc index.md >> docs/index.md
 
 cat index.md >> docs/index.md
 
+# Remove Inherits sections
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' -E '/^\*\*Inherits:\*\*/,+2d' docs/index.md
+else
+    sed -i -E '/^\*\*Inherits:\*\*/,+2d' docs/index.md
+fi
+
 rm index.md
