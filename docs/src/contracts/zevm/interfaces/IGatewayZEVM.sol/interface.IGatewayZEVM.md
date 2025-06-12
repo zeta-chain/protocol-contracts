@@ -157,6 +157,21 @@ function deposit(address zrc20, uint256 amount, address target) external;
 |`target`|`address`|The target address to receive the deposited tokens.|
 
 
+### deposit
+
+Deposit native ZETA.
+
+
+```solidity
+function deposit(address target) external payable;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`target`|`address`|The target address to receive the ZETA.|
+
+
 ### execute
 
 Execute a user-specified contract on ZEVM.
@@ -211,24 +226,17 @@ function depositAndCall(
 
 ### depositAndCall
 
-Deposit ZETA and call a user-specified contract on ZEVM.
+Deposit native ZETA and call a user-specified contract on ZEVM.
 
 
 ```solidity
-function depositAndCall(
-    MessageContext calldata context,
-    uint256 amount,
-    address target,
-    bytes calldata message
-)
-    external;
+function depositAndCall(MessageContext calldata context, address target, bytes calldata message) external payable;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`context`|`MessageContext`|The context of the cross-chain call.|
-|`amount`|`uint256`|The amount of tokens to transfer.|
 |`target`|`address`|The target contract to call.|
 |`message`|`bytes`|The calldata to pass to the contract call.|
 

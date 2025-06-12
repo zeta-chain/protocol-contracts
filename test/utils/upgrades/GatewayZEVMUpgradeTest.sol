@@ -11,10 +11,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-import {CallOptions, IGatewayZEVM} from "../../../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import {IZRC20} from "../../../contracts/zevm/interfaces/IZRC20.sol";
-import {MessageContext, UniversalContract} from "../../../contracts/zevm/interfaces/UniversalContract.sol";
-import {RevertContext, RevertOptions, Revertable} from "../../../contracts/Revert.sol";
+import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
+import { CallOptions, IGatewayZEVM } from "../../../contracts/zevm/interfaces/IGatewayZEVM.sol";
+import { IZRC20 } from "../../../contracts/zevm/interfaces/IZRC20.sol";
+import { MessageContext, UniversalContract } from "../../../contracts/zevm/interfaces/UniversalContract.sol";
 
 /// @title GatewayZEVMUpgradeTest
 /// @notice Modified GatewayZEVM contract for testing upgrades

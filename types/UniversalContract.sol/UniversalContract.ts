@@ -103,7 +103,7 @@ export interface UniversalContract extends BaseContract {
       message: BytesLike
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   registry: TypedContractMethod<[], [string], "view">;
@@ -125,7 +125,7 @@ export interface UniversalContract extends BaseContract {
       message: BytesLike
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "registry"

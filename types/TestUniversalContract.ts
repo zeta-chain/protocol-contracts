@@ -219,13 +219,13 @@ export interface TestUniversalContract extends BaseContract {
       message: BytesLike
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   onRevert: TypedContractMethod<
     [revertContext: RevertContextStruct],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   registry: TypedContractMethod<[], [string], "view">;
@@ -254,14 +254,14 @@ export interface TestUniversalContract extends BaseContract {
       message: BytesLike
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "onRevert"
   ): TypedContractMethod<
     [revertContext: RevertContextStruct],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "registry"

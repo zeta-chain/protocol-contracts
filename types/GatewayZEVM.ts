@@ -114,12 +114,12 @@ export interface GatewayZEVMInterface extends Interface {
       | "PROTOCOL_ADDRESS"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
-      | "deposit(uint256,address)"
+      | "deposit(address)"
       | "deposit(address,uint256,address)"
-      | "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
+      | "depositAndCall((bytes,address,uint256),address,bytes)"
       | "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
-      | "depositAndRevert(uint256,address,(address,address,uint256,bytes))"
       | "depositAndRevert(address,uint256,address,(address,address,uint256,bytes))"
+      | "depositAndRevert(address,(address,address,uint256,bytes))"
       | "execute"
       | "executeAbort"
       | "executeRevert"
@@ -186,16 +186,16 @@ export interface GatewayZEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit(uint256,address)",
-    values: [BigNumberish, AddressLike]
+    functionFragment: "deposit(address)",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "deposit(address,uint256,address)",
     values: [AddressLike, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
-    values: [MessageContextStruct, BigNumberish, AddressLike, BytesLike]
+    functionFragment: "depositAndCall((bytes,address,uint256),address,bytes)",
+    values: [MessageContextStruct, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)",
@@ -208,12 +208,12 @@ export interface GatewayZEVMInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "depositAndRevert(uint256,address,(address,address,uint256,bytes))",
-    values: [BigNumberish, AddressLike, RevertContextStruct]
-  ): string;
-  encodeFunctionData(
     functionFragment: "depositAndRevert(address,uint256,address,(address,address,uint256,bytes))",
     values: [AddressLike, BigNumberish, AddressLike, RevertContextStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndRevert(address,(address,address,uint256,bytes))",
+    values: [AddressLike, RevertContextStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
@@ -334,7 +334,7 @@ export interface GatewayZEVMInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(uint256,address)",
+    functionFragment: "deposit(address)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -342,7 +342,7 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndCall((bytes,address,uint256),uint256,address,bytes)",
+    functionFragment: "depositAndCall((bytes,address,uint256),address,bytes)",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -350,11 +350,11 @@ export interface GatewayZEVMInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndRevert(uint256,address,(address,address,uint256,bytes))",
+    functionFragment: "depositAndRevert(address,uint256,address,(address,address,uint256,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositAndRevert(address,uint256,address,(address,address,uint256,bytes))",
+    functionFragment: "depositAndRevert(address,(address,address,uint256,bytes))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
@@ -710,10 +710,10 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "deposit(uint256,address)": TypedContractMethod<
-    [amount: BigNumberish, target: AddressLike],
+  "deposit(address)": TypedContractMethod<
+    [target: AddressLike],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   "deposit(address,uint256,address)": TypedContractMethod<
@@ -722,15 +722,10 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "depositAndCall((bytes,address,uint256),uint256,address,bytes)": TypedContractMethod<
-    [
-      context: MessageContextStruct,
-      amount: BigNumberish,
-      target: AddressLike,
-      message: BytesLike
-    ],
+  "depositAndCall((bytes,address,uint256),address,bytes)": TypedContractMethod<
+    [context: MessageContextStruct, target: AddressLike, message: BytesLike],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)": TypedContractMethod<
@@ -745,16 +740,6 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
 
-  "depositAndRevert(uint256,address,(address,address,uint256,bytes))": TypedContractMethod<
-    [
-      amount: BigNumberish,
-      target: AddressLike,
-      revertContext: RevertContextStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-
   "depositAndRevert(address,uint256,address,(address,address,uint256,bytes))": TypedContractMethod<
     [
       zrc20: AddressLike,
@@ -764,6 +749,12 @@ export interface GatewayZEVM extends BaseContract {
     ],
     [void],
     "nonpayable"
+  >;
+
+  "depositAndRevert(address,(address,address,uint256,bytes))": TypedContractMethod<
+    [target: AddressLike, revertContext: RevertContextStruct],
+    [void],
+    "payable"
   >;
 
   execute: TypedContractMethod<
@@ -928,12 +919,8 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deposit(uint256,address)"
-  ): TypedContractMethod<
-    [amount: BigNumberish, target: AddressLike],
-    [void],
-    "nonpayable"
-  >;
+    nameOrSignature: "deposit(address)"
+  ): TypedContractMethod<[target: AddressLike], [void], "payable">;
   getFunction(
     nameOrSignature: "deposit(address,uint256,address)"
   ): TypedContractMethod<
@@ -942,16 +929,11 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "depositAndCall((bytes,address,uint256),uint256,address,bytes)"
+    nameOrSignature: "depositAndCall((bytes,address,uint256),address,bytes)"
   ): TypedContractMethod<
-    [
-      context: MessageContextStruct,
-      amount: BigNumberish,
-      target: AddressLike,
-      message: BytesLike
-    ],
+    [context: MessageContextStruct, target: AddressLike, message: BytesLike],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "depositAndCall((bytes,address,uint256),address,uint256,address,bytes)"
@@ -967,17 +949,6 @@ export interface GatewayZEVM extends BaseContract {
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "depositAndRevert(uint256,address,(address,address,uint256,bytes))"
-  ): TypedContractMethod<
-    [
-      amount: BigNumberish,
-      target: AddressLike,
-      revertContext: RevertContextStruct
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
     nameOrSignature: "depositAndRevert(address,uint256,address,(address,address,uint256,bytes))"
   ): TypedContractMethod<
     [
@@ -988,6 +959,13 @@ export interface GatewayZEVM extends BaseContract {
     ],
     [void],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndRevert(address,(address,address,uint256,bytes))"
+  ): TypedContractMethod<
+    [target: AddressLike, revertContext: RevertContextStruct],
+    [void],
+    "payable"
   >;
   getFunction(
     nameOrSignature: "execute"

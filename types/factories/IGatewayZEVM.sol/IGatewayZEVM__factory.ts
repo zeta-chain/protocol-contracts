@@ -86,6 +86,19 @@ const _abi = [
     name: "deposit",
     inputs: [
       {
+        name: "target",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
+  },
+  {
+    type: "function",
+    name: "deposit",
+    inputs: [
+      {
         name: "zrc20",
         type: "address",
         internalType: "address",
@@ -131,11 +144,6 @@ const _abi = [
         ],
       },
       {
-        name: "amount",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
         name: "target",
         type: "address",
         internalType: "address",
@@ -147,7 +155,7 @@ const _abi = [
       },
     ],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
   },
   {
     type: "function",

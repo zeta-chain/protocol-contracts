@@ -66,6 +66,7 @@ function onCall(
     bytes calldata message
 )
     external
+    payable
     virtual;
 ```
 
