@@ -28,6 +28,8 @@ touch prioritized_docs.md other_docs.md
 # First, process the two specific gateway files
 for file in "docs/src/contracts/evm/GatewayEVM.sol/contract.GatewayEVM.md" "docs/src/contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md"; do
     if [ -f "$file" ]; then
+        # echo -e "\n# $(basename "$file" .md)\n" >> prioritized_docs.md
+        echo -e "\n" >> prioritized_docs.md
         cat "$file" >> prioritized_docs.md
         rm "$file"
     fi
@@ -35,6 +37,8 @@ done
 
 # Then process all other files
 find docs/src/contracts -type f -name "*.md" -print0 | sort -z | while IFS= read -r -d '' file; do
+    # echo -e "\n# $(basename "$file" .md)\n" >> other_docs.md
+    echo -e "\n" >> other_docs.md
     cat "$file" >> other_docs.md
 done
 
