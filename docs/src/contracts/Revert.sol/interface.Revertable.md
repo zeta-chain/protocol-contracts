@@ -11,7 +11,7 @@ Called when a revertable call is made.
 
 
 ```solidity
-function onRevert(RevertContext calldata revertContext) external;
+function onRevert(RevertContext calldata revertContext) external payable;
 ```
 **Parameters**
 
