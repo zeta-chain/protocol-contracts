@@ -22,10 +22,24 @@ else
     find docs/src/ -type f -name "*.md" -exec sed -i -E 's|(https://github.com/zeta-chain/protocol-contracts/blob/)[^/]+/|\1main/|g' {} +
 fi
 
-find docs/src/contracts -type f -name "*.md" -print0 | sort -z | while IFS= read -r -d '' file; do
-    echo -e "\n## $(basename "$file" .md)\n" >> index.md
-    cat "$file" >> index.md
+# Create temporary files for prioritized and other docs
+touch prioritized_docs.md other_docs.md
+
+# First, process the two specific gateway files
+for file in "docs/src/contracts/evm/GatewayEVM.sol/contract.GatewayEVM.md" "docs/src/contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md"; do
+    if [ -f "$file" ]; then
+        cat "$file" >> prioritized_docs.md
+    fi
 done
+
+# Then process all other files
+find docs/src/contracts -type f -name "*.md" ! -name "contract.GatewayEVM.md" ! -name "contract.GatewayZEVM.md" -print0 | sort -z | while IFS= read -r -d '' file; do
+    cat "$file" >> other_docs.md
+done
+
+cat prioritized_docs.md other_docs.md > index.md
+
+rm prioritized_docs.md other_docs.md
 
 rm -rf docs
 
