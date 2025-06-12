@@ -29,11 +29,12 @@ touch prioritized_docs.md other_docs.md
 for file in "docs/src/contracts/evm/GatewayEVM.sol/contract.GatewayEVM.md" "docs/src/contracts/zevm/GatewayZEVM.sol/contract.GatewayZEVM.md"; do
     if [ -f "$file" ]; then
         cat "$file" >> prioritized_docs.md
+        rm "$file"
     fi
 done
 
 # Then process all other files
-find docs/src/contracts -type f -name "*.md" ! -name "contract.GatewayEVM.md" ! -name "contract.GatewayZEVM.md" -print0 | sort -z | while IFS= read -r -d '' file; do
+find docs/src/contracts -type f -name "*.md" -print0 | sort -z | while IFS= read -r -d '' file; do
     cat "$file" >> other_docs.md
 done
 
