@@ -42,7 +42,7 @@ Max size of message + revertOptions revert message.
 
 
 ```solidity
-uint256 public constant MAX_MESSAGE_SIZE = 2048;
+uint256 public constant MAX_MESSAGE_SIZE = 2880;
 ```
 
 
