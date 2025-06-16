@@ -40,7 +40,7 @@ contract GatewayZEVM is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @notice Max size of message + revertOptions revert message.
-    uint256 public constant MAX_MESSAGE_SIZE = 2048;
+    uint256 public constant MAX_MESSAGE_SIZE = 3072;
 
     /// @notice Minimum gas limit for a call.
     uint256 public constant MIN_GAS_LIMIT = 100_000;
