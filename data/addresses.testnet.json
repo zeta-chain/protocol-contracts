@@ -98,7 +98,7 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 sETH-sepolia_testnet",
+    "description": "ZetaChain ZRC20 sETH on Ethereum Sepolia",
     "foreign_chain_id": "11155111",
     "symbol": "sETH.SEPOLIA",
     "type": "zrc20"
@@ -111,7 +111,7 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Arbitrum Sepolia ETH",
+    "description": "ZetaChain ZRC20 ETH on Arbitrum Sepolia",
     "foreign_chain_id": "421614",
     "symbol": "ETH.ARBSEP",
     "type": "zrc20"
@@ -124,7 +124,7 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Base Sepolia ETH-base_sepolia",
+    "description": "ZetaChain ZRC20 ETH on Base Sepolia",
     "foreign_chain_id": "84532",
     "symbol": "ETH.BASESEPOLIA",
     "type": "zrc20"
@@ -163,7 +163,7 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 9,
-    "description": "ZetaChain ZRC20 TON Testnet TON",
+    "description": "ZetaChain ZRC20 TON on TON Testnet",
     "foreign_chain_id": "2015141",
     "symbol": "TON.TON",
     "type": "zrc20"
@@ -176,9 +176,9 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Amoy MATIC-amoy_testnet",
+    "description": "ZetaChain ZRC20 POL on Amoy Testnet",
     "foreign_chain_id": "80002",
-    "symbol": "MATIC.AMOY",
+    "symbol": "POL.AMOY",
     "type": "zrc20"
   },
   {
@@ -189,9 +189,9 @@
     "chain_name": "zeta_testnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "USDC-bsc_testnet",
+    "description": "ZetaChain ZRC20 USDC on BSC Testnet",
     "foreign_chain_id": "97",
-    "symbol": "USDC",
+    "symbol": "USDC.BSC",
     "type": "zrc20"
   },
   {
@@ -228,7 +228,7 @@
     "chain_name": "zeta_testnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "ZetaChain ZRC20 USDC on SEPOLIA",
+    "description": "ZetaChain ZRC20 USDC on Ethereum Sepolia",
     "foreign_chain_id": "11155111",
     "symbol": "USDC.SEPOLIA",
     "type": "zrc20"
@@ -254,9 +254,9 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "BNB-bsc_testnet",
+    "description": "ZetaChain ZRC20 BNB on BSC Testnet",
     "foreign_chain_id": "97",
-    "symbol": "tBNB",
+    "symbol": "BNB.BSC",
     "type": "zrc20"
   },
   {
@@ -267,9 +267,9 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 8,
-    "description": "sBTC.sBTC",
+    "description": "ZetaChain ZRC20 BTC on Bitcoin Signet",
     "foreign_chain_id": "18333",
-    "symbol": "sBTC",
+    "symbol": "sBTC.BTC",
     "type": "zrc20"
   },
   {
@@ -319,9 +319,9 @@
     "chain_name": "zeta_testnet",
     "coin_type": "gas",
     "decimals": 8,
-    "description": "ZetaChain ZRC20 Bitcoin Testnet4",
+    "description": "ZetaChain ZRC20 BTC on Bitcoin Testnet4",
     "foreign_chain_id": "18334",
-    "symbol": "tBTC",
+    "symbol": "tBTC.BTC",
     "type": "zrc20"
   },
   {
@@ -332,7 +332,7 @@
     "type": "tss"
   },
   {
-    "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
+    "address": "0x1B088fbAfD7ab966022944AD7b90B9f1113DC027",
     "category": "omnichain",
     "chain_id": 43113,
     "chain_name": "avalanche_testnet",
@@ -402,7 +402,7 @@
     "type": "zetaToken"
   },
   {
-    "address": "0x521c7665CA120Db02c115041122235B8654e60e6",
+    "address": "0x1B088fbAfD7ab966022944AD7b90B9f1113DC027",
     "category": "omnichain",
     "chain_id": 421614,
     "chain_name": "arbitrum_sepolia",
