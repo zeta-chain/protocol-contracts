@@ -70,7 +70,10 @@ abstract contract UniversalContract {
         gateway = IGatewayZEVM(registry.gatewayZEVM());
     }
 
-    /// @notice Function to handle cross-chain calls
+    /// @notice Function to handle cross-chain calls (use for ZETA deposits)
+    function onCall(MessageContext calldata context, bytes calldata message) external payable virtual;
+
+    /// @notice Function to handle cross-chain calls (use for ZRC20 deposits)
     function onCall(
         MessageContext calldata context,
         address zrc20,
@@ -78,6 +81,5 @@ abstract contract UniversalContract {
         bytes calldata message
     )
         external
-        payable
         virtual;
 }

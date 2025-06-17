@@ -444,7 +444,7 @@ contract GatewayZEVMUpgradeTest is
     {
         GatewayZEVMValidations.validateZetaDepositParams(msg.value, target, PROTOCOL_ADDRESS, address(this));
 
-        UniversalContract(target).onCall{ value: msg.value }(context, zetaToken, msg.value, message);
+        UniversalContract(target).onCall{ value: msg.value }(context, message);
     }
 
     /// @notice Revert a user-specified contract on ZEVM.
