@@ -55,7 +55,16 @@ constructor();
 
 ### onCall
 
-Function to handle cross-chain calls
+Function to handle cross-chain calls (use for ZETA deposits)
+
+
+```solidity
+function onCall(MessageContext calldata context, bytes calldata message) external payable virtual;
+```
+
+### onCall
+
+Function to handle cross-chain calls (use for ZRC20 deposits)
 
 
 ```solidity
@@ -66,7 +75,6 @@ function onCall(
     bytes calldata message
 )
     external
-    payable
     virtual;
 ```
 
