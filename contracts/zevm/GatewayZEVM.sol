@@ -40,7 +40,7 @@ contract GatewayZEVM is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @notice Max size of message + revertOptions revert message.
-    uint256 public constant MAX_MESSAGE_SIZE = 2048;
+    uint256 public constant MAX_MESSAGE_SIZE = 2880;
 
     /// @notice Minimum gas limit for a call.
     uint256 public constant MIN_GAS_LIMIT = 100_000;
@@ -187,9 +187,6 @@ contract GatewayZEVM is
         if (amount == 0) revert InsufficientZRC20Amount();
         if (callOptions.gasLimit < MIN_GAS_LIMIT) revert InsufficientGasLimit();
         if (message.length + revertOptions.revertMessage.length > MAX_MESSAGE_SIZE) revert MessageSizeExceeded();
-
-        // Solana mainnet not supported for now
-        require(IZRC20(zrc20).CHAIN_ID() != 900);
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit WithdrawnAndCalled(
