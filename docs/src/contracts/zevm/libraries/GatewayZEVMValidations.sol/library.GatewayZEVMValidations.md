@@ -12,7 +12,7 @@ Maximum message size constant
 
 
 ```solidity
-uint256 internal constant MAX_MESSAGE_SIZE = 2048;
+uint256 internal constant MAX_MESSAGE_SIZE = 2880;
 ```
 
 
