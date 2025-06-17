@@ -55,7 +55,7 @@ constructor();
 
 ### onCall
 
-Function to handle cross-chain calls (use for ZETA deposits)
+Function to handle cross-chain calls with native ZETA transfers
 
 
 ```solidity
@@ -64,7 +64,7 @@ function onCall(MessageContext calldata context, bytes calldata message) externa
 
 ### onCall
 
-Function to handle cross-chain calls (use for ZRC20 deposits)
+Function to handle cross-chain calls with ZRC20 token transfers
 
 
 ```solidity
