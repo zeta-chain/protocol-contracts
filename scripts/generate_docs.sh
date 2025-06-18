@@ -4,7 +4,7 @@ set -euo pipefail
 
 forge doc
 
-rm -rf index.md
+rm -f index.md
 
 cat docs/src/README.md docs/src/SUMMARY.md > docs/src/index.md
 
