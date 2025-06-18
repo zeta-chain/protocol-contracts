@@ -48,7 +48,6 @@
     "hardhat": "^2.22.13",
     "hardhat-gas-reporter": "^1.0.8",
     "lodash": "^4.17.21",
-    "markdown-toc": "^1.2.0",
     "solidity-coverage": "^0.8.1",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
