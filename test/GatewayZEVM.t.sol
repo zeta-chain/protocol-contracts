@@ -1087,13 +1087,13 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     function testDepositZETAFailsIfAmountIsZero() public {
         vm.prank(protocolAddress);
         vm.expectRevert(InsufficientAmount.selector);
-        gateway.deposit(0, addr1);
+        gateway.deposit{ value: 0 }(addr1);
     }
 
     function testDepositZETAFailsIfTargetIsZeroAddress() public {
         vm.prank(protocolAddress);
         vm.expectRevert(EmptyAddress.selector);
-        gateway.deposit(1, address(0));
+        gateway.deposit{ value: 1 }(address(0));
     }
 
     function testDepositZETAFailsIfSenderIsNotProtocol() public {
@@ -1101,7 +1101,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(CallerIsNotProtocol.selector);
         vm.prank(owner);
-        gateway.deposit(amount, addr1);
+        gateway.deposit{ value: amount }(addr1);
     }
 
     function testDepositZETAFailsIfTargetIsProtocol() public {
@@ -1109,7 +1109,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
-        gateway.deposit(amount, protocolAddress);
+        gateway.deposit{ value: amount }(protocolAddress);
     }
 
     function testDepositZETAFailsIfTargetIsGateway() public {
@@ -1117,7 +1117,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
-        gateway.deposit(amount, address(gateway));
+        gateway.deposit{ value: amount }(address(gateway));
     }
 
     function testDepositZETAFailsWhenPaused() public {
@@ -1128,39 +1128,35 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(EnforcedPause.selector);
         vm.prank(protocolAddress);
-        gateway.deposit(amount, addr1);
+        gateway.deposit{ value: amount }(addr1);
     }
 
     function testDepositZETAFailsIfInsufficientProtocolBalance() public {
-        uint256 amount = 1000;
+        uint256 protocolBalance = protocolAddress.balance;
 
+        vm.prank(protocolAddress);
+        payable(address(0x999)).transfer(protocolBalance - 1);
+
+        // Use low-level call because because when an account doesn't have enough ETH to cover the transaction value,
+        // Foundry throws an OutOfFunds error at the EVM level before the contract code even executes.
         vm.expectRevert();
         vm.prank(protocolAddress);
-        gateway.deposit(amount, addr1);
-    }
+        (bool success,) = address(gateway).call{ value: 2 }(abi.encodeWithSignature("deposit(address)", addr1));
 
-    function testDepositZETAFailsIfInsufficientAllowance() public {
-        uint256 amount = 1;
-
-        vm.prank(protocolAddress);
-        zetaToken.approve(address(gateway), 0);
-
-        vm.expectRevert();
-        vm.prank(protocolAddress);
-        gateway.deposit(amount, addr1);
+        assertFalse(success);
     }
 
     function testDepositZETA() public {
         uint256 amount = 1;
-        uint256 protocolZetaBalanceBefore = zetaToken.balanceOf(protocolAddress);
-        uint256 gatewayZetaBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 protocolZetaBalanceBefore = protocolAddress.balance;
+        uint256 gatewayZetaBalanceBefore = address(gateway).balance;
         uint256 targetBalanceBefore = addr1.balance;
 
         vm.prank(protocolAddress);
-        gateway.deposit(amount, addr1);
+        gateway.deposit{ value: amount }(addr1);
 
-        uint256 protocolZetaBalanceAfter = zetaToken.balanceOf(protocolAddress);
-        uint256 gatewayZetaBalanceAfter = zetaToken.balanceOf(address(gateway));
+        uint256 protocolZetaBalanceAfter = protocolAddress.balance;
+        uint256 gatewayZetaBalanceAfter = address(gateway).balance;
         uint256 targetBalanceAfter = addr1.balance;
 
         assertEq(protocolZetaBalanceBefore - amount, protocolZetaBalanceAfter);
@@ -1365,49 +1361,53 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsZeroAddress() public {
+        uint256 amount = 1;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(EmptyAddress.selector);
-        gateway.depositAndCall(context, 1, address(0), message);
+        gateway.depositAndCall{ value: amount }(context, address(0), message);
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsAmountIsZero() public {
+        uint256 amount = 0;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(InsufficientAmount.selector);
-        gateway.depositAndCall(context, 0, address(zrc20), message);
+        gateway.depositAndCall{ value: amount }(context, address(zrc20), message);
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfZeroAddress() public {
+        uint256 amount = 1;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(EmptyAddress.selector);
-        gateway.depositAndCall(context, 1, address(0), message);
+        gateway.depositAndCall{ value: amount }(context, address(0), message);
     }
 
     function testDepositZETAAndCallUniversal() public {
+        uint256 amount = 1;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
             MessageContext({ sender: abi.encodePacked(address(gateway)), senderEVM: protocolAddress, chainID: 1 });
 
         vm.prank(protocolAddress);
         vm.expectRevert(EmptyAddress.selector);
-        gateway.depositAndCall(context, 1, address(0), message);
+        gateway.depositAndCall{ value: amount }(context, address(0), message);
     }
 
     function testDepositZETAAndCallUniversalContract() public {
         uint256 amount = 1;
-        uint256 protocolBalanceBefore = zetaToken.balanceOf(protocolAddress);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 protocolBalanceBefore = protocolAddress.balance;
+        uint256 gatewayBalanceBefore = address(gateway).balance;
         uint256 destinationBalanceBefore = address(testUniversalContract).balance;
         bytes memory message = abi.encode("hello");
         MessageContext memory context =
@@ -1416,12 +1416,12 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextData(abi.encodePacked(gateway), protocolAddress, amount, address(gateway), "hello");
         vm.prank(protocolAddress);
-        gateway.depositAndCall(context, amount, address(testUniversalContract), message);
+        gateway.depositAndCall{ value: amount }(context, address(testUniversalContract), message);
 
-        uint256 protocolBalanceAfter = zetaToken.balanceOf(protocolAddress);
+        uint256 protocolBalanceAfter = protocolAddress.balance;
         assertEq(protocolBalanceBefore - amount, protocolBalanceAfter);
 
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        uint256 gatewayBalanceAfter = address(gateway).balance;
         assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
         // Verify amount is transfered to destination
@@ -1436,7 +1436,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(CallerIsNotProtocol.selector);
         vm.prank(owner);
-        gateway.depositAndCall(context, amount, address(testUniversalContract), message);
+        gateway.depositAndCall{ value: amount }(context, address(testUniversalContract), message);
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsProtocol() public {
@@ -1447,7 +1447,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
-        gateway.depositAndCall(context, amount, protocolAddress, message);
+        gateway.depositAndCall{ value: amount }(context, protocolAddress, message);
     }
 
     function testDepositZETAAndCallUniversalContractFailsIfTargetIsGateway() public {
@@ -1458,7 +1458,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
-        gateway.depositAndCall(context, amount, address(gateway), message);
+        gateway.depositAndCall{ value: amount }(context, address(gateway), message);
     }
 
     function testExecuteAbortUniversalContract() public {
@@ -1475,32 +1475,34 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
     }
 
     function testDepositZETAAndRevertUniversalContractFailsIfTargetIsZeroAddress() public {
+        uint256 amount = 1;
         vm.prank(protocolAddress);
         vm.expectRevert(EmptyAddress.selector);
-        gateway.depositAndRevert(1, address(0), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(0), revertContext);
     }
 
     function testDepositZETAAndRevertUniversalContractFailsIfAmountIsZero() public {
+        uint256 amount = 0;
         vm.prank(protocolAddress);
         vm.expectRevert(InsufficientAmount.selector);
-        gateway.depositAndRevert(0, address(testUniversalContract), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(testUniversalContract), revertContext);
     }
 
     function testDepositZETAAndRevertUniversalContract() public {
         uint256 amount = 1;
-        uint256 protocolBalanceBefore = zetaToken.balanceOf(protocolAddress);
-        uint256 gatewayBalanceBefore = zetaToken.balanceOf(address(gateway));
+        uint256 protocolBalanceBefore = protocolAddress.balance;
+        uint256 gatewayBalanceBefore = address(gateway).balance;
         uint256 destinationBalanceBefore = address(testUniversalContract).balance;
 
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
         vm.prank(protocolAddress);
-        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(testUniversalContract), revertContext);
 
-        uint256 protocolBalanceAfter = zetaToken.balanceOf(protocolAddress);
+        uint256 protocolBalanceAfter = protocolAddress.balance;
         assertEq(protocolBalanceBefore - amount, protocolBalanceAfter);
 
-        uint256 gatewayBalanceAfter = zetaToken.balanceOf(address(gateway));
+        uint256 gatewayBalanceAfter = address(gateway).balance;
         assertEq(gatewayBalanceBefore, gatewayBalanceAfter);
 
         // Verify amount is transferred to destination
@@ -1512,7 +1514,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(CallerIsNotProtocol.selector);
         vm.prank(owner);
-        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(testUniversalContract), revertContext);
     }
 
     function testDepositZETAAndRevertUniversalContractFailsIfTargetIsProtocol() public {
@@ -1520,7 +1522,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
-        gateway.depositAndRevert(amount, protocolAddress, revertContext);
+        gateway.depositAndRevert{ value: amount }(protocolAddress, revertContext);
     }
 
     function testDepositZETAAndRevertUniversalContractFailsIfTargetIsGateway() public {
@@ -1528,7 +1530,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(InvalidTarget.selector);
         vm.prank(protocolAddress);
-        gateway.depositAndRevert(amount, address(gateway), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(gateway), revertContext);
     }
 
     function testDepositZETAAndRevertUniversalContractWhenPaused() public {
@@ -1539,7 +1541,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
 
         vm.expectRevert(EnforcedPause.selector);
         vm.prank(protocolAddress);
-        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(testUniversalContract), revertContext);
 
         vm.prank(owner);
         gateway.unpause();
@@ -1547,7 +1549,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.expectEmit(true, true, true, true, address(testUniversalContract));
         emit ContextDataRevert(revertContext);
         vm.prank(protocolAddress);
-        gateway.depositAndRevert(amount, address(testUniversalContract), revertContext);
+        gateway.depositAndRevert{ value: amount }(address(testUniversalContract), revertContext);
     }
 
     function testBurnGasFeeForZRC20Withdrawal() public {

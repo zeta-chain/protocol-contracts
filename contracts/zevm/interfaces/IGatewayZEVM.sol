@@ -218,6 +218,10 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     /// @param target The target address to receive the deposited tokens.
     function deposit(address zrc20, uint256 amount, address target) external;
 
+    /// @notice Deposit native ZETA.
+    /// @param target The target address to receive the ZETA.
+    function deposit(address target) external payable;
+
     /// @notice Execute a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
     /// @param zrc20 The address of the ZRC20 token.
@@ -248,18 +252,11 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
     )
         external;
 
-    /// @notice Deposit ZETA and call a user-specified contract on ZEVM.
+    /// @notice Deposit native ZETA and call a user-specified contract on ZEVM.
     /// @param context The context of the cross-chain call.
-    /// @param amount The amount of tokens to transfer.
     /// @param target The target contract to call.
     /// @param message The calldata to pass to the contract call.
-    function depositAndCall(
-        MessageContext calldata context,
-        uint256 amount,
-        address target,
-        bytes calldata message
-    )
-        external;
+    function depositAndCall(MessageContext calldata context, address target, bytes calldata message) external payable;
 
     /// @notice Revert a user-specified contract on ZEVM.
     /// @param target The target contract to call.
