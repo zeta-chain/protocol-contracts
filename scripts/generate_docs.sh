@@ -54,9 +54,7 @@ rm -rf docs
 
 mkdir -p docs
 
-echo -e "# ZetaChain and EVM Protocol Contracts\n" > docs/index.md
-
-npx markdown-toc index.md --maxdepth 2 >> docs/index.md
+echo -e "# ZetaChain and EVM Protocol Contracts" > docs/index.md
 
 cat index.md >> docs/index.md
 
