@@ -32,6 +32,9 @@ interface IZRC20 {
     /// @dev Name is in upper case to maintain compatibility with ZRC20.sol v1
     function GAS_LIMIT() external view returns (uint256);
 
+    /// @dev Name is in upper case to maintain compatibility with ZRC20.sol v1
+    function SYSTEM_CONTRACT_ADDRESS() external view returns (address);
+
     function setName(string memory newName) external;
 
     function setSymbol(string memory newSymbol) external;
