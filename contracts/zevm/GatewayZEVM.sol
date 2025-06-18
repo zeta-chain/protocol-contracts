@@ -226,7 +226,7 @@ contract GatewayZEVM is
         if (gasPrice == 0) {
             revert ZeroGasPrice();
         }
-        // if its not WaC, get the gasLimit for ZETA transfer to the external chain
+        // if gasLimit is not provided, get the gasLimit for ZETA transfer to the external chain
         if (gasLimit == 0) {
             gasLimit = _getGasLimitForZETATransfer(chainId);
         }
