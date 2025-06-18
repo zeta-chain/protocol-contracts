@@ -44,9 +44,8 @@ struct MessageContext {
 /// @dev Contracts extending this abstract contract can handle incoming cross-chain messages
 /// and execute logic based on the provided context, token, and message payload.
 abstract contract UniversalContract {
-    // TODO: replace with real CoreRegistry address that will be deployed across all envs
     /// @notice Reference to the ZetaChain Registry contract
-    ICoreRegistry public constant registry = ICoreRegistry(0x7c591652f159496b14e15616F0948a6d63b585E8);
+    ICoreRegistry public constant registry = ICoreRegistry(0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394);
     /// @notice Reference to the ZetaChain Gateway contract
     IGatewayZEVM public immutable gateway;
 

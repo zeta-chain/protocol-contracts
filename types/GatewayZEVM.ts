@@ -112,6 +112,7 @@ export interface GatewayZEVMInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
+      | "REGISTRY"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "deposit(address)"
@@ -171,6 +172,7 @@ export interface GatewayZEVMInterface extends Interface {
     functionFragment: "PROTOCOL_ADDRESS",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "REGISTRY", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
@@ -328,6 +330,7 @@ export interface GatewayZEVMInterface extends Interface {
     functionFragment: "PROTOCOL_ADDRESS",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "REGISTRY", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
@@ -696,6 +699,8 @@ export interface GatewayZEVM extends BaseContract {
 
   PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
 
+  REGISTRY: TypedContractMethod<[], [string], "view">;
+
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
@@ -901,6 +906,9 @@ export interface GatewayZEVM extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PROTOCOL_ADDRESS"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "REGISTRY"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
