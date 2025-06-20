@@ -416,7 +416,7 @@
     "type": "gateway"
   },
   {
-    "address": "0:7a4d41496726aadb227cf4d313c95912f1fe6cc742c18ebde306ff59881d8816",
+    "address": "0:87115e4a012e747d9bce013ce2244010c6d5e3b0f88ddbc63420519b8619e5a0",
     "category": "omnichain",
     "chain_id": 2015141,
     "chain_name": "ton_testnet",
