@@ -78,7 +78,7 @@ Max size of payload + revertOptions revert message.
 
 
 ```solidity
-uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+uint256 public constant MAX_PAYLOAD_SIZE = 2880;
 ```
 
 
