@@ -51,7 +51,7 @@ contract GatewayEVM is
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
-    uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+    uint256 public constant MAX_PAYLOAD_SIZE = 2880;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
