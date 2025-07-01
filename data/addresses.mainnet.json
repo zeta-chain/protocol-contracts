@@ -207,7 +207,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "ZetaChain ZRC20 USDC on ETH",
+    "description": "ZetaChain ZRC20 USDC on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "USDC.ETH",
     "type": "zrc20"
@@ -220,7 +220,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 8,
-    "description": "ZetaChain ZRC20 BTC-btc_mainnet",
+    "description": "ZetaChain ZRC20 BTC on Bitcoin Mainnet",
     "foreign_chain_id": "8332",
     "symbol": "BTC.BTC",
     "type": "zrc20"
@@ -233,7 +233,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Base Mainnet ETH",
+    "description": "ZetaChain ZRC20 ETH on Base Mainnet",
     "foreign_chain_id": "8453",
     "symbol": "ETH.BASE",
     "type": "zrc20"
@@ -246,7 +246,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 PEPE on ETH",
+    "description": "ZetaChain ZRC20 PEPE on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "PEPE.ETH",
     "type": "zrc20"
@@ -285,7 +285,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 BNB-bsc_mainnet",
+    "description": "ZetaChain ZRC20 BNB on BSC Mainnet",
     "foreign_chain_id": "56",
     "symbol": "BNB.BSC",
     "type": "zrc20"
@@ -324,7 +324,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 SHIB on ETH",
+    "description": "ZetaChain ZRC20 SHIB on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "SHIB.ETH",
     "type": "zrc20"
@@ -337,7 +337,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "ZetaChain ZRC20 USDT on ETH",
+    "description": "ZetaChain ZRC20 USDT on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "USDT.ETH",
     "type": "zrc20"
@@ -363,7 +363,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 USDT on BSC",
+    "description": "ZetaChain ZRC20 USDT on BSC Mainnet",
     "foreign_chain_id": "56",
     "symbol": "USDT.BSC",
     "type": "zrc20"
@@ -376,7 +376,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "ZetaChain ZRC20 USDC on BASE",
+    "description": "ZetaChain ZRC20 USDC on Base Mainnet",
     "foreign_chain_id": "8453",
     "symbol": "USDC.BASE",
     "type": "zrc20"
@@ -402,7 +402,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Arbitrum One ETH",
+    "description": "ZetaChain ZRC20 ETH on Arbitrum One",
     "foreign_chain_id": "42161",
     "symbol": "ETH.ARB",
     "type": "zrc20"
@@ -415,9 +415,9 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Polygon POL-polygon_mainnet",
+    "description": "ZetaChain ZRC20 POL on Polygon Mainnet",
     "foreign_chain_id": "137",
-    "symbol": "POL.POLYGON",
+    "symbol": "POL.POL",
     "type": "zrc20"
   },
   {
@@ -428,7 +428,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 DAI on ETH",
+    "description": "ZetaChain ZRC20 DAI on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "DAI.ETH",
     "type": "zrc20"
@@ -454,7 +454,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 ULTI on BNB Chain",
+    "description": "ZetaChain ZRC20 ULTI on BSC Mainnet",
     "foreign_chain_id": "56",
     "symbol": "ULTI.BSC",
     "type": "zrc20"
@@ -467,7 +467,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 ETH-eth_mainnet",
+    "description": "ZetaChain ZRC20 ETH on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "ETH.ETH",
     "type": "zrc20"
@@ -480,7 +480,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "ZetaChain ZRC20 USDT on POL",
+    "description": "ZetaChain ZRC20 USDT on Polygon Mainnet",
     "foreign_chain_id": "137",
     "symbol": "USDT.POL",
     "type": "zrc20"
@@ -506,7 +506,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 ULTI on Ethereum",
+    "description": "ZetaChain ZRC20 ULTI on Ethereum Mainnet",
     "foreign_chain_id": "1",
     "symbol": "ULTI.ETH",
     "type": "zrc20"
@@ -532,7 +532,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "gas",
     "decimals": 18,
-    "description": "ZetaChain ZRC20 Avalanche C-Chain AVAX",
+    "description": "ZetaChain ZRC20 AVAX on Avalanche C-Chain",
     "foreign_chain_id": "43114",
     "symbol": "AVAX.AVAX",
     "type": "zrc20"
@@ -558,7 +558,7 @@
     "chain_name": "zeta_mainnet",
     "coin_type": "erc20",
     "decimals": 6,
-    "description": "ZetaChain ZRC20 USDC on POL",
+    "description": "ZetaChain ZRC20 USDC on Polygon Mainnet",
     "foreign_chain_id": "137",
     "symbol": "USDC.POL",
     "type": "zrc20"
