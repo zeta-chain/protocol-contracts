@@ -186,7 +186,7 @@ contract GatewayEVM is
         // Approve the target contract to spend the tokens
         if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
         // Approve token to spender
-        _safeApprove(token, to, amount);
+        IERC20(token).forceApprove(to, amount);
         // Execute the call on the target contract
         // if sender is provided in messageContext call is authenticated and target is Callable.onCall
         // otherwise, call is arbitrary
@@ -408,29 +408,6 @@ contract GatewayEVM is
         }
 
         return true;
-    }
-
-    /// @notice Approve a token for spending, handling tokens that don't return boolean value.
-    /// @dev Custom safe approve handling since current SafeERC implementation expects return value.
-    /// @param spender Address to approve.
-    /// @param amount Amount to approve.
-    function _safeApprove(address token, address spender, uint256 amount) private {
-        // Use low-level call in order to handle also the tokens that don't return value.
-        (bool success, bytes memory returnData) =
-            token.call(abi.encodeWithSelector(IERC20.approve.selector, spender, amount));
-        // Check if the call was successful.
-        if (!success) {
-            revert ApprovalFailed(token, spender);
-        }
-
-        // If there's return data, it should be true (for standard ERC20 tokens)
-        // If there's no return data, assume success (for non-standard tokens)
-        if (returnData.length > 0) {
-            bool approved = abi.decode(returnData, (bool));
-            if (!approved) {
-                revert ApprovalFailed(token, spender);
-            }
-        }
     }
 
     /// @dev Transfers tokens from the sender to the asset handler.
