@@ -440,25 +440,6 @@ function _resetApproval(address token, address to) private returns (bool);
 |`<none>`|`bool`|True if the approval reset was successful or if the token reverts on zero approval.|
 
 
-### _safeApprove
-
-Approve a token for spending, handling tokens that don't return boolean value.
-
-*Custom safe approve handling since current SafeERC implementation expects return value.*
-
-
-```solidity
-function _safeApprove(address token, address spender, uint256 amount) private;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`token`|`address`||
-|`spender`|`address`|Address to approve.|
-|`amount`|`uint256`|Amount to approve.|
-
-
 ### _transferFromToAssetHandler
 
 *Transfers tokens from the sender to the asset handler.
