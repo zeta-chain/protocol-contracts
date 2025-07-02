@@ -2,7 +2,7 @@
 pragma solidity 0.8.26;
 
 import "../../../contracts/Errors.sol";
-
+import { ICoreRegistry } from "../../../contracts/zevm/interfaces/ICoreRegistry.sol";
 import "../../../contracts/zevm/interfaces/ISystem.sol";
 import "../../../contracts/zevm/interfaces/IWZETA.sol";
 import "../../../contracts/zevm/libraries/GatewayZEVMValidations.sol";
