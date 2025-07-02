@@ -153,15 +153,8 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
 
     /// @notice Withdraw ZETA tokens to an external chain.
     /// @param receiver The receiver address on the external chain.
-    /// @param amount The amount of tokens to withdraw.
     /// @param revertOptions Revert options.
-    function withdraw(
-        bytes memory receiver,
-        uint256 amount,
-        uint256 chainId,
-        RevertOptions calldata revertOptions
-    )
-        external;
+    function withdraw(bytes memory receiver, uint256 chainId, RevertOptions calldata revertOptions) external payable;
 
     /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
@@ -182,20 +175,19 @@ interface IGatewayZEVM is IGatewayZEVMErrors, IGatewayZEVMEvents {
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     /// @param receiver The receiver address on the external chain.
-    /// @param amount The amount of tokens to withdraw.
     /// @param chainId Chain id of the external chain.
     /// @param message The calldata to pass to the contract call.
     /// @param callOptions Call options including gas limit and arbirtrary call flag.
     /// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
-        uint256 amount,
         uint256 chainId,
         bytes calldata message,
         CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
-        external;
+        external
+        payable;
 
     /// @notice Call a smart contract on an external chain without asset transfer.
     /// @param receiver The receiver address on the external chain.
