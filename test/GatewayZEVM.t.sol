@@ -64,7 +64,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         );
         gateway = GatewayZEVM(proxy);
 
-        address expectedRegistryAddress = gateway.REGISTRY();
+        address expectedRegistryAddress = gateway.registry();
         bytes memory creationCode = abi.encodePacked(type(CoreRegistry).creationCode);
         address deployedRegistry;
         assembly {
@@ -953,7 +953,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         );
         gateway = GatewayZEVM(proxy);
 
-        address expectedRegistryAddress = gateway.REGISTRY();
+        address expectedRegistryAddress = gateway.registry();
         bytes memory creationCode = abi.encodePacked(type(CoreRegistry).creationCode);
         address deployedRegistry;
         assembly {
