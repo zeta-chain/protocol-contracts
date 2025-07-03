@@ -896,12 +896,13 @@ Withdraw ZETA tokens to an external chain.
 ```solidity
 function withdraw(
     bytes memory receiver,
-    uint256 amount,
     uint256 chainId,
     RevertOptions calldata revertOptions
 )
     external
-    whenNotPaused;
+    payable
+    whenNotPaused
+    nonReentrant;
 ```
 
 ### withdrawAndCall
@@ -912,14 +913,15 @@ Withdraw ZETA tokens and call a smart contract on an external chain.
 ```solidity
 function withdrawAndCall(
     bytes memory receiver,
-    uint256 amount,
     uint256 chainId,
     bytes calldata message,
     CallOptions calldata callOptions,
     RevertOptions calldata revertOptions
 )
     external
-    whenNotPaused;
+    payable
+    whenNotPaused
+    nonReentrant;
 ```
 
 ### call
@@ -6070,20 +6072,13 @@ Withdraw ZETA tokens to an external chain.
 
 
 ```solidity
-function withdraw(
-    bytes memory receiver,
-    uint256 amount,
-    uint256 chainId,
-    RevertOptions calldata revertOptions
-)
-    external;
+function withdraw(bytes memory receiver, uint256 chainId, RevertOptions calldata revertOptions) external payable;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`receiver`|`bytes`|The receiver address on the external chain.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
 |`chainId`|`uint256`||
 |`revertOptions`|`RevertOptions`|Revert options.|
 
@@ -6124,20 +6119,19 @@ Withdraw ZETA tokens and call a smart contract on an external chain.
 ```solidity
 function withdrawAndCall(
     bytes memory receiver,
-    uint256 amount,
     uint256 chainId,
     bytes calldata message,
     CallOptions calldata callOptions,
     RevertOptions calldata revertOptions
 )
-    external;
+    external
+    payable;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
 |`receiver`|`bytes`|The receiver address on the external chain.|
-|`amount`|`uint256`|The amount of tokens to withdraw.|
 |`chainId`|`uint256`|Chain id of the external chain.|
 |`message`|`bytes`|The calldata to pass to the contract call.|
 |`callOptions`|`CallOptions`|Call options including gas limit and arbirtrary call flag.|
