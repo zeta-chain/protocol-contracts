@@ -11,7 +11,7 @@ import "../contracts/helpers/interfaces/IBaseRegistry.sol";
 import { SystemContract } from "../contracts/zevm/SystemContract.sol";
 import "../contracts/zevm/ZRC20.sol";
 import "../contracts/zevm/interfaces/IGatewayZEVM.sol";
-import { console } from "../dependencies/forge-std-1.9.2/src/console.sol";
+import { console } from "forge-std/console.sol";
 
 // Mock GatewayZEVM
 contract MockGatewayZEVM {

@@ -29,6 +29,7 @@
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.0",
     "@nomicfoundation/ignition-core": "^0.15.6",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
     "@openzeppelin/upgrades-core": "1.35.0",
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.0.0",
