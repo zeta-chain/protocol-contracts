@@ -243,15 +243,8 @@ contract GatewayZEVM is
     /// @param amount The amount of tokens to transfer.
     /// @param to The address to transfer the tokens to.
     function _transferZETA(uint256 amount, address to) private {
-        if (!_safeTransferFrom(zetaToken, msg.sender, address(this), amount)) {
-            revert FailedZetaSent(address(this), amount);
-        }
-        try IWETH9(zetaToken).withdraw(amount) {
-            (bool sent,) = to.call{ value: amount }("");
-            if (!sent) revert FailedZetaSent(to, amount);
-        } catch {
-            revert FailedZetaSent(to, amount);
-        }
+        (bool sent,) = to.call{ value: amount }("");
+        if (!sent) revert FailedZetaSent(to, amount);
     }
 
     /// @notice Withdraw ZRC20 tokens to an external chain.
@@ -322,28 +315,28 @@ contract GatewayZEVM is
 
     /// @notice Withdraw ZETA tokens to an external chain.
     //// @param receiver The receiver address on the external chain.
-    //// @param amount The amount of tokens to withdraw.
     //// @param chainId Chain id of the external chain.
     //// @param revertOptions Revert options.
     function withdraw(
         bytes memory receiver,
-        uint256 amount,
         uint256 chainId,
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
+        nonReentrant
     {
-        GatewayZEVMValidations.validateWithdrawalParams(receiver, amount, revertOptions);
+        GatewayZEVMValidations.validateWithdrawalParams(receiver, msg.value, revertOptions);
         (uint256 gasFee, uint256 protocolFlatFee) = _computeAndPayFeesForZETAWithdrawals(chainId, 0);
-        _transferZETA(amount, PROTOCOL_ADDRESS);
+        _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
         emit Withdrawn(
             msg.sender,
             chainId,
             receiver,
             address(zetaToken),
-            amount,
+            msg.value,
             gasFee,
             protocolFlatFee,
             "",
@@ -354,32 +347,32 @@ contract GatewayZEVM is
 
     /// @notice Withdraw ZETA tokens and call a smart contract on an external chain.
     //// @param receiver The receiver address on the external chain.
-    //// @param amount The amount of tokens to withdraw.
     //// @param chainId Chain id of the external chain.
     //// @param message The calldata to pass to the contract call.
     //// @param callOptions Call options including gas limit and arbirtrary call flag.
     //// @param revertOptions Revert options.
     function withdrawAndCall(
         bytes memory receiver,
-        uint256 amount,
         uint256 chainId,
         bytes calldata message,
         CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
+        nonReentrant
     {
-        GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, amount, message, callOptions, revertOptions);
+        GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, msg.value, message, callOptions, revertOptions);
         (uint256 gasFee, uint256 protocolFlatFee) = _computeAndPayFeesForZETAWithdrawals(chainId, callOptions.gasLimit);
-        _transferZETA(amount, PROTOCOL_ADDRESS);
+        _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
         emit WithdrawnAndCalled(
             msg.sender,
             chainId,
             receiver,
             address(zetaToken),
-            amount,
+            msg.value,
             gasFee,
             protocolFlatFee,
             message,
@@ -439,9 +432,7 @@ contract GatewayZEVM is
     /// @param target The target address to receive the ZETA.
     function deposit(address target) external payable nonReentrant onlyProtocol whenNotPaused {
         GatewayZEVMValidations.validateZetaDepositParams(msg.value, target, PROTOCOL_ADDRESS, address(this));
-
-        (bool sent,) = target.call{ value: msg.value }("");
-        if (!sent) revert FailedZetaSent(target, msg.value);
+        _transferZETA(msg.value, target);
     }
 
     /// @notice Execute a user-specified contract on ZEVM.

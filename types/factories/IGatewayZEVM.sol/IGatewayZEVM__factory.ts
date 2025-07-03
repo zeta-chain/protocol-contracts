@@ -357,14 +357,9 @@ const _abi = [
         internalType: "bytes",
       },
       {
-        name: "amount",
+        name: "chainId",
         type: "uint256",
         internalType: "uint256",
-      },
-      {
-        name: "zrc20",
-        type: "address",
-        internalType: "address",
       },
       {
         name: "revertOptions",
@@ -400,7 +395,7 @@ const _abi = [
       },
     ],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
   },
   {
     type: "function",
@@ -417,86 +412,9 @@ const _abi = [
         internalType: "uint256",
       },
       {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "revertOptions",
-        type: "tuple",
-        internalType: "struct RevertOptions",
-        components: [
-          {
-            name: "revertAddress",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "callOnRevert",
-            type: "bool",
-            internalType: "bool",
-          },
-          {
-            name: "abortAddress",
-            type: "address",
-            internalType: "address",
-          },
-          {
-            name: "revertMessage",
-            type: "bytes",
-            internalType: "bytes",
-          },
-          {
-            name: "onRevertGasLimit",
-            type: "uint256",
-            internalType: "uint256",
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "withdrawAndCall",
-    inputs: [
-      {
-        name: "receiver",
-        type: "bytes",
-        internalType: "bytes",
-      },
-      {
-        name: "amount",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "message",
-        type: "bytes",
-        internalType: "bytes",
-      },
-      {
-        name: "callOptions",
-        type: "tuple",
-        internalType: "struct CallOptions",
-        components: [
-          {
-            name: "gasLimit",
-            type: "uint256",
-            internalType: "uint256",
-          },
-          {
-            name: "isArbitraryCall",
-            type: "bool",
-            internalType: "bool",
-          },
-        ],
+        name: "zrc20",
+        type: "address",
+        internalType: "address",
       },
       {
         name: "revertOptions",
@@ -610,6 +528,78 @@ const _abi = [
     ],
     outputs: [],
     stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "withdrawAndCall",
+    inputs: [
+      {
+        name: "receiver",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
+        name: "chainId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "message",
+        type: "bytes",
+        internalType: "bytes",
+      },
+      {
+        name: "callOptions",
+        type: "tuple",
+        internalType: "struct CallOptions",
+        components: [
+          {
+            name: "gasLimit",
+            type: "uint256",
+            internalType: "uint256",
+          },
+          {
+            name: "isArbitraryCall",
+            type: "bool",
+            internalType: "bool",
+          },
+        ],
+      },
+      {
+        name: "revertOptions",
+        type: "tuple",
+        internalType: "struct RevertOptions",
+        components: [
+          {
+            name: "revertAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "callOnRevert",
+            type: "bool",
+            internalType: "bool",
+          },
+          {
+            name: "abortAddress",
+            type: "address",
+            internalType: "address",
+          },
+          {
+            name: "revertMessage",
+            type: "bytes",
+            internalType: "bytes",
+          },
+          {
+            name: "onRevertGasLimit",
+            type: "uint256",
+            internalType: "uint256",
+          },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
   },
   {
     type: "event",
