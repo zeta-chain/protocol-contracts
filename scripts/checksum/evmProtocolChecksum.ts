@@ -136,7 +136,7 @@ async function checkGatewayEVMState(
   console.log(`      📋 Role Assignments:`);
   const adminHasRole = await gatewayEVM.hasRole(DEFAULT_ADMIN_ROLE, allContracts.Admin);
   console.log(`        Admin has DEFAULT_ADMIN_ROLE: ${adminHasRole ? '✅' : '❌'}`);
-  const adminHasPauserRole = await gatewayEVM.hasRole(DEFAULT_ADMIN_ROLE, allContracts.Admin);
+  const adminHasPauserRole = await gatewayEVM.hasRole(PAUSER_ROLE, allContracts.Admin);
   console.log(`        Admin has PAUSER_ROLE: ${adminHasPauserRole ? '✅' : '❌'}`);
   const tssHasRole = await gatewayEVM.hasRole(TSS_ROLE, tssAddress);
   console.log(`        TSS has TSS_ROLE: ${tssHasRole ? '✅' : '❌'}`);
@@ -146,8 +146,86 @@ async function checkGatewayEVMState(
   console.log(`        Connector has ASSET_HANDLER_ROLE: ${connectorHasRole ? '✅' : '❌'}`);
 }
 
+async function checkERC20CustodyState(
+  contractName: string,
+  contractAddress: string,
+  allContracts: Record<string, string>,
+  provider: any
+) {
+  const erc20Custody = await hre.ethers.getContractAt(contractName, contractAddress, provider);
+
+  console.log(`    📊 State Variables:`);
+
+  // ERC20Custody specific state
+  const gateway = await erc20Custody.gateway();
+  const gatewayMatches = allContracts.GatewayEVM
+    ? gateway.toLowerCase() === allContracts.GatewayEVM.toLowerCase()
+    : false;
+  console.log(`      gateway: ${gatewayMatches ? '✅' : '❌'} ${gateway}`);
+  if (!gatewayMatches && allContracts.GatewayEVM) {
+    console.log(`        Expected: ${allContracts.GatewayEVM}`);
+  }
+
+  const tssAddress = await erc20Custody.tssAddress();
+  const tssMatches = allContracts.TSS
+    ? tssAddress.toLowerCase() === allContracts.TSS.toLowerCase()
+    : false;
+  console.log(`      tssAddress: ${tssMatches ? '✅' : '❌'} ${tssAddress}`);
+  if (!tssMatches && allContracts.TSS) {
+    console.log(`        Expected: ${allContracts.TSS}`);
+  }
+
+  // Access Control roles
+  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
+  const WITHDRAWER_ROLE = await erc20Custody.WITHDRAWER_ROLE();
+  const WHITELISTER_ROLE = await erc20Custody.WHITELISTER_ROLE();
+  const PAUSER_ROLE = await erc20Custody.PAUSER_ROLE();
+
+  console.log(`      📋 Role Assignments:`);
+  const adminHasDefaultRole = await erc20Custody.hasRole(DEFAULT_ADMIN_ROLE, allContracts.Admin);
+  console.log(`        Admin has DEFAULT_ADMIN_ROLE: ${adminHasDefaultRole ? '✅' : '❌'}`);
+  const adminHasPauserRole = await erc20Custody.hasRole(PAUSER_ROLE, allContracts.Admin);
+  console.log(`        Admin has PAUSER_ROLE: ${adminHasPauserRole ? '✅' : '❌'}`);
+  const adminHasWhitelisterRole = await erc20Custody.hasRole(WHITELISTER_ROLE, allContracts.Admin);
+  console.log(`        Admin has WHITELISTER_ROLE: ${adminHasWhitelisterRole ? '✅' : '❌'}`);
+  const tssHasWithdrawerRole = await erc20Custody.hasRole(WITHDRAWER_ROLE, tssAddress);
+  console.log(`        TSS has WITHDRAWER_ROLE: ${tssHasWithdrawerRole ? '✅' : '❌'}`);
+  const tssHasWhitelisterRole = await erc20Custody.hasRole(WHITELISTER_ROLE, tssAddress);
+  console.log(`        TSS has WHITELISTER_ROLE: ${tssHasWhitelisterRole ? '✅' : '❌'}`);
+}
+
+async function checkGatewayZEVMState(
+  contractName: string,
+  contractAddress: string,
+  allContracts: Record<string, string>,
+  provider: any
+) {
+  const gatewayZEVM = await hre.ethers.getContractAt(contractName, contractAddress, provider);
+
+  console.log(`    📊 State Variables:`);
+
+  // GatewayZEVM specific state
+  const zetaToken = await gatewayZEVM.zetaToken();
+  const zetaTokenMatches = allContracts.ZetaToken
+    ? zetaToken.toLowerCase() === allContracts.ZetaToken.toLowerCase()
+    : false;
+  console.log(`      zetaToken: ${zetaTokenMatches ? '✅' : '❌'} ${zetaToken}`);
+  if (!zetaTokenMatches && allContracts.ZetaToken) {
+    console.log(`        Expected: ${allContracts.ZetaToken}`);
+  }
+
+  // Access Control roles
+  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
+  const PAUSER_ROLE = await gatewayZEVM.PAUSER_ROLE();
+
+  console.log(`      📋 Role Assignments:`);
+  const adminHasDefaultRole = await gatewayZEVM.hasRole(DEFAULT_ADMIN_ROLE, allContracts.Admin);
+  console.log(`        Admin has DEFAULT_ADMIN_ROLE: ${adminHasDefaultRole ? '✅' : '❌'}`);
+  const adminHasPauserRole = await gatewayZEVM.hasRole(PAUSER_ROLE, allContracts.Admin);
+  console.log(`        Admin has PAUSER_ROLE: ${adminHasPauserRole ? '✅' : '❌'}`);
+}
+
 async function checkGatewayEVM(
-  chainId: string,
   contractName: string,
   contractAddress: string,
   allContracts: Record<string, string>,
@@ -165,7 +243,6 @@ async function checkGatewayEVM(
 }
 
 async function checkERC20Custody(
-  chainId: string,
   contractName: string,
   contractAddress: string,
   allContracts: Record<string, string>,
@@ -176,16 +253,15 @@ async function checkERC20Custody(
   if (allContracts.ERC20CustodyImplementation) {
     await checkProxy(contractName, contractAddress, allContracts.ERC20CustodyImplementation, provider);
     await compareBytecode(contractName, allContracts.ERC20CustodyImplementation, provider);
+    await checkERC20CustodyState(contractName, contractAddress, allContracts, provider);
   } else {
     console.log(`    ⚠️  No implementation found`);
   }
 }
 
 async function checkSystemContract(
-  chainId: string,
   contractName: string,
   contractAddress: string,
-  allContracts: Record<string, string>,
   provider: any
 ) {
   console.log(`\n  🏗️  SystemContract (Non-upgradeable):`);
@@ -193,7 +269,6 @@ async function checkSystemContract(
 }
 
 async function checkGatewayZEVM(
-  chainId: string,
   contractName: string,
   contractAddress: string,
   allContracts: Record<string, string>,
@@ -204,6 +279,7 @@ async function checkGatewayZEVM(
   if (allContracts.GatewayZEVMImplementation) {
     await checkProxy(contractName, contractAddress, allContracts.GatewayZEVMImplementation, provider);
     await compareBytecode(contractName, allContracts.GatewayZEVMImplementation, provider);
+    await checkGatewayZEVMState(contractName, contractAddress, allContracts, provider);
   } else {
     console.log(`    ⚠️  No implementation found`);
   }
@@ -234,16 +310,16 @@ async function checksumNetworks() {
       for (const [contractName, contractAddress] of Object.entries(contractsTyped)) {
         switch (contractName) {
           case "GatewayEVM":
-            await checkGatewayEVM(chainId, contractName, contractAddress, contractsTyped, provider);
+            await checkGatewayEVM(contractName, contractAddress, contractsTyped, provider);
             break;
           case "ERC20Custody":
-            await checkERC20Custody(chainId, contractName, contractAddress, contractsTyped, provider);
+            await checkERC20Custody(contractName, contractAddress, contractsTyped, provider);
             break;
           case "SystemContract":
-            await checkSystemContract(chainId, contractName, contractAddress, contractsTyped, provider);
+            await checkSystemContract(contractName, contractAddress, provider);
             break;
           case "GatewayZEVM":
-            await checkGatewayZEVM(chainId, contractName, contractAddress, contractsTyped, provider);
+            await checkGatewayZEVM(contractName, contractAddress, contractsTyped, provider);
             break;
         }
       }
