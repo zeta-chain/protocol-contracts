@@ -1,0 +1,44 @@
+{
+  "7001" : {
+    "FungibleModule": "0x735b14BB79463307AAcBED86DAf3322B1e6226aB",
+    "GatewayZEVM": "0x6c533f7fe93fae114d0954697069df33c9b74fd7",
+    "GatewayZEVMImplementation": "0xbb8B732Cf4A8CE8264e3fbC8499C0Cc31f3eF292",
+    "SystemContract": "0xEdf1c3275d13489aCdC6cD6eD246E72458B8795B"
+  },
+  "11155111" : {
+    "GatewayEVM": "0x0c487a766110c85d301d96e33579c5b317fa4995",
+    "GatewayEVMImplementation": "0x7E10457ab8F12a2C114B5e46C938B807CD9edDc1",
+    "ERC20Custody": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
+    "ERC20CustodyImplementation": "0x7524282ea07F95f9BA3eE1eD53e2CcbF72CD82eB"
+  },
+  "97" : {
+    "GatewayEVM": "0x0c487a766110c85d301d96e33579c5b317fa4995",
+    "GatewayEVMImplementation": "0x7E10457ab8F12a2C114B5e46C938B807CD9edDc1",
+    "ERC20Custody": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
+    "ERC20CustodyImplementation": "0x7524282ea07F95f9BA3eE1eD53e2CcbF72CD82eB"
+  },
+  "80002" : {
+    "GatewayEVM": "0x0c487a766110c85d301d96e33579c5b317fa4995",
+    "GatewayEVMImplementation": "0x7E10457ab8F12a2C114B5e46C938B807CD9edDc1",
+    "ERC20Custody": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
+    "ERC20CustodyImplementation": "0x7524282ea07F95f9BA3eE1eD53e2CcbF72CD82eB"
+  },
+  "84532" : {
+    "GatewayEVM": "0x0c487a766110c85d301d96e33579c5b317fa4995",
+    "GatewayEVMImplementation": "0x7E10457ab8F12a2C114B5e46C938B807CD9edDc1",
+    "ERC20Custody": "0xd80be3710f08d280f51115e072e5d2a778946cd7",
+    "ERC20CustodyImplementation": "0x7524282ea07F95f9BA3eE1eD53e2CcbF72CD82eB"
+  },
+  "421614" : {
+    "GatewayEVM": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
+    "GatewayEVMImplementation": "0x23766Cc94581daD11EA09e502156965930152Ce8",
+    "ERC20Custody": "0x1B088fbAfD7ab966022944AD7b90B9f1113DC027",
+    "ERC20CustodyImplementation": "0x87B5Fca697B4FfAa3E4eA29201Fc1420428015cB"
+  },
+  "43113" : {
+    "GatewayEVM": "0x0dA86Dc3F9B71F84a0E97B0e2291e50B7a5df10f",
+    "GatewayEVMImplementation": "0x496dCe139A2903af6187Af6017167C5880126E2A",
+    "ERC20Custody": "0x1B088fbAfD7ab966022944AD7b90B9f1113DC027",
+    "ERC20CustodyImplementation": "0x87B5Fca697B4FfAa3E4eA29201Fc1420428015cB"
+  }
+}
