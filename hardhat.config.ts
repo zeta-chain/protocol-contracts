@@ -17,19 +17,19 @@ const config: HardhatUserConfig = {
       chainId: 56,
     },
     polygon: {
-      url: process.env.POLYGON_RPC || "https://polygon.blockpi.network/v1/rpc/public",
+      url: process.env.POLYGON_RPC || "https://polygon.rpc.subquery.network/public",
       chainId: 137,
     },
     base: {
-      url: process.env.BASE_RPC || "https://base.blockpi.network/v1/rpc/public",
+      url: process.env.BASE_RPC || "https://base.rpc.subquery.network/public",
       chainId: 8453,
     },
     arbitrum: {
-      url: process.env.ARBITRUM_RPC || "https://arb1.arbitrum.io/rpc",
+      url: process.env.ARBITRUM_RPC || "https://arbitrum-one-rpc.publicnode.com",
       chainId: 42161,
     },
     avalanche: {
-      url: process.env.AVALANCHE_RPC || "https://api.avax.network/ext/bc/C/rpc",
+      url: process.env.AVALANCHE_RPC || "https://avalanche.drpc.org",
       chainId: 43114,
     },
   },
