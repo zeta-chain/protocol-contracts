@@ -27,7 +27,6 @@ function loadAddresses() {
 }
 
 async function checkProxy(
-  contractName: string,
   proxyAddress: string,
   localImplementation: string,
   provider: any
@@ -234,7 +233,7 @@ async function checkGatewayEVM(
   console.log(`\n  🏗️  GatewayEVM (Proxy):`);
 
   if (allContracts.GatewayEVMImplementation) {
-    await checkProxy(contractName, contractAddress, allContracts.GatewayEVMImplementation, provider);
+    await checkProxy(contractAddress, allContracts.GatewayEVMImplementation, provider);
     await compareBytecode(contractName, allContracts.GatewayEVMImplementation, provider);
     await checkGatewayEVMState(contractName, contractAddress, allContracts, provider);
   } else {
@@ -251,7 +250,7 @@ async function checkERC20Custody(
   console.log(`\n  🏗️  ERC20Custody (Proxy):`);
 
   if (allContracts.ERC20CustodyImplementation) {
-    await checkProxy(contractName, contractAddress, allContracts.ERC20CustodyImplementation, provider);
+    await checkProxy(contractAddress, allContracts.ERC20CustodyImplementation, provider);
     await compareBytecode(contractName, allContracts.ERC20CustodyImplementation, provider);
     await checkERC20CustodyState(contractName, contractAddress, allContracts, provider);
   } else {
@@ -277,7 +276,7 @@ async function checkGatewayZEVM(
   console.log(`\n  🏗️  GatewayZEVM (Proxy):`);
 
   if (allContracts.GatewayZEVMImplementation) {
-    await checkProxy(contractName, contractAddress, allContracts.GatewayZEVMImplementation, provider);
+    await checkProxy(contractAddress, allContracts.GatewayZEVMImplementation, provider);
     await compareBytecode(contractName, allContracts.GatewayZEVMImplementation, provider);
     await checkGatewayZEVMState(contractName, contractAddress, allContracts, provider);
   } else {
