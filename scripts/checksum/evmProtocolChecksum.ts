@@ -80,6 +80,72 @@ async function compareBytecode(
   }
 }
 
+async function checkGatewayEVMState(
+  contractName: string,
+  contractAddress: string,
+  allContracts: Record<string, string>,
+  provider: any
+) {
+  const gatewayEVM = await hre.ethers.getContractAt(contractName, contractAddress, provider);
+
+  console.log(`    📊 State Variables:`);
+
+  // GatewayEVM specific state
+  const custody = await gatewayEVM.custody();
+  const custodyMatches = allContracts.ERC20Custody
+    ? custody.toLowerCase() === allContracts.ERC20Custody.toLowerCase()
+    : false;
+  console.log(`      custody: ${custodyMatches ? '✅' : '❌'} ${custody}`);
+  if (!custodyMatches && allContracts.ERC20Custody) {
+    console.log(`        Expected: ${allContracts.ERC20Custody}`);
+  }
+
+  const tssAddress = await gatewayEVM.tssAddress();
+  const tssMatches = allContracts.TSS
+    ? tssAddress.toLowerCase() === allContracts.TSS.toLowerCase()
+    : false;
+  console.log(`      tssAddress: ${tssMatches ? '✅' : '❌'} ${tssAddress}`);
+  if (!tssMatches && allContracts.TSS) {
+    console.log(`        Expected: ${allContracts.TSS}`);
+  }
+
+  const zetaConnector = await gatewayEVM.zetaConnector();
+  const zetaConnectorMatches = allContracts.Connector
+    ? zetaConnector.toLowerCase() === allContracts.Connector.toLowerCase()
+    : false;
+  console.log(`      zetaConnector: ${zetaConnectorMatches ? '✅' : '❌'} ${zetaConnector}`);
+  if (!zetaConnectorMatches && allContracts.Connector) {
+    console.log(`        Expected: ${allContracts.Connector}`);
+  }
+
+  const zetaToken = await gatewayEVM.zetaToken();
+  const zetaTokenMatches = allContracts.ZetaToken
+    ? zetaToken.toLowerCase() === allContracts.ZetaToken.toLowerCase()
+    : false;
+  console.log(`      zetaToken: ${zetaTokenMatches ? '✅' : '❌'} ${zetaToken}`);
+  if (!zetaTokenMatches && allContracts.ZetaToken) {
+    console.log(`        Expected: ${allContracts.ZetaToken}`);
+  }
+
+  // Access Control roles
+  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
+  const TSS_ROLE = await gatewayEVM.TSS_ROLE();
+  const ASSET_HANDLER_ROLE = await gatewayEVM.ASSET_HANDLER_ROLE();
+  const PAUSER_ROLE = await gatewayEVM.PAUSER_ROLE();
+
+  console.log(`      📋 Role Assignments:`);
+  const adminHasRole = await gatewayEVM.hasRole(DEFAULT_ADMIN_ROLE, allContracts.Admin);
+  console.log(`        Admin has DEFAULT_ADMIN_ROLE: ${adminHasRole ? '✅' : '❌'}`);
+  const adminHasPauserRole = await gatewayEVM.hasRole(DEFAULT_ADMIN_ROLE, allContracts.Admin);
+  console.log(`        Admin has PAUSER_ROLE: ${adminHasPauserRole ? '✅' : '❌'}`);
+  const tssHasRole = await gatewayEVM.hasRole(TSS_ROLE, tssAddress);
+  console.log(`        TSS has TSS_ROLE: ${tssHasRole ? '✅' : '❌'}`);
+  const custodyHasRole = await gatewayEVM.hasRole(ASSET_HANDLER_ROLE, custody);
+  console.log(`        Custody has ASSET_HANDLER_ROLE: ${custodyHasRole ? '✅' : '❌'}`);
+  const connectorHasRole = await gatewayEVM.hasRole(ASSET_HANDLER_ROLE, zetaConnector);
+  console.log(`        Connector has ASSET_HANDLER_ROLE: ${connectorHasRole ? '✅' : '❌'}`);
+}
+
 async function checkGatewayEVM(
   chainId: string,
   contractName: string,
@@ -91,7 +157,8 @@ async function checkGatewayEVM(
 
   if (allContracts.GatewayEVMImplementation) {
     await checkProxy(contractName, contractAddress, allContracts.GatewayEVMImplementation, provider);
-    await compareBytecode("GatewayEVM", allContracts.GatewayEVMImplementation, provider);
+    await compareBytecode(contractName, allContracts.GatewayEVMImplementation, provider);
+    await checkGatewayEVMState(contractName, contractAddress, allContracts, provider);
   } else {
     console.log(`    ⚠️  No implementation found`);
   }
@@ -107,7 +174,7 @@ async function checkERC20Custody(
   console.log(`\n  🏗️  ERC20Custody (Proxy):`);
 
   if (allContracts.ERC20CustodyImplementation) {
-    await checkProxy("ERC20Custody", contractAddress, allContracts.ERC20CustodyImplementation, provider);
+    await checkProxy(contractName, contractAddress, allContracts.ERC20CustodyImplementation, provider);
     await compareBytecode(contractName, allContracts.ERC20CustodyImplementation, provider);
   } else {
     console.log(`    ⚠️  No implementation found`);
@@ -135,7 +202,7 @@ async function checkGatewayZEVM(
   console.log(`\n  🏗️  GatewayZEVM (Proxy):`);
 
   if (allContracts.GatewayZEVMImplementation) {
-    await checkProxy("GatewayZEVM", contractAddress, allContracts.GatewayZEVMImplementation, provider);
+    await checkProxy(contractName, contractAddress, allContracts.GatewayZEVMImplementation, provider);
     await compareBytecode(contractName, allContracts.GatewayZEVMImplementation, provider);
   } else {
     console.log(`    ⚠️  No implementation found`);
