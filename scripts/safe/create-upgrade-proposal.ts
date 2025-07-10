@@ -3,12 +3,12 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ethers } from 'ethers';
-import SafeApiKit from '@safe-global/api-kit'
-import Safe from '@safe-global/protocol-kit'
+import SafeApiKit from '@safe-global/api-kit';
+import Safe from '@safe-global/protocol-kit';
 import {
   MetaTransactionData,
   OperationType
-} from '@safe-global/types-kit'
+} from '@safe-global/types-kit';
 
 dotenv.config();
 
@@ -33,7 +33,7 @@ function loadAddresses() {
     const rawData = fs.readFileSync(addressesPath, 'utf8');
     return JSON.parse(rawData);
   } catch (error) {
-    console.error('❌ Error loading addresses from data/checksum/test.json');
+    console.error('❌ Error loading addresses from data/checksum/testnet.json:', error);
     process.exit(1);
   }
 }
@@ -105,7 +105,6 @@ async function createUpgradeProposal(
 
 async function main() {
   const addresses = loadAddresses();
-  const results: Record<string, any> = {};
   const upgradeData = process.env.UPGRADE_DATA || '0x';
 
   console.log('🚀 Starting upgrade proposals for all networks');
@@ -117,7 +116,6 @@ async function main() {
     const contractsTyped = contracts as Record<string, string>;
     if (!contractsTyped.GatewayEVM) {
       console.log(`\n⚠️ No GatewayEVM found for ${networkName} (Chain ID: ${chainId})`);
-      results[chainId] = { error: 'No GatewayEVM address' };
       continue;
     }
 
@@ -125,13 +123,12 @@ async function main() {
       const newImplementation = contractsTyped.GatewayEVMImplementation;
       if (!newImplementation) {
         console.log(`\n⚠️ No GatewayEVMImplementation found for ${networkName} (Chain ID: ${chainId})`);
-        results[chainId] = { error: 'No GatewayEVMImplementation address' };
         continue;
       }
 
-      results[chainId] = await createUpgradeProposal(chainIdNum, networkName, contractsTyped, upgradeData);
+      await createUpgradeProposal(chainIdNum, networkName, contractsTyped, upgradeData);
     } catch (error) {
-      console.error(`\n❌ Error creating proposal for ${networkName} (Chain ID: ${chainId})`);
+      console.error(`\n❌ Error creating proposal for ${networkName} (Chain ID: ${chainId}):`, error);
     }
   }
 }
