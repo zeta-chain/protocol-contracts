@@ -1,6 +1,7 @@
 import hre from "hardhat";
 import path from "path";
 import fs from "fs";
+import { JsonRpcProvider } from "ethers";
 
 
 // ERC1967 implementation slot: keccak256("eip1967.proxy.implementation") - 1
@@ -32,7 +33,7 @@ function loadAddresses() {
     const rawData = fs.readFileSync(addressesPath, 'utf8');
     return JSON.parse(rawData);
   } catch (error) {
-    console.error(`❌ Error loading addresses from JSON`);
+    console.error(`❌ Error loading addresses from JSON: ${error}`);
     process.exit(1);
   }
 }
@@ -40,7 +41,7 @@ function loadAddresses() {
 async function checkProxy(
   proxyAddress: string,
   localImplementation: string,
-  provider: any
+  provider: JsonRpcProvider
 ) {
   try {
     // Read the implementation slot form the proxy
@@ -69,7 +70,7 @@ async function checkProxy(
 async function compareBytecode(
   contractName: string,
   contractAddress: string,
-  provider: any
+  provider: JsonRpcProvider
 ) {
   try {
     const remoteBytecode = await provider.getCode(contractAddress);
@@ -323,7 +324,7 @@ async function checksumNetworks() {
         }
       }
     } catch (error) {
-      console.error(`  ❌ Error connecting to ${networkName}:`);
+      console.error(`  ❌ Error connecting to ${networkName}: ${error}`);
     }
   }
 }
@@ -331,7 +332,3 @@ async function checksumNetworks() {
 export async function main() {
   await checksumNetworks();
 }
-
-// if (require.main === module) {
-//   main().catch(console.error);
-// }
