@@ -6,6 +6,7 @@ import { JsonRpcProvider } from "ethers";
 
 // ERC1967 implementation slot: keccak256("eip1967.proxy.implementation") - 1
 const ERC1967_IMPLEMENTATION_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc";
+const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 const CHAIN_ID_TO_NETWORK: Record<string, string> = {
   "1": "eth_mainnet",
@@ -140,7 +141,6 @@ async function checkGatewayEVMState(
   }
 
   // Access Control roles
-  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
   const TSS_ROLE = await gatewayEVM.TSS_ROLE();
   const ASSET_HANDLER_ROLE = await gatewayEVM.ASSET_HANDLER_ROLE();
   const PAUSER_ROLE = await gatewayEVM.PAUSER_ROLE();
@@ -188,7 +188,6 @@ async function checkERC20CustodyState(
   }
 
   // Access Control roles
-  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
   const WITHDRAWER_ROLE = await erc20Custody.WITHDRAWER_ROLE();
   const WHITELISTER_ROLE = await erc20Custody.WHITELISTER_ROLE();
   const PAUSER_ROLE = await erc20Custody.PAUSER_ROLE();
@@ -227,7 +226,6 @@ async function checkGatewayZEVMState(
   }
 
   // Access Control roles
-  const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
   const PAUSER_ROLE = await gatewayZEVM.PAUSER_ROLE();
 
   console.log(`      📋 Role Assignments:`);
@@ -241,7 +239,7 @@ async function checkGatewayEVM(
   contractName: string,
   contractAddress: string,
   allContracts: Record<string, string>,
-  provider: any
+  provider: JsonRpcProvider
 ) {
   console.log(`\n  🏗️  GatewayEVM (Proxy):`);
 
@@ -258,7 +256,7 @@ async function checkERC20Custody(
   contractName: string,
   contractAddress: string,
   allContracts: Record<string, string>,
-  provider: any
+  provider: JsonRpcProvider
 ) {
   console.log(`\n  🏗️  ERC20Custody (Proxy):`);
 
@@ -275,7 +273,7 @@ async function checkGatewayZEVM(
   contractName: string,
   contractAddress: string,
   allContracts: Record<string, string>,
-  provider: any
+  provider: JsonRpcProvider
 ) {
   console.log(`\n  🏗️  GatewayZEVM (Proxy):`);
 
