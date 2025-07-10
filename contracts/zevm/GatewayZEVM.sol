@@ -219,12 +219,13 @@ contract GatewayZEVM is
     /// @param gasLimit The gas limit.
     /// @return gasFee The gas fee for the withdrawal.
     /// @return protocolFlatFee The protocol flat fee.
+    /// @return gasLimit_ The gas limit used for the withdrawal.
     function _computeAndPayFeesForZETAWithdrawals(
         uint256 chainId,
         uint256 gasLimit
     )
         private
-        returns (uint256 gasFee, uint256 protocolFlatFee)
+        returns (uint256 gasFee, uint256 protocolFlatFee, uint256 gasLimit_)
     {
         // get the gas ZRC20 token address for the external chain
         (address gasZRC20,) = ICoreRegistry(registry).getChainInfo(chainId);
@@ -243,7 +244,7 @@ contract GatewayZEVM is
         gasFee = gasPrice * gasLimit + protocolFlatFee;
         // burn protocol fees
         _burnProtocolFees(gasZRC20, gasFee);
-        return (gasFee, protocolFlatFee);
+        return (gasFee, protocolFlatFee, gasLimit);
     }
 
     /// @dev Private function to transfer ZETA tokens.
@@ -335,7 +336,7 @@ contract GatewayZEVM is
         nonReentrant
     {
         GatewayZEVMValidations.validateWithdrawalParams(receiver, msg.value, revertOptions);
-        (uint256 gasFee, uint256 protocolFlatFee) = _computeAndPayFeesForZETAWithdrawals(chainId, 0);
+        (uint256 gasFee, uint256 protocolFlatFee, uint256 gasLimit) = _computeAndPayFeesForZETAWithdrawals(chainId, 0);
         _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
         emit Withdrawn(
@@ -347,7 +348,7 @@ contract GatewayZEVM is
             gasFee,
             protocolFlatFee,
             "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
     }
@@ -371,7 +372,7 @@ contract GatewayZEVM is
         nonReentrant
     {
         GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, msg.value, message, callOptions, revertOptions);
-        (uint256 gasFee, uint256 protocolFlatFee) = _computeAndPayFeesForZETAWithdrawals(chainId, callOptions.gasLimit);
+        (uint256 gasFee, uint256 protocolFlatFee,) = _computeAndPayFeesForZETAWithdrawals(chainId, callOptions.gasLimit);
         _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
         emit WithdrawnAndCalled(

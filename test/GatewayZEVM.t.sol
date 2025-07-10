@@ -562,7 +562,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             gasFee,
             abi.decode(protocolFlatFeeValue, (uint256)),
             "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            CallOptions({ gasLimit: abi.decode(gasLimitValue, (uint256)), isArbitraryCall: true }),
             revertOptions
         );
 
@@ -607,7 +607,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             expectedGasFee,
             abi.decode(protocolFlatFeeValue, (uint256)),
             "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            CallOptions({ gasLimit: DEFAULT_GAS_LIMIT, isArbitraryCall: true }),
             revertOptions
         );
 
@@ -651,7 +651,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             expectedGasFee,
             expectedProtocolFlatFee,
             "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            CallOptions({ gasLimit: abi.decode(gasLimitValue, (uint256)), isArbitraryCall: true }),
             revertOptions
         );
 
@@ -690,7 +690,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             expectedGasFee,
             expectedProtocolFlatFee,
             "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            CallOptions({ gasLimit: DEFAULT_GAS_LIMIT, isArbitraryCall: true }),
             revertOptions
         );
 

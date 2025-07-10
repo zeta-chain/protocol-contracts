@@ -816,7 +816,7 @@ function _computeAndPayFeesForZETAWithdrawals(
     uint256 gasLimit
 )
     private
-    returns (uint256 gasFee, uint256 protocolFlatFee);
+    returns (uint256 gasFee, uint256 protocolFlatFee, uint256 gasLimit_);
 ```
 **Parameters**
 
@@ -831,6 +831,7 @@ function _computeAndPayFeesForZETAWithdrawals(
 |----|----|-----------|
 |`gasFee`|`uint256`|The gas fee for the withdrawal.|
 |`protocolFlatFee`|`uint256`|The protocol flat fee.|
+|`gasLimit_`|`uint256`|The gas limit used for the withdrawal.|
 
 
 ### _transferZETA
