@@ -2,30 +2,33 @@ import hre from "hardhat";
 import path from "path";
 import fs from "fs";
 
+
 // ERC1967 implementation slot: keccak256("eip1967.proxy.implementation") - 1
 const ERC1967_IMPLEMENTATION_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc";
 
 const CHAIN_ID_TO_NETWORK: Record<string, string> = {
-  "1": "ethereum",
-  "56": "bsc",
-  "137": "polygon",
-  "8453": "base",
-  "42161": "arbitrum",
-  "43114": "avalanche",
-  "7000": "zetachain",
-  "7001": "zetachainTestnet",
-  "11155111": "sepolia",
-  "97": "bscTestnet",
-  "80002": "polygonAmoy",
-  "84532": "baseSepolia",
-  "421614": "arbitrumSepolia",
-  "43113": "avalancheFuji"
+  "1": "eth_mainnet",
+  "56": "bsc_mainnet",
+  "137": "polygon_mainnet",
+  "8453": "base_mainnet",
+  "42161": "arbitrum_mainnet",
+  "43114": "avalanche_mainnet",
+  "7000": "zeta_mainnet",
+  "7001": "zeta_testnet",
+  "11155111": "sepolia_testnet",
+  "97": "bsc_testnet",
+  "80002": "amoy_testnet",
+  "84532": "base_sepolia",
+  "421614": "arbitrum_sepolia",
+  "43113": "avalanche_testnet"
 };
-
 
 function loadAddresses() {
   try {
-    const addressesPath = path.join(process.cwd(), `/data/checksum/testnet.json`);
+    const networkType = process.env.NETWORK_TYPE || 'testnet';
+    const fileName = `${networkType}.json`;
+
+    const addressesPath = path.join(process.cwd(), `/data/checksum/${fileName}`);
     const rawData = fs.readFileSync(addressesPath, 'utf8');
     return JSON.parse(rawData);
   } catch (error) {
@@ -325,10 +328,10 @@ async function checksumNetworks() {
   }
 }
 
-async function main() {
+export async function main() {
   await checksumNetworks();
 }
 
-if (require.main === module) {
-  main().catch(console.error);
-}
+// if (require.main === module) {
+//   main().catch(console.error);
+// }
