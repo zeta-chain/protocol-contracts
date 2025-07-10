@@ -12,12 +12,20 @@ const CHAIN_ID_TO_NETWORK: Record<string, string> = {
   "8453": "base",
   "42161": "arbitrum",
   "43114": "avalanche",
-  "7000": "zetachain"
+  "7000": "zetachain",
+  "7001": "zetachainTestnet",
+  "11155111": "sepolia",
+  "97": "bscTestnet",
+  "80002": "polygonAmoy",
+  "84532": "baseSepolia",
+  "421614": "arbitrumSepolia",
+  "43113": "avalancheFuji"
 };
+
 
 function loadAddresses() {
   try {
-    const addressesPath = path.join(process.cwd(), `/data/checksum/mainnet.json`);
+    const addressesPath = path.join(process.cwd(), `/data/checksum/testnet.json`);
     const rawData = fs.readFileSync(addressesPath, 'utf8');
     return JSON.parse(rawData);
   } catch (error) {
@@ -121,6 +129,7 @@ async function checkGatewayEVMState(
   const zetaTokenMatches = allContracts.ZetaToken
     ? zetaToken.toLowerCase() === allContracts.ZetaToken.toLowerCase()
     : false;
+
   console.log(`      zetaToken: ${zetaTokenMatches ? '✅' : '❌'} ${zetaToken}`);
   if (!zetaTokenMatches && allContracts.ZetaToken) {
     console.log(`        Expected: ${allContracts.ZetaToken}`);
@@ -258,15 +267,6 @@ async function checkERC20Custody(
   }
 }
 
-async function checkSystemContract(
-  contractName: string,
-  contractAddress: string,
-  provider: any
-) {
-  console.log(`\n  🏗️  SystemContract (Non-upgradeable):`);
-  await compareBytecode(contractName, contractAddress, provider);
-}
-
 async function checkGatewayZEVM(
   contractName: string,
   contractAddress: string,
@@ -313,9 +313,6 @@ async function checksumNetworks() {
             break;
           case "ERC20Custody":
             await checkERC20Custody(contractName, contractAddress, contractsTyped, provider);
-            break;
-          case "SystemContract":
-            await checkSystemContract(contractName, contractAddress, provider);
             break;
           case "GatewayZEVM":
             await checkGatewayZEVM(contractName, contractAddress, contractsTyped, provider);
