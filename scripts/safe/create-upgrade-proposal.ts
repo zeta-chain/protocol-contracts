@@ -95,7 +95,7 @@ async function createUpgradeProposal(
     safeAddress: safeAddress,
     safeTransactionData: safeTransaction.data,
     safeTxHash,
-    senderAddress: process.env.PROPOSER_ADDRESS,
+    senderAddress: process.env.PROPOSER_ADDRESS!,
     senderSignature: signature.data
   })
 
