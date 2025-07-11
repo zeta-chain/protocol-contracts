@@ -64,7 +64,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         );
         gateway = GatewayZEVM(proxy);
 
-        address expectedRegistryAddress = gateway.REGISTRY();
+        address expectedRegistryAddress = 0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394;
         bytes memory creationCode = abi.encodePacked(type(CoreRegistry).creationCode);
         address deployedRegistry;
         assembly {
@@ -73,6 +73,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         vm.etch(expectedRegistryAddress, deployedRegistry.code);
         CoreRegistry(expectedRegistryAddress).initialize(owner, owner, address(gateway));
         coreRegistry = CoreRegistry(expectedRegistryAddress);
+        gateway.setRegistryAddress(address(coreRegistry));
 
         protocolAddress = gateway.PROTOCOL_ADDRESS();
         testUniversalContract = new TestUniversalContract();
@@ -953,7 +954,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         );
         gateway = GatewayZEVM(proxy);
 
-        address expectedRegistryAddress = gateway.REGISTRY();
+        address expectedRegistryAddress = 0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394;
         bytes memory creationCode = abi.encodePacked(type(CoreRegistry).creationCode);
         address deployedRegistry;
         assembly {
@@ -962,6 +963,7 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.etch(expectedRegistryAddress, deployedRegistry.code);
         CoreRegistry(expectedRegistryAddress).initialize(owner, owner, address(gateway));
         coreRegistry = CoreRegistry(expectedRegistryAddress);
+        gateway.setRegistryAddress(address(coreRegistry));
 
         protocolAddress = gateway.PROTOCOL_ADDRESS();
 
