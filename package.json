@@ -61,7 +61,7 @@
     "@safe-global/api-kit": "^4.0.0",
     "@safe-global/protocol-kit": "^6.1.0",
     "@safe-global/types-kit": "^3.0.0",
-    "@zetachain/networks": "^10.0.0",
+    "@zetachain/networks": "^13.0.0",
     "ethers": "6.13.5"
   },
   "types": "./dist/lib/index.d.ts",
