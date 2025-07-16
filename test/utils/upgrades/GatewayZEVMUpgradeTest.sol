@@ -35,14 +35,14 @@ contract GatewayZEVMUpgradeTest is
     /// @notice The constant address of the protocol
     address public constant PROTOCOL_ADDRESS = 0x735b14BB79463307AAcBED86DAf3322B1e6226aB;
 
-    /// @notice The constant address of the registry contract on ZetaChain
-    address public constant REGISTRY = 0x7CCE3Eb018bf23e1FE2a32692f2C77592D110394;
+    /// @notice New role identifier for pauser role.
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
     /// @notice The address of the Zeta token.
     address public zetaToken;
 
-    /// @notice New role identifier for pauser role.
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    /// @notice The address of the registry contract on ZetaChain
+    address public registry;
 
     /// @dev Modified event for testing upgrade.
     event WithdrawnV2(
@@ -104,6 +104,13 @@ contract GatewayZEVMUpgradeTest is
     /// @notice Unpause contract.
     function unpause() external onlyRole(PAUSER_ROLE) {
         _unpause();
+    }
+
+    /// @notice Set registry address, callable only by DEFAULT_ADMIN_ROLE.
+    /// @param _registry The address of the registry contract.
+    function setRegistryAddress(address _registry) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (_registry == address(0)) revert GatewayZEVMValidations.EmptyAddress();
+        registry = _registry;
     }
 
     /// @notice Helper function to safely execute transferFrom
@@ -193,7 +200,7 @@ contract GatewayZEVMUpgradeTest is
         // default gas limit for ZETA transfer
         uint256 DEFAULT_GAS_LIMIT = 100_000;
         // fetch gasLimit for the external chain
-        try ICoreRegistry(REGISTRY).getChainMetadata(chainId, "gasLimit") returns (bytes memory _gasLimit) {
+        try ICoreRegistry(registry).getChainMetadata(chainId, "gasLimit") returns (bytes memory _gasLimit) {
             if (_gasLimit.length > 0) {
                 gasLimit = abi.decode(_gasLimit, (uint256));
             } else {
@@ -209,7 +216,7 @@ contract GatewayZEVMUpgradeTest is
     /// @return protocolFlatFee The protocol flat fee.
     function _getProtocolFlatFeeFromRegistry(uint256 chainId) private view returns (uint256 protocolFlatFee) {
         // fetch protocolFlatFee for the external chain
-        try ICoreRegistry(REGISTRY).getChainMetadata(chainId, "protocolFlatFee") returns (bytes memory _protocolFlatFee)
+        try ICoreRegistry(registry).getChainMetadata(chainId, "protocolFlatFee") returns (bytes memory _protocolFlatFee)
         {
             if (_protocolFlatFee.length > 0) {
                 protocolFlatFee = abi.decode(_protocolFlatFee, (uint256));
@@ -234,7 +241,7 @@ contract GatewayZEVMUpgradeTest is
         returns (uint256 gasFee, uint256 protocolFlatFee)
     {
         // get the gas ZRC20 token address for the external chain
-        (address gasZRC20,) = ICoreRegistry(REGISTRY).getChainInfo(chainId);
+        (address gasZRC20,) = ICoreRegistry(registry).getChainInfo(chainId);
         // get the current gas price for the external chain
         uint256 gasPrice = ISystem(IZRC20(gasZRC20).SYSTEM_CONTRACT_ADDRESS()).gasPriceByChainId(chainId);
         if (gasPrice == 0) {
