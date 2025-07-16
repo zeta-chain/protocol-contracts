@@ -112,7 +112,6 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
       | "DEFAULT_ADMIN_ROLE"
       | "PAUSER_ROLE"
       | "PROTOCOL_ADDRESS"
-      | "REGISTRY"
       | "UPGRADE_INTERFACE_VERSION"
       | "call"
       | "deposit(address)"
@@ -134,8 +133,10 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
       | "pause"
       | "paused"
       | "proxiableUUID"
+      | "registry"
       | "renounceRole"
       | "revokeRole"
+      | "setRegistryAddress"
       | "supportsInterface"
       | "unpause"
       | "upgradeToAndCall"
@@ -173,7 +174,6 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     functionFragment: "PROTOCOL_ADDRESS",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "REGISTRY", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     values?: undefined
@@ -270,6 +270,7 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     functionFragment: "proxiableUUID",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "registry", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
     values: [BytesLike, AddressLike]
@@ -277,6 +278,10 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
   encodeFunctionData(
     functionFragment: "revokeRole",
     values: [BytesLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRegistryAddress",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -330,7 +335,6 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     functionFragment: "PROTOCOL_ADDRESS",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "REGISTRY", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
     data: BytesLike
@@ -394,11 +398,16 @@ export interface GatewayZEVMUpgradeTestInterface extends Interface {
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setRegistryAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -742,8 +751,6 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
 
   PROTOCOL_ADDRESS: TypedContractMethod<[], [string], "view">;
 
-  REGISTRY: TypedContractMethod<[], [string], "view">;
-
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
   call: TypedContractMethod<
@@ -861,6 +868,8 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
 
   proxiableUUID: TypedContractMethod<[], [string], "view">;
 
+  registry: TypedContractMethod<[], [string], "view">;
+
   renounceRole: TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
     [void],
@@ -869,6 +878,12 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
 
   revokeRole: TypedContractMethod<
     [role: BytesLike, account: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  setRegistryAddress: TypedContractMethod<
+    [_registry: AddressLike],
     [void],
     "nonpayable"
   >;
@@ -947,9 +962,6 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "PROTOCOL_ADDRESS"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "REGISTRY"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
@@ -1086,6 +1098,9 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     nameOrSignature: "proxiableUUID"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "registry"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "renounceRole"
   ): TypedContractMethod<
     [role: BytesLike, callerConfirmation: AddressLike],
@@ -1099,6 +1114,9 @@ export interface GatewayZEVMUpgradeTest extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "setRegistryAddress"
+  ): TypedContractMethod<[_registry: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
