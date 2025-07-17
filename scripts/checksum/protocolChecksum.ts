@@ -3,27 +3,47 @@ import path from "path";
 import fs from "fs";
 import { JsonRpcProvider } from "ethers";
 
-
 // ERC1967 implementation slot: keccak256("eip1967.proxy.implementation") - 1
 const ERC1967_IMPLEMENTATION_SLOT = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc";
 const DEFAULT_ADMIN_ROLE = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
-const CHAIN_ID_TO_NETWORK: Record<string, string> = {
-  "1": "eth_mainnet",
-  "56": "bsc_mainnet",
-  "137": "polygon_mainnet",
-  "8453": "base_mainnet",
-  "42161": "arbitrum_mainnet",
-  "43114": "avalanche_mainnet",
-  "7000": "zeta_mainnet",
-  "7001": "zeta_testnet",
-  "11155111": "sepolia_testnet",
-  "97": "bsc_testnet",
-  "80002": "amoy_testnet",
-  "84532": "base_sepolia",
-  "421614": "arbitrum_sepolia",
-  "43113": "avalanche_testnet"
+const SUPPORTED_CHAINS_API = {
+  mainnet: "https://zetachain.blockpi.network/lcd/v1/public/zeta-chain/observer/supportedChains",
+  testnet: "https://zetachain-athens.blockpi.network/lcd/v1/public/zeta-chain/observer/supportedChains"
 };
+
+interface ChainInfo {
+  chain_id: string;
+  name: string;
+}
+
+interface SupportedChainsResponse {
+  chains: ChainInfo[];
+}
+
+async function fetchSupportedChains(): Promise<Record<string, string>> {
+  try {
+    const networkType = process.env.NETWORK_TYPE || 'testnet';
+    const apiUrl = SUPPORTED_CHAINS_API[networkType as keyof typeof SUPPORTED_CHAINS_API];
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error, status: ${response.status}`);
+    }
+
+    const data: SupportedChainsResponse = await response.json();
+    const chainMapping: Record<string, string> = {};
+
+    for (const chain of data.chains) {
+      chainMapping[chain.chain_id] = chain.name;
+    }
+
+    return chainMapping;
+  } catch (error) {
+    console.error("❌ Failed to fetch supported chains from API:", error);
+    process.exit(1);
+  }
+}
 
 function loadAddresses() {
   try {
@@ -288,6 +308,7 @@ async function checkGatewayZEVM(
 
 async function checksumNetworks() {
   const addresses = loadAddresses();
+  const CHAIN_ID_TO_NETWORK = await fetchSupportedChains();
 
   console.log("🔍 Contract checksum verification:");
   console.log("=".repeat(60));
