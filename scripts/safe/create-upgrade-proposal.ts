@@ -12,26 +12,50 @@ import {
 
 dotenv.config();
 
-const CHAIN_ID_TO_NETWORK: Record<string, string> = {
-  "1": "eth_mainnet",
-  "56": "bsc_mainnet",
-  "137": "polygon_mainnet",
-  "8453": "base_mainnet",
-  "42161": "arbitrum_mainnet",
-  "43114": "avalanche_mainnet",
-  "7000": "zeta_mainnet",
-  "7001": "zeta_testnet",
-  "11155111": "sepolia_testnet",
-  "97": "bsc_testnet",
-  "80002": "amoy_testnet",
-  "84532": "base_sepolia",
-  "421614": "arbitrum_sepolia",
-  "43113": "avalanche_testnet"
+const SUPPORTED_CHAINS_API = {
+  mainnet: "https://zetachain.blockpi.network/lcd/v1/public/zeta-chain/observer/supportedChains",
+  testnet: "https://zetachain-athens.blockpi.network/lcd/v1/public/zeta-chain/observer/supportedChains"
 };
+
+interface ChainInfo {
+  chain_id: string;
+  name: string;
+}
+
+interface SupportedChainsResponse {
+  chains: ChainInfo[];
+}
+
+async function fetchSupportedChains(): Promise<Record<string, string>> {
+  try {
+    const networkType = process.env.NETWORK_TYPE || 'testnet';
+    const apiUrl = SUPPORTED_CHAINS_API[networkType as keyof typeof SUPPORTED_CHAINS_API];
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error, status: ${response.status}`);
+    }
+
+    const data: SupportedChainsResponse = await response.json();
+    const chainMapping: Record<string, string> = {};
+
+    for (const chain of data.chains) {
+      chainMapping[chain.chain_id] = chain.name;
+    }
+
+    return chainMapping;
+  } catch (error) {
+    console.error("❌ Failed to fetch supported chains from API:", error);
+    process.exit(1);
+  }
+}
 
 function loadAddresses() {
   try {
-    const addressesPath = path.join(process.cwd(), 'data/checksum/testnet.json');
+    const networkType = process.env.NETWORK_TYPE || 'testnet';
+    const fileName = `${networkType}.json`;
+
+    const addressesPath = path.join(process.cwd(), `/data/checksum/${fileName}`);
     const rawData = fs.readFileSync(addressesPath, 'utf8');
     return JSON.parse(rawData);
   } catch (error) {
@@ -105,8 +129,9 @@ async function createUpgradeProposal(
   console.log(`  Safe Transaction Hash: ${safeTxHash}`);
 }
 
-async function main() {
+export async function main() {
   const addresses = loadAddresses();
+  const CHAIN_ID_TO_NETWORK = await fetchSupportedChains();
   const upgradeData = process.env.UPGRADE_DATA || '0x';
 
   console.log('🚀 Starting upgrade proposals for all networks');
@@ -133,8 +158,4 @@ async function main() {
       console.error(`\n❌ Error creating proposal for ${networkName} (Chain ID: ${chainId}):`, error);
     }
   }
-}
-
-if (require.main === module) {
-  main().catch(console.error);
 }
