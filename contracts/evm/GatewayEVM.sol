@@ -5,7 +5,7 @@ import { INotSupportedMethods } from "../../contracts/Errors.sol";
 import { RevertContext, RevertOptions, Revertable } from "../../contracts/Revert.sol";
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
-import { Callable, IGatewayEVM, MessageContext } from "./interfaces/IGatewayEVM.sol";
+import "./interfaces/IGatewayEVM.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -148,7 +148,7 @@ contract GatewayEVM is
         if (messageContext.sender == address(0)) {
             result = _executeArbitraryCall(destination, data);
         } else {
-            result = _executeAuthenticatedCall(messageContext, destination, data);
+            result = _executeAuthenticatedCall(messageContext, destination, address(0), msg.value, data);
         }
 
         emit Executed(destination, msg.value, data);
@@ -187,7 +187,7 @@ contract GatewayEVM is
         if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
         } else {
-            _executeAuthenticatedCall(messageContext, to, data);
+            _executeAuthenticatedCall(messageContext, to, token, amount, data);
         }
 
         // Reset approval
@@ -426,17 +426,29 @@ contract GatewayEVM is
     /// @dev Private function to execute an authenticated call to a destination address.
     /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param destination Address to call.
+    /// @param asset Address of the asset.
+    /// @param amount The amount of the asset.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _executeAuthenticatedCall(
         MessageContext calldata messageContext,
         address destination,
+        address asset,
+        uint256 amount,
         bytes calldata data
     )
         private
         returns (bytes memory)
     {
-        return Callable(destination).onCall{ value: msg.value }(messageContext, data);
+        // Try standard Callable interface first.
+        try Callable(destination).onCall{ value: msg.value }(messageContext, data) returns (bytes memory result) {
+            return result;
+        } catch {
+            // Contract doesn't support standard interface, try extended interface with asset and amount info.
+            ExtendedMessageContext memory extendedMessageContext =
+                ExtendedMessageContext({ sender: messageContext.sender, asset: asset, amount: amount });
+            return ExtendedCallable(destination).onCall{ value: msg.value }(extendedMessageContext, data);
+        }
     }
 
     // @dev prevent spoofing onCall and onRevert functions
