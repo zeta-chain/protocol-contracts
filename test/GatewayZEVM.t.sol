@@ -216,6 +216,84 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         assertEq(ownerBalanceBefore, ownerBalanceAfter);
     }
 
+    function testWithdrawZRC20WithCustomGasLimit() public {
+        uint256 amount = 1;
+        uint256 customGasLimit = 200_000;
+        uint256 ownerBalanceBefore = zrc20.balanceOf(owner);
+        uint256 expectedGasFee = customGasLimit;
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Withdrawn(
+            owner,
+            0,
+            abi.encodePacked(addr1),
+            address(zrc20),
+            amount,
+            expectedGasFee,
+            zrc20.PROTOCOL_FLAT_FEE(),
+            "",
+            CallOptions({ gasLimit: customGasLimit, isArbitraryCall: true }),
+            revertOptions
+        );
+
+        gateway.withdraw(abi.encodePacked(addr1), amount, customGasLimit, address(zrc20), revertOptions);
+        uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
+        assertEq(ownerBalanceBefore - amount - expectedGasFee, ownerBalanceAfter);
+    }
+
+    function testWithdrawZRC20WithCustomGasLimitFailsIfGasLimitTooLow() public {
+        uint256 amount = 1;
+        uint256 lowGasLimit = MIN_GAS_LIMIT - 1;
+        vm.expectRevert(InsufficientGasLimit.selector);
+        gateway.withdraw(abi.encodePacked(addr1), amount, lowGasLimit, address(zrc20), revertOptions);
+    }
+
+    function testWithdrawZRC20WithCustomGasLimitFailsIfAmountIsZero() public {
+        uint256 customGasLimit = 150_000;
+
+        vm.expectRevert(InsufficientAmount.selector);
+        gateway.withdraw(abi.encodePacked(addr1), 0, customGasLimit, address(zrc20), revertOptions);
+    }
+
+    function testWithdrawZRC20WithCustomGasLimitFailsIfReceiverIsEmpty() public {
+        uint256 amount = 1;
+        uint256 customGasLimit = 150_000;
+
+        vm.expectRevert(EmptyAddress.selector);
+        gateway.withdraw(abi.encodePacked(""), amount, customGasLimit, address(zrc20), revertOptions);
+    }
+
+    function testWithdrawZRC20WithCustomGasLimitFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 1;
+        uint256 customGasLimit = 150_000;
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: true,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.withdraw(abi.encodePacked(addr1), amount, customGasLimit, address(zrc20), revertOptionsExcessiveGas);
+    }
+
+    function testWithdrawZRC20WithCustomGasLimitFailsIfMessageSizeExceeded() public {
+        uint256 amount = 1;
+        uint256 customGasLimit = 150_000;
+        revertOptions.revertMessage = new bytes(gateway.getMaxMessageSize() + 1);
+
+        uint256 messageSize = revertOptions.revertMessage.length;
+        uint256 maxSize = gateway.getMaxMessageSize();
+
+        vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
+        gateway.withdraw(abi.encodePacked(addr1), amount, customGasLimit, address(zrc20), revertOptions);
+    }
+
     function testWithdrawAndCallZRC20FailsIfReceiverIsZeroAddress() public {
         bytes memory message = abi.encodeWithSignature("hello(address)", addr1);
         vm.expectRevert(EmptyAddress.selector);
