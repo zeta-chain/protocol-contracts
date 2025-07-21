@@ -170,14 +170,14 @@ contract GatewayZEVM is
     ///      either smart contract accounts or smart contracts with custom receive/fallback implementations.
     /// @param receiver The receiver address on the external chain.
     /// @param amount The amount of tokens to withdraw.
-    /// @param gasLimit The custom gas limit for the withdrawal (must be >= MIN_GAS_LIMIT).
     /// @param zrc20 The address of the ZRC20 token.
+    /// @param gasLimit The custom gas limit for the withdrawal (must be >= MIN_GAS_LIMIT).
     /// @param revertOptions Revert options.
     function withdraw(
         bytes memory receiver,
         uint256 amount,
-        uint256 gasLimit,
         address zrc20,
+        uint256 gasLimit,
         RevertOptions calldata revertOptions
     )
         external
