@@ -233,12 +233,13 @@ contract GatewayZEVMUpgradeTest is
     /// @param gasLimit The gas limit.
     /// @return gasFee The gas fee for the withdrawal.
     /// @return protocolFlatFee The protocol flat fee.
+    /// @return gasLimit_ The gas limit used for the withdrawal.
     function _computeAndPayFeesForZETAWithdrawals(
         uint256 chainId,
         uint256 gasLimit
     )
         private
-        returns (uint256 gasFee, uint256 protocolFlatFee)
+        returns (uint256 gasFee, uint256 protocolFlatFee, uint256 gasLimit_)
     {
         // get the gas ZRC20 token address for the external chain
         (address gasZRC20,) = ICoreRegistry(registry).getChainInfo(chainId);
@@ -257,7 +258,7 @@ contract GatewayZEVMUpgradeTest is
         gasFee = gasPrice * gasLimit + protocolFlatFee;
         // burn protocol fees
         _burnProtocolFees(gasZRC20, gasFee);
-        return (gasFee, protocolFlatFee);
+        return (gasFee, protocolFlatFee, gasLimit);
     }
 
     /// @dev Private function to transfer ZETA tokens.
@@ -295,6 +296,42 @@ contract GatewayZEVMUpgradeTest is
             IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
             "",
             CallOptions({ gasLimit: IZRC20(zrc20).GAS_LIMIT(), isArbitraryCall: true }),
+            revertOptions
+        );
+    }
+
+    /// @notice Withdraw ZRC20 tokens to an external chain with custom gas limit.
+    /// @dev Use this function for simple gas ZRC20 withdrawals to the receivers that are
+    ///      either smart contract accounts or smart contracts with custom receive/fallback implementations.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param gasLimit The custom gas limit for the withdrawal (must be >= MIN_GAS_LIMIT).
+    /// @param revertOptions Revert options.
+    function withdraw(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        uint256 gasLimit,
+        RevertOptions calldata revertOptions
+    )
+        external
+        whenNotPaused
+    {
+        GatewayZEVMValidations.validateWithdrawalParams(receiver, amount, revertOptions);
+        GatewayZEVMValidations.validateGasLimit(gasLimit);
+
+        uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, gasLimit);
+        emit Withdrawn(
+            msg.sender,
+            0,
+            receiver,
+            zrc20,
+            amount,
+            gasFee,
+            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
+            "",
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
     }
@@ -349,7 +386,7 @@ contract GatewayZEVMUpgradeTest is
         nonReentrant
     {
         GatewayZEVMValidations.validateWithdrawalParams(receiver, msg.value, revertOptions);
-        (uint256 gasFee, uint256 protocolFlatFee) = _computeAndPayFeesForZETAWithdrawals(chainId, 0);
+        (uint256 gasFee, uint256 protocolFlatFee, uint256 gasLimit) = _computeAndPayFeesForZETAWithdrawals(chainId, 0);
         _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
         emit Withdrawn(
@@ -361,7 +398,7 @@ contract GatewayZEVMUpgradeTest is
             gasFee,
             protocolFlatFee,
             "",
-            CallOptions({ gasLimit: 0, isArbitraryCall: true }),
+            CallOptions({ gasLimit: gasLimit, isArbitraryCall: true }),
             revertOptions
         );
     }
@@ -385,7 +422,7 @@ contract GatewayZEVMUpgradeTest is
         nonReentrant
     {
         GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, msg.value, message, callOptions, revertOptions);
-        (uint256 gasFee, uint256 protocolFlatFee) = _computeAndPayFeesForZETAWithdrawals(chainId, callOptions.gasLimit);
+        (uint256 gasFee, uint256 protocolFlatFee,) = _computeAndPayFeesForZETAWithdrawals(chainId, callOptions.gasLimit);
         _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
         emit WithdrawnAndCalled(

@@ -236,7 +236,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
             revertOptions
         );
 
-        gateway.withdraw(abi.encodePacked(addr1), amount, customGasLimit, address(zrc20), revertOptions);
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), customGasLimit, revertOptions);
         uint256 ownerBalanceAfter = zrc20.balanceOf(owner);
         assertEq(ownerBalanceBefore - amount - expectedGasFee, ownerBalanceAfter);
     }
@@ -245,14 +245,14 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 amount = 1;
         uint256 lowGasLimit = MIN_GAS_LIMIT - 1;
         vm.expectRevert(InsufficientGasLimit.selector);
-        gateway.withdraw(abi.encodePacked(addr1), amount, lowGasLimit, address(zrc20), revertOptions);
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), lowGasLimit, revertOptions);
     }
 
     function testWithdrawZRC20WithCustomGasLimitFailsIfAmountIsZero() public {
         uint256 customGasLimit = 150_000;
 
         vm.expectRevert(InsufficientAmount.selector);
-        gateway.withdraw(abi.encodePacked(addr1), 0, customGasLimit, address(zrc20), revertOptions);
+        gateway.withdraw(abi.encodePacked(addr1), 0, address(zrc20), customGasLimit, revertOptions);
     }
 
     function testWithdrawZRC20WithCustomGasLimitFailsIfReceiverIsEmpty() public {
@@ -260,7 +260,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 customGasLimit = 150_000;
 
         vm.expectRevert(EmptyAddress.selector);
-        gateway.withdraw(abi.encodePacked(""), amount, customGasLimit, address(zrc20), revertOptions);
+        gateway.withdraw(abi.encodePacked(""), amount, address(zrc20), customGasLimit, revertOptions);
     }
 
     function testWithdrawZRC20WithCustomGasLimitFailsIfRevertGasLimitExceeded() public {
@@ -279,7 +279,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
                 RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
             )
         );
-        gateway.withdraw(abi.encodePacked(addr1), amount, customGasLimit, address(zrc20), revertOptionsExcessiveGas);
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), customGasLimit, revertOptionsExcessiveGas);
     }
 
     function testWithdrawZRC20WithCustomGasLimitFailsIfMessageSizeExceeded() public {
@@ -291,7 +291,7 @@ contract GatewayZEVMInboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors 
         uint256 maxSize = gateway.getMaxMessageSize();
 
         vm.expectRevert(abi.encodeWithSelector(MessageSizeExceeded.selector, messageSize, maxSize));
-        gateway.withdraw(abi.encodePacked(addr1), amount, customGasLimit, address(zrc20), revertOptions);
+        gateway.withdraw(abi.encodePacked(addr1), amount, address(zrc20), customGasLimit, revertOptions);
     }
 
     function testWithdrawAndCallZRC20FailsIfReceiverIsZeroAddress() public {
