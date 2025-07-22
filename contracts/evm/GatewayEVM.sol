@@ -440,14 +440,14 @@ contract GatewayEVM is
         private
         returns (bytes memory)
     {
-        // Try standard Callable interface first.
-        MessageContextV2 memory messageContextV2 =
-            MessageContextV2({ sender: messageContext.sender, asset: asset, amount: amount });
-        try Callable(destination).onCall{ value: msg.value }(messageContextV2, data) returns (bytes memory result) {
+        // Try legacy Callable interface first.
+        try LegacyCallable(destination).onCall{ value: msg.value }(messageContext, data) returns (bytes memory result) {
             return result;
         } catch {
-            // Contract doesn't support standard interface, try legacy with interface.
-            return LegacyCallable(destination).onCall{ value: msg.value }(messageContext, data);
+            // Contract doesn't support legacy interface, try with standard interface.
+            MessageContextV2 memory messageContextV2 =
+                MessageContextV2({ sender: messageContext.sender, asset: asset, amount: amount });
+            return Callable(destination).onCall{ value: msg.value }(messageContextV2, data);
         }
     }
 
