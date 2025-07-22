@@ -229,24 +229,18 @@ struct MessageContext {
 /// @param sender Sender from omnichain contract.
 /// @param asset Address of token that is sent cross chain.
 /// @param amount The amount of the token.
-struct ExtendedMessageContext {
+struct MessageContextV2 {
     address sender;
     address asset;
     uint256 amount;
 }
 
 /// @notice Interface implemented by contracts receiving authenticated calls.
-interface Callable {
+interface LegacyCallable {
     function onCall(MessageContext calldata context, bytes calldata message) external payable returns (bytes memory);
 }
 
 /// @notice Interface implemented by contracts receiving authenticated calls with extended message context.
-interface ExtendedCallable {
-    function onCall(
-        ExtendedMessageContext calldata context,
-        bytes memory message
-    )
-        external
-        payable
-        returns (bytes memory);
+interface Callable {
+    function onCall(MessageContextV2 calldata context, bytes memory message) external payable returns (bytes memory);
 }

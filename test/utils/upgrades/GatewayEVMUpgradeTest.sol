@@ -49,7 +49,7 @@ contract GatewayEVMUpgradeTest is
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
-    uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+    uint256 public constant MAX_PAYLOAD_SIZE = 2880;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -114,9 +114,9 @@ contract GatewayEVMUpgradeTest is
     )
         public
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
@@ -146,10 +146,13 @@ contract GatewayEVMUpgradeTest is
     {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result;
+        // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
         if (messageContext.sender == address(0)) {
             result = _executeArbitraryCall(destination, data);
         } else {
-            result = _executeAuthenticatedCall(messageContext, destination, data);
+            result = _executeAuthenticatedCall(messageContext, destination, address(0), msg.value, data);
         }
 
         emit ExecutedV2(destination, msg.value, data);
@@ -173,9 +176,9 @@ contract GatewayEVMUpgradeTest is
         bytes calldata data
     )
         public
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -183,10 +186,12 @@ contract GatewayEVMUpgradeTest is
         if (!_resetApproval(token, to)) revert ApprovalFailed();
         if (!IERC20(token).approve(to, amount)) revert ApprovalFailed();
         // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
         if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
         } else {
-            _executeAuthenticatedCall(messageContext, to, data);
+            _executeAuthenticatedCall(messageContext, to, token, amount, data);
         }
 
         // Reset approval
@@ -216,9 +221,9 @@ contract GatewayEVMUpgradeTest is
         RevertContext calldata revertContext
     )
         external
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -232,15 +237,7 @@ contract GatewayEVMUpgradeTest is
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
     /// @param revertOptions Revert options.
-    function deposit(
-        address receiver,
-        RevertOptions calldata revertOptions
-    )
-        external
-        payable
-        whenNotPaused
-        nonReentrant
-    {
+    function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
         if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
@@ -265,7 +262,6 @@ contract GatewayEVMUpgradeTest is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -288,7 +284,6 @@ contract GatewayEVMUpgradeTest is
         external
         payable
         whenNotPaused
-        nonReentrant
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -298,7 +293,7 @@ contract GatewayEVMUpgradeTest is
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposited(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -316,7 +311,6 @@ contract GatewayEVMUpgradeTest is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
@@ -324,7 +318,7 @@ contract GatewayEVMUpgradeTest is
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
@@ -338,8 +332,8 @@ contract GatewayEVMUpgradeTest is
     )
         external
         whenNotPaused
-        nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver == address(0)) revert ZeroAddress();
         if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded();
 
@@ -436,17 +430,29 @@ contract GatewayEVMUpgradeTest is
     /// @dev Private function to execute an authenticated call to a destination address.
     /// @param messageContext Message context containing sender and arbitrary call flag.
     /// @param destination Address to call.
+    /// @param asset Address of the asset.
+    /// @param amount The amount of the asset.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _executeAuthenticatedCall(
         MessageContext calldata messageContext,
         address destination,
+        address asset,
+        uint256 amount,
         bytes calldata data
     )
         private
         returns (bytes memory)
     {
-        return Callable(destination).onCall{ value: msg.value }(messageContext, data);
+        // Try standard Callable interface first.
+        try LegacyCallable(destination).onCall{ value: msg.value }(messageContext, data) returns (bytes memory result) {
+            return result;
+        } catch {
+            // Contract doesn't support standard interface, try extended interface with asset and amount info.
+            MessageContextV2 memory messageContextV2 =
+                MessageContextV2({ sender: messageContext.sender, asset: asset, amount: amount });
+            return Callable(destination).onCall{ value: msg.value }(messageContextV2, data);
+        }
     }
 
     // @dev prevent spoofing onCall and onRevert functions

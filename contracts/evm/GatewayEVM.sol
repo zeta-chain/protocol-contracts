@@ -441,13 +441,13 @@ contract GatewayEVM is
         returns (bytes memory)
     {
         // Try standard Callable interface first.
-        try Callable(destination).onCall{ value: msg.value }(messageContext, data) returns (bytes memory result) {
+        MessageContextV2 memory messageContextV2 =
+            MessageContextV2({ sender: messageContext.sender, asset: asset, amount: amount });
+        try Callable(destination).onCall{ value: msg.value }(messageContextV2, data) returns (bytes memory result) {
             return result;
         } catch {
-            // Contract doesn't support standard interface, try extended interface with asset and amount info.
-            ExtendedMessageContext memory extendedMessageContext =
-                ExtendedMessageContext({ sender: messageContext.sender, asset: asset, amount: amount });
-            return ExtendedCallable(destination).onCall{ value: msg.value }(extendedMessageContext, data);
+            // Contract doesn't support standard interface, try legacy with interface.
+            return LegacyCallable(destination).onCall{ value: msg.value }(messageContext, data);
         }
     }
 
@@ -459,7 +459,7 @@ contract GatewayEVM is
                 functionSelector := calldataload(data.offset)
             }
 
-            if (functionSelector == Callable.onCall.selector) {
+            if (functionSelector == Callable.onCall.selector || functionSelector == LegacyCallable.onCall.selector) {
                 revert NotAllowedToCallOnCall();
             }
 
