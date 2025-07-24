@@ -8,8 +8,6 @@ rm -f index.md
 
 cat docs/src/README.md docs/src/SUMMARY.md > docs/src/index.md
 
-echo -e "---\ntitle: \"Protocol contracts\"\n---\n" | cat - docs/src/index.md > temp && mv temp docs/src/index.md
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|contracts/|protocol/contracts/|g' docs/src/index.md
 else
@@ -54,8 +52,6 @@ rm -rf docs
 
 mkdir -p docs
 
-echo -e "# ZetaChain and EVM Protocol Contracts" > docs/index.md
-
 cat index.md >> docs/index.md
 
 # Remove Inherits sections
@@ -63,6 +59,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' -E '/^\*\*Inherits:\*\*/,+2d' docs/index.md
 else
     sed -i -E '/^\*\*Inherits:\*\*/,+2d' docs/index.md
+fi
+
+# Make all Markdown headings one level deeper (e.g., # -> ##, ## -> ###)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' -E 's/^(#{1,5}) /#\1 /' docs/index.md
+else
+    sed -i -E 's/^(#{1,5}) /#\1 /' docs/index.md
 fi
 
 rm index.md
