@@ -30,7 +30,8 @@ contract ZetaConnectorNonNative is ZetaConnectorBase {
     {
         super.initialize(gateway_, zetaToken_, tssAddress_, admin_);
 
-        maxSupply = type(uint256).max;
+        // Total ZETA supply: 2.1 billion tokens (2,100,000,000 * 10^18 wei)
+        maxSupply = 2_100_000_000_000_000_000_000_000_000;
     }
 
     /// @notice Set max supply for minting.
