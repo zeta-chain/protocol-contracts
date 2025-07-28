@@ -12,43 +12,38 @@ contract DeployZetaConnectorNonNative is Script {
         address gateway = vm.envAddress("GATEWAY_PROXY_EVM");
         address zeta = vm.envAddress("ZETA_ERC20_EVM");
 
-        address expectedImplAddress;
-        address expectedProxyAddress;
-
         bytes32 implSalt = keccak256("ZetaConnectorNonNative");
         bytes32 proxySalt = keccak256("ZetaConnectorNonNativeProxy");
 
         vm.startBroadcast();
 
-        expectedImplAddress = vm.computeCreate2Address(
-            implSalt,
-            hashInitCode(type(ZetaConnectorNonNative).creationCode)
-        );
-
         ZetaConnectorNonNative connectorImpl = new ZetaConnectorNonNative{salt: implSalt}();
         require(address(connectorImpl) != address(0), "connectorImpl deployment failed");
-
-        require(expectedImplAddress == address(connectorImpl), "impl address doesn't match expected address");
-
-        expectedProxyAddress = vm.computeCreate2Address(
-            proxySalt,
-            hashInitCode(
-                type(ERC1967Proxy).creationCode,
-                abi.encode(
-                    address(connectorImpl),
-                    abi.encodeWithSelector(ZetaConnectorNonNative.initialize.selector, gateway, zeta, tss, admin)
-                )
-            )
+        require(
+            vm.computeCreate2Address(implSalt, hashInitCode(type(ZetaConnectorNonNative).creationCode))
+            == address(connectorImpl),
+            "impl address doesn't match expected address"
         );
 
-        ERC1967Proxy connectorProxy = new ERC1967Proxy{salt: proxySalt}(
-            address(connectorImpl),
-            abi.encodeWithSelector(ZetaConnectorNonNative.initialize.selector, gateway, zeta, tss, admin)
+        bytes memory initData = abi.encodeWithSelector(
+            ZetaConnectorNonNative.initialize.selector,
+            gateway,
+            zeta,
+            tss,
+            admin
         );
+
+        ERC1967Proxy connectorProxy = new ERC1967Proxy{salt: proxySalt}(address(connectorImpl), initData);
         require(address(connectorProxy) != address(0), "connectorProxy deployment failed");
+        require(
+            vm.computeCreate2Address(
+                proxySalt,
+                hashInitCode(type(ERC1967Proxy).creationCode, abi.encode(address(connectorImpl), initData))
+            ) == address(connectorProxy),
+            "proxy address doesn't match expected address"
+        );
 
-        require(expectedProxyAddress == address(connectorProxy), "proxy address doesn't match expected address");
-
+        // Verify deployment
         ZetaConnectorNonNative connector = ZetaConnectorNonNative(address(connectorProxy));
         require(connector.tssAddress() == tss, "tss not set");
         require(address(connector.gateway()) == gateway, "gateway not set");
