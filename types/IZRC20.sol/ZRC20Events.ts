@@ -25,6 +25,7 @@ export interface ZRC20EventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
       | "Approval"
+      | "BatchWithdrawal"
       | "Deposit"
       | "Transfer"
       | "UpdatedGasLimit"
@@ -46,6 +47,34 @@ export namespace ApprovalEvent {
     owner: string;
     spender: string;
     value: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace BatchWithdrawalEvent {
+  export type InputTuple = [
+    from: AddressLike,
+    recipients: BytesLike[],
+    values: BigNumberish[],
+    gasFeePerTx: BigNumberish,
+    protocolFlatFee: BigNumberish
+  ];
+  export type OutputTuple = [
+    from: string,
+    recipients: string[],
+    values: bigint[],
+    gasFeePerTx: bigint,
+    protocolFlatFee: bigint
+  ];
+  export interface OutputObject {
+    from: string;
+    recipients: string[];
+    values: bigint[];
+    gasFeePerTx: bigint;
+    protocolFlatFee: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -220,6 +249,13 @@ export interface ZRC20Events extends BaseContract {
     ApprovalEvent.OutputObject
   >;
   getEvent(
+    key: "BatchWithdrawal"
+  ): TypedContractEvent<
+    BatchWithdrawalEvent.InputTuple,
+    BatchWithdrawalEvent.OutputTuple,
+    BatchWithdrawalEvent.OutputObject
+  >;
+  getEvent(
     key: "Deposit"
   ): TypedContractEvent<
     DepositEvent.InputTuple,
@@ -279,6 +315,17 @@ export interface ZRC20Events extends BaseContract {
       ApprovalEvent.InputTuple,
       ApprovalEvent.OutputTuple,
       ApprovalEvent.OutputObject
+    >;
+
+    "BatchWithdrawal(address,bytes[],uint256[],uint256,uint256)": TypedContractEvent<
+      BatchWithdrawalEvent.InputTuple,
+      BatchWithdrawalEvent.OutputTuple,
+      BatchWithdrawalEvent.OutputObject
+    >;
+    BatchWithdrawal: TypedContractEvent<
+      BatchWithdrawalEvent.InputTuple,
+      BatchWithdrawalEvent.OutputTuple,
+      BatchWithdrawalEvent.OutputObject
     >;
 
     "Deposit(bytes,address,uint256)": TypedContractEvent<

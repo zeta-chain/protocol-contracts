@@ -77,6 +77,7 @@ export interface ERC20CustodyUpgradeTestInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "BatchWithdrawn"
       | "Deposited"
       | "Initialized"
       | "Paused"
@@ -291,6 +292,28 @@ export interface ERC20CustodyUpgradeTestInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
+}
+
+export namespace BatchWithdrawnEvent {
+  export type InputTuple = [
+    token: AddressLike,
+    length: BigNumberish,
+    totalAmount: BigNumberish
+  ];
+  export type OutputTuple = [
+    token: string,
+    length: bigint,
+    totalAmount: bigint
+  ];
+  export interface OutputObject {
+    token: string;
+    length: bigint;
+    totalAmount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace DepositedEvent {
@@ -873,6 +896,13 @@ export interface ERC20CustodyUpgradeTest extends BaseContract {
   >;
 
   getEvent(
+    key: "BatchWithdrawn"
+  ): TypedContractEvent<
+    BatchWithdrawnEvent.InputTuple,
+    BatchWithdrawnEvent.OutputTuple,
+    BatchWithdrawnEvent.OutputObject
+  >;
+  getEvent(
     key: "Deposited"
   ): TypedContractEvent<
     DepositedEvent.InputTuple,
@@ -979,6 +1009,17 @@ export interface ERC20CustodyUpgradeTest extends BaseContract {
   >;
 
   filters: {
+    "BatchWithdrawn(address,uint256,uint256)": TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+    BatchWithdrawn: TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+
     "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,

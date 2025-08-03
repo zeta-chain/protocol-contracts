@@ -36,6 +36,43 @@ const _abi = [
   },
   {
     type: "event",
+    name: "BatchWithdrawal",
+    inputs: [
+      {
+        name: "from",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "recipients",
+        type: "bytes[]",
+        indexed: false,
+        internalType: "bytes[]",
+      },
+      {
+        name: "values",
+        type: "uint256[]",
+        indexed: false,
+        internalType: "uint256[]",
+      },
+      {
+        name: "gasFeePerTx",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "protocolFlatFee",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Deposit",
     inputs: [
       {

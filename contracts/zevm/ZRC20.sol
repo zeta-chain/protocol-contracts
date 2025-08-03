@@ -17,6 +17,9 @@ interface ZRC20Errors {
     error LowAllowance();
     error LowBalance();
     error ZeroAddress();
+    error EmptyArray();
+    error ArrayLengthMismatch();
+    error BatchWithdrawSizeExceeded();
 }
 
 // NOTE: this is exactly the same as ZRC20, except gateway contract address is set at deployment
@@ -37,6 +40,8 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
     /// @notice Protocol flat fee.
     /// @dev Name is in upper case to maintain compatibility with ZRC20.sol v1
     uint256 public override PROTOCOL_FLAT_FEE;
+    /// @notice Maximum number of recipients in a batch withdraw.
+    uint256 public constant MAX_BATCH_SIZE = 128;
 
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
@@ -304,6 +309,42 @@ contract ZRC20 is IZRC20Metadata, ZRC20Errors, ZRC20Events {
         }
         _burn(msg.sender, amount);
         emit Withdrawal(msg.sender, to, amount, gasFee, PROTOCOL_FLAT_FEE);
+        return true;
+    }
+
+    /**
+     * @dev Batch withdraws ZRC20 tokens to multiple addresses on external chains.
+     * @param recipients Array of recipient addresses on external chain (as bytes).
+     * @param amounts Array of amounts to withdraw to each recipient.
+     * @return success True if all withdrawals succeeded.
+     */
+    function batchWithdraw(bytes[] calldata recipients, uint256[] calldata amounts) external returns (bool success) {
+        // validate inputs
+        uint256 length = recipients.length;
+        if (length == 0) revert EmptyArray();
+        if (length != amounts.length) revert ArrayLengthMismatch();
+        if (length > MAX_BATCH_SIZE) revert BatchWithdrawSizeExceeded();
+
+        // get batch withdraw gas fee
+        (address gasZRC20, uint256 gasFeePerTx) = withdrawGasFee();
+        uint256 totalGasFee = gasFeePerTx * length;
+
+        // transfer total gas fee upfront (more gas efficient)
+        if (!IZRC20(gasZRC20).transferFrom(msg.sender, FUNGIBLE_MODULE_ADDRESS, totalGasFee)) {
+            revert GasFeeTransferFailed();
+        }
+
+        // calculate total amount for batch event
+        uint256 totalAmount = 0;
+        for (uint256 i = 0; i < length; ++i) {
+            totalAmount += amounts[i];
+        }
+
+        // burn tokens from sender
+        _burn(msg.sender, totalAmount);
+
+        emit BatchWithdrawal(msg.sender, recipients, amounts, gasFeePerTx, PROTOCOL_FLAT_FEE);
+
         return true;
     }
 

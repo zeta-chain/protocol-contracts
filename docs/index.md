@@ -1359,6 +1359,15 @@ bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
 ```
 
 
+#### MAX_BATCH_SIZE
+Maximum number of recipients in a batch withdraw.
+
+
+```solidity
+uint256 public constant MAX_BATCH_SIZE = 128;
+```
+
+
 ### Functions
 #### initialize
 
@@ -1483,6 +1492,33 @@ function withdraw(
 |`to`|`address`|Destination address for the tokens.|
 |`token`|`address`|Address of the ERC20 token.|
 |`amount`|`uint256`|Amount of tokens to withdraw.|
+
+
+#### batchWithdraw
+
+Withdraw tokens to multiple addresses with specified amounts in a single transaction
+
+*This function maintains all security checks from the single withdraw function*
+
+
+```solidity
+function batchWithdraw(
+    address token,
+    address[] calldata recipients,
+    uint256[] calldata amounts
+)
+    external
+    nonReentrant
+    onlyRole(WITHDRAWER_ROLE)
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`token`|`address`|Address of the ERC20 token to withdraw|
+|`recipients`|`address[]`|Array of destination addresses|
+|`amounts`|`uint256[]`|Array of amounts to send to each recipient|
 
 
 #### withdrawAndCall
@@ -1677,6 +1713,22 @@ Error for zero address input.
 error ZeroAddress();
 ```
 
+#### ZeroAmount
+Error for zero amount
+
+
+```solidity
+error ZeroAmount();
+```
+
+#### EmptyArray
+Error for empty array
+
+
+```solidity
+error EmptyArray();
+```
+
 #### NotWhitelisted
 Error for not whitelisted ERC20 token
 
@@ -1691,6 +1743,22 @@ Error for calling not supported legacy methods.
 
 ```solidity
 error LegacyMethodsNotSupported();
+```
+
+#### ArrayLengthMismatch
+Error for array length mismatch
+
+
+```solidity
+error ArrayLengthMismatch();
+```
+
+#### BatchWithdrawSizeExceeded
+Error for batch withdraw size exceeded
+
+
+```solidity
+error BatchWithdrawSizeExceeded();
 ```
 
 
@@ -1717,6 +1785,22 @@ event Withdrawn(address indexed to, address indexed token, uint256 amount);
 |`to`|`address`|The address receiving the tokens.|
 |`token`|`address`|The address of the ERC20 token.|
 |`amount`|`uint256`|The amount of tokens withdrawn.|
+
+#### BatchWithdrawn
+Emitted when tokens are withdrawn in batch.
+
+
+```solidity
+event BatchWithdrawn(address indexed token, uint256 length, uint256 totalAmount);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`token`|`address`|The address of the ERC20 token.|
+|`length`|`uint256`|The number of recipients.|
+|`totalAmount`|`uint256`|The total amount of tokens withdrawn.|
 
 #### WithdrawnAndCalled
 Emitted when tokens are withdrawn and a contract call is made.
@@ -3312,8 +3396,6 @@ function mint(address mintee, uint256 value, bytes32 internalSendHash) external 
 ```
 
 #### burnFrom
-
-*Only Connector can mint. Minting requires burning the equivalent amount on another chain*
 
 
 ```solidity
@@ -6991,6 +7073,14 @@ event Deposit(bytes from, address indexed to, uint256 value);
 event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasFee, uint256 protocolFlatFee);
 ```
 
+#### BatchWithdrawal
+
+```solidity
+event BatchWithdrawal(
+    address indexed from, bytes[] recipients, uint256[] values, uint256 gasFeePerTx, uint256 protocolFlatFee
+);
+```
+
 #### UpdatedSystemContract
 
 ```solidity
@@ -8224,6 +8314,15 @@ uint256 public override PROTOCOL_FLAT_FEE;
 ```
 
 
+#### MAX_BATCH_SIZE
+Maximum number of recipients in a batch withdraw.
+
+
+```solidity
+uint256 public constant MAX_BATCH_SIZE = 128;
+```
+
+
 #### _balances
 
 ```solidity
@@ -8627,6 +8726,28 @@ function withdraw(bytes memory to, uint256 amount) external override returns (bo
 |`<none>`|`bool`|true/false if succeeded/failed.|
 
 
+#### batchWithdraw
+
+*Batch withdraws ZRC20 tokens to multiple addresses on external chains.*
+
+
+```solidity
+function batchWithdraw(bytes[] calldata recipients, uint256[] calldata amounts) external returns (bool success);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`recipients`|`bytes[]`|Array of recipient addresses on external chain (as bytes).|
+|`amounts`|`uint256[]`|Array of amounts to withdraw to each recipient.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`success`|`bool`|True if all withdrawals succeeded.|
+
+
 #### updateSystemContractAddress
 
 *Updates system contract address. Can only be updated by the fungible module.*
@@ -8742,5 +8863,23 @@ error LowBalance();
 
 ```solidity
 error ZeroAddress();
+```
+
+#### EmptyArray
+
+```solidity
+error EmptyArray();
+```
+
+#### ArrayLengthMismatch
+
+```solidity
+error ArrayLengthMismatch();
+```
+
+#### BatchWithdrawSizeExceeded
+
+```solidity
+error BatchWithdrawSizeExceeded();
 ```
 

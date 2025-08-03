@@ -15,6 +15,12 @@ interface IERC20CustodyEvents {
     /// @param amount The amount of tokens withdrawn.
     event Withdrawn(address indexed to, address indexed token, uint256 amount);
 
+    /// @notice Emitted when tokens are withdrawn in batch.
+    /// @param token The address of the ERC20 token.
+    /// @param length The number of recipients.
+    /// @param totalAmount The total amount of tokens withdrawn.
+    event BatchWithdrawn(address indexed token, uint256 length, uint256 totalAmount);
+
     /// @notice Emitted when tokens are withdrawn and a contract call is made.
     /// @param to The address receiving the tokens.
     /// @param token The address of the ERC20 token.
@@ -54,10 +60,18 @@ interface IERC20CustodyEvents {
 interface IERC20CustodyErrors {
     /// @notice Error for zero address input.
     error ZeroAddress();
+    /// @notice Error for zero amount
+    error ZeroAmount();
+    /// @notice Error for empty array
+    error EmptyArray();
     /// @notice Error for not whitelisted ERC20 token
     error NotWhitelisted();
     /// @notice Error for calling not supported legacy methods.
     error LegacyMethodsNotSupported();
+    /// @notice Error for array length mismatch
+    error ArrayLengthMismatch();
+    /// @notice Error for batch withdraw size exceeded
+    error BatchWithdrawSizeExceeded();
 }
 
 interface IERC20Custody is IERC20CustodyEvents, IERC20CustodyErrors {

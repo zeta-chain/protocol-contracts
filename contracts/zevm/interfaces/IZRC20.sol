@@ -57,6 +57,9 @@ interface ZRC20Events {
     event Approval(address indexed owner, address indexed spender, uint256 value);
     event Deposit(bytes from, address indexed to, uint256 value);
     event Withdrawal(address indexed from, bytes to, uint256 value, uint256 gasFee, uint256 protocolFlatFee);
+    event BatchWithdrawal(
+        address indexed from, bytes[] recipients, uint256[] values, uint256 gasFeePerTx, uint256 protocolFlatFee
+    );
     event UpdatedSystemContract(address systemContract);
     event UpdatedGateway(address gateway);
     event UpdatedGasLimit(uint256 gasLimit);

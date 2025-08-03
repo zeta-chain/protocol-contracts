@@ -52,6 +52,7 @@ export interface IERC20CustodyInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "BatchWithdrawn"
       | "Deposited"
       | "Unwhitelisted"
       | "UpdatedCustodyTSSAddress"
@@ -103,6 +104,28 @@ export interface IERC20CustodyInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
+}
+
+export namespace BatchWithdrawnEvent {
+  export type InputTuple = [
+    token: AddressLike,
+    length: BigNumberish,
+    totalAmount: BigNumberish
+  ];
+  export type OutputTuple = [
+    token: string,
+    length: bigint,
+    totalAmount: bigint
+  ];
+  export interface OutputObject {
+    token: string;
+    length: bigint;
+    totalAmount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace DepositedEvent {
@@ -358,6 +381,13 @@ export interface IERC20Custody extends BaseContract {
   >;
 
   getEvent(
+    key: "BatchWithdrawn"
+  ): TypedContractEvent<
+    BatchWithdrawnEvent.InputTuple,
+    BatchWithdrawnEvent.OutputTuple,
+    BatchWithdrawnEvent.OutputObject
+  >;
+  getEvent(
     key: "Deposited"
   ): TypedContractEvent<
     DepositedEvent.InputTuple,
@@ -408,6 +438,17 @@ export interface IERC20Custody extends BaseContract {
   >;
 
   filters: {
+    "BatchWithdrawn(address,uint256,uint256)": TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+    BatchWithdrawn: TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+
     "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,

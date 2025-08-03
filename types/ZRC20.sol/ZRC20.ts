@@ -30,11 +30,13 @@ export interface ZRC20Interface extends Interface {
       | "COIN_TYPE"
       | "FUNGIBLE_MODULE_ADDRESS"
       | "GAS_LIMIT"
+      | "MAX_BATCH_SIZE"
       | "PROTOCOL_FLAT_FEE"
       | "SYSTEM_CONTRACT_ADDRESS"
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "batchWithdraw"
       | "burn"
       | "decimals"
       | "deposit"
@@ -58,6 +60,7 @@ export interface ZRC20Interface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
       | "Approval"
+      | "BatchWithdrawal"
       | "Deposit"
       | "Transfer"
       | "UpdatedGasLimit"
@@ -74,6 +77,10 @@ export interface ZRC20Interface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "GAS_LIMIT", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "MAX_BATCH_SIZE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "PROTOCOL_FLAT_FEE",
     values?: undefined
@@ -93,6 +100,10 @@ export interface ZRC20Interface extends Interface {
   encodeFunctionData(
     functionFragment: "balanceOf",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "batchWithdraw",
+    values: [BytesLike[], BigNumberish[]]
   ): string;
   encodeFunctionData(functionFragment: "burn", values: [BigNumberish]): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
@@ -157,6 +168,10 @@ export interface ZRC20Interface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "GAS_LIMIT", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "MAX_BATCH_SIZE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "PROTOCOL_FLAT_FEE",
     data: BytesLike
   ): Result;
@@ -167,6 +182,10 @@ export interface ZRC20Interface extends Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "batchWithdraw",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
@@ -225,6 +244,34 @@ export namespace ApprovalEvent {
     owner: string;
     spender: string;
     value: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace BatchWithdrawalEvent {
+  export type InputTuple = [
+    from: AddressLike,
+    recipients: BytesLike[],
+    values: BigNumberish[],
+    gasFeePerTx: BigNumberish,
+    protocolFlatFee: BigNumberish
+  ];
+  export type OutputTuple = [
+    from: string,
+    recipients: string[],
+    values: bigint[],
+    gasFeePerTx: bigint,
+    protocolFlatFee: bigint
+  ];
+  export interface OutputObject {
+    from: string;
+    recipients: string[];
+    values: bigint[];
+    gasFeePerTx: bigint;
+    protocolFlatFee: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -395,6 +442,8 @@ export interface ZRC20 extends BaseContract {
 
   GAS_LIMIT: TypedContractMethod<[], [bigint], "view">;
 
+  MAX_BATCH_SIZE: TypedContractMethod<[], [bigint], "view">;
+
   PROTOCOL_FLAT_FEE: TypedContractMethod<[], [bigint], "view">;
 
   SYSTEM_CONTRACT_ADDRESS: TypedContractMethod<[], [string], "view">;
@@ -412,6 +461,12 @@ export interface ZRC20 extends BaseContract {
   >;
 
   balanceOf: TypedContractMethod<[account: AddressLike], [bigint], "view">;
+
+  batchWithdraw: TypedContractMethod<
+    [recipients: BytesLike[], amounts: BigNumberish[]],
+    [boolean],
+    "nonpayable"
+  >;
 
   burn: TypedContractMethod<[amount: BigNumberish], [boolean], "nonpayable">;
 
@@ -502,6 +557,9 @@ export interface ZRC20 extends BaseContract {
     nameOrSignature: "GAS_LIMIT"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "MAX_BATCH_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "PROTOCOL_FLAT_FEE"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
@@ -524,6 +582,13 @@ export interface ZRC20 extends BaseContract {
   getFunction(
     nameOrSignature: "balanceOf"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "batchWithdraw"
+  ): TypedContractMethod<
+    [recipients: BytesLike[], amounts: BigNumberish[]],
+    [boolean],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "burn"
   ): TypedContractMethod<[amount: BigNumberish], [boolean], "nonpayable">;
@@ -607,6 +672,13 @@ export interface ZRC20 extends BaseContract {
     ApprovalEvent.OutputObject
   >;
   getEvent(
+    key: "BatchWithdrawal"
+  ): TypedContractEvent<
+    BatchWithdrawalEvent.InputTuple,
+    BatchWithdrawalEvent.OutputTuple,
+    BatchWithdrawalEvent.OutputObject
+  >;
+  getEvent(
     key: "Deposit"
   ): TypedContractEvent<
     DepositEvent.InputTuple,
@@ -666,6 +738,17 @@ export interface ZRC20 extends BaseContract {
       ApprovalEvent.InputTuple,
       ApprovalEvent.OutputTuple,
       ApprovalEvent.OutputObject
+    >;
+
+    "BatchWithdrawal(address,bytes[],uint256[],uint256,uint256)": TypedContractEvent<
+      BatchWithdrawalEvent.InputTuple,
+      BatchWithdrawalEvent.OutputTuple,
+      BatchWithdrawalEvent.OutputObject
+    >;
+    BatchWithdrawal: TypedContractEvent<
+      BatchWithdrawalEvent.InputTuple,
+      BatchWithdrawalEvent.OutputTuple,
+      BatchWithdrawalEvent.OutputObject
     >;
 
     "Deposit(bytes,address,uint256)": TypedContractEvent<

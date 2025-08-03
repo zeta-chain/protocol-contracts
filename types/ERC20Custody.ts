@@ -45,10 +45,12 @@ export interface ERC20CustodyInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
+      | "MAX_BATCH_SIZE"
       | "PAUSER_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
       | "WHITELISTER_ROLE"
       | "WITHDRAWER_ROLE"
+      | "batchWithdraw"
       | "deposit"
       | "gateway"
       | "getRoleAdmin"
@@ -77,6 +79,7 @@ export interface ERC20CustodyInterface extends Interface {
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "BatchWithdrawn"
       | "Deposited"
       | "Initialized"
       | "Paused"
@@ -98,6 +101,10 @@ export interface ERC20CustodyInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "MAX_BATCH_SIZE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
     values?: undefined
   ): string;
@@ -112,6 +119,10 @@ export interface ERC20CustodyInterface extends Interface {
   encodeFunctionData(
     functionFragment: "WITHDRAWER_ROLE",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "batchWithdraw",
+    values: [AddressLike, AddressLike[], BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "deposit",
@@ -215,6 +226,10 @@ export interface ERC20CustodyInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "MAX_BATCH_SIZE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
     data: BytesLike
   ): Result;
@@ -228,6 +243,10 @@ export interface ERC20CustodyInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "WITHDRAWER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "batchWithdraw",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
@@ -290,6 +309,28 @@ export interface ERC20CustodyInterface extends Interface {
     functionFragment: "withdrawAndRevert",
     data: BytesLike
   ): Result;
+}
+
+export namespace BatchWithdrawnEvent {
+  export type InputTuple = [
+    token: AddressLike,
+    length: BigNumberish,
+    totalAmount: BigNumberish
+  ];
+  export type OutputTuple = [
+    token: string,
+    length: bigint,
+    totalAmount: bigint
+  ];
+  export interface OutputObject {
+    token: string;
+    length: bigint;
+    totalAmount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace DepositedEvent {
@@ -579,6 +620,8 @@ export interface ERC20Custody extends BaseContract {
 
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
+  MAX_BATCH_SIZE: TypedContractMethod<[], [bigint], "view">;
+
   PAUSER_ROLE: TypedContractMethod<[], [string], "view">;
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
@@ -586,6 +629,12 @@ export interface ERC20Custody extends BaseContract {
   WHITELISTER_ROLE: TypedContractMethod<[], [string], "view">;
 
   WITHDRAWER_ROLE: TypedContractMethod<[], [string], "view">;
+
+  batchWithdraw: TypedContractMethod<
+    [token: AddressLike, recipients: AddressLike[], amounts: BigNumberish[]],
+    [void],
+    "nonpayable"
+  >;
 
   deposit: TypedContractMethod<
     [
@@ -712,6 +761,9 @@ export interface ERC20Custody extends BaseContract {
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "MAX_BATCH_SIZE"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "PAUSER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -723,6 +775,13 @@ export interface ERC20Custody extends BaseContract {
   getFunction(
     nameOrSignature: "WITHDRAWER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "batchWithdraw"
+  ): TypedContractMethod<
+    [token: AddressLike, recipients: AddressLike[], amounts: BigNumberish[]],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "deposit"
   ): TypedContractMethod<
@@ -854,6 +913,13 @@ export interface ERC20Custody extends BaseContract {
   >;
 
   getEvent(
+    key: "BatchWithdrawn"
+  ): TypedContractEvent<
+    BatchWithdrawnEvent.InputTuple,
+    BatchWithdrawnEvent.OutputTuple,
+    BatchWithdrawnEvent.OutputObject
+  >;
+  getEvent(
     key: "Deposited"
   ): TypedContractEvent<
     DepositedEvent.InputTuple,
@@ -953,6 +1019,17 @@ export interface ERC20Custody extends BaseContract {
   >;
 
   filters: {
+    "BatchWithdrawn(address,uint256,uint256)": TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+    BatchWithdrawn: TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+
     "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,

@@ -148,6 +148,31 @@ const _abi = [
   },
   {
     type: "event",
+    name: "BatchWithdrawn",
+    inputs: [
+      {
+        name: "token",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "length",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "totalAmount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
     name: "Deposited",
     inputs: [
       {
@@ -339,6 +364,21 @@ const _abi = [
   },
   {
     type: "error",
+    name: "ArrayLengthMismatch",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "BatchWithdrawSizeExceeded",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "EmptyArray",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "LegacyMethodsNotSupported",
     inputs: [],
   },
@@ -350,6 +390,11 @@ const _abi = [
   {
     type: "error",
     name: "ZeroAddress",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "ZeroAmount",
     inputs: [],
   },
 ] as const;

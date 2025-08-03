@@ -11,6 +11,21 @@ import type {
 const _abi = [
   {
     type: "error",
+    name: "ArrayLengthMismatch",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "BatchWithdrawSizeExceeded",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "EmptyArray",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "LegacyMethodsNotSupported",
     inputs: [],
   },
@@ -22,6 +37,11 @@ const _abi = [
   {
     type: "error",
     name: "ZeroAddress",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "ZeroAmount",
     inputs: [],
   },
 ] as const;

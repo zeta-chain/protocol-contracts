@@ -11,7 +11,22 @@ import type {
 const _abi = [
   {
     type: "error",
+    name: "ArrayLengthMismatch",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "BatchWithdrawSizeExceeded",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "CallerIsNotFungibleModule",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "EmptyArray",
     inputs: [],
   },
   {

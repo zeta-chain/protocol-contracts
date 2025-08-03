@@ -42,6 +42,8 @@ contract ERC20Custody is
     bytes32 public constant WITHDRAWER_ROLE = keccak256("WITHDRAWER_ROLE");
     /// @notice New role identifier for whitelister role.
     bytes32 public constant WHITELISTER_ROLE = keccak256("WHITELISTER_ROLE");
+    /// @notice Maximum number of recipients in a batch withdraw.
+    uint256 public constant MAX_BATCH_SIZE = 128;
 
     /// @notice Initializer for ERC20Custody.
     /// @dev Set admin as default admin and pauser, and tssAddress as tss role.
@@ -135,6 +137,48 @@ contract ERC20Custody is
         IERC20(token).safeTransfer(to, amount);
 
         emit Withdrawn(to, token, amount);
+    }
+
+    /// @notice Withdraw tokens to multiple addresses with specified amounts in a single transaction
+    /// @dev This function maintains all security checks from the single withdraw function
+    /// @param token Address of the ERC20 token to withdraw
+    /// @param recipients Array of destination addresses
+    /// @param amounts Array of amounts to send to each recipient
+    function batchWithdraw(
+        address token,
+        address[] calldata recipients,
+        uint256[] calldata amounts
+    )
+        external
+        nonReentrant
+        onlyRole(WITHDRAWER_ROLE)
+        whenNotPaused
+    {
+        if (!whitelisted[token]) revert NotWhitelisted();
+
+        // validate inputs
+        uint256 length = recipients.length;
+        if (length == 0) revert EmptyArray();
+        if (length != amounts.length) revert ArrayLengthMismatch();
+        if (length > MAX_BATCH_SIZE) revert BatchWithdrawSizeExceeded();
+
+        IERC20 tokenERC20 = IERC20(token);
+
+        // execute transfers
+        uint256 totalAmount;
+        for (uint256 i = 0; i < length; ++i) {
+            address recipient = recipients[i];
+            uint256 amount = amounts[i];
+
+            if (recipient == address(0)) revert ZeroAddress();
+            if (amount == 0) revert ZeroAmount();
+
+            totalAmount += amount;
+            tokenERC20.safeTransfer(recipient, amount);
+        }
+
+        // emit batch event for overall operation
+        emit BatchWithdrawn(token, length, totalAmount);
     }
 
     /// @notice WithdrawAndCall transfers tokens to Gateway and call a contract through the Gateway.

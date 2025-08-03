@@ -38,6 +38,7 @@ export type RevertContextStructOutput = [
 export interface IERC20CustodyEventsInterface extends Interface {
   getEvent(
     nameOrSignatureOrTopic:
+      | "BatchWithdrawn"
       | "Deposited"
       | "Unwhitelisted"
       | "UpdatedCustodyTSSAddress"
@@ -46,6 +47,28 @@ export interface IERC20CustodyEventsInterface extends Interface {
       | "WithdrawnAndCalled"
       | "WithdrawnAndReverted"
   ): EventFragment;
+}
+
+export namespace BatchWithdrawnEvent {
+  export type InputTuple = [
+    token: AddressLike,
+    length: BigNumberish,
+    totalAmount: BigNumberish
+  ];
+  export type OutputTuple = [
+    token: string,
+    length: bigint,
+    totalAmount: bigint
+  ];
+  export interface OutputObject {
+    token: string;
+    length: bigint;
+    totalAmount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace DepositedEvent {
@@ -232,6 +255,13 @@ export interface IERC20CustodyEvents extends BaseContract {
   ): T;
 
   getEvent(
+    key: "BatchWithdrawn"
+  ): TypedContractEvent<
+    BatchWithdrawnEvent.InputTuple,
+    BatchWithdrawnEvent.OutputTuple,
+    BatchWithdrawnEvent.OutputObject
+  >;
+  getEvent(
     key: "Deposited"
   ): TypedContractEvent<
     DepositedEvent.InputTuple,
@@ -282,6 +312,17 @@ export interface IERC20CustodyEvents extends BaseContract {
   >;
 
   filters: {
+    "BatchWithdrawn(address,uint256,uint256)": TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+    BatchWithdrawn: TypedContractEvent<
+      BatchWithdrawnEvent.InputTuple,
+      BatchWithdrawnEvent.OutputTuple,
+      BatchWithdrawnEvent.OutputObject
+    >;
+
     "Deposited(bytes,address,uint256,bytes)": TypedContractEvent<
       DepositedEvent.InputTuple,
       DepositedEvent.OutputTuple,
