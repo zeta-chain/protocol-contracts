@@ -40,7 +40,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
     address foo;
     RevertOptions revertOptions;
     RevertContext revertContext;
-    MessageContext arbitraryCallMessageContext = MessageContext({ sender: address(0) });
+    MessageContextV2 arbitraryCallMessageContext = MessageContextV2({ sender: address(0), asset: address(0), amount: 0 });
 
     error EnforcedPause();
     error AccessControlUnauthorizedAccount(address account, bytes32 neededRole);
@@ -194,7 +194,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.expectEmit(true, true, true, true, address(gateway));
         emit Executed(address(receiver), 0, bytes("1"));
         vm.prank(tssAddress);
-        gateway.execute(MessageContext({ sender: sender }), address(receiver), bytes("1"));
+        gateway.execute(MessageContextV2({ sender: sender, asset: address(0), amount: 0 }), address(receiver), bytes("1"));
     }
 
     function testForwardCallToReceiveNonPayableFailsIfSenderIsNotTSS() public {
@@ -220,7 +220,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.prank(owner);
         vm.expectRevert(abi.encodeWithSelector(AccessControlUnauthorizedAccount.selector, owner, TSS_ROLE));
-        gateway.execute(MessageContext({ sender: address(0x123) }), address(receiver), data);
+        gateway.execute(MessageContextV2({ sender: address(0x123), asset: address(0), amount: 0 }), address(receiver), data);
     }
 
     function testForwardCallToReceivePayable() public {
@@ -284,7 +284,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
         vm.prank(tssAddress);
         vm.expectRevert(ZeroAddress.selector);
-        gateway.execute(MessageContext({ sender: address(0x123) }), address(0), data);
+        gateway.execute(MessageContextV2({ sender: address(0x123), asset: address(0), amount: 0 }), address(0), data);
     }
 
     function testForwardCallToReceiveNoParamsTogglePause() public {

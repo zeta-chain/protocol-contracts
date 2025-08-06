@@ -44,7 +44,7 @@ contract ZetaConnectorNativeUpgradeTest is ZetaConnectorBase {
     /// @param data The calldata to pass to the contract call.
     /// @dev This function can only be called by the TSS address.
     function withdrawAndCall(
-        MessageContext calldata messageContext,
+        MessageContextV2 calldata messageContext,
         address to,
         uint256 amount,
         bytes calldata data
