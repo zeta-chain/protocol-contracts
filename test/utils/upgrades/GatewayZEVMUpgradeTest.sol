@@ -354,10 +354,49 @@ contract GatewayZEVMUpgradeTest is
         external
         whenNotPaused
     {
-        GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, amount, message, callOptions, revertOptions);
+        GatewayZEVMValidations.validateWithdrawalAndCallParams(
+            receiver, amount, callOptions.gasLimit, message, revertOptions
+        );
 
         uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
         emit WithdrawnAndCalled(
+            msg.sender,
+            0,
+            receiver,
+            zrc20,
+            amount,
+            gasFee,
+            IZRC20(zrc20).PROTOCOL_FLAT_FEE(),
+            message,
+            callOptions,
+            revertOptions
+        );
+    }
+
+    /// @notice Withdraw ZRC20 tokens and call a smart contract on an external chain.
+    /// @param receiver The receiver address on the external chain.
+    /// @param amount The amount of tokens to withdraw.
+    /// @param zrc20 The address of the ZRC20 token.
+    /// @param message The calldata to pass to the contract call.
+    /// @param callOptions Call options including gas limit and arbirtrary call flag.
+    /// @param revertOptions Revert options.
+    function withdrawAndCall(
+        bytes memory receiver,
+        uint256 amount,
+        address zrc20,
+        bytes calldata message,
+        CallOptionsV2 calldata callOptions,
+        RevertOptions calldata revertOptions
+    )
+        external
+        whenNotPaused
+    {
+        GatewayZEVMValidations.validateWithdrawalAndCallParams(
+            receiver, amount, callOptions.gasLimit, message, revertOptions
+        );
+
+        uint256 gasFee = _withdrawZRC20WithGasLimit(amount, zrc20, callOptions.gasLimit);
+        emit WithdrawnAndCalledV2(
             msg.sender,
             0,
             receiver,
@@ -421,7 +460,9 @@ contract GatewayZEVMUpgradeTest is
         whenNotPaused
         nonReentrant
     {
-        GatewayZEVMValidations.validateWithdrawalAndCallParams(receiver, msg.value, message, callOptions, revertOptions);
+        GatewayZEVMValidations.validateWithdrawalAndCallParams(
+            receiver, msg.value, callOptions.gasLimit, message, revertOptions
+        );
         (uint256 gasFee, uint256 protocolFlatFee,) = _computeAndPayFeesForZETAWithdrawals(chainId, callOptions.gasLimit);
         _transferZETA(msg.value, PROTOCOL_ADDRESS);
 
@@ -455,7 +496,7 @@ contract GatewayZEVMUpgradeTest is
         external
         whenNotPaused
     {
-        GatewayZEVMValidations.validateCallAndRevertOptions(callOptions, revertOptions, message.length);
+        GatewayZEVMValidations.validateCallAndRevertOptions(callOptions.gasLimit, message.length, revertOptions);
         _call(receiver, zrc20, message, callOptions, revertOptions);
     }
 
