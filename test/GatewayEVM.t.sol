@@ -188,6 +188,7 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         gateway.execute(arbitraryCallMessageContext, address(receiver), data);
     }
 
+    // Test with legacy MessageContext
     function testForwardCallToReceiveOnCallUsingAuthCall() public {
         vm.expectEmit(true, true, true, true, address(receiver));
         address sender = address(0x123);
@@ -197,6 +198,22 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         vm.prank(tssAddress);
         gateway.execute(
             MessageContextV2({ sender: sender, asset: address(0), amount: 0 }), address(receiver), bytes("1")
+        );
+    }
+
+    // Test with new MessageContextV2
+    function testForwardCallToReceiveOnCallUsingAuthCallV2() public {
+        vm.expectEmit(true, true, true, true, address(receiver));
+        address sender = address(0x123);
+        address asset = address(token);
+        uint256 amount = 100;
+        bytes memory data = bytes("1");
+        emit ReceivedOnCallV2(sender, asset, amount, data);
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Executed(address(receiver), 0, data);
+        vm.prank(tssAddress);
+        gateway.execute(
+            MessageContextV2({ sender: sender, asset: asset, amount: amount }), address(receiver), bytes("1")
         );
     }
 
@@ -262,6 +279,14 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
 
     function testForwardCallToReceiveOnCallFails() public {
         bytes memory data = abi.encodeWithSignature("onCall((address),bytes)", address(123), bytes(""));
+
+        vm.prank(tssAddress);
+        vm.expectRevert(NotAllowedToCallOnCall.selector);
+        gateway.execute(arbitraryCallMessageContext, address(receiver), data);
+    }
+
+    function testForwardCallToReceiveOnCallV2Fails() public {
+        bytes memory data = abi.encodeWithSignature("onCall((address,address,uint256),bytes)", address(123), address(456), 100, bytes(""));
 
         vm.prank(tssAddress);
         vm.expectRevert(NotAllowedToCallOnCall.selector);

@@ -491,7 +491,7 @@ contract GatewayEVM is
                 functionSelector := calldataload(data.offset)
             }
 
-            if (functionSelector == Callable.onCall.selector) {
+            if (functionSelector == Callable.onCall.selector || functionSelector == CallableV2.onCall.selector) {
                 revert NotAllowedToCallOnCall();
             }
 
