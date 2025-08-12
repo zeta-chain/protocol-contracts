@@ -6,6 +6,8 @@ import "forge-std/Vm.sol";
 
 import "./utils/ReceiverEVM.sol";
 
+import "./mocks/NonReturnApprovalToken.sol";
+import "./mocks/RevertOnZeroApprovalToken.sol";
 import "./utils/TestERC20.sol";
 import "./utils/upgrades/GatewayEVMUpgradeTest.sol";
 
@@ -312,6 +314,46 @@ contract GatewayEVMTest is Test, IGatewayEVMErrors, IGatewayEVMEvents, IReceiver
         emit Executed(address(receiver), 0, data);
         vm.prank(tssAddress);
         gateway.execute(arbitraryCallMessageContext, address(receiver), data);
+    }
+
+    function testExecuteWithTokenRevertingOnZeroApproval() public {
+        RevertOnZeroApprovalToken revertingToken = new RevertOnZeroApprovalToken("BNB", "BNB");
+        revertingToken.mint(owner, 1_000_000);
+
+        vm.startPrank(owner);
+        custody.whitelist(address(revertingToken));
+        vm.stopPrank();
+
+        uint256 amount = 100_000;
+        revertingToken.transfer(address(custody), amount);
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.expectEmit(true, true, true, true, address(receiver));
+        emit ReceivedNoParams(address(gateway));
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit ExecutedWithERC20(address(revertingToken), address(receiver), amount, data);
+
+        vm.prank(address(custody));
+        gateway.executeWithERC20(arbitraryCallMessageContext, address(revertingToken), address(receiver), amount, data);
+    }
+
+    function testExecuteWithNonReturnApprovalToken() public {
+        NonReturnApprovalToken nonReturnToken = new NonReturnApprovalToken("USDT", "USDT");
+        nonReturnToken.mint(owner, 1_000_000);
+
+        vm.startPrank(owner);
+        custody.whitelist(address(nonReturnToken));
+        vm.stopPrank();
+
+        uint256 amount = 100_000;
+        nonReturnToken.transfer(address(custody), amount);
+
+        bytes memory data = abi.encodeWithSignature("receiveNoParams()");
+
+        vm.prank(address(custody));
+        gateway.executeWithERC20(arbitraryCallMessageContext, address(nonReturnToken), address(receiver), amount, data);
     }
 
     function testExecuteWithERC20FailsIfNotCustodyOrConnector() public {
