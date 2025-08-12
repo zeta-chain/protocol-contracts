@@ -419,8 +419,8 @@ function setConnector(address zetaConnector_) external onlyRole(DEFAULT_ADMIN_RO
 
 ### _resetApproval
 
-*Resets the approval of a token for a specified address.
-This is used to ensure that the approval is set to zero before setting it to a new value.*
+Resets the approval of a token for a specified address.
+This is used to ensure that the approval is set to zero before setting it to a new value.
 
 
 ```solidity
@@ -437,7 +437,7 @@ function _resetApproval(address token, address to) private returns (bool);
 
 |Name|Type|Description|
 |----|----|-----------|
-|`<none>`|`bool`|True if the approval reset was successful, false otherwise.|
+|`<none>`|`bool`|True if the approval reset was successful or if the token reverts on zero approval.|
 
 
 ### _transferFromToAssetHandler

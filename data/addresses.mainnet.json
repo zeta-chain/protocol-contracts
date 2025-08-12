@@ -453,6 +453,19 @@
     "type": "zrc20"
   },
   {
+    "address": "0xD45F47412073b75B7c70728aD9A45Dee0ee01bac",
+    "asset": "",
+    "category": "omnichain",
+    "chain_id": 7000,
+    "chain_name": "zeta_mainnet",
+    "coin_type": "gas",
+    "decimals": 9,
+    "description": "ZetaChain ZRC20 TON Mainnet TON",
+    "foreign_chain_id": "2015140",
+    "symbol": "TON.TON",
+    "type": "zrc20"
+  },
+  {
     "address": "0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891",
     "asset": "",
     "category": "omnichain",
@@ -643,6 +656,13 @@
     "category": "omnichain",
     "chain_id": 43114,
     "chain_name": "avalanche_mainnet",
+    "type": "gateway"
+  },
+  {
+    "address": "0:21f6bb20c44e7fb5efe6db87a4fead0c289cc13bd94880419cabf19688647987",
+    "category": "omnichain",
+    "chain_id": 2015140,
+    "chain_name": "ton_mainnet",
     "type": "gateway"
   }
 ]
