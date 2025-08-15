@@ -1217,13 +1217,14 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.prank(protocolAddress);
         payable(address(0x999)).transfer(protocolBalance - 1);
 
-        // When an account doesn't have enough ETH to cover the transaction value,
-        // Foundry throws an OutOfFunds error at the EVM level before the contract code even executes.
-        // We can't use a low-level call with value > balance as it will revert before execution
-        // Instead, we directly expect the revert
-        vm.expectRevert();
+        // When an account doesn't have enough ETH to cover the call value, the CALL fails
+        // pre-execution and returns (success = false) to the caller. This cannot be caught
+        // with vm.expectRevert because it doesn't create a deeper call frame.
+        uint256 targetBefore = addr1.balance;
         vm.prank(protocolAddress);
-        gateway.deposit{ value: 2 }(addr1);
+        (bool success,) = address(gateway).call{ value: 2 }(abi.encodeWithSignature("deposit(address)", addr1));
+        assertEq(success, false, "deposit should fail due to insufficient ETH on protocol EOA");
+        assertEq(addr1.balance, targetBefore, "target must not receive funds");
     }
 
     function testDepositZETA() public {
