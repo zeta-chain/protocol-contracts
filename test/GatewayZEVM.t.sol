@@ -1217,13 +1217,13 @@ contract GatewayZEVMOutboundTest is Test, IGatewayZEVMEvents, IGatewayZEVMErrors
         vm.prank(protocolAddress);
         payable(address(0x999)).transfer(protocolBalance - 1);
 
-        // Use low-level call because because when an account doesn't have enough ETH to cover the transaction value,
+        // When an account doesn't have enough ETH to cover the transaction value,
         // Foundry throws an OutOfFunds error at the EVM level before the contract code even executes.
+        // We can't use a low-level call with value > balance as it will revert before execution
+        // Instead, we directly expect the revert
         vm.expectRevert();
         vm.prank(protocolAddress);
-        (bool success,) = address(gateway).call{ value: 2 }(abi.encodeWithSignature("deposit(address)", addr1));
-
-        assertFalse(success);
+        gateway.deposit{ value: 2 }(addr1);
     }
 
     function testDepositZETA() public {
