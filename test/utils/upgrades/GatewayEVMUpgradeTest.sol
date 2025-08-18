@@ -2,7 +2,13 @@
 pragma solidity 0.8.26;
 
 import { INotSupportedMethods } from "../../../contracts/Errors.sol";
-import { RevertContext, RevertOptions, Revertable } from "../../../contracts/Revert.sol";
+import {
+    MAX_REVERT_GAS_LIMIT,
+    RevertContext,
+    RevertGasLimitExceeded,
+    RevertOptions,
+    Revertable
+} from "../../../contracts/Revert.sol";
 import "../../../contracts/evm/ZetaConnectorBase.sol";
 import "../../../contracts/evm/interfaces/IERC20Custody.sol";
 import "../../../contracts/evm/interfaces/IGatewayEVM.sol";
@@ -49,7 +55,7 @@ contract GatewayEVMUpgradeTest is
     /// @notice New role identifier for pauser role.
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
-    uint256 public constant MAX_PAYLOAD_SIZE = 1024;
+    uint256 public constant MAX_PAYLOAD_SIZE = 2880;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -69,8 +75,8 @@ contract GatewayEVMUpgradeTest is
 
         _grantRole(DEFAULT_ADMIN_ROLE, admin_);
         _grantRole(PAUSER_ROLE, admin_);
-        tssAddress = tssAddress_;
         _grantRole(TSS_ROLE, tssAddress_);
+        tssAddress = tssAddress_;
 
         zetaToken = zetaToken_;
     }
@@ -113,9 +119,9 @@ contract GatewayEVMUpgradeTest is
     )
         public
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (destination == address(0)) revert ZeroAddress();
         (bool success,) = destination.call{ value: msg.value }("");
@@ -125,26 +131,29 @@ contract GatewayEVMUpgradeTest is
         emit Reverted(destination, address(0), msg.value, data, revertContext);
     }
 
-    /// @notice Executes an authenticated call to a destination address without ERC20 tokens.
+    /// @notice Executes a call to a destination address without ERC20 tokens.
     /// @dev This function can only be called by the TSS address and it is payable.
     /// @param messageContext Message context containing sender.
     /// @param destination Address to call.
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function execute(
-        MessageContext calldata messageContext,
+        MessageContextV2 calldata messageContext,
         address destination,
         bytes calldata data
     )
         external
         payable
+        nonReentrant
         onlyRole(TSS_ROLE)
         whenNotPaused
-        nonReentrant
         returns (bytes memory)
     {
         if (destination == address(0)) revert ZeroAddress();
         bytes memory result;
+        // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
         if (messageContext.sender == address(0)) {
             result = _executeArbitraryCall(destination, data);
         } else {
@@ -165,23 +174,26 @@ contract GatewayEVMUpgradeTest is
     /// @param amount Amount of tokens to transfer.
     /// @param data Calldata to pass to the call.
     function executeWithERC20(
-        MessageContext calldata messageContext,
+        MessageContextV2 calldata messageContext,
         address token,
         address to,
         uint256 amount,
         bytes calldata data
     )
         public
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
         // Approve the target contract to spend the tokens
         if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
-        if (!IERC20(token).approve(to, amount)) revert ApprovalFailed(token, to);
+        // Approve token to spender
+        IERC20(token).forceApprove(to, amount);
         // Execute the call on the target contract
+        // if sender is provided in messageContext call is authenticated and target is Callable.onCall
+        // otherwise, call is arbitrary
         if (messageContext.sender == address(0)) {
             _executeArbitraryCall(to, data);
         } else {
@@ -215,9 +227,9 @@ contract GatewayEVMUpgradeTest is
         RevertContext calldata revertContext
     )
         external
+        nonReentrant
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (to == address(0)) revert ZeroAddress();
@@ -231,19 +243,15 @@ contract GatewayEVMUpgradeTest is
     /// @notice Deposits ETH to the TSS address.
     /// @param receiver Address of the receiver.
     /// @param revertOptions Revert options.
-    function deposit(
-        address receiver,
-        RevertOptions calldata revertOptions
-    )
-        external
-        payable
-        whenNotPaused
-        nonReentrant
-    {
+    function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
@@ -265,12 +273,15 @@ contract GatewayEVMUpgradeTest is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -289,18 +300,21 @@ contract GatewayEVMUpgradeTest is
         external
         payable
         whenNotPaused
-        nonReentrant
     {
         if (msg.value == 0) revert InsufficientETHAmount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         (bool deposited,) = tssAddress.call{ value: msg.value }("");
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposited(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -318,16 +332,19 @@ contract GatewayEVMUpgradeTest is
     )
         external
         whenNotPaused
-        nonReentrant
     {
         if (amount == 0) revert InsufficientERC20Amount();
         if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
+            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
+        }
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
-        emit Deposited(msg.sender, receiver, amount, asset, payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, amount, asset, payload, revertOptions);
     }
 
     /// @notice Calls an omnichain smart contract without asset transfer.
@@ -341,11 +358,14 @@ contract GatewayEVMUpgradeTest is
     )
         external
         whenNotPaused
-        nonReentrant
     {
+        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
         if (receiver == address(0)) revert ZeroAddress();
         uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
         if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
+        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
+            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
+        }
 
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
@@ -370,13 +390,28 @@ contract GatewayEVMUpgradeTest is
         zetaConnector = zetaConnector_;
     }
 
-    /// @dev Resets the approval of a token for a specified address.
+    /// @notice Resets the approval of a token for a specified address.
     /// This is used to ensure that the approval is set to zero before setting it to a new value.
     /// @param token Address of the ERC20 token.
     /// @param to Address to reset the approval for.
-    /// @return True if the approval reset was successful, false otherwise.
+    /// @return True if the approval reset was successful or if the token reverts on zero approval.
     function _resetApproval(address token, address to) private returns (bool) {
-        return IERC20(token).approve(to, 0);
+        // Use low-level call to handle tokens that don't return boolean values
+        (bool success, bytes memory returnData) = token.call(abi.encodeWithSelector(IERC20.approve.selector, to, 0));
+        if (!success) {
+            // If the call failed, it might be because the token reverts on zero approval
+            // In this case, we consider it successful since the goal is to reset approval
+            return true;
+        }
+
+        // If there's return data, check if it's true (for standard ERC20 tokens)
+        // If there's no return data, assume success (for non-standard tokens like USDT)
+        if (returnData.length > 0) {
+            bool approved = abi.decode(returnData, (bool));
+            return approved;
+        }
+
+        return true;
     }
 
     /// @dev Transfers tokens from the sender to the asset handler.
@@ -387,7 +422,6 @@ contract GatewayEVMUpgradeTest is
     /// @param amount Amount of tokens to transfer.
     function _transferFromToAssetHandler(address from, address token, uint256 amount) private {
         if (token == zetaToken) {
-            // transfer to connector
             // transfer amount to gateway
             IERC20(token).safeTransferFrom(from, address(this), amount);
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
@@ -408,7 +442,6 @@ contract GatewayEVMUpgradeTest is
     /// @param amount Amount of tokens to transfer.
     function _transferToAssetHandler(address token, uint256 amount) private {
         if (token == zetaToken) {
-            // transfer to connector
             // approve connector to handle tokens depending on connector version (eg. lock or burn)
             if (!IERC20(token).approve(zetaConnector, amount)) revert ApprovalFailed(token, zetaConnector);
             // send tokens to connector
@@ -438,14 +471,20 @@ contract GatewayEVMUpgradeTest is
     /// @param data Calldata to pass to the call.
     /// @return The result of the call.
     function _executeAuthenticatedCall(
-        MessageContext calldata messageContext,
+        MessageContextV2 calldata messageContext,
         address destination,
         bytes calldata data
     )
         private
         returns (bytes memory)
     {
-        return Callable(destination).onCall{ value: msg.value }(messageContext, data);
+        if (messageContext.amount == 0) {
+            return Callable(destination).onCall{ value: msg.value }(
+                MessageContext({ sender: messageContext.sender }), data
+            );
+        } else {
+            return CallableV2(destination).onCall{ value: msg.value }(messageContext, data);
+        }
     }
 
     // @dev prevent spoofing onCall and onRevert functions

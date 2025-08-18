@@ -71,18 +71,18 @@ library GatewayZEVMValidations {
     }
 
     /// @dev Validates call options and revert options together
-    /// @param callOptions The call options to validate
+    /// @param gasLimit The gas limit to validate
     /// @param revertOptions The revert options to validate
     /// @param messageLength The length of the message
     function validateCallAndRevertOptions(
-        CallOptions calldata callOptions,
-        RevertOptions calldata revertOptions,
-        uint256 messageLength
+        uint256 gasLimit,
+        uint256 messageLength,
+        RevertOptions calldata revertOptions
     )
         internal
         pure
     {
-        validateGasLimit(callOptions.gasLimit);
+        validateGasLimit(gasLimit);
         validateMessageSize(messageLength, revertOptions.revertMessage.length);
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
@@ -109,14 +109,14 @@ library GatewayZEVMValidations {
     /// @dev Validates withdrawal and call parameters
     /// @param receiver The receiver address
     /// @param amount The amount to withdraw
+    /// @param gasLimit The gas limit
     /// @param message The message to send
-    /// @param callOptions The call options
     /// @param revertOptions The revert options
     function validateWithdrawalAndCallParams(
         bytes memory receiver,
         uint256 amount,
+        uint256 gasLimit,
         bytes calldata message,
-        CallOptions calldata callOptions,
         RevertOptions calldata revertOptions
     )
         internal
@@ -124,7 +124,7 @@ library GatewayZEVMValidations {
     {
         validateReceiver(receiver);
         validateAmount(amount);
-        validateCallAndRevertOptions(callOptions, revertOptions, message.length);
+        validateCallAndRevertOptions(gasLimit, message.length, revertOptions);
     }
 
     /// @dev Validates deposit parameters
