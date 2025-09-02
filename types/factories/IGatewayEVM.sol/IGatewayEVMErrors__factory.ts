@@ -47,6 +47,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "FeeTransferFailed",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "InsufficientERC20Amount",
     inputs: [],
   },
@@ -54,6 +59,22 @@ const _abi = [
     type: "error",
     name: "InsufficientETHAmount",
     inputs: [],
+  },
+  {
+    type: "error",
+    name: "InsufficientFee",
+    inputs: [
+      {
+        name: "required",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "provided",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",

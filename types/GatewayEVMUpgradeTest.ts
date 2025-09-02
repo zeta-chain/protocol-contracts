@@ -72,6 +72,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "PAUSER_ROLE"
       | "TSS_ROLE"
       | "UPGRADE_INTERFACE_VERSION"
+      | "additionalActionFeeWei"
       | "call"
       | "custody"
       | "deposit(address,uint256,address,(address,bool,address,bytes,uint256))"
@@ -96,6 +97,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "supportsInterface"
       | "tssAddress"
       | "unpause"
+      | "updateAdditionalActionFee"
       | "updateTSSAddress"
       | "upgradeToAndCall"
       | "zetaConnector"
@@ -117,6 +119,7 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "RoleGranted"
       | "RoleRevoked"
       | "Unpaused"
+      | "UpdatedAdditionalActionFee"
       | "UpdatedGatewayTSSAddress"
       | "Upgraded"
   ): EventFragment;
@@ -140,6 +143,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   encodeFunctionData(functionFragment: "TSS_ROLE", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "additionalActionFeeWei",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -245,6 +252,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "updateAdditionalActionFee",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateTSSAddress",
     values: [AddressLike]
   ): string;
@@ -277,6 +288,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   decodeFunctionResult(functionFragment: "TSS_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "UPGRADE_INTERFACE_VERSION",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "additionalActionFeeWei",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
@@ -339,6 +354,10 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "tssAddress", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateAdditionalActionFee",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "updateTSSAddress",
     data: BytesLike
@@ -624,6 +643,19 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace UpdatedAdditionalActionFeeEvent {
+  export type InputTuple = [oldFeeWei: BigNumberish, newFeeWei: BigNumberish];
+  export type OutputTuple = [oldFeeWei: bigint, newFeeWei: bigint];
+  export interface OutputObject {
+    oldFeeWei: bigint;
+    newFeeWei: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace UpdatedGatewayTSSAddressEvent {
   export type InputTuple = [
     oldTSSAddress: AddressLike,
@@ -707,6 +739,8 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   UPGRADE_INTERFACE_VERSION: TypedContractMethod<[], [string], "view">;
 
+  additionalActionFeeWei: TypedContractMethod<[], [bigint], "view">;
+
   call: TypedContractMethod<
     [
       receiver: AddressLike,
@@ -714,7 +748,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       revertOptions: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   custody: TypedContractMethod<[], [string], "view">;
@@ -727,7 +761,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       revertOptions: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   "deposit(address,(address,bool,address,bytes,uint256))": TypedContractMethod<
@@ -755,7 +789,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       revertOptions: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
 
   execute: TypedContractMethod<
@@ -862,6 +896,12 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
 
   unpause: TypedContractMethod<[], [void], "nonpayable">;
 
+  updateAdditionalActionFee: TypedContractMethod<
+    [newFeeWei: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   updateTSSAddress: TypedContractMethod<
     [newTSSAddress: AddressLike],
     [void],
@@ -901,6 +941,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     nameOrSignature: "UPGRADE_INTERFACE_VERSION"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "additionalActionFeeWei"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "call"
   ): TypedContractMethod<
     [
@@ -909,7 +952,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       revertOptions: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "custody"
@@ -924,7 +967,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       revertOptions: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "deposit(address,(address,bool,address,bytes,uint256))"
@@ -955,7 +998,7 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       revertOptions: RevertOptionsStruct
     ],
     [void],
-    "nonpayable"
+    "payable"
   >;
   getFunction(
     nameOrSignature: "execute"
@@ -1068,6 +1111,9 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     nameOrSignature: "unpause"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "updateAdditionalActionFee"
+  ): TypedContractMethod<[newFeeWei: BigNumberish], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "updateTSSAddress"
   ): TypedContractMethod<[newTSSAddress: AddressLike], [void], "nonpayable">;
   getFunction(
@@ -1174,6 +1220,13 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     UnpausedEvent.InputTuple,
     UnpausedEvent.OutputTuple,
     UnpausedEvent.OutputObject
+  >;
+  getEvent(
+    key: "UpdatedAdditionalActionFee"
+  ): TypedContractEvent<
+    UpdatedAdditionalActionFeeEvent.InputTuple,
+    UpdatedAdditionalActionFeeEvent.OutputTuple,
+    UpdatedAdditionalActionFeeEvent.OutputObject
   >;
   getEvent(
     key: "UpdatedGatewayTSSAddress"
@@ -1332,6 +1385,17 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "UpdatedAdditionalActionFee(uint256,uint256)": TypedContractEvent<
+      UpdatedAdditionalActionFeeEvent.InputTuple,
+      UpdatedAdditionalActionFeeEvent.OutputTuple,
+      UpdatedAdditionalActionFeeEvent.OutputObject
+    >;
+    UpdatedAdditionalActionFee: TypedContractEvent<
+      UpdatedAdditionalActionFeeEvent.InputTuple,
+      UpdatedAdditionalActionFeeEvent.OutputTuple,
+      UpdatedAdditionalActionFeeEvent.OutputObject
     >;
 
     "UpdatedGatewayTSSAddress(address,address)": TypedContractEvent<

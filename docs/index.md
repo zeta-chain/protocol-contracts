@@ -81,6 +81,32 @@ uint256 public constant MAX_PAYLOAD_SIZE = 2880;
 ```
 
 
+#### additionalActionFeeWei
+Fee charged for additional cross-chain actions within the same transaction.
+
+*The first action in a transaction is free, subsequent actions incur this fee.*
+
+*This is configurable by the admin role to allow for fee adjustments.*
+
+
+```solidity
+uint256 public additionalActionFeeWei;
+```
+
+
+#### _TRANSACTION_ACTION_COUNT_KEY
+Storage slot key for tracking transaction action count.
+
+*Uses transient storage (tload/tstore) for gas efficiency.*
+
+*Value 0x01 is used as a unique identifier for this storage slot.*
+
+
+```solidity
+uint256 private constant _TRANSACTION_ACTION_COUNT_KEY = 0x01;
+```
+
+
 ### Functions
 #### constructor
 
@@ -150,6 +176,23 @@ Unpause contract.
 ```solidity
 function unpause() external onlyRole(PAUSER_ROLE);
 ```
+
+#### updateAdditionalActionFee
+
+Update the additional action fee.
+
+*Only callable by admin role. This allows for fee adjustments based on network conditions.*
+
+
+```solidity
+function updateAdditionalActionFee(uint256 newFeeWei) external onlyRole(DEFAULT_ADMIN_ROLE);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`newFeeWei`|`uint256`|The new fee amount in wei for additional actions in the same transaction.|
+
 
 #### executeRevert
 
@@ -306,6 +349,7 @@ function deposit(
     RevertOptions calldata revertOptions
 )
     external
+    payable
     whenNotPaused;
 ```
 **Parameters**
@@ -356,6 +400,7 @@ function depositAndCall(
     RevertOptions calldata revertOptions
 )
     external
+    payable
     whenNotPaused;
 ```
 **Parameters**
@@ -375,7 +420,14 @@ Calls an omnichain smart contract without asset transfer.
 
 
 ```solidity
-function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external whenNotPaused;
+function call(
+    address receiver,
+    bytes calldata payload,
+    RevertOptions calldata revertOptions
+)
+    external
+    payable
+    whenNotPaused;
 ```
 **Parameters**
 
@@ -533,6 +585,45 @@ function _executeAuthenticatedCall(
 ```solidity
 function _revertIfOnCallOrOnRevert(bytes calldata data) private pure;
 ```
+
+#### _processTransactionActionFee
+
+Processes fee collection for cross-chain actions within a transaction.
+
+*The first action in a transaction is free, subsequent actions incur ADDITIONAL_ACTION_FEE_WEI.*
+
+*Fees are collected and sent to the TSS address to prevent spam and abuse.*
+
+
+```solidity
+function _processTransactionActionFee() internal returns (uint256 feeCharged, uint256 actionIndex);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`feeCharged`|`uint256`|The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for subsequent).|
+|`actionIndex`|`uint256`|The zero-based index of the action within the transaction (0 = free, 1+ = paid).|
+
+
+#### _getNextTransactionActionIndex
+
+Gets and increments the transaction action counter using transient storage.
+
+*Uses assembly for gas efficiency with tload/tstore operations.*
+
+*Transient storage is transaction-scoped and automatically cleared after each transaction.*
+
+
+```solidity
+function _getNextTransactionActionIndex() internal returns (uint256 currentIndex);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`currentIndex`|`uint256`|The current action index within the transaction (0-based).|
+
 
 
 
@@ -1962,7 +2053,14 @@ Deposits ERC20 tokens to the custody or connector contract.
 
 
 ```solidity
-function deposit(address receiver, uint256 amount, address asset, RevertOptions calldata revertOptions) external;
+function deposit(
+    address receiver,
+    uint256 amount,
+    address asset,
+    RevertOptions calldata revertOptions
+)
+    external
+    payable;
 ```
 **Parameters**
 
@@ -2010,7 +2108,8 @@ function depositAndCall(
     bytes calldata payload,
     RevertOptions calldata revertOptions
 )
-    external;
+    external
+    payable;
 ```
 **Parameters**
 
@@ -2029,7 +2128,7 @@ Calls an omnichain smart contract without asset transfer.
 
 
 ```solidity
-function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
+function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external payable;
 ```
 **Parameters**
 
@@ -2164,6 +2263,31 @@ error PayloadSizeExceeded(uint256 provided, uint256 maximum);
 |----|----|-----------|
 |`provided`|`uint256`|The size of the payload that was provided.|
 |`maximum`|`uint256`|The maximum allowed payload size.|
+
+#### FeeTransferFailed
+Error thrown when fee transfer to TSS address fails.
+
+*This error occurs when the low-level call to transfer fees fails.*
+
+
+```solidity
+error FeeTransferFailed();
+```
+
+#### InsufficientFee
+Error thrown when insufficient fee is provided for additional actions.
+
+
+```solidity
+error InsufficientFee(uint256 required, uint256 provided);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`required`|`uint256`|The fee amount required for the action.|
+|`provided`|`uint256`|The fee amount actually provided by the caller.|
 
 
 
@@ -2308,6 +2432,12 @@ event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
 |----|----|-----------|
 |`oldTSSAddress`|`address`|old tss address|
 |`newTSSAddress`|`address`|new tss address|
+
+#### UpdatedAdditionalActionFee
+
+```solidity
+event UpdatedAdditionalActionFee(uint256 oldFeeWei, uint256 newFeeWei);
+```
 
 
 
