@@ -70,6 +70,7 @@ interface IGatewayEVMEvents {
     /// @param oldTSSAddress old tss address
     /// @param newTSSAddress new tss address
     event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
+    event UpdatedAdditionalActionFee(uint256 oldFeeWei, uint256 newFeeWei);
 }
 
 /// @title IGatewayEVMErrors
