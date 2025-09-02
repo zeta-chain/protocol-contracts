@@ -56,8 +56,8 @@ contract GatewayEVM is
 
     /// @notice Fee charged for additional cross-chain actions within the same transaction.
     /// @dev The first action in a transaction is free, subsequent actions incur this fee.
-    /// @dev Set to 0.02 ETH (2e13 wei) to prevent spam and abuse.
-    uint256 public constant ADDITIONAL_ACTION_FEE_WEI = 2e13;
+    /// @dev This is configurable by the admin role to allow for fee adjustments.
+    uint256 public additionalActionFeeWei;
 
     /// @notice Storage slot key for tracking transaction action count.
     /// @dev Uses transient storage (tload/tstore) for gas efficiency.
@@ -86,6 +86,9 @@ contract GatewayEVM is
         tssAddress = tssAddress_;
 
         zetaToken = zetaToken_;
+
+        // Initialize the additional action fee to 0.02 ETH (2e13 wei)
+        additionalActionFeeWei = 2e13;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
@@ -113,6 +116,15 @@ contract GatewayEVM is
     /// @notice Unpause contract.
     function unpause() external onlyRole(PAUSER_ROLE) {
         _unpause();
+    }
+
+    /// @notice Update the additional action fee.
+    /// @dev Only callable by admin role. This allows for fee adjustments based on network conditions.
+    /// @param newFeeWei The new fee amount in wei for additional actions in the same transaction.
+    function updateAdditionalActionFee(uint256 newFeeWei) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        uint256 oldFee = additionalActionFeeWei;
+        additionalActionFeeWei = newFeeWei;
+        emit UpdatedAdditionalActionFee(oldFee, newFeeWei);
     }
 
     /// @notice Transfers msg.value to destination contract and executes it's onRevert function.
@@ -534,7 +546,7 @@ contract GatewayEVM is
         }
 
         // Subsequent actions require fee payment
-        feeCharged = ADDITIONAL_ACTION_FEE_WEI;
+        feeCharged = additionalActionFeeWei;
         if (msg.value < feeCharged) {
             revert InsufficientFee(feeCharged, msg.value);
         }

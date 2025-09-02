@@ -1097,4 +1097,43 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + (ADDITIONAL_ACTION_FEE_WEI * 2), tssBalanceAfter);
         assertEq(ownerBalanceBefore - (ADDITIONAL_ACTION_FEE_WEI * 2), ownerBalanceAfter);
     }
+
+    function testUpdateAdditionalActionFee() public {
+        uint256 newFee = 1e13; // 0.01 ETH
+
+        vm.expectEmit(true, true, true, true);
+        emit UpdatedAdditionalActionFee(ADDITIONAL_ACTION_FEE_WEI, newFee);
+        gateway.updateAdditionalActionFee(newFee);
+
+        assertEq(gateway.additionalActionFeeWei(), newFee);
+    }
+
+    function testUpdateAdditionalActionFeeOnlyAdmin() public {
+        uint256 newFee = 1e13;
+
+        vm.prank(tssAddress);
+        vm.expectRevert();
+        gateway.updateAdditionalActionFee(newFee);
+    }
+
+    function testFeeSystemWithUpdatedFee() public {
+        uint256 newFee = 1e13; // 0.01 ETH
+        uint256 amount = 100_000;
+
+        // Update the fee
+        gateway.updateAdditionalActionFee(newFee);
+
+        // Test that the new fee is applied
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        gateway.deposit{ value: amount }(destination, revertOptions);
+        gateway.deposit{ value: amount + newFee }(destination, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(tssBalanceBefore + (amount * 2) + newFee, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2) - newFee, ownerBalanceAfter);
+    }
 }
