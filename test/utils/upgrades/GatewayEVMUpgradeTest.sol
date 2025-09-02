@@ -264,6 +264,7 @@ contract GatewayEVMUpgradeTest is
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
         nonReentrant
     {
@@ -315,6 +316,7 @@ contract GatewayEVMUpgradeTest is
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
         nonReentrant
     {
@@ -337,6 +339,7 @@ contract GatewayEVMUpgradeTest is
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
         nonReentrant
     {
