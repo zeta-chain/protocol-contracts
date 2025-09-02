@@ -1007,4 +1007,39 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + (amount * 2) + newFee, tssBalanceAfter);
         assertEq(ownerBalanceBefore - (amount * 2) - newFee, ownerBalanceAfter);
     }
+
+    function testDepositERC20InsufficientFee() public {
+        uint256 amount = 100_000;
+        uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
+
+        token.approve(address(gateway), amount * 2);
+
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
+        gateway.deposit{ value: insufficientFee }(destination, amount, address(token), revertOptions);
+    }
+
+    function testDepositAndCallERC20InsufficientFee() public {
+        uint256 amount = 100_000;
+        uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount * 2);
+
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
+        gateway.depositAndCall{ value: insufficientFee }(destination, amount, address(token), payload, revertOptions);
+    }
+
+    function testCallInsufficientFee() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
+
+        gateway.call(destination, payload, revertOptions);
+
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
+        gateway.call{ value: insufficientFee }(destination, payload, revertOptions);
+    }
 }
