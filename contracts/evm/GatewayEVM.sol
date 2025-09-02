@@ -19,6 +19,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /// @title GatewayEVM
@@ -52,6 +53,16 @@ contract GatewayEVM is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
     uint256 public constant MAX_PAYLOAD_SIZE = 2880;
+
+    /// @notice Fee charged for additional cross-chain actions within the same transaction.
+    /// @dev The first action in a transaction is free, subsequent actions incur this fee.
+    /// @dev Set to 0.02 ETH (2e13 wei) to prevent spam and abuse.
+    uint256 public constant ADDITIONAL_ACTION_FEE_WEI = 2e13;
+
+    /// @notice Storage slot key for tracking transaction action count.
+    /// @dev Uses transient storage (tload/tstore) for gas efficiency.
+    /// @dev Value 0x01 is used as a unique identifier for this storage slot.
+    uint256 private constant _TRANSACTION_ACTION_COUNT_KEY = 0x01;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -249,11 +260,13 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (bool deposited,) = tssAddress.call{ value: msg.value }("");
+        (uint256 feeCharged,) = _processTransactionActionFee();
+
+        (bool deposited,) = tssAddress.call{ value: msg.value - feeCharged }("");
 
         if (!deposited) revert DepositFailed();
 
-        emit Deposited(msg.sender, receiver, msg.value, address(0), "", revertOptions);
+        emit Deposited(msg.sender, receiver, msg.value - feeCharged, address(0), "", revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
@@ -268,6 +281,7 @@ contract GatewayEVM is
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
     {
         if (amount == 0) revert InsufficientERC20Amount();
@@ -278,6 +292,8 @@ contract GatewayEVM is
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
+
+        _processTransactionActionFee();
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -306,11 +322,13 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (bool deposited,) = tssAddress.call{ value: msg.value }("");
+        (uint256 feeCharged,) = _processTransactionActionFee();
+
+        (bool deposited,) = tssAddress.call{ value: msg.value - feeCharged }("");
 
         if (!deposited) revert DepositFailed();
 
-        emit DepositedAndCalled(msg.sender, receiver, msg.value, address(0), payload, revertOptions);
+        emit DepositedAndCalled(msg.sender, receiver, msg.value - feeCharged, address(0), payload, revertOptions);
     }
 
     /// @notice Deposits ERC20 tokens to the custody or connector contract and calls an omnichain smart contract.
@@ -327,6 +345,7 @@ contract GatewayEVM is
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
     {
         if (amount == 0) revert InsufficientERC20Amount();
@@ -337,6 +356,8 @@ contract GatewayEVM is
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
+
+        _processTransactionActionFee();
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -353,6 +374,7 @@ contract GatewayEVM is
         RevertOptions calldata revertOptions
     )
         external
+        payable
         whenNotPaused
     {
         if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
@@ -362,6 +384,8 @@ contract GatewayEVM is
         if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
+
+        _processTransactionActionFee();
 
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
@@ -492,6 +516,49 @@ contract GatewayEVM is
             if (functionSelector == Revertable.onRevert.selector) {
                 revert NotAllowedToCallOnRevert();
             }
+        }
+    }
+
+    /// @notice Processes fee collection for cross-chain actions within a transaction.
+    /// @dev The first action in a transaction is free, subsequent actions incur ADDITIONAL_ACTION_FEE_WEI.
+    /// @dev Fees are collected and sent to the TSS address to prevent spam and abuse.
+    /// @return feeCharged The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for
+    /// subsequent).
+    /// @return actionIndex The zero-based index of the action within the transaction (0 = free, 1+ = paid).
+    function _processTransactionActionFee() internal returns (uint256 feeCharged, uint256 actionIndex) {
+        actionIndex = _getNextTransactionActionIndex();
+
+        // First action in transaction is free
+        if (actionIndex == 0) {
+            return (0, actionIndex);
+        }
+
+        // Subsequent actions require fee payment
+        feeCharged = ADDITIONAL_ACTION_FEE_WEI;
+        if (msg.value < feeCharged) {
+            revert InsufficientFee(feeCharged, msg.value);
+        }
+
+        // Transfer fee to TSS address
+        (bool success,) = tssAddress.call{ value: feeCharged }("");
+        if (!success) {
+            revert FeeTransferFailed();
+        }
+
+        // Return the remaining value after fee deduction
+        return (feeCharged, actionIndex);
+    }
+
+    /// @notice Gets and increments the transaction action counter using transient storage.
+    /// @dev Uses assembly for gas efficiency with tload/tstore operations.
+    /// @dev Transient storage is transaction-scoped and automatically cleared after each transaction.
+    /// @return currentIndex The current action index within the transaction (0-based).
+    function _getNextTransactionActionIndex() internal returns (uint256 currentIndex) {
+        assembly {
+            // Load current count from transient storage
+            currentIndex := tload(_TRANSACTION_ACTION_COUNT_KEY)
+            // Increment and store back to transient storage
+            tstore(_TRANSACTION_ACTION_COUNT_KEY, add(currentIndex, 1))
         }
     }
 }

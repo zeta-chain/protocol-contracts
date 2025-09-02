@@ -22,6 +22,7 @@ import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "forge-std/Test.sol";
+
 import "forge-std/Vm.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
@@ -492,7 +493,8 @@ contract GatewayEVMInboundTest is
     address tssAddress;
     RevertOptions revertOptions;
 
-    uint256 ownerAmount = 1_000_000;
+    uint256 ownerAmount = 10_000 ether;
+    uint256 public constant ADDITIONAL_ACTION_FEE_WEI = 2e13;
 
     function setUp() public {
         owner = address(this);
@@ -557,6 +559,36 @@ contract GatewayEVMInboundTest is
 
         uint256 ownerAmountAfter = token.balanceOf(owner);
         assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
+    function testDeposit2ERC20ToCustody() public {
+        uint256 amount = 100_000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        assertEq(0, custodyBalanceBefore);
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        assertEq(amount * 2, custodyBalanceAfter);
+
+        uint256 ownerAmountAfter = token.balanceOf(owner);
+        assertEq(ownerAmount - amount * 2, ownerAmountAfter);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
     }
 
     function testDepositERC20ToCustodyFailsIfTokenIsNotWhitelisted() public {
@@ -889,5 +921,180 @@ contract GatewayEVMInboundTest is
             )
         );
         gateway.call(destination, payload, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthSecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
+        gateway.deposit{ value: amount }(destination, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
+        gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(tssBalanceBefore + (amount * 2) + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2) - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
+    }
+
+    function testDepositERC20SecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 ownerBalanceBefore = token.balanceOf(owner);
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 ownerBalanceAfter = token.balanceOf(owner);
+        uint256 tssBalanceAfter = tssAddress.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 2), custodyBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2), ownerBalanceAfter);
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+    }
+
+    function testDepositAndCallEthSecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
+        gateway.depositAndCall{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, payload, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(tssBalanceBefore + (amount * 2) + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2) - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
+    }
+
+    function testDepositAndCallERC20SecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 ownerBalanceBefore = token.balanceOf(owner);
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(token), payload, revertOptions);
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(token), payload, revertOptions);
+        gateway.depositAndCall{ value: ADDITIONAL_ACTION_FEE_WEI }(
+            destination, amount, address(token), payload, revertOptions
+        );
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 ownerBalanceAfter = token.balanceOf(owner);
+        uint256 tssBalanceAfter = tssAddress.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 2), custodyBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2), ownerBalanceAfter);
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+    }
+
+    function testCallSecondActionRequiresFee() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 ownerBalanceBefore = owner.balance;
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit Called(owner, destination, payload, revertOptions);
+        gateway.call(destination, payload, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Called(owner, destination, payload, revertOptions);
+        gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, payload, revertOptions);
+
+        uint256 ownerBalanceAfter = owner.balance;
+        uint256 tssBalanceAfter = tssAddress.balance;
+
+        assertEq(ownerBalanceBefore - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+    }
+
+    function testMultipleActionsInSameTransaction() public {
+        uint256 amount = 100_000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        token.approve(address(gateway), amount * 3);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 3), custodyBalanceAfter);
+        assertEq(tssBalanceBefore + (ADDITIONAL_ACTION_FEE_WEI * 2), tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (ADDITIONAL_ACTION_FEE_WEI * 2), ownerBalanceAfter);
+    }
+
+    function testMixedActionTypesInSameTransaction() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(token), payload, revertOptions);
+        gateway.depositAndCall{ value: ADDITIONAL_ACTION_FEE_WEI }(
+            destination, amount, address(token), payload, revertOptions
+        );
+
+        vm.expectEmit(true, true, true, true);
+        emit Called(owner, destination, payload, revertOptions);
+        gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, payload, revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 2), custodyBalanceAfter);
+        assertEq(tssBalanceBefore + (ADDITIONAL_ACTION_FEE_WEI * 2), tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (ADDITIONAL_ACTION_FEE_WEI * 2), ownerBalanceAfter);
     }
 }
