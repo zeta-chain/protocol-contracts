@@ -1137,6 +1137,106 @@ contract GatewayEVMInboundTest is
         assertEq(ownerBalanceBefore - (amount * 2) - newFee, ownerBalanceAfter);
     }
 
+    function testDepositEthSecondActionWithOnlyFee() public {
+        uint256 amount = 100_000;
+
+        // First deposit (free)
+        gateway.deposit{ value: amount }(destination, revertOptions);
+
+        // Second deposit with only fee amount should fail because depositAmount = 0
+        vm.expectRevert(InsufficientETHAmount.selector);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, revertOptions);
+    }
+
+    function testDepositERC20WithExcessEthReverts() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+
+        token.approve(address(gateway), amount);
+
+        // First ERC20 deposit with excess ETH should revert
+        vm.expectRevert(abi.encodeWithSelector(ExcessETHProvided.selector, 0, excessEth));
+        gateway.deposit{ value: excessEth }(destination, amount, address(token), revertOptions);
+    }
+
+    function testDepositERC20SecondActionWithExcessEthReverts() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+
+        token.approve(address(gateway), amount * 2);
+
+        // First ERC20 deposit (free)
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        // Second ERC20 deposit with excess ETH should revert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ExcessETHProvided.selector, ADDITIONAL_ACTION_FEE_WEI, ADDITIONAL_ACTION_FEE_WEI + excessEth
+            )
+        );
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(
+            destination, amount, address(token), revertOptions
+        );
+    }
+
+    function testCallWithExcessEthReverts() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 excessEth = 50_000;
+
+        // First call with excess ETH should revert
+        vm.expectRevert(abi.encodeWithSelector(ExcessETHProvided.selector, 0, excessEth));
+        gateway.call{ value: excessEth }(destination, payload, revertOptions);
+    }
+
+    function testCallSecondActionWithExcessEthReverts() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 excessEth = 50_000;
+
+        // First call (free)
+        gateway.call(destination, payload, revertOptions);
+
+        // Second call with excess ETH should revert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ExcessETHProvided.selector, ADDITIONAL_ACTION_FEE_WEI, ADDITIONAL_ACTION_FEE_WEI + excessEth
+            )
+        );
+        gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(destination, payload, revertOptions);
+    }
+
+    function testDepositAndCallERC20WithExcessEthReverts() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount);
+
+        // ERC20 depositAndCall with excess ETH should revert
+        vm.expectRevert(abi.encodeWithSelector(ExcessETHProvided.selector, 0, excessEth));
+        gateway.depositAndCall{ value: excessEth }(destination, amount, address(token), payload, revertOptions);
+    }
+
+    function testDepositAndCallERC20SecondActionWithExcessEthReverts() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount * 2);
+
+        // First ERC20 depositAndCall (free)
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+
+        // Second ERC20 depositAndCall with excess ETH should revert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ExcessETHProvided.selector, ADDITIONAL_ACTION_FEE_WEI, ADDITIONAL_ACTION_FEE_WEI + excessEth
+            )
+        );
+        gateway.depositAndCall{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(
+            destination, amount, address(token), payload, revertOptions
+        );
+    }
+
     function testDepositERC20InsufficientFee() public {
         uint256 amount = 100_000;
         uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
