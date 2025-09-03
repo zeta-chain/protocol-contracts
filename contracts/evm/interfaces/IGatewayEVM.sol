@@ -122,6 +122,11 @@ interface IGatewayEVMErrors {
     /// @param required The fee amount required for the action.
     /// @param provided The fee amount actually provided by the caller.
     error InsufficientFee(uint256 required, uint256 provided);
+
+    /// @notice Error thrown when excess ETH is sent for non-ETH operations.
+    /// @param required The fee amount required for the action.
+    /// @param provided The ETH amount actually provided by the caller.
+    error ExcessETHProvided(uint256 required, uint256 provided);
 }
 
 /// @title IGatewayEVM
