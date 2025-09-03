@@ -586,7 +586,7 @@ function _executeAuthenticatedCall(
 function _revertIfOnCallOrOnRevert(bytes calldata data) private pure;
 ```
 
-#### _processTransactionActionFee
+#### _processFee
 
 Processes fee collection for cross-chain actions within a transaction.
 
@@ -596,17 +596,56 @@ Processes fee collection for cross-chain actions within a transaction.
 
 
 ```solidity
-function _processTransactionActionFee() internal returns (uint256 feeCharged, uint256 actionIndex);
+function _processFee() internal returns (uint256 feeCharged);
 ```
 **Returns**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`feeCharged`|`uint256`|The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for subsequent).|
-|`actionIndex`|`uint256`|The zero-based index of the action within the transaction (0 = free, 1+ = paid).|
+|`feeCharged`|`uint256`|The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for subsequent actions).|
 
 
-#### _getNextTransactionActionIndex
+#### _validateFeeForETH
+
+Validates fee payment for ETH operations (deposit, depositAndCall).
+
+*Calculates the deposit amount after fee deduction and validates it.*
+
+
+```solidity
+function _validateFeeForETH(uint256 feeCharged) internal view returns (uint256 depositAmount);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`feeCharged`|`uint256`|The fee amount that was charged.|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`depositAmount`|`uint256`|The amount available for deposit after fee deduction.|
+
+
+#### _validateFeeForERC20
+
+Validates fee payment for ERC20 operations (deposit, depositAndCall, call).
+
+*Validates that msg.value equals the required fee (no excess ETH allowed).*
+
+
+```solidity
+function _validateFeeForERC20(uint256 feeCharged) internal view;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`feeCharged`|`uint256`|The fee amount that was charged.|
+
+
+#### _getNextActionIndex
 
 Gets and increments the transaction action counter using transient storage.
 
@@ -616,7 +655,7 @@ Gets and increments the transaction action counter using transient storage.
 
 
 ```solidity
-function _getNextTransactionActionIndex() internal returns (uint256 currentIndex);
+function _getNextActionIndex() internal returns (uint256 currentIndex);
 ```
 **Returns**
 
@@ -2288,6 +2327,21 @@ error InsufficientFee(uint256 required, uint256 provided);
 |----|----|-----------|
 |`required`|`uint256`|The fee amount required for the action.|
 |`provided`|`uint256`|The fee amount actually provided by the caller.|
+
+#### ExcessETHProvided
+Error thrown when excess ETH is sent for non-ETH operations.
+
+
+```solidity
+error ExcessETHProvided(uint256 required, uint256 provided);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`required`|`uint256`|The fee amount required for the action.|
+|`provided`|`uint256`|The ETH amount actually provided by the caller.|
 
 
 

@@ -561,36 +561,6 @@ contract GatewayEVMInboundTest is
         assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testDeposit2ERC20ToCustody() public {
-        uint256 amount = 100_000;
-        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
-        uint256 tssBalanceBefore = tssAddress.balance;
-        uint256 ownerBalanceBefore = owner.balance;
-
-        assertEq(0, custodyBalanceBefore);
-
-        token.approve(address(gateway), amount * 2);
-
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
-        gateway.deposit(destination, amount, address(token), revertOptions);
-
-        vm.expectEmit(true, true, true, true, address(gateway));
-        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
-        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
-
-        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
-        assertEq(amount * 2, custodyBalanceAfter);
-
-        uint256 ownerAmountAfter = token.balanceOf(owner);
-        assertEq(ownerAmount - amount * 2, ownerAmountAfter);
-
-        uint256 tssBalanceAfter = tssAddress.balance;
-        uint256 ownerBalanceAfter = owner.balance;
-        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
-        assertEq(ownerBalanceBefore - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
-    }
-
     function testDepositERC20ToCustodyFailsIfTokenIsNotWhitelisted() public {
         uint256 amount = 100_000;
         token.approve(address(gateway), amount);

@@ -42,6 +42,22 @@ const _abi = [
   },
   {
     type: "error",
+    name: "ExcessETHProvided",
+    inputs: [
+      {
+        name: "required",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "provided",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
+  },
+  {
+    type: "error",
     name: "ExecutionFailed",
     inputs: [],
   },
