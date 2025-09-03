@@ -272,9 +272,8 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (uint256 feeCharged,) = _processTransactionActionFee();
-
-        uint256 depositAmount = _processPostFeeForETH(feeCharged);
+        uint256 feeCharged = _processFee();
+        uint256 depositAmount = _validateFeeForETH(feeCharged);
 
         (bool deposited,) = tssAddress.call{ value: depositAmount }("");
 
@@ -307,9 +306,8 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (uint256 feeCharged,) = _processTransactionActionFee();
-
-        _processPostFeeForERC20(feeCharged);
+        uint256 feeCharged = _processFee();
+        _validateFeeForERC20(feeCharged);
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -338,9 +336,8 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (uint256 feeCharged,) = _processTransactionActionFee();
-
-        uint256 depositAmount = _processPostFeeForETH(feeCharged);
+        uint256 feeCharged = _processFee();
+        uint256 depositAmount = _validateFeeForETH(feeCharged);
 
         (bool deposited,) = tssAddress.call{ value: depositAmount }("");
 
@@ -375,9 +372,8 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (uint256 feeCharged,) = _processTransactionActionFee();
-
-        _processPostFeeForERC20(feeCharged);
+        uint256 feeCharged = _processFee();
+        _validateFeeForERC20(feeCharged);
 
         _transferFromToAssetHandler(msg.sender, asset, amount);
 
@@ -405,9 +401,8 @@ contract GatewayEVM is
             revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
         }
 
-        (uint256 feeCharged,) = _processTransactionActionFee();
-
-        _processPostFeeForERC20(feeCharged);
+        uint256 feeCharged = _processFee();
+        _validateFeeForERC20(feeCharged);
 
         emit Called(msg.sender, receiver, payload, revertOptions);
     }
@@ -546,13 +541,12 @@ contract GatewayEVM is
     /// @dev Fees are collected and sent to the TSS address to prevent spam and abuse.
     /// @return feeCharged The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for
     /// subsequent actions).
-    /// @return actionIndex The index of the action within the transaction.
-    function _processTransactionActionFee() internal returns (uint256 feeCharged, uint256 actionIndex) {
-        actionIndex = _getNextActionIndex();
+    function _processFee() internal returns (uint256 feeCharged) {
+        uint256 actionIndex = _getNextActionIndex();
 
         // First action is free
         if (actionIndex == 0) {
-            return (0, actionIndex);
+            return 0;
         }
 
         // Subsequent actions require fee payment
@@ -567,15 +561,14 @@ contract GatewayEVM is
             revert FeeTransferFailed();
         }
 
-        // Return the remaining value after fee deduction
-        return (feeCharged, actionIndex);
+        return feeCharged;
     }
 
-    /// @notice Processes post-fee logic for ETH operations (deposit, depositAndCall).
+    /// @notice Validates fee payment for ETH operations (deposit, depositAndCall).
     /// @dev Calculates the deposit amount after fee deduction and validates it.
     /// @param feeCharged The fee amount that was charged.
     /// @return depositAmount The amount available for deposit after fee deduction.
-    function _processPostFeeForETH(uint256 feeCharged) internal view returns (uint256 depositAmount) {
+    function _validateFeeForETH(uint256 feeCharged) internal view returns (uint256 depositAmount) {
         // For ETH operations, the deposit amount is msg.value minus any fee charged
         depositAmount = msg.value - feeCharged;
 
@@ -585,10 +578,10 @@ contract GatewayEVM is
         return depositAmount;
     }
 
-    /// @notice Processes post-fee logic for ERC20 operations (deposit, depositAndCall, call).
+    /// @notice Validates fee payment for ERC20 operations (deposit, depositAndCall, call).
     /// @dev Validates that msg.value equals the required fee (no excess ETH allowed).
     /// @param feeCharged The fee amount that was charged.
-    function _processPostFeeForERC20(uint256 feeCharged) internal view {
+    function _validateFeeForERC20(uint256 feeCharged) internal view {
         // For ERC20 operations, msg.value must equal the required fee
         if (msg.value > feeCharged) {
             revert ExcessETHProvided(feeCharged, msg.value);
