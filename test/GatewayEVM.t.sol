@@ -1228,7 +1228,7 @@ contract GatewayEVMInboundTest is
         assertEq(ownerBalanceBefore - (amount * 2) - newFee, ownerBalanceAfter);
     }
 
-    function testDepositEthWithAmountSecondActionWithOnlyFee() public {
+    function testDepositEthWithAmountSecondActionFailsWithOnlyFee() public {
         uint256 amount = 100_000;
 
         // First deposit (free)
@@ -1410,6 +1410,38 @@ contract GatewayEVMInboundTest is
             )
         );
         gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI + 1 }(destination, amount, revertOptions);
+    }
+
+    function testDepositAndCallEthWithAmountToTssFailsIfInsufficientFee() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with incorrect value (should revert)
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, amount));
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+    }
+
+    function testDepositAndCallEthWithAmountToTssSecondActionFailsIfIncorrectValue() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with excess eth (should revert)
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IncorrectValueProvided.selector,
+                amount + ADDITIONAL_ACTION_FEE_WEI,
+                amount + ADDITIONAL_ACTION_FEE_WEI + 1
+            )
+        );
+        gateway.depositAndCall{ value: amount + ADDITIONAL_ACTION_FEE_WEI + 1 }(
+            destination, amount, payload, revertOptions
+        );
     }
 
     function testDepositEthToTssFailsForSubsequentActions() public {
