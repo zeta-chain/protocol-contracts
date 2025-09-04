@@ -600,7 +600,7 @@ contract GatewayEVMInboundTest is
         // assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testRevertDepositERC20ToCustodyIfAmountIs0() public {
+    function testDepositERC20ToCustodyFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         token.approve(address(gateway), amount);
@@ -609,7 +609,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
-    function testRevertDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
+    function testDepositERC20ToCustodyFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
         vm.expectRevert(ZeroAddress.selector);
         gateway.deposit(address(0), amount, address(token), revertOptions);
@@ -627,7 +627,7 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + amount, tssBalanceAfter);
     }
 
-    function testRevertDepositEthToTssIfAmountIs0() public {
+    function testDepositEthToTssFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         vm.expectRevert(InsufficientETHAmount.selector);
@@ -640,7 +640,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: 1 }(destination, revertOptions);
     }
 
-    function testRevertDepositEthToTssIfReceiverIsZeroAddress() public {
+    function testDepositEthToTssFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
         vm.expectRevert(ZeroAddress.selector);
@@ -659,28 +659,28 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + amount, tssBalanceAfter);
     }
 
-    function testRevertDepositEthWithAmountIfAmountIsLessThanMsgValue() public {
+    function testDepositEthWithAmountToTssFailsIfAmountIsLessThanMsgValue() public {
         uint256 amount = 100_000;
 
         vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount - 1, amount));
         gateway.deposit{ value: amount }(destination, amount - 1, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountIfAmountIsMoreThanMsgValue() public {
+    function testDepositEthWithAmountToTssFailsIfAmountIsMoreThanMsgValue() public {
         uint256 amount = 100_000;
 
         vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount + 1, amount));
         gateway.deposit{ value: amount }(destination, amount + 1, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountToTssIfAmountIs0() public {
+    function testDepositEthWithAmountToTssFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         vm.expectRevert(InsufficientETHAmount.selector);
         gateway.deposit{ value: amount }(destination, amount, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountToTssIfPayloadSizeExceeded() public {
+    function testDepositEthWithAmountToTssFailsIfPayloadSizeExceeded() public {
         revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() + 1);
 
         uint256 payloadSize = revertOptions.revertMessage.length;
@@ -691,7 +691,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: 1 }(destination, 1, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountToTssIfReceiverIsZeroAddress() public {
+    function testDepositEthWithAmountToTssFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
         vm.expectRevert(ZeroAddress.selector);
@@ -742,7 +742,7 @@ contract GatewayEVMInboundTest is
         assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testRevertDepositERC20ToCustodyWithPayloadIfAmountIs0() public {
+    function testDepositERC20ToCustodyWithPayloadFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -751,7 +751,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
-    function testRevertDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
+    function testDepositERC20ToCustodyWithPayloadFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -782,7 +782,27 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
-    function testRevertDepositEthToTssWithPayloadIfAmountIs0() public {
+    function testDepositAndCallEthFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthToTssWithPayloadFailsIfAmountIs0() public {
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -790,7 +810,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
-    function testRevertDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
+    function testDepositEthToTssWithPayloadFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -862,7 +882,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptionsExcessiveGas);
     }
 
-    function testRevertDepositEthWithAmountToTssWithPayloadIfAmountIs0() public {
+    function testDepositEthWithAmountToTssWithPayloadFailsIfAmountIs0() public {
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -870,7 +890,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountToTssWithPayloadIfReceiverIsZeroAddress() public {
+    function testDepositEthWithAmountToTssWithPayloadFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -878,7 +898,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(address(0), amount, payload, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountToTssWithPayloadIfAmountIsLessThanMsgValue() public {
+    function testDepositEthWithAmountToTssWithPayloadFailsIfAmountIsLessThanMsgValue() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -886,7 +906,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, amount - 1, payload, revertOptions);
     }
 
-    function testRevertDepositEthWithAmountToTssWithPayloadIfAmountIsMoreThanMsgValue() public {
+    function testDepositEthWithAmountToTssWithPayloadFailsIfAmountIsMoreThanMsgValue() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -1140,7 +1160,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, 0, revertOptions);
     }
 
-    function testDepositERC20WithExcessEthReverts() public {
+    function testDepositERC20ToCustodyFailsIfExcessEthProvided() public {
         uint256 amount = 100_000;
         uint256 excessEth = 50_000;
 
@@ -1151,7 +1171,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: excessEth }(destination, amount, address(token), revertOptions);
     }
 
-    function testDepositERC20SecondActionWithExcessEthReverts() public {
+    function testDepositERC20ToCustodySecondActionFailsIfExcessEthProvided() public {
         uint256 amount = 100_000;
         uint256 excessEth = 50_000;
 
@@ -1171,7 +1191,7 @@ contract GatewayEVMInboundTest is
         );
     }
 
-    function testCallWithExcessEthReverts() public {
+    function testCallFailsIfExcessEthProvided() public {
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
         uint256 excessEth = 50_000;
 
@@ -1180,7 +1200,7 @@ contract GatewayEVMInboundTest is
         gateway.call{ value: excessEth }(destination, payload, revertOptions);
     }
 
-    function testCallSecondActionWithExcessEthReverts() public {
+    function testCallSecondActionFailsIfExcessEthProvided() public {
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
         uint256 excessEth = 50_000;
 
@@ -1196,7 +1216,7 @@ contract GatewayEVMInboundTest is
         gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(destination, payload, revertOptions);
     }
 
-    function testDepositAndCallERC20WithExcessEthReverts() public {
+    function testDepositAndCallERC20ToCustodyFailsIfExcessEthProvided() public {
         uint256 amount = 100_000;
         uint256 excessEth = 50_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -1208,7 +1228,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: excessEth }(destination, amount, address(token), payload, revertOptions);
     }
 
-    function testDepositAndCallERC20SecondActionWithExcessEthReverts() public {
+    function testDepositAndCallERC20ToCustodySecondActionFailsIfExcessEthProvided() public {
         uint256 amount = 100_000;
         uint256 excessEth = 50_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -1229,7 +1249,7 @@ contract GatewayEVMInboundTest is
         );
     }
 
-    function testDepositERC20InsufficientFee() public {
+    function testDepositERC20ToCustodyFailsIfInsufficientFee() public {
         uint256 amount = 100_000;
         uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
 
@@ -1241,7 +1261,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: insufficientFee }(destination, amount, address(token), revertOptions);
     }
 
-    function testDepositAndCallERC20InsufficientFee() public {
+    function testDepositAndCallERC20ToCustodyFailsIfInsufficientFee() public {
         uint256 amount = 100_000;
         uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -1254,7 +1274,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: insufficientFee }(destination, amount, address(token), payload, revertOptions);
     }
 
-    function testCallInsufficientFee() public {
+    function testCallFailsIfInsufficientFee() public {
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
         uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
 
@@ -1285,7 +1305,7 @@ contract GatewayEVMInboundTest is
         gateway.call(destination, payload, revertOptions);
     }
 
-    function testDepositWithAmountInsufficientFee() public {
+    function testDepositEthWithAmountToTssFailsIfInsufficientFee() public {
         uint256 amount = 100_000;
 
         // First action (free)
@@ -1296,7 +1316,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: amount }(destination, amount, revertOptions);
     }
 
-    function testDepositWithAmountSecondActionRevertsIfIncorrectValue() public {
+    function testDepositEthWithAmountToTssSecondActionFailsIfIncorrectValue() public {
         uint256 amount = 100_000;
 
         // First action (free)
@@ -1313,7 +1333,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI + 1 }(destination, amount, revertOptions);
     }
 
-    function testRegularDepositRevertsForSubsequentActions() public {
+    function testDepositEthToTssFailsForSubsequentActions() public {
         uint256 amount = 100_000;
 
         // First action works
@@ -1324,7 +1344,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: amount }(destination, revertOptions);
     }
 
-    function testRegularDepositAndCallRevertsForSubsequentActions() public {
+    function testDepositAndCallEthToTssFailsForSubsequentActions() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
