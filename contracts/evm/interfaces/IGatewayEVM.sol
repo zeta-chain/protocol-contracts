@@ -127,6 +127,14 @@ interface IGatewayEVMErrors {
     /// @param required The fee amount required for the action.
     /// @param provided The ETH amount actually provided by the caller.
     error ExcessETHProvided(uint256 required, uint256 provided);
+
+    /// @notice Error thrown when additional action functionality is disabled (fee set to 0).
+    error AdditionalActionDisabled();
+
+    /// @notice Error thrown when msg.value doesn't match expected amount + fee.
+    /// @param expected The expected value (amount + fee).
+    /// @param provided The actual msg.value provided.
+    error IncorrectValueProvided(uint256 expected, uint256 provided);
 }
 
 /// @title IGatewayEVM
