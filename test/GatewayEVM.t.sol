@@ -494,7 +494,7 @@ contract GatewayEVMInboundTest is
     RevertOptions revertOptions;
 
     uint256 ownerAmount = 10_000 ether;
-    uint256 public constant ADDITIONAL_ACTION_FEE_WEI = 2e13;
+    uint256 public constant ADDITIONAL_ACTION_FEE_WEI = 2e5;
 
     function setUp() public {
         owner = address(this);
@@ -541,6 +541,9 @@ contract GatewayEVMInboundTest is
             revertMessage: "",
             onRevertGasLimit: 0
         });
+
+        // Enable fees for testing
+        gateway.updateAdditionalActionFee(ADDITIONAL_ACTION_FEE_WEI);
     }
 
     function testDepositERC20ToCustody() public {
@@ -893,18 +896,18 @@ contract GatewayEVMInboundTest is
         gateway.call(destination, payload, revertOptionsExcessiveGas);
     }
 
-    function testDepositEthSecondActionRequiresFee() public {
+    function testDepositEthWithAmountSecondActionRequiresFee() public {
         uint256 amount = 100_000;
         uint256 tssBalanceBefore = tssAddress.balance;
         uint256 ownerBalanceBefore = owner.balance;
 
         vm.expectEmit(true, true, true, true);
         emit Deposited(owner, destination, amount, address(0), "", revertOptions);
-        gateway.deposit{ value: amount }(destination, revertOptions);
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
 
         vm.expectEmit(true, true, true, true);
         emit Deposited(owner, destination, amount, address(0), "", revertOptions);
-        gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, revertOptions);
+        gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, amount, revertOptions);
 
         uint256 tssBalanceAfter = tssAddress.balance;
         uint256 ownerBalanceAfter = owner.balance;
@@ -938,7 +941,7 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
     }
 
-    function testDepositAndCallEthSecondActionRequiresFee() public {
+    function testDepositAndCallEthWithAmountSecondActionRequiresFee() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
         uint256 tssBalanceBefore = tssAddress.balance;
@@ -946,11 +949,11 @@ contract GatewayEVMInboundTest is
 
         vm.expectEmit(true, true, true, true);
         emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
-        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
 
         vm.expectEmit(true, true, true, true);
         emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
-        gateway.depositAndCall{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, payload, revertOptions);
+        gateway.depositAndCall{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, amount, payload, revertOptions);
 
         uint256 tssBalanceAfter = tssAddress.balance;
         uint256 ownerBalanceAfter = owner.balance;
@@ -1007,35 +1010,6 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
     }
 
-    function testMultipleActionsInSameTransaction() public {
-        uint256 amount = 100_000;
-        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
-        uint256 tssBalanceBefore = tssAddress.balance;
-        uint256 ownerBalanceBefore = owner.balance;
-
-        token.approve(address(gateway), amount * 3);
-
-        vm.expectEmit(true, true, true, true);
-        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
-        gateway.deposit(destination, amount, address(token), revertOptions);
-
-        vm.expectEmit(true, true, true, true);
-        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
-        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
-
-        vm.expectEmit(true, true, true, true);
-        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
-        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
-
-        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
-        uint256 tssBalanceAfter = tssAddress.balance;
-        uint256 ownerBalanceAfter = owner.balance;
-
-        assertEq(custodyBalanceBefore + (amount * 3), custodyBalanceAfter);
-        assertEq(tssBalanceBefore + (ADDITIONAL_ACTION_FEE_WEI * 2), tssBalanceAfter);
-        assertEq(ownerBalanceBefore - (ADDITIONAL_ACTION_FEE_WEI * 2), ownerBalanceAfter);
-    }
-
     function testMixedActionTypesInSameTransaction() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -1072,7 +1046,7 @@ contract GatewayEVMInboundTest is
         uint256 newFee = 1e13; // 0.01 ETH
 
         vm.expectEmit(true, true, true, true);
-        emit UpdatedAdditionalActionFee(ADDITIONAL_ACTION_FEE_WEI, newFee);
+        emit UpdatedAdditionalActionFee(ADDITIONAL_ACTION_FEE_WEI, newFee); // Initial fee is 0
         gateway.updateAdditionalActionFee(newFee);
 
         assertEq(gateway.additionalActionFeeWei(), newFee);
@@ -1098,7 +1072,7 @@ contract GatewayEVMInboundTest is
         uint256 ownerBalanceBefore = owner.balance;
 
         gateway.deposit{ value: amount }(destination, revertOptions);
-        gateway.deposit{ value: amount + newFee }(destination, revertOptions);
+        gateway.deposit{ value: amount + newFee }(destination, amount, revertOptions);
 
         uint256 tssBalanceAfter = tssAddress.balance;
         uint256 ownerBalanceAfter = owner.balance;
@@ -1107,7 +1081,7 @@ contract GatewayEVMInboundTest is
         assertEq(ownerBalanceBefore - (amount * 2) - newFee, ownerBalanceAfter);
     }
 
-    function testDepositEthSecondActionWithOnlyFee() public {
+    function testDepositEthWithAmountSecondActionWithOnlyFee() public {
         uint256 amount = 100_000;
 
         // First deposit (free)
@@ -1115,7 +1089,7 @@ contract GatewayEVMInboundTest is
 
         // Second deposit with only fee amount should fail because depositAmount = 0
         vm.expectRevert(InsufficientETHAmount.selector);
-        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, 0, revertOptions);
     }
 
     function testDepositERC20WithExcessEthReverts() public {
@@ -1240,5 +1214,60 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
         gateway.call{ value: insufficientFee }(destination, payload, revertOptions);
+    }
+
+    function testAdditionalActionDisabledReverts() public {
+        // Disable fees
+        gateway.updateAdditionalActionFee(0);
+
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount * 2);
+
+        // First action should work (free)
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        // Second action should revert because fee is disabled
+        vm.expectRevert(AdditionalActionDisabled.selector);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        // Call should also revert on second action
+        vm.expectRevert(AdditionalActionDisabled.selector);
+        gateway.call(destination, payload, revertOptions);
+    }
+
+    function testDepositWithAmountInsufficientFee() public {
+        uint256 amount = 100_000;
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with incorrect value (should revert)
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, amount));
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+    }
+
+    function testRegularDepositRevertsForSubsequentActions() public {
+        uint256 amount = 100_000;
+
+        // First action works
+        gateway.deposit{ value: amount }(destination, revertOptions);
+
+        // Second action with regular deposit should revert
+        vm.expectRevert(abi.encodeWithSelector(AdditionalActionDisabled.selector));
+        gateway.deposit{ value: amount }(destination, revertOptions);
+    }
+
+    function testRegularDepositAndCallRevertsForSubsequentActions() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        // First action works
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
+
+        // Second action with regular depositAndCall should revert
+        vm.expectRevert(abi.encodeWithSelector(AdditionalActionDisabled.selector));
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 }
