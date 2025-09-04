@@ -647,6 +647,57 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: amount }(address(0), revertOptions);
     }
 
+    function testDepositEthWithAmountToTss() public {
+        uint256 amount = 100_000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        assertEq(tssBalanceBefore + amount, tssBalanceAfter);
+    }
+
+    function testRevertDepositEthWithAmountIfAmountIsLessThanMsgValue() public {
+        uint256 amount = 100_000;
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount - 1, amount));
+        gateway.deposit{ value: amount }(destination, amount - 1, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountIfAmountIsMoreThanMsgValue() public {
+        uint256 amount = 100_000;
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount + 1, amount));
+        gateway.deposit{ value: amount }(destination, amount + 1, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountToTssIfAmountIs0() public {
+        uint256 amount = 0;
+
+        vm.expectRevert(InsufficientETHAmount.selector);
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountToTssIfPayloadSizeExceeded() public {
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() + 1);
+
+        uint256 payloadSize = revertOptions.revertMessage.length;
+        uint256 maxSize = gateway.MAX_PAYLOAD_SIZE();
+
+        vm.expectRevert(abi.encodeWithSelector(PayloadSizeExceeded.selector, payloadSize, maxSize));
+
+        gateway.deposit{ value: 1 }(destination, 1, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountToTssIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.deposit{ value: amount }(address(0), amount, revertOptions);
+    }
+
     function testDepositERC20ToCustodyWithPayloadFailsIfTokenIsNotWhitelisted() public {
         uint256 amount = 100_000;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -745,6 +796,102 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(ZeroAddress.selector);
         gateway.depositAndCall{ value: amount }(address(0), payload, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssWithPayload() public {
+        uint256 amount = 100_000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        assertEq(tssBalanceBefore + amount, tssBalanceAfter);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.deposit{ value: amount }(destination, amount, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthWithAmountToTssWithPayloadFailsIfPayloadSizeExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2);
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2 + 1);
+
+        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
+        uint256 maxSize = gateway.MAX_PAYLOAD_SIZE();
+
+        vm.expectRevert(abi.encodeWithSelector(PayloadSizeExceeded.selector, payloadSize, maxSize));
+
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+    }
+
+    function testDepositAndCallEthWithAmountFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptionsExcessiveGas);
+    }
+
+    function testRevertDepositEthWithAmountToTssWithPayloadIfAmountIs0() public {
+        uint256 amount = 0;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(InsufficientETHAmount.selector);
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountToTssWithPayloadIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.depositAndCall{ value: amount }(address(0), amount, payload, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountToTssWithPayloadIfAmountIsLessThanMsgValue() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount - 1, amount));
+        gateway.depositAndCall{ value: amount }(destination, amount - 1, payload, revertOptions);
+    }
+
+    function testRevertDepositEthWithAmountToTssWithPayloadIfAmountIsMoreThanMsgValue() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount + 1, amount));
+        gateway.depositAndCall{ value: amount }(destination, amount + 1, payload, revertOptions);
     }
 
     function testCallWithPayload() public {
@@ -1147,6 +1294,23 @@ contract GatewayEVMInboundTest is
         // Second action with incorrect value (should revert)
         vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, amount));
         gateway.deposit{ value: amount }(destination, amount, revertOptions);
+    }
+
+    function testDepositWithAmountSecondActionRevertsIfIncorrectValue() public {
+        uint256 amount = 100_000;
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with excess eth (should revert)
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IncorrectValueProvided.selector,
+                amount + ADDITIONAL_ACTION_FEE_WEI,
+                amount + ADDITIONAL_ACTION_FEE_WEI + 1
+            )
+        );
+        gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI + 1 }(destination, amount, revertOptions);
     }
 
     function testRegularDepositRevertsForSubsequentActions() public {
