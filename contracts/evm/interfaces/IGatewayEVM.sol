@@ -206,6 +206,12 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param revertOptions Revert options.
     function deposit(address receiver, RevertOptions calldata revertOptions) external payable;
 
+    /// @notice Deposits ETH to the TSS address with specified amount.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of ETH to deposit.
+    /// @param revertOptions Revert options.
+    function deposit(address receiver, uint256 amount, RevertOptions calldata revertOptions) external payable;
+
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
@@ -226,6 +232,20 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param revertOptions Revert options.
     function depositAndCall(
         address receiver,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable;
+
+    /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract with specified amount.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of ETH to deposit.
+    /// @param payload Calldata to pass to the call.
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
         bytes calldata payload,
         RevertOptions calldata revertOptions
     )
