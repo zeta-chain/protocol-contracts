@@ -76,7 +76,9 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
       | "call"
       | "custody"
       | "deposit(address,uint256,address,(address,bool,address,bytes,uint256))"
+      | "deposit(address,uint256,(address,bool,address,bytes,uint256))"
       | "deposit(address,(address,bool,address,bytes,uint256))"
+      | "depositAndCall(address,uint256,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))"
       | "depositAndCall(address,uint256,address,bytes,(address,bool,address,bytes,uint256))"
       | "execute"
@@ -159,8 +161,16 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     values: [AddressLike, BigNumberish, AddressLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "deposit(address,uint256,(address,bool,address,bytes,uint256))",
+    values: [AddressLike, BigNumberish, RevertOptionsStruct]
+  ): string;
+  encodeFunctionData(
     functionFragment: "deposit(address,(address,bool,address,bytes,uint256))",
     values: [AddressLike, RevertOptionsStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositAndCall(address,uint256,bytes,(address,bool,address,bytes,uint256))",
+    values: [AddressLike, BigNumberish, BytesLike, RevertOptionsStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "depositAndCall(address,bytes,(address,bool,address,bytes,uint256))",
@@ -301,7 +311,15 @@ export interface GatewayEVMUpgradeTestInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "deposit(address,uint256,(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "deposit(address,(address,bool,address,bytes,uint256))",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "depositAndCall(address,uint256,bytes,(address,bool,address,bytes,uint256))",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -764,8 +782,29 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "payable"
   >;
 
+  "deposit(address,uint256,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
+  >;
+
   "deposit(address,(address,bool,address,bytes,uint256))": TypedContractMethod<
     [receiver: AddressLike, revertOptions: RevertOptionsStruct],
+    [void],
+    "payable"
+  >;
+
+  "depositAndCall(address,uint256,bytes,(address,bool,address,bytes,uint256))": TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
     [void],
     "payable"
   >;
@@ -970,9 +1009,32 @@ export interface GatewayEVMUpgradeTest extends BaseContract {
     "payable"
   >;
   getFunction(
+    nameOrSignature: "deposit(address,uint256,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      revertOptions: RevertOptionsStruct
+    ],
+    [void],
+    "payable"
+  >;
+  getFunction(
     nameOrSignature: "deposit(address,(address,bool,address,bytes,uint256))"
   ): TypedContractMethod<
     [receiver: AddressLike, revertOptions: RevertOptionsStruct],
+    [void],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "depositAndCall(address,uint256,bytes,(address,bool,address,bytes,uint256))"
+  ): TypedContractMethod<
+    [
+      receiver: AddressLike,
+      amount: BigNumberish,
+      payload: BytesLike,
+      revertOptions: RevertOptionsStruct
+    ],
     [void],
     "payable"
   >;
