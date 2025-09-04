@@ -798,6 +798,11 @@ const _abi = [
   },
   {
     type: "error",
+    name: "AdditionalActionDisabled",
+    inputs: [],
+  },
+  {
+    type: "error",
     name: "ApprovalFailed",
     inputs: [
       {
@@ -852,6 +857,22 @@ const _abi = [
     type: "error",
     name: "FeeTransferFailed",
     inputs: [],
+  },
+  {
+    type: "error",
+    name: "IncorrectValueProvided",
+    inputs: [
+      {
+        name: "expected",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "provided",
+        type: "uint256",
+        internalType: "uint256",
+      },
+    ],
   },
   {
     type: "error",

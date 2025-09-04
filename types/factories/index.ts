@@ -17,6 +17,7 @@ export * as stdErrorSol from "./StdError.sol";
 export * as stdStorageSol from "./StdStorage.sol";
 export * as systemContractSol from "./SystemContract.sol";
 export * as systemContractMockSol from "./SystemContractMock.sol";
+export * as testDAppV2Sol from "./TestDAppV2.sol";
 export * as transparentUpgradeableProxySol from "./TransparentUpgradeableProxy.sol";
 export * as universalContractSol from "./UniversalContract.sol";
 export * as vmSol from "./Vm.sol";

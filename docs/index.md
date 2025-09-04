@@ -183,6 +183,10 @@ Update the additional action fee.
 
 *Only callable by admin role. This allows for fee adjustments based on network conditions.*
 
+*Setting fee to 0 disables additional action fees entirely.*
+
+*Fee should be adjusted based on the chain's native token decimals.*
+
 
 ```solidity
 function updateAdditionalActionFee(uint256 newFeeWei) external onlyRole(DEFAULT_ADMIN_ROLE);
@@ -324,6 +328,10 @@ function revertWithERC20(
 
 Deposits ETH to the TSS address.
 
+*This function only works for the first action in a transaction (backward compatibility).*
+
+*For subsequent actions, use the overloaded version with amount parameter.*
+
 
 ```solidity
 function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused;
@@ -333,6 +341,32 @@ function deposit(address receiver, RevertOptions calldata revertOptions) externa
 |Name|Type|Description|
 |----|----|-----------|
 |`receiver`|`address`|Address of the receiver.|
+|`revertOptions`|`RevertOptions`|Revert options.|
+
+
+#### deposit
+
+Deposits ETH to the TSS address with specified amount.
+
+*msg.value must equal amount + required fee for the action.*
+
+
+```solidity
+function deposit(
+    address receiver,
+    uint256 amount,
+    RevertOptions calldata revertOptions
+)
+    external
+    payable
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`receiver`|`address`|Address of the receiver.|
+|`amount`|`uint256`|Amount of ETH to deposit (excluding fees).|
 |`revertOptions`|`RevertOptions`|Revert options.|
 
 
@@ -366,6 +400,10 @@ function deposit(
 
 Deposits ETH to the TSS address and calls an omnichain smart contract.
 
+*This function only works for the first action in a transaction (backward compatibility).*
+
+*For subsequent actions, use the overloaded version with amount parameter.*
+
 
 ```solidity
 function depositAndCall(
@@ -382,6 +420,34 @@ function depositAndCall(
 |Name|Type|Description|
 |----|----|-----------|
 |`receiver`|`address`|Address of the receiver.|
+|`payload`|`bytes`|Calldata to pass to the call.|
+|`revertOptions`|`RevertOptions`|Revert options.|
+
+
+#### depositAndCall
+
+Deposits ETH to the TSS address and calls an omnichain smart contract with specified amount.
+
+*msg.value must equal amount + required fee for the action.*
+
+
+```solidity
+function depositAndCall(
+    address receiver,
+    uint256 amount,
+    bytes calldata payload,
+    RevertOptions calldata revertOptions
+)
+    external
+    payable
+    whenNotPaused;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`receiver`|`address`|Address of the receiver.|
+|`amount`|`uint256`|Amount of ETH to deposit (excluding fees).|
 |`payload`|`bytes`|Calldata to pass to the call.|
 |`revertOptions`|`RevertOptions`|Revert options.|
 
@@ -592,7 +658,7 @@ Processes fee collection for cross-chain actions within a transaction.
 
 *The first action in a transaction is free, subsequent actions incur ADDITIONAL_ACTION_FEE_WEI.*
 
-*Fees are collected and sent to the TSS address to prevent spam and abuse.*
+*If fee is 0, the entire functionality is disabled and will revert.*
 
 
 ```solidity
@@ -605,30 +671,7 @@ function _processFee() internal returns (uint256 feeCharged);
 |`feeCharged`|`uint256`|The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for subsequent actions).|
 
 
-#### _validateFeeForETH
-
-Validates fee payment for ETH operations (deposit, depositAndCall).
-
-*Calculates the deposit amount after fee deduction and validates it.*
-
-
-```solidity
-function _validateFeeForETH(uint256 feeCharged) internal view returns (uint256 depositAmount);
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`feeCharged`|`uint256`|The fee amount that was charged.|
-
-**Returns**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`depositAmount`|`uint256`|The amount available for deposit after fee deduction.|
-
-
-#### _validateFeeForERC20
+#### _validateChargedFeeForERC20
 
 Validates fee payment for ERC20 operations (deposit, depositAndCall, call).
 
@@ -636,12 +679,30 @@ Validates fee payment for ERC20 operations (deposit, depositAndCall, call).
 
 
 ```solidity
-function _validateFeeForERC20(uint256 feeCharged) internal view;
+function _validateChargedFeeForERC20(uint256 feeCharged) internal view;
 ```
 **Parameters**
 
 |Name|Type|Description|
 |----|----|-----------|
+|`feeCharged`|`uint256`|The fee amount that was charged.|
+
+
+#### _validateChargedFeeForETHWithAmount
+
+Validates fee payment for ETH operations with specified amount.
+
+*Validates that msg.value equals amount + feeCharged.*
+
+
+```solidity
+function _validateChargedFeeForETHWithAmount(uint256 amount, uint256 feeCharged) internal view;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`amount`|`uint256`|The amount to deposit (excluding fees).|
 |`feeCharged`|`uint256`|The fee amount that was charged.|
 
 
@@ -2342,6 +2403,29 @@ error ExcessETHProvided(uint256 required, uint256 provided);
 |----|----|-----------|
 |`required`|`uint256`|The fee amount required for the action.|
 |`provided`|`uint256`|The ETH amount actually provided by the caller.|
+
+#### AdditionalActionDisabled
+Error thrown when additional action functionality is disabled (fee set to 0).
+
+
+```solidity
+error AdditionalActionDisabled();
+```
+
+#### IncorrectValueProvided
+Error thrown when msg.value doesn't match expected amount + fee.
+
+
+```solidity
+error IncorrectValueProvided(uint256 expected, uint256 provided);
+```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`expected`|`uint256`|The expected value (amount + fee).|
+|`provided`|`uint256`|The actual msg.value provided.|
 
 
 
