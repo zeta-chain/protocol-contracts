@@ -45,6 +45,19 @@ address public zetaToken;
 ```
 
 
+#### additionalActionFeeWei
+Fee charged for additional cross-chain actions within the same transaction.
+
+*The first action in a transaction is free, subsequent actions incur this fee.*
+
+*This is configurable by the admin role to allow for fee adjustments.*
+
+
+```solidity
+uint256 public additionalActionFeeWei;
+```
+
+
 #### TSS_ROLE
 New role identifier for tss role.
 
@@ -78,19 +91,6 @@ Max size of payload + revertOptions revert message.
 
 ```solidity
 uint256 public constant MAX_PAYLOAD_SIZE = 2880;
-```
-
-
-#### additionalActionFeeWei
-Fee charged for additional cross-chain actions within the same transaction.
-
-*The first action in a transaction is free, subsequent actions incur this fee.*
-
-*This is configurable by the admin role to allow for fee adjustments.*
-
-
-```solidity
-uint256 public additionalActionFeeWei;
 ```
 
 
@@ -662,13 +662,13 @@ Processes fee collection for cross-chain actions within a transaction.
 
 
 ```solidity
-function _processFee() internal returns (uint256 feeCharged);
+function _processFee() internal returns (uint256);
 ```
 **Returns**
 
 |Name|Type|Description|
 |----|----|-----------|
-|`feeCharged`|`uint256`|The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for subsequent actions).|
+|`<none>`|`uint256`|The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for subsequent actions).|
 
 
 #### _validateChargedFeeForERC20
