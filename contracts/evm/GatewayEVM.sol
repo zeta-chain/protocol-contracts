@@ -39,6 +39,11 @@ contract GatewayEVM is
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
 
+    /// @notice Fee charged for additional cross-chain actions within the same transaction.
+    /// @dev The first action in a transaction is free, subsequent actions incur this fee.
+    /// @dev This is configurable by the admin role to allow for fee adjustments.
+    uint256 public additionalActionFeeWei;
+
     /// @notice New role identifier for tss role.
     bytes32 public constant TSS_ROLE = keccak256("TSS_ROLE");
     /// @notice New role identifier for asset handler role.
@@ -47,11 +52,6 @@ contract GatewayEVM is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
     uint256 public constant MAX_PAYLOAD_SIZE = 2880;
-
-    /// @notice Fee charged for additional cross-chain actions within the same transaction.
-    /// @dev The first action in a transaction is free, subsequent actions incur this fee.
-    /// @dev This is configurable by the admin role to allow for fee adjustments.
-    uint256 public additionalActionFeeWei;
 
     /// @notice Storage slot key for tracking transaction action count.
     /// @dev Uses transient storage (tload/tstore) for gas efficiency.
@@ -81,11 +81,6 @@ contract GatewayEVM is
         _grantRole(TSS_ROLE, tssAddress_);
 
         zetaToken = zetaToken_;
-
-        // Initialize the additional action fee to 0 (disabled by default)
-        // Note: Fee is denominated in wei and should be adjusted based on the chain's native token decimals
-        // Setting to 0 disables additional action fees entirely.
-        additionalActionFeeWei = 0;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
@@ -601,9 +596,9 @@ contract GatewayEVM is
     /// @notice Processes fee collection for cross-chain actions within a transaction.
     /// @dev The first action in a transaction is free, subsequent actions incur ADDITIONAL_ACTION_FEE_WEI.
     /// @dev If fee is 0, the entire functionality is disabled and will revert.
-    /// @return feeCharged The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for
+    /// @return The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for
     /// subsequent actions).
-    function _processFee() internal returns (uint256 feeCharged) {
+    function _processFee() internal returns (uint256) {
         uint256 actionIndex = _getNextActionIndex();
 
         // First action is free
@@ -617,18 +612,17 @@ contract GatewayEVM is
         }
 
         // Subsequent actions require fee payment
-        feeCharged = additionalActionFeeWei;
-        if (msg.value < feeCharged) {
-            revert InsufficientFee(feeCharged, msg.value);
+        if (msg.value < additionalActionFeeWei) {
+            revert InsufficientFee(additionalActionFeeWei, msg.value);
         }
 
         // Transfer fee to TSS address
-        (bool success,) = tssAddress.call{ value: feeCharged }("");
+        (bool success,) = tssAddress.call{ value: additionalActionFeeWei }("");
         if (!success) {
             revert FeeTransferFailed();
         }
 
-        return feeCharged;
+        return additionalActionFeeWei;
     }
 
     /// @notice Validates fee payment for ERC20 operations (deposit, depositAndCall, call).
