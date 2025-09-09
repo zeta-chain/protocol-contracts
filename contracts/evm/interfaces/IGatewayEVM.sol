@@ -70,6 +70,7 @@ interface IGatewayEVMEvents {
     /// @param oldTSSAddress old tss address
     /// @param newTSSAddress new tss address
     event UpdatedGatewayTSSAddress(address oldTSSAddress, address newTSSAddress);
+    event UpdatedAdditionalActionFee(uint256 oldFeeWei, uint256 newFeeWei);
 }
 
 /// @title IGatewayEVMErrors
@@ -115,6 +116,28 @@ interface IGatewayEVMErrors {
     /// @param provided The size of the payload that was provided.
     /// @param maximum The maximum allowed payload size.
     error PayloadSizeExceeded(uint256 provided, uint256 maximum);
+
+    /// @notice Error thrown when fee transfer to TSS address fails.
+    /// @dev This error occurs when the low-level call to transfer fees fails.
+    error FeeTransferFailed();
+
+    /// @notice Error thrown when insufficient fee is provided for additional actions.
+    /// @param required The fee amount required for the action.
+    /// @param provided The fee amount actually provided by the caller.
+    error InsufficientFee(uint256 required, uint256 provided);
+
+    /// @notice Error thrown when excess ETH is sent for non-ETH operations.
+    /// @param required The fee amount required for the action.
+    /// @param provided The ETH amount actually provided by the caller.
+    error ExcessETHProvided(uint256 required, uint256 provided);
+
+    /// @notice Error thrown when additional action functionality is disabled (fee set to 0).
+    error AdditionalActionDisabled();
+
+    /// @notice Error thrown when msg.value doesn't match expected amount + fee.
+    /// @param expected The expected value (amount + fee).
+    /// @param provided The actual msg.value provided.
+    error IncorrectValueProvided(uint256 expected, uint256 provided);
 }
 
 /// @title IGatewayEVM
@@ -183,12 +206,25 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param revertOptions Revert options.
     function deposit(address receiver, RevertOptions calldata revertOptions) external payable;
 
+    /// @notice Deposits ETH to the TSS address with specified amount.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of ETH to deposit.
+    /// @param revertOptions Revert options.
+    function deposit(address receiver, uint256 amount, RevertOptions calldata revertOptions) external payable;
+
     /// @notice Deposits ERC20 tokens to the custody or connector contract.
     /// @param receiver Address of the receiver.
     /// @param amount Amount of tokens to deposit.
     /// @param asset Address of the ERC20 token.
     /// @param revertOptions Revert options.
-    function deposit(address receiver, uint256 amount, address asset, RevertOptions calldata revertOptions) external;
+    function deposit(
+        address receiver,
+        uint256 amount,
+        address asset,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable;
 
     /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract.
     /// @param receiver Address of the receiver.
@@ -196,6 +232,20 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
     /// @param revertOptions Revert options.
     function depositAndCall(
         address receiver,
+        bytes calldata payload,
+        RevertOptions calldata revertOptions
+    )
+        external
+        payable;
+
+    /// @notice Deposits ETH to the TSS address and calls an omnichain smart contract with specified amount.
+    /// @param receiver Address of the receiver.
+    /// @param amount Amount of ETH to deposit.
+    /// @param payload Calldata to pass to the call.
+    /// @param revertOptions Revert options.
+    function depositAndCall(
+        address receiver,
+        uint256 amount,
         bytes calldata payload,
         RevertOptions calldata revertOptions
     )
@@ -215,13 +265,14 @@ interface IGatewayEVM is IGatewayEVMErrors, IGatewayEVMEvents {
         bytes calldata payload,
         RevertOptions calldata revertOptions
     )
-        external;
+        external
+        payable;
 
     /// @notice Calls an omnichain smart contract without asset transfer.
     /// @param receiver Address of the receiver.
     /// @param payload Calldata to pass to the call.
     /// @param revertOptions Revert options.
-    function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external;
+    function call(address receiver, bytes calldata payload, RevertOptions calldata revertOptions) external payable;
 }
 
 /// @notice Message context passed to execute function.
