@@ -82,11 +82,8 @@ interface IGatewayEVMErrors {
     /// @notice Error for failed deposit.
     error DepositFailed();
 
-    /// @notice Error for insufficient ETH amount.
-    error InsufficientETHAmount();
-
-    /// @notice Error for insufficient ERC20 token amount.
-    error InsufficientERC20Amount();
+    /// @notice Error for insufficient token amount.
+    error InsufficientEVMAmount();
 
     /// @notice Error for zero address input.
     error ZeroAddress();
