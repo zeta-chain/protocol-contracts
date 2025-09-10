@@ -627,7 +627,7 @@ contract GatewayEVMInboundTest is
 
         token.approve(address(gateway), amount);
 
-        vm.expectRevert(InsufficientERC20Amount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
@@ -652,7 +652,7 @@ contract GatewayEVMInboundTest is
     function testDepositEthToTssFailsIfAmountIs0() public {
         uint256 amount = 0;
 
-        vm.expectRevert(InsufficientETHAmount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.deposit{ value: amount }(destination, revertOptions);
     }
 
@@ -703,7 +703,7 @@ contract GatewayEVMInboundTest is
     function testDepositEthWithAmountToTssFailsIfAmountIs0() public {
         uint256 amount = 0;
 
-        vm.expectRevert(InsufficientETHAmount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.deposit{ value: amount }(destination, amount, revertOptions);
     }
 
@@ -800,7 +800,7 @@ contract GatewayEVMInboundTest is
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert(InsufficientERC20Amount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
@@ -881,7 +881,7 @@ contract GatewayEVMInboundTest is
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert(InsufficientETHAmount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
@@ -961,7 +961,7 @@ contract GatewayEVMInboundTest is
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
-        vm.expectRevert(InsufficientETHAmount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
     }
 
@@ -1235,7 +1235,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: amount }(destination, revertOptions);
 
         // Second deposit with only fee amount should fail because depositAmount = 0
-        vm.expectRevert(InsufficientETHAmount.selector);
+        vm.expectRevert(InsufficientEVMAmount.selector);
         gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, 0, revertOptions);
     }
 

@@ -13,6 +13,7 @@ import {
     RevertOptions,
     Revertable
 } from "../../../contracts/Revert.sol";
+import { GatewayEVMValidations } from "../../../contracts/evm/libraries/GatewayEVMValidations.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -37,6 +38,7 @@ contract GatewayEVMUpgradeTest is
     INotSupportedMethods
 {
     using SafeERC20 for IERC20;
+    using GatewayEVMValidations for *;
 
     /// @notice The address of the custody contract.
     address public custody;
@@ -46,6 +48,11 @@ contract GatewayEVMUpgradeTest is
     address public zetaConnector;
     /// @notice The address of the Zeta token contract.
     address public zetaToken;
+
+    /// @notice Fee charged for additional cross-chain actions within the same transaction.
+    /// @dev The first action in a transaction is free, subsequent actions incur this fee.
+    /// @dev This is configurable by the admin role to allow for fee adjustments.
+    uint256 public additionalActionFeeWei;
 
     /// @dev Modified event for testing upgrade.
     event ExecutedV2(address indexed destination, uint256 value, bytes data);
@@ -58,11 +65,6 @@ contract GatewayEVMUpgradeTest is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     /// @notice Max size of payload + revertOptions revert message.
     uint256 public constant MAX_PAYLOAD_SIZE = 2880;
-
-    /// @notice Fee charged for additional cross-chain actions within the same transaction.
-    /// @dev The first action in a transaction is free, subsequent actions incur this fee.
-    /// @dev This is configurable by the admin role to allow for fee adjustments.
-    uint256 public additionalActionFeeWei;
 
     /// @notice Storage slot key for tracking transaction action count.
     /// @dev Uses transient storage (tload/tstore) for gas efficiency.
@@ -91,11 +93,6 @@ contract GatewayEVMUpgradeTest is
         tssAddress = tssAddress_;
 
         zetaToken = zetaToken_;
-
-        // Initialize the additional action fee to 0 (disabled by default)
-        // Note: Fee is denominated in wei and should be adjusted based on the chain's native token decimals
-        // Setting to 0 disables additional action fees entirely.
-        additionalActionFeeWei = 0;
     }
 
     /// @dev Authorizes the upgrade of the contract, sender must be owner.
@@ -151,7 +148,7 @@ contract GatewayEVMUpgradeTest is
         onlyRole(TSS_ROLE)
         whenNotPaused
     {
-        if (destination == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateNonZeroAddress(destination);
         (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(revertContext);
@@ -177,7 +174,7 @@ contract GatewayEVMUpgradeTest is
         whenNotPaused
         returns (bytes memory)
     {
-        if (destination == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateNonZeroAddress(destination);
         bytes memory result;
         // Execute the call on the target contract
         // if sender is provided in messageContext call is authenticated and target is Callable.onCall
@@ -213,8 +210,8 @@ contract GatewayEVMUpgradeTest is
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (to == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateAmount(amount);
+        GatewayEVMValidations.validateNonZeroAddress(to);
         // Approve the target contract to spend the tokens
         if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
         // Approve token to spender
@@ -259,8 +256,8 @@ contract GatewayEVMUpgradeTest is
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (to == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateAmount(amount);
+        GatewayEVMValidations.validateNonZeroAddress(to);
 
         IERC20(token).safeTransfer(address(to), amount);
         Revertable(to).onRevert(revertContext);
@@ -274,14 +271,7 @@ contract GatewayEVMUpgradeTest is
     /// @dev This function only works for the first action in a transaction (backward compatibility).
     /// @dev For subsequent actions, use the overloaded version with amount parameter.
     function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
-        if (msg.value == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositParams(receiver, msg.value, revertOptions);
 
         // Check if this is a subsequent action (action index > 0)
         uint256 currentIndex = _getNextActionIndex();
@@ -311,14 +301,7 @@ contract GatewayEVMUpgradeTest is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositParams(receiver, amount, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForETHWithAmount(amount, feeCharged);
@@ -345,14 +328,7 @@ contract GatewayEVMUpgradeTest is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositParams(receiver, amount, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForERC20(feeCharged);
@@ -377,14 +353,7 @@ contract GatewayEVMUpgradeTest is
         payable
         whenNotPaused
     {
-        if (msg.value == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositAndCallParams(receiver, msg.value, payload, revertOptions);
 
         // Check if this is a subsequent action (action index > 0)
         uint256 currentIndex = _getNextActionIndex();
@@ -416,14 +385,7 @@ contract GatewayEVMUpgradeTest is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositAndCallParams(receiver, amount, payload, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForETHWithAmount(amount, feeCharged);
@@ -452,14 +414,7 @@ contract GatewayEVMUpgradeTest is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositAndCallParams(receiver, amount, payload, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForERC20(feeCharged);
@@ -482,13 +437,7 @@ contract GatewayEVMUpgradeTest is
         payable
         whenNotPaused
     {
-        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
-        if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateCallParams(receiver, payload, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForERC20(feeCharged);
@@ -628,9 +577,9 @@ contract GatewayEVMUpgradeTest is
     /// @notice Processes fee collection for cross-chain actions within a transaction.
     /// @dev The first action in a transaction is free, subsequent actions incur ADDITIONAL_ACTION_FEE_WEI.
     /// @dev If fee is 0, the entire functionality is disabled and will revert.
-    /// @return feeCharged The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for
+    /// @return The fee amount actually charged (0 for first action, ADDITIONAL_ACTION_FEE_WEI for
     /// subsequent actions).
-    function _processFee() internal returns (uint256 feeCharged) {
+    function _processFee() internal returns (uint256) {
         uint256 actionIndex = _getNextActionIndex();
 
         // First action is free
@@ -644,18 +593,17 @@ contract GatewayEVMUpgradeTest is
         }
 
         // Subsequent actions require fee payment
-        feeCharged = additionalActionFeeWei;
-        if (msg.value < feeCharged) {
-            revert InsufficientFee(feeCharged, msg.value);
+        if (msg.value < additionalActionFeeWei) {
+            revert InsufficientFee(additionalActionFeeWei, msg.value);
         }
 
         // Transfer fee to TSS address
-        (bool success,) = tssAddress.call{ value: feeCharged }("");
+        (bool success,) = tssAddress.call{ value: additionalActionFeeWei }("");
         if (!success) {
             revert FeeTransferFailed();
         }
 
-        return feeCharged;
+        return additionalActionFeeWei;
     }
 
     /// @notice Validates fee payment for ERC20 operations (deposit, depositAndCall, call).
