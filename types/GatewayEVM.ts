@@ -119,6 +119,7 @@ export interface GatewayEVMInterface extends Interface {
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
+      | "TestEvent"
       | "Unpaused"
       | "UpdatedAdditionalActionFee"
       | "UpdatedGatewayTSSAddress"
@@ -624,6 +625,16 @@ export namespace RoleRevokedEvent {
     account: string;
     sender: string;
   }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace TestEventEvent {
+  export type InputTuple = [];
+  export type OutputTuple = [];
+  export interface OutputObject {}
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
   export type Log = TypedEventLog<Event>;
@@ -1251,6 +1262,13 @@ export interface GatewayEVM extends BaseContract {
     RoleRevokedEvent.OutputObject
   >;
   getEvent(
+    key: "TestEvent"
+  ): TypedContractEvent<
+    TestEventEvent.InputTuple,
+    TestEventEvent.OutputTuple,
+    TestEventEvent.OutputObject
+  >;
+  getEvent(
     key: "Unpaused"
   ): TypedContractEvent<
     UnpausedEvent.InputTuple,
@@ -1399,6 +1417,17 @@ export interface GatewayEVM extends BaseContract {
       RoleRevokedEvent.InputTuple,
       RoleRevokedEvent.OutputTuple,
       RoleRevokedEvent.OutputObject
+    >;
+
+    "TestEvent()": TypedContractEvent<
+      TestEventEvent.InputTuple,
+      TestEventEvent.OutputTuple,
+      TestEventEvent.OutputObject
+    >;
+    TestEvent: TypedContractEvent<
+      TestEventEvent.InputTuple,
+      TestEventEvent.OutputTuple,
+      TestEventEvent.OutputObject
     >;
 
     "Unpaused(address)": TypedContractEvent<
