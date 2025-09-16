@@ -725,13 +725,6 @@ function _getNextActionIndex() internal returns (uint256 currentIndex);
 |`currentIndex`|`uint256`|The current action index within the transaction (0-based).|
 
 
-### Events
-#### TestEvent
-
-```solidity
-event TestEvent();
-```
-
 
 
 ## GatewayZEVM

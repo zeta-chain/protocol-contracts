@@ -64,8 +64,6 @@ contract GatewayEVM is
     /// @dev Value 0x01 is used as a unique identifier for this storage slot.
     uint256 private constant _TRANSACTION_ACTION_COUNT_KEY = 0x01;
 
-    event TestEvent();
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
