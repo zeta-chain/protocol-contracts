@@ -53,8 +53,9 @@ library GatewayZEVMValidations {
     /// @param messageLength The length of the main message
     /// @param revertMessageLength The length of the revert message
     function validateMessageSize(uint256 messageLength, uint256 revertMessageLength) internal pure {
-        if (messageLength + revertMessageLength > MAX_MESSAGE_SIZE) {
-            revert IGatewayZEVMErrors.MessageSizeExceeded(messageLength + revertMessageLength, MAX_MESSAGE_SIZE);
+        uint256 totalSize = messageLength + revertMessageLength;
+        if (totalSize > MAX_MESSAGE_SIZE) {
+            revert IGatewayZEVMErrors.MessageSizeExceeded(totalSize, MAX_MESSAGE_SIZE);
         }
     }
 

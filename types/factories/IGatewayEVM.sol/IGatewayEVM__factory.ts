@@ -981,12 +981,7 @@ const _abi = [
   },
   {
     type: "error",
-    name: "InsufficientERC20Amount",
-    inputs: [],
-  },
-  {
-    type: "error",
-    name: "InsufficientETHAmount",
+    name: "InsufficientEVMAmount",
     inputs: [],
   },
   {

@@ -12,6 +12,7 @@ import {
 import { ZetaConnectorBase } from "./ZetaConnectorBase.sol";
 import { IERC20Custody } from "./interfaces/IERC20Custody.sol";
 import { Callable, IGatewayEVM, MessageContext } from "./interfaces/IGatewayEVM.sol";
+import { GatewayEVMValidations } from "./libraries/GatewayEVMValidations.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -35,6 +36,7 @@ contract GatewayEVM is
     INotSupportedMethods
 {
     using SafeERC20 for IERC20;
+    using GatewayEVMValidations for *;
 
     /// @notice The address of the custody contract.
     address public custody;
@@ -141,7 +143,7 @@ contract GatewayEVM is
         onlyRole(TSS_ROLE)
         whenNotPaused
     {
-        if (destination == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateNonZeroAddress(destination);
         (bool success,) = destination.call{ value: msg.value }("");
         if (!success) revert ExecutionFailed();
         Revertable(destination).onRevert(revertContext);
@@ -167,7 +169,7 @@ contract GatewayEVM is
         whenNotPaused
         returns (bytes memory)
     {
-        if (destination == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateNonZeroAddress(destination);
         bytes memory result;
         // Execute the call on the target contract
         // if sender is provided in messageContext call is authenticated and target is Callable.onCall
@@ -203,8 +205,8 @@ contract GatewayEVM is
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (to == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateAmount(amount);
+        GatewayEVMValidations.validateNonZeroAddress(to);
         // Approve the target contract to spend the tokens
         if (!_resetApproval(token, to)) revert ApprovalFailed(token, to);
         // Approve token to spender
@@ -249,8 +251,8 @@ contract GatewayEVM is
         onlyRole(ASSET_HANDLER_ROLE)
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (to == address(0)) revert ZeroAddress();
+        GatewayEVMValidations.validateAmount(amount);
+        GatewayEVMValidations.validateNonZeroAddress(to);
 
         IERC20(token).safeTransfer(address(to), amount);
         Revertable(to).onRevert(revertContext);
@@ -264,14 +266,7 @@ contract GatewayEVM is
     /// @dev This function only works for the first action in a transaction (backward compatibility).
     /// @dev For subsequent actions, use the overloaded version with amount parameter.
     function deposit(address receiver, RevertOptions calldata revertOptions) external payable whenNotPaused {
-        if (msg.value == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositParams(receiver, msg.value, revertOptions);
 
         // Check if this is a subsequent action (action index > 0)
         uint256 currentIndex = _getNextActionIndex();
@@ -301,14 +296,7 @@ contract GatewayEVM is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositParams(receiver, amount, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForETHWithAmount(amount, feeCharged);
@@ -335,14 +323,7 @@ contract GatewayEVM is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositParams(receiver, amount, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForERC20(feeCharged);
@@ -367,14 +348,7 @@ contract GatewayEVM is
         payable
         whenNotPaused
     {
-        if (msg.value == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositAndCallParams(receiver, msg.value, payload, revertOptions);
 
         // Check if this is a subsequent action (action index > 0)
         uint256 currentIndex = _getNextActionIndex();
@@ -406,14 +380,7 @@ contract GatewayEVM is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientETHAmount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositAndCallParams(receiver, amount, payload, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForETHWithAmount(amount, feeCharged);
@@ -442,14 +409,7 @@ contract GatewayEVM is
         payable
         whenNotPaused
     {
-        if (amount == 0) revert InsufficientERC20Amount();
-        if (receiver == address(0)) revert ZeroAddress();
-        if (payload.length + revertOptions.revertMessage.length > MAX_PAYLOAD_SIZE) {
-            revert PayloadSizeExceeded(payload.length + revertOptions.revertMessage.length, MAX_PAYLOAD_SIZE);
-        }
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateDepositAndCallParams(receiver, amount, payload, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForERC20(feeCharged);
@@ -472,13 +432,7 @@ contract GatewayEVM is
         payable
         whenNotPaused
     {
-        if (revertOptions.callOnRevert) revert CallOnRevertNotSupported();
-        if (receiver == address(0)) revert ZeroAddress();
-        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
-        if (payloadSize > MAX_PAYLOAD_SIZE) revert PayloadSizeExceeded(payloadSize, MAX_PAYLOAD_SIZE);
-        if (revertOptions.onRevertGasLimit > MAX_REVERT_GAS_LIMIT) {
-            revert RevertGasLimitExceeded(revertOptions.onRevertGasLimit, MAX_REVERT_GAS_LIMIT);
-        }
+        GatewayEVMValidations.validateCallParams(receiver, payload, revertOptions);
 
         uint256 feeCharged = _processFee();
         _validateChargedFeeForERC20(feeCharged);
