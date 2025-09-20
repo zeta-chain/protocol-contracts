@@ -14,6 +14,9 @@ import "./utils/upgrades/GatewayEVMUpgradeTest.sol";
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "forge-std/Test.sol";
+
+import "forge-std/Vm.sol";
 import { Upgrades } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 import "../contracts/evm/ERC20Custody.sol";
@@ -460,7 +463,8 @@ contract GatewayEVMInboundTest is
     address tssAddress;
     RevertOptions revertOptions;
 
-    uint256 ownerAmount = 1_000_000;
+    uint256 ownerAmount = 10_000 ether;
+    uint256 public constant ADDITIONAL_ACTION_FEE_WEI = 2e5;
 
     function setUp() public {
         owner = address(this);
@@ -507,6 +511,9 @@ contract GatewayEVMInboundTest is
             revertMessage: "",
             onRevertGasLimit: 0
         });
+
+        // Enable fees for testing
+        gateway.updateAdditionalActionFee(ADDITIONAL_ACTION_FEE_WEI);
     }
 
     function testDepositERC20ToCustody() public {
@@ -525,6 +532,36 @@ contract GatewayEVMInboundTest is
 
         uint256 ownerAmountAfter = token.balanceOf(owner);
         assertEq(ownerAmount - amount, ownerAmountAfter);
+    }
+
+    function testDeposit2ERC20ToCustody() public {
+        uint256 amount = 100_000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        assertEq(0, custodyBalanceBefore);
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        assertEq(amount * 2, custodyBalanceAfter);
+
+        uint256 ownerAmountAfter = token.balanceOf(owner);
+        assertEq(ownerAmount - amount * 2, ownerAmountAfter);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
     }
 
     function testDepositERC20ToCustodyFailsIfTokenIsNotWhitelisted() public {
@@ -563,7 +600,7 @@ contract GatewayEVMInboundTest is
         // assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testRevertDepositERC20ToCustodyIfAmountIs0() public {
+    function testDepositERC20ToCustodyFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         token.approve(address(gateway), amount);
@@ -572,7 +609,7 @@ contract GatewayEVMInboundTest is
         gateway.deposit(destination, amount, address(token), revertOptions);
     }
 
-    function testRevertDepositERC20ToCustodyIfReceiverIsZeroAddress() public {
+    function testDepositERC20ToCustodyFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
         vm.expectRevert(ZeroAddress.selector);
         gateway.deposit(address(0), amount, address(token), revertOptions);
@@ -590,7 +627,7 @@ contract GatewayEVMInboundTest is
         assertEq(tssBalanceBefore + amount, tssBalanceAfter);
     }
 
-    function testRevertDepositEthToTssIfAmountIs0() public {
+    function testDepositEthToTssFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         vm.expectRevert(InsufficientETHAmount.selector);
@@ -603,11 +640,62 @@ contract GatewayEVMInboundTest is
         gateway.deposit{ value: 1 }(destination, revertOptions);
     }
 
-    function testRevertDepositEthToTssIfReceiverIsZeroAddress() public {
+    function testDepositEthToTssFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
         vm.expectRevert(ZeroAddress.selector);
         gateway.deposit{ value: amount }(address(0), revertOptions);
+    }
+
+    function testDepositEthWithAmountToTss() public {
+        uint256 amount = 100_000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        assertEq(tssBalanceBefore + amount, tssBalanceAfter);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfAmountIsLessThanMsgValue() public {
+        uint256 amount = 100_000;
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount - 1, amount));
+        gateway.deposit{ value: amount }(destination, amount - 1, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfAmountIsMoreThanMsgValue() public {
+        uint256 amount = 100_000;
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount + 1, amount));
+        gateway.deposit{ value: amount }(destination, amount + 1, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfAmountIs0() public {
+        uint256 amount = 0;
+
+        vm.expectRevert(InsufficientETHAmount.selector);
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfPayloadSizeExceeded() public {
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() + 1);
+
+        uint256 payloadSize = revertOptions.revertMessage.length;
+        uint256 maxSize = gateway.MAX_PAYLOAD_SIZE();
+
+        vm.expectRevert(abi.encodeWithSelector(PayloadSizeExceeded.selector, payloadSize, maxSize));
+
+        gateway.deposit{ value: 1 }(destination, 1, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.deposit{ value: amount }(address(0), amount, revertOptions);
     }
 
     function testDepositERC20ToCustodyWithPayloadFailsIfTokenIsNotWhitelisted() public {
@@ -654,7 +742,7 @@ contract GatewayEVMInboundTest is
         assertEq(ownerAmount - amount, ownerAmountAfter);
     }
 
-    function testRevertDepositERC20ToCustodyWithPayloadIfAmountIs0() public {
+    function testDepositERC20ToCustodyWithPayloadFailsIfAmountIs0() public {
         uint256 amount = 0;
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -663,7 +751,7 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
     }
 
-    function testRevertDepositERC20ToCustodyWithPayloadIfReceiverIsZeroAddress() public {
+    function testDepositERC20ToCustodyWithPayloadFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
 
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
@@ -694,7 +782,27 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
-    function testRevertDepositEthToTssWithPayloadIfAmountIs0() public {
+    function testDepositAndCallEthFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthToTssWithPayloadFailsIfAmountIs0() public {
         uint256 amount = 0;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
@@ -702,12 +810,108 @@ contract GatewayEVMInboundTest is
         gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 
-    function testRevertDepositEthToTssWithPayloadIfReceiverIsZeroAddress() public {
+    function testDepositEthToTssWithPayloadFailsIfReceiverIsZeroAddress() public {
         uint256 amount = 1;
         bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
 
         vm.expectRevert(ZeroAddress.selector);
         gateway.depositAndCall{ value: amount }(address(0), payload, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssWithPayload() public {
+        uint256 amount = 100_000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectEmit(true, true, true, true, address(gateway));
+        emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        assertEq(tssBalanceBefore + amount, tssBalanceAfter);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.deposit{ value: amount }(destination, amount, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthWithAmountToTssWithPayloadFailsIfPayloadSizeExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2);
+        revertOptions.revertMessage = new bytes(gateway.MAX_PAYLOAD_SIZE() / 2 + 1);
+
+        uint256 payloadSize = payload.length + revertOptions.revertMessage.length;
+        uint256 maxSize = gateway.MAX_PAYLOAD_SIZE();
+
+        vm.expectRevert(abi.encodeWithSelector(PayloadSizeExceeded.selector, payloadSize, maxSize));
+
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+    }
+
+    function testDepositAndCallEthWithAmountFailsIfRevertGasLimitExceeded() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthWithAmountToTssWithPayloadFailsIfAmountIs0() public {
+        uint256 amount = 0;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(InsufficientETHAmount.selector);
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssWithPayloadFailsIfReceiverIsZeroAddress() public {
+        uint256 amount = 1;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(ZeroAddress.selector);
+        gateway.depositAndCall{ value: amount }(address(0), amount, payload, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssWithPayloadFailsIfAmountIsLessThanMsgValue() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount - 1, amount));
+        gateway.depositAndCall{ value: amount }(destination, amount - 1, payload, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssWithPayloadFailsIfAmountIsMoreThanMsgValue() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        vm.expectRevert(abi.encodeWithSelector(IncorrectValueProvided.selector, amount + 1, amount));
+        gateway.depositAndCall{ value: amount }(destination, amount + 1, payload, revertOptions);
     }
 
     function testCallWithPayload() public {
@@ -739,5 +943,448 @@ contract GatewayEVMInboundTest is
 
         vm.expectRevert(ZeroAddress.selector);
         gateway.call(address(0), payload, revertOptions);
+    }
+
+    function testCallFailsIfRevertGasLimitExceeded() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        RevertOptions memory revertOptionsExcessiveGas = RevertOptions({
+            revertAddress: address(0x321),
+            callOnRevert: false,
+            abortAddress: address(0x321),
+            revertMessage: "",
+            onRevertGasLimit: MAX_REVERT_GAS_LIMIT + 1
+        });
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                RevertGasLimitExceeded.selector, revertOptionsExcessiveGas.onRevertGasLimit, MAX_REVERT_GAS_LIMIT
+            )
+        );
+        gateway.call(destination, payload, revertOptionsExcessiveGas);
+    }
+
+    function testDepositEthWithAmountSecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(0), "", revertOptions);
+        gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, amount, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(tssBalanceBefore + (amount * 2) + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2) - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
+    }
+
+    function testDepositERC20SecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 ownerBalanceBefore = token.balanceOf(owner);
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, amount, address(token), revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 ownerBalanceAfter = token.balanceOf(owner);
+        uint256 tssBalanceAfter = tssAddress.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 2), custodyBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2), ownerBalanceAfter);
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+    }
+
+    function testDepositAndCallEthWithAmountSecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(0), payload, revertOptions);
+        gateway.depositAndCall{ value: amount + ADDITIONAL_ACTION_FEE_WEI }(destination, amount, payload, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(tssBalanceBefore + (amount * 2) + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2) - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
+    }
+
+    function testDepositAndCallERC20SecondActionRequiresFee() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 ownerBalanceBefore = token.balanceOf(owner);
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(token), payload, revertOptions);
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(token), payload, revertOptions);
+        gateway.depositAndCall{ value: ADDITIONAL_ACTION_FEE_WEI }(
+            destination, amount, address(token), payload, revertOptions
+        );
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 ownerBalanceAfter = token.balanceOf(owner);
+        uint256 tssBalanceAfter = tssAddress.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 2), custodyBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2), ownerBalanceAfter);
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+    }
+
+    function testCallSecondActionRequiresFee() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 ownerBalanceBefore = owner.balance;
+        uint256 tssBalanceBefore = tssAddress.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit Called(owner, destination, payload, revertOptions);
+        gateway.call(destination, payload, revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit Called(owner, destination, payload, revertOptions);
+        gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, payload, revertOptions);
+
+        uint256 ownerBalanceAfter = owner.balance;
+        uint256 tssBalanceAfter = tssAddress.balance;
+
+        assertEq(ownerBalanceBefore - ADDITIONAL_ACTION_FEE_WEI, ownerBalanceAfter);
+        assertEq(tssBalanceBefore + ADDITIONAL_ACTION_FEE_WEI, tssBalanceAfter);
+    }
+
+    function testMixedActionTypesInSameTransaction() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 custodyBalanceBefore = token.balanceOf(address(custody));
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        token.approve(address(gateway), amount * 2);
+
+        vm.expectEmit(true, true, true, true);
+        emit Deposited(owner, destination, amount, address(token), "", revertOptions);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectEmit(true, true, true, true);
+        emit DepositedAndCalled(owner, destination, amount, address(token), payload, revertOptions);
+        gateway.depositAndCall{ value: ADDITIONAL_ACTION_FEE_WEI }(
+            destination, amount, address(token), payload, revertOptions
+        );
+
+        vm.expectEmit(true, true, true, true);
+        emit Called(owner, destination, payload, revertOptions);
+        gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, payload, revertOptions);
+
+        uint256 custodyBalanceAfter = token.balanceOf(address(custody));
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(custodyBalanceBefore + (amount * 2), custodyBalanceAfter);
+        assertEq(tssBalanceBefore + (ADDITIONAL_ACTION_FEE_WEI * 2), tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (ADDITIONAL_ACTION_FEE_WEI * 2), ownerBalanceAfter);
+    }
+
+    function testUpdateAdditionalActionFee() public {
+        uint256 newFee = 1e13; // 0.01 ETH
+
+        vm.expectEmit(true, true, true, true);
+        emit UpdatedAdditionalActionFee(ADDITIONAL_ACTION_FEE_WEI, newFee); // Initial fee is 0
+        gateway.updateAdditionalActionFee(newFee);
+
+        assertEq(gateway.additionalActionFeeWei(), newFee);
+    }
+
+    function testUpdateAdditionalActionFeeOnlyAdmin() public {
+        uint256 newFee = 1e13;
+
+        vm.prank(tssAddress);
+        vm.expectRevert();
+        gateway.updateAdditionalActionFee(newFee);
+    }
+
+    function testFeeSystemWithUpdatedFee() public {
+        uint256 newFee = 1e13; // 0.01 ETH
+        uint256 amount = 100_000;
+
+        // Update the fee
+        gateway.updateAdditionalActionFee(newFee);
+
+        // Test that the new fee is applied
+        uint256 tssBalanceBefore = tssAddress.balance;
+        uint256 ownerBalanceBefore = owner.balance;
+
+        gateway.deposit{ value: amount }(destination, revertOptions);
+        gateway.deposit{ value: amount + newFee }(destination, amount, revertOptions);
+
+        uint256 tssBalanceAfter = tssAddress.balance;
+        uint256 ownerBalanceAfter = owner.balance;
+
+        assertEq(tssBalanceBefore + (amount * 2) + newFee, tssBalanceAfter);
+        assertEq(ownerBalanceBefore - (amount * 2) - newFee, ownerBalanceAfter);
+    }
+
+    function testDepositEthWithAmountSecondActionFailsWithOnlyFee() public {
+        uint256 amount = 100_000;
+
+        // First deposit (free)
+        gateway.deposit{ value: amount }(destination, revertOptions);
+
+        // Second deposit with only fee amount should fail because depositAmount = 0
+        vm.expectRevert(InsufficientETHAmount.selector);
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI }(destination, 0, revertOptions);
+    }
+
+    function testDepositERC20ToCustodyFailsIfExcessEthProvided() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+
+        token.approve(address(gateway), amount);
+
+        // First ERC20 deposit with excess ETH should revert
+        vm.expectRevert(abi.encodeWithSelector(ExcessETHProvided.selector, 0, excessEth));
+        gateway.deposit{ value: excessEth }(destination, amount, address(token), revertOptions);
+    }
+
+    function testDepositERC20ToCustodySecondActionFailsIfExcessEthProvided() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+
+        token.approve(address(gateway), amount * 2);
+
+        // First ERC20 deposit (free)
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        // Second ERC20 deposit with excess ETH should revert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ExcessETHProvided.selector, ADDITIONAL_ACTION_FEE_WEI, ADDITIONAL_ACTION_FEE_WEI + excessEth
+            )
+        );
+        gateway.deposit{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(
+            destination, amount, address(token), revertOptions
+        );
+    }
+
+    function testCallFailsIfExcessEthProvided() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 excessEth = 50_000;
+
+        // First call with excess ETH should revert
+        vm.expectRevert(abi.encodeWithSelector(ExcessETHProvided.selector, 0, excessEth));
+        gateway.call{ value: excessEth }(destination, payload, revertOptions);
+    }
+
+    function testCallSecondActionFailsIfExcessEthProvided() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 excessEth = 50_000;
+
+        // First call (free)
+        gateway.call(destination, payload, revertOptions);
+
+        // Second call with excess ETH should revert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ExcessETHProvided.selector, ADDITIONAL_ACTION_FEE_WEI, ADDITIONAL_ACTION_FEE_WEI + excessEth
+            )
+        );
+        gateway.call{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(destination, payload, revertOptions);
+    }
+
+    function testDepositAndCallERC20ToCustodyFailsIfExcessEthProvided() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount);
+
+        // ERC20 depositAndCall with excess ETH should revert
+        vm.expectRevert(abi.encodeWithSelector(ExcessETHProvided.selector, 0, excessEth));
+        gateway.depositAndCall{ value: excessEth }(destination, amount, address(token), payload, revertOptions);
+    }
+
+    function testDepositAndCallERC20ToCustodySecondActionFailsIfExcessEthProvided() public {
+        uint256 amount = 100_000;
+        uint256 excessEth = 50_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount * 2);
+
+        // First ERC20 depositAndCall (free)
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+
+        // Second ERC20 depositAndCall with excess ETH should revert
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                ExcessETHProvided.selector, ADDITIONAL_ACTION_FEE_WEI, ADDITIONAL_ACTION_FEE_WEI + excessEth
+            )
+        );
+        gateway.depositAndCall{ value: ADDITIONAL_ACTION_FEE_WEI + excessEth }(
+            destination, amount, address(token), payload, revertOptions
+        );
+    }
+
+    function testDepositERC20ToCustodyFailsIfInsufficientFee() public {
+        uint256 amount = 100_000;
+        uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
+
+        token.approve(address(gateway), amount * 2);
+
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
+        gateway.deposit{ value: insufficientFee }(destination, amount, address(token), revertOptions);
+    }
+
+    function testDepositAndCallERC20ToCustodyFailsIfInsufficientFee() public {
+        uint256 amount = 100_000;
+        uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount * 2);
+
+        gateway.depositAndCall(destination, amount, address(token), payload, revertOptions);
+
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
+        gateway.depositAndCall{ value: insufficientFee }(destination, amount, address(token), payload, revertOptions);
+    }
+
+    function testCallFailsIfInsufficientFee() public {
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+        uint256 insufficientFee = ADDITIONAL_ACTION_FEE_WEI - 1;
+
+        gateway.call(destination, payload, revertOptions);
+
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, insufficientFee));
+        gateway.call{ value: insufficientFee }(destination, payload, revertOptions);
+    }
+
+    function testAdditionalActionDisabledReverts() public {
+        // Disable fees
+        gateway.updateAdditionalActionFee(0);
+
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        token.approve(address(gateway), amount * 2);
+
+        // First action should work (free)
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        // Second action should revert because fee is disabled
+        vm.expectRevert(AdditionalActionDisabled.selector);
+        gateway.deposit(destination, amount, address(token), revertOptions);
+
+        // Call should also revert on second action
+        vm.expectRevert(AdditionalActionDisabled.selector);
+        gateway.call(destination, payload, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssFailsIfInsufficientFee() public {
+        uint256 amount = 100_000;
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with incorrect value (should revert)
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, amount));
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+    }
+
+    function testDepositEthWithAmountToTssSecondActionFailsIfIncorrectValue() public {
+        uint256 amount = 100_000;
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with excess eth (should revert)
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IncorrectValueProvided.selector,
+                amount + ADDITIONAL_ACTION_FEE_WEI,
+                amount + ADDITIONAL_ACTION_FEE_WEI + 1
+            )
+        );
+        gateway.deposit{ value: amount + ADDITIONAL_ACTION_FEE_WEI + 1 }(destination, amount, revertOptions);
+    }
+
+    function testDepositAndCallEthWithAmountToTssFailsIfInsufficientFee() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with incorrect value (should revert)
+        vm.expectRevert(abi.encodeWithSelector(InsufficientFee.selector, ADDITIONAL_ACTION_FEE_WEI, amount));
+        gateway.depositAndCall{ value: amount }(destination, amount, payload, revertOptions);
+    }
+
+    function testDepositAndCallEthWithAmountToTssSecondActionFailsIfIncorrectValue() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        // First action (free)
+        gateway.deposit{ value: amount }(destination, amount, revertOptions);
+
+        // Second action with excess eth (should revert)
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                IncorrectValueProvided.selector,
+                amount + ADDITIONAL_ACTION_FEE_WEI,
+                amount + ADDITIONAL_ACTION_FEE_WEI + 1
+            )
+        );
+        gateway.depositAndCall{ value: amount + ADDITIONAL_ACTION_FEE_WEI + 1 }(
+            destination, amount, payload, revertOptions
+        );
+    }
+
+    function testDepositEthToTssFailsForSubsequentActions() public {
+        uint256 amount = 100_000;
+
+        // First action works
+        gateway.deposit{ value: amount }(destination, revertOptions);
+
+        // Second action with regular deposit should revert
+        vm.expectRevert(abi.encodeWithSelector(AdditionalActionDisabled.selector));
+        gateway.deposit{ value: amount }(destination, revertOptions);
+    }
+
+    function testDepositAndCallEthToTssFailsForSubsequentActions() public {
+        uint256 amount = 100_000;
+        bytes memory payload = abi.encodeWithSignature("hello(address)", destination);
+
+        // First action works
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
+
+        // Second action with regular depositAndCall should revert
+        vm.expectRevert(abi.encodeWithSelector(AdditionalActionDisabled.selector));
+        gateway.depositAndCall{ value: amount }(destination, payload, revertOptions);
     }
 }
